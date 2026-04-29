@@ -39,10 +39,10 @@ export function GuidanceMock({ position, decomposed }) {
     RIGHT:  { right: 0 },
   }[position];
 
-  const PANEL_W = 115;
+  const PANEL_W = 200;
 
   return (
-    <div style={{ width: 300, height: 210, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 320, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 210" fill="none">
           <path d="M20 115 Q80 80 150 110 T280 100" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -55,26 +55,26 @@ export function GuidanceMock({ position, decomposed }) {
       {decomposed ? (
         <>
           {/* NIP — top */}
-          <div style={{ position: 'absolute', top: 0, width: PANEL_W, ...panelStyle, background: '#1a3d2b', padding: '7px 10px', display: 'flex', alignItems: 'center', gap: 7, borderBottom: '1px solid rgba(255,255,255,0.08)', borderLeft: '1px solid rgba(255,255,255,0.08)', borderRight: '1px solid rgba(255,255,255,0.08)', borderRadius: '0 0 7px 7px' }}>
-            <span style={{ fontSize: '1.1rem', color: 'white' }}>↖</span>
+          <div style={{ position: 'absolute', top: 0, width: PANEL_W, ...panelStyle, background: '#1a3d2b', padding: '12px 16px', display: 'flex', alignItems: 'center', gap: 12, borderBottom: '1px solid rgba(255,255,255,0.08)', borderLeft: '1px solid rgba(255,255,255,0.08)', borderRight: '1px solid rgba(255,255,255,0.08)', borderRadius: '0 0 10px 10px' }}>
+            <span style={{ fontSize: '1.6rem', color: 'white' }}>↖</span>
             <div>
-              <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-              <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
             </div>
           </div>
           {/* Upcoming Events — middle (floating) */}
-          <div style={{ position: 'absolute', top: 72, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.88)', borderRadius: 7, padding: '6px 9px', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ fontSize: '0.45rem', color: '#94a3b8', marginBottom: 3, letterSpacing: '0.05em' }}>UPCOMING</div>
-            <div style={{ display: 'flex', gap: 5 }}>
-              {['🚧', '⛽', '☕'].map(e => <span key={e} style={{ fontSize: '0.6rem' }}>{e}</span>)}
+          <div style={{ position: 'absolute', top: 110, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.88)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ fontSize: '0.6rem', color: '#94a3b8', marginBottom: 5, letterSpacing: '0.05em' }}>UPCOMING</div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {['🚧', '⛽', '☕'].map(e => <span key={e} style={{ fontSize: '0.9rem' }}>{e}</span>)}
             </div>
           </div>
           {/* ETA — bottom */}
-          <div style={{ position: 'absolute', bottom: 8, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.93)', borderRadius: 7, padding: '6px 9px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: 8 }}>
+          <div style={{ position: 'absolute', bottom: 12, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.93)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: 14 }}>
             {[['14:32', 'ETA'], ['18m', 'Time'], ['6.4', 'km']].map(([v, l]) => (
               <div key={l} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-                <div style={{ fontSize: '0.44rem', color: '#64748b' }}>{l}</div>
+                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
+                <div style={{ fontSize: '0.62rem', color: '#64748b' }}>{l}</div>
               </div>
             ))}
           </div>
@@ -86,24 +86,24 @@ export function GuidanceMock({ position, decomposed }) {
           background: 'rgba(15,26,40,0.90)', border: '1px solid rgba(255,255,255,0.1)',
           display: 'flex', flexDirection: 'column',
         }}>
-          <div style={{ background: '#1a3d2b', padding: '9px 10px', display: 'flex', alignItems: 'center', gap: 7 }}>
-            <span style={{ fontSize: '1.2rem', color: 'white' }}>↖</span>
+          <div style={{ background: '#1a3d2b', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span style={{ fontSize: '1.6rem', color: 'white' }}>↖</span>
             <div>
-              <div style={{ fontSize: '0.66rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-              <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
             </div>
           </div>
-          <div style={{ flex: 1, padding: '7px 10px', borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <div style={{ fontSize: '0.45rem', color: '#64748b', marginBottom: 4, letterSpacing: '0.05em' }}>UPCOMING</div>
-            <div style={{ display: 'flex', gap: 5 }}>
-              {['🚧', '⛽', '☕'].map(e => <span key={e} style={{ fontSize: '0.65rem' }}>{e}</span>)}
+          <div style={{ flex: 1, padding: '10px 14px', borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+            <div style={{ fontSize: '0.6rem', color: '#64748b', marginBottom: 6, letterSpacing: '0.05em' }}>UPCOMING</div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {['🚧', '⛽', '☕'].map(e => <span key={e} style={{ fontSize: '0.9rem' }}>{e}</span>)}
             </div>
           </div>
-          <div style={{ padding: '7px 10px', display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ padding: '10px 14px', display: 'flex', justifyContent: 'space-between' }}>
             {[['14:32', 'ETA'], ['18m', 'Time'], ['6.4km', 'Dist']].map(([v, l]) => (
               <div key={l} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-                <div style={{ fontSize: '0.44rem', color: '#64748b' }}>{l}</div>
+                <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
+                <div style={{ fontSize: '0.62rem', color: '#64748b' }}>{l}</div>
               </div>
             ))}
           </div>

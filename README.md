@@ -51,6 +51,41 @@ Full dark theme across all pages — map previews, cluster display, navigation p
 
 ---
 
+### Home Screen Layout — interactive IVI screen zones & resize demo
+Click any of the four named zones to highlight it on the full-width IVI mock. Drag the four inset sliders to resize the navigation application area live — the generated Kotlin code updates in real time. A fourth explorer lets you combine all four UI state dimensions to inspect active/passive transitions.
+
+![Home Screen Layout](docs/screenshots/07-home-screen-layout.png)
+
+---
+
+### Navigation Controls — button bar position & search entry point
+Choose from four button bar positions (left, right, top, bottom) and toggle individual control buttons on/off. Switch search entry between a persistent destination panel and a compact button. The full-width IVI mock and Kotlin snippet update instantly.
+
+![Navigation Controls](docs/screenshots/08-nav-controls.png)
+
+---
+
+### Horizon Panel — composed vs decomposed layout
+Toggle between the single composed Horizon Panel and its three independent sub-components (NIP, Upcoming Events, ETA). Switch panel position between left, centre, and right. The full-width guidance mock shows exactly how each configuration looks on screen.
+
+![Horizon Panel](docs/screenshots/09-horizon-panel.png)
+
+---
+
+### Next Instruction Panel — five anchor positions
+Place the NIP at any of five anchor points (top-left, top-centre, top-right, bottom-left, bottom-right). The full-width map mock and Kotlin configuration update live.
+
+![Next Instruction Panel](docs/screenshots/10-instruction-panel.png)
+
+---
+
+### ETA Panel — position & content field toggles
+Choose from six anchor positions and individually show/hide each content field (ETA, travel time, distance, battery SoC, end-route button) via toggle switches. The full-width map mock and generated Kotlin reflect every change.
+
+![ETA Panel](docs/screenshots/11-eta-panel.png)
+
+---
+
 ## Sharing internally
 
 The repo is private, so GitHub Pages won't serve it publicly. The easiest way to give colleagues a live URL is **Vercel** — free, no config needed beyond connecting the repo.

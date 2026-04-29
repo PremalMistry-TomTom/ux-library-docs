@@ -33,7 +33,7 @@ export const CONTENT_FIELDS = [
 export function ETAMock({ position, visibleFields }) {
   const pos = POSITIONS.find(p => p.id === position);
   return (
-    <div style={{ width: 300, height: 190, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
           <path d="M20 100 Q80 70 150 100 T280 90" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -44,16 +44,16 @@ export function ETAMock({ position, visibleFields }) {
       </div>
       <div style={{
         position: 'absolute', ...pos.anchor,
-        background: 'rgba(15,26,40,0.93)', borderRadius: 8,
-        padding: '7px 10px', border: '1px solid rgba(255,255,255,0.12)',
-        display: 'flex', alignItems: 'center', gap: 8, minWidth: 80,
+        background: 'rgba(15,26,40,0.93)', borderRadius: 10,
+        padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)',
+        display: 'flex', alignItems: 'center', gap: 16, minWidth: 120,
       }}>
         {visibleFields.length === 0
-          ? <span style={{ fontSize: '0.55rem', color: 'rgba(255,255,255,0.2)' }}>all hidden</span>
+          ? <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.2)' }}>all hidden</span>
           : visibleFields.map(f => (
             <div key={f.id} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{f.value}</div>
-              <div style={{ fontSize: '0.48rem', color: '#64748b', marginTop: 2 }}>{f.label}</div>
+              <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{f.value}</div>
+              <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: 3 }}>{f.label}</div>
             </div>
           ))
         }
@@ -135,29 +135,27 @@ export default function ETAPanel() {
         <p className="body">
           Toggle individual fields on or off. The panel width adapts to the visible set.
         </p>
-        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-          <div style={{ flex: 1, minWidth: 200 }}>
-            {CONTENT_FIELDS.map(f => {
-              const hidden = hiddenFields.includes(f.id);
-              return (
-                <div key={f.id} onClick={() => toggleField(f.id)} style={{
-                  display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
-                  marginBottom: 6, borderRadius: 7, cursor: 'pointer',
-                  background: hidden ? 'var(--bg)' : '#fff',
-                  border: '1px solid var(--border)', opacity: hidden ? 0.5 : 1,
-                  transition: 'all 0.12s',
-                }}>
-                  <div style={{ width: 32, height: 18, borderRadius: 9, background: hidden ? 'var(--border)' : 'var(--red)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
-                    <div style={{ position: 'absolute', top: 2, left: hidden ? 2 : 14, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
-                  </div>
-                  <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>{f.label}</span>
-                  <span style={{ marginLeft: 'auto', fontSize: '0.68rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>{hidden ? 'hidden' : 'shown'}</span>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 16 }}>
+          {CONTENT_FIELDS.map(f => {
+            const hidden = hiddenFields.includes(f.id);
+            return (
+              <div key={f.id} onClick={() => toggleField(f.id)} style={{
+                display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
+                borderRadius: 7, cursor: 'pointer',
+                background: hidden ? 'var(--bg)' : '#fff',
+                border: '1px solid var(--border)', opacity: hidden ? 0.5 : 1,
+                transition: 'all 0.12s',
+              }}>
+                <div style={{ width: 32, height: 18, borderRadius: 9, background: hidden ? 'var(--border)' : 'var(--red)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
+                  <div style={{ position: 'absolute', top: 2, left: hidden ? 2 : 14, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
                 </div>
-              );
-            })}
-          </div>
-          <ETAMock position={position} visibleFields={visibleFields} />
+                <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>{f.label}</span>
+                <span style={{ marginLeft: 'auto', fontSize: '0.68rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>{hidden ? 'hidden' : 'shown'}</span>
+              </div>
+            );
+          })}
         </div>
+        <ETAMock position={position} visibleFields={visibleFields} />
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Kotlin']}>
             <pre>

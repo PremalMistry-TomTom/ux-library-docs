@@ -35,29 +35,29 @@ export function NIPMock({ position }) {
     : { borderRadius: '0 0 8px 8px', borderTop: 'none' };
 
   return (
-    <div style={{ width: 300, height: 200, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 320, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 200" fill="none">
           <path d="M20 110 Q80 75 150 105 T280 95" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
           <path d="M85 0 L90 200" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
           <path d="M215 0 L210 200" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
         </svg>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', width: 8, height: 8, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 3px rgba(226,0,26,0.3)' }} />
+        <div style={{ position: 'absolute', top: '50%', left: '50%', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.3)' }} />
       </div>
       <div style={{
         position: 'absolute', ...anchor, ...radius,
-        background: '#1a3d2b', padding: '9px 13px',
-        display: 'flex', alignItems: 'center', gap: 10,
-        minWidth: 150, border: '1px solid rgba(255,255,255,0.1)',
+        background: '#1a3d2b', padding: '14px 20px',
+        display: 'flex', alignItems: 'center', gap: 16,
+        minWidth: 220, border: '1px solid rgba(255,255,255,0.1)',
       }}>
-        <span style={{ fontSize: '1.5rem', color: 'white' }}>↖</span>
+        <span style={{ fontSize: '2rem', color: 'white' }}>↖</span>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.76rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-          <div style={{ fontSize: '0.56rem', color: 'rgba(255,255,255,0.65)' }}>Oak Street North</div>
+          <div style={{ fontSize: '1rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
+          <div style={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.65)' }}>Oak Street North</div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.48rem', color: 'rgba(255,255,255,0.35)' }}>then</div>
-          <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>↗</div>
+          <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.35)' }}>then</div>
+          <div style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.6)' }}>↗</div>
         </div>
       </div>
     </div>

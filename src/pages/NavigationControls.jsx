@@ -8,7 +8,7 @@ const BTN_ENUM  = { '🔍': 'SEARCH', '⚡': 'CHARGING', '🔇': 'MUTE', '⚙️
 
 function MapMockBase({ children }) {
   return (
-    <div style={{ width: 280, height: 175, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 175" fill="none">
           <path d="M20 90 Q80 60 140 90 T260 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -41,11 +41,11 @@ export function ButtonBarConfig({ t }) {
   const visibleButtons = BTN_ORDER.filter(b => !hiddenBtns.includes(b));
 
   const barStyle = {
-    position: 'absolute', background: 'rgba(0,0,0,0.55)', display: 'flex', gap: 4, padding: 6,
-    ...(position === 'LEFT'   ? { top: 0, left: 0, bottom: 0, flexDirection: 'column', width: 32, borderRight: '1px solid rgba(255,255,255,0.08)' } : {}),
-    ...(position === 'RIGHT'  ? { top: 0, right: 0, bottom: 0, flexDirection: 'column', width: 32, borderLeft: '1px solid rgba(255,255,255,0.08)' } : {}),
-    ...(position === 'TOP'    ? { top: 0, left: 0, right: 0, flexDirection: 'row', height: 32, borderBottom: '1px solid rgba(255,255,255,0.08)' } : {}),
-    ...(position === 'BOTTOM' ? { bottom: 0, left: 0, right: 0, flexDirection: 'row', height: 32, borderTop: '1px solid rgba(255,255,255,0.08)', justifyContent: 'center' } : {}),
+    position: 'absolute', background: 'rgba(0,0,0,0.55)', display: 'flex', gap: 6, padding: 8,
+    ...(position === 'LEFT'   ? { top: 0, left: 0, bottom: 0, flexDirection: 'column', width: 44, borderRight: '1px solid rgba(255,255,255,0.08)' } : {}),
+    ...(position === 'RIGHT'  ? { top: 0, right: 0, bottom: 0, flexDirection: 'column', width: 44, borderLeft: '1px solid rgba(255,255,255,0.08)' } : {}),
+    ...(position === 'TOP'    ? { top: 0, left: 0, right: 0, flexDirection: 'row', height: 44, borderBottom: '1px solid rgba(255,255,255,0.08)' } : {}),
+    ...(position === 'BOTTOM' ? { bottom: 0, left: 0, right: 0, flexDirection: 'row', height: 44, borderTop: '1px solid rgba(255,255,255,0.08)', justifyContent: 'center' } : {}),
   };
 
   return (
@@ -65,23 +65,23 @@ export function ButtonBarConfig({ t }) {
         ))}
       </div>
 
-      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-        <MapMockBase>
-          <div style={barStyle}>
-            {visibleButtons.map(icon => (
-              <div key={icon} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem', flexShrink: 0 }}>{icon}</div>
-            ))}
-          </div>
-        </MapMockBase>
+      <MapMockBase>
+        <div style={barStyle}>
+          {visibleButtons.map(icon => (
+            <div key={icon} style={{ width: 28, height: 28, borderRadius: 5, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', flexShrink: 0 }}>{icon}</div>
+          ))}
+        </div>
+      </MapMockBase>
 
-        <div style={{ flex: 1, minWidth: 160 }}>
-          <div style={{ fontSize: '0.76rem', fontWeight: 600, marginBottom: 8 }}>Button visibility</div>
+      <div>
+        <div style={{ fontSize: '0.76rem', fontWeight: 600, marginBottom: 8 }}>Button visibility</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
           {BTN_ORDER.map(icon => {
             const hidden = hiddenBtns.includes(icon);
             return (
               <div key={icon} onClick={() => toggleHide(icon)} style={{
-                display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px',
-                marginBottom: 5, borderRadius: 6, cursor: 'pointer',
+                display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px',
+                borderRadius: 6, cursor: 'pointer',
                 background: hidden ? 'var(--bg)' : 'var(--white)',
                 border: '1px solid var(--border)', opacity: hidden ? 0.5 : 1,
                 transition: 'all 0.1s',

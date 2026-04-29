@@ -22,12 +22,12 @@ export function ZonesDiagram({ t }) {
   const zone = zones.find(z => z.id === activeZone);
 
   return (
-    <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-      {/* IVI mock */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* IVI mock — full width */}
       <div style={{
-        width: 300, height: 200, background: '#0c1318', borderRadius: 10,
+        width: '100%', height: 300, background: '#0c1318', borderRadius: 10,
         border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden',
-        position: 'relative', flexShrink: 0,
+        position: 'relative',
       }}>
         {/* Map background */}
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
@@ -37,41 +37,41 @@ export function ZonesDiagram({ t }) {
             <path d="M70 0 L75 200" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
             <path d="M200 0 L190 200" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
           </svg>
-          <div style={{ position: 'absolute', top: '45%', left: '52%', width: 8, height: 8, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 3px rgba(226,0,26,0.3)' }} />
+          <div style={{ position: 'absolute', top: '45%', left: '52%', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.3)' }} />
         </div>
         {/* Widget strip */}
         <div style={{
-          position: 'absolute', top: 0, right: 0, width: 90, height: '100%',
+          position: 'absolute', top: 0, right: 0, width: '28%', height: '100%',
           background: 'rgba(0,0,0,0.55)', borderLeft: '1px solid rgba(255,255,255,0.08)',
-          display: 'flex', flexDirection: 'column', padding: 8, gap: 6,
+          display: 'flex', flexDirection: 'column', padding: '10px 12px', gap: 8,
         }}>
           {['MEDIA','CLIMATE','PHONE'].map(w => (
-            <div key={w} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '0.45rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>{w}</span>
+            <div key={w} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>{w}</span>
             </div>
           ))}
         </div>
         {/* Controls zone */}
-        <div style={{ position: 'absolute', bottom: 8, left: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ position: 'absolute', bottom: 12, left: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
           {['🔍','⚡','🔇','⚙️'].map((icon, i) => (
-            <div key={i} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem' }}>{icon}</div>
+            <div key={i} style={{ width: 28, height: 28, borderRadius: 6, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem' }}>{icon}</div>
           ))}
         </div>
         {/* Zone overlays */}
-        {activeZone === 'display'  && <div style={{ position: 'absolute', inset: 0, right: 90, border: `2px solid ${ZONE_COLORS.display.border}`,  background: ZONE_COLORS.display.bg,  borderRadius: '9px 0 0 9px', pointerEvents: 'none' }} />}
+        {activeZone === 'display'  && <div style={{ position: 'absolute', inset: 0, right: '28%', border: `2px solid ${ZONE_COLORS.display.border}`,  background: ZONE_COLORS.display.bg,  borderRadius: '9px 0 0 9px', pointerEvents: 'none' }} />}
         {activeZone === 'nav'      && <div style={{ position: 'absolute', inset: 0, border: `2px solid ${ZONE_COLORS.nav.border}`,      background: ZONE_COLORS.nav.bg,      borderRadius: 9, pointerEvents: 'none' }} />}
-        {activeZone === 'safe'     && <div style={{ position: 'absolute', top: 12, left: 30, right: 100, bottom: 12, border: `2px solid ${ZONE_COLORS.safe.border}`, background: ZONE_COLORS.safe.bg, borderRadius: 6, pointerEvents: 'none' }} />}
-        {activeZone === 'controls' && <div style={{ position: 'absolute', bottom: 4, left: 4, width: 32, top: 4, border: `2px solid ${ZONE_COLORS.controls.border}`, background: ZONE_COLORS.controls.bg, borderRadius: 6, pointerEvents: 'none' }} />}
+        {activeZone === 'safe'     && <div style={{ position: 'absolute', top: '5%', left: '8%', right: '31%', bottom: '5%', border: `2px solid ${ZONE_COLORS.safe.border}`, background: ZONE_COLORS.safe.bg, borderRadius: 8, pointerEvents: 'none' }} />}
+        {activeZone === 'controls' && <div style={{ position: 'absolute', top: '2%', bottom: '2%', left: '1%', width: '9%', border: `2px solid ${ZONE_COLORS.controls.border}`, background: ZONE_COLORS.controls.bg, borderRadius: 8, pointerEvents: 'none' }} />}
       </div>
 
-      {/* Zone legend */}
-      <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 6 }}>
+      {/* Zone legend — 2×2 grid below mock */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
         {zones.map(z => (
           <div
             key={z.id}
             onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
             style={{
-              padding: '8px 12px', borderRadius: 7, cursor: 'pointer',
+              padding: '10px 14px', borderRadius: 8, cursor: 'pointer',
               border: `1px solid ${activeZone === z.id ? z.border : 'var(--border)'}`,
               background: activeZone === z.id ? z.bg : 'var(--bg)',
               transition: 'all 0.15s',
@@ -79,15 +79,15 @@ export function ZonesDiagram({ t }) {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 10, height: 10, borderRadius: 2, background: z.color, flexShrink: 0 }} />
-              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--black)' }}>{z.label}</span>
+              <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--black)' }}>{z.label}</span>
             </div>
             {activeZone === z.id && (
-              <p style={{ fontSize: '0.76rem', color: 'var(--mid)', margin: '5px 0 0 18px', lineHeight: 1.5 }}>{z.desc}</p>
+              <p style={{ fontSize: '0.78rem', color: 'var(--mid)', margin: '6px 0 0 18px', lineHeight: 1.5 }}>{z.desc}</p>
             )}
           </div>
         ))}
-        <p style={{ fontSize: '0.72rem', color: 'var(--muted)', marginTop: 4 }}>Click a zone to highlight it</p>
       </div>
+      <p style={{ fontSize: '0.72rem', color: 'var(--muted)', margin: '-4px 0 0' }}>Click a zone to highlight it on the diagram</p>
     </div>
   );
 }
@@ -119,8 +119,32 @@ export function ResizeDemo({ t }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-        <div style={{ position: 'relative', width: 300, height: 190, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', flexShrink: 0 }}>
+      {/* Sliders — 2×2 grid above mock */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        {SLIDER_SIDES.map(({ side, label }) => (
+          <div key={side}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>{label}</span>
+              <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{insets[side]}%</span>
+            </div>
+            <input
+              type="range" min="0" max="50" value={insets[side]}
+              onChange={e => set(side, e.target.value)}
+              style={{ width: '100%', accentColor: 'var(--red)' }}
+            />
+          </div>
+        ))}
+      </div>
+      <div>
+        <button
+          onClick={() => setInsets({ top: 0, right: 30, bottom: 0, left: 0 })}
+          style={{ fontSize: '0.76rem', padding: '4px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 5, cursor: 'pointer' }}
+        >
+          {t('homeScreen.sliders.reset')}
+        </button>
+      </div>
+      <div>
+        <div style={{ position: 'relative', width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
             <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
               <path d="M20 90 Q80 60 150 95 T280 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -157,29 +181,6 @@ export function ResizeDemo({ t }) {
               <span style={{ fontSize: '0.45rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>BOTTOM BAR</span>
             </div>
           )}
-        </div>
-
-        {/* Sliders */}
-        <div style={{ flex: 1, minWidth: 200 }}>
-          {SLIDER_SIDES.map(({ side, label }) => (
-            <div key={side} style={{ marginBottom: 12 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>{label}</span>
-                <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{insets[side]}%</span>
-              </div>
-              <input
-                type="range" min="0" max="50" value={insets[side]}
-                onChange={e => set(side, e.target.value)}
-                style={{ width: '100%', accentColor: 'var(--red)' }}
-              />
-            </div>
-          ))}
-          <button
-            onClick={() => setInsets({ top: 0, right: 30, bottom: 0, left: 0 })}
-            style={{ fontSize: '0.76rem', padding: '4px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 5, cursor: 'pointer' }}
-          >
-            {t('homeScreen.sliders.reset')}
-          </button>
         </div>
       </div>
 
@@ -218,7 +219,7 @@ function StateMapMock({ state }) {
   const browsing   = state.map === 'BROWSING';
 
   return (
-    <div style={{ width: '100%', height: 180, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 400 180" fill="none">
           {inGuidance && <path d="M20 100 Q100 70 200 100 T380 90" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>}
