@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── API references ─────────────────────────────────────────────────────────── */
 const HORIZON_APIS = [
@@ -135,10 +136,7 @@ export default function HorizonPanel() {
     <div className="page">
       <div className="page-header">
         <h1>{t('horizonPanel.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag private">{t('horizonPanel.badge')}</span>
-          <span className="meta-tag">{t('horizonPanel.version')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

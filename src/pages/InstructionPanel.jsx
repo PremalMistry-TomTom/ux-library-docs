@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── API references ─────────────────────────────────────────────────────────── */
 const NIP_APIS = [
@@ -71,10 +72,7 @@ export default function InstructionPanel() {
     <div className="page">
       <div className="page-header">
         <h1>Next Instruction Panel</h1>
-        <div className="page-meta">
-          <span className="meta-tag private">Private</span>
-          <span className="meta-tag">v0.1 · Q2 2026</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

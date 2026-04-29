@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Architecture diagram — CSS stack (same pattern as ADAS) ────────────── */
 export function ArchDiagram() {
@@ -106,9 +107,7 @@ export default function TAIAOverview() {
     <div className="page">
       <div className="page-header">
         <h1>{t('overview.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag">{t('overview.badge')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

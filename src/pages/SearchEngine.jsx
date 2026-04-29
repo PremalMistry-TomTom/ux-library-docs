@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── API references ─────────────────────────────────────────────────────────── */
 const SEARCH_APIS = [
@@ -432,10 +433,7 @@ export default function SearchEngine() {
     <div className="page">
       <div className="page-header">
         <h1>{t('searchEngine.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag private">{t('searchEngine.badge')}</span>
-          <span className="meta-tag">{t('searchEngine.version')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

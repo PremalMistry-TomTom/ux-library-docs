@@ -1,4 +1,5 @@
 import Callout from '../components/ui/Callout';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Positioning diagram ───────────────────────────────────── */
 const LAYOUT_MODES = [
@@ -112,10 +113,7 @@ export default function RouteBar() {
     <div className="page">
       <div className="page-header">
         <h1>Route Bar</h1>
-        <div className="page-meta">
-          <span className="meta-tag private">Private</span>
-          <span className="meta-tag">Roadmap · Q3 2026</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

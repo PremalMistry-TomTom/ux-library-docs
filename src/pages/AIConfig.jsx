@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Navigation context fields ─────────────────────────────────────────────── */
 const CONTEXT_FIELDS = [
@@ -24,9 +25,7 @@ export default function AIConfig() {
     <div className="page">
       <div className="page-header">
         <h1>{t('config.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag">{t('config.badge')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

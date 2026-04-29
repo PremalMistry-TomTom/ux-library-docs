@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import PageActions from '../components/ui/PageActions';
 
 const MAP_DISPLAY_APIS = [
   {
@@ -314,10 +315,7 @@ export default function SafetyLocations() {
     <div className="page">
       <div className="page-header">
         <h1>Safety Locations</h1>
-        <div className="page-meta">
-          <span className="meta-tag">NavSDK for Android</span>
-          <span className="meta-tag">v2.2.0</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

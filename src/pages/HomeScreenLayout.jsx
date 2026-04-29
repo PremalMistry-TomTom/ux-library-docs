@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import PageActions from '../components/ui/PageActions';
 
 const ZONE_COLORS = {
   nav:      { color: '#f59e0b', bg: 'rgba(245,158,11,0.15)', border: '#f59e0b' },
@@ -404,10 +405,7 @@ export default function HomeScreenLayout() {
     <div className="page">
       <div className="page-header">
         <h1>{t('homeScreen.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag private">{t('homeScreen.badge')}</span>
-          <span className="meta-tag">{t('homeScreen.version')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

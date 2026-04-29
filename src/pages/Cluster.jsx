@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Static IDs (no i18n needed — these are API identifiers) ────────────── */
 const HP_ELEMENT_IDS  = ['SLG', 'CMP', 'JV', 'UEP', 'ETA'];
@@ -419,10 +420,7 @@ export default function Cluster() {
     <div className="page">
       <div className="page-header">
         <h1>{t('cluster.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag">NavSDK for Android</span>
-          <span className="meta-tag">{t('cluster.version')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

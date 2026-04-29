@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import PageActions from '../components/ui/PageActions';
 
 export default function VoiceEngine() {
   const { t } = useTranslation('ai');
@@ -15,9 +16,7 @@ export default function VoiceEngine() {
     <div className="page">
       <div className="page-header">
         <h1>{t('voiceEngine.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag">{t('voiceEngine.badge')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks, ApiRef } from '../components/ui/ApiLinks';
+import PageActions from '../components/ui/PageActions';
 
 const EV_APIS = [
   {
@@ -560,9 +561,7 @@ export default function EVSupport() {
       {/* ── Header ── */}
       <div className="page-header" id="ev-overview">
         <h1>{t('title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag">{t('badge')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">{t('intro')}</div>

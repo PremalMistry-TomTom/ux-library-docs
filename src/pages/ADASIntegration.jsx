@@ -1,4 +1,5 @@
 import Callout from '../components/ui/Callout';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Capability icons ───────────────────────────────────────────────────── */
 function IconISA() {
@@ -105,11 +106,7 @@ export default function ADASIntegration() {
 
       <div className="page-header">
         <h1>Advanced Driver Assistance (ADAS)</h1>
-        <div className="page-meta">
-          <span className="meta-tag">Android SDK</span>
-          <span className="meta-tag">Vehicle Integration</span>
-          <span className="meta-tag private">Request access</span>
-        </div>
+        <PageActions />
         <p className="page-intro">
           A standalone, modular safety layer that augments any existing navigation stack
           with horizon-aware features — without replacing your incumbent nav provider.

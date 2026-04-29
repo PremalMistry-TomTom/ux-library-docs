@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import PageActions from '../components/ui/PageActions';
 
 const BTN_ORDER = ['🔍', '⚡', '🔇', '⚙️'];
 const BTN_ENUM  = { '🔍': 'SEARCH', '⚡': 'CHARGING', '🔇': 'MUTE', '⚙️': 'QUICK_SETTINGS' };
@@ -174,10 +175,7 @@ export default function NavigationControls() {
     <div className="page">
       <div className="page-header">
         <h1>{t('navControls.title')}</h1>
-        <div className="page-meta">
-          <span className="meta-tag private">{t('navControls.badge')}</span>
-          <span className="meta-tag">{t('navControls.version')}</span>
-        </div>
+        <PageActions />
       </div>
 
       <div className="quick-answer">
