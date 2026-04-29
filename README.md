@@ -12,6 +12,17 @@ Interactive documentation for the TomTom UX Library SDK — a composable Android
 
 The UX Library gives OEMs a production-ready baseline for every visible layer of the navigation experience — colours, typography, map styles, navigation panels, search, cluster display, AI assistant integration, and vehicle systems — all overridable without forking the SDK.
 
+Six integration domains:
+
+| Domain | Pages |
+|---|---|
+| **Design System** | Design tokens, colour, font, corner radius |
+| **Map Customisation** | Map style, traffic, safety locations, route styling, map markers |
+| **App Customisation** | Home screen layout, search engine, nav controls, horizon panel, NIP, ETA panel, route bar |
+| **EV & Charging** | Overview, vehicle & battery, charging search, long-distance routing, in-navigation UI, requirements |
+| **Vehicle Integration** | Instrument cluster, head-up display, ADAS integration, truck support |
+| **TomTom AI Assistant** | Overview, voice engine, speech-to-text, configuration |
+
 ---
 
 ## Screens
@@ -83,6 +94,34 @@ Place the NIP at any of five anchor points (top-left, top-centre, top-right, bot
 Choose from six anchor positions and individually show/hide each content field (ETA, travel time, distance, battery SoC, end-route button) via toggle switches. The full-width map mock and generated Kotlin reflect every change.
 
 ![ETA Panel](docs/screenshots/11-eta-panel.png)
+
+---
+
+### Overview — Key use cases
+Eight of the most commonly customised capabilities, each with an SVG preview thumbnail. Click any card to jump directly to its documentation page.
+
+![Key use cases](docs/screenshots/13-overview-use-cases.png)
+
+---
+
+### Overview — Explore by domain
+Six integration domains with page-pill navigation. Each card shows the domain description and links directly to sub-pages.
+
+![Explore by domain](docs/screenshots/14-overview-domains.png)
+
+---
+
+### EV & Charging — domain landing
+The full EV integration journey in one place — battery modelling, charging search, long-distance routing, and in-navigation UI. Each sub-page links directly from the landing card grid.
+
+![EV & Charging](docs/screenshots/15-ev-landing.png)
+
+---
+
+### EV Long-Distance Routing — Berlin → Amsterdam trip timeline
+A real-world 679 km route showing how LDEVR automatically inserts two charging stops (Ionity Bochum + Fastned Eindhoven) with per-stop SoC, kWh, peak power, and charge time. Zero routing code required from the OEM.
+
+![EV Routing — Berlin → Amsterdam](docs/screenshots/17-ev-routing-trip.png)
 
 ---
 
