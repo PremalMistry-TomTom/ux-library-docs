@@ -26,12 +26,13 @@ function ExternalIcon() {
   );
 }
 
-/* One card is ~260px wide in a 4-col layout. Constrain the block to exactly
-   the number of columns needed so there is no empty column dead-space.      */
-const CARD_COL_W = 260;
-const MAX_COLS   = 4;
+const MAX_COLS = 4;
 
 export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
+  // Pad to the next full row so column dividers extend through empty cells
+  const remainder = items.length % MAX_COLS;
+  const spacers   = remainder === 0 ? 0 : MAX_COLS - remainder;
+
   return (
     <div className="api-links-block">
       <div className="api-links-header">{title}</div>
@@ -61,6 +62,9 @@ export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
             </a>
           );
         })}
+        {Array.from({ length: spacers }, (_, i) => (
+          <div key={`spacer-${i}`} className="api-links-spacer" />
+        ))}
       </div>
     </div>
   );
