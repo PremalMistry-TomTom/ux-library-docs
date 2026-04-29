@@ -16,6 +16,18 @@ const MAP_DISPLAY_APIS = [
     description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
     url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
   },
+  {
+    name: 'TomTom Map Maker',
+    type: 'Tool',
+    description: 'Customise safety location icon styles — size, colour, and appearance — in your map style and publish directly to UX Library.',
+    url: 'https://mapmaker.tomtom.com',
+  },
+  {
+    name: 'Map Maker — Docs',
+    type: 'Tool',
+    description: 'Get started with Map Maker: style editor guide, layer reference, and publishing workflow.',
+    url: 'https://docs.tomtom.com/map-maker/documentation/overview/introduction',
+  },
 ];
 
 /* ─── Shared map base ───────────────────────────────────────── */
@@ -314,7 +326,7 @@ export default function SafetyLocations() {
         beyond initialising the Navigation Visualisation factory.
       </div>
 
-      <ApiLinks items={MAP_DISPLAY_APIS} />
+      <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />
 
       <div className="zone">
         <h2 className="sh" id="sl-overview">Overview</h2>
@@ -330,14 +342,6 @@ export default function SafetyLocations() {
         <Callout type="info">
           Safety locations are shown on the map only during an active navigation session.
           They are hidden automatically when navigation ends.
-        </Callout>
-        <Callout type="info">
-          Safety location icon styles — size, colour, and appearance — can be customised using{' '}
-          <strong>TomTom Map Maker</strong>. Design and publish your own map style, then load it
-          into UX Library to apply your branding to camera and zone overlays.{' '}
-          <a href="https://mapmaker.tomtom.com" target="_blank" rel="noopener noreferrer">Open Map Maker ↗</a>
-          {' · '}
-          <a href="https://docs.tomtom.com/map-maker/documentation/overview/introduction" target="_blank" rel="noopener noreferrer">Map Maker docs ↗</a>
         </Callout>
       </div>
 

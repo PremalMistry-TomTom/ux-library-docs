@@ -13,6 +13,7 @@ const TYPE_COLORS = {
   'Android SDK':  { bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8' },
   'iOS SDK':      { bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d' },
   'Web SDK':      { bg: '#fefce8', border: '#fde68a', text: '#b45309' },
+  'Tool':         { bg: '#f0fdfa', border: '#99f6e4', text: '#0f766e' },
 };
 
 const DEFAULT_COLOR = { bg: '#f8f8f8', border: '#e0e0e0', text: '#444' };

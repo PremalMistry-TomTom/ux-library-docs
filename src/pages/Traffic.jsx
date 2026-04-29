@@ -16,6 +16,18 @@ const MAP_DISPLAY_APIS = [
     description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
     url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
   },
+  {
+    name: 'TomTom Map Maker',
+    type: 'Tool',
+    description: 'Customise traffic flow colours and incident icon styles in your map style, then publish and load directly into UX Library.',
+    url: 'https://mapmaker.tomtom.com',
+  },
+  {
+    name: 'Map Maker — Docs',
+    type: 'Tool',
+    description: 'Get started with Map Maker: style editor guide, layer reference, and publishing workflow.',
+    url: 'https://docs.tomtom.com/map-maker/documentation/overview/introduction',
+  },
 ];
 
 /* ─── Shared map base ───────────────────────────────────────── */
@@ -298,7 +310,7 @@ export default function TrafficPage() {
         toggled, filtered, and refreshed on a custom schedule.
       </div>
 
-      <ApiLinks items={MAP_DISPLAY_APIS} />
+      <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />
 
       <div className="zone">
         <h2 className="sh" id="tr-overview">Overview</h2>
@@ -308,14 +320,6 @@ export default function TrafficPage() {
           speed relative to the free-flow baseline (or against fixed thresholds). The{' '}
           <strong>incidents layer</strong> places icons at the exact position of reported events.
         </p>
-        <Callout type="info">
-          Traffic colours and incident icons can be customised per map style using{' '}
-          <strong>TomTom Map Maker</strong> — design your own colour schemes for flow and incidents,
-          then publish and load the style directly into UX Library.{' '}
-          <a href="https://mapmaker.tomtom.com" target="_blank" rel="noopener noreferrer">Open Map Maker ↗</a>
-          {' · '}
-          <a href="https://docs.tomtom.com/map-maker/documentation/overview/introduction" target="_blank" rel="noopener noreferrer">Map Maker docs ↗</a>
-        </Callout>
         <p className="body">
           Both layers are updated on a configurable refresh cycle and require an active internet
           connection. When connectivity is unavailable, the last known traffic state is held and
