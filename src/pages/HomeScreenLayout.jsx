@@ -1,46 +1,25 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 
-/* ─── Zone diagram ──────────────────────────────────────────── */
-const ZONES = [
-  {
-    id: 'nav',
-    label: 'Navigation Application Area',
-    color: '#f59e0b',
-    bg: 'rgba(245,158,11,0.15)',
-    border: '#f59e0b',
-    desc: 'The area where all navigation map content and features reside. The IVI orchestrator controls its size.',
-  },
-  {
-    id: 'safe',
-    label: 'Map Safe Area',
-    color: '#3b82f6',
-    bg: 'rgba(59,130,246,0.15)',
-    border: '#3b82f6',
-    desc: 'The portion of the screen where the map renders critical content without obstruction. Contains the recenter button and compass.',
-  },
-  {
-    id: 'display',
-    label: 'Map Display Area',
-    color: '#8b5cf6',
-    bg: 'rgba(139,92,246,0.12)',
-    border: '#8b5cf6',
-    desc: 'The full map area. Can be covered by navigation elements or IVI widgets such as media panels.',
-  },
-  {
-    id: 'controls',
-    label: 'Map Controls Zone',
-    color: '#e2001a',
-    bg: 'rgba(226,0,26,0.12)',
-    border: '#e2001a',
-    desc: 'Primary controls surfaced on the navigation home screen — Search, Charging Finder, Mute, Quick Settings.',
-  },
-];
+const ZONE_COLORS = {
+  nav:      { color: '#f59e0b', bg: 'rgba(245,158,11,0.15)', border: '#f59e0b' },
+  safe:     { color: '#3b82f6', bg: 'rgba(59,130,246,0.15)',  border: '#3b82f6' },
+  display:  { color: '#8b5cf6', bg: 'rgba(139,92,246,0.12)', border: '#8b5cf6' },
+  controls: { color: '#e2001a', bg: 'rgba(226,0,26,0.12)',   border: '#e2001a' },
+};
 
-function ZonesDiagram() {
+/* ─── Zone diagram ──────────────────────────────────────────── */
+export function ZonesDiagram({ t }) {
+  const zones = [
+    { id: 'nav',      ...ZONE_COLORS.nav,      label: t('homeScreen.zones.nav.label'),      desc: t('homeScreen.zones.nav.desc') },
+    { id: 'safe',     ...ZONE_COLORS.safe,     label: t('homeScreen.zones.safe.label'),     desc: t('homeScreen.zones.safe.desc') },
+    { id: 'display',  ...ZONE_COLORS.display,  label: t('homeScreen.zones.display.label'),  desc: t('homeScreen.zones.display.desc') },
+    { id: 'controls', ...ZONE_COLORS.controls, label: t('homeScreen.zones.controls.label'), desc: t('homeScreen.zones.controls.desc') },
+  ];
   const [activeZone, setActiveZone] = useState(null);
-  const zone = ZONES.find(z => z.id === activeZone);
+  const zone = zones.find(z => z.id === activeZone);
 
   return (
     <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
@@ -60,13 +39,11 @@ function ZonesDiagram() {
           </svg>
           <div style={{ position: 'absolute', top: '45%', left: '52%', width: 8, height: 8, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 3px rgba(226,0,26,0.3)' }} />
         </div>
-
         {/* Widget strip */}
         <div style={{
           position: 'absolute', top: 0, right: 0, width: 90, height: '100%',
           background: 'rgba(0,0,0,0.55)', borderLeft: '1px solid rgba(255,255,255,0.08)',
           display: 'flex', flexDirection: 'column', padding: 8, gap: 6,
-          ...(activeZone === null ? {} : {}),
         }}>
           {['MEDIA','CLIMATE','PHONE'].map(w => (
             <div key={w} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -74,35 +51,22 @@ function ZonesDiagram() {
             </div>
           ))}
         </div>
-
         {/* Controls zone */}
-        <div style={{
-          position: 'absolute', bottom: 8, left: 8,
-          display: 'flex', flexDirection: 'column', gap: 4,
-        }}>
+        <div style={{ position: 'absolute', bottom: 8, left: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
           {['🔍','⚡','🔇','⚙️'].map((icon, i) => (
             <div key={i} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem' }}>{icon}</div>
           ))}
         </div>
-
         {/* Zone overlays */}
-        {activeZone === 'display' && (
-          <div style={{ position: 'absolute', inset: 0, right: 90, border: `2px solid ${ZONES[2].border}`, background: ZONES[2].bg, borderRadius: '9px 0 0 9px', pointerEvents: 'none' }} />
-        )}
-        {activeZone === 'nav' && (
-          <div style={{ position: 'absolute', inset: 0, border: `2px solid ${ZONES[0].border}`, background: ZONES[0].bg, borderRadius: 9, pointerEvents: 'none' }} />
-        )}
-        {activeZone === 'safe' && (
-          <div style={{ position: 'absolute', top: 12, left: 30, right: 100, bottom: 12, border: `2px solid ${ZONES[1].border}`, background: ZONES[1].bg, borderRadius: 6, pointerEvents: 'none' }} />
-        )}
-        {activeZone === 'controls' && (
-          <div style={{ position: 'absolute', bottom: 4, left: 4, width: 32, top: 4, border: `2px solid ${ZONES[3].border}`, background: ZONES[3].bg, borderRadius: 6, pointerEvents: 'none' }} />
-        )}
+        {activeZone === 'display'  && <div style={{ position: 'absolute', inset: 0, right: 90, border: `2px solid ${ZONE_COLORS.display.border}`,  background: ZONE_COLORS.display.bg,  borderRadius: '9px 0 0 9px', pointerEvents: 'none' }} />}
+        {activeZone === 'nav'      && <div style={{ position: 'absolute', inset: 0, border: `2px solid ${ZONE_COLORS.nav.border}`,      background: ZONE_COLORS.nav.bg,      borderRadius: 9, pointerEvents: 'none' }} />}
+        {activeZone === 'safe'     && <div style={{ position: 'absolute', top: 12, left: 30, right: 100, bottom: 12, border: `2px solid ${ZONE_COLORS.safe.border}`, background: ZONE_COLORS.safe.bg, borderRadius: 6, pointerEvents: 'none' }} />}
+        {activeZone === 'controls' && <div style={{ position: 'absolute', bottom: 4, left: 4, width: 32, top: 4, border: `2px solid ${ZONE_COLORS.controls.border}`, background: ZONE_COLORS.controls.bg, borderRadius: 6, pointerEvents: 'none' }} />}
       </div>
 
       {/* Zone legend */}
       <div style={{ flex: 1, minWidth: 200, display: 'flex', flexDirection: 'column', gap: 6 }}>
-        {ZONES.map(z => (
+        {zones.map(z => (
           <div
             key={z.id}
             onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
@@ -129,10 +93,16 @@ function ZonesDiagram() {
 }
 
 /* ─── Resize demo ───────────────────────────────────────────── */
-function ResizeDemo() {
+export function ResizeDemo({ t }) {
   const [insets, setInsets] = useState({ top: 0, right: 30, bottom: 0, left: 0 });
-
   const set = (side, val) => setInsets(s => ({ ...s, [side]: Number(val) }));
+
+  const SLIDER_SIDES = [
+    { side: 'top',    label: t('homeScreen.sliders.top') },
+    { side: 'right',  label: t('homeScreen.sliders.right') },
+    { side: 'bottom', label: t('homeScreen.sliders.bottom') },
+    { side: 'left',   label: t('homeScreen.sliders.left') },
+  ];
 
   const kt = `homeScreenLayout.setApplicationArea(
     ApplicationArea(
@@ -149,10 +119,8 @@ function ResizeDemo() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {/* Mock screen */}
       <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
         <div style={{ position: 'relative', width: 300, height: 190, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', flexShrink: 0 }}>
-          {/* Full map */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
             <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
               <path d="M20 90 Q80 60 150 95 T280 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -161,21 +129,15 @@ function ResizeDemo() {
             </svg>
             <div style={{ position: 'absolute', top: '48%', left: '50%', width: 8, height: 8, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 3px rgba(226,0,26,0.3)' }} />
           </div>
-
-          {/* Navigation application area overlay (the constrained region) */}
+          {/* Navigation application area overlay */}
           <div style={{
             position: 'absolute',
-            top: `${insets.top}%`,
-            right: `${insets.right}%`,
-            bottom: `${insets.bottom}%`,
-            left: `${insets.left}%`,
-            border: '2px solid #f59e0b',
-            borderRadius: 4,
+            top: `${insets.top}%`, right: `${insets.right}%`,
+            bottom: `${insets.bottom}%`, left: `${insets.left}%`,
+            border: '2px solid #f59e0b', borderRadius: 4,
           }}>
             <span style={{ position: 'absolute', top: 3, left: 4, fontSize: '0.45rem', color: '#f59e0b', fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.6)', padding: '1px 3px', borderRadius: 2 }}>nav app area</span>
           </div>
-
-          {/* Widget strips based on insets */}
           {insets.right > 5 && (
             <div style={{ position: 'absolute', top: 0, right: 0, width: `${insets.right}%`, height: '100%', background: 'rgba(0,0,0,0.6)', borderLeft: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', padding: 4, gap: 3 }}>
               {['MEDIA','PHONE'].map(w => (
@@ -199,12 +161,7 @@ function ResizeDemo() {
 
         {/* Sliders */}
         <div style={{ flex: 1, minWidth: 200 }}>
-          {[
-            { side: 'top', label: 'Top inset' },
-            { side: 'right', label: 'End (right) inset' },
-            { side: 'bottom', label: 'Bottom inset' },
-            { side: 'left', label: 'Start (left) inset' },
-          ].map(({ side, label }) => (
+          {SLIDER_SIDES.map(({ side, label }) => (
             <div key={side} style={{ marginBottom: 12 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
                 <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>{label}</span>
@@ -221,7 +178,7 @@ function ResizeDemo() {
             onClick={() => setInsets({ top: 0, right: 30, bottom: 0, left: 0 })}
             style={{ fontSize: '0.76rem', padding: '4px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 5, cursor: 'pointer' }}
           >
-            Reset
+            {t('homeScreen.sliders.reset')}
           </button>
         </div>
       </div>
@@ -245,29 +202,6 @@ function ResizeDemo() {
 }
 
 /* ─── UI State explorer ─────────────────────────────────────── */
-const STATE_DIMS = {
-  activity: {
-    label: 'Navigation Activity State',
-    values: ['IDLE', 'FREE_DRIVING', 'GUIDANCE', 'ARRIVAL'],
-    desc: 'High-level navigation activity regardless of UI interaction.',
-  },
-  panel: {
-    label: 'UI Panel State',
-    values: ['NONE', 'SEARCH', 'LOCATION_PREVIEW', 'QUICK_SETTINGS', 'ROUTE_OPTIONS', 'SETTINGS', 'WEATHER'],
-    desc: 'Which navigation UI panel, if any, is currently foregrounded. NONE = default map view.',
-  },
-  map: {
-    label: 'Map Interaction State',
-    values: ['FOLLOWING', 'BROWSING'],
-    desc: 'Whether the map is auto-following the vehicle or being actively panned/zoomed.',
-  },
-  trip: {
-    label: 'Trip Planning State',
-    values: ['NONE', 'IN_PROGRESS', 'CANCELLED', 'FAILURE'],
-    desc: 'Lifecycle of the current trip planning session.',
-  },
-};
-
 function isPassive(state) {
   return (
     ['FREE_DRIVING','GUIDANCE','IDLE'].includes(state.activity) &&
@@ -279,15 +213,12 @@ function isPassive(state) {
 function StateMapMock({ state }) {
   const passive = isPassive(state);
   const inGuidance = state.activity === 'GUIDANCE';
-  const inArrival = state.activity === 'ARRIVAL';
-  const panelOpen = state.panel !== 'NONE';
-  const browsing = state.map === 'BROWSING';
+  const inArrival  = state.activity === 'ARRIVAL';
+  const panelOpen  = state.panel !== 'NONE';
+  const browsing   = state.map === 'BROWSING';
 
   return (
-    <div style={{
-      width: '100%', height: 180, background: '#0c1318', borderRadius: 10,
-      border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative',
-    }}>
+    <div style={{ width: '100%', height: 180, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 400 180" fill="none">
           {inGuidance && <path d="M20 100 Q100 70 200 100 T380 90" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>}
@@ -296,14 +227,8 @@ function StateMapMock({ state }) {
           <path d="M270 0 L260 180" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
         </svg>
         <div style={{ position: 'absolute', top: '50%', left: '52%', width: 10, height: 10, borderRadius: '50%', background: browsing ? '#f59e0b' : '#e2001a', boxShadow: `0 0 0 4px ${browsing ? 'rgba(245,158,11,0.3)' : 'rgba(226,0,26,0.3)'}` }} />
-        {browsing && (
-          <div style={{ position: 'absolute', top: '30%', right: '35%', fontSize: '0.6rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 4 }}>
-            browsing…
-          </div>
-        )}
+        {browsing && <div style={{ position: 'absolute', top: '30%', right: '35%', fontSize: '0.6rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 4 }}>browsing…</div>}
       </div>
-
-      {/* Full-screen panel overlay */}
       {panelOpen && (
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,19,24,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
           <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{state.panel}</div>
@@ -312,8 +237,6 @@ function StateMapMock({ state }) {
           <div style={{ width: 100, height: 6, background: 'rgba(255,255,255,0.07)', borderRadius: 3 }} />
         </div>
       )}
-
-      {/* Guidance NIP */}
       {inGuidance && !panelOpen && (
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, background: '#1a6040', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span style={{ fontSize: '1.4rem', color: 'white' }}>↖</span>
@@ -323,16 +246,12 @@ function StateMapMock({ state }) {
           </div>
         </div>
       )}
-
-      {/* Arrival */}
       {inArrival && !panelOpen && (
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,19,24,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
           <div style={{ fontSize: '1.2rem' }}>📍</div>
           <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'white' }}>You have arrived</div>
         </div>
       )}
-
-      {/* Passive/Active badge */}
       <div style={{
         position: 'absolute', bottom: 8, right: 8,
         fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.06em',
@@ -347,10 +266,32 @@ function StateMapMock({ state }) {
   );
 }
 
-function UIStateExplorer() {
+export function UIStateExplorer({ t }) {
+  const stateDimensions = {
+    activity: {
+      label: t('homeScreen.stateDimensions.activity.label'),
+      values: ['IDLE', 'FREE_DRIVING', 'GUIDANCE', 'ARRIVAL'],
+      desc: t('homeScreen.stateDimensions.activity.desc'),
+    },
+    panel: {
+      label: t('homeScreen.stateDimensions.panel.label'),
+      values: ['NONE', 'SEARCH', 'LOCATION_PREVIEW', 'QUICK_SETTINGS', 'ROUTE_OPTIONS', 'SETTINGS', 'WEATHER'],
+      desc: t('homeScreen.stateDimensions.panel.desc'),
+    },
+    map: {
+      label: t('homeScreen.stateDimensions.map.label'),
+      values: ['FOLLOWING', 'BROWSING'],
+      desc: t('homeScreen.stateDimensions.map.desc'),
+    },
+    trip: {
+      label: t('homeScreen.stateDimensions.trip.label'),
+      values: ['NONE', 'IN_PROGRESS', 'CANCELLED', 'FAILURE'],
+      desc: t('homeScreen.stateDimensions.trip.desc'),
+    },
+  };
+
   const [state, setState] = useState({ activity: 'GUIDANCE', panel: 'NONE', map: 'FOLLOWING', trip: 'NONE' });
   const passive = isPassive(state);
-
   const set = (dim, val) => setState(s => ({ ...s, [dim]: val }));
 
   const observerKt = `// Observe all four state dimensions
@@ -361,7 +302,6 @@ navApp.uiState
         val mapState      = s.mapInteraction      // ${state.map}
         val tripState     = s.tripPlanning        // ${state.trip}
 
-        // Derive your own active/passive signal
         val isPassive = activityState in setOf(
             NavigationActivity.FREE_DRIVING,
             NavigationActivity.GUIDANCE,
@@ -378,7 +318,7 @@ navApp.uiState
       <StateMapMock state={state} />
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-        {Object.entries(STATE_DIMS).map(([dim, { label, values, desc }]) => (
+        {Object.entries(stateDimensions).map(([dim, { label, values, desc }]) => (
           <div key={dim} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
             <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 2, color: 'var(--black)' }}>{label}</div>
             <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginBottom: 10, lineHeight: 1.4 }}>{desc}</div>
@@ -413,12 +353,10 @@ navApp.uiState
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: passive ? '#16a34a' : '#e2001a', flexShrink: 0 }} />
         <div>
           <span style={{ fontSize: '0.8rem', fontWeight: 700, color: passive ? '#15803d' : '#e2001a' }}>
-            {passive ? 'Passive mode' : 'Active mode'}
+            {passive ? t('homeScreen.passive') : t('homeScreen.active')}
           </span>
           <span style={{ fontSize: '0.78rem', color: 'var(--mid)', marginLeft: 8 }}>
-            {passive
-              ? 'Orchestrator may show domain widgets over the map.'
-              : 'Orchestrator should hide or collapse domain widgets.'}
+            {passive ? t('homeScreen.passiveDesc') : t('homeScreen.activeDesc')}
           </span>
         </div>
       </div>
@@ -448,241 +386,81 @@ navApp.uiState
   );
 }
 
-/* ─── Button bar configurator ───────────────────────────────── */
-const BTN_POSITIONS = [
-  { id: 'LEFT',   label: 'Vertical — Left',   icon: '⬅', desc: 'Vertical bar on the left side' },
-  { id: 'RIGHT',  label: 'Vertical — Right',  icon: '➡', desc: 'Vertical bar on the right side' },
-  { id: 'TOP',    label: 'Horizon — Top',     icon: '⬆', desc: 'Horizontal bar on the top side' },
-  { id: 'BOTTOM', label: 'Horizon — Bottom',  icon: '⬇', desc: 'Horizontal bar on the bottom side' },
-];
-
-const BTN_ORDER = ['🔍', '⚡', '🔇', '⚙️'];
-
-function ButtonBarConfig() {
-  const [position, setPosition] = useState('LEFT');
-  const [buttons, setButtons] = useState(BTN_ORDER);
-  const [hiddenBtns, setHiddenBtns] = useState([]);
-
-  const isVertical = position === 'LEFT' || position === 'RIGHT';
-
-  const toggleHide = (icon) => {
-    setHiddenBtns(h => h.includes(icon) ? h.filter(x => x !== icon) : [...h, icon]);
-  };
-
-  const visibleButtons = buttons.filter(b => !hiddenBtns.includes(b));
-
-  const btnKt = `homeScreenLayout.setControlsZone(
-    ControlsZone(
-        position = ControlsPosition.${position},
-        buttons  = listOf(${visibleButtons.map(b => {
-          const map = {'🔍':'SEARCH','⚡':'CHARGING','🔇':'MUTE','⚙️':'QUICK_SETTINGS'};
-          return `\n            ControlButton.${map[b]}`;
-        }).join(',')}\n        )
-    )
-)`;
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {/* Position selector */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
-        {BTN_POSITIONS.map(p => (
-          <button key={p.id} onClick={() => setPosition(p.id)} style={{
-            padding: '8px 4px', borderRadius: 7, cursor: 'pointer', textAlign: 'center',
-            background: position === p.id ? '#fff5f5' : 'var(--bg)',
-            border: `1px solid ${position === p.id ? 'var(--red)' : 'var(--border)'}`,
-            color: position === p.id ? 'var(--red)' : 'var(--mid)',
-            transition: 'all 0.1s',
-          }}>
-            <div style={{ fontSize: '1rem', marginBottom: 3 }}>{p.icon}</div>
-            <div style={{ fontSize: '0.68rem', fontWeight: 600 }}>{p.label}</div>
-          </button>
-        ))}
-      </div>
-
-      {/* Screen preview + button visibility */}
-      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-        <div style={{ width: 280, height: 175, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
-            <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 175" fill="none">
-              <path d="M20 90 Q80 60 140 90 T260 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
-            </svg>
-            <div style={{ position: 'absolute', top: '48%', left: '50%', width: 8, height: 8, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 3px rgba(226,0,26,0.3)' }} />
-          </div>
-
-          {/* Controls zone */}
-          {(() => {
-            const style = {
-              position: 'absolute',
-              background: 'rgba(0,0,0,0.55)',
-              display: 'flex',
-              gap: 4,
-              padding: 6,
-              ...(position === 'LEFT'   ? { top: 0, left: 0, bottom: 0, flexDirection: 'column', width: 32, borderRight: '1px solid rgba(255,255,255,0.08)' } : {}),
-              ...(position === 'RIGHT'  ? { top: 0, right: 0, bottom: 0, flexDirection: 'column', width: 32, borderLeft: '1px solid rgba(255,255,255,0.08)' } : {}),
-              ...(position === 'TOP'    ? { top: 0, left: 0, right: 0, flexDirection: 'row', height: 32, borderBottom: '1px solid rgba(255,255,255,0.08)' } : {}),
-              ...(position === 'BOTTOM' ? { bottom: 0, left: 0, right: 0, flexDirection: 'row', height: 32, borderTop: '1px solid rgba(255,255,255,0.08)', justifyContent: 'center' } : {}),
-            };
-            return (
-              <div style={style}>
-                {visibleButtons.map(icon => (
-                  <div key={icon} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem', flexShrink: 0 }}>{icon}</div>
-                ))}
-              </div>
-            );
-          })()}
-        </div>
-
-        {/* Button visibility toggles */}
-        <div style={{ flex: 1, minWidth: 160 }}>
-          <div style={{ fontSize: '0.76rem', fontWeight: 600, marginBottom: 8 }}>Button visibility</div>
-          {BTN_ORDER.map(icon => {
-            const labels = { '🔍': 'Search', '⚡': 'Charging Finder', '🔇': 'Mute', '⚙️': 'Quick Settings' };
-            const hidden = hiddenBtns.includes(icon);
-            return (
-              <div key={icon} onClick={() => toggleHide(icon)} style={{
-                display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px',
-                marginBottom: 5, borderRadius: 6, cursor: 'pointer',
-                background: hidden ? 'var(--bg)' : '#fff',
-                border: '1px solid var(--border)', opacity: hidden ? 0.5 : 1,
-                transition: 'all 0.1s',
-              }}>
-                <span style={{ fontSize: '0.85rem' }}>{icon}</span>
-                <span style={{ fontSize: '0.78rem', flex: 1 }}>{labels[icon]}</span>
-                <span style={{ fontSize: '0.65rem', color: hidden ? 'var(--muted)' : 'var(--green)', fontWeight: 600 }}>
-                  {hidden ? 'hidden' : 'shown'}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <CodeBlock tabs={['Kotlin']}>
-        <pre>
-          {'homeScreenLayout.'}<span className="hl-f">setControlsZone</span>{'(\n'}
-          {'    '}<span className="hl-t">ControlsZone</span>{'(\n'}
-          {'        '}<span className="hl-f">position</span>{' = '}<span className="hl-t">ControlsPosition</span>{'.'}<span className="hl-n">{position}</span>{',\n'}
-          {'        '}<span className="hl-f">buttons</span>{'  = listOf('}
-          {visibleButtons.map((b, i) => {
-            const map = {'🔍':'SEARCH','⚡':'CHARGING','🔇':'MUTE','⚙️':'QUICK_SETTINGS'};
-            return <span key={b}>{'\n            '}<span className="hl-t">ControlButton</span>{'.'}<span className="hl-n">{map[b]}</span>{i < visibleButtons.length - 1 ? ',' : ''}</span>;
-          })}
-          {'\n        )\n    )\n)'}
-        </pre>
-      </CodeBlock>
-    </div>
-  );
-}
-
 /* ─── Main page ─────────────────────────────────────────────── */
 export default function HomeScreenLayout() {
+  const { t } = useTranslation('pages');
+
+  const reqRows = [
+    { key: 'area',    pri: 'P0 · R2' },
+    { key: 'resize',  pri: 'P0 · R2' },
+    { key: 'state',   pri: 'P0 · R2' },
+    { key: 'anim',    pri: 'P0 · R2' },
+    { key: 'safe',    pri: 'P1' },
+    { key: 'display', pri: 'P1' },
+  ];
+
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Home Screen Layout</h1>
+        <h1>{t('homeScreen.title')}</h1>
         <div className="page-meta">
-          <span className="meta-tag private">Private</span>
-          <span className="meta-tag">v0.3 · Q2 2026</span>
+          <span className="meta-tag private">{t('homeScreen.badge')}</span>
+          <span className="meta-tag">{t('homeScreen.version')}</span>
         </div>
       </div>
 
       <div className="quick-answer">
-        <strong>Map as wallpaper</strong> — the navigation map fills the entire IVI home screen
-        as a background. Other domain widgets (media, climate, phone) layer on top. The IVI
-        home-screen orchestrator controls how much space is given to navigation at any point;
-        the navigation app exposes four observable UI state dimensions so the orchestrator can
-        make its own widget visibility decisions without being coupled to TomTom's API.
+        {t('homeScreen.intro')}
       </div>
 
       {/* Overview */}
       <div className="zone">
-        <h2 className="sh" id="h-overview">Overview</h2>
-        <p className="body">
-          Embedding the map as the IVI home screen wallpaper keeps spatial awareness continuously
-          visible and reduces the interaction depth required to start navigation. The orchestrator
-          retains full control of layout: it decides the size of the navigation application area
-          and when to show or collapse domain widgets, based on the state signals the navigation
-          app exposes.
-        </p>
-        <Callout type="info">
-          Navigation in a <strong>dedicated window or view</strong> is a separate integration
-          pattern covered in a different PRD. This page covers the <em>map as wallpaper</em>
-          pattern only.
-        </Callout>
+        <h2 className="sh" id="h-overview">{t('homeScreen.sections.overview')}</h2>
+        <p className="body">{t('homeScreen.overviewBody1')}</p>
+        <Callout type="info">{t('homeScreen.callout1')}</Callout>
       </div>
 
       {/* Screen zones */}
       <div className="zone">
-        <h2 className="sh" id="h-zones">Screen zones</h2>
-        <p className="body">
-          The IVI interface is divided into named areas. Click a zone below to see where it
-          sits on screen and what it contains.
-        </p>
-        <ZonesDiagram />
+        <h2 className="sh" id="h-zones">{t('homeScreen.sections.zones')}</h2>
+        <p className="body">{t('homeScreen.zonesIntro')}</p>
+        <ZonesDiagram t={t} />
       </div>
 
       {/* Resize */}
       <div className="zone">
-        <h2 className="sh" id="h-resize">Resize the application area</h2>
-        <p className="body">
-          The orchestrator can dynamically resize the navigation application area from any side
-          — top, bottom, left, or right — simultaneously. The navigation app transitions smoothly
-          to the new area with a configurable animation. Drag the sliders below to see how
-          the application area and generated code change.
-        </p>
-        <Callout type="warn">
-          Resizing can occur on multiple sides simultaneously. The navigation app must adhere
-          to the viewable application area across <strong>all</strong> flows and screens.
-          Our documentation includes recommended minimum sizes for the application area.
-        </Callout>
-        <ResizeDemo />
+        <h2 className="sh" id="h-resize">{t('homeScreen.sections.resize')}</h2>
+        <p className="body">{t('homeScreen.resizeBody')}</p>
+        <Callout type="warn">{t('homeScreen.callout2')}</Callout>
+        <ResizeDemo t={t} />
       </div>
 
       {/* UI State */}
       <div className="zone">
-        <h2 className="sh" id="h-states">UI state API</h2>
-        <p className="body">
-          Rather than a binary active/passive flag, the navigation app exposes{' '}
-          <strong>four orthogonal observable state dimensions</strong>. The orchestrator
-          composes these into its own widget visibility logic — TomTom&apos;s API is not coupled
-          to any specific OEM integration pattern.
-        </p>
-        <p className="body">
-          Use the selector below to explore each state combination. The preview and Kotlin
-          observer snippet update live.
-        </p>
-        <UIStateExplorer />
+        <h2 className="sh" id="h-states">{t('homeScreen.sections.states')}</h2>
+        <p className="body">{t('homeScreen.statesIntro')}</p>
+        <UIStateExplorer t={t} />
       </div>
 
-      {/* Controls zone */}
       <div className="zone">
-        <h2 className="sh" id="h-controls">Button bar position</h2>
-        <p className="body">
-          The primary controls zone — Search, Charging Finder, Mute, Quick Settings — can be
-          positioned on any edge of the screen. Each position also supports customising which
-          buttons are shown and in what order.
-        </p>
-        <ButtonBarConfig />
+        <Callout type="info">{t('homeScreen.callout3')}</Callout>
       </div>
 
       {/* Requirements summary */}
       <div className="zone">
-        <h2 className="sh" id="h-requirements">Requirements summary</h2>
+        <h2 className="sh" id="h-requirements">{t('homeScreen.sections.requirements')}</h2>
         <table className="prop-table">
-          <thead><tr><th>Requirement</th><th>Priority</th><th>Notes</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Requirement</th>
+              <th>Priority</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
           <tbody>
-            {[
-              ['Set the navigation application area', 'P0 · R2', 'All flows and screens must adhere to the configured area'],
-              ['Dynamically resize from any side', 'P0 · R2', 'Top, bottom, left, right — simultaneously, with animation'],
-              ['Expose 4 UI state dimensions', 'P0 · R2', 'Activity, Panel, Map Interaction, Trip Planning'],
-              ['Sync animation type + duration', 'P0 · R2', 'Orchestrator-controlled so widget animations can be synchronised'],
-              ['Dynamic safe area / horizon rebalancing', 'P1', 'Resize horizon panel when safe area is compromised'],
-              ['Resize on all display types', 'P1', 'Center, passenger, and rear seat displays'],
-              ['Button bar position control', 'P1', 'Left, right, top, bottom vertical/horizontal bar'],
-              ['Button order + visibility control', 'P1', 'Per-slot configuration within each zone option'],
-            ].map(([req, pri, notes]) => (
-              <tr key={req}>
-                <td style={{ fontWeight: 500 }}>{req}</td>
+            {reqRows.map(({ key, pri }) => (
+              <tr key={key}>
+                <td style={{ fontWeight: 500 }}>{t(`homeScreen.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
                     fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
@@ -691,20 +469,14 @@ export default function HomeScreenLayout() {
                     border: `1px solid ${pri.includes('P0') ? '#fecaca' : 'var(--border)'}`,
                     whiteSpace: 'nowrap',
                   }}>
-                    {pri}
+                    {t(`homeScreen.requirementsTable.rows.${key}.pri`)}
                   </span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{notes}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`homeScreen.requirementsTable.rows.${key}.notes`)}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div className="feedback-strip">
-        Was this page helpful?
-        <button>👍 Yes</button>
-        <button>👎 No</button>
       </div>
     </div>
   );

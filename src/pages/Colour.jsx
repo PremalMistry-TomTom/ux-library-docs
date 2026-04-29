@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { SCALES, EXTENDED, SYSTEM } from '../data/colours';
 import { Swatch, TokenDot } from '../components/ui/Swatch';
 import Callout from '../components/ui/Callout';
@@ -47,10 +48,11 @@ function TokenTableSection({ id, label, desc, rows }) {
 }
 
 export default function Colour() {
+  const { t } = useTranslation('pages');
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Colour</h1>
+        <h1>{t('colour.title')}</h1>
         <p className="page-intro">
           Colour tokens are split into two layers: <strong>global colours</strong> define the raw
           palette. <strong>System colours</strong> are semantic aliases that map those values to
@@ -60,7 +62,7 @@ export default function Colour() {
 
       {/* Global colours */}
       <div className="zone">
-        <h2 className="sh" id="c-global">Global colours</h2>
+        <h2 className="sh" id="c-global">{t('colour.sections.global')}</h2>
         <p className="body">
           Global colours are the foundational palette — neutral, versatile, and context-agnostic.
           Reference system colour tokens in your code, not these values directly.
@@ -117,7 +119,7 @@ export default function Colour() {
 
       {/* System colours */}
       <div className="zone">
-        <h2 className="sh" id="c-system">System colours</h2>
+        <h2 className="sh" id="c-system">{t('colour.sections.system')}</h2>
         <p className="body">
           Semantic tokens — they carry intent, not just hue. Components reference these tokens,
           never global colours directly.
@@ -151,7 +153,7 @@ export default function Colour() {
 
       {/* Semantic definitions */}
       <div className="zone">
-        <h2 className="sh" id="c-semantics">Semantic token definitions</h2>
+        <h2 className="sh" id="c-semantics">{t('colour.sections.semantics')}</h2>
         <p className="body">
           Role definitions describe intent — not just the current value. Understanding the role
           prevents incorrect substitutions.

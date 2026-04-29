@@ -1,0 +1,203 @@
+{
+  "overview": {
+    "title": "TomTom AI 助手",
+    "badge": "可用",
+    "intro": "TomTom 导航 AI 智能体（TAIA）是一项将自然语言语音命令转化为导航操作的云服务。集成商提供 STT、TTS 及其自有语音个人助手（VPA）；TAIA 负责导航意图理解、语音响应生成和 UI 命令生产。",
+    "sections": {
+      "overview": "概览",
+      "architecture": "架构",
+      "scope": "责任范围",
+      "capabilities": "功能",
+      "requirements": "要求"
+    },
+    "overviewBody": "TAIA 位于您的语音个人助手与 TomTom 导航 SDK 之间。当驾驶员说出导航意图时，VPA 转录音频，判断该话语与导航相关，并通过 TAIA SDK 将文本转录转发给 TAIA。TAIA 处理请求，查询实时导航数据，并返回两个输出：供 TTS 引擎朗读的语音文本字符串，以及指示导航应用更新显示内容的结构化 UI 命令。",
+    "cloudCallout": "TAIA 是一项云服务。所有 AI 辅助语音交互都需要有效的互联网连接。离线回退行为由 OEM 负责。",
+    "architectureBody": "下图展示了完整的语音处理流程。虚线蓝色边框内的组件由集成商负责。TAIA SDK 和 TAIA Cloud 由 TomTom 提供。",
+    "pipelineSteps": [
+      "驾驶员说话——OEM 唤醒词引擎激活。",
+      "OEM STT 引擎将音频转录为文本。",
+      "OEM VPA 云端执行领域仲裁；导航意图委托给 TAIA。",
+      "TAIA SDK（设备端）通过 POST /chat 将转录文本和导航上下文转发至 TAIA Cloud。",
+      "TAIA Cloud 返回语音文本响应和 UI 命令。",
+      "SDK 将响应传递给 VPA；VPA 将语音文本交给 OEM TTS 引擎。",
+      "导航应用执行 UI 命令（路线显示、兴趣点卡片等）。"
+    ],
+    "scopeIntro": "理解 TAIA 与集成商之间的边界对于正确的系统设计至关重要。下表列出了流程中每个领域及其归属方。",
+    "scopeTable": {
+      "colArea": "领域",
+      "colTaia": "TAIA",
+      "colOem": "OEM / 集成商",
+      "colNotes": "说明",
+      "rows": {
+        "wakeWord": { "area": "唤醒词检测", "notes": "完全由 OEM VPA 处理" },
+        "stt": { "area": "语音转文字（STT）", "notes": "TAIA 接收文本转录，不接受音频" },
+        "tts": { "area": "文字转语音（TTS）", "notes": "TAIA 返回语音文本字符串；OEM 负责渲染音频" },
+        "intent": { "area": "导航意图解析", "notes": "自然语言 → 结构化导航命令" },
+        "voiceResp": { "area": "语音响应生成", "notes": "返回适合该语言的语音文本" },
+        "uiCmd": { "area": "UI 命令生成", "notes": "路线列表、兴趣点卡片、路线确认对话框" },
+        "brand": { "area": "品牌风格与人设", "notes": "VPA 品牌形象由集成商保留" },
+        "nonNav": { "area": "非导航查询", "notes": "VPA 处理音乐、通话、常识问题等" },
+        "domain": { "area": "领域仲裁", "notes": "VPA 云端决定何时将请求委托给 TAIA" }
+      }
+    },
+    "capabilitiesIntro": "TAIA 目前支持 20 个英语导航功能用例。计划支持更多语言及 VPA 集成（Cerence、Amazon Alexa）。",
+    "capList": [
+      "语音导航", "多停靠点路线", "电动车路线与充电停靠", "按名称搜索兴趣点",
+      "按类别搜索兴趣点", "沿途搜索兴趣点", "目的地附近搜索兴趣点", "交通信息",
+      "备选路线", "避开区域与道路类型", "限速感知", "到达时间更新",
+      "按需重新规划路线", "取消导航", "途径点管理", "家和工作地快捷方式",
+      "已保存位置调用", "实时危险警报", "天气感知路线规划", "行程摘要与历史记录"
+    ],
+    "requirementsTable": {
+      "colReq": "要求",
+      "colPri": "优先级",
+      "colNotes": "说明",
+      "rows": {
+        "sdk": { "req": "TAIA SDK 依赖", "notes": "在构建中添加 com.tomtom.sdk:taia" },
+        "apiKey": { "req": "有效的 API 密钥", "notes": "从 TomTom 开发者门户获取" },
+        "stt": { "req": "OEM STT 引擎", "notes": "TAIA 仅接收文本转录" },
+        "tts": { "req": "OEM TTS 引擎", "notes": "TAIA 返回语音文本；OEM 负责渲染音频" },
+        "vpa": { "req": "OEM VPA / 领域仲裁", "notes": "VPA 决定哪些话语转发给 TAIA" },
+        "context": { "req": "每次调用传递导航上下文", "notes": "当前路线、车辆位置、已保存位置" },
+        "internet": { "req": "网络连接", "notes": "云服务；TAIA 本身无离线回退" },
+        "lang": { "req": "英语支持", "notes": "目前唯一官方支持的语言" }
+      }
+    }
+  },
+  "config": {
+    "title": "配置",
+    "badge": "可用",
+    "intro": "使用 API 密钥和接口端点配置 TAIA SDK，然后在每次请求时传递导航上下文。导航上下文的质量和完整性直接决定 TAIA 响应驾驶员命令的准确性。",
+    "sections": {
+      "overview": "概览",
+      "dependency": "添加依赖",
+      "init": "初始化 TAIA 客户端",
+      "context": "导航上下文",
+      "events": "MQTT 事件传递",
+      "session": "多轮对话",
+      "requirements": "要求"
+    },
+    "overviewBody": "TAIA SDK 是您的 VPA 与 TAIA 云服务之间的设备端桥接器。它负责身份验证、请求序列化、中间结果流式传输的 MQTT 事件传递及响应反序列化。配置极为简单——您只需提供 API 密钥、接口端点和导航上下文构建器。",
+    "depBody": "将 TAIA SDK 添加到模块的 build.gradle.kts：",
+    "initBody": "在应用启动时创建单个 TaiaClient 实例。可在整个应用生命周期内安全复用。",
+    "initCallout": "将 API 密钥存储在 local.properties 或密钥管理器中——切勿硬编码在源文件中或提交至版本控制。",
+    "destroyBody": "应用终止时必须关闭客户端以释放 MQTT 资源：",
+    "contextBody": "每次 chat() 调用都需传递导航上下文。它为 TAIA 提供正确响应所需的情境感知——没有它，TAIA 无法提供备选路线、在地图上定位车辆或调用已保存位置。",
+    "contextBuildBody": "在每次请求前立即构建上下文，以确保它反映当前车辆状态：",
+    "contextTableIntro": "下表列出了所有支持的上下文字段：",
+    "contextTable": {
+      "colField": "字段",
+      "colType": "类型",
+      "colRequired": "必需",
+      "colDesc": "描述",
+      "fields": {
+        "currentRoute": "包含途径点、剩余距离和预计到达时间的当前路线对象",
+        "vehiclePosition": "车辆当前 GPS 位置",
+        "vehicleHeading": "以度为单位的方位角（0–360）；提高重新规划路线的准确性",
+        "vehicleSpeed": "当前速度（km/h）；用于速度感知响应",
+        "savedLocations": "家、工作地点和用户收藏；支持\"带我回家\"命令",
+        "vehicleType": "CAR、TRUCK、EV——影响 TAIA 提供的路线选项",
+        "batteryLevel": "电动车路线功能的电量状态（0–100）",
+        "rangeEstimate": "预计剩余续航（km）；用于电动车充电停靠建议",
+        "recentDestinations": "最近访问的地点；帮助解析模糊请求",
+        "mapRegion": "当前可见地图区域；用于上下文兴趣点搜索"
+      }
+    },
+    "eventsBody": "TAIA 通过 MQTT 传递中间结果，使 TTS 引擎能在完整响应生成前开始朗读。SDK 自动管理 MQTT 连接；无需额外配置。",
+    "eventsRegisterBody": "要接收流式事件，请在首次调用 chat() 之前在客户端上注册 StreamingResponseListener：",
+    "eventsCallout": "如果不注册流式监听器，SDK 将缓冲所有事件，并在 chat() 回调中以单个 TaiaChatResponse 的形式传递。这种方式实现更简单，但会在 TTS 开始播放前增加延迟。",
+    "sessionBody": "TAIA 支持单次交互会话中的追问。在连续对话轮次中传递相同的 conversationId 以保持上下文：",
+    "requirementsTable": {
+      "colReq": "要求",
+      "colPri": "优先级",
+      "colNotes": "说明",
+      "rows": {
+        "apiKey": { "req": "有效的 API 密钥", "notes": "从 TomTom 开发者门户获取；切勿提交至源代码控制" },
+        "route": { "req": "上下文中的 currentRoute", "notes": "重新规划路线、备选路线、ETA 查询必需" },
+        "position": { "req": "上下文中的 vehiclePosition", "notes": "所有位置相关命令必需" },
+        "saved": { "req": "上下文中的 savedLocations", "notes": "\"带我回家 / 去公司\" 命令必需" },
+        "single": { "req": "单个 TaiaClient 实例", "notes": "在生命周期内复用；创建一次，在 onDestroy 中关闭" },
+        "ev": { "req": "电动车需提供 batteryLevel + rangeEstimate", "notes": "电动车充电停靠建议必需" },
+        "conv": { "req": "多轮对话需提供 conversationId", "notes": "支持同一会话内的追问" },
+        "mqtt": { "req": "MQTT 流式监听器", "notes": "通过部分结果传递降低 TTS 感知延迟" }
+      }
+    }
+  },
+  "voiceEngine": {
+    "title": "语音引擎",
+    "badge": "可用",
+    "intro": "TAIA 不提供 TTS 引擎或语音人设。集成商需自行提供文字转语音（TTS）引擎和语音个人助手（VPA）。本页说明如何连接 VPA 和 TTS 层，使 TAIA 响应通过您选择的音频系统朗读。",
+    "sections": {
+      "overview": "概览",
+      "responsibilities": "OEM 责任",
+      "integration": "连接 TTS 引擎",
+      "providers": "VPA 提供商",
+      "requirements": "要求"
+    },
+    "overviewBody": "TAIA 集成中的语音层分为两部分：监听唤醒词并执行领域仲裁的语音个人助手（VPA），以及将 TAIA 文本响应转换为音频的 TTS 引擎。TAIA 在音频处理流程中的作用仅限于在每个响应中返回 voiceText 字符串。",
+    "callout": "TAIA 不处理唤醒词、音频输入、领域仲裁或 TTS 渲染。这些完全在 OEM 或集成商的技术栈中处理。",
+    "respBody": "在 TAIA 处理语音命令之前，您的 VPA 必须完成以下步骤：",
+    "respSteps": [
+      "唤醒词检测——通过触发词激活麦克风。",
+      "音频采集——录制驾驶员话语。",
+      "语音转文字——将音频转录为文本字符串（见语音转文字页面）。",
+      "领域仲裁——判断该话语是否与导航相关，是否应转发给 TAIA。",
+      "响应播放——将 TAIA 的 voiceText 字段传给 TTS 引擎并播放结果。"
+    ],
+    "ttsBody": "收到 TAIA 响应后，提取 voiceText 字段并直接传给 TTS 引擎：",
+    "streamBody": "TAIA 通过 MQTT 传递中间结果，允许 TTS 在完整响应可用之前开始朗读。要启用此功能，请注册流式监听器：",
+    "providersBody": "TAIA 在设计上与 VPA 无关——任何能将文本转录转发给 TAIA SDK 的 VPA 均可使用。以下提供商的原生集成计划中：",
+    "providersTable": {
+      "colProvider": "提供商",
+      "colStatus": "状态",
+      "colNotes": "说明",
+      "rows": {
+        "custom": { "provider": "自定义 VPA", "status": "可用", "notes": "任何能向 TAIA SDK 转发文本转录的 VPA" },
+        "cerence": { "provider": "Cerence", "status": "计划中", "notes": "原生集成开发中" },
+        "alexa": { "provider": "Amazon Alexa", "status": "计划中", "notes": "原生集成开发中" }
+      }
+    },
+    "requirementsTable": {
+      "rows": {
+        "tts": { "req": "OEM TTS 引擎", "notes": "从 TAIA 响应接收 voiceText 字符串" },
+        "wake": { "req": "OEM 唤醒词检测", "notes": "激活麦克风；不属于 TAIA SDK 范畴" },
+        "vpa": { "req": "具有领域路由的 OEM VPA", "notes": "决定哪些话语转发给 TAIA" },
+        "mqtt": { "req": "MQTT 流式传输（可选）", "notes": "通过部分结果实现更低延迟的 TTS 播放" },
+        "lang": { "req": "TTS ↔ TAIA 语言匹配", "notes": "确保 TTS 语言区域与 TAIA 响应语言一致" }
+      }
+    }
+  },
+  "speechToText": {
+    "title": "语音转文字引擎",
+    "badge": "可用",
+    "intro": "TAIA 不执行语音识别。它接收纯文本转录并将其作为导航命令处理。STT 引擎完全由集成商负责——任何能生成 UTF-8 文本字符串的引擎均可使用。",
+    "sections": {
+      "overview": "概览",
+      "boundary": "TAIA 输入边界",
+      "integration": "STT 集成模式",
+      "wake": "唤醒词处理",
+      "requirements": "要求"
+    },
+    "boundaryBody": "下图展示了 STT 边界的位置。红色虚线左侧的所有内容均由集成商负责。TAIA 仅接收文本转录——它不感知音频、麦克风或触发交互的唤醒词。",
+    "boundaryBody2": "这种设计使您能完全掌控 STT 提供商、音频质量设置、降噪和语言模型定制，无需依赖 TomTom。",
+    "integrationBody": "TAIA 的 POST /chat 接口接受结构化 JSON 请求体。驾驶员的话语通过 utterance 字段传递——这是由 STT 引擎生成的纯文本字符串：",
+    "rephrasedCallout": "rephrasedQuery 字段为可选项。当存在时，它是 VPA 云端在领域仲裁后对话语的重述版本——例如，去除填充词或解析\"那里\"或\"那个地方\"等模糊指代。",
+    "integrationPatternBody": "推荐的模式是在 VPA 层实现 SpeechRecognitionListener，并通过 SDK 将最终结果转发给 TAIA：",
+    "wakeBody": "唤醒词检测完全超出 TAIA SDK 的范围。唤醒词触发 OEM 麦克风处理流程；TAIA 仅接收其后的话语。常见处理模式包括：",
+    "wakePoints": [
+      "在将转录传递给 TAIA 之前抑制唤醒词令牌。",
+      "使用唤醒词引擎的内置话语提取功能，避免发送触发词。",
+      "如果无法抑制唤醒词，请在构建 TaiaChatRequest 之前通过简单的预处理步骤将其去除。"
+    ],
+    "requirementsTable": {
+      "rows": {
+        "stt": { "req": "OEM STT 引擎", "notes": "必须生成 UTF-8 文本转录" },
+        "wake": { "req": "唤醒词抑制", "notes": "转发给 TAIA 的转录不得包含唤醒词" },
+        "final": { "req": "仅最终结果", "notes": "仅传递最终 STT 结果；流式中间结果不支持作为话语输入" },
+        "lang": { "req": "语言：英语", "notes": "目前唯一官方支持的语言" },
+        "rephrased": { "req": "rephrasedQuery（可选）", "notes": "当 VPA 执行查询规范化时提高准确性" },
+        "conv": { "req": "conversationId（可选）", "notes": "在一个会话内支持多轮对话" }
+      }
+    }
+  }
+}

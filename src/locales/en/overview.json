@@ -1,0 +1,57 @@
+{
+  "title": "UX Library",
+  "intro": "A composable Android UI layer on top of NavSDK that helps you build driving applications — Automotive AAOS, Logistics, Fleet — without writing a full navigation UI from scratch.",
+  "what": {
+    "heading": "What is UX Library?",
+    "body1": "UX Library is TomTom's customisation layer for navigation applications. It sits between NavSDK (the routing, map rendering and positioning engine) and the OEM application, providing production-ready UI components, design tokens, and a stable API surface for tailoring every visible aspect of the navigation experience.",
+    "body2": "OEMs get a coherent, ANA-consistent baseline out of the box. From there, every layer is overridable — colours, typography, layout, component structure, and even core functional components like the search engine — without forking or maintaining a parallel UI codebase.",
+    "capabilities": {
+      "map": { "title": "Map as wallpaper", "body": "The navigation map fills the entire IVI home screen as a persistent background layer." },
+      "theme": { "title": "Full theming", "body": "Override any design token — colour, radius, typography — to match OEM brand guidelines." },
+      "modules": { "title": "Replaceable modules", "body": "Swap search, voice, or routing providers without changing any UI code." },
+      "layouts": { "title": "Composable layouts", "body": "Resize the navigation area from any edge. Other domain widgets layer on top." }
+    }
+  },
+  "explore": {
+    "heading": "Explore this library",
+    "subheading": "Key capabilities of the UX Library — click any card to go to the full documentation.",
+    "allPages": "All pages"
+  },
+  "featured": {
+    "ev": { "label": "EV Support", "desc": "Range-aware routing, charging station search, and automatic stop planning.", "group": "Vehicle Integration" },
+    "cluster": { "label": "Displaying on Cluster", "desc": "Render NIP, lane guidance, CMP, and ETA on the vehicle instrument cluster via intent.", "group": "Vehicle Integration" },
+    "search-engine": { "label": "Search engine", "desc": "Replace the search provider, connectivity transitions & UI enrichment.", "group": "App Customisation" },
+    "nav-controls": { "label": "Navigation Controls", "desc": "Button bar position, visibility & search entry point configuration.", "group": "App Customisation" },
+    "ai-overview": { "label": "TomTom AI Assistant", "desc": "Cloud AI agent for voice navigation — STT, TTS, intent understanding.", "group": "TomTom AI Assistant" },
+    "horizon-panel": { "label": "Horizon Panel", "desc": "Compose or decompose the guidance panel into NIP, Upcoming Events & ETA.", "group": "App Customisation" },
+    "colour": { "label": "Colour", "desc": "Global palettes, system tokens & semantic colour definitions.", "group": "Assets" },
+    "home-screen-layout": { "label": "Home Screen Layout", "desc": "Map as wallpaper, application area sizing & UI state signals.", "group": "App Customisation" }
+  },
+  "sections": {
+    "Assets": "Assets",
+    "App Customisation": "App Customisation",
+    "TomTom AI Assistant": "TomTom AI Assistant",
+    "Vehicle Integration": "Vehicle Integration"
+  },
+  "allSections": {
+    "design-tokens": { "label": "Design tokens", "desc": "Token architecture, naming conventions & tier structure" },
+    "colour": { "label": "Colour", "desc": "Global palettes, system tokens & semantic definitions" },
+    "font": { "label": "Font", "desc": "Typography tokens, scale & component mappings" },
+    "corner-radius": { "label": "Corner radius", "desc": "Radius scale from null (0dp) through to full (50%)" },
+    "home-screen-layout": { "label": "Home Screen Layout", "desc": "Map as wallpaper, application area sizing & UI state signals" },
+    "search-engine": { "label": "Search engine", "desc": "Replace the search provider, connectivity transitions & UI enrichment" },
+    "nav-controls": { "label": "Navigation Controls", "desc": "Button bar position, visibility & search entry point configuration" },
+    "horizon-panel": { "label": "Horizon Panel", "desc": "Compose or decompose the guidance panel into NIP, Upcoming Events & ETA" },
+    "instruction-panel": { "label": "Next Instruction Panel", "desc": "Position and theme the manoeuvre instruction panel during guidance" },
+    "eta-panel": { "label": "ETA Panel", "desc": "Configure position and visible content fields for the ETA panel" },
+    "route-bar": { "label": "Route Bar", "desc": "Planned component — upcoming events displayed along the active route" },
+    "ai-overview": { "label": "Overview", "desc": "Architecture, scope of responsibility, and capability overview" },
+    "voice-engine": { "label": "Voice engine", "desc": "Connecting TTS, VPA providers and MQTT streaming" },
+    "speech-to-text": { "label": "Speech to Text", "desc": "STT boundary, integration pattern, and wake word handling" },
+    "ai-config": { "label": "Configuration", "desc": "SDK init, navigation context, and multi-turn conversations" },
+    "cluster": { "label": "Displaying on Cluster", "desc": "NIP, SLG lane arrows, CMP, junction view, and ETA stacked in the instrument cluster" },
+    "ev": { "label": "EV Support", "desc": "Range-aware routing, charging station search, automatic stop planning" },
+    "truck": { "label": "Truck Support", "desc": "Vehicle dimensions, hazmat classes, weight restrictions and tunnel codes" }
+  },
+  "callout": "This is a prototype. Pages with full interactive content are Colour, Design Tokens, Font, Corner radius, Home Screen Layout, Search engine, Navigation Controls, Horizon Panel, Next Instruction Panel, ETA Panel, Route Bar, TomTom AI Assistant, and EV Support. All other nav items are placeholders to be built out."
+}

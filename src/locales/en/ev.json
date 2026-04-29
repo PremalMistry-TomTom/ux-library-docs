@@ -1,0 +1,141 @@
+{
+  "title": "EV Support",
+  "badge": "Available",
+  "intro": "EV Support enables range-aware navigation for electric vehicles — including automatic charging stop planning, real-time station search with connector matching, and route preferences for minimum battery thresholds. Three integrated layers work together: the Vehicle Integration API supplies battery and consumption data, the EV Search API discovers compatible charging stations, and the Long Distance EV Routing API plans multi-stop routes automatically.",
+  "architecture": {
+    "heading": "Architecture",
+    "body": "Vehicle data flows from the OEM's Battery Management System through the Vehicle Integration API into the Navigation SDK's VehicleProvider. The SDK uses this data to drive both the EV Search API (connector-aware station discovery) and the LDEVR API (automatic charging stop calculation on long routes).",
+    "callout": "The Vehicle Integration API and Navigation SDK must both be configured — the SDK's VehicleProvider is the source of truth for the routing engine. Charge level must be set before navigation starts or resumes."
+  },
+  "vehicleSetup": {
+    "heading": "Vehicle setup",
+    "body": "Before EV features activate, the SDK needs an accurate model of the vehicle's battery, energy consumption, efficiency, and supported connector types. These parameters feed directly into route range calculations — incorrect values will produce inaccurate charging stop predictions.",
+    "vehicleApi": {
+      "heading": "Vehicle Integration API",
+      "body": "Use VehicleInfoManager (from the Vehicle Integration Library) to send battery state and consumption data. Parameters should be updated whenever the BMS reports a change — the SoC update frequency should be at 1 Hz and fluctuation kept below 0.3%.",
+      "callout": "Consumption curves must cover a speed range from 10 km/h to maximum vehicle speed with 15–25 definition points. Values are baseline at 20°C — auxiliary power defaults to 500 W (climate, infotainment, lighting) if not supplied."
+    },
+    "vehicleProvider": {
+      "heading": "Navigation SDK — VehicleProvider",
+      "body": "The Navigation SDK maintains its own vehicle state via VehicleProvider. Set the initial charge level at app start and keep it updated reactively using BMS callbacks."
+    },
+    "paramsTable": {
+      "heading": "Battery parameters reference",
+      "colParam": "Parameter",
+      "colType": "Type",
+      "colNotes": "Notes",
+      "params": {
+        "currentBatteryCapacity": "Current usable battery capacity. Range: [0, nominal].",
+        "stateOfEnergy": "Current charge. Update at 1 Hz; fluctuation < 0.3%.",
+        "batteryChargeCurve": "0–20 entries. Piecewise-constant or piecewise-linear.",
+        "speedConsumptionCurve": "15–25 points. 10 km/h → max speed. Baseline at 20°C.",
+        "uphillEfficiency": "Default 0.9 when unavailable.",
+        "downhillEfficiency": "Paired with uphill. Default 0.9.",
+        "accelerationEfficiency": "KineticEnergyGained / ElectricEnergyConsumed.",
+        "decelerationEfficiency": "ElectricEnergyGained / KineticEnergyLost.",
+        "vehicleConnectors": "Drives station compatibility filtering in search.",
+        "auxiliaryPower": "Default 500 W. 5-minute rolling average.",
+        "chargingTimeOffset": "Plug-in/out overhead. Default 60 s."
+      }
+    }
+  },
+  "evSearch": {
+    "heading": "EV charging search",
+    "body": "The EV charging search panel lets drivers find compatible stations nearby, along the route, or near their destination. Filters include charging speed tiers, preferred operators, charging cards, and nearby services. Results show real-time availability and connector compatibility based on the vehicle profile.",
+    "speedFilters": "Speed filters",
+    "paymentFilters": "Payment filters",
+    "serviceFilters": "Service filters",
+    "stationDetail": "Station detail",
+    "searchOptions": {
+      "heading": "Search options",
+      "body": "Use EvSearchOptions to configure the search. When vehicleConnectors is set in the vehicle profile, the SDK automatically filters results by connector compatibility — stations are marked as compatible or incompatible in the detail view."
+    },
+    "realtimeDetails": {
+      "heading": "Real-time station details",
+      "body": "After an initial search, retrieve live connector availability and payment details by Place ID. This is useful to refresh data when the driver taps a station or when the route recalculates."
+    },
+    "filterTable": {
+      "heading": "Search filter reference",
+      "colOption": "Option",
+      "colType": "Type",
+      "colDesc": "Description",
+      "options": {
+        "geoBias": "Search centre coordinates.",
+        "radius": "Search radius. e.g. Distance.kilometers(5.0)",
+        "minMaxPower": "Charging speed range filter.",
+        "connectors": "Connector type filter. Automatically populated from vehicle profile.",
+        "status": "Status.Available filters to open connectors only.",
+        "accessTypes": "Public, Restricted, or Private.",
+        "limit": "Maximum number of results.",
+        "nearbyPoiCategories": "Request nearby amenities: Restaurant, HotelMotel, CafePub, PublicAmenity, Shop, ParkRecreationArea."
+      }
+    }
+  },
+  "ldevr": {
+    "heading": "Long distance EV routing",
+    "body": "For journeys beyond the vehicle's single-charge range, the LDEVR API automatically calculates the optimal sequence of charging stops. The driver sees a route timeline with each stop's arrival SoC, target SoC, charging time, and operator. Charging is re-evaluated dynamically if battery consumption deviates from prediction.",
+    "routePreview": "Route preview with charging stops",
+    "callout1": "The Plan charging automatically toggle is visible to the driver in the route preview panel. When disabled, the route is shown as-is — if it's out of range a warning banner appears. The default state (on/off) can be set at the SDK configuration level.",
+    "callout2": "The traffic parameter must be set to true — the LDEVR endpoint requires live traffic data and will reject requests with it disabled.",
+    "apiRequest": {
+      "heading": "LDEVR API request",
+      "body": "The route calculation is a POST request to the LDEVR endpoint. Vehicle parameters passed via the Vehicle Integration API are automatically forwarded by the Navigation SDK — you only need to call the REST endpoint directly for custom integrations or server-side planning."
+    },
+    "responseTable": {
+      "heading": "Charging stop response fields",
+      "colField": "Field",
+      "colDesc": "Description",
+      "fields": {
+        "remainingChargeAtArrivalInkWh": "Battery state when arriving at this stop or destination.",
+        "targetChargeInkWh": "Target charge level after charging at this stop.",
+        "chargingTimeInSeconds": "Estimated charging duration.",
+        "chargingParkName": "Station name (e.g. \"Fastned\", \"bp pulse\").",
+        "chargingPowerInkW": "Negotiated charging power in kW.",
+        "chargingParkPaymentOptions": "Payment methods: Direct, Subscription, No_Payment.",
+        "chargingStopType": "Auto_Generated (by LDEVR) or User_Defined (manual stop).",
+        "totalChargingTimeInSeconds": "Total charging time across all stops."
+      }
+    }
+  },
+  "preferences": {
+    "heading": "Route preferences",
+    "body": "The route preferences panel is accessible from the route preview screen. Drivers can set minimum battery thresholds at charging stops and at the destination, and opt to avoid toll roads or unpaved roads. These preferences map directly to LDEVR API parameters.",
+    "colUi": "UI preference",
+    "colParam": "LDEVR parameter",
+    "colDefault": "Default",
+    "callout": "While driving, actual arrival SoC may drop up to 2% below the configured minimum due to real-time consumption variance — this is expected behaviour shown in the UI disclaimer.",
+    "rows": {
+      "minAtStop": "Min battery at charging stop",
+      "minAtDest": "Min battery at destination",
+      "minAtFirst": "Min battery at first stop",
+      "criticalMin": "Critical min at destination",
+      "avoidTolls": "Avoid tolls",
+      "avoidUnpaved": "Avoid unpaved roads"
+    }
+  },
+  "requirements": {
+    "heading": "Requirements",
+    "colDep": "Dependency",
+    "colVersion": "Version / Detail",
+    "deps": {
+      "vehicleLib": "Vehicle Integration Library",
+      "vehicleModule": "Navigation SDK — Vehicle module",
+      "searchModule": "Navigation SDK — Search module",
+      "ldevrApi": "LDEVR REST API",
+      "evSearch": "EV Search API",
+      "bms": "Vehicle BMS / SoC feed",
+      "internet": "Active internet connection",
+      "weight": "Vehicle weight"
+    },
+    "details": {
+      "vehicleLib": "com.tomtom.sdk.vehicle:vehicle-integration-api",
+      "vehicleModule": "com.tomtom.sdk.vehicle:vehicle-provider:2.2.0",
+      "searchModule": "com.tomtom.sdk.search:search-ev:2.2.0",
+      "ldevrApi": "api.tomtom.com/routing/1/calculateLongDistanceEVRoute",
+      "evSearch": "Included in Navigation SDK search module",
+      "bms": "OEM-provided. Update frequency: 1 Hz minimum.",
+      "internet": "Required for LDEVR and real-time station availability.",
+      "weight": "Hardcoded at 2000 kg — cannot be overridden."
+    }
+  }
+}

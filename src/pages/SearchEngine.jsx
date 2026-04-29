@@ -1,6 +1,18 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+/* ─── API references ─────────────────────────────────────────────────────────── */
+const SEARCH_APIS = [
+  {
+    name: 'Search API',
+    type: 'REST API',
+    description: 'Full-text and POI search REST endpoint. Supports fuzzy matching, category filtering, and structured address lookup.',
+    url: 'https://developer.tomtom.com/search-api/documentation/product-information/introduction',
+  },
+];
 
 /* ─── Mock palette ──────────────────────────────────────────────────────────── */
 const M = {
@@ -25,7 +37,7 @@ const RESULTS = [
 ];
 
 /* ─── Search panel mock ─────────────────────────────────────────────────────── */
-function SearchMock({ isOnline = true, showAttribution = false, showEnrichment = false, showFilters = false }) {
+export function SearchMock({ isOnline = true, showAttribution = false, showEnrichment = false, showFilters = false }) {
   return (
     <div style={{ background: M.bg, borderRadius: 10, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       {/* Search bar */}
@@ -85,7 +97,7 @@ function SearchMock({ isOnline = true, showAttribution = false, showEnrichment =
 }
 
 /* ─── Location Preview Panel mock ───────────────────────────────────────────── */
-function LPPMock({ enriched = false, attribution = false }) {
+export function LPPMock({ enriched = false, attribution = false }) {
   return (
     <div style={{ background: M.card, borderRadius: 10, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '14px 14px 10px' }}>
@@ -216,7 +228,7 @@ const STATE_STYLE = {
   cached:     { bg: '#0f1a2a', dot: '#3b82f6', label: 'Showing cached content',       color: '#93c5fd' },
 };
 
-function TransitionExplorer() {
+export function TransitionExplorer() {
   const [active, setActive] = useState(0);
   const scenario = TRANSITIONS[active];
   const s = STATE_STYLE[scenario.state];
@@ -229,7 +241,7 @@ function TransitionExplorer() {
             padding: '9px 12px', borderRadius: 8, cursor: 'pointer', textAlign: 'left',
             background: active === i ? 'var(--code-bg)' : 'transparent',
             border: active === i ? '1px solid var(--red)' : '1px solid var(--border)',
-            color: active === i ? 'var(--black)' : 'var(--mid)',
+            color: active === i ? '#e2e8f0' : 'var(--mid)',
             fontSize: '0.76rem', fontWeight: active === i ? 600 : 400,
             transition: 'all 0.15s',
           }}>
@@ -265,7 +277,7 @@ const UI_TABS = [
   { id: 'filters',     label: '+ Filters',           showAttribution: true,  showEnrichment: true,  showFilters: true  },
 ];
 
-function SearchUICustomiser() {
+export function SearchUICustomiser() {
   const [tab, setTab] = useState('basic');
   const cfg = UI_TABS.find(t => t.id === tab);
 
@@ -414,26 +426,27 @@ function Pri({ children }) {
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
 export default function SearchEngine() {
+  const { t } = useTranslation('pages');
+
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Search engine</h1>
+        <h1>{t('searchEngine.title')}</h1>
         <div className="page-meta">
-          <span className="meta-tag private">Private</span>
-          <span className="meta-tag">v0.3 · Q2 2026</span>
+          <span className="meta-tag private">{t('searchEngine.badge')}</span>
+          <span className="meta-tag">{t('searchEngine.version')}</span>
         </div>
       </div>
 
       <div className="quick-answer">
-        <strong>Search is a replaceable capability.</strong> UX Library owns the search UI; the OEM provides the
-        search provider. When online, queries go to the 3rd-party provider (e.g. Stellantis / Google). When
-        offline, UX Library falls back automatically to TomTom onboard search. The orchestrator never needs
-        to manage the switch.
+        {t('searchEngine.intro')}
       </div>
+
+      <ApiLinks items={SEARCH_APIS} />
 
       {/* Overview */}
       <div className="zone">
-        <h2 className="sh" id="se-overview">Overview</h2>
+        <h2 className="sh" id="se-overview">{t('searchEngine.sections.overview')}</h2>
         <p className="body">
           The STLA R2 programme requires Stellantis to use Google Search when the vehicle is online — a contractual
           and ecosystem requirement — while preserving TomTom onboard search for offline scenarios. UX Library achieves
@@ -449,22 +462,19 @@ export default function SearchEngine() {
 
       {/* Provider setup */}
       <div className="zone">
-        <h2 className="sh" id="se-provider">Provider setup</h2>
+        <h2 className="sh" id="se-provider">{t('searchEngine.sections.provider')}</h2>
         <p className="body">
           Configure the search provider once at initialisation. Set an <code className="ic">onlineProvider</code> for
           3rd-party queries and an <code className="ic">offlineProvider</code> for onboard fallback. Toggle below to see
           how the search panel and generated Kotlin code adapt to each configuration.
         </p>
         <ProviderSetup />
-        <Callout type="info">
-          The offline provider is always required — even when an online provider is configured. UX Library
-          automatically routes queries to the offline provider when connectivity is unavailable.
-        </Callout>
+        <Callout type="info">{t('searchEngine.callout1')}</Callout>
       </div>
 
       {/* Connectivity transitions */}
       <div className="zone">
-        <h2 className="sh" id="se-transitions">Connectivity transitions</h2>
+        <h2 className="sh" id="se-transitions">{t('searchEngine.sections.transitions')}</h2>
         <p className="body">
           Connectivity can change at any point during a search session. UX Library defines specific behaviour for
           each transition so the experience stays coherent. Click a scenario to see the trigger and expected behaviour.
@@ -474,37 +484,31 @@ export default function SearchEngine() {
 
       {/* Search UI customisation */}
       <div className="zone">
-        <h2 className="sh" id="se-ui-custom">Search UI customisation</h2>
+        <h2 className="sh" id="se-ui-custom">{t('searchEngine.sections.uiCustom')}</h2>
         <p className="body">
           The search panel supports progressive enrichment. Start with the default layout, then layer in provider
           attribution, enriched result metadata, and category-specific filters. Click through the tabs below to see
           each layer and the corresponding Kotlin configuration.
         </p>
         <SearchUICustomiser />
-        <Callout type="warn">
-          <strong>"Powered by Google"</strong> attribution is a legal commitment for STLA R2. It must appear in both
-          the search bar and results list whenever the 3rd-party provider is active.
-        </Callout>
+        <Callout type="warn">{t('searchEngine.callout2')}</Callout>
       </div>
 
       {/* LPP */}
       <div className="zone">
-        <h2 className="sh" id="se-lpp">Location preview panel</h2>
+        <h2 className="sh" id="se-lpp">{t('searchEngine.sections.lpp')}</h2>
         <p className="body">
           The Location Preview Panel (LPP) can display additional attributes supplied by the 3rd-party provider —
           ratings, review counts, price classification, opening hours, and user review snippets. Toggle the options
           below to preview the LPP in each configuration.
         </p>
         <LPPCustomiser />
-        <Callout type="info">
-          When connectivity drops while viewing an LPP, the cached version is shown and Drive / Route actions continue
-          to work. The UI never replaces the cached content with an offline result.
-        </Callout>
+        <Callout type="info">{t('searchEngine.callout3')}</Callout>
       </div>
 
       {/* POI entry points */}
       <div className="zone">
-        <h2 className="sh" id="se-entry-points">POI entry points</h2>
+        <h2 className="sh" id="se-entry-points">{t('searchEngine.sections.entryPoints')}</h2>
         <p className="body">
           POI details can be opened from six places in the navigation UI. UX Library ensures all six route the detail
           request to the correct provider based on the origin of the POI.
@@ -536,15 +540,12 @@ export default function SearchEngine() {
           ))}
         </div>
 
-        <Callout type="info">
-          When the map shows a mix of TomTom and STLA POIs, configure the source routing so each POI type
-          calls the right API: TomTom POI → TomTom Online Search API; STLA POI → STLA Search API.
-        </Callout>
+        <Callout type="info">{t('searchEngine.callout4')}</Callout>
       </div>
 
       {/* Requirements summary */}
       <div className="zone">
-        <h2 className="sh" id="se-requirements">Requirements summary</h2>
+        <h2 className="sh" id="se-requirements">{t('searchEngine.sections.requirements')}</h2>
         <table className="prop-table">
           <thead><tr><th>Requirement</th><th>Area</th><th>Priority</th></tr></thead>
           <tbody>

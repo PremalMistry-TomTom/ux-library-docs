@@ -1,0 +1,57 @@
+{
+  "title": "UX Library",
+  "intro": "基于 NavSDK 构建的可组合 Android UI 层，帮助您在无需从头编写完整导航 UI 的情况下，开发适用于车载 AAOS、物流和车队管理的驾驶应用。",
+  "what": {
+    "heading": "什么是 UX Library？",
+    "body1": "UX Library 是 TomTom 的导航应用定制层。它位于 NavSDK（路线规划、地图渲染和定位引擎）与 OEM 应用之间，提供生产就绪的 UI 组件、设计令牌以及稳定的 API 接口，用于定制导航体验的每个可见方面。",
+    "body2": "OEM 开箱即可获得符合 ANA 规范的一致基础界面。在此基础上，每一层都可以被覆盖——颜色、字体、布局、组件结构，甚至核心功能组件（如搜索引擎）——无需派生或维护并行 UI 代码库。",
+    "capabilities": {
+      "map": { "title": "地图作为壁纸", "body": "导航地图作为持久背景图层填满整个 IVI 主屏幕。" },
+      "theme": { "title": "完整主题定制", "body": "覆盖任意设计令牌——颜色、圆角、字体——以匹配 OEM 品牌规范。" },
+      "modules": { "title": "可替换模块", "body": "替换搜索、语音或路线规划提供商，无需更改任何 UI 代码。" },
+      "layouts": { "title": "可组合布局", "body": "从任意边缘调整导航区域大小，其他功能模块的 Widget 可叠加其上。" }
+    }
+  },
+  "explore": {
+    "heading": "探索本库",
+    "subheading": "UX Library 的核心功能——点击任意卡片查看完整文档。",
+    "allPages": "所有页面"
+  },
+  "featured": {
+    "ev": { "label": "电动车支持", "desc": "续航感知路线规划、充电站搜索及自动停靠点规划。", "group": "车辆集成" },
+    "cluster": { "label": "仪表盘显示", "desc": "通过 Intent 在车辆仪表盘上渲染 NIP、车道引导、CMP 和 ETA。", "group": "车辆集成" },
+    "search-engine": { "label": "搜索引擎", "desc": "替换搜索提供商、连接状态切换与 UI 增强。", "group": "应用定制" },
+    "nav-controls": { "label": "导航控件", "desc": "按钮栏位置、可见性及搜索入口点配置。", "group": "应用定制" },
+    "ai-overview": { "label": "TomTom AI 助手", "desc": "语音导航云端 AI 智能体——STT、TTS、意图理解。", "group": "TomTom AI 助手" },
+    "horizon-panel": { "label": "视野面板", "desc": "将导航面板组合或分解为 NIP、即将发生事件与 ETA。", "group": "应用定制" },
+    "colour": { "label": "颜色", "desc": "全局调色板、系统令牌与语义颜色定义。", "group": "资源" },
+    "home-screen-layout": { "label": "首页布局", "desc": "地图作为壁纸、应用区域大小调整及 UI 状态信号。", "group": "应用定制" }
+  },
+  "sections": {
+    "Assets": "资源",
+    "App Customisation": "应用定制",
+    "TomTom AI Assistant": "TomTom AI 助手",
+    "Vehicle Integration": "车辆集成"
+  },
+  "allSections": {
+    "design-tokens": { "label": "设计令牌", "desc": "令牌架构、命名规范与层级结构" },
+    "colour": { "label": "颜色", "desc": "全局调色板、系统令牌与语义定义" },
+    "font": { "label": "字体", "desc": "字体令牌、规模与组件映射" },
+    "corner-radius": { "label": "圆角半径", "desc": "从无（0dp）到完全（50%）的圆角规模" },
+    "home-screen-layout": { "label": "首页布局", "desc": "地图作为壁纸、应用区域大小调整及 UI 状态信号" },
+    "search-engine": { "label": "搜索引擎", "desc": "替换搜索提供商、连接状态切换与 UI 增强" },
+    "nav-controls": { "label": "导航控件", "desc": "按钮栏位置、可见性及搜索入口点配置" },
+    "horizon-panel": { "label": "视野面板", "desc": "将导航面板组合或分解为 NIP、即将发生事件与 ETA" },
+    "instruction-panel": { "label": "下一指令面板", "desc": "在导航过程中定位和主题化转弯指令面板" },
+    "eta-panel": { "label": "预计到达时间面板", "desc": "配置 ETA 面板的位置和可见内容字段" },
+    "route-bar": { "label": "路线栏", "desc": "计划中的组件——沿当前路线显示即将发生的事件" },
+    "ai-overview": { "label": "概览", "desc": "架构、责任范围及功能概览" },
+    "voice-engine": { "label": "语音引擎", "desc": "连接 TTS、VPA 提供商与 MQTT 流传输" },
+    "speech-to-text": { "label": "语音转文字", "desc": "STT 边界、集成模式及唤醒词处理" },
+    "ai-config": { "label": "配置", "desc": "SDK 初始化、导航上下文及多轮对话" },
+    "ev": { "label": "电动车支持", "desc": "续航感知路线规划、充电站搜索及自动停靠点规划" },
+    "cluster": { "label": "仪表盘显示", "desc": "NIP、SLG 车道箭头、CMP、交叉路口视图及 ETA 在仪表盘垂直堆叠显示" },
+    "truck": { "label": "货车支持", "desc": "车辆尺寸、危险品类别、重量限制及隧道代码" }
+  },
+  "callout": "这是一个原型。具有完整交互内容的页面包括：颜色、设计令牌、字体、圆角半径、首页布局、搜索引擎、导航控件、视野面板、下一指令面板、预计到达时间面板、路线栏、TomTom AI 助手及电动车支持。其他导航项目为待开发的占位页面。"
+}

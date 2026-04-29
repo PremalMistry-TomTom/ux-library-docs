@@ -5,4 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/ux-library-docs/',
+  optimizeDeps: {
+    include: ['@tomtom-international/web-sdk-maps'],
+  },
 })

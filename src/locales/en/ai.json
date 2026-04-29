@@ -1,0 +1,203 @@
+{
+  "overview": {
+    "title": "TomTom AI Assistant",
+    "badge": "Available",
+    "intro": "TomTom AI Agent for Navigation (TAIA) is a cloud service that converts natural language voice commands into navigation actions. The integrator provides STT, TTS, and their own Voice Personal Assistant (VPA); TAIA handles navigation intent understanding, voice response generation, and UI command production.",
+    "sections": {
+      "overview": "Overview",
+      "architecture": "Architecture",
+      "scope": "Scope of responsibility",
+      "capabilities": "Capabilities",
+      "requirements": "Requirements"
+    },
+    "overviewBody": "TAIA sits between your Voice Personal Assistant and the TomTom Navigation SDK. When the driver speaks a navigation intent, the VPA transcribes the audio, determines the utterance is navigation-related, and forwards the text transcript to TAIA via the TAIA SDK. TAIA processes the request, queries live navigation data, and responds with two outputs: a voice text string for your TTS engine to speak aloud, and structured UI commands that instruct the navigation app to update its display.",
+    "cloudCallout": "TAIA is a cloud service. An active internet connection is required for all AI-assisted voice interactions. Offline fallback behaviour is the OEM's responsibility.",
+    "architectureBody": "The diagram below shows the complete voice pipeline. Components inside the dashed blue boundary are the integrator's responsibility. TAIA SDK and TAIA Cloud are provided by TomTom.",
+    "pipelineSteps": [
+      "Driver speaks — OEM wake word engine activates.",
+      "OEM STT engine transcribes audio to text.",
+      "OEM VPA cloud performs domain arbitration; navigation intents are delegated to TAIA.",
+      "TAIA SDK (on-device) forwards the transcript and navigation context to TAIA Cloud via POST /chat.",
+      "TAIA Cloud returns a voice text response and UI commands.",
+      "SDK delivers response to the VPA; VPA hands the voice text to the OEM TTS engine.",
+      "Navigation app executes the UI commands (route display, POI card, etc.)."
+    ],
+    "scopeIntro": "Understanding the boundary between TAIA and the integrator is essential for correct system design. The table below lists each area of the pipeline and who owns it.",
+    "scopeTable": {
+      "colArea": "Area",
+      "colTaia": "TAIA",
+      "colOem": "OEM / Integrator",
+      "colNotes": "Notes",
+      "rows": {
+        "wakeWord": { "area": "Wake word detection", "notes": "Handled entirely by OEM VPA" },
+        "stt": { "area": "Speech to text (STT)", "notes": "TAIA receives text transcript, not audio" },
+        "tts": { "area": "Text to speech (TTS)", "notes": "TAIA returns a voice text string; OEM renders audio" },
+        "intent": { "area": "Navigation intent parsing", "notes": "Natural language → structured navigation command" },
+        "voiceResp": { "area": "Voice response generation", "notes": "Returns language-appropriate voice text" },
+        "uiCmd": { "area": "UI command generation", "notes": "Route list, POI cards, route confirmation dialogs" },
+        "brand": { "area": "Brand tone & persona", "notes": "VPA branding remains with the integrator" },
+        "nonNav": { "area": "Non-navigation queries", "notes": "VPA handles music, calls, general knowledge etc." },
+        "domain": { "area": "Domain arbitration", "notes": "VPA cloud decides when to delegate to TAIA" }
+      }
+    },
+    "capabilitiesIntro": "TAIA currently supports 20 navigation capability use cases in English. Additional languages and VPA integrations (Cerence, Amazon Alexa) are planned.",
+    "capList": [
+      "Voice navigation", "Multi-stop routing", "EV routing & charging stops", "POI search by name",
+      "POI search by category", "POI search near route", "POI search near destination", "Traffic information",
+      "Route alternatives", "Avoid areas & road types", "Speed limit awareness", "Arrival time updates",
+      "Re-routing on request", "Cancel navigation", "Waypoint management", "Home & work shortcuts",
+      "Saved locations recall", "Real-time hazard alerts", "Weather-aware routing", "Trip summary & history"
+    ],
+    "requirementsTable": {
+      "colReq": "Requirement",
+      "colPri": "Priority",
+      "colNotes": "Notes",
+      "rows": {
+        "sdk": { "req": "TAIA SDK dependency", "notes": "Add com.tomtom.sdk:taia to your build" },
+        "apiKey": { "req": "Valid API key", "notes": "Obtain from TomTom Developer Portal" },
+        "stt": { "req": "OEM STT engine", "notes": "TAIA receives text transcripts only" },
+        "tts": { "req": "OEM TTS engine", "notes": "TAIA returns voice text; OEM renders audio" },
+        "vpa": { "req": "OEM VPA / domain arbitration", "notes": "VPA decides which utterances to forward to TAIA" },
+        "context": { "req": "Navigation context on each call", "notes": "Current route, vehicle position, saved locations" },
+        "internet": { "req": "Internet connectivity", "notes": "Cloud service; no offline fallback in TAIA itself" },
+        "lang": { "req": "English language support", "notes": "Currently the only officially supported language" }
+      }
+    }
+  },
+  "config": {
+    "title": "Configuration",
+    "badge": "Available",
+    "intro": "Configure the TAIA SDK with your API key and endpoint, then pass navigation context with every request. The quality and completeness of the navigation context directly determines how accurately TAIA can respond to driver commands.",
+    "sections": {
+      "overview": "Overview",
+      "dependency": "Adding the dependency",
+      "init": "Initialising the TAIA client",
+      "context": "Navigation context",
+      "events": "MQTT event delivery",
+      "session": "Multi-turn conversations",
+      "requirements": "Requirements"
+    },
+    "overviewBody": "The TAIA SDK is the on-device bridge between your VPA and the TAIA cloud service. It handles authentication, request serialisation, MQTT event delivery for streaming intermediate results, and response deserialisation. Configuration is minimal — you provide an API key, an endpoint, and a navigation context builder.",
+    "depBody": "Add the TAIA SDK to your module's build.gradle.kts:",
+    "initBody": "Create a single TaiaClient instance at application start. It is safe to reuse across the application lifecycle.",
+    "initCallout": "Store your API key in local.properties or a secrets manager — never hard-code it in source files or commit it to version control.",
+    "destroyBody": "The client must be closed when the application terminates to release MQTT resources:",
+    "contextBody": "Navigation context is passed with every chat() call. It gives TAIA the situational awareness needed to respond correctly — without it, TAIA cannot offer route alternatives, locate the vehicle on the map, or recall saved places.",
+    "contextBuildBody": "Build the context immediately before each request to ensure it reflects the current vehicle state:",
+    "contextTableIntro": "The table below lists all supported context fields:",
+    "contextTable": {
+      "colField": "Field",
+      "colType": "Type",
+      "colRequired": "Required",
+      "colDesc": "Description",
+      "fields": {
+        "currentRoute": "Active route object including waypoints, remaining distance, and ETA",
+        "vehiclePosition": "Current GPS location of the vehicle",
+        "vehicleHeading": "Bearing in degrees (0–360); improves re-routing accuracy",
+        "vehicleSpeed": "Current speed in km/h; used for speed-aware responses",
+        "savedLocations": "Home, work, and user favourites; enables \"take me home\" commands",
+        "vehicleType": "CAR, TRUCK, EV — affects routing options offered by TAIA",
+        "batteryLevel": "State of charge 0–100 for EV routing capability",
+        "rangeEstimate": "Estimated remaining range in km; used for EV charging stop suggestions",
+        "recentDestinations": "Recently visited places; helps resolve ambiguous requests",
+        "mapRegion": "Currently visible map region; used for contextual POI search"
+      }
+    },
+    "eventsBody": "TAIA delivers intermediate results over MQTT, enabling your TTS engine to begin speaking before the full response has been generated. The SDK manages the MQTT connection automatically; no additional configuration is required.",
+    "eventsRegisterBody": "To receive streaming events, register a StreamingResponseListener on the client before making the first chat() call:",
+    "eventsCallout": "If you do not register a streaming listener, the SDK buffers all events and delivers them as a single TaiaChatResponse in the chat() callback. This is simpler to implement but adds latency before TTS playback begins.",
+    "sessionBody": "TAIA supports follow-up questions within a single interaction session. Pass the same conversationId across sequential turns to maintain context:",
+    "requirementsTable": {
+      "colReq": "Requirement",
+      "colPri": "Priority",
+      "colNotes": "Notes",
+      "rows": {
+        "apiKey": { "req": "Valid API key", "notes": "Obtain from TomTom Developer Portal; never commit to source control" },
+        "route": { "req": "currentRoute in context", "notes": "Required for re-routing, route alternatives, ETA queries" },
+        "position": { "req": "vehiclePosition in context", "notes": "Required for all location-relative commands" },
+        "saved": { "req": "savedLocations in context", "notes": "Required for \"take me home / to work\" commands" },
+        "single": { "req": "Single TaiaClient instance", "notes": "Reuse across the lifecycle; create once, close in onDestroy" },
+        "ev": { "req": "batteryLevel + rangeEstimate for EV", "notes": "Required for EV charging stop suggestions" },
+        "conv": { "req": "conversationId for multi-turn", "notes": "Enables follow-up questions within the same session" },
+        "mqtt": { "req": "MQTT streaming listener", "notes": "Reduces perceived TTS latency via partial result delivery" }
+      }
+    }
+  },
+  "voiceEngine": {
+    "title": "Voice Engine",
+    "badge": "Available",
+    "intro": "TAIA does not provide a TTS engine or voice persona. The integrator supplies their own Text-to-Speech engine and Voice Personal Assistant (VPA). This page explains how to wire the VPA and TTS layer so that TAIA responses are spoken aloud through your chosen audio system.",
+    "sections": {
+      "overview": "Overview",
+      "responsibilities": "OEM responsibilities",
+      "integration": "Connecting your TTS engine",
+      "providers": "VPA providers",
+      "requirements": "Requirements"
+    },
+    "overviewBody": "The voice layer in a TAIA integration has two parts: the Voice Personal Assistant (VPA) that listens for wake words and performs domain arbitration, and the TTS engine that converts TAIA's text response into audio. TAIA's role in the audio pipeline is limited to returning a voiceText string in each response.",
+    "callout": "TAIA does not handle wake words, audio input, domain arbitration, or TTS rendering. These remain entirely within the OEM or integrator's stack.",
+    "respBody": "Before TAIA can process a voice command, your VPA must complete the following steps:",
+    "respSteps": [
+      "Wake word detection — activate the microphone on a trigger phrase.",
+      "Audio capture — record the driver utterance.",
+      "Speech to text — transcribe the audio to a text string (see Speech to Text page).",
+      "Domain arbitration — determine whether the utterance is navigation-related and should be forwarded to TAIA.",
+      "Response playback — pass TAIA's voiceText field to your TTS engine and play the result."
+    ],
+    "ttsBody": "After receiving a response from TAIA, extract the voiceText field and pass it directly to your TTS engine:",
+    "streamBody": "TAIA intermediate results are delivered over MQTT, allowing your TTS to begin speaking before the full response is available. To enable this, register a streaming listener:",
+    "providersBody": "TAIA is VPA-agnostic by design — any VPA that can forward a text transcript to the TAIA SDK will work. Native integrations for the following providers are planned:",
+    "providersTable": {
+      "colProvider": "Provider",
+      "colStatus": "Status",
+      "colNotes": "Notes",
+      "rows": {
+        "custom": { "provider": "Custom VPA", "status": "Available", "notes": "Any VPA that can forward text transcripts to TAIA SDK" },
+        "cerence": { "provider": "Cerence", "status": "Planned", "notes": "Native integration in development" },
+        "alexa": { "provider": "Amazon Alexa", "status": "Planned", "notes": "Native integration in development" }
+      }
+    },
+    "requirementsTable": {
+      "rows": {
+        "tts": { "req": "OEM TTS engine", "notes": "Receives voiceText string from TAIA response" },
+        "wake": { "req": "OEM wake word detection", "notes": "Activates microphone; not part of TAIA SDK" },
+        "vpa": { "req": "OEM VPA with domain routing", "notes": "Decides which utterances are forwarded to TAIA" },
+        "mqtt": { "req": "MQTT streaming (optional)", "notes": "Enables lower-latency TTS playback via partial results" },
+        "lang": { "req": "Language match TTS ↔ TAIA", "notes": "Ensure TTS locale matches the TAIA response language" }
+      }
+    }
+  },
+  "speechToText": {
+    "title": "Speech to Text Engine",
+    "badge": "Available",
+    "intro": "TAIA does not perform speech recognition. It receives a plain text transcript and processes it as a navigation command. The STT engine is entirely the integrator's responsibility — any engine that produces a UTF-8 text string can be used.",
+    "sections": {
+      "overview": "Overview",
+      "boundary": "The TAIA input boundary",
+      "integration": "STT integration pattern",
+      "wake": "Wake word handling",
+      "requirements": "Requirements"
+    },
+    "boundaryBody": "The diagram below shows where the STT boundary lies. Everything to the left of the red dashed line is owned by the integrator. TAIA only receives the text transcript — it has no awareness of the audio, the microphone, or the wake word that triggered the interaction.",
+    "boundaryBody2": "This design gives you full control over STT provider, audio quality settings, noise cancellation, and language model customisation without any dependency on TomTom.",
+    "integrationBody": "TAIA's POST /chat endpoint accepts a structured JSON body. The driver's utterance is passed as the utterance field — a plain text string produced by your STT engine:",
+    "rephrasedCallout": "The rephrasedQuery field is optional. When present, it is the VPA cloud's rephrased version of the utterance after domain arbitration — for example, stripping filler words or resolving ambiguous references like \"there\" or \"that place\".",
+    "integrationPatternBody": "The recommended pattern is to implement a SpeechRecognitionListener in your VPA layer and forward the final result to TAIA via the SDK:",
+    "wakeBody": "Wake word detection is entirely outside the TAIA SDK scope. The wake word triggers your OEM microphone pipeline; TAIA only receives the utterance that follows it. Common patterns include:",
+    "wakePoints": [
+      "Suppress the wake word token before passing the transcript to TAIA.",
+      "Use the wake word engine's built-in utterance extraction to avoid sending the trigger phrase.",
+      "If the wake word cannot be suppressed, strip it in a simple pre-processing step before constructing the TaiaChatRequest."
+    ],
+    "requirementsTable": {
+      "rows": {
+        "stt": { "req": "OEM STT engine", "notes": "Must produce UTF-8 text transcript" },
+        "wake": { "req": "Wake word suppression", "notes": "Transcript forwarded to TAIA must not include the wake phrase" },
+        "final": { "req": "Final result only", "notes": "Pass only the final STT result; streaming partials are not supported as utterance input" },
+        "lang": { "req": "Language: English", "notes": "Only officially supported language at this time" },
+        "rephrased": { "req": "rephrasedQuery (optional)", "notes": "Improves accuracy when VPA performs query normalisation" },
+        "conv": { "req": "conversationId (optional)", "notes": "Enables multi-turn conversations within a session" }
+      }
+    }
+  }
+}

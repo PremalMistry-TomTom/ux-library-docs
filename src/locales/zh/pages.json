@@ -1,0 +1,243 @@
+{
+  "horizonPanel": {
+    "title": "视野面板",
+    "badge": "内部",
+    "version": "v0.1 · 2026 年第二季度",
+    "intro": "视野面板——在主动路线跟随期间显示的主导航组件。它将下一指令面板、即将发生事件面板和预计到达时间面板组合在一个垂直堆叠中。UX Library 允许您直接使用它，或将其分解为三个独立定位的子组件。",
+    "sections": {
+      "overview": "概览",
+      "decompose": "组合 vs 分解",
+      "position": "位置（组合模式）",
+      "requirements": "要求"
+    },
+    "overviewBody1": "视野面板在导航主屏上占用全部可用垂直空间。它仅在导航引导状态下可见——在自由驾驶模式下，即将发生事件面板单独显示。",
+    "overviewBody2": "在默认的组合状态下，三个子组件共享交互契约：点击 ETA 区域可打开路线选项，当安全区域变化时面板会整体调整大小。分解后，每个子组件可独立定位和主题化。",
+    "decomposeBody": "选择将视野面板用作单一组合块，或将其拆分为可分别放置在导航屏幕任意位置的独立子组件（NIP、即将发生事件、ETA 面板）。",
+    "decomposeCallout": "分解后，子组件的交互契约变为可选。例如，当 ETA 面板与 NIP 距离较远时，可以禁用点击 ETA 面板打开路线选项的功能。",
+    "composed": "组合（默认）",
+    "decomposed": "分解",
+    "positionBody": "在组合模式下，将视野面板放置在导航屏幕的左侧、中央或右侧。地图安全区域会自动调整。",
+    "left": "左", "center": "中", "right": "右",
+    "requirementsTable": {
+      "colReq": "要求", "colPri": "优先级", "colNotes": "说明",
+      "rows": {
+        "theme": { "req": "主题化视野面板", "notes": "颜色、字体、图标资产、间距、圆角、边框、停靠/浮动——继承自 ANA" },
+        "decompose": { "req": "分解为 NIP + 即将发生事件 + ETA 面板", "notes": "市场需求极高；大众集团 UX 愿景的核心" },
+        "reposition": { "req": "重新定位视野面板（左/中/右）", "notes": "R2 或大众 PoC 不需要" },
+        "reverse": { "req": "反转顺序（ETA 在上，NIP 在下）", "notes": "未发现需求" }
+      }
+    }
+  },
+  "navControls": {
+    "title": "导航控件",
+    "badge": "内部",
+    "version": "v0.1 · 2026 年第二季度",
+    "intro": "地图控件按钮栏——一个可配置的导航操作按钮条（搜索、充电桩查找、静音、快速设置），可定位在屏幕的任意边缘。内容、可见性和搜索入口点形式均可配置。",
+    "sections": {
+      "overview": "概览",
+      "position": "位置与按钮可见性",
+      "search": "搜索入口点",
+      "requirements": "要求"
+    },
+    "overviewBody1": "地图控件按钮栏在主屏上显示主要导航操作。集成商将其定位为导航应用区域任意边缘的垂直或水平条。该按钮栏归 UX Library 所有——TomTom 控制交互质量和无障碍性，OEM 控制位置、内容和视觉主题。",
+    "callout": "按钮栏配置之前记录在首页布局中。现已整合到此处，以便将所有导航控件定制集中在一个地方。",
+    "positionBody": "将按钮栏放置在屏幕任意边缘，并控制显示哪些按钮。地图安全区域和其他 UI 元素会自动调整。",
+    "positionOptions": {
+      "vertLeft": "垂直——左侧",
+      "vertRight": "垂直——右侧",
+      "horizTop": "水平——顶部",
+      "horizBottom": "水平——底部"
+    },
+    "buttons": { "search": "搜索", "charging": "充电桩查找", "mute": "静音", "settings": "快速设置", "hidden": "隐藏", "shown": "显示" },
+    "searchBody": "默认情况下，搜索以地图上的持久目的地输入面板形式显示。或者，可将其折叠为控件栏内的紧凑搜索按钮，以释放地图空间，打造更简洁的空闲状态。",
+    "searchOptions": { "panel": "目的地输入面板", "button": "控件栏中的按钮" },
+    "requirementsTable": {
+      "colReq": "要求", "colPri": "优先级", "colNotes": "说明",
+      "rows": {
+        "theme": { "req": "主题化地图控件按钮栏", "notes": "颜色、字体、图标资产、间距、圆角、边框——继承自 ANA" },
+        "left": { "req": "左侧按钮栏", "notes": "继承自 ANA" },
+        "right": { "req": "右侧按钮栏", "notes": "继承自 ANA" },
+        "toggle": { "req": "显示/隐藏单个按钮", "notes": "大众集团 UX 愿景的一部分" },
+        "searchBtn": { "req": "在按钮栏中以按钮形式显示搜索入口点", "notes": "隐藏目的地输入面板；大众集团 UX 愿景的一部分" },
+        "both": { "req": "同时显示两侧按钮栏", "notes": "需要进一步调研" },
+        "custom": { "req": "向按钮栏添加自定义按钮", "notes": "需要进一步调研" }
+      }
+    }
+  },
+  "homeScreen": {
+    "title": "首页布局",
+    "badge": "内部",
+    "version": "v0.3 · 2026 年第二季度",
+    "intro": "地图作为壁纸——导航地图作为背景填满整个 IVI 主屏幕。其他功能模块的 Widget（媒体、空调、电话）叠加其上。IVI 主屏编排器控制导航在任意时刻占用的空间；导航应用暴露四个可观察的 UI 状态维度，使编排器无需与 TomTom API 耦合即可做出 Widget 可见性决策。",
+    "sections": {
+      "overview": "概览",
+      "zones": "屏幕区域",
+      "resize": "调整应用区域",
+      "states": "UI 状态 API",
+      "requirements": "要求摘要"
+    },
+    "overviewBody1": "将地图嵌入为 IVI 主屏壁纸，可持续保持空间感知可见，并减少开始导航所需的交互深度。编排器完全控制布局：基于导航应用暴露的状态信号，决定导航应用区域的大小以及何时显示或折叠功能模块 Widget。",
+    "callout1": "在专用窗口或视图中使用导航是另一种集成模式，在其他文档中介绍。本页仅介绍地图作为壁纸的模式。",
+    "zonesIntro": "IVI 界面被划分为若干命名区域。点击下方区域可查看其在屏幕上的位置及其内容。",
+    "zones": {
+      "nav": { "label": "导航应用区域", "desc": "所有导航地图内容和功能所在的区域。IVI 编排器控制其大小。" },
+      "safe": { "label": "地图安全区域", "desc": "地图渲染关键内容且不受遮挡的屏幕部分。包含重新定位按钮和罗盘。" },
+      "display": { "label": "地图显示区域", "desc": "完整地图区域。可被导航元素或 IVI Widget（如媒体面板）覆盖。" },
+      "controls": { "label": "地图控件区域", "desc": "导航主屏上显示的主要控件——搜索、充电桩查找、静音、快速设置。" }
+    },
+    "resizeBody": "编排器可以同时从任意方向——顶部、底部、左侧或右侧——动态调整导航应用区域的大小。导航应用通过可配置的动画平滑过渡到新区域。拖动下方滑块，查看应用区域和生成代码如何变化。",
+    "callout2": "调整大小可以在多个方向同时发生。导航应用必须在所有流程和屏幕上遵守可视应用区域。",
+    "sliders": { "top": "顶部内边距", "right": "末端（右侧）内边距", "bottom": "底部内边距", "left": "起始（左侧）内边距", "reset": "重置" },
+    "statesIntro": "导航应用不使用简单的活跃/被动标志，而是暴露四个正交的可观察状态维度。使用下方选择器探索每种状态组合。",
+    "callout3": "按钮栏位置、可见性和搜索入口点配置已移至应用定制部分的导航控件中。",
+    "stateDimensions": {
+      "activity": { "label": "导航活动状态", "desc": "与 UI 交互无关的高层导航活动。" },
+      "panel": { "label": "UI 面板状态", "desc": "当前处于前台的导航 UI 面板（如有）。NONE = 默认地图视图。" },
+      "map": { "label": "地图交互状态", "desc": "地图是否在自动跟随车辆，还是正在主动平移/缩放。" },
+      "trip": { "label": "行程规划状态", "desc": "当前行程规划会话的生命周期。" }
+    },
+    "passive": "被动模式",
+    "passiveDesc": "编排器可在地图上显示功能模块 Widget。",
+    "active": "活跃模式",
+    "activeDesc": "编排器应隐藏或折叠功能模块 Widget。",
+    "requirementsTable": {
+      "rows": {
+        "area": { "req": "设置导航应用区域", "pri": "P0 · R2", "notes": "所有流程和屏幕必须遵守配置的区域" },
+        "resize": { "req": "从任意方向动态调整大小", "pri": "P0 · R2", "notes": "顶部、底部、左侧、右侧——同时进行，带动画效果" },
+        "state": { "req": "暴露 4 个 UI 状态维度", "pri": "P0 · R2", "notes": "活动、面板、地图交互、行程规划" },
+        "anim": { "req": "同步动画类型 + 时长", "pri": "P0 · R2", "notes": "由编排器控制，以便同步 Widget 动画" },
+        "safe": { "req": "动态安全区域 / 视野面板重新平衡", "pri": "P1", "notes": "当安全区域受影响时调整视野面板大小" },
+        "display": { "req": "在所有显示器类型上调整大小", "pri": "P1", "notes": "中控、副驾和后排显示器" }
+      }
+    }
+  },
+  "searchEngine": {
+    "title": "搜索引擎",
+    "badge": "内部",
+    "version": "v0.3 · 2026 年第二季度",
+    "intro": "搜索是一项可替换的功能。UX Library 拥有搜索 UI；OEM 提供搜索提供商。在线时，查询发送至第三方提供商。离线时，UX Library 自动回退至 TomTom 本机搜索。",
+    "sections": {
+      "overview": "概览",
+      "provider": "提供商设置",
+      "transitions": "连接状态切换",
+      "uiCustom": "搜索 UI 定制",
+      "lpp": "位置预览面板",
+      "entryPoints": "兴趣点入口",
+      "requirements": "要求摘要"
+    },
+    "overviewBody": "STLA R2 项目要求 Stellantis 在车辆在线时使用 Google 搜索，同时为离线场景保留 TomTom 本机搜索。UX Library 通过将搜索提供商抽象在可配置接口后面来实现这一点。",
+    "callout1": "即使配置了在线提供商，离线提供商也始终是必需的。当网络不可用时，UX Library 会自动将查询路由至离线提供商。",
+    "onlineMode": "🌐 在线（第三方）",
+    "offlineMode": "📡 仅离线（TomTom）",
+    "callout2": "\"由 Google 提供支持\"归因是 STLA R2 的法律要求。每当第三方提供商处于活跃状态时，必须同时显示在搜索栏和搜索结果列表中。",
+    "callout3": "当查看位置预览面板时网络中断，将显示缓存版本，驾驶和路线操作继续可用。",
+    "callout4": "当地图同时显示 TomTom 和 STLA 兴趣点时，配置来源路由，使每种兴趣点类型调用正确的 API。",
+    "uiTabs": { "basic": "基础", "attribution": "+ 归因", "enriched": "+ 丰富结果", "filters": "+ 筛选" },
+    "entryPointsTable": {
+      "colNum": "#", "colSource": "入口点", "colTrigger": "触发方式", "colProvider": "提供商"
+    }
+  },
+  "colour": {
+    "title": "颜色",
+    "sections": {
+      "global": "全局颜色",
+      "system": "系统颜色",
+      "semantics": "语义定义"
+    }
+  },
+  "font": {
+    "title": "字体",
+    "sections": {
+      "global": "全局令牌",
+      "system": "系统令牌",
+      "component": "组件令牌",
+      "theming": "主题与缩放"
+    }
+  },
+  "designTokens": {
+    "title": "设计令牌",
+    "sections": {
+      "intro": "介绍",
+      "benefits": "优势",
+      "structure": "令牌结构",
+      "names": "令牌命名",
+      "themes": "主题与模式"
+    }
+  },
+  "cornerRadius": {
+    "title": "圆角半径",
+    "sections": {
+      "intro": "介绍",
+      "sizes": "圆角大小",
+      "examples": "示例"
+    }
+  },
+  "cluster": {
+    "title": "仪表盘显示",
+    "badge": "内部",
+    "version": "v0.1 · 2026 年第二季度",
+    "intro": "ClusterActivity 在车辆仪表盘上渲染导航信息。组件在地图旁的导航列中垂直堆叠显示：NIP → SLG → CMP → 视野面板事件 → ETA。每个组件均可独立配置，并自动响应导航状态切换。",
+    "apiDesc": "启动并配置 ClusterActivity，在车辆仪表盘上渲染导航信息。",
+    "sections": {
+      "overview": "概览",
+      "start": "启动 Activity",
+      "config": "配置",
+      "position": "组件定位",
+      "runtime": "运行时更新",
+      "requirements": "要求"
+    },
+    "overviewBody": "ClusterActivity 通过显式 Android Intent（包含固定 action 和 category）从宿主应用启动。初始配置——包括要显示的组件、布局类型及像素尺寸——以 JSON 字符串形式通过 Intent extra 传入。任何参数均可在运行时通过重新发送仅包含变更字段的同一 Intent 进行更新。",
+    "overviewCallout": "ClusterActivity 自动处理导航状态切换：根据是否处于导航引导状态来显示或隐藏组件，无需宿主应用进行额外调用。",
+    "startBody": "Activity 必须以特定 action 和 NAVIGATION category 启动。完整的初始配置以 JSON 字符串形式通过 clusterConfigurationUpdate extra 传入。",
+    "configBody": "调整下方控件，探索每个参数对仪表盘显示的影响。组件在导航列中从上到下堆叠：NIP → SLG → CMP → JV/UEP → ETA。",
+    "componentVisibility": "组件可见性",
+    "shown": "显示",
+    "hidden": "隐藏",
+    "toggles": {
+      "map": "地图",
+      "horizonPanel": "视野面板",
+      "vignette": "暗角效果"
+    },
+    "hpElements": {
+      "SLG": { "label": "简单车道引导",   "desc": "指令下方显示的车道箭头行" },
+      "CMP": { "label": "连续转弯面板",   "desc": "下下个转弯预览「然后→」" },
+      "JV":  { "label": "交叉路口视图",   "desc": "复杂路口的示意图" },
+      "UEP": { "label": "即将发生事件",   "desc": "前方摄像头、危险及车道封闭信息" },
+      "ETA": { "label": "预计到达时间",   "desc": "底部到达时间条" }
+    },
+    "nipLayouts": {
+      "LANDSCAPE_MINIMAL":  { "label": "最小",   "desc": "仅图标 + 距离" },
+      "LANDSCAPE_MEDIUM":   { "label": "中等",   "desc": "图标 + 距离 + 道路名称" },
+      "LANDSCAPE_MAXIMAL":  { "label": "最大",   "desc": "距离 + 道路名称 + 出口标牌" },
+      "NORMAL_LAYOUT":      { "label": "标准",   "desc": "默认竖屏优先布局" }
+    },
+    "etaLayouts": {
+      "MINIMAL":            { "label": "最小",   "desc": "仅到达时间" },
+      "MEDIUM":             { "label": "中等",   "desc": "到达时间 + 距离" },
+      "MAXIMAL":            { "label": "最大",   "desc": "到达时间 + 距离 + 电量" },
+      "NORMAL_LAYOUT_WIDE": { "label": "宽屏",   "desc": "全宽面板布局" }
+    },
+    "positionBody": "可通过 hpComponentRect 和 safeAreaComponentRect 为视野面板和安全区域指定精确的像素边界。当仪表盘使用原始像素值而非密度无关单位时，请设置 displayPX: true。",
+    "runtimeBody": "支持局部更新——JSON 中仅包含需要变更的字段即可。适用于昼夜样式切换或导航状态变更时切换引导元素。",
+    "requirementsTable": {
+      "colReq": "要求",
+      "colPri": "优先级",
+      "colNotes": "说明",
+      "rows": {
+        "startIntent":   { "req": "通过 Intent 启动 ClusterActivity",           "notes": "固定 action + NAVIGATION category" },
+        "showMap":       { "req": "在仪表盘上显示/隐藏地图",                     "notes": "displayMapComponent" },
+        "showHp":        { "req": "显示/隐藏视野面板",                           "notes": "displayHpComponent" },
+        "nipLayout":     { "req": "NIP 布局：最小/中等/最大",                    "notes": "nipLayoutType — LANDSCAPE_* 变体" },
+        "slg":           { "req": "NIP 下方的 SLG 车道箭头条",                  "notes": "hpElementsToShowOnCluster: SLG" },
+        "cmp":           { "req": "CMP「然后→」连续转弯面板",                    "notes": "hpElementsToShowOnCluster: CMP" },
+        "eta":           { "req": "ETA 条：最小/中等/最大",                      "notes": "hpElementsToShowOnCluster: ETA + etaLayoutType" },
+        "jv":            { "req": "JV 交叉路口视图示意图",                       "notes": "hpElementsToShowOnCluster: JV" },
+        "uep":           { "req": "UEP 即将发生事件（摄像头、危险）",            "notes": "hpElementsToShowOnCluster: UEP" },
+        "positionRect":  { "req": "通过像素矩形定位视野面板和安全区域",           "notes": "hpComponentRect + safeAreaComponentRect" },
+        "runtimeUpdate": { "req": "运行时局部配置更新",                          "notes": "仅重新发送包含变更字段的 Intent" },
+        "vignette":      { "req": "暗角效果开/关",                              "notes": "displayVignette" },
+        "displayPx":     { "req": "像素 vs 密度无关尺寸",                       "notes": "displayPX — 固定分辨率仪表盘请设置为 true" }
+      }
+    }
+  }
+}

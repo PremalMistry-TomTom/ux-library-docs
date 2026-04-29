@@ -1,0 +1,141 @@
+{
+  "title": "电动车支持",
+  "badge": "可用",
+  "intro": "电动车支持功能为电动汽车提供续航感知导航，包括自动规划充电停靠点、实时充电站搜索（含充电接口匹配）以及最低电量阈值的路线偏好设置。三个集成层协同工作：车辆集成 API 提供电池和能耗数据，电动车搜索 API 发现兼容充电站，长途电动车路线 API 自动规划多停靠点路线。",
+  "architecture": {
+    "heading": "架构",
+    "body": "车辆数据从 OEM 的电池管理系统经由车辆集成 API 流入导航 SDK 的 VehicleProvider。SDK 使用此数据同时驱动电动车搜索 API（兼容接口的充电站发现）和 LDEVR API（长途路线的自动充电停靠点计算）。",
+    "callout": "车辆集成 API 和导航 SDK 必须同时配置——SDK 的 VehicleProvider 是路线规划引擎的数据来源。电量必须在导航开始或恢复之前设置。"
+  },
+  "vehicleSetup": {
+    "heading": "车辆设置",
+    "body": "在电动车功能激活之前，SDK 需要准确的车辆电池、能耗、效率及支持的充电接口类型模型。这些参数直接用于路线续航计算——错误的值将导致充电停靠点预测不准确。",
+    "vehicleApi": {
+      "heading": "车辆集成 API",
+      "body": "使用 VehicleInfoManager（来自车辆集成库）发送电池状态和能耗数据。每当 BMS 上报变化时，应更新参数——SoC 更新频率应为 1 Hz，波动幅度保持在 0.3% 以下。",
+      "callout": "能耗曲线必须覆盖 10 km/h 至最大车速的速度范围，包含 15–25 个定义点。数值以 20°C 为基准——如未提供辅助功耗，默认为 500 W（空调、娱乐系统、照明）。"
+    },
+    "vehicleProvider": {
+      "heading": "导航 SDK — VehicleProvider",
+      "body": "导航 SDK 通过 VehicleProvider 维护自身的车辆状态。在应用启动时设置初始电量，并通过 BMS 回调实时更新。"
+    },
+    "paramsTable": {
+      "heading": "电池参数参考",
+      "colParam": "参数",
+      "colType": "类型",
+      "colNotes": "说明",
+      "params": {
+        "currentBatteryCapacity": "当前可用电池容量。范围：[0, 额定值]。",
+        "stateOfEnergy": "当前电量。以 1 Hz 更新；波动 < 0.3%。",
+        "batteryChargeCurve": "0–20 个条目。分段常数或分段线性。",
+        "speedConsumptionCurve": "15–25 个点。10 km/h → 最大车速。基准为 20°C。",
+        "uphillEfficiency": "不可用时默认为 0.9。",
+        "downhillEfficiency": "与上坡效率配对。默认为 0.9。",
+        "accelerationEfficiency": "动能增益 / 电能消耗。",
+        "decelerationEfficiency": "电能增益 / 动能损耗。",
+        "vehicleConnectors": "在搜索中驱动充电站兼容性过滤。",
+        "auxiliaryPower": "默认 500 W。5 分钟滚动平均。",
+        "chargingTimeOffset": "插拔接口的额外时间。默认 60 秒。"
+      }
+    }
+  },
+  "evSearch": {
+    "heading": "电动车充电搜索",
+    "body": "电动车充电搜索面板允许驾驶员查找附近、沿途或目的地附近的兼容充电站。筛选条件包括充电速度等级、首选运营商、充电卡及周边服务。搜索结果根据车辆档案显示实时可用性和充电接口兼容情况。",
+    "speedFilters": "速度筛选",
+    "paymentFilters": "支付筛选",
+    "serviceFilters": "服务筛选",
+    "stationDetail": "充电站详情",
+    "searchOptions": {
+      "heading": "搜索选项",
+      "body": "使用 EvSearchOptions 配置搜索。当车辆档案中设置了 vehicleConnectors 时，SDK 会自动按充电接口兼容性过滤结果——在详情视图中，充电站将被标记为兼容或不兼容。"
+    },
+    "realtimeDetails": {
+      "heading": "实时充电站详情",
+      "body": "在初始搜索后，通过 Place ID 检索实时接口可用性和支付详情。在驾驶员点击充电站或路线重新计算时，此功能可用于刷新数据。"
+    },
+    "filterTable": {
+      "heading": "搜索筛选参数参考",
+      "colOption": "选项",
+      "colType": "类型",
+      "colDesc": "描述",
+      "options": {
+        "geoBias": "搜索中心坐标。",
+        "radius": "搜索半径。例如 Distance.kilometers(5.0)",
+        "minMaxPower": "充电速度范围筛选。",
+        "connectors": "充电接口类型筛选。自动从车辆档案中填充。",
+        "status": "Status.Available 仅筛选可用接口。",
+        "accessTypes": "公共、受限或私人。",
+        "limit": "最大结果数量。",
+        "nearbyPoiCategories": "请求附近设施：餐厅、酒店、咖啡馆、公共设施、商店、休闲区。"
+      }
+    }
+  },
+  "ldevr": {
+    "heading": "长途电动车路线规划",
+    "body": "对于超出车辆单次充电续航范围的行程，LDEVR API 会自动计算最优充电停靠序列。驾驶员可看到包含每个停靠点到达电量、目标电量、充电时间及运营商信息的路线时间轴。若实际电耗与预测偏差较大，充电计划将动态重新评估。",
+    "routePreview": "含充电停靠点的路线预览",
+    "callout1": "路线预览面板中向驾驶员显示\"自动规划充电\"开关。禁用时，路线将按原样显示——若超出续航范围则出现警告横幅。默认状态（开/关）可在 SDK 配置层面设置。",
+    "callout2": "traffic 参数必须设为 true——LDEVR 接口需要实时交通数据，禁用时将拒绝请求。",
+    "apiRequest": {
+      "heading": "LDEVR API 请求",
+      "body": "路线计算是对 LDEVR 接口的 POST 请求。通过车辆集成 API 传入的车辆参数由导航 SDK 自动转发——只有在自定义集成或服务端规划时，才需要直接调用 REST 接口。"
+    },
+    "responseTable": {
+      "heading": "充电停靠点响应字段",
+      "colField": "字段",
+      "colDesc": "描述",
+      "fields": {
+        "remainingChargeAtArrivalInkWh": "到达本停靠点或目的地时的电池状态。",
+        "targetChargeInkWh": "在本停靠点充电后的目标电量。",
+        "chargingTimeInSeconds": "预计充电时长。",
+        "chargingParkName": "充电站名称（如\"Fastned\"、\"bp pulse\"）。",
+        "chargingPowerInkW": "协商的充电功率（kW）。",
+        "chargingParkPaymentOptions": "支付方式：直接支付、订阅、免费充电。",
+        "chargingStopType": "Auto_Generated（由 LDEVR 生成）或 User_Defined（手动停靠点）。",
+        "totalChargingTimeInSeconds": "所有停靠点的总充电时间。"
+      }
+    }
+  },
+  "preferences": {
+    "heading": "路线偏好",
+    "body": "路线偏好面板可从路线预览界面进入。驾驶员可设置充电停靠点和目的地的最低电量阈值，以及选择避开收费道路或未铺砌道路。这些偏好直接映射到 LDEVR API 参数。",
+    "colUi": "UI 偏好设置",
+    "colParam": "LDEVR 参数",
+    "colDefault": "默认值",
+    "callout": "行驶过程中，由于实时能耗变化，实际到达电量可能低于设定最低值最多 2%——这是 UI 声明中显示的预期行为。",
+    "rows": {
+      "minAtStop": "充电停靠点最低电量",
+      "minAtDest": "目的地最低电量",
+      "minAtFirst": "第一个停靠点最低电量",
+      "criticalMin": "目的地紧急最低电量",
+      "avoidTolls": "避免收费道路",
+      "avoidUnpaved": "避免未铺砌道路"
+    }
+  },
+  "requirements": {
+    "heading": "要求",
+    "colDep": "依赖项",
+    "colVersion": "版本 / 详情",
+    "deps": {
+      "vehicleLib": "车辆集成库",
+      "vehicleModule": "导航 SDK — 车辆模块",
+      "searchModule": "导航 SDK — 搜索模块",
+      "ldevrApi": "LDEVR REST API",
+      "evSearch": "电动车搜索 API",
+      "bms": "车辆 BMS / SoC 数据源",
+      "internet": "网络连接",
+      "weight": "车辆重量"
+    },
+    "details": {
+      "vehicleLib": "com.tomtom.sdk.vehicle:vehicle-integration-api",
+      "vehicleModule": "com.tomtom.sdk.vehicle:vehicle-provider:2.2.0",
+      "searchModule": "com.tomtom.sdk.search:search-ev:2.2.0",
+      "ldevrApi": "api.tomtom.com/routing/1/calculateLongDistanceEVRoute",
+      "evSearch": "包含在导航 SDK 搜索模块中",
+      "bms": "OEM 提供。最低更新频率：1 Hz。",
+      "internet": "LDEVR 和实时充电站可用性需要网络连接。",
+      "weight": "固定为 2000 kg——不可覆盖。"
+    }
+  }
+}

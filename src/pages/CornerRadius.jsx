@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 
 const RADIUS_TOKENS = [
@@ -42,10 +43,11 @@ function RadiusCard({ token, dp, label }) {
 }
 
 export default function CornerRadius() {
+  const { t } = useTranslation('pages');
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Corner radius</h1>
+        <h1>{t('cornerRadius.title')}</h1>
         <p className="page-intro">
           Radius values control how much the corners of a container or element are rounded.
           The radius token is a single value applied to all four corners, ensuring
@@ -55,7 +57,7 @@ export default function CornerRadius() {
 
       {/* Introduction */}
       <div className="zone">
-        <h2 className="sh" id="cr-intro">Introduction</h2>
+        <h2 className="sh" id="cr-intro">{t('cornerRadius.sections.intro')}</h2>
         <p className="body">
           Radius values are assigned to the corners of a container or element within a component.
           The radius token is a single value that is applied to all four corners.
@@ -74,7 +76,7 @@ export default function CornerRadius() {
 
       {/* Radius sizes */}
       <div className="zone">
-        <h2 className="sh" id="cr-sizes">Radius sizes</h2>
+        <h2 className="sh" id="cr-sizes">{t('cornerRadius.sections.sizes')}</h2>
         <p className="body">
           To allow for variation in the UI, the system layer has a range of radius sizes to
           choose from. The scale runs from <code className="ic">null</code> (sharp, 0dp) through
@@ -148,7 +150,7 @@ export default function CornerRadius() {
 
       {/* Examples */}
       <div className="zone">
-        <h2 className="sh" id="cr-examples">Examples</h2>
+        <h2 className="sh" id="cr-examples">{t('cornerRadius.sections.examples')}</h2>
         <p className="body">
           The three special values cover the most common shape needs without requiring
           arbitrary intermediate values.

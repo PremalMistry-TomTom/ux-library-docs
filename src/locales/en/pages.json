@@ -1,0 +1,243 @@
+{
+  "horizonPanel": {
+    "title": "Horizon Panel",
+    "badge": "Private",
+    "version": "v0.1 · Q2 2026",
+    "intro": "Horizon Panel — the primary guidance component shown during active route following. It combines the Next Instruction Panel, Upcoming Events Panel, and ETA Panel in a single vertical stack. UX Library lets you use it as-is or decompose it into three independently positioned sub-components.",
+    "sections": {
+      "overview": "Overview",
+      "decompose": "Composed vs decomposed",
+      "position": "Position (composed mode)",
+      "requirements": "Requirements"
+    },
+    "overviewBody1": "The Horizon Panel occupies the full available vertical space on the guidance home screen. It is only visible in the guidance navigation state — in free driving, the Upcoming Events Panel appears separately.",
+    "overviewBody2": "In its default composed state, the three sub-components share interaction contracts: tapping the ETA area opens route options, and the panel resizes cohesively when the safe area changes. When decomposed, each sub-component is positioned and themed independently.",
+    "decomposeBody": "Choose whether to use the Horizon Panel as a single composed block, or break it apart into independent sub-components (NIP, Upcoming Events, ETA Panel) that can each be placed anywhere on the guidance screen.",
+    "decomposeCallout": "When decomposed, sub-component interaction contracts become optional. For example, tapping the ETA Panel to open route options can be disabled when it is positioned far from the NIP.",
+    "composed": "Composed (default)",
+    "decomposed": "Decomposed",
+    "positionBody": "In composed mode, place the Horizon Panel on the left, center, or right side of the guidance screen. The map safe area adjusts automatically.",
+    "left": "Left", "center": "Center", "right": "Right",
+    "requirementsTable": {
+      "colReq": "Requirement", "colPri": "Priority", "colNotes": "Notes",
+      "rows": {
+        "theme": { "req": "Theme the Horizon Panel", "notes": "Colors, typography, icon assets, spacing, radius, border, docked/floating — carry-over from ANA" },
+        "decompose": { "req": "Break apart into NIP + Upcoming Events + ETA Panel", "notes": "Very popular market request; core of VW group UX vision" },
+        "reposition": { "req": "Re-position the Horizon Panel (left/center/right)", "notes": "Not needed for R2 or VW PoC" },
+        "reverse": { "req": "Reverse order (ETA top, NIP bottom)", "notes": "No demand identified" }
+      }
+    }
+  },
+  "navControls": {
+    "title": "Navigation Controls",
+    "badge": "Private",
+    "version": "v0.1 · Q2 2026",
+    "intro": "Map Controls Button Bar — a configurable strip of navigation action buttons (Search, Charging Finder, Mute, Quick Settings) positionable on any edge of the screen. Content, visibility, and the search entry point form are all configurable.",
+    "sections": {
+      "overview": "Overview",
+      "position": "Position & button visibility",
+      "search": "Search entry point",
+      "requirements": "Requirements"
+    },
+    "overviewBody1": "The Map Controls Button Bar surfaces primary navigation actions on the home screen. It is positioned by the integrator as a vertical or horizontal strip on any edge of the navigation application area. The bar is owned by UX Library — TomTom controls interaction quality and accessibility while OEMs control placement, content, and visual theming.",
+    "callout": "Button bar configuration was previously documented in Home Screen Layout. It has been consolidated here to keep all navigation controls customisation in one place.",
+    "positionBody": "Place the bar on any edge of the screen and control which buttons are shown. The map safe area and other UI elements adjust automatically.",
+    "positionOptions": {
+      "vertLeft": "Vertical — Left",
+      "vertRight": "Vertical — Right",
+      "horizTop": "Horizontal — Top",
+      "horizBottom": "Horizontal — Bottom"
+    },
+    "buttons": { "search": "Search", "charging": "Charging Finder", "mute": "Mute", "settings": "Quick Settings", "hidden": "hidden", "shown": "shown" },
+    "searchBody": "By default, search is surfaced as a persistent destination entry panel on the map. Alternatively, collapse it to a compact search button inside the controls bar to free up map space for a cleaner idle state.",
+    "searchOptions": { "panel": "Destination entry panel", "button": "Button in controls bar" },
+    "requirementsTable": {
+      "colReq": "Requirement", "colPri": "Priority", "colNotes": "Notes",
+      "rows": {
+        "theme": { "req": "Theme the Map Controls button bar", "notes": "Colors, typography, icon assets, spacing, radius, border — carry-over from ANA" },
+        "left": { "req": "Button bar on left side", "notes": "Carry-over from ANA" },
+        "right": { "req": "Button bar on right side", "notes": "Carry-over from ANA" },
+        "toggle": { "req": "Show/hide individual buttons", "notes": "Part of VW group UX vision" },
+        "searchBtn": { "req": "Show search as button entry point in bar", "notes": "Hides destination entry panel; part of VW group UX vision" },
+        "both": { "req": "Button bar on both sides simultaneously", "notes": "Discovery required" },
+        "custom": { "req": "Add custom button to button bar", "notes": "Discovery required" }
+      }
+    }
+  },
+  "homeScreen": {
+    "title": "Home Screen Layout",
+    "badge": "Private",
+    "version": "v0.3 · Q2 2026",
+    "intro": "Map as wallpaper — the navigation map fills the entire IVI home screen as a background. Other domain widgets (media, climate, phone) layer on top. The IVI home-screen orchestrator controls how much space is given to navigation at any point; the navigation app exposes four observable UI state dimensions so the orchestrator can make its own widget visibility decisions without being coupled to TomTom's API.",
+    "sections": {
+      "overview": "Overview",
+      "zones": "Screen zones",
+      "resize": "Resize the application area",
+      "states": "UI state API",
+      "requirements": "Requirements summary"
+    },
+    "overviewBody1": "Embedding the map as the IVI home screen wallpaper keeps spatial awareness continuously visible and reduces the interaction depth required to start navigation. The orchestrator retains full control of layout: it decides the size of the navigation application area and when to show or collapse domain widgets, based on the state signals the navigation app exposes.",
+    "callout1": "Navigation in a dedicated window or view is a separate integration pattern covered in a different PRD. This page covers the map as wallpaper pattern only.",
+    "zonesIntro": "The IVI interface is divided into named areas. Click a zone below to see where it sits on screen and what it contains.",
+    "zones": {
+      "nav": { "label": "Navigation Application Area", "desc": "The area where all navigation map content and features reside. The IVI orchestrator controls its size." },
+      "safe": { "label": "Map Safe Area", "desc": "The portion of the screen where the map renders critical content without obstruction. Contains the recenter button and compass." },
+      "display": { "label": "Map Display Area", "desc": "The full map area. Can be covered by navigation elements or IVI widgets such as media panels." },
+      "controls": { "label": "Map Controls Zone", "desc": "Primary controls surfaced on the navigation home screen — Search, Charging Finder, Mute, Quick Settings." }
+    },
+    "resizeBody": "The orchestrator can dynamically resize the navigation application area from any side — top, bottom, left, or right — simultaneously. The navigation app transitions smoothly to the new area with a configurable animation. Drag the sliders below to see how the application area and generated code change.",
+    "callout2": "Resizing can occur on multiple sides simultaneously. The navigation app must adhere to the viewable application area across all flows and screens.",
+    "sliders": { "top": "Top inset", "right": "End (right) inset", "bottom": "Bottom inset", "left": "Start (left) inset", "reset": "Reset" },
+    "statesIntro": "Rather than a binary active/passive flag, the navigation app exposes four orthogonal observable state dimensions. Use the selector below to explore each state combination.",
+    "callout3": "Button bar position, visibility, and search entry point configuration has moved to Navigation Controls in the App Customisation section.",
+    "stateDimensions": {
+      "activity": { "label": "Navigation Activity State", "desc": "High-level navigation activity regardless of UI interaction." },
+      "panel": { "label": "UI Panel State", "desc": "Which navigation UI panel, if any, is currently foregrounded. NONE = default map view." },
+      "map": { "label": "Map Interaction State", "desc": "Whether the map is auto-following the vehicle or being actively panned/zoomed." },
+      "trip": { "label": "Trip Planning State", "desc": "Lifecycle of the current trip planning session." }
+    },
+    "passive": "Passive mode",
+    "passiveDesc": "Orchestrator may show domain widgets over the map.",
+    "active": "Active mode",
+    "activeDesc": "Orchestrator should hide or collapse domain widgets.",
+    "requirementsTable": {
+      "rows": {
+        "area": { "req": "Set the navigation application area", "pri": "P0 · R2", "notes": "All flows and screens must adhere to the configured area" },
+        "resize": { "req": "Dynamically resize from any side", "pri": "P0 · R2", "notes": "Top, bottom, left, right — simultaneously, with animation" },
+        "state": { "req": "Expose 4 UI state dimensions", "pri": "P0 · R2", "notes": "Activity, Panel, Map Interaction, Trip Planning" },
+        "anim": { "req": "Sync animation type + duration", "pri": "P0 · R2", "notes": "Orchestrator-controlled so widget animations can be synchronised" },
+        "safe": { "req": "Dynamic safe area / horizon rebalancing", "pri": "P1", "notes": "Resize horizon panel when safe area is compromised" },
+        "display": { "req": "Resize on all display types", "pri": "P1", "notes": "Center, passenger, and rear seat displays" }
+      }
+    }
+  },
+  "searchEngine": {
+    "title": "Search engine",
+    "badge": "Private",
+    "version": "v0.3 · Q2 2026",
+    "intro": "Search is a replaceable capability. UX Library owns the search UI; the OEM provides the search provider. When online, queries go to the 3rd-party provider. When offline, UX Library falls back automatically to TomTom onboard search.",
+    "sections": {
+      "overview": "Overview",
+      "provider": "Provider setup",
+      "transitions": "Connectivity transitions",
+      "uiCustom": "Search UI customisation",
+      "lpp": "Location preview panel",
+      "entryPoints": "POI entry points",
+      "requirements": "Requirements summary"
+    },
+    "overviewBody": "The STLA R2 programme requires Stellantis to use Google Search when the vehicle is online while preserving TomTom onboard search for offline scenarios. UX Library achieves this by abstracting the search provider behind a configurable interface.",
+    "callout1": "The offline provider is always required — even when an online provider is configured. UX Library automatically routes queries to the offline provider when connectivity is unavailable.",
+    "onlineMode": "🌐 Online (3rd party)",
+    "offlineMode": "📡 Offline only (TomTom)",
+    "callout2": "\"Powered by Google\" attribution is a legal commitment for STLA R2. It must appear in both the search bar and results list whenever the 3rd-party provider is active.",
+    "callout3": "When connectivity drops while viewing an LPP, the cached version is shown and Drive / Route actions continue to work.",
+    "callout4": "When the map shows a mix of TomTom and STLA POIs, configure the source routing so each POI type calls the right API.",
+    "uiTabs": { "basic": "Basic", "attribution": "+ Attribution", "enriched": "+ Enriched results", "filters": "+ Filters" },
+    "entryPointsTable": {
+      "colNum": "#", "colSource": "Entry point", "colTrigger": "Trigger", "colProvider": "Provider"
+    }
+  },
+  "colour": {
+    "title": "Colour",
+    "sections": {
+      "global": "Global colours",
+      "system": "System colours",
+      "semantics": "Semantic definitions"
+    }
+  },
+  "font": {
+    "title": "Font",
+    "sections": {
+      "global": "Global tokens",
+      "system": "System tokens",
+      "component": "Component tokens",
+      "theming": "Theming & scaling"
+    }
+  },
+  "designTokens": {
+    "title": "Design tokens",
+    "sections": {
+      "intro": "Introduction",
+      "benefits": "Benefits",
+      "structure": "Token structure",
+      "names": "Token names",
+      "themes": "Themes & modes"
+    }
+  },
+  "cornerRadius": {
+    "title": "Corner radius",
+    "sections": {
+      "intro": "Introduction",
+      "sizes": "Radius sizes",
+      "examples": "Examples"
+    }
+  },
+  "cluster": {
+    "title": "Displaying on Cluster",
+    "badge": "Private",
+    "version": "v0.1 · Q2 2026",
+    "intro": "ClusterActivity renders navigation information on the vehicle's instrument cluster display. Components are stacked vertically in a navigation column alongside the map: NIP → SLG → CMP → Horizon Panel events → ETA. Each is independently configurable and responds to navigation-state transitions automatically.",
+    "apiDesc": "Start and configure the ClusterActivity to render navigation info on vehicle instrument cluster displays.",
+    "sections": {
+      "overview": "Overview",
+      "start": "Starting the activity",
+      "config": "Configuration",
+      "position": "Positioning components",
+      "runtime": "Runtime updates",
+      "requirements": "Requirements"
+    },
+    "overviewBody": "ClusterActivity is started from the host application using an explicit Android Intent with a fixed action and category. The initial configuration — which components to show, their layout types, and their pixel dimensions — is passed as a JSON string in the intent extra. Any parameter can be updated at runtime by re-sending the same intent with only the changed fields.",
+    "overviewCallout": "ClusterActivity handles navigation-state transitions automatically: it shows or hides components based on whether guidance is active, without any additional calls from the host app.",
+    "startBody": "The activity must be started with a specific action and NAVIGATION category. The full initial configuration is passed as a JSON string in the clusterConfigurationUpdate extra.",
+    "configBody": "Adjust the controls below to explore how each parameter affects the cluster display. Components stack top-to-bottom in the navigation column: NIP → SLG → CMP → JV/UEP → ETA.",
+    "componentVisibility": "Component visibility",
+    "shown": "shown",
+    "hidden": "hidden",
+    "toggles": {
+      "map": "Map",
+      "horizonPanel": "Horizon Panel",
+      "vignette": "Vignette"
+    },
+    "hpElements": {
+      "SLG": { "label": "Simple Lane Guidance",  "desc": "Row of lane arrows beneath the instruction" },
+      "CMP": { "label": "Consecutive Maneuver",   "desc": "\"Then →\" preview of the next-next manoeuvre" },
+      "JV":  { "label": "Junction View",          "desc": "Schematic diagram of complex junctions" },
+      "UEP": { "label": "Upcoming Events",        "desc": "Cameras, hazards and lane closures ahead" },
+      "ETA": { "label": "ETA",                    "desc": "Arrival time strip at the bottom" }
+    },
+    "nipLayouts": {
+      "LANDSCAPE_MINIMAL":  { "label": "Minimal",  "desc": "Icon + distance only" },
+      "LANDSCAPE_MEDIUM":   { "label": "Medium",   "desc": "Icon + distance + road name" },
+      "LANDSCAPE_MAXIMAL":  { "label": "Maximal",  "desc": "Distance + road name + exit badge" },
+      "NORMAL_LAYOUT":      { "label": "Normal",   "desc": "Default portrait-first layout" }
+    },
+    "etaLayouts": {
+      "MINIMAL":            { "label": "Minimal",  "desc": "Arrival time only" },
+      "MEDIUM":             { "label": "Medium",   "desc": "Arrival + distance" },
+      "MAXIMAL":            { "label": "Maximal",  "desc": "Arrival + distance + battery" },
+      "NORMAL_LAYOUT_WIDE": { "label": "Wide",     "desc": "Full-width panel layout" }
+    },
+    "positionBody": "The Horizon Panel and safe area can be given precise pixel bounds using hpComponentRect and safeAreaComponentRect. Set displayPX: true when your cluster display uses raw pixel values rather than density-independent units.",
+    "runtimeBody": "Partial updates are supported — only the fields included in the JSON will change. Useful for day/night style switching or toggling guidance elements when navigation state changes.",
+    "requirementsTable": {
+      "colReq": "Requirement",
+      "colPri": "Priority",
+      "colNotes": "Notes",
+      "rows": {
+        "startIntent":   { "req": "Start ClusterActivity via intent",              "notes": "Fixed action + NAVIGATION category" },
+        "showMap":       { "req": "Show / hide map on cluster",                    "notes": "displayMapComponent" },
+        "showHp":        { "req": "Show / hide Horizon Panel",                    "notes": "displayHpComponent" },
+        "nipLayout":     { "req": "NIP layout: Minimal / Medium / Maximal",       "notes": "nipLayoutType — LANDSCAPE_* variants" },
+        "slg":           { "req": "SLG lane-arrow strip beneath NIP",             "notes": "hpElementsToShowOnCluster: SLG" },
+        "cmp":           { "req": "CMP \"Then →\" consecutive manoeuvre",         "notes": "hpElementsToShowOnCluster: CMP" },
+        "eta":           { "req": "ETA strip: Minimal / Medium / Maximal",        "notes": "hpElementsToShowOnCluster: ETA + etaLayoutType" },
+        "jv":            { "req": "JV junction view schematic",                   "notes": "hpElementsToShowOnCluster: JV" },
+        "uep":           { "req": "UEP upcoming events (cameras, hazards)",       "notes": "hpElementsToShowOnCluster: UEP" },
+        "positionRect":  { "req": "Position HP and safe area via pixel rect",     "notes": "hpComponentRect + safeAreaComponentRect" },
+        "runtimeUpdate": { "req": "Runtime partial config updates",               "notes": "Re-send intent with only changed keys" },
+        "vignette":      { "req": "Vignette on/off",                              "notes": "displayVignette" },
+        "displayPx":     { "req": "Pixel vs density-independent dimensions",      "notes": "displayPX — use true for fixed-res clusters" }
+      }
+    }
+  }
+}

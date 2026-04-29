@@ -1,0 +1,263 @@
+{
+  "ui": {
+    "copy": "复制",
+    "copied": "已复制！",
+    "onThisPage": "本页内容",
+    "switchToDark": "切换到暗色模式",
+    "switchToLight": "切换到亮色模式",
+    "langToggle": "EN",
+    "private": "内部",
+    "available": "可用",
+    "planned": "计划中",
+    "wasHelpful": "此页面对您有帮助吗？",
+    "yes": "👍 是",
+    "no": "👎 否",
+    "version": "v01.08"
+  },
+  "nav": {
+    "overview": "概览",
+    "quickstart": "快速入门",
+    "groups": {
+      "assets": "资源",
+      "mapCustomisation": "地图定制",
+      "appCustomisation": "应用定制",
+      "taia": "TomTom AI 助手",
+      "vehicleIntegration": "车辆集成",
+      "examples": "示例",
+      "releaseSupport": "发布与支持",
+      "apiReference": "API 参考"
+    },
+    "items": {
+      "design-tokens": "设计令牌",
+      "string-ids": "字符串 ID",
+      "colour": "颜色",
+      "font": "字体",
+      "corner-radius": "圆角半径",
+      "icons": "图标",
+      "map-style": "地图样式",
+      "map-assets": "地图资源",
+      "traffic": "交通",
+      "safety-locations": "安全位置",
+      "route": "路线",
+      "map-markers": "地图标记",
+      "events": "事件",
+      "search-engine": "搜索引擎",
+      "home-screen-layout": "首页布局",
+      "nav-controls": "导航控件",
+      "horizon-panel": "视野面板",
+      "instruction-panel": "下一指令面板",
+      "eta-panel": "预计到达时间面板",
+      "route-bar": "路线栏",
+      "ai-overview": "概览",
+      "voice-engine": "语音引擎",
+      "speech-to-text": "语音转文字引擎",
+      "ai-config": "配置",
+      "vi-basics": "基础",
+      "cluster": "仪表盘显示",
+      "hud": "抬头显示器显示",
+      "adas": "ADAS 与导航集成",
+      "ev": "电动车支持",
+      "truck": "货车支持",
+      "ivi-example": "IVI 主屏集成",
+      "homescreen-example": "主屏 UI 定制",
+      "release-notes": "发布说明",
+      "migration": "迁移指南",
+      "api-ref": "完整 API 参考"
+    }
+  },
+  "pageTitles": {
+    "overview": "概览",
+    "quickstart": "快速入门",
+    "design-tokens": "设计令牌",
+    "colour": "颜色",
+    "font": "字体",
+    "corner-radius": "圆角半径",
+    "icons": "图标",
+    "string-ids": "字符串 ID",
+    "map-style": "地图样式",
+    "map-assets": "地图资源",
+    "safety-locations": "安全位置",
+    "route": "路线",
+    "map-markers": "地图标记",
+    "events": "事件",
+    "search-engine": "搜索引擎",
+    "home-screen-layout": "首页布局",
+    "nav-controls": "导航控件",
+    "horizon-panel": "视野面板",
+    "instruction-panel": "下一指令面板",
+    "eta-panel": "预计到达时间面板",
+    "route-bar": "路线栏",
+    "ai-overview": "TomTom AI 助手",
+    "voice-engine": "语音引擎",
+    "speech-to-text": "语音转文字",
+    "ai-config": "配置",
+    "vi-basics": "基础",
+    "cluster": "仪表盘显示",
+    "hud": "抬头显示器显示",
+    "adas": "ADAS 与导航集成",
+    "ev": "电动车支持",
+    "truck": "货车支持",
+    "ivi-example": "IVI 主屏集成",
+    "homescreen-example": "主屏 UI 定制",
+    "release-notes": "发布说明",
+    "migration": "迁移指南",
+    "api-ref": "API 参考",
+    "traffic": "交通"
+  },
+  "toc": {
+    "colour": {
+      "c-global": "全局颜色",
+      "c-extended": "扩展集合",
+      "c-system": "系统颜色",
+      "c-surfaces": "a. 表面颜色",
+      "c-brand": "b. 品牌颜色",
+      "c-guidance": "c. 导航颜色",
+      "c-alerts": "d. 警告颜色",
+      "c-actions": "e. 操作颜色",
+      "c-ui": "f. UI 控件颜色",
+      "c-signage": "g. 道路标识颜色",
+      "c-poi": "h. 兴趣点分类颜色",
+      "c-semantics": "语义定义"
+    },
+    "home-screen-layout": {
+      "h-overview": "概览",
+      "h-zones": "屏幕区域",
+      "h-resize": "调整应用区域",
+      "h-states": "UI 状态 API",
+      "h-requirements": "要求"
+    },
+    "traffic": {
+      "tr-overview": "概览",
+      "tr-layers": "交通流和事故图层",
+      "tr-incidents": "事故类型",
+      "tr-refresh": "刷新间隔",
+      "tr-provider": "自定义提供商",
+      "tr-requirements": "要求"
+    },
+    "safety-locations": {
+      "sl-overview": "概览",
+      "sl-types": "安全位置类型",
+      "sl-zones": "速度和危险区域",
+      "sl-style": "样式定制",
+      "sl-requirements": "要求"
+    },
+    "map-style": {
+      "ms-overview": "概览",
+      "ms-variants": "样式变体",
+      "ms-uri": "样式 URI",
+      "ms-custom": "定制样式",
+      "ms-tilt": "添加倾斜",
+      "ms-requirements": "要求"
+    },
+    "nav-controls": {
+      "nc-overview": "概览",
+      "nc-position": "位置与可见性",
+      "nc-entry": "搜索入口点",
+      "nc-requirements": "要求"
+    },
+    "horizon-panel": {
+      "hp-overview": "概览",
+      "hp-decompose": "组合 vs 分解",
+      "hp-position": "位置（组合模式）",
+      "hp-requirements": "要求"
+    },
+    "instruction-panel": {
+      "nip-overview": "概览",
+      "nip-position": "位置",
+      "nip-requirements": "要求"
+    },
+    "eta-panel": {
+      "eta-overview": "概览",
+      "eta-position": "位置",
+      "eta-content": "内容字段",
+      "eta-requirements": "要求"
+    },
+    "route-bar": {
+      "rb-overview": "概览",
+      "rb-position": "位置设置",
+      "rb-requirements": "要求"
+    },
+    "search-engine": {
+      "se-overview": "概览",
+      "se-provider": "提供商设置",
+      "se-transitions": "连接状态切换",
+      "se-ui-custom": "搜索 UI 定制",
+      "se-lpp": "位置预览面板",
+      "se-entry-points": "兴趣点入口",
+      "se-requirements": "要求"
+    },
+    "font": {
+      "f-global": "全局令牌",
+      "f-family": "字体家族",
+      "f-weight": "字体粗细",
+      "f-size": "字体大小",
+      "f-system": "系统令牌",
+      "f-system-anatomy": "令牌结构",
+      "f-system-scale": "令牌规模",
+      "f-component": "组件令牌",
+      "f-theming": "主题与缩放"
+    },
+    "corner-radius": {
+      "cr-intro": "介绍",
+      "cr-sizes": "圆角大小",
+      "cr-examples": "示例"
+    },
+    "ai-overview": {
+      "ai-overview": "概览",
+      "ai-architecture": "架构",
+      "ai-scope": "责任范围",
+      "ai-capabilities": "功能",
+      "ai-requirements": "要求"
+    },
+    "voice-engine": {
+      "ve-overview": "概览",
+      "ve-responsibilities": "OEM 责任",
+      "ve-integration": "连接 TTS 引擎",
+      "ve-providers": "VPA 提供商",
+      "ve-requirements": "要求"
+    },
+    "speech-to-text": {
+      "stt-overview": "概览",
+      "stt-boundary": "TAIA 输入边界",
+      "stt-integration": "STT 集成模式",
+      "stt-wake": "唤醒词处理",
+      "stt-requirements": "要求"
+    },
+    "ai-config": {
+      "ac-overview": "概览",
+      "ac-dependency": "添加依赖",
+      "ac-init": "初始化 TAIA 客户端",
+      "ac-context": "导航上下文",
+      "ac-events": "MQTT 事件传递",
+      "ac-session": "多轮对话",
+      "ac-requirements": "要求"
+    },
+    "ev": {
+      "ev-overview": "概览",
+      "ev-architecture": "架构",
+      "ev-vehicle": "车辆设置",
+      "ev-search": "电动车充电搜索",
+      "ev-routing": "长途路线规划",
+      "ev-preferences": "路线偏好",
+      "ev-requirements": "要求"
+    },
+    "cluster": {
+      "cl-overview":     "概览",
+      "cl-start":        "启动 Activity",
+      "cl-config":       "配置",
+      "cl-position":     "组件定位",
+      "cl-runtime":      "运行时更新",
+      "cl-requirements": "要求"
+    },
+    "design-tokens": {
+      "dt-intro": "介绍",
+      "dt-benefits": "优势",
+      "dt-structure": "令牌结构",
+      "dt-names": "令牌命名",
+      "dt-overview": "结构概览",
+      "dt-examples": "令牌示例",
+      "dt-naming": "命名原则",
+      "dt-themes": "主题与模式"
+    }
+  }
+}

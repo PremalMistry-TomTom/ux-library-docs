@@ -1,0 +1,255 @@
+{
+  "ui": {
+    "copy": "Copy",
+    "copied": "Copied!",
+    "onThisPage": "On this page",
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode",
+    "langToggle": "中文",
+    "private": "Private",
+    "available": "Available",
+    "planned": "Planned",
+    "wasHelpful": "Was this page helpful?",
+    "yes": "👍 Yes",
+    "no": "👎 No",
+    "version": "v01.08"
+  },
+  "nav": {
+    "overview": "Overview",
+    "quickstart": "Quickstart",
+    "groups": {
+      "assets": "Assets",
+      "mapCustomisation": "Map Customisation",
+      "appCustomisation": "App Customisation",
+      "taia": "TomTom AI Assistant",
+      "vehicleIntegration": "Vehicle Integration",
+      "examples": "Examples",
+      "releaseSupport": "Release & Support",
+      "apiReference": "API Reference"
+    },
+    "items": {
+      "design-tokens": "Design tokens",
+      "string-ids": "String IDs",
+      "colour": "Colour",
+      "font": "Font",
+      "corner-radius": "Corner radius",
+      "icons": "Icons",
+      "map-style": "Map Style",
+      "map-assets": "Map Assets",
+      "traffic": "Traffic",
+      "safety-locations": "Safety Locations",
+      "route": "Route",
+      "map-markers": "Map Markers",
+      "events": "Events",
+      "search-engine": "Search engine",
+      "home-screen-layout": "Home Screen Layout",
+      "nav-controls": "Navigation Controls",
+      "horizon-panel": "Horizon Panel",
+      "instruction-panel": "Next Instruction Panel",
+      "eta-panel": "ETA Panel",
+      "route-bar": "Route Bar",
+      "ai-overview": "Overview",
+      "voice-engine": "Voice engine",
+      "speech-to-text": "Speech to Text engine",
+      "ai-config": "Configuration",
+      "vi-basics": "Basics",
+      "cluster": "Displaying on Cluster",
+      "hud": "Displaying on Head Up Display",
+      "adas": "ADAS Integration",
+      "ev": "EV Support",
+      "truck": "Truck Support",
+      "ivi-example": "IVI Home screen integration",
+      "homescreen-example": "Home Screen UI Customisation",
+      "release-notes": "Release Notes",
+      "migration": "Migration Guide",
+      "api-ref": "Full API Reference"
+    }
+  },
+  "pageTitles": {
+    "overview": "Overview",
+    "quickstart": "Quickstart",
+    "design-tokens": "Design tokens",
+    "colour": "Colour",
+    "font": "Font",
+    "corner-radius": "Corner radius",
+    "icons": "Icons",
+    "string-ids": "String IDs",
+    "map-style": "Map Style",
+    "map-assets": "Map Assets",
+    "safety-locations": "Safety Locations",
+    "route": "Route",
+    "map-markers": "Map Markers",
+    "events": "Events",
+    "search-engine": "Search engine",
+    "home-screen-layout": "Home Screen Layout",
+    "nav-controls": "Navigation Controls",
+    "horizon-panel": "Horizon Panel",
+    "instruction-panel": "Next Instruction Panel",
+    "eta-panel": "ETA Panel",
+    "route-bar": "Route Bar",
+    "ai-overview": "TomTom AI Assistant",
+    "voice-engine": "Voice engine",
+    "speech-to-text": "Speech to Text",
+    "ai-config": "Configuration",
+    "vi-basics": "Basics",
+    "cluster": "Displaying on Cluster",
+    "hud": "Head Up Display",
+    "adas": "ADAS Integration",
+    "ev": "EV Support",
+    "truck": "Truck Support",
+    "ivi-example": "IVI Home screen integration",
+    "homescreen-example": "Home Screen UI Customisation",
+    "release-notes": "Release Notes",
+    "migration": "Migration Guide",
+    "api-ref": "API Reference",
+    "traffic": "Traffic"
+  },
+  "toc": {
+    "colour": {
+      "c-global": "Global colours",
+      "c-extended": "Extended collection",
+      "c-system": "System colours",
+      "c-surfaces": "a. Surfaces",
+      "c-brand": "b. Brand",
+      "c-guidance": "c. Guidance",
+      "c-alerts": "d. Alerts & warnings",
+      "c-actions": "e. Actions",
+      "c-ui": "f. UI controls",
+      "c-signage": "g. Road signage",
+      "c-poi": "h. POI categories",
+      "c-semantics": "Semantic definitions"
+    },
+    "home-screen-layout": {
+      "h-overview": "Overview",
+      "h-zones": "Screen zones",
+      "h-resize": "Resize application area",
+      "h-states": "UI state API",
+      "h-requirements": "Requirements"
+    },
+    "traffic": {
+      "tr-overview": "Overview",
+      "tr-layers": "Flow & incidents layers",
+      "tr-incidents": "Incident types",
+      "tr-refresh": "Refresh interval",
+      "tr-provider": "Custom provider",
+      "tr-requirements": "Requirements"
+    },
+    "safety-locations": {
+      "sl-overview": "Overview",
+      "sl-types": "Safety location types",
+      "sl-zones": "Speed & danger zones",
+      "sl-style": "Style customisation",
+      "sl-requirements": "Requirements"
+    },
+    "map-style": {
+      "ms-overview": "Overview",
+      "ms-variants": "Style variants",
+      "ms-uri": "Style URIs",
+      "ms-custom": "Customising a style",
+      "ms-tilt": "Adding tilt",
+      "ms-requirements": "Requirements"
+    },
+    "nav-controls": {
+      "nc-overview": "Overview",
+      "nc-position": "Position & visibility",
+      "nc-entry": "Search entry point",
+      "nc-requirements": "Requirements"
+    },
+    "horizon-panel": {
+      "hp-overview": "Overview",
+      "hp-decompose": "Composed vs decomposed",
+      "hp-position": "Position (composed)",
+      "hp-requirements": "Requirements"
+    },
+    "instruction-panel": {
+      "nip-overview": "Overview",
+      "nip-position": "Position",
+      "nip-requirements": "Requirements"
+    },
+    "eta-panel": {
+      "eta-overview": "Overview",
+      "eta-position": "Position",
+      "eta-content": "Content fields",
+      "eta-requirements": "Requirements"
+    },
+    "route-bar": {
+      "rb-overview": "Overview",
+      "rb-position": "Positioning",
+      "rb-requirements": "Requirements"
+    },
+    "search-engine": {
+      "se-overview": "Overview",
+      "se-provider": "Provider setup",
+      "se-transitions": "Connectivity transitions",
+      "se-ui-custom": "Search UI customisation",
+      "se-lpp": "Location preview panel",
+      "se-entry-points": "POI entry points",
+      "se-requirements": "Requirements"
+    },
+    "font": {
+      "f-global": "Global tokens",
+      "f-family": "Font family",
+      "f-weight": "Font weight",
+      "f-size": "Font size",
+      "f-system": "System tokens",
+      "f-system-anatomy": "Token anatomy",
+      "f-system-scale": "Token scale",
+      "f-component": "Component tokens",
+      "f-theming": "Theming & scaling"
+    },
+    "corner-radius": {
+      "cr-intro": "Introduction",
+      "cr-sizes": "Radius sizes",
+      "cr-examples": "Examples"
+    },
+    "ai-overview": {
+      "ai-overview": "Overview",
+      "ai-architecture": "Architecture",
+      "ai-scope": "Scope of responsibility",
+      "ai-capabilities": "Capabilities",
+      "ai-requirements": "Requirements"
+    },
+    "voice-engine": {
+      "ve-overview": "Overview",
+      "ve-responsibilities": "OEM responsibilities",
+      "ve-integration": "Connecting your TTS engine",
+      "ve-providers": "VPA providers",
+      "ve-requirements": "Requirements"
+    },
+    "speech-to-text": {
+      "stt-overview": "Overview",
+      "stt-boundary": "The TAIA input boundary",
+      "stt-integration": "STT integration pattern",
+      "stt-wake": "Wake word handling",
+      "stt-requirements": "Requirements"
+    },
+    "ai-config": {
+      "ac-overview": "Overview",
+      "ac-dependency": "Adding the dependency",
+      "ac-init": "Initialising the TAIA client",
+      "ac-context": "Navigation context",
+      "ac-events": "MQTT event delivery",
+      "ac-session": "Multi-turn conversations",
+      "ac-requirements": "Requirements"
+    },
+    "ev": {
+      "ev-overview": "Overview",
+      "ev-architecture": "Architecture",
+      "ev-vehicle": "Vehicle setup",
+      "ev-search": "EV charging search",
+      "ev-routing": "Long distance routing",
+      "ev-preferences": "Route preferences",
+      "ev-requirements": "Requirements"
+    },
+    "design-tokens": {
+      "dt-intro": "Introduction",
+      "dt-benefits": "Benefits",
+      "dt-structure": "Token structure",
+      "dt-names": "Token names",
+      "dt-overview": "Structure overview",
+      "dt-examples": "Token examples",
+      "dt-naming": "Naming principles",
+      "dt-themes": "Themes & modes"
+    }
+  }
+}

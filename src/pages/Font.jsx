@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FONT_SIZES, FONT_CMP_ROWS, TYPE_SCALE } from '../data/fonts';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
@@ -56,10 +57,11 @@ function TypeScaleRow({ token, size, weight, sampleStyle, sample }) {
 }
 
 export default function Font() {
+  const { t } = useTranslation('pages');
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Font</h1>
+        <h1>{t('font.title')}</h1>
         <p className="page-intro">
           Typography tokens ensure consistency, legibility, and brand flexibility across all TomTom
           products. They define how text appears in the UI — from large titles and guidance
@@ -76,7 +78,7 @@ export default function Font() {
 
       {/* Global tokens */}
       <div className="zone">
-        <h2 className="sh" id="f-global">Global tokens</h2>
+        <h2 className="sh" id="f-global">{t('font.sections.global')}</h2>
         <p className="body">
           Global tokens define the raw building blocks of type. They are neutral and brand-agnostic
           — they can be overridden to align with OEM identity without disrupting the structure of
@@ -134,7 +136,7 @@ export default function Font() {
 
       {/* System tokens */}
       <div className="zone">
-        <h2 className="sh" id="f-system">System tokens</h2>
+        <h2 className="sh" id="f-system">{t('font.sections.system')}</h2>
         <p className="body">
           System tokens give semantic meaning to type styles. Each token combines a font family,
           weight, and size into a single reusable style. They are grouped into five categories
@@ -203,7 +205,7 @@ export default function Font() {
 
       {/* Component tokens */}
       <div className="zone">
-        <h2 className="sh" id="f-component">Component tokens</h2>
+        <h2 className="sh" id="f-component">{t('font.sections.component')}</h2>
         <p className="body">
           Component tokens apply specific font styles to unique UI elements such as guidance
           prompts or list items. They pull values from the system-level tokens, ensuring components
@@ -238,7 +240,7 @@ export default function Font() {
 
       {/* Theming and scaling */}
       <div className="zone">
-        <h2 className="sh" id="f-theming">Theming and scaling</h2>
+        <h2 className="sh" id="f-theming">{t('font.sections.theming')}</h2>
         <p className="body">
           Typography is theme-aware. Each size mode (<code className="ic">S</code>{' '}
           <code className="ic">M</code> <code className="ic">L</code>) applies proportional scaling

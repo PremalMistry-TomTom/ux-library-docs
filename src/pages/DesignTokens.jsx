@@ -1,10 +1,12 @@
+import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 
 export default function DesignTokens() {
+  const { t } = useTranslation('pages');
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Design Tokens</h1>
+        <h1>{t('designTokens.title')}</h1>
         <p className="page-intro">
           Design tokens are the named, versioned design decisions that power TomTom's UI — colours,
           type styles, spacing, and more — expressed as platform-agnostic variables that resolve to
@@ -14,7 +16,7 @@ export default function DesignTokens() {
 
       {/* Introduction */}
       <div className="zone">
-        <h2 className="sh" id="dt-intro">Introduction</h2>
+        <h2 className="sh" id="dt-intro">{t('designTokens.sections.intro')}</h2>
         <div className="token-flow-intro">
           <div className="tfi-step">
             <div className="tfi-icon tfi-icon-token">🎨</div>
@@ -40,7 +42,7 @@ export default function DesignTokens() {
 
       {/* Benefits */}
       <div className="zone">
-        <h2 className="sh" id="dt-benefits">Benefits</h2>
+        <h2 className="sh" id="dt-benefits">{t('designTokens.sections.benefits')}</h2>
         <div className="benefit-grid">
           {[
             ['🎨', 'Theme switching', 'Swap entire colour modes (light/dark/OEM brand) by changing token values, not component code.'],
@@ -59,7 +61,7 @@ export default function DesignTokens() {
 
       {/* Token structure */}
       <div className="zone">
-        <h2 className="sh" id="dt-structure">Token structure</h2>
+        <h2 className="sh" id="dt-structure">{t('designTokens.sections.structure')}</h2>
         <p className="body">
           TomTom uses a three-tier token architecture. Each tier builds on the one below it.
         </p>
@@ -82,7 +84,7 @@ export default function DesignTokens() {
 
       {/* Token names */}
       <div className="zone">
-        <h2 className="sh" id="dt-names">Token names</h2>
+        <h2 className="sh" id="dt-names">{t('designTokens.sections.names')}</h2>
         <p className="body">
           TomTom follows a naming convention: <code className="ic">[Prefix]_[Tier]_[Type]_[Name]_[Variant]</code>
         </p>
@@ -220,7 +222,7 @@ export default function DesignTokens() {
 
       {/* Themes and modes */}
       <div className="zone">
-        <h2 className="sh" id="dt-themes">Themes and modes</h2>
+        <h2 className="sh" id="dt-themes">{t('designTokens.sections.themes')}</h2>
         <p className="body">
           Using design tokens, you can apply multiple modes to all relevant design properties —
           colour, typography, and sizing — simultaneously, without touching component code. There
