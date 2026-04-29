@@ -79,28 +79,31 @@ function ThumbNavControls() {
 }
 
 function ThumbAI() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', blue: '#58a6ff', green: '#3fb950', purple: '#a78bfa', dim: '#8b949e' };
-  const boxes = [
-    { x: 5, y: 30, w: 55, h: 34, label: 'Vehicle BMS', color: M.purple },
-    { x: 72, y: 22, w: 55, h: 50, label: 'Nav SDK', color: M.blue },
-    { x: 142, y: 8, w: 50, h: 32, label: 'LDEVR', color: M.green },
-    { x: 142, y: 52, w: 50, h: 32, label: 'EV Search', color: M.green },
-  ];
+  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', purple: '#a78bfa', green: '#3fb950', dim: '#8b949e' };
+  const bars = [3, 5, 8, 10, 7, 9, 6, 8, 5, 3, 7, 4];
   return (
-    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 8 }}>
-      <div style={{ fontSize: '0.55rem', color: M.dim, marginBottom: 6 }}>TAIA — system architecture</div>
-      <svg viewBox="0 0 200 100" style={{ width: '100%', height: 'auto' }}>
-        {boxes.map(b => (
-          <g key={b.label}>
-            <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="4" fill={M.card} stroke={b.color} strokeWidth="1" strokeOpacity="0.7"/>
-            <text x={b.x + b.w / 2} y={b.y + b.h / 2 + 3} textAnchor="middle" fontSize="7" fontWeight="600" fontFamily="system-ui" fill={b.color}>{b.label}</text>
-          </g>
-        ))}
-        <line x1="60" y1="47" x2="70" y2="47" stroke={M.dim} strokeWidth="1" markerEnd="url(#a2)"/>
-        <line x1="127" y1="38" x2="140" y2="30" stroke={M.dim} strokeWidth="1" markerEnd="url(#a2)"/>
-        <line x1="127" y1="56" x2="140" y2="64" stroke={M.dim} strokeWidth="1" markerEnd="url(#a2)"/>
-        <defs><marker id="a2" markerWidth="4" markerHeight="4" refX="3" refY="2" orient="auto"><path d="M0,0 L4,2 L0,4 Z" fill={M.dim}/></marker></defs>
-      </svg>
+    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.55rem', color: M.dim, marginBottom: 8 }}>TAIA — in-vehicle voice</div>
+      {/* Listening indicator */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#2d1f4a', border: `1px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill={M.purple}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke={M.purple} strokeWidth="2.5" fill="none"/></svg>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+          {bars.map((h, i) => (
+            <div key={i} style={{ width: 2.5, height: h, borderRadius: 2, background: M.purple, opacity: 0.6 + (i % 4) * 0.1 }}/>
+          ))}
+        </div>
+      </div>
+      {/* User utterance */}
+      <div style={{ background: '#2d1f4a', borderRadius: '6px 6px 6px 2px', padding: '4px 8px', marginBottom: 6, maxWidth: '88%' }}>
+        <div style={{ fontSize: '0.5rem', color: '#d4bbff', lineHeight: 1.4 }}>"Take me to the nearest fast charger"</div>
+      </div>
+      {/* AI response */}
+      <div style={{ background: M.card, borderRadius: '6px 6px 2px 6px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '88%', border: `1px solid ${M.line}` }}>
+        <div style={{ fontSize: '0.44rem', color: M.green, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>NAVIGATE_TO_EV_CHARGING</div>
+        <div style={{ fontSize: '0.5rem', color: M.dim }}>Ionity · 4.2 km · Route set ✓</div>
+      </div>
     </div>
   );
 }
@@ -261,6 +264,52 @@ function ThumbCluster() {
   );
 }
 
+function ThumbMapStyle() {
+  return (
+    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      {/* Day half */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: '50%', overflow: 'hidden' }}>
+        <svg style={{ width: '200%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill="#e8e0d5"/>
+          <rect x="0" y="0" width="200" height="130" fill="#e8e0d5"/>
+          <path d="M0 70 Q50 58 100 70 T200 62" stroke="#cfc9bf" strokeWidth="5" strokeLinecap="round"/>
+          <path d="M0 70 Q50 58 100 70 T200 62" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M48 0 L50 130" stroke="#cfc9bf" strokeWidth="4"/>
+          <path d="M48 0 L50 130" stroke="white" strokeWidth="1.5"/>
+          <path d="M0 55 Q50 44 100 55 T200 48" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
+          <rect x="8" y="18" width="34" height="24" rx="2" fill="#d8d0c4"/>
+          <rect x="56" y="30" width="16" height="18" rx="2" fill="#d8d0c4"/>
+          <rect x="76" y="12" width="22" height="28" rx="2" fill="#d8d0c4"/>
+        </svg>
+      </div>
+      {/* Night half */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', right: 0, overflow: 'hidden' }}>
+        <svg style={{ width: '200%', height: '100%', marginLeft: '-100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill="#1a2535"/>
+          <path d="M0 70 Q50 58 100 70 T200 62" stroke="#263040" strokeWidth="5" strokeLinecap="round"/>
+          <path d="M0 70 Q50 58 100 70 T200 62" stroke="rgba(255,255,255,0.1)" strokeWidth="2" strokeLinecap="round"/>
+          <path d="M48 0 L50 130" stroke="#263040" strokeWidth="4"/>
+          <path d="M48 0 L50 130" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5"/>
+          <path d="M0 55 Q50 44 100 55 T200 48" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.75"/>
+          <rect x="8" y="18" width="34" height="24" rx="2" fill="#223044"/>
+          <rect x="56" y="30" width="16" height="18" rx="2" fill="#223044"/>
+          <rect x="76" y="12" width="22" height="28" rx="2" fill="#223044"/>
+        </svg>
+      </div>
+      {/* Divider */}
+      <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 1.5, background: 'rgba(255,255,255,0.25)', zIndex: 1 }}/>
+      {/* Labels */}
+      <div style={{ position: 'absolute', bottom: 7, left: 8, fontSize: '0.42rem', fontWeight: 700, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.06em' }}>DAY</div>
+      <div style={{ position: 'absolute', bottom: 7, right: 8, fontSize: '0.42rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}>NIGHT</div>
+      {/* Traffic legend */}
+      <div style={{ position: 'absolute', top: 7, left: 8, display: 'flex', alignItems: 'center', gap: 3 }}>
+        <div style={{ width: 12, height: 3, borderRadius: 2, background: '#22c55e' }}/>
+        <span style={{ fontSize: '0.4rem', color: 'rgba(0,0,0,0.4)', fontWeight: 600 }}>Free flow</span>
+      </div>
+    </div>
+  );
+}
+
 function ThumbHomeScreen() {
   return (
     <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -296,8 +345,150 @@ function ThumbHomeScreen() {
   );
 }
 
-/* ─── Feature card ──────────────────────────────────────────────────────────── */
-function FeatureCard({ id, label, desc, group, Thumb, onNavigate }) {
+/* ─── Use-case Thumb components ─────────────────────────────────────────────── */
+
+function ThumbETAPanel() {
+  return (
+    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg,#0f1a28,#1a2535)' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <path d="M10 75 Q60 55 100 72 T190 65" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
+          <circle cx="102" cy="70" r="4" fill="#e2001a" opacity="0.8"/>
+          <circle cx="102" cy="70" r="8" fill="rgba(226,0,26,0.18)"/>
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.96)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '9px 14px' }}>
+        <div style={{ fontSize: '0.38rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+          {[['14:32', 'ETA'], ['18 min', 'Remaining'], ['6.4 km', 'Distance']].map(([val, label]) => (
+            <div key={label} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{val}</div>
+              <div style={{ fontSize: '0.42rem', color: '#475569', marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbTheming() {
+  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', dim: '#8b949e' };
+  const tokens = [
+    { name: '--brand-primary',  from: '#e2001a', to: '#0066cc', color: true },
+    { name: '--corner-radius',  from: '4 dp',    to: '12 dp',   color: false },
+    { name: '--font-family',    from: 'Roboto',  to: 'Inter',   color: false },
+  ];
+  return (
+    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.dim, marginBottom: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Token override</div>
+      {tokens.map(({ name, from, to, color }) => (
+        <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
+          {color
+            ? <div style={{ width: 26, height: 14, borderRadius: 3, background: from, flexShrink: 0 }} />
+            : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span style={{ fontSize: '0.4rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
+              </div>}
+          <span style={{ fontSize: '0.44rem', color: M.dim, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
+          <span style={{ fontSize: '0.6rem', color: '#374151' }}>→</span>
+          {color
+            ? <div style={{ width: 26, height: 14, borderRadius: 3, background: to, flexShrink: 0 }} />
+            : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span style={{ fontSize: '0.4rem', color: '#0066cc', fontFamily: 'monospace' }}>{to}</span>
+              </div>}
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
+        <div style={{ padding: '4px 10px', borderRadius: 4, background: '#e2001a', fontSize: '0.48rem', color: '#fff', fontWeight: 700 }}>Default</div>
+        <span style={{ fontSize: '0.65rem', color: '#374151' }}>→</span>
+        <div style={{ padding: '4px 10px', borderRadius: 12, background: '#0066cc', fontSize: '0.48rem', color: '#fff', fontWeight: 700 }}>OEM Brand</div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbChargingSearch() {
+  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950' };
+  return (
+    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.52rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>EV Charging</div>
+      <div style={{ fontSize: '0.46rem', color: M.green, marginBottom: 7 }}>Near you · Connector matched</div>
+      <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+        {['⚡ Speed', '💳 Payment', '🍴 Services'].map((f, i) => (
+          <span key={f} style={{ fontSize: '0.46rem', padding: '2px 5px', borderRadius: 4, background: i === 0 ? M.blue : M.card, color: i === 0 ? '#fff' : M.dim, border: `1px solid ${i === 0 ? M.blue : M.line}` }}>{f}</span>
+        ))}
+      </div>
+      {[['Ionity', '350 kW', '3/4'], ['Fastned', '300 kW', '2/4'], ['bp pulse', '50 kW', '5/6']].map(([name, kw, avail], i) => (
+        <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '4px 0', borderTop: i > 0 ? `1px solid ${M.line}` : 'none' }}>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.42rem', fontWeight: 700, color: '#000', flexShrink: 0 }}>{i+1}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.54rem', fontWeight: 700, color: M.text }}>{name}</div>
+            <div style={{ fontSize: '0.46rem', color: M.dim }}>⚡ {kw}</div>
+          </div>
+          <span style={{ fontSize: '0.46rem', color: M.green }}>{avail}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ThumbConversationPersonality() {
+  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', purple: '#a78bfa', dim: '#8b949e', text: '#e6edf3' };
+  return (
+    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#1a1a4a', border: `1.5px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', flexShrink: 0 }}>✦</div>
+        <span style={{ fontSize: '0.58rem', fontWeight: 700, color: M.text }}>BMW Assistant</span>
+        <span style={{ fontSize: '0.4rem', color: M.purple, marginLeft: 'auto' }}>Custom name ✓</span>
+      </div>
+      <div style={{ background: M.card, borderRadius: '4px 10px 10px 4px', padding: '4px 8px', marginBottom: 6, maxWidth: '92%' }}>
+        <div style={{ fontSize: '0.4rem', color: M.dim, marginBottom: 1 }}>Default TomTom tone</div>
+        <div style={{ fontSize: '0.48rem', color: '#94a3b8', lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
+      </div>
+      <div style={{ background: '#1a1a4a', borderRadius: '10px 4px 10px 10px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '92%', border: `1px solid ${M.purple}44` }}>
+        <div style={{ fontSize: '0.4rem', color: M.purple, marginBottom: 1 }}>OEM branded tone</div>
+        <div style={{ fontSize: '0.48rem', color: '#d4bbff', lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbADAS() {
+  const lanes = [false, false, true, true, false];
+  return (
+    <div style={{ background: '#060608', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420 0%,#101820 100%)' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill="#151a26" opacity="0.9"/>
+          {[65, 85, 100, 115, 135].map((x, i) => (
+            <line key={i} x1={x} y1={58} x2={i === 0 ? 0 : i === 4 ? 200 : x + (i - 2) * 12} y2={130} stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="5 5"/>
+          ))}
+          <path d="M100 75 L100 120" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 5"/>
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 6 }}>
+        {lanes.map((active, i) => (
+          <svg key={i} width="13" height="20" viewBox="0 0 13 20">
+            <rect x="4.5" y="7" width="4" height="11" rx="1" fill={active ? '#e2001a' : 'rgba(255,255,255,0.15)'}/>
+            <polygon points="6.5,0 13,8 9.5,8 9.5,7 3.5,7 3.5,8 0,8" fill={active ? '#e2001a' : 'rgba(255,255,255,0.15)'}/>
+          </svg>
+        ))}
+      </div>
+      <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'white', border: '3px solid #e2001a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontSize: '0.52rem', fontWeight: 800, color: '#111' }}>100</span>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'white' }}>600 m</div>
+          <div style={{ fontSize: '0.38rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Lane change</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Domain card ────────────────────────────────────────────────────────────── */
+function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
   return (
     <div
       onClick={() => onNavigate(id)}
@@ -305,22 +496,40 @@ function FeatureCard({ id, label, desc, group, Thumb, onNavigate }) {
       onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
       onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
     >
-      {/* Thumbnail */}
       <div style={{ height: 130, background: '#0d1117', overflow: 'hidden', padding: 10, flexShrink: 0 }}>
         <Thumb />
       </div>
-      {/* Text */}
-      <div style={{ padding: '12px 14px', flex: 1 }}>
-        <div style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
-        <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+      <div style={{ padding: '12px 14px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, marginBottom: 10, flex: 1 }}>{desc}</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {pages.map(p => (
+            <span key={p} style={{ fontSize: '0.64rem', padding: '2px 7px', borderRadius: 4, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{p}</span>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-/* ─── Simple text card for placeholder pages ────────────────────────────────── */
-function TextCard({ id, label, desc, onNavigate }) {
+/* ─── Domain data (one card per nav group, in nav order) ─────────────────────── */
+const DOMAIN_CARDS = [
+  { id: 'assets',              key: 'assets',             Thumb: ThumbColour,
+    pages: ['Colour', 'Font', 'Corner Radius', 'Icons', 'Design Tokens'] },
+  { id: 'map-customisation',   key: 'mapCustomisation',   Thumb: ThumbMapStyle,
+    pages: ['Map Style', 'Traffic', 'Safety Locations', 'Route', 'Map Markers'] },
+  { id: 'app-customisation',   key: 'appCustomisation',   Thumb: ThumbHomeScreen,
+    pages: ['Home Screen Layout', 'Search Engine', 'Nav Controls', 'Horizon Panel'] },
+  { id: 'ev-charging',         key: 'evCharging',         Thumb: ThumbEV,
+    pages: ['Vehicle & Battery', 'Charging Search', 'Long-Distance Routing', 'In-Navigation UI'] },
+  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: ThumbCluster,
+    pages: ['Basics', 'Cluster', 'Head-Up Display', 'ADAS Integration', 'Truck Support'] },
+  { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: ThumbAI,
+    pages: ['Overview', 'Voice Engine', 'Speech to Text', 'Configuration'] },
+];
+
+/* ─── Use-case card (thumbnail + group tag + title + desc) ──────────────────── */
+function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
   return (
     <div
       onClick={() => onNavigate(id)}
@@ -328,12 +537,11 @@ function TextCard({ id, label, desc, onNavigate }) {
       onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
       onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
     >
-      <div style={{ height: 130, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--border)" strokeWidth="1.5">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
-        </svg>
+      <div style={{ height: 130, background: '#0d1117', overflow: 'hidden', padding: 10, flexShrink: 0 }}>
+        <Thumb />
       </div>
       <div style={{ padding: '12px 14px', flex: 1 }}>
+        <div style={{ fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
         <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
         <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
@@ -341,50 +549,33 @@ function TextCard({ id, label, desc, onNavigate }) {
   );
 }
 
-/* ─── Section data (IDs + Thumbs only; labels/descs resolved via i18n) ─────── */
-const FEATURED_IDS = [
-  { id: 'ev',                  Thumb: ThumbEV },
-  { id: 'cluster',             Thumb: ThumbCluster },
-  { id: 'search-engine',       Thumb: ThumbSearch },
-  { id: 'nav-controls',        Thumb: ThumbNavControls },
-  { id: 'ai-overview',         Thumb: ThumbAI },
-  { id: 'horizon-panel',       Thumb: ThumbHorizonPanel },
-  { id: 'colour',              Thumb: ThumbColour },
-  { id: 'home-screen-layout',  Thumb: ThumbHomeScreen },
-];
-
-const ALL_SECTION_KEYS = [
-  { groupKey: 'Assets',              items: ['design-tokens', 'colour', 'font', 'corner-radius'] },
-  { groupKey: 'App Customisation',   items: ['home-screen-layout', 'search-engine', 'nav-controls', 'horizon-panel', 'instruction-panel', 'eta-panel', 'route-bar'] },
-  { groupKey: 'TomTom AI Assistant', items: ['ai-overview', 'voice-engine', 'speech-to-text', 'ai-config'] },
-  { groupKey: 'Vehicle Integration', items: ['cluster', 'ev', 'truck'] },
+const USE_CASE_CARDS = [
+  { id: 'home-screen-layout', key: 'homeScreenLayout', Thumb: ThumbHomeScreen },
+  { id: 'eta-panel',          key: 'etaPanel',         Thumb: ThumbETAPanel },
+  { id: 'search-engine',      key: 'searchEngine',     Thumb: ThumbSearch },
+  { id: 'theming',            key: 'theming',          Thumb: ThumbTheming },
+  { id: 'ev-charging-search', key: 'evChargingSearch', Thumb: ThumbChargingSearch },
+  { id: 'cluster',            key: 'cluster',          Thumb: ThumbCluster },
+  { id: 'ai-personality',     key: 'aiPersonality',    Thumb: ThumbConversationPersonality },
+  { id: 'adas',               key: 'adas',             Thumb: ThumbADAS },
 ];
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
 export default function Overview({ onNavigate }) {
   const { t } = useTranslation('overview');
 
-  const featured = FEATURED_IDS.map(({ id, Thumb }) => ({
+  const domains = DOMAIN_CARDS.map(({ id, key, Thumb, pages }) => ({
+    id, Thumb, pages,
+    label: t(`domains.${key}.label`),
+    desc:  t(`domains.${key}.desc`),
+  }));
+
+  const useCases = USE_CASE_CARDS.map(({ id, key, Thumb }) => ({
     id, Thumb,
-    label: t(`featured.${id}.label`),
-    desc:  t(`featured.${id}.desc`),
-    group: t(`featured.${id}.group`),
+    label: t(`useCases.${key}.label`),
+    desc:  t(`useCases.${key}.desc`),
+    group: t(`useCases.${key}.group`),
   }));
-
-  const allSections = ALL_SECTION_KEYS.map(({ groupKey, items }) => ({
-    group: t(`sections.${groupKey}`),
-    items: items.map(id => ({
-      id,
-      label: t(`allSections.${id}.label`),
-    })),
-  }));
-
-  const capabilities = [
-    { icon: '🗺', key: 'map' },
-    { icon: '🎨', key: 'theme' },
-    { icon: '🔌', key: 'modules' },
-    { icon: '📐', key: 'layouts' },
-  ];
 
   return (
     <div className="page">
@@ -415,28 +606,28 @@ export default function Overview({ onNavigate }) {
         <h2 className="sh" id="ov-what">{t('what.heading')}</h2>
         <p className="body">{t('what.body1')}</p>
         <p className="body">{t('what.body2')}</p>
+      </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, marginTop: 20 }}>
-          {capabilities.map(({ icon, key }) => (
-            <div key={key} style={{ padding: '14px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
-              <div style={{ fontSize: '1.3rem', marginBottom: 8 }}>{icon}</div>
-              <div style={{ fontWeight: 700, fontSize: '0.84rem', marginBottom: 5, color: 'var(--black)' }}>{t(`what.capabilities.${key}.title`)}</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--mid)', lineHeight: 1.55 }}>{t(`what.capabilities.${key}.body`)}</div>
-            </div>
+      {/* Key use cases */}
+      <div className="zone">
+        <h2 className="sh" id="ov-usecases">{t('useCases.heading')}</h2>
+        <p className="quick-answer" style={{ marginBottom: 20 }}>{t('useCases.subheading')}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
+          {useCases.map(card => (
+            <UseCaseCard key={card.id} {...card} onNavigate={onNavigate} />
           ))}
         </div>
       </div>
 
-      {/* Featured visual cards */}
+      {/* Domain cards */}
       <div className="zone">
         <h2 className="sh" id="ov-explore">{t('explore.heading')}</h2>
-        <p className="body" style={{ marginBottom: 20 }}>{t('explore.subheading')}</p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14, marginBottom: 36 }}>
-          {featured.map(card => (
-            <FeatureCard key={card.id} {...card} onNavigate={onNavigate} />
+        <p className="quick-answer" style={{ marginBottom: 20 }}>{t('explore.subheading')}</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14, marginBottom: 36 }}>
+          {domains.map(card => (
+            <DomainCard key={card.id} {...card} onNavigate={onNavigate} />
           ))}
         </div>
-
       </div>
 
       <Callout type="info">{t('callout')}</Callout>

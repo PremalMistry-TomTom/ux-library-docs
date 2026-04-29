@@ -11,6 +11,128 @@ const ROUTING_APIS = [
   { name: 'Navigation SDK — VehicleProvider', type: 'Android SDK', description: 'Vehicle parameters set via VehicleInfoManager are automatically forwarded to the routing engine — no manual wiring required.', url: 'https://docs.tomtom.com/navigation/android/guides/navigation/vehicle' },
 ];
 
+/* ─── Berlin → Amsterdam trip data ──────────────────────────────────────────── */
+// Real energy math: 75 kWh usable battery, 18.5 kWh/100 km, minAtStop 18%, charge to 80%.
+// Per-leg available range: (80%-18%) × 75 kWh ÷ 0.185 kWh/km ≈ 251 km.
+const TRIP = {
+  battery: 75,
+  legs: [
+    { from: 'Berlin',              fromSoc: 78, toSoc: null, km: null, type: 'origin' },
+    { km: 245, mins: 113,                                               type: 'leg'    },
+    { name: 'Ionity Bochum',       network: 'Ionity',    socIn: 18, socOut: 80, kWh: 46.5, mins: 21, kW: 350, type: 'stop' },
+    { km: 250, mins: 115,                                               type: 'leg'    },
+    { name: 'Fastned Eindhoven',   network: 'Fastned',   socIn: 18, socOut: 78, kWh: 45.0, mins: 19, kW: 300, type: 'stop' },
+    { km: 184, mins: 85,                                               type: 'leg'    },
+    { to: 'Amsterdam',             toSoc: 33,                          type: 'dest'   },
+  ],
+};
+
+const SOC_COLOR = soc => soc >= 40 ? '#3fb950' : soc >= 20 ? '#d29922' : '#f85149';
+
+function SoCBadge({ pct }) {
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 12, background: `${SOC_COLOR(pct)}22`, border: `1px solid ${SOC_COLOR(pct)}55`, fontSize: '0.7rem', fontWeight: 700, color: SOC_COLOR(pct), whiteSpace: 'nowrap' }}>
+      ⚡ {pct}%
+    </span>
+  );
+}
+
+function TripTimeline() {
+  const Mc = { bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950', amber: '#d29922' };
+
+  const totalKm = TRIP.legs.filter(l => l.type === 'leg').reduce((s, l) => s + l.km, 0);
+  const totalChargeMins = TRIP.legs.filter(l => l.type === 'stop').reduce((s, l) => s + l.mins, 0);
+  const totalDriveMins  = TRIP.legs.filter(l => l.type === 'leg').reduce((s, l) => s + l.mins, 0);
+  const totalMins = totalDriveMins + totalChargeMins;
+  const totalHrs = Math.floor(totalMins / 60), remMins = totalMins % 60;
+
+  return (
+    <div>
+      {/* Summary bar */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: 8, marginBottom: 20 }}>
+        {[
+          ['📍', `${totalKm} km`, 'Total distance'],
+          ['🔌', `${TRIP.legs.filter(l => l.type === 'stop').length} stops`, 'Auto-inserted'],
+          ['⚡', `${totalChargeMins} min`, 'Total charging'],
+          ['🕐', `${totalHrs}h ${remMins}min`, 'Total journey'],
+        ].map(([icon, val, label]) => (
+          <div key={label} style={{ background: Mc.card, border: `1px solid ${Mc.line}`, borderRadius: 8, padding: '10px 12px' }}>
+            <div style={{ fontSize: '1rem', marginBottom: 3 }}>{icon}</div>
+            <div style={{ fontSize: '1.0rem', fontWeight: 700, color: Mc.text, lineHeight: 1 }}>{val}</div>
+            <div style={{ fontSize: '0.6rem', color: Mc.dim, marginTop: 2 }}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Route timeline */}
+      <div style={{ background: Mc.bg, border: `1px solid ${Mc.line}`, borderRadius: 10, padding: '16px 18px' }}>
+        {TRIP.legs.map((item, i) => {
+          if (item.type === 'origin') return (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#1a3d2b', border: `2px solid ${Mc.green}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', flexShrink: 0 }}>📍</div>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontWeight: 700, fontSize: '0.9rem', color: Mc.text }}>{item.from}</span>
+                <span style={{ fontSize: '0.7rem', color: Mc.dim, marginLeft: 8 }}>Start</span>
+              </div>
+              <SoCBadge pct={item.fromSoc} />
+            </div>
+          );
+          if (item.type === 'leg') return (
+            <div key={i} style={{ display: 'flex', alignItems: 'stretch', gap: 10, margin: '2px 0' }}>
+              <div style={{ width: 28, display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: 2, background: Mc.line, borderRadius: 1 }}/>
+              </div>
+              <div style={{ padding: '6px 0', fontSize: '0.7rem', color: Mc.dim }}>
+                {item.km} km &nbsp;·&nbsp; {Math.floor(item.mins / 60)}h {item.mins % 60}min driving
+              </div>
+            </div>
+          );
+          if (item.type === 'stop') return (
+            <div key={i} style={{ marginBottom: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#1c2d4a', border: `2px solid ${Mc.blue}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', flexShrink: 0 }}>🔌</div>
+                <div style={{ flex: 1, background: Mc.card2, border: `1px solid ${Mc.line}`, borderRadius: 8, padding: '8px 12px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6, marginBottom: 6 }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.85rem', color: Mc.text }}>{item.name}</span>
+                    <span style={{ fontSize: '0.65rem', padding: '2px 7px', borderRadius: 10, background: '#1c2d4a', border: `1px solid ${Mc.blue}44`, color: Mc.blue }}>{item.network}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <SoCBadge pct={item.socIn} />
+                      <span style={{ fontSize: '0.7rem', color: Mc.dim }}>→</span>
+                      <SoCBadge pct={item.socOut} />
+                    </div>
+                    <span style={{ fontSize: '0.7rem', color: Mc.dim }}>+{item.kWh} kWh &nbsp;·&nbsp; {item.kW} kW peak &nbsp;·&nbsp; {item.mins} min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+          if (item.type === 'dest') return (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#2d1f4a', border: `2px solid #a78bfa`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', flexShrink: 0 }}>🏁</div>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontWeight: 700, fontSize: '0.9rem', color: Mc.text }}>{item.to}</span>
+                <span style={{ fontSize: '0.7rem', color: Mc.dim, marginLeft: 8 }}>Destination</span>
+              </div>
+              <SoCBadge pct={item.toSoc} />
+            </div>
+          );
+          return null;
+        })}
+      </div>
+
+      {/* OEM value callout */}
+      <div style={{ marginTop: 14, background: '#0f2a1a', border: '1px solid #22533a', borderRadius: 8, padding: '10px 14px', display: 'flex', gap: 10 }}>
+        <span style={{ fontSize: '0.9rem', flexShrink: 0 }}>✅</span>
+        <div style={{ fontSize: '0.78rem', color: '#86efac', lineHeight: 1.55 }}>
+          <strong>Zero routing code from the OEM.</strong> Battery parameters set once via <code style={{ fontSize: '0.73rem', background: 'rgba(0,0,0,0.3)', padding: '1px 4px', borderRadius: 3 }}>VehicleInfoManager</code> are automatically forwarded to LDEVR. The SDK plans the stops, monitors SoC in-drive, and re-queries if conditions change.
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Mock palette ──────────────────────────────────────────────────────────── */
 const M = {
   bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d',
@@ -336,6 +458,14 @@ export default function EVRouting() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Real-world trip example */}
+      <div className="zone">
+        <h2 className="sh" id="evr-trip">{t('routing.trip.heading')}</h2>
+        <p className="body">{t('routing.trip.body')}</p>
+        <TripTimeline />
+        <Callout type="info" style={{ marginTop: 16 }}>{t('routing.trip.callout')}</Callout>
       </div>
 
       <div className="feedback-strip">

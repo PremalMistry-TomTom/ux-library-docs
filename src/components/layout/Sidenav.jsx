@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NAV } from '../../data/navigation';
 
@@ -55,34 +55,27 @@ function ChevronIcon() {
 }
 
 /* ─── Nav group ──────────────────────────────────────────────────────────────── */
-function NavGroup({ group, currentPage, onNavigate, plumbing }) {
+function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle }) {
   const { t } = useTranslation('common');
-  const containsActive = group.items.some(item => item.id === currentPage)
-    || group.landingId === currentPage;
-  const [open, setOpen] = useState(group.defaultOpen || containsActive);
-
-  useEffect(() => {
-    if (containsActive) setOpen(true);
-  }, [currentPage]); // re-evaluate on every navigation
 
   const groupLabel = group.key
     ? t(`nav.groups.${group.key}`, { defaultValue: group.label })
     : group.label;
 
   // Groups with a landingId: label navigates, chevron toggles.
-  // Groups without: whole header toggles as before.
+  // Groups without: whole header toggles.
   const handleLabelClick = () => {
     if (group.landingId) {
       onNavigate(group.landingId);
-      setOpen(true);
+      onToggle(true); // always open when navigating to landing
     } else {
-      setOpen(o => !o);
+      onToggle(!isOpen);
     }
   };
 
   const handleChevronClick = (e) => {
     e.stopPropagation();
-    setOpen(o => !o);
+    onToggle(!isOpen);
   };
 
   const isLandingActive = group.landingId === currentPage;
@@ -91,7 +84,7 @@ function NavGroup({ group, currentPage, onNavigate, plumbing }) {
     <div className={`sidenav-group${plumbing ? ' sidenav-group--plumbing' : ''}`}>
       {plumbing && <div className="sidenav-plumbing-divider" />}
       <div
-        className={`sidenav-label${open ? ' open' : ''}${isLandingActive ? ' landing-active' : ''}`}
+        className={`sidenav-label${isOpen ? ' open' : ''}${isLandingActive ? ' landing-active' : ''}`}
         onClick={handleLabelClick}
         style={plumbing ? { opacity: 0.6 } : undefined}
       >
@@ -101,7 +94,7 @@ function NavGroup({ group, currentPage, onNavigate, plumbing }) {
           <ChevronIcon />
         </span>
       </div>
-      <div className={`sidenav-items${open ? ' open' : ''}`}>
+      <div className={`sidenav-items${isOpen ? ' open' : ''}`}>
         {group.items.map((item, idx) => {
           const isLast = idx === group.items.length - 1;
           const isActive = currentPage === item.id;
@@ -126,6 +119,28 @@ function NavGroup({ group, currentPage, onNavigate, plumbing }) {
 export default function Sidenav({ currentPage, onNavigate }) {
   const { t } = useTranslation('common');
 
+  // Derive the key of whichever group contains the active page
+  const activeGroupKey = NAV.find(
+    e => e.type === 'group' && (
+      e.items?.some(item => item.id === currentPage) ||
+      e.landingId === currentPage
+    )
+  )?.key ?? null;
+
+  const [openKey, setOpenKey] = useState(activeGroupKey);
+
+  // When navigation changes the active page, open that group
+  useEffect(() => {
+    if (activeGroupKey) setOpenKey(activeGroupKey);
+  }, [activeGroupKey]);
+
+  const handleToggle = useCallback((groupKey, forceOpen) => {
+    setOpenKey(prev => {
+      if (forceOpen) return groupKey;
+      return prev === groupKey ? null : groupKey; // clicking open group closes it
+    });
+  }, []);
+
   return (
     <aside className="sidenav">
       {NAV.map((entry, i) => {
@@ -143,11 +158,13 @@ export default function Sidenav({ currentPage, onNavigate }) {
         }
         return (
           <NavGroup
-            key={i}
+            key={entry.key ?? i}
             group={entry}
             currentPage={currentPage}
             onNavigate={onNavigate}
             plumbing={entry.plumbing}
+            isOpen={openKey === entry.key}
+            onToggle={(forceOpen) => handleToggle(entry.key, forceOpen)}
           />
         );
       })}

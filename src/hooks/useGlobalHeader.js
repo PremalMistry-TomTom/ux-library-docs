@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 const GLOBAL_H        = 50;   // px — global header height
 const NAV_H           = 52;   // px — UX Library topnav height
-const SCROLL_HIDE_AT  = 80;   // scrollY threshold before global header hides
+const SCROLL_HIDE_AT  = 1;    // scrollY threshold before global header hides
 const SCROLL_SHOW_AT  = 8;    // scrollY threshold to auto-show again (back at top)
 const HOVER_HIDE_MS   = 2500; // ms idle before re-hiding after hover-reveal
 const HOVER_REVEAL_MS = 2500; // ms hover dwell before expanding the global header

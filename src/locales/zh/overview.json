@@ -12,10 +12,30 @@
       "layouts": { "title": "可组合布局", "body": "从任意边缘调整导航区域大小，其他功能模块的 Widget 可叠加其上。" }
     }
   },
+  "useCases": {
+    "heading": "关键使用场景",
+    "subheading": "最常定制的功能模块——点击任意卡片直接跳转至对应文档。",
+    "homeScreenLayout": { "label": "首页布局",           "desc": "地图作为壁纸、应用区域大小调整及导航区域 UI 状态信号。",            "group": "应用定制"       },
+    "etaPanel":         { "label": "预计到达时间面板",   "desc": "配置预计到达时间面板的位置、内容字段及主题样式。",                    "group": "应用定制"       },
+    "searchEngine":     { "label": "搜索引擎",           "desc": "替换搜索提供商、配置连接状态切换并丰富搜索 UI。",                    "group": "应用定制"       },
+    "theming":          { "label": "主题定制",           "desc": "将 OEM 品牌令牌——颜色、字体、圆角——应用于所有导航 UI 组件。",       "group": "设计系统"       },
+    "evChargingSearch": { "label": "充电站搜索",         "desc": "按连接器类型、功率等级及首选充电网络筛选兼容的电动车充电站。",        "group": "电动车与充电"  },
+    "cluster":          { "label": "仪表盘显示",         "desc": "通过 Intent 在车辆仪表盘上渲染 NIP、车道引导、CMP 和 ETA。",        "group": "车辆集成"       },
+    "aiPersonality":    { "label": "对话个性",           "desc": "为 OEM 语音身份定制 AI 助手的名称、语气和品牌专属用语。",            "group": "TomTom AI"      },
+    "adas":             { "label": "ADAS 集成",          "desc": "连接高级驾驶辅助系统——车道引导、速度提醒及交叉路口视图。",           "group": "车辆集成"       }
+  },
   "explore": {
-    "heading": "探索本库",
-    "subheading": "UX Library 的核心功能——点击任意卡片查看完整文档。",
+    "heading": "按领域探索",
+    "subheading": "六个集成领域——点击任意卡片查看该领域的所有页面。",
     "allPages": "所有页面"
+  },
+  "domains": {
+    "assets":             { "label": "设计系统",          "desc": "设计令牌、颜色调色板、字体排版、图标及圆角半径——OEM 主题定制的基础。" },
+    "mapCustomisation":   { "label": "地图定制",          "desc": "地图样式变体、交通覆盖层、安全摄像头区域、路线样式及自定义地图标记。" },
+    "appCustomisation":   { "label": "应用定制",          "desc": "首页布局、搜索引擎集成、导航面板定位及导航 UI 面板。" },
+    "evCharging":         { "label": "电动车与充电",      "desc": "电池模型配置、充电站搜索、长途路线规划及导航中电量 UI。" },
+    "vehicleIntegration": { "label": "车辆集成",          "desc": "仪表盘显示、抬头显示器、ADAS 车道引导集成及货车路线限制。" },
+    "aiAssistant":        { "label": "TomTom AI 助手",    "desc": "车载语音云端 AI 智能体——语音识别、意图路由、TTS 及多轮对话。" }
   },
   "featured": {
     "ev": { "label": "电动车支持", "desc": "续航感知路线规划、充电站搜索及自动停靠点规划。", "group": "车辆集成" },

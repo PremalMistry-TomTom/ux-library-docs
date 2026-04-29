@@ -87,6 +87,11 @@
   "routing": {
     "title": "Long-Distance Routing",
     "intro": "The LDEVR API calculates the optimal sequence of charging stops for routes beyond single-charge range. Adjust the minimum SoC thresholds below to see how they affect stop count, total charge time, and journey duration.",
+    "trip": {
+      "heading": "Real-world trip: Berlin → Amsterdam",
+      "body": "A 679 km motorway route with a 75 kWh family EV starting at 78% SoC. LDEVR automatically inserts two charging stops — no routing code required from the OEM.",
+      "callout": "The SDK forwards battery parameters from VehicleInfoManager directly to LDEVR. The OEM never calls the routing API manually — just set up the vehicle profile once and navigate."
+    },
     "strategy": {
       "heading": "Charging stop strategy",
       "body": "Drag the sliders to adjust minimum SoC thresholds. The route timeline updates in real time — note the trade-off between safety buffer and total journey time.",

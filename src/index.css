@@ -58,7 +58,7 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 .global-header {
   position: fixed; top: 0; left: 0; right: 0; z-index: 300;
   height: var(--global-h);
-  background: #ffffff; border-bottom: 1px solid #e8e8e8;
+  background: #ffffff;
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 32px;
   transform: translateY(0);
@@ -175,10 +175,20 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 /* Chevron wrapper — intercepts click for toggle-only, parent click navigates */
 .sidenav-chevron-wrap { display: flex; align-items: center; padding: 2px; border-radius: 4px; transition: background 0.1s; }
 .sidenav-chevron-wrap:hover { background: rgba(0,0,0,0.06); }
-.sidenav-label svg { flex-shrink: 0; transition: transform 0.15s; transform: rotate(-90deg); }
+.sidenav-label svg { flex-shrink: 0; transition: transform 0.25s ease; transform: rotate(-90deg); }
 .sidenav-label.open svg { transform: rotate(0deg); }
-.sidenav-items { display: none; }
-.sidenav-items.open { display: block; padding-left: 10px; }
+.sidenav-items {
+  max-height: 0;
+  overflow: hidden;
+  padding-left: 10px;
+  transition: max-height 0.28s ease, opacity 0.22s ease;
+  opacity: 0;
+}
+.sidenav-items.open {
+  max-height: 800px;
+  opacity: 1;
+  transition: max-height 0.32s ease, opacity 0.25s ease;
+}
 .sidenav-item {
   display: flex; align-items: stretch; gap: 4px;
   padding-right: 8px;

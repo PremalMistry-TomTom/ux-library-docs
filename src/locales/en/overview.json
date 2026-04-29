@@ -12,10 +12,30 @@
       "layouts": { "title": "Composable layouts", "body": "Resize the navigation area from any edge. Other domain widgets layer on top." }
     }
   },
+  "useCases": {
+    "heading": "Key use cases",
+    "subheading": "The most commonly customised capabilities — click any card to jump straight to the documentation.",
+    "homeScreenLayout": { "label": "Home Screen Layout",       "desc": "Map as wallpaper, application area sizing, and UI state signals for navigation zones.",                              "group": "App Customisation"    },
+    "etaPanel":         { "label": "ETA Panel",                "desc": "Configure position, content fields, and theming for the arrival estimate panel.",                                   "group": "App Customisation"    },
+    "searchEngine":     { "label": "Search Engine",            "desc": "Replace the search provider, configure connectivity transitions, and enrich the search UI.",                        "group": "App Customisation"    },
+    "theming":          { "label": "Theming",                  "desc": "Apply OEM brand tokens — colour, typography, corner radius — across all navigation UI components.",                 "group": "Design System"        },
+    "evChargingSearch": { "label": "Charging Search",          "desc": "Discover compatible EV stations filtered by connector type, power level, and preferred charging networks.",         "group": "EV & Charging"        },
+    "cluster":          { "label": "Displaying on Cluster",    "desc": "Render NIP, lane guidance, CMP, and ETA on the vehicle instrument cluster via intent.",                             "group": "Vehicle Integration"  },
+    "aiPersonality":    { "label": "Conversation Personality", "desc": "Customise the AI assistant's name, tone, and branded phrases for a distinct OEM voice identity.",                   "group": "TomTom AI"            },
+    "adas":             { "label": "ADAS Integration",         "desc": "Connect advanced driver assistance systems — lane guidance, speed alerts, and junction view.",                       "group": "Vehicle Integration"  }
+  },
   "explore": {
-    "heading": "Explore this library",
-    "subheading": "Key capabilities of the UX Library — click any card to go to the full documentation.",
+    "heading": "Explore by domain",
+    "subheading": "Six integration domains — click any card to explore all pages within that domain.",
     "allPages": "All pages"
+  },
+  "domains": {
+    "assets":             { "label": "Design System",          "desc": "Design tokens, colour palettes, typography, icons, and corner radius — the OEM theming foundation." },
+    "mapCustomisation":   { "label": "Map Customisation",      "desc": "Map style variants, traffic overlay, safety camera zones, route styling, and custom map markers." },
+    "appCustomisation":   { "label": "App Customisation",      "desc": "Home screen layout, search engine integration, navigation panel positioning, and guidance UI panels." },
+    "evCharging":         { "label": "EV & Charging",          "desc": "Battery model configuration, charging station search, long-distance route planning, and in-navigation SoC UI." },
+    "vehicleIntegration": { "label": "Vehicle Integration",    "desc": "Instrument cluster, head-up display, ADAS lane guidance integration, and truck routing constraints." },
+    "aiAssistant":        { "label": "TomTom AI Assistant",    "desc": "Cloud AI agent for in-vehicle voice — speech recognition, intent routing, TTS, and multi-turn dialogue." }
   },
   "featured": {
     "ev": { "label": "EV Support", "desc": "Range-aware routing, charging station search, and automatic stop planning.", "group": "Vehicle Integration" },
