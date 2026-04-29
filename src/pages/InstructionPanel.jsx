@@ -76,9 +76,7 @@ export default function InstructionPanel() {
       </div>
 
       <div className="quick-answer">
-        <strong>Next Instruction Panel (NIP)</strong> — shows the upcoming manoeuvre during
-        active guidance. Position is configurable across five anchor points. The instruction
-        list expands toward the available screen space relative to the configured position.
+        Set where the upcoming-manoeuvre panel appears on screen — five anchor positions, expanding toward available space.
       </div>
 
       <ApiLinks items={NIP_APIS} />

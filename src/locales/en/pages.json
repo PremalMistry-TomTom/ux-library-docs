@@ -3,7 +3,7 @@
     "title": "Horizon Panel",
     "badge": "Private",
     "version": "v0.1 · Q2 2026",
-    "intro": "Horizon Panel — the primary guidance component shown during active route following. It combines the Next Instruction Panel, Upcoming Events Panel, and ETA Panel in a single vertical stack. UX Library lets you use it as-is or decompose it into three independently positioned sub-components.",
+    "intro": "The primary guidance HUD — use it as a combined stack or break it into three independently positioned panels.",
     "sections": {
       "overview": "Overview",
       "decompose": "Composed vs decomposed",
@@ -32,7 +32,7 @@
     "title": "Navigation Controls",
     "badge": "Private",
     "version": "v0.1 · Q2 2026",
-    "intro": "Map Controls Button Bar — a configurable strip of navigation action buttons (Search, Charging Finder, Mute, Quick Settings) positionable on any edge of the screen. Content, visibility, and the search entry point form are all configurable.",
+    "intro": "Position the navigation button bar on any screen edge and choose which actions — search, charging, mute, and settings — are visible.",
     "sections": {
       "overview": "Overview",
       "position": "Position & button visibility",
@@ -68,7 +68,7 @@
     "title": "Home Screen Layout",
     "badge": "Private",
     "version": "v0.3 · Q2 2026",
-    "intro": "Map as wallpaper — the navigation map fills the entire IVI home screen as a background. Other domain widgets (media, climate, phone) layer on top. The IVI home-screen orchestrator controls how much space is given to navigation at any point; the navigation app exposes four observable UI state dimensions so the orchestrator can make its own widget visibility decisions without being coupled to TomTom's API.",
+    "intro": "Configure how navigation shares the IVI home screen — zone sizing, widget strip placement, and state signals for the orchestrator.",
     "sections": {
       "overview": "Overview",
       "zones": "Screen zones",
@@ -115,7 +115,7 @@
     "title": "Search engine",
     "badge": "Private",
     "version": "v0.3 · Q2 2026",
-    "intro": "Search is a replaceable capability. UX Library owns the search UI; the OEM provides the search provider. When online, queries go to the 3rd-party provider. When offline, UX Library falls back automatically to TomTom onboard search.",
+    "intro": "Plug in any search provider behind UX Library's panel — 3rd-party online results, automatic offline fallback to TomTom onboard search.",
     "sections": {
       "overview": "Overview",
       "provider": "Provider setup",
@@ -176,7 +176,7 @@
     "title": "Displaying on Cluster",
     "badge": "Private",
     "version": "v0.1 · Q2 2026",
-    "intro": "ClusterActivity renders navigation information on the vehicle's instrument cluster display. Components are stacked vertically in a navigation column alongside the map: NIP → SLG → CMP → Horizon Panel events → ETA. Each is independently configurable and responds to navigation-state transitions automatically.",
+    "intro": "Mirror navigation guidance — manoeuvres, speed limit, lane guidance, and ETA — onto the vehicle's instrument cluster.",
     "apiDesc": "Start and configure the ClusterActivity to render navigation info on vehicle instrument cluster displays.",
     "sections": {
       "overview": "Overview",

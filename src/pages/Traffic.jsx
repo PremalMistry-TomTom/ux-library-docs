@@ -302,10 +302,7 @@ export default function TrafficPage() {
       </div>
 
       <div className="quick-answer">
-        UX Library renders <strong>live traffic data</strong> directly on the map — colour-coded
-        flow tiles showing road speeds and incident icons marking accidents, roadworks, closures,
-        hazards, and weather events. Both layers are independently configurable and can be
-        toggled, filtered, and refreshed on a custom schedule.
+        Toggle and configure live traffic flow tiles and incident icons on the navigation map — each layer is independently controlled.
       </div>
 
       <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />

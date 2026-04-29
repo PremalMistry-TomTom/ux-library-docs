@@ -387,10 +387,7 @@ export default function MapStyle() {
       </div>
 
       <div className="quick-answer">
-        A <strong>map style</strong> is a JSON-based specification — compatible with the
-        MapLibre style format — that defines the visual appearance of every rendered layer:
-        road colours, label fonts, water fill, icons, and draw order. UX Library ships three
-        preloaded styles and supports custom styles loaded from any URI.
+        Apply a custom visual style to the navigation map — define road colours, labels, icons, and layer order using MapLibre-compatible JSON.
       </div>
 
       <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />

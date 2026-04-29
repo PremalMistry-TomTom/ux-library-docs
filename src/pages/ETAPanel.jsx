@@ -78,9 +78,7 @@ export default function ETAPanel() {
       </div>
 
       <div className="quick-answer">
-        <strong>ETA Panel</strong> — shows route progress information (arrival time, travel
-        time, distance, battery SoC) during active guidance. Position and visible fields are
-        fully configurable by the OEM.
+        Show arrival time, travel time, distance, and battery SoC during guidance — fully positionable with individually toggleable fields.
       </div>
 
       <ApiLinks items={ETA_APIS} />

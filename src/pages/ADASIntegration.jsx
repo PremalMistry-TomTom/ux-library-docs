@@ -107,10 +107,10 @@ export default function ADASIntegration() {
       <div className="page-header">
         <h1>Advanced Driver Assistance (ADAS)</h1>
         <PageActions />
-        <p className="page-intro">
-          A standalone, modular safety layer that augments any existing navigation stack
-          with horizon-aware features — without replacing your incumbent nav provider.
-        </p>
+      </div>
+
+      <div className="quick-answer">
+        A modular safety layer that adds horizon-aware ADAS features — speed alerts, ISA, predictive hazards — to any navigation stack.
       </div>
 
       {/* Access notice */}

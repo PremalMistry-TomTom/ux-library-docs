@@ -2,7 +2,7 @@
   "overview": {
     "title": "TomTom AI Assistant",
     "badge": "Available",
-    "intro": "TomTom AI Agent for Navigation (TAIA) is a cloud service that converts natural language voice commands into navigation actions. The integrator provides STT, TTS, and their own Voice Personal Assistant (VPA); TAIA handles navigation intent understanding, voice response generation, and UI command production.",
+    "intro": "A cloud service that converts spoken navigation commands into route actions and spoken responses — no on-device NLU required.",
     "sections": {
       "overview": "Overview",
       "architecture": "Architecture",
@@ -67,7 +67,7 @@
   "config": {
     "title": "Configuration",
     "badge": "Available",
-    "intro": "Configure the TAIA SDK with your API key and endpoint, then pass navigation context with every request. The quality and completeness of the navigation context directly determines how accurately TAIA can respond to driver commands.",
+    "intro": "Connect your API key, set the endpoint, and shape the navigation context that travels with every request.",
     "sections": {
       "overview": "Overview",
       "dependency": "Adding the dependency",
@@ -126,7 +126,7 @@
   "voiceEngine": {
     "title": "Voice Engine",
     "badge": "Available",
-    "intro": "TAIA does not provide a TTS engine or voice persona. The integrator supplies their own Text-to-Speech engine and Voice Personal Assistant (VPA). This page explains how to wire the VPA and TTS layer so that TAIA responses are spoken aloud through your chosen audio system.",
+    "intro": "Bring your own TTS engine and voice persona — TAIA produces the response text, your engine speaks it.",
     "sections": {
       "overview": "Overview",
       "responsibilities": "OEM responsibilities",
@@ -170,7 +170,7 @@
   "speechToText": {
     "title": "Speech to Text Engine",
     "badge": "Available",
-    "intro": "TAIA does not perform speech recognition. It receives a plain text transcript and processes it as a navigation command. The STT engine is entirely the integrator's responsibility — any engine that produces a UTF-8 text string can be used.",
+    "intro": "TAIA starts where speech ends — hand it a plain-text transcript and it handles the navigation intent from there.",
     "sections": {
       "overview": "Overview",
       "boundary": "The TAIA input boundary",

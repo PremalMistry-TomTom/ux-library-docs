@@ -1,7 +1,7 @@
 {
   "title": "EV Support",
   "badge": "Available",
-  "intro": "EV Support enables range-aware navigation for electric vehicles — including automatic charging stop planning, real-time station search with connector matching, and route preferences for minimum battery thresholds. Three integrated layers work together: the Vehicle Integration API supplies battery and consumption data, the EV Search API discovers compatible charging stations, and the Long Distance EV Routing API plans multi-stop routes automatically.",
+  "intro": "Range-aware routing for EVs — automatic charging stop planning, connector-matched station search, and battery threshold preferences.",
   "architecture": {
     "heading": "Architecture",
     "body": "Vehicle data flows from the OEM's Battery Management System through the Vehicle Integration API into the Navigation SDK's VehicleProvider. The SDK uses this data to drive both the EV Search API (connector-aware station discovery) and the LDEVR API (automatic charging stop calculation on long routes).",

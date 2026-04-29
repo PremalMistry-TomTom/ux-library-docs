@@ -117,9 +117,7 @@ export default function RouteBar() {
       </div>
 
       <div className="quick-answer">
-        <strong>Route Bar</strong> — a vertical progress bar showing upcoming events (traffic,
-        cameras, hazards, POI suggestions, waypoints) placed at their proportional position along
-        the active route. This component is planned and not yet available in UX Library.
+        A vertical progress bar showing upcoming traffic, cameras, and hazards at their proportional positions along the active route. Planned — not yet available.
       </div>
 
       <div className="zone">

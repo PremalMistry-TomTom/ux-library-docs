@@ -319,9 +319,7 @@ export default function SafetyLocations() {
       </div>
 
       <div className="quick-answer">
-        UX Library renders <strong>speed cameras, mobile enforcement points, speed zones, and
-        danger zones</strong> on the navigation map automatically — no additional setup required
-        beyond initialising the Navigation Visualisation factory.
+        Speed cameras, enforcement zones, and danger areas — rendered automatically once Navigation Visualisation is initialised.
       </div>
 
       <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />

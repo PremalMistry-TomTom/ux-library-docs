@@ -381,9 +381,7 @@ export default function ScreenshotAssets() {
       </div>
 
       <div className="quick-answer">
-        A complete inventory of every UI mock and interactive demo across this library.
-        Use this to align on which static screenshots need to be captured — one per screen variant —
-        before moving from SVG mocks to real device images.
+        An inventory of every UI mock in the library — track which screens still need real device screenshots to replace the current SVG mocks.
       </div>
 
       <Callout type="warn">
