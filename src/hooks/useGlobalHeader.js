@@ -5,15 +5,21 @@ const NAV_H           = 52;   // px — UX Library topnav height
 const SCROLL_HIDE_AT  = 80;   // scrollY threshold before global header hides
 const SCROLL_SHOW_AT  = 8;    // scrollY threshold to auto-show again (back at top)
 const HOVER_HIDE_MS   = 2500; // ms idle before re-hiding after hover-reveal
+const HOVER_REVEAL_MS = 2500; // ms hover dwell before expanding the global header
 
 export function useGlobalHeader() {
   const [isVisible, setIsVisible] = useState(true);
   const timerRef         = useRef(null);
+  const revealTimerRef   = useRef(null);
   const mouseInGlobalRef = useRef(false);
 
   /* ─── Helpers ────────────────────────────────────────────── */
   const clearTimer = useCallback(() => {
     if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
+  }, []);
+
+  const clearRevealTimer = useCallback(() => {
+    if (revealTimerRef.current) { clearTimeout(revealTimerRef.current); revealTimerRef.current = null; }
   }, []);
 
   const scheduleHide = useCallback(() => {
@@ -23,17 +29,22 @@ export function useGlobalHeader() {
     }, HOVER_HIDE_MS);
   }, [clearTimer]);
 
-  /** Call this from any hover-entry that should reveal the global header */
+  /** Call this from any hover-entry that should reveal the global header.
+   *  Waits HOVER_REVEAL_MS before expanding — cancelled if mouse leaves first. */
   const reveal = useCallback(() => {
-    setIsVisible(true);
-    scheduleHide();
-  }, [scheduleHide]);
+    clearRevealTimer();
+    revealTimerRef.current = setTimeout(() => {
+      setIsVisible(true);
+      scheduleHide();
+    }, HOVER_REVEAL_MS);
+  }, [clearRevealTimer, scheduleHide]);
 
   /** Mouse entered the global header itself — cancel the idle timer */
   const onMouseEnterGlobal = useCallback(() => {
     mouseInGlobalRef.current = true;
+    clearRevealTimer();
     clearTimer();
-  }, [clearTimer]);
+  }, [clearRevealTimer, clearTimer]);
 
   /** Mouse left the global header — restart idle timer */
   const onMouseLeaveGlobal = useCallback(() => {
@@ -83,8 +94,8 @@ export function useGlobalHeader() {
     el.style.setProperty('--topnav-top',           `${GLOBAL_H}px`);
     el.style.setProperty('--breadcrumb-shift',     '-16px');
     el.style.setProperty('--breadcrumb-sep-alpha', '0');
-    return () => clearTimer();
-  }, [clearTimer]);
+    return () => { clearTimer(); clearRevealTimer(); };
+  }, [clearTimer, clearRevealTimer]);
 
-  return { isVisible, reveal, onMouseEnterGlobal, onMouseLeaveGlobal };
+  return { isVisible, reveal, cancelReveal: clearRevealTimer, onMouseEnterGlobal, onMouseLeaveGlobal };
 }

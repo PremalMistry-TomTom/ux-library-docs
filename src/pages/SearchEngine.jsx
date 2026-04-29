@@ -138,12 +138,14 @@ function ProviderSetup() {
 
   return (
     <div>
-      <div style={{ display: 'flex', marginBottom: 16, background: 'var(--code-bg)', borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)', width: 'fit-content' }}>
+      <div style={{ display: 'flex', marginBottom: 16, background: 'var(--bg)', borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)', width: 'fit-content', padding: 3, gap: 3 }}>
         {[['online', '🌐  Online (3rd party)'], ['offline', '📡  Offline only (TomTom)']].map(([id, label]) => (
           <button key={id} onClick={() => setMode(id)} style={{
-            padding: '8px 18px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', border: 'none',
-            background: mode === id ? 'var(--red)' : 'transparent',
-            color: mode === id ? '#fff' : 'var(--mid)',
+            padding: '7px 18px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer',
+            border: mode === id ? '1px solid var(--red)' : '1px solid transparent',
+            borderRadius: 6,
+            background: mode === id ? 'var(--red)' : 'var(--white)',
+            color: mode === id ? '#fff' : 'var(--black)',
             transition: 'all 0.15s',
           }}>{label}</button>
         ))}
@@ -288,9 +290,9 @@ export function SearchUICustomiser() {
         {UI_TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} style={{
             padding: '7px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
-            background: tab === t.id ? 'var(--red)' : 'var(--code-bg)',
-            color: tab === t.id ? '#fff' : 'var(--mid)',
-            border: tab === t.id ? 'none' : '1px solid var(--border)',
+            background: tab === t.id ? 'var(--red)' : 'var(--white)',
+            color: tab === t.id ? '#fff' : 'var(--black)',
+            border: tab === t.id ? '1px solid var(--red)' : '1px solid var(--border)',
             transition: 'all 0.15s',
           }}>{t.label}</button>
         ))}

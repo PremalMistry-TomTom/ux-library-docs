@@ -29,9 +29,10 @@ function ExternalIcon() {
 const MAX_COLS = 4;
 
 export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
-  // Pad to the next full row so column dividers extend through empty cells
-  const remainder = items.length % MAX_COLS;
-  const spacers   = remainder === 0 ? 0 : MAX_COLS - remainder;
+  // Pad the last row only when there IS a second row — single-row layouts need no spacers
+  const hasMultipleRows = items.length > MAX_COLS;
+  const remainder       = items.length % MAX_COLS;
+  const spacers         = hasMultipleRows && remainder !== 0 ? MAX_COLS - remainder : 0;
 
   return (
     <div className="api-links-block">

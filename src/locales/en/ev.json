@@ -2,11 +2,194 @@
   "title": "EV Support",
   "badge": "Available",
   "intro": "Range-aware routing for EVs — automatic charging stop planning, connector-matched station search, and battery threshold preferences.",
-  "architecture": {
-    "heading": "Architecture",
-    "body": "Vehicle data flows from the OEM's Battery Management System through the Vehicle Integration API into the Navigation SDK's VehicleProvider. The SDK uses this data to drive both the EV Search API (connector-aware station discovery) and the LDEVR API (automatic charging stop calculation on long routes).",
-    "callout": "The Vehicle Integration API and Navigation SDK must both be configured — the SDK's VehicleProvider is the source of truth for the routing engine. Charge level must be set before navigation starts or resumes."
+
+  "overview": {
+    "title": "EV & Charging",
+    "intro": "End-to-end EV integration — from wiring the Battery Management System through charging station search, long-distance route planning, and the in-navigation driver UI.",
+    "arch": {
+      "heading": "How it all connects",
+      "body": "EV support in the UX Library spans five layers: the vehicle's BMS feeds live battery data upward through the Vehicle Integration API into the Navigation SDK. From there, the LDEVR API plans optimal charging stops, the EV Search API surfaces compatible stations, and the in-navigation UI keeps the driver informed throughout the journey.",
+      "body2": "Each layer is independently configurable — you can deploy charging search without LDEVR, or enable range-ring overlays without custom consumption models."
+    },
+    "guide": {
+      "heading": "In this section",
+      "body": "Five pages cover the full integration journey. Start with Vehicle & Battery to establish accurate range predictions, then build outward."
+    },
+    "sections": {
+      "battery": { "label": "Vehicle & Battery", "desc": "BMS setup, battery parameters, and consumption model with vehicle class presets." },
+      "charging_search": { "label": "Charging Search", "desc": "Connector-matched station discovery, real-time availability, and preferred network configuration." },
+      "routing": { "label": "Long-Distance Routing", "desc": "LDEVR API, automatic stop planning, and interactive threshold calculator." },
+      "nav_ui": { "label": "In-Navigation UI", "desc": "SoC strip, reachable range ring, horizon stop countdown, and low-battery re-routing." },
+      "requirements": { "label": "Requirements", "desc": "SDK dependencies, Android permissions, and integration checklist." }
+    },
+    "order": {
+      "heading": "Integration order",
+      "body": "Follow this sequence to avoid blocked dependencies — the routing and search APIs depend on accurate vehicle data being set first.",
+      "steps": {
+        "s0": { "title": "Add SDK dependencies",           "desc": "Add vehicle-integration-api, vehicle-provider, and search-ev to your build.gradle." },
+        "s1": { "title": "Configure battery & consumption","desc": "Send accurate battery capacity, charge curve, and speed consumption curve via VehicleInfoManager." },
+        "s2": { "title": "Initialise VehicleProvider",     "desc": "Set the initial SoC in the Navigation SDK and wire BMS callbacks for live updates at 1 Hz." },
+        "s3": { "title": "Enable EV Search",               "desc": "Configure connector type filters and optionally set preferred charging networks (MSPs)." },
+        "s4": { "title": "Configure in-navigation UI",     "desc": "Enable the SoC strip, range ring, and horizon stop card. Set low-battery re-routing thresholds." }
+      }
+    }
   },
+
+  "battery": {
+    "title": "Vehicle & Battery",
+    "intro": "Accurate vehicle parameters are the foundation of all EV features. The consumption model you set here determines the precision of every range prediction, charging stop, and reachable range calculation downstream.",
+    "presets": {
+      "heading": "Vehicle class presets",
+      "body": "Select a vehicle class to see representative battery parameters, charge rate and consumption curves, and the generated Kotlin configuration. These are starting-point values — use your vehicle's actual specification sheets for production.",
+      "classes": {
+        "city":        "City EV",
+        "family":      "Family EV",
+        "performance": "Performance EV",
+        "suv":         "SUV / Crossover"
+      },
+      "stats": {
+        "capacity":       "Battery capacity",
+        "peakCharge":     "Peak charge rate",
+        "highwayConsumed":"Highway consumption",
+        "aux":            "Auxiliary load"
+      },
+      "generatedCode": "Generated configuration",
+      "callout": "These presets are illustrative. Always use your vehicle programme's validated consumption curves — deviating by more than 10% from actual values will cause measurable inaccuracy in charging stop placement."
+    },
+    "aux": {
+      "heading": "Auxiliary power load",
+      "body": "Auxiliary power covers all non-drivetrain electrical load: climate control, infotainment, lighting, seat heating, and communication systems. In winter conditions, HVAC alone can consume 1–2 kW continuously, reducing effective range by 20–35%. Set the auxiliaryPower parameter to the 5-minute rolling average your vehicle programme measures.",
+      "colVehicle": "Vehicle / condition",
+      "colLoad":    "Typical load",
+      "colImpact":  "Range impact",
+      "callout":    "Auxiliary power is the single most under-specified parameter in EV integrations. A 500 W default is used when not supplied — for cold-climate or SUV deployments this can be 3–4× too low, leading to charging stops appearing later than they should."
+    },
+    "offset": {
+      "heading": "Charging time offset",
+      "body": "The chargingTimeOffset accounts for the time spent physically connecting and disconnecting the charge cable — typically 60–180 seconds. The default is 60 s. For premium vehicles with automated charging arms, or for fleet deployments where cable handling time is documented, adjust this value to improve total journey time accuracy in route planning."
+    }
+  },
+
+  "chargingSearch": {
+    "title": "Charging Search",
+    "intro": "The EV Search API surfaces compatible charging stations nearby, along the route, or near the destination. Connector type matching, real-time availability, and preferred network prioritisation are all configurable.",
+    "msp": {
+      "heading": "Preferred charging networks",
+      "body": "OEMs can configure a prioritised list of Mobility Service Providers (MSPs). The LDEVR API uses this list to prefer stops at those networks when stop quality is otherwise equal. Select and reorder the networks relevant to your deployment region.",
+      "available": "Available networks",
+      "priority":  "Priority order",
+      "empty":     "No networks selected — LDEVR will choose stops by optimal time only.",
+      "output":    "LDEVR request body",
+      "callout":   "MSP preferences influence stop selection when multiple stations offer equivalent quality. They do not override the minimum SoC thresholds or force sub-optimal routing to reach a preferred network."
+    }
+  },
+
+  "routing": {
+    "title": "Long-Distance Routing",
+    "intro": "The LDEVR API calculates the optimal sequence of charging stops for routes beyond single-charge range. Adjust the minimum SoC thresholds below to see how they affect stop count, total charge time, and journey duration.",
+    "strategy": {
+      "heading": "Charging stop strategy",
+      "body": "Drag the sliders to adjust minimum SoC thresholds. The route timeline updates in real time — note the trade-off between safety buffer and total journey time.",
+      "minAtStop":         "Min battery at each stop",
+      "minAtDest":         "Min battery at destination",
+      "stops":             "Charging stops",
+      "chargeTime":        "Total charge time",
+      "totalTime":         "Total journey time",
+      "arrivalSoC":        "Arrival SoC",
+      "chargeStopsLabel":  "charging stops",
+      "callout":           "Lower thresholds reduce stop count and journey time but leave less buffer for unexpected consumption. TomTom recommends 15% at stops and destination as a baseline for most markets."
+    }
+  },
+
+  "navUI": {
+    "title": "In-Navigation UI",
+    "intro": "The in-navigation EV UI keeps the driver informed throughout the journey — state of charge, estimated range, next charging stop, and automatic re-routing when battery drops below threshold.",
+    "soc": {
+      "heading": "State of charge strip",
+      "body": "The SoC strip appears below the NIP during active navigation. It shows current battery percentage, estimated range remaining, and — when SoC drops below the low threshold — the next planned charging stop. Select a battery state below to preview how the UI adapts.",
+      "stripLabel":   "SoC strip",
+      "horizonLabel": "Horizon panel"
+    },
+    "rangeRing": {
+      "heading": "Reachable range overlay",
+      "body": "The reachable range ring (isoline) visualises how far the vehicle can travel on current charge. Charging stations within the ring are highlighted in green; those outside are dimmed. The ring updates every 30 seconds during navigation.",
+      "mapLabel": "Range ring on map",
+      "hint":     "Select a SoC state above to see how the ring shrinks as battery depletes.",
+      "callout":  "The range ring is computed by the TomTom Reachable Range API. It accounts for the current consumption model, remaining SoC, and real-time traffic — not a simple radius."
+    },
+    "reroute": {
+      "heading": "Low-battery re-routing",
+      "body": "When SoC drops below the configured threshold during navigation, the SDK automatically recalculates the route to include the nearest suitable charging stop.",
+      "colTrigger":   "Trigger",
+      "colBehaviour": "Behaviour",
+      "t1": "SoC drops below low threshold (default 25%)",
+      "b1": "Next charging stop added to horizon panel. Driver notified.",
+      "t2": "SoC drops below critical threshold (default 10%)",
+      "b2": "Route immediately recalculated to nearest charger. Warning banner shown.",
+      "t3": "Planned charging stop becomes unreachable",
+      "b3": "Route recalculated with closer stop. Previous stop removed from plan.",
+      "t4": "Driver skips a planned charging stop",
+      "b4": "Route recalculated from current position. SoC at destination re-evaluated.",
+      "callout": "Re-routing to a charging stop overrides active detour avoidances — the SDK will route through toll roads or unpaved segments if they are required to reach a charger safely."
+    }
+  },
+
+  "requirements": {
+    "title": "Requirements",
+    "intro": "SDK dependencies, Android permissions, and a step-by-step integration checklist — everything needed before going live with EV features.",
+    "heading": "SDK dependencies",
+    "colDep": "Dependency",
+    "colVersion": "Version / Detail",
+    "checklist": {
+      "heading": "Integration checklist",
+      "body": "Work through each phase in order. Later phases depend on earlier ones being complete — particularly vehicle data accuracy affecting routing quality.",
+      "progress": "Integration progress",
+      "complete": "All steps complete — your EV integration is ready for testing.",
+      "phase1": "Project setup",
+      "phase2": "Battery & consumption model",
+      "phase3": "Navigation SDK vehicle state",
+      "phase4": "Search & routing",
+      "phase5": "In-navigation UI",
+      "items": {
+        "depVehicle":      "Add vehicle-integration-api and vehicle-provider to build.gradle",
+        "depSearch":       "Add search-ev module to build.gradle",
+        "permissions":     "Declare INTERNET, ACCESS_FINE_LOCATION, and VEHICLE_INTEGRATION permissions",
+        "bmsConnect":      "Connect VehicleInfoManager to OEM BMS callback at 1 Hz",
+        "batteryParams":   "Send currentBatteryCapacity and stateOfEnergy via sendBatteryInfo()",
+        "consumption":     "Send validated speedConsumptionCurve and batteryChargeCurve",
+        "connectors":      "Send vehicleConnectors matching the vehicle's physical connector types",
+        "vehicleProvider": "Set Vehicle.Car with ElectricEngine in VehicleProvider at app start",
+        "socInit":         "Initialise ChargeLevel with current SoC before starting navigation",
+        "socUpdate":       "Wire addVehicleUpdatedListener to update SoC from BMS in real time",
+        "evSearch":        "Configure EvSearchOptions with connector filter and geoBias",
+        "msp":             "Set preferredMSPs list in LDEVR request if commercial MSP agreements apply",
+        "ldevr":           "Verify LDEVR route returns charging stops on a route exceeding vehicle range",
+        "socStrip":        "Enable EVNavigationConfiguration with showStateOfCharge and showRemainingRange",
+        "rangeRing":       "Enable ReachableRangeConfiguration and verify ring updates during navigation",
+        "horizonStop":     "Confirm charging stop card appears in Horizon Panel below low-battery threshold",
+        "reroute":         "Test low-battery re-routing by simulating SoC drop below critical threshold"
+      }
+    },
+    "permissions": {
+      "heading": "Android permissions",
+      "body": "Declare all four permissions in AndroidManifest.xml. ACCESS_FINE_LOCATION and VEHICLE_INTEGRATION require runtime permission requests on Android 6+.",
+      "colPermission": "Permission",
+      "colRequired":   "Required",
+      "colReason":     "Reason",
+      "callout":       "Missing VEHICLE_INTEGRATION permission causes VehicleInfoManager to silently fail — BMS data will not reach the SDK and range calculations will fall back to defaults."
+    },
+    "deps": {
+      "vehicleLib": "Vehicle Integration Library",
+      "vehicleModule": "Navigation SDK — Vehicle module",
+      "searchModule": "Navigation SDK — Search module",
+      "ldevrApi": "LDEVR REST API",
+      "evSearch": "EV Search API",
+      "bms": "Vehicle BMS / SoC feed",
+      "internet": "Active internet connection",
+      "weight": "Vehicle weight"
+    }
+  },
+
   "vehicleSetup": {
     "heading": "Vehicle setup",
     "body": "Before EV features activate, the SDK needs an accurate model of the vehicle's battery, energy consumption, efficiency, and supported connector types. These parameters feed directly into route range calculations — incorrect values will produce inaccurate charging stop predictions.",
@@ -111,31 +294,6 @@
       "criticalMin": "Critical min at destination",
       "avoidTolls": "Avoid tolls",
       "avoidUnpaved": "Avoid unpaved roads"
-    }
-  },
-  "requirements": {
-    "heading": "Requirements",
-    "colDep": "Dependency",
-    "colVersion": "Version / Detail",
-    "deps": {
-      "vehicleLib": "Vehicle Integration Library",
-      "vehicleModule": "Navigation SDK — Vehicle module",
-      "searchModule": "Navigation SDK — Search module",
-      "ldevrApi": "LDEVR REST API",
-      "evSearch": "EV Search API",
-      "bms": "Vehicle BMS / SoC feed",
-      "internet": "Active internet connection",
-      "weight": "Vehicle weight"
-    },
-    "details": {
-      "vehicleLib": "com.tomtom.sdk.vehicle:vehicle-integration-api",
-      "vehicleModule": "com.tomtom.sdk.vehicle:vehicle-provider:2.2.0",
-      "searchModule": "com.tomtom.sdk.search:search-ev:2.2.0",
-      "ldevrApi": "api.tomtom.com/routing/1/calculateLongDistanceEVRoute",
-      "evSearch": "Included in Navigation SDK search module",
-      "bms": "OEM-provided. Update frequency: 1 Hz minimum.",
-      "internet": "Required for LDEVR and real-time station availability.",
-      "weight": "Hardcoded at 2000 kg — cannot be overridden."
     }
   }
 }

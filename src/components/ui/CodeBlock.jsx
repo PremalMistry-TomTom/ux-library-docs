@@ -46,7 +46,7 @@ function HighlightedPre({ code, lang }) {
   );
 }
 
-export default function CodeBlock({ label, tabs, children }) {
+export default function CodeBlock({ label, tabs, children, code, language }) {
   const { t } = useTranslation('common');
   const [activeTab, setActiveTab] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -55,10 +55,10 @@ export default function CodeBlock({ label, tabs, children }) {
   const panels = Array.isArray(children) ? children : [children];
   const activePanel = panels[activeTab];
   const activeLabel = tabList[activeTab] || '';
-  const lang = detectLang(activeLabel);
 
-  // Extract raw text from the child <pre> node
-  const rawCode = extractText(activePanel?.props?.children ?? activePanel);
+  // `code` + `language` props take priority over children-based extraction
+  const lang = code ? detectLang(language || '') : detectLang(activeLabel);
+  const rawCode = code ?? extractText(activePanel?.props?.children ?? activePanel);
 
   function handleCopy() {
     navigator.clipboard?.writeText(rawCode).catch(() => {});

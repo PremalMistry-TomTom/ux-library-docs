@@ -61,45 +61,56 @@ const M = {
   teal:   '#39d353',
 };
 
-/* ─── Architecture diagram ──────────────────────────────────────────────────── */
+/* ─── Architecture diagram — stack pattern (same as TAIA) ───────────────────── */
 export function ArchDiagram() {
-  const box = (x, y, w, h, label, sub, color = M.blue) => (
-    <g key={label}>
-      <rect x={x} y={y} width={w} height={h} rx="6" fill={M.card2} stroke={color} strokeWidth="1.5" strokeOpacity="0.6" />
-      <text x={x + w / 2} y={y + h / 2 - 6} textAnchor="middle" fontSize="11" fontWeight="700" fontFamily="system-ui" fill={color}>{label}</text>
-      {sub && <text x={x + w / 2} y={y + h / 2 + 9} textAnchor="middle" fontSize="9" fontFamily="system-ui" fill={M.dim}>{sub}</text>}
-    </g>
-  );
-  const arrow = (x1, y1, x2, y2) => (
-    <g key={`${x1}-${x2}`}>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={M.muted} strokeWidth="1.2" markerEnd="url(#arr)" />
-    </g>
-  );
   return (
-    <svg viewBox="0 0 680 200" style={{ width: '100%', maxWidth: 680, height: 'auto', display: 'block' }}>
-      <defs>
-        <marker id="arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-          <path d="M0,0 L6,3 L0,6 Z" fill={M.muted} />
-        </marker>
-      </defs>
-      {/* OEM */}
-      {box(20, 76, 120, 48, 'Vehicle BMS', 'Battery / SoC data', '#a78bfa')}
-      {arrow(140, 100, 168, 100)}
-      {/* VehicleIntegration */}
-      {box(170, 64, 130, 72, 'Vehicle Integration', 'VehicleInfoManager', M.blue)}
-      {arrow(300, 100, 328, 100)}
-      {/* NavSDK */}
-      {box(330, 64, 130, 72, 'Navigation SDK', 'VehicleProvider', M.blue)}
-      {/* LDEVR */}
-      {arrow(460, 80, 488, 60)}
-      {box(490, 34, 130, 48, 'LDEVR API', 'Charging stop planning', M.green)}
-      {/* EV Search */}
-      {arrow(460, 110, 488, 128)}
-      {box(490, 108, 130, 48, 'EV Search API', 'Station discovery', M.green)}
-      {/* labels */}
-      <text x="154" y="93" fontSize="8" fill={M.dim} textAnchor="middle">BMS events</text>
-      <text x="315" y="93" fontSize="8" fill={M.dim} textAnchor="middle">SDK calls</text>
-    </svg>
+    <div className="adas-stack" style={{ maxWidth: 560, margin: '20px 0' }}>
+
+      {/* OEM — Vehicle BMS */}
+      <div className="adas-stack-layer adas-stack-oem" style={{ borderRadius: '8px 8px 0 0' }}>
+        <div className="adas-stack-text">
+          <span className="adas-stack-label">Vehicle BMS</span>
+          <span className="adas-stack-note">Sends battery state and SoC data from the drivetrain</span>
+        </div>
+        <span className="adas-stack-badge adas-stack-badge-oem">OEM</span>
+      </div>
+      <div className="adas-stack-arrow">↓</div>
+
+      {/* TomTom — Vehicle Integration API */}
+      <div className="adas-stack-layer adas-stack-highlight">
+        <div className="adas-stack-text">
+          <span className="adas-stack-label">Vehicle Integration API</span>
+          <span className="adas-stack-note">VehicleInfoManager — bridges BMS events into the SDK</span>
+        </div>
+        <span className="adas-stack-badge adas-stack-badge-tt">TomTom</span>
+      </div>
+      <div className="adas-stack-arrow">↓</div>
+
+      {/* TomTom — Navigation SDK */}
+      <div className="adas-stack-layer adas-stack-highlight" style={{ borderRadius: '0 0 8px 8px' }}>
+        <div className="adas-stack-text">
+          <span className="adas-stack-label">Navigation SDK</span>
+          <span className="adas-stack-note">VehicleProvider — source of truth for range-aware routing</span>
+        </div>
+        <span className="adas-stack-badge adas-stack-badge-tt">TomTom</span>
+      </div>
+      <div className="adas-stack-arrow">↓</div>
+
+      {/* Outputs — LDEVR + EV Search */}
+      <div className="adas-stack-outputs">
+        <div className="adas-stack-output adas-stack-output-tt">
+          <span className="adas-stack-label">LDEVR API</span>
+          <span className="adas-stack-note">Calculates charging stops on long routes</span>
+          <span className="adas-stack-badge adas-stack-badge-tt">TomTom</span>
+        </div>
+        <div className="adas-stack-output adas-stack-output-tt">
+          <span className="adas-stack-label">EV Search API</span>
+          <span className="adas-stack-note">Finds compatible charging stations nearby</span>
+          <span className="adas-stack-badge adas-stack-badge-tt">TomTom</span>
+        </div>
+      </div>
+
+    </div>
   );
 }
 

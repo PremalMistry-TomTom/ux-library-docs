@@ -4,18 +4,21 @@ import PageActions from '../components/ui/PageActions';
 
 /* Pages that have real content — everything else shows "Coming soon" */
 const IMPLEMENTED = new Set([
-  'design-tokens', 'colour', 'font', 'corner-radius',
+  'design-tokens', 'theming', 'colour', 'font', 'corner-radius',
   'map-style', 'traffic', 'safety-locations',
   'search-engine', 'home-screen-layout', 'nav-controls',
   'horizon-panel', 'instruction-panel', 'eta-panel', 'route-bar',
-  'ai-overview', 'voice-engine', 'speech-to-text', 'ai-config',
+  'ai-overview', 'ai-personality', 'intent-routing',
+  'voice-engine', 'speech-to-text', 'ai-config',
   'cluster', 'ev', 'adas',
+  'ev-overview', 'ev-battery', 'ev-charging-search', 'ev-routing', 'ev-nav-ui', 'ev-requirements',
 ]);
 
 /* One-line descriptions for implemented pages */
 const PAGE_DESCS = {
   // Assets
   'design-tokens': 'The full catalogue of design tokens — spacing, elevation, and motion values that drive every component.',
+  'theming':        'Apply your OEM brand — colours, typography, radius, assets, and fonts — using Tokens Studio and the RRO mechanism.',
   'colour':        'Brand colour palettes, semantic colour roles, and how to override them per theme and OEM.',
   'font':          'Typography scale, supported typefaces, and how to supply a custom font family.',
   'corner-radius': 'Global and per-component corner radius tokens — from pill buttons to map cards.',
@@ -33,6 +36,8 @@ const PAGE_DESCS = {
   'route-bar':          'Customise the route progress bar, waypoints, and traffic summary.',
   // TomTom AI Assistant
   'ai-overview':    'Overview of the TAIA architecture, capabilities, and integration scope.',
+  'ai-personality': 'Configure the assistant name, response tone, and silence threshold to match your brand voice.',
+  'intent-routing': 'Route navigation intents through TAIA and forward media, climate, and phone intents to your own domain handlers.',
   'voice-engine':   'Connect your OEM text-to-speech engine for voice output.',
   'speech-to-text': 'Integrate a speech-to-text provider for voice input and wake word handling.',
   'ai-config':      'Initialise the TAIA client, configure navigation context, and handle MQTT events.',
@@ -40,16 +45,24 @@ const PAGE_DESCS = {
   'cluster': 'Render NIP, lane guidance, CMP, and ETA on the instrument cluster via Intent.',
   'ev':      'Enable range-aware routing, charging station search, and automatic stop planning.',
   'adas':    'Layer TomTom safety and horizon data onto any navigation stack for ISA compliance, predictive speed control, and safety alerting.',
+  // EV & Charging
+  'ev-overview':        'Architecture, data flow, and where to start your EV integration.',
+  'ev-battery':         'BMS integration, battery parameters, consumption curves, and vehicle class presets.',
+  'ev-charging-search': 'Connector-matched station search, real-time availability, and preferred network configuration.',
+  'ev-routing':         'Long-distance route planning with automatic charging stops and interactive threshold tuning.',
+  'ev-nav-ui':          'In-navigation SoC strip, reachable range ring, horizon stop countdown, and low-battery re-routing.',
+  'ev-requirements':    'SDK dependencies, Android permissions, and a step-by-step integration checklist.',
 };
 
 /* Domain intro blurbs */
 const DOMAIN_INTROS = {
-  assets:           'Design tokens, colour palettes, typography, and icon assets — the building blocks every component and theme is derived from.',
-  mapCustomisation:   'Customise how the map looks and behaves — including style, traffic overlays, safety cameras, route lines, and map markers.',
-  appCustomisation:   'Tailor the in-app UI to your product — configure search, home screen layout, navigation panels, and ETA display.',
-  taia:               'Integrate the TomTom AI Assistant for natural-language navigation commands and hands-free interaction.',
-  vehicleIntegration: 'Connect navigation data to vehicle systems including instrument cluster, head-up display, ADAS, and drivetrain integrations.',
-  releaseSupport:     'Stay up to date with release notes, migration guides, and support resources.',
+  assets:           'Design tokens, theming workflow, palettes, type, and icons — the foundation every component and OEM theme is built on.',
+  mapCustomisation:   'Style the map, overlay traffic and safety data, and customise route lines and markers.',
+  appCustomisation:   'Tailor search, home layout, guidance panels, and controls to your product.',
+  taia:               'Natural-language navigation commands and hands-free interaction via the TomTom AI Assistant.',
+  vehicleIntegration: 'Connect navigation data to the cluster, HUD, ADAS, and drivetrain systems.',
+  releaseSupport:     'Release notes, migration guides, and support resources.',
+  evCharging:         'Full EV integration journey — from BMS wiring and battery modelling through charging search, long-distance routing, and the in-navigation driver UI.',
 };
 
 function ArrowIcon() {

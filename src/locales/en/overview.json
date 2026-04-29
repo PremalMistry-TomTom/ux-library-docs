@@ -1,6 +1,6 @@
 {
   "title": "UX Library",
-  "intro": "A composable Android UI layer on top of NavSDK that helps you build driving applications — Automotive AAOS, Logistics, Fleet — without writing a full navigation UI from scratch.",
+  "intro": "Production-ready navigation UI for Android — fully themeable, OEM-customisable, built on NavSDK.",
   "what": {
     "heading": "What is UX Library?",
     "body1": "UX Library is TomTom's customisation layer for navigation applications. It sits between NavSDK (the routing, map rendering and positioning engine) and the OEM application, providing production-ready UI components, design tokens, and a stable API surface for tailoring every visible aspect of the navigation experience.",

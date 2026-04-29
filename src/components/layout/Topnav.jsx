@@ -41,7 +41,7 @@ function MoonIcon() {
   );
 }
 
-export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter }) {
+export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave }) {
   const { t } = useTranslation('common');
   const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: 'Overview' });
   const ctx        = getPageContext(currentPage);
@@ -56,7 +56,7 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
   };
 
   return (
-    <nav className="topnav" onMouseEnter={onMouseEnter}>
+    <nav className="topnav" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       <div className="topnav-crumb">
         <span className="topnav-crumb-root" onClick={onHome}>UX Library</span>
 

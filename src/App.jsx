@@ -28,6 +28,7 @@ import HomeScreenLayout from './pages/HomeScreenLayout';
 import SearchEngine from './pages/SearchEngine';
 import Font from './pages/Font';
 import DesignTokens from './pages/DesignTokens';
+import Theming from './pages/Theming';
 import CornerRadius from './pages/CornerRadius';
 import MapStyle from './pages/MapStyle';
 import TrafficPage from './pages/Traffic';
@@ -38,10 +39,18 @@ import InstructionPanel from './pages/InstructionPanel';
 import ETAPanel from './pages/ETAPanel';
 import RouteBar from './pages/RouteBar';
 import TAIAOverview from './pages/TAIAOverview';
+import ConversationPersonality from './pages/ConversationPersonality';
+import IntentRouting from './pages/IntentRouting';
 import VoiceEngine from './pages/VoiceEngine';
 import SpeechToText from './pages/SpeechToText';
 import AIConfig from './pages/AIConfig';
 import EVSupport from './pages/EVSupport';
+import EVOverview from './pages/EVOverview';
+import EVBattery from './pages/EVBattery';
+import EVChargingSearch from './pages/EVChargingSearch';
+import EVRouting from './pages/EVRouting';
+import EVNavUI from './pages/EVNavUI';
+import EVRequirements from './pages/EVRequirements';
 import Cluster from './pages/Cluster';
 import ADASIntegration from './pages/ADASIntegration';
 import ScreenshotAssets from './pages/ScreenshotAssets';
@@ -49,11 +58,12 @@ import DomainLanding from './pages/DomainLanding';
 import Placeholder from './pages/Placeholder';
 
 const FULL_PAGES = new Set([
-  'overview', 'colour', 'home-screen-layout', 'search-engine', 'font', 'design-tokens',
+  'overview', 'colour', 'home-screen-layout', 'search-engine', 'font', 'design-tokens', 'theming',
   'map-style', 'traffic', 'safety-locations',
   'nav-controls', 'horizon-panel', 'instruction-panel', 'eta-panel', 'route-bar',
-  'ai-overview', 'voice-engine', 'speech-to-text', 'ai-config',
+  'ai-overview', 'ai-personality', 'intent-routing', 'voice-engine', 'speech-to-text', 'ai-config',
   'ev', 'cluster', 'adas',
+  'ev-overview', 'ev-battery', 'ev-charging-search', 'ev-routing', 'ev-nav-ui', 'ev-requirements',
   'screenshot-assets',
 ]);
 
@@ -65,6 +75,7 @@ function PageContent({ pageId, onNavigate }) {
     case 'search-engine':      return <SearchEngine />;
     case 'font':               return <Font />;
     case 'design-tokens':      return <DesignTokens />;
+    case 'theming':            return <Theming />;
     case 'corner-radius':      return <CornerRadius />;
     case 'map-style':          return <MapStyle />;
     case 'traffic':            return <TrafficPage />;
@@ -75,10 +86,19 @@ function PageContent({ pageId, onNavigate }) {
     case 'eta-panel':          return <ETAPanel />;
     case 'route-bar':          return <RouteBar />;
     case 'ai-overview':        return <TAIAOverview />;
+    case 'ai-personality':     return <ConversationPersonality />;
+    case 'intent-routing':     return <IntentRouting />;
     case 'voice-engine':       return <VoiceEngine />;
     case 'speech-to-text':     return <SpeechToText />;
     case 'ai-config':          return <AIConfig />;
-    case 'ev':                 return <EVSupport />;
+    case 'ev':                 return <EVOverview onNavigate={onNavigate} />;
+    case 'ev-overview':        return <EVOverview onNavigate={onNavigate} />;
+    case 'ev-battery':         return <EVBattery />;
+    case 'ev-charging-search': return <EVChargingSearch />;
+    case 'ev-routing':         return <EVRouting />;
+    case 'ev-nav-ui':          return <EVNavUI />;
+    case 'ev-requirements':    return <EVRequirements />;
+    case 'ev-charging':        return <DomainLanding groupKey="evCharging" onNavigate={onNavigate} />;
     case 'cluster':            return <Cluster />;
     case 'adas':               return <ADASIntegration />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
@@ -96,7 +116,7 @@ function PageContent({ pageId, onNavigate }) {
 export default function App() {
   const [currentPage, setCurrentPage] = useState('overview');
   const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
-  const { isVisible: isGlobalVisible, reveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
+  const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
@@ -125,6 +145,7 @@ export default function App() {
         isDark={isDark}
         onToggleTheme={() => setIsDark(d => !d)}
         onMouseEnter={reveal}
+        onMouseLeave={cancelReveal}
       />
       <div className="shell">
         <Sidenav currentPage={currentPage} onNavigate={navigate} />

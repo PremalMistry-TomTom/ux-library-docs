@@ -104,6 +104,7 @@ A `vercel.json` is already committed to the repo with the correct build settings
 ## Running locally
 
 ```bash
+cd ux-library
 npm install
 npm run dev
 ```

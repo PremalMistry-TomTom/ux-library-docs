@@ -18,17 +18,19 @@
     "overview": "Overview",
     "quickstart": "Quickstart",
     "groups": {
-      "assets": "Assets",
+      "assets": "Design System",
       "mapCustomisation": "Map Customisation",
       "appCustomisation": "App Customisation",
       "taia": "TomTom AI Assistant",
       "vehicleIntegration": "Vehicle Integration",
+      "evCharging": "EV & Charging",
       "examples": "Examples",
       "releaseSupport": "Release & Support",
       "apiReference": "API Reference"
     },
     "items": {
       "design-tokens": "Design tokens",
+      "theming": "Theming",
       "string-ids": "String IDs",
       "colour": "Colour",
       "font": "Font",
