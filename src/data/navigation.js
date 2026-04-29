@@ -2,7 +2,7 @@ export const NAV = [
   { id: 'overview',   label: 'Overview',   type: 'top' },
   { id: 'quickstart', label: 'Quickstart', type: 'top' },
   {
-    label: 'Assets', key: 'assets', type: 'group', defaultOpen: false,
+    label: 'Assets', key: 'assets', type: 'group', defaultOpen: false, landingId: 'assets',
     items: [
       { id: 'design-tokens', label: 'Design tokens' },
       { id: 'string-ids',    label: 'String IDs' },
@@ -114,6 +114,7 @@ export function getPageContext(pageId) {
 
 export const PAGE_TITLES = {
   overview: 'Overview', quickstart: 'Quickstart',
+  'assets': 'Assets',
   'map-customisation': 'Map Customisation',
   'app-customisation': 'App Customisation',
   'ai-assistant':        'TomTom AI Assistant',

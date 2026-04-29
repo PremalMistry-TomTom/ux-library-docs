@@ -3,6 +3,7 @@ import { NAV } from '../data/navigation';
 
 /* Pages that have real content — everything else shows "Coming soon" */
 const IMPLEMENTED = new Set([
+  'design-tokens', 'colour', 'font', 'corner-radius',
   'map-style', 'traffic', 'safety-locations',
   'search-engine', 'home-screen-layout', 'nav-controls',
   'horizon-panel', 'instruction-panel', 'eta-panel', 'route-bar',
@@ -12,6 +13,11 @@ const IMPLEMENTED = new Set([
 
 /* One-line descriptions for implemented pages */
 const PAGE_DESCS = {
+  // Assets
+  'design-tokens': 'The full catalogue of design tokens — spacing, elevation, and motion values that drive every component.',
+  'colour':        'Brand colour palettes, semantic colour roles, and how to override them per theme and OEM.',
+  'font':          'Typography scale, supported typefaces, and how to supply a custom font family.',
+  'corner-radius': 'Global and per-component corner radius tokens — from pill buttons to map cards.',
   // Map Customisation
   'map-style':        'Configure light and dark map themes, colour overrides, and brand-specific styling.',
   'traffic':          'Display real-time traffic flow and incident overlays on the map.',
@@ -37,6 +43,7 @@ const PAGE_DESCS = {
 
 /* Domain intro blurbs */
 const DOMAIN_INTROS = {
+  assets:           'Design tokens, colour palettes, typography, and icon assets — the building blocks every component and theme is derived from.',
   mapCustomisation:   'Customise how the map looks and behaves — including style, traffic overlays, safety cameras, route lines, and map markers.',
   appCustomisation:   'Tailor the in-app UI to your product — configure search, home screen layout, navigation panels, and ETA display.',
   taia:               'Integrate the TomTom AI Assistant for natural-language navigation commands and hands-free interaction.',

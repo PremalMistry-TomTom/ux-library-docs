@@ -83,6 +83,7 @@ function PageContent({ pageId, onNavigate }) {
     case 'adas':               return <ADASIntegration />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
     // Domain landing pages
+    case 'assets':                 return <DomainLanding groupKey="assets"             onNavigate={onNavigate} />;
     case 'map-customisation':      return <DomainLanding groupKey="mapCustomisation"   onNavigate={onNavigate} />;
     case 'app-customisation':      return <DomainLanding groupKey="appCustomisation"   onNavigate={onNavigate} />;
     case 'ai-assistant':           return <DomainLanding groupKey="taia"               onNavigate={onNavigate} />;
