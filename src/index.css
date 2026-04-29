@@ -224,12 +224,12 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 .page-meta { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
 .meta-tag { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; color: var(--muted); }
 .meta-tag.private { background: #fef3c7; border-color: #fcd34d; color: #92400e; }
-.page-intro { font-size: 0.9rem; color: var(--mid); line-height: 1.75; max-width: 680px; margin-top: 8px; }
+.page-intro { font-size: 0.9rem; color: var(--mid); line-height: 1.75; margin-top: 8px; }
 
 h2.sh { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; scroll-margin-top: calc(var(--app-top-offset) + 20px); font-family: var(--font-display); }
 h2.sh::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 h3.sub { font-size: 0.88rem; font-weight: 600; margin: 20px 0 8px; scroll-margin-top: calc(var(--app-top-offset) + 20px); font-family: var(--font-display); }
-p.body { font-size: 0.88rem; color: var(--mid); line-height: 1.75; margin-bottom: 12px; max-width: 680px; }
+p.body { font-size: 0.88rem; color: var(--mid); line-height: 1.75; margin-bottom: 12px; }
 
 .zone { margin-bottom: 40px; }
 

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Mini mock thumbnails ──────────────────────────────────────────────────── */
 
@@ -389,8 +390,9 @@ export default function Overview({ onNavigate }) {
     <div className="page">
       <div className="page-header">
         <h1>{t('title')}</h1>
-        <p className="page-intro">{t('intro')}</p>
+        <PageActions />
       </div>
+      <div className="quick-answer">{t('intro')}</div>
 
       {/* Hero image */}
       <div style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>

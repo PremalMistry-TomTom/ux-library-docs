@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
+import PageActions from '../components/ui/PageActions';
 
 const RADIUS_TOKENS = [
   { token: 'tt_sys_size_radius_null', dp: 0,      label: 'null' },
@@ -48,11 +49,10 @@ export default function CornerRadius() {
     <div className="page">
       <div className="page-header">
         <h1>{t('cornerRadius.title')}</h1>
-        <p className="page-intro">
-          Radius values control how much the corners of a container or element are rounded.
-          The radius token is a single value applied to all four corners, ensuring
-          consistent shape language across the system.
-        </p>
+        <PageActions />
+      </div>
+      <div className="quick-answer">
+        Global and per-component corner radius tokens — consistent shape language from pill buttons to map cards.
       </div>
 
       {/* Introduction */}

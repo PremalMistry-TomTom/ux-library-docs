@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { NAV } from '../data/navigation';
+import PageActions from '../components/ui/PageActions';
 
 /* Pages that have real content — everything else shows "Coming soon" */
 const IMPLEMENTED = new Set([
@@ -71,8 +72,9 @@ export default function DomainLanding({ groupKey, onNavigate }) {
     <div className="page">
       <div className="page-header">
         <h1>{groupLabel}</h1>
-        {intro && <p className="page-intro">{intro}</p>}
+        <PageActions />
       </div>
+      {intro && <div className="quick-answer">{intro}</div>}
 
       <div className="domain-grid">
         {group.items.map(item => {

@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
+import PageActions from '../components/ui/PageActions';
 
 export default function DesignTokens() {
   const { t } = useTranslation('pages');
@@ -7,11 +8,10 @@ export default function DesignTokens() {
     <div className="page">
       <div className="page-header">
         <h1>{t('designTokens.title')}</h1>
-        <p className="page-intro">
-          Design tokens are the named, versioned design decisions that power TomTom's UI — colours,
-          type styles, spacing, and more — expressed as platform-agnostic variables that resolve to
-          concrete values at build time.
-        </p>
+        <PageActions />
+      </div>
+      <div className="quick-answer">
+        Named design variables for colours, type, spacing, and more — expressed as platform-agnostic values that resolve at build time.
       </div>
 
       {/* Introduction */}

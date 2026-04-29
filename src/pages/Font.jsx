@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { FONT_SIZES, FONT_CMP_ROWS, TYPE_SCALE } from '../data/fonts';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import PageActions from '../components/ui/PageActions';
 
 function TokenPill({ name, value }) {
   const [copied, setCopied] = useState(false);
@@ -62,11 +63,10 @@ export default function Font() {
     <div className="page">
       <div className="page-header">
         <h1>{t('font.title')}</h1>
-        <p className="page-intro">
-          Typography tokens ensure consistency, legibility, and brand flexibility across all TomTom
-          products. They define how text appears in the UI — from large titles and guidance
-          instructions to body text and button labels — and are optimised for automotive use.
-        </p>
+        <PageActions />
+      </div>
+      <div className="quick-answer">
+        Typography scale, supported typefaces, and custom font family setup — optimised for automotive displays.
       </div>
 
       <p className="body">

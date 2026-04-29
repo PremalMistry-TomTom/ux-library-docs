@@ -424,7 +424,7 @@ export default function Cluster() {
       </div>
 
       <div className="quick-answer">
-        <strong>ClusterActivity</strong> {t('cluster.intro')}
+        {t('cluster.intro')}
       </div>
 
       <ApiLinks items={clusterApis} />

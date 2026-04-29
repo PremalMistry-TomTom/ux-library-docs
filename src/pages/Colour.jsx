@@ -3,6 +3,7 @@ import { SCALES, EXTENDED, SYSTEM } from '../data/colours';
 import { Swatch, TokenDot } from '../components/ui/Swatch';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import PageActions from '../components/ui/PageActions';
 
 function ScaleRow({ label, prefix, steps, narrow }) {
   return (
@@ -53,11 +54,10 @@ export default function Colour() {
     <div className="page">
       <div className="page-header">
         <h1>{t('colour.title')}</h1>
-        <p className="page-intro">
-          Colour tokens are split into two layers: <strong>global colours</strong> define the raw
-          palette. <strong>System colours</strong> are semantic aliases that map those values to
-          specific UI roles, ensuring consistency across surfaces, states, and contexts.
-        </p>
+        <PageActions />
+      </div>
+      <div className="quick-answer">
+        Global palette tokens and semantic system aliases — the colour foundation every component and theme is built on.
       </div>
 
       {/* Global colours */}
