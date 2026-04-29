@@ -3,6 +3,22 @@ import tt from '@tomtom-international/web-sdk-maps';
 import '@tomtom-international/web-sdk-maps/dist/maps.css';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const MAP_DISPLAY_APIS = [
+  {
+    name: 'Map Display API',
+    type: 'REST API',
+    description: 'Tile-based mapping service powering the map view with vector tiles, raster imagery, and style bundles.',
+    url: 'https://docs.tomtom.com/map-display-api/documentation/tomtom-maps/product-information/introduction',
+  },
+  {
+    name: 'Map Display for Compose',
+    type: 'Android SDK',
+    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
+    url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
+  },
+];
 
 const API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
 const CENTER  = [4.9041, 52.3676]; // Amsterdam
@@ -367,6 +383,8 @@ export default function MapStyle() {
         preloaded styles and supports custom styles loaded from any URI.
       </div>
 
+      <ApiLinks items={MAP_DISPLAY_APIS} />
+
       <div className="zone">
         <h2 className="sh" id="ms-overview">Overview</h2>
         <p className="body">
@@ -375,6 +393,15 @@ export default function MapStyle() {
           The map reloads all tile layers when a new style is applied, so style switches are best
           triggered between navigation states rather than mid-guidance.
         </p>
+        <Callout type="info">
+          Want to design a completely custom map look? <strong>TomTom Map Maker</strong> lets you
+          build and publish your own map styles — adjust colours, typography, layer visibility, and
+          more — then load them directly into UX Library via a{' '}
+          <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85em' }}>StyleUri</code>.{' '}
+          <a href="https://mapmaker.tomtom.com" target="_blank" rel="noopener noreferrer">Open Map Maker ↗</a>
+          {' · '}
+          <a href="https://docs.tomtom.com/map-maker/documentation/overview/introduction" target="_blank" rel="noopener noreferrer">Map Maker docs ↗</a>
+        </Callout>
         <Callout type="info">
           <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85em' }}>MapStyle.NAVIGATE</code> is
           the default applied when UX Library initialises. You only need to call{' '}

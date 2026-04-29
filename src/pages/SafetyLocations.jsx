@@ -1,6 +1,22 @@
 import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const MAP_DISPLAY_APIS = [
+  {
+    name: 'Map Display API',
+    type: 'REST API',
+    description: 'Tile-based mapping service powering the map view with vector tiles, raster imagery, and style bundles.',
+    url: 'https://docs.tomtom.com/map-display-api/documentation/tomtom-maps/product-information/introduction',
+  },
+  {
+    name: 'Map Display for Compose',
+    type: 'Android SDK',
+    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
+    url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
+  },
+];
 
 /* ─── Shared map base ───────────────────────────────────────── */
 function MapBase({ children, height = 260 }) {
@@ -298,6 +314,8 @@ export default function SafetyLocations() {
         beyond initialising the Navigation Visualisation factory.
       </div>
 
+      <ApiLinks items={MAP_DISPLAY_APIS} />
+
       <div className="zone">
         <h2 className="sh" id="sl-overview">Overview</h2>
         <p className="body">
@@ -312,6 +330,14 @@ export default function SafetyLocations() {
         <Callout type="info">
           Safety locations are shown on the map only during an active navigation session.
           They are hidden automatically when navigation ends.
+        </Callout>
+        <Callout type="info">
+          Safety location icon styles — size, colour, and appearance — can be customised using{' '}
+          <strong>TomTom Map Maker</strong>. Design and publish your own map style, then load it
+          into UX Library to apply your branding to camera and zone overlays.{' '}
+          <a href="https://mapmaker.tomtom.com" target="_blank" rel="noopener noreferrer">Open Map Maker ↗</a>
+          {' · '}
+          <a href="https://docs.tomtom.com/map-maker/documentation/overview/introduction" target="_blank" rel="noopener noreferrer">Map Maker docs ↗</a>
         </Callout>
       </div>
 

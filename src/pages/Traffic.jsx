@@ -1,6 +1,22 @@
 import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const MAP_DISPLAY_APIS = [
+  {
+    name: 'Map Display API',
+    type: 'REST API',
+    description: 'Tile-based mapping service powering the map view with vector tiles, raster imagery, and style bundles.',
+    url: 'https://docs.tomtom.com/map-display-api/documentation/tomtom-maps/product-information/introduction',
+  },
+  {
+    name: 'Map Display for Compose',
+    type: 'Android SDK',
+    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
+    url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
+  },
+];
 
 /* ─── Shared map base ───────────────────────────────────────── */
 function MapBase({ children, height = 240 }) {
@@ -282,6 +298,8 @@ export default function TrafficPage() {
         toggled, filtered, and refreshed on a custom schedule.
       </div>
 
+      <ApiLinks items={MAP_DISPLAY_APIS} />
+
       <div className="zone">
         <h2 className="sh" id="tr-overview">Overview</h2>
         <p className="body">
@@ -290,6 +308,14 @@ export default function TrafficPage() {
           speed relative to the free-flow baseline (or against fixed thresholds). The{' '}
           <strong>incidents layer</strong> places icons at the exact position of reported events.
         </p>
+        <Callout type="info">
+          Traffic colours and incident icons can be customised per map style using{' '}
+          <strong>TomTom Map Maker</strong> — design your own colour schemes for flow and incidents,
+          then publish and load the style directly into UX Library.{' '}
+          <a href="https://mapmaker.tomtom.com" target="_blank" rel="noopener noreferrer">Open Map Maker ↗</a>
+          {' · '}
+          <a href="https://docs.tomtom.com/map-maker/documentation/overview/introduction" target="_blank" rel="noopener noreferrer">Map Maker docs ↗</a>
+        </Callout>
         <p className="body">
           Both layers are updated on a configurable refresh cycle and require an active internet
           connection. When connectivity is unavailable, the last known traffic state is held and
