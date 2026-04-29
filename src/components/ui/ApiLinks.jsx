@@ -32,11 +32,8 @@ const CARD_COL_W = 260;
 const MAX_COLS   = 4;
 
 export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
-  const cols      = Math.min(items.length, MAX_COLS);
-  const blockStyle = cols < MAX_COLS ? { maxWidth: cols * CARD_COL_W } : {};
-
   return (
-    <div className="api-links-block" style={blockStyle}>
+    <div className="api-links-block">
       <div className="api-links-header">{title}</div>
       <div className="api-links-grid">
         {items.map(item => {
