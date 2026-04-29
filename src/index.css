@@ -317,9 +317,8 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 .api-links-card:last-child { border-right: none; padding-right: 0; }
 /* Row separator */
 .api-links-card:nth-child(n+5) { border-top: 1px solid var(--border); }
-/* Spacer cells — hold column dividers in empty row positions */
-.api-links-spacer { border-right: 1px solid var(--border); border-top: 1px solid var(--border); }
-.api-links-spacer:last-child { border-right: none; }
+/* Spacer cells — row separator only, no vertical lines */
+.api-links-spacer { border-top: 1px solid var(--border); }
 .api-links-card-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .api-links-name { font-size: 0.8rem; font-weight: 600; color: var(--black); line-height: 1.3; }
 .api-links-desc { font-size: 0.72rem; color: var(--mid); line-height: 1.4; flex: 1; }
