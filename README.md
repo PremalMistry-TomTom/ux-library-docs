@@ -2,6 +2,8 @@
 
 Interactive documentation for the TomTom UX Library SDK — a composable Android UI layer built on top of NavSDK for automotive, IVI, and fleet navigation applications.
 
+> **Live preview →** deploy via Vercel (see [Sharing internally](#sharing-internally) below)
+
 ![Overview](docs/screenshots/01-overview.png)
 
 ---
@@ -46,6 +48,21 @@ Highlights the six ADAS SDK capabilities (ISA, Predictive Speed Control, Safety 
 Full dark theme across all pages — map previews, cluster display, navigation panels, code blocks, and the global header.
 
 ![Dark mode](docs/screenshots/06-dark-map.png)
+
+---
+
+## Sharing internally
+
+The repo is private, so GitHub Pages won't serve it publicly. The easiest way to give colleagues a live URL is **Vercel** — free, no config needed beyond connecting the repo.
+
+1. Go to [vercel.com](https://vercel.com) and sign in with your GitHub account
+2. Click **Add New → Project**
+3. Import **PremalMistry-TomTom/ux-library-docs**
+4. Leave all settings as-is (Vercel auto-detects Vite) and click **Deploy**
+
+That's it. You'll get a URL like `ux-library-docs.vercel.app` in about 60 seconds. Every push to `main` auto-redeploys. Anyone with the link can view it — no GitHub account required.
+
+A `vercel.json` is already committed to the repo with the correct build settings.
 
 ---
 
