@@ -305,20 +305,39 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 /* ── ApiLinks block ── */
 .api-links-block { margin-bottom: 20px; }
 .api-links-header { padding: 0 0 8px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); border-bottom: 1px solid var(--border); }
-.api-links-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-top: 4px; }
-/* Cards */
+
+/* ── Large: auto-fill up to 4 columns ── */
+.api-links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0; padding-top: 4px; }
 .api-links-card { display: flex; flex-direction: column; gap: 5px; padding: 16px 24px; border-right: 1px solid var(--border); text-decoration: none; color: inherit; transition: background 0.12s; }
 .api-links-card:hover { background: var(--bg); }
-/* Flush left on first column of every row */
 .api-links-card:nth-child(4n+1) { padding-left: 0; }
-/* Flush right + no border on last column of every row */
-.api-links-card:nth-child(4n) { border-right: none; padding-right: 0; }
-/* Fallback for non-full last rows */
-.api-links-card:last-child { border-right: none; padding-right: 0; }
-/* Row separator */
-.api-links-card:nth-child(n+5) { border-top: 1px solid var(--border); }
-/* Spacer cells — row separator only, no vertical lines */
+.api-links-card:nth-child(4n)   { border-right: none; padding-right: 0; }
+.api-links-card:last-child       { border-right: none; padding-right: 0; }
+.api-links-card:nth-child(n+5)  { border-top: 1px solid var(--border); }
 .api-links-spacer { border-top: 1px solid var(--border); }
+
+/* ── Medium (≤ 960px): 2 columns, hide descriptions and spacers ── */
+@media (max-width: 960px) {
+  .api-links-grid { grid-template-columns: repeat(2, 1fr); }
+  .api-links-desc { display: none; }
+  .api-links-spacer { display: none; }
+  /* Reset 4-col flush rules */
+  .api-links-card:nth-child(4n+1) { padding-left: 24px; }
+  .api-links-card:nth-child(4n)   { border-right: 1px solid var(--border); padding-right: 24px; }
+  .api-links-card:nth-child(n+5)  { border-top: none; }
+  /* Apply 2-col flush rules */
+  .api-links-card:nth-child(2n+1) { padding-left: 0; }
+  .api-links-card:nth-child(2n)   { border-right: none; padding-right: 0; }
+  .api-links-card:nth-child(n+3)  { border-top: 1px solid var(--border); }
+}
+
+/* ── Mobile (≤ 480px): single column ── */
+@media (max-width: 480px) {
+  .api-links-grid { grid-template-columns: 1fr; }
+  .api-links-card { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
+  .api-links-card:nth-child(n+2) { border-top: 1px solid var(--border); }
+  .api-links-card:nth-child(n+3) { border-top: none; }
+}
 .api-links-card-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
 .api-links-name { font-size: 0.8rem; font-weight: 600; color: var(--black); line-height: 1.3; }
 .api-links-desc { font-size: 0.72rem; color: var(--mid); line-height: 1.4; flex: 1; }
