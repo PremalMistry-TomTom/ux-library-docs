@@ -25,6 +25,30 @@ Six integration domains:
 
 ---
 
+## Ask AI integration
+
+Every page surfaces an **Ask about this page** button that opens a contextual AI chat panel from the right. The panel seeds itself from the current page's content so responses are immediately relevant.
+
+![Ask AI panel open](docs/screenshots/20-ask-ai-panel.png)
+
+![Ask AI conversation](docs/screenshots/20b-ask-ai-conversation.png)
+
+The panel is prototype-ready — swap in a real AI endpoint in `src/components/ui/AskAIPanel.jsx`. The page text is already extracted and structured as context on every open. A suggested integration pattern:
+
+```js
+// In AskAIPanel.jsx — replace the DEMO_RESPONSES simulation with:
+const response = await fetch('/api/ask', {
+  method: 'POST',
+  body: JSON.stringify({
+    system: `You are a helpful assistant for the TomTom UX Library docs. 
+             Answer questions about the following page:\n\n${getPageText()}`,
+    message: userMessage,
+  }),
+});
+```
+
+---
+
 ## Screens
 
 ### Map Style — live interactive preview
@@ -105,21 +129,21 @@ Eight of the most commonly customised capabilities, each with an SVG preview thu
 ---
 
 ### Overview — Explore by domain
-Six integration domains with page-pill navigation. Each card shows the domain description and links directly to sub-pages.
+Six integration domains with page-pill navigation. Each card shows the domain description and links directly to its sub-pages.
 
 ![Explore by domain](docs/screenshots/14-overview-domains.png)
 
 ---
 
 ### EV & Charging — domain landing
-The full EV integration journey in one place — battery modelling, charging search, long-distance routing, and in-navigation UI. Each sub-page links directly from the landing card grid.
+The full EV integration journey in one view — battery modelling, charging search, long-distance routing, and in-navigation SoC UI. Each sub-page is one click from the landing card grid.
 
 ![EV & Charging](docs/screenshots/15-ev-landing.png)
 
 ---
 
 ### EV Long-Distance Routing — Berlin → Amsterdam trip timeline
-A real-world 679 km route showing how LDEVR automatically inserts two charging stops (Ionity Bochum + Fastned Eindhoven) with per-stop SoC, kWh, peak power, and charge time. Zero routing code required from the OEM.
+A real-world 679 km route showing LDEVR automatically inserting two charging stops (Ionity Bochum + Fastned Eindhoven) with per-stop SoC, kWh, peak power, and charge time. Zero routing code required from the OEM.
 
 ![EV Routing — Berlin → Amsterdam](docs/screenshots/17-ev-routing-trip.png)
 
