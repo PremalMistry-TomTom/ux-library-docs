@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import AskAIPanel from './AskAIPanel';
 
 /* ─── Icons ──────────────────────────────────────────────────────────────── */
 function SparkleIcon() {
@@ -88,6 +89,7 @@ function MarkdownModal({ onClose }) {
 export default function PageActions() {
   const [copied, setCopied] = useState(false);
   const [showMd, setShowMd] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(getPageText());
@@ -95,10 +97,13 @@ export default function PageActions() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Derive page title from the h1 on the page
+  const pageTitle = document.querySelector('.page h1')?.textContent?.trim() ?? '';
+
   return (
     <>
       <div className="page-actions">
-        <button className="page-action-btn page-action-btn--disabled" disabled title="Coming soon">
+        <button className="page-action-btn page-action-btn--ai" onClick={() => setAiOpen(true)}>
           <SparkleIcon /> Ask about this page
         </button>
         <span className="page-action-sep" aria-hidden="true" />
@@ -113,6 +118,7 @@ export default function PageActions() {
       </div>
 
       {showMd && <MarkdownModal onClose={() => setShowMd(false)} />}
+      <AskAIPanel isOpen={aiOpen} onClose={() => setAiOpen(false)} pageTitle={pageTitle} />
     </>
   );
 }
