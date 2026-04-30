@@ -25,6 +25,18 @@ Six integration domains:
 
 ---
 
+## Chinese localisation (中文)
+
+All core pages are available in Simplified Chinese. Toggle between EN and 中文 using the language switcher in the top-right corner — the full navigation, page titles, body content, and UI labels switch instantly.
+
+![Chinese overview](docs/screenshots/21-chinese-overview.png)
+
+![Chinese EV & Charging](docs/screenshots/21b-chinese-ev.png)
+
+Translations live in `src/locales/zh/` and are wired through `react-i18next`. Adding a new language requires only a matching locale folder — no component changes needed.
+
+---
+
 ## Ask AI integration
 
 Every page surfaces an **Ask about this page** button that opens a contextual AI chat panel from the right. The panel seeds itself from the current page's content so responses are immediately relevant.
