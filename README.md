@@ -39,11 +39,15 @@ Six integration domains with page-pill navigation — each card links directly t
 
 ## Ask AI integration
 
-Every page surfaces an **Ask about this page** button that opens a contextual AI chat panel from the right. The panel seeds itself from the current page's content so responses are immediately relevant.
+Every page surfaces an **Ask about this page** button that opens a contextual AI chat panel from the right. Opening the panel pushes the layout: the sidenav and TOC slide away, the content expands to fill the full width, and the header bars shrink to match — so the page remains fully readable and interactive while the conversation is open.
+
+The panel seeds itself from the current page's content so responses are immediately relevant to what the developer is looking at.
+
+![Ask AI — Charging Search with EMSP integration question](docs/screenshots/22-ask-ai-charging-search.png)
+
+*Above: panel open on the EV Charging Search page. The user asks how to surface only preferred EMSP network partners — the AI responds with the `preferredNetworks` array in `EVSearchOptions`, connector type filtering, and minimum power thresholds.*
 
 ![Ask AI panel open](docs/screenshots/20-ask-ai-panel.png)
-
-![Ask AI conversation](docs/screenshots/20b-ask-ai-conversation.png)
 
 The panel is prototype-ready — swap in a real AI endpoint in `src/components/ui/AskAIPanel.jsx`. The page text is already extracted and structured as context on every open. A suggested integration pattern:
 
