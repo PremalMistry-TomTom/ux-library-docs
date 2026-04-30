@@ -1070,12 +1070,6 @@ html.ai-panel-open .sidenav {
   min-width: 0;
 }
 
-/* TOC fades out right */
-.toc {
-  min-width: 0;
-  overflow: hidden;
-  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
-}
 html.ai-panel-open .toc {
   transform: translateX(40px);
   opacity: 0;
