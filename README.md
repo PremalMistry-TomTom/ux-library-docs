@@ -2,6 +2,8 @@
 
 Interactive documentation for the TomTom UX Library SDK — a composable Android UI layer built on top of NavSDK for automotive, IVI, and fleet navigation applications.
 
+This site is built as a high-fidelity prototype to communicate the SDK's capabilities to OEM partners and internal stakeholders. Every page pairs written documentation with live interactive demos — sliders, toggles, and configuration builders that generate real Kotlin output — so the integration story is tangible rather than abstract. Pages are organised across six integration domains, each with its own landing page and sub-pages covering architecture, configuration, API references, and annotated code examples. The site supports full Simplified Chinese localisation, dark mode, and a contextual AI chat panel on every page.
+
 > **Live preview →** deploy via Vercel (see [Sharing internally](#sharing-internally) below)
 
 ![Overview](docs/screenshots/01-overview.png)
@@ -22,6 +24,16 @@ Six integration domains:
 | **EV & Charging** | Overview, vehicle & battery, charging search, long-distance routing, in-navigation UI, requirements |
 | **Vehicle Integration** | Instrument cluster, head-up display, ADAS integration, truck support |
 | **TomTom AI Assistant** | Overview, voice engine, speech-to-text, configuration |
+
+### Key use cases
+Eight of the most commonly customised capabilities, each with a visual preview. Click any card to jump directly to that page.
+
+![Key use cases](docs/screenshots/13-overview-use-cases.png)
+
+### Explore by domain
+Six integration domains with page-pill navigation — each card links directly to its sub-pages.
+
+![Explore by domain](docs/screenshots/14-overview-domains.png)
 
 ---
 
@@ -130,20 +142,6 @@ Place the NIP at any of five anchor points (top-left, top-centre, top-right, bot
 Choose from six anchor positions and individually show/hide each content field (ETA, travel time, distance, battery SoC, end-route button) via toggle switches. The full-width map mock and generated Kotlin reflect every change.
 
 ![ETA Panel](docs/screenshots/11-eta-panel.png)
-
----
-
-### Overview — Key use cases
-Eight of the most commonly customised capabilities, each with an SVG preview thumbnail. Click any card to jump directly to its documentation page.
-
-![Key use cases](docs/screenshots/13-overview-use-cases.png)
-
----
-
-### Overview — Explore by domain
-Six integration domains with page-pill navigation. Each card shows the domain description and links directly to its sub-pages.
-
-![Explore by domain](docs/screenshots/14-overview-domains.png)
 
 ---
 
