@@ -221,7 +221,7 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
   height: calc(100vh - var(--app-top-offset)); overflow-y: auto;
   padding: 24px 16px; border-left: 1px solid var(--border);
   font-size: 0.78rem;
-  transition: top var(--header-transition), height var(--header-transition);
+  transition: top var(--header-transition), height var(--header-transition), transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease;
 }
 .toc-heading { font-weight: 600; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
 .toc-list { list-style: none; display: flex; flex-direction: column; gap: 2px; }
@@ -1030,36 +1030,71 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   color: #ddd6fe;
 }
 
-/* ─── Ask AI panel ───────────────────────────────────────────────────────── */
-.ai-panel-scrim {
-  position: fixed;
-  inset: 0;
-  top: var(--app-top-offset, 102px);
-  background: rgba(0, 0, 0, 0);
-  z-index: 190;
-  pointer-events: none;
-  transition: background 0.25s ease;
+/* ─── Ask AI panel — layout push (Stripe-style) ─────────────────────────── */
+:root { --ai-panel-w: 380px; }
+
+/* Shell shrinks right when panel opens */
+.shell {
+  transition:
+    padding-top var(--header-transition),
+    padding-right 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.ai-panel-scrim.open {
-  pointer-events: auto;
-  background: rgba(0, 0, 0, 0.18);
+html.ai-panel-open .shell {
+  padding-right: var(--ai-panel-w);
 }
 
+/* Headers shrink to not overlap the panel */
+.global-header,
+.topnav {
+  transition:
+    transform var(--header-transition),
+    right 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+html.ai-panel-open .global-header,
+html.ai-panel-open .topnav {
+  right: var(--ai-panel-w);
+}
+
+/* Sidenav slides out left */
+.sidenav {
+  transition:
+    top var(--header-transition),
+    height var(--header-transition),
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s ease;
+}
+html.ai-panel-open .sidenav {
+  transform: translateX(calc(-1 * var(--nav-w)));
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* TOC fades out right */
+.toc {
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+}
+html.ai-panel-open .toc {
+  transform: translateX(40px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ─── Ask AI panel ───────────────────────────────────────────────────────── */
 .ai-panel {
   position: fixed;
-  top: var(--app-top-offset, 102px);
+  top: 0;
   right: 0;
   bottom: 0;
-  width: 400px;
-  max-width: 100vw;
+  width: var(--ai-panel-w);
   background: var(--white);
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  z-index: 191;
+  z-index: 250;
   transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.08);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.06);
 }
 .ai-panel.open {
   transform: translateX(0);
@@ -1067,32 +1102,36 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 
 /* Panel header */
 .ai-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 16px;
+  padding: 14px 16px 10px;
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+}
+.ai-panel-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
 }
 .ai-panel-title {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.85rem;
+  font-size: 0.88rem;
   font-weight: 700;
-  color: #5b21b6;
-  flex-shrink: 0;
+  color: var(--black);
 }
-[data-theme="dark"] .ai-panel-title { color: #c4b5fd; }
-.ai-panel-context {
-  flex: 1;
-  font-size: 0.75rem;
+.ai-panel-disclaimer {
+  font-size: 0.72rem;
   color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0;
+  line-height: 1.4;
 }
-.ai-panel-close {
+.ai-panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.ai-panel-icon-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1101,15 +1140,40 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   padding: 0;
   background: none;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   color: var(--muted);
   cursor: pointer;
-  flex-shrink: 0;
   transition: background 0.1s, color 0.1s;
 }
-.ai-panel-close:hover {
+.ai-panel-icon-btn:hover {
   background: var(--bg);
   color: var(--black);
+}
+
+/* Source chip */
+.ai-panel-source {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.ai-panel-source-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.73rem;
+  font-weight: 500;
+  color: #5b21b6;
+  background: #f3f0ff;
+  border-radius: 20px;
+  padding: 3px 10px 3px 8px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+[data-theme="dark"] .ai-panel-source-chip {
+  color: #c4b5fd;
+  background: rgba(139, 92, 246, 0.12);
 }
 
 /* Messages */
@@ -1181,20 +1245,26 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 }
 
 /* Typing dots */
-.ai-msg--typing {
-  align-self: flex-start;
+.ai-msg--typing { align-self: flex-start; }
+.ai-msg-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 13px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px 14px 14px 14px;
 }
-.ai-msg--typing span {
+.ai-msg-dots span {
   display: inline-block;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--muted);
-  margin: 0 2px;
   animation: ai-dot 1.2s infinite;
 }
-.ai-msg--typing span:nth-child(2) { animation-delay: 0.2s; }
-.ai-msg--typing span:nth-child(3) { animation-delay: 0.4s; }
+.ai-msg-dots span:nth-child(2) { animation-delay: 0.2s; }
+.ai-msg-dots span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes ai-dot {
   0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
   30%            { transform: translateY(-5px); opacity: 1; }

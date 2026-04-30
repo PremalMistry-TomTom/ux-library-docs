@@ -20,8 +20,16 @@ function SendIcon() {
 
 function CloseIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
       <path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function NewChatIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
     </svg>
   );
 }
@@ -29,9 +37,7 @@ function CloseIcon() {
 /* ─── Helpers ────────────────────────────────────────────────────────────── */
 function getPageContext() {
   const headings = [...document.querySelectorAll('.page h2, .page h3')]
-    .map(h => h.textContent.trim())
-    .filter(Boolean)
-    .slice(0, 6);
+    .map(h => h.textContent.trim()).filter(Boolean).slice(0, 6);
   const intro = document.querySelector('.page .quick-answer')?.textContent?.trim() ?? '';
   return { headings, intro };
 }
@@ -43,26 +49,26 @@ const DEMO_RESPONSES = [
       ? `This page covers ${topics}. I can answer questions about any of these sections — what would you like to dig into?`
       : `I have full context for this page. What would you like to know?`;
   },
-  () => `That's a great question. In a production integration you'd connect this panel to your AI endpoint and pass it the page markdown as context. The "Copy for LLM" button above copies exactly the right format.`,
+  () => `That's a great question. In a production integration you'd connect this panel to your AI endpoint and pass it the page markdown as context. The "Copy for LLM" button copies exactly the right format.`,
   () => `This is a prototype panel — wire up a real endpoint (OpenAI, Claude, Gemini) in \`AskAIPanel.jsx\` to get live answers. The page text is already extracted and ready to use as the system prompt.`,
   () => `For OEM integrations, the recommended pattern is to use the page content as a retrieval chunk in a RAG pipeline so responses stay accurate to the SDK version being documented.`,
 ];
 
-/* ─── Typing indicator ───────────────────────────────────────────────────── */
+/* ─── Sub-components ─────────────────────────────────────────────────────── */
 function TypingDots() {
   return (
     <div className="ai-msg ai-msg--ai ai-msg--typing" aria-label="AI is thinking">
-      <span /><span /><span />
+      <span className="ai-msg-avatar"><SparkleIcon size={11} /></span>
+      <span className="ai-msg-dots"><span /><span /><span /></span>
     </div>
   );
 }
 
-/* ─── Message bubble ─────────────────────────────────────────────────────── */
 function Message({ role, text }) {
   return (
     <div className={`ai-msg ai-msg--${role}`}>
       {role === 'ai' && (
-        <span className="ai-msg-avatar"><SparkleIcon size={12} /></span>
+        <span className="ai-msg-avatar"><SparkleIcon size={11} /></span>
       )}
       <span className="ai-msg-text">{text}</span>
     </div>
@@ -78,7 +84,18 @@ export default function AskAIPanel({ isOpen, onClose, pageTitle }) {
   const endRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Reset conversation when navigating to a new page
+  // Push/pull the whole layout by toggling a class on <html>
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isOpen) {
+      html.classList.add('ai-panel-open');
+    } else {
+      html.classList.remove('ai-panel-open');
+    }
+    return () => html.classList.remove('ai-panel-open');
+  }, [isOpen]);
+
+  // Reset conversation when page changes
   useEffect(() => {
     setMessages([]);
     responseIndexRef.current = 0;
@@ -89,26 +106,39 @@ export default function AskAIPanel({ isOpen, onClose, pageTitle }) {
     if (isOpen && messages.length === 0) {
       const ctx = getPageContext();
       const intro = ctx.intro
-        ? `I can see this page — "${ctx.intro.slice(0, 80)}${ctx.intro.length > 80 ? '…' : ''}". Ask me anything about it.`
+        ? `I can see this page — "${ctx.intro.slice(0, 90)}${ctx.intro.length > 90 ? '…' : ''}". Ask me anything about it.`
         : `I have full context for this page. What would you like to know?`;
       setMessages([{ role: 'ai', text: intro }]);
     }
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 320);
-    }
+    if (isOpen) setTimeout(() => inputRef.current?.focus(), 350);
   }, [isOpen]);
 
-  // Close on Escape
+  // Escape to close
   useEffect(() => {
     const handler = (e) => { if (e.key === 'Escape' && isOpen) onClose(); };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [isOpen, onClose]);
 
-  // Scroll to bottom
+  // Scroll to latest message
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
+
+  const startNewChat = useCallback(() => {
+    setMessages([]);
+    setInput('');
+    setIsTyping(false);
+    responseIndexRef.current = 0;
+    // Re-seed
+    setTimeout(() => {
+      const ctx = getPageContext();
+      const intro = ctx.intro
+        ? `I can see this page — "${ctx.intro.slice(0, 90)}${ctx.intro.length > 90 ? '…' : ''}". Ask me anything about it.`
+        : `I have full context for this page. What would you like to know?`;
+      setMessages([{ role: 'ai', text: intro }]);
+    }, 50);
+  }, []);
 
   const send = useCallback(() => {
     if (!input.trim() || isTyping) return;
@@ -116,15 +146,13 @@ export default function AskAIPanel({ isOpen, onClose, pageTitle }) {
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text }]);
     setIsTyping(true);
-
-    const delay = 900 + Math.random() * 600;
+    const delay = 800 + Math.random() * 500;
     setTimeout(() => {
       const ctx = getPageContext();
       const idx = responseIndexRef.current % DEMO_RESPONSES.length;
       responseIndexRef.current += 1;
-      const responseText = DEMO_RESPONSES[idx](ctx);
       setIsTyping(false);
-      setMessages(prev => [...prev, { role: 'ai', text: responseText }]);
+      setMessages(prev => [...prev, { role: 'ai', text: DEMO_RESPONSES[idx](ctx) }]);
     }, delay);
   }, [input, isTyping]);
 
@@ -133,63 +161,67 @@ export default function AskAIPanel({ isOpen, onClose, pageTitle }) {
   };
 
   return (
-    <>
-      {/* Scrim */}
-      <div
-        className={`ai-panel-scrim${isOpen ? ' open' : ''}`}
-        onClick={onClose}
-        aria-hidden="true"
-      />
+    <aside className={`ai-panel${isOpen ? ' open' : ''}`} aria-label="Ask AI">
 
-      {/* Slide panel */}
-      <aside className={`ai-panel${isOpen ? ' open' : ''}`} aria-label="Ask AI panel">
-        {/* Header */}
-        <div className="ai-panel-header">
+      {/* ── Header ── */}
+      <div className="ai-panel-header">
+        <div className="ai-panel-header-top">
           <div className="ai-panel-title">
-            <SparkleIcon size={13} />
-            Ask AI
+            <SparkleIcon size={13} /> Ask AI
           </div>
-          {pageTitle && (
-            <span className="ai-panel-context">{pageTitle}</span>
-          )}
-          <button className="ai-panel-close" onClick={onClose} aria-label="Close panel">
-            <CloseIcon />
-          </button>
-        </div>
-
-        {/* Messages */}
-        <div className="ai-panel-messages">
-          {messages.map((m, i) => (
-            <Message key={i} role={m.role} text={m.text} />
-          ))}
-          {isTyping && <TypingDots />}
-          <div ref={endRef} />
-        </div>
-
-        {/* Input */}
-        <div className="ai-panel-footer">
-          <div className="ai-panel-input-wrap">
-            <textarea
-              ref={inputRef}
-              className="ai-panel-input"
-              placeholder="Ask anything about this page…"
-              rows={1}
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={handleKey}
-            />
-            <button
-              className="ai-panel-send"
-              onClick={send}
-              disabled={!input.trim() || isTyping}
-              aria-label="Send"
-            >
-              <SendIcon />
+          <div className="ai-panel-header-actions">
+            <button className="ai-panel-icon-btn" onClick={startNewChat} title="New chat">
+              <NewChatIcon />
+            </button>
+            <button className="ai-panel-icon-btn" onClick={onClose} title="Close" aria-label="Close AI panel">
+              <CloseIcon />
             </button>
           </div>
-          <p className="ai-panel-hint">Press Enter to send · Esc to close</p>
         </div>
-      </aside>
-    </>
+        <p className="ai-panel-disclaimer">
+          Responses are generated using AI and may contain mistakes.
+        </p>
+      </div>
+
+      {/* ── Source chip ── */}
+      {pageTitle && (
+        <div className="ai-panel-source">
+          <span className="ai-panel-source-chip">
+            <SparkleIcon size={10} /> UX Library · {pageTitle}
+          </span>
+        </div>
+      )}
+
+      {/* ── Messages ── */}
+      <div className="ai-panel-messages">
+        {messages.map((m, i) => <Message key={i} role={m.role} text={m.text} />)}
+        {isTyping && <TypingDots />}
+        <div ref={endRef} />
+      </div>
+
+      {/* ── Input ── */}
+      <div className="ai-panel-footer">
+        <div className="ai-panel-input-wrap">
+          <textarea
+            ref={inputRef}
+            className="ai-panel-input"
+            placeholder="Ask a question about this page…"
+            rows={1}
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={handleKey}
+          />
+          <button
+            className="ai-panel-send"
+            onClick={send}
+            disabled={!input.trim() || isTyping}
+            aria-label="Send"
+          >
+            <SendIcon />
+          </button>
+        </div>
+        <p className="ai-panel-hint">Enter to send · Esc to close</p>
+      </div>
+    </aside>
   );
 }
