@@ -163,30 +163,69 @@ A real-world 679 km route showing LDEVR automatically inserting two charging sto
 
 ---
 
-## Sharing
-
-The repo is public — anyone with the GitHub link can browse the source. The easiest way to give colleagues a live preview URL is **Vercel** — free, no config needed beyond connecting the repo.
-
-1. Go to [vercel.com](https://vercel.com) and sign in with your GitHub account
-2. Click **Add New → Project**
-3. Import **PremalMistry-TomTom/ux-library-docs**
-4. Leave all settings as-is (Vercel auto-detects Vite) and click **Deploy**
-
-That's it. You'll get a URL like `ux-library-docs.vercel.app` in about 60 seconds. Every push to `main` auto-redeploys. Anyone with the link can view it — no GitHub account required.
-
-A `vercel.json` is already committed to the repo with the correct build settings.
-
----
-
 ## Running locally
 
+Everything runs in the browser — no backend, no environment variables needed.
+
+### Prerequisites
+
+| Tool | Version | Install |
+|---|---|---|
+| **Node.js** | 18 or higher | [nodejs.org](https://nodejs.org) — download the LTS installer |
+| **Git** | any | [git-scm.com](https://git-scm.com) — or use GitHub Desktop |
+
+To check if you already have them, open a terminal and run:
+
 ```bash
-cd ux-library
+node -v   # should print v18.x or higher
+git --version
+```
+
+### Steps
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/PremalMistry-TomTom/ux-library-docs.git
+```
+
+**2. Move into the project folder**
+
+```bash
+cd ux-library-docs/ux-library
+```
+
+**3. Install dependencies** *(first time only, takes ~30 seconds)*
+
+```bash
 npm install
+```
+
+**4. Start the dev server**
+
+```bash
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+**5. Open in your browser**
+
+```
+http://localhost:5173
+```
+
+The site loads instantly. Any changes you save to the source files hot-reload automatically — no restart needed.
+
+### Stopping the server
+
+Press `Ctrl + C` in the terminal.
+
+### Updating to the latest version
+
+```bash
+git pull
+npm install   # only needed if dependencies changed
+npm run dev
+```
 
 ---
 
