@@ -163,9 +163,9 @@ A real-world 679 km route showing LDEVR automatically inserting two charging sto
 
 ---
 
-## Sharing internally
+## Sharing
 
-The repo is private, so GitHub Pages won't serve it publicly. The easiest way to give colleagues a live URL is **Vercel** — free, no config needed beyond connecting the repo.
+The repo is public — anyone with the GitHub link can browse the source. The easiest way to give colleagues a live preview URL is **Vercel** — free, no config needed beyond connecting the repo.
 
 1. Go to [vercel.com](https://vercel.com) and sign in with your GitHub account
 2. Click **Add New → Project**
