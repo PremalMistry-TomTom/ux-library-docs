@@ -4,8 +4,6 @@ Interactive documentation for the TomTom UX Library SDK — a composable Android
 
 This site is built as a high-fidelity prototype to communicate the SDK's capabilities to OEM partners and internal stakeholders. Every page pairs written documentation with live interactive demos — sliders, toggles, and configuration builders that generate real Kotlin output — so the integration story is tangible rather than abstract. Pages are organised across six integration domains, each with its own landing page and sub-pages covering architecture, configuration, API references, and annotated code examples. The site supports full Simplified Chinese localisation, dark mode, and a contextual AI chat panel on every page.
 
-> **Live preview →** deploy via Vercel (see [Sharing internally](#sharing-internally) below)
-
 ![Overview](docs/screenshots/01-overview.png)
 
 ---
