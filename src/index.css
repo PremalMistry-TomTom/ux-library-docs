@@ -51,7 +51,10 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
   grid-template-columns: var(--nav-w) minmax(0,1fr) var(--toc-w);
   min-height: 100vh;
   padding-top: var(--app-top-offset);
-  transition: padding-top var(--header-transition);
+  transition:
+    padding-top var(--header-transition),
+    grid-template-columns 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    padding-right 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ── Global (site-level) header ── */
@@ -1033,13 +1036,9 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 /* ─── Ask AI panel — layout push (Stripe-style) ─────────────────────────── */
 :root { --ai-panel-w: 380px; }
 
-/* Shell shrinks right when panel opens */
-.shell {
-  transition:
-    padding-top var(--header-transition),
-    padding-right 0.32s cubic-bezier(0.4, 0, 0.2, 1);
-}
+/* Shell expands content + shrinks right when panel opens */
 html.ai-panel-open .shell {
+  grid-template-columns: 0px minmax(0,1fr) 0px;
   padding-right: var(--ai-panel-w);
 }
 
@@ -1068,10 +1067,13 @@ html.ai-panel-open .sidenav {
   opacity: 0;
   pointer-events: none;
   overflow: hidden;
+  min-width: 0;
 }
 
 /* TOC fades out right */
 .toc {
+  min-width: 0;
+  overflow: hidden;
   transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
 }
 html.ai-panel-open .toc {
