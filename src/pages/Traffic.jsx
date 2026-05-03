@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import tt from '@tomtom-international/web-sdk-maps';
 import '@tomtom-international/web-sdk-maps/dist/maps.css';
 import Callout from '../components/ui/Callout';
@@ -36,27 +36,38 @@ const MAP_DISPLAY_APIS = [
 const API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
 const CENTER  = [4.9041, 52.3676]; // Amsterdam
 
-/* ─── Style builder ──────────────────────────────────────────── */
-function buildStyle(flowOn, incOn, flowStyle) {
-  const cfg = { map: '2/basic_street-light-driving' };
-  if (flowOn)  cfg.trafficFlow      = flowStyle === 'RELATIVE' ? '2/flow_relative-light' : '2/flow_absolute-light';
-  if (incOn)   cfg.trafficIncidents = '2/incidents_light';
-  return cfg;
-}
+const FLOW_STYLES = {
+  RELATIVE: '2/flow_relative-light',
+  ABSOLUTE: '2/flow_absolute-light',
+};
 
-/* ─── Live TomTom map ────────────────────────────────────────── */
-function LiveTrafficMap({ styleCfg, zoom = 13 }) {
-  const containerRef = useRef(null);
-  const mapRef       = useRef(null);
-  const prevCfgRef   = useRef(JSON.stringify(styleCfg));
+/* ─── Live TomTom map with SDK traffic methods ───────────────── */
+function LiveTrafficMap({ flowOn, incOn, flowStyle = 'RELATIVE', zoom = 13 }) {
+  const containerRef  = useRef(null);
+  const mapRef        = useRef(null);
+  // Keep latest values accessible in closures without stale captures
+  const flowOnRef     = useRef(flowOn);
+  const incOnRef      = useRef(incOn);
 
+  useEffect(() => { flowOnRef.current = flowOn; }, [flowOn]);
+  useEffect(() => { incOnRef.current  = incOn;  }, [incOn]);
+
+  /* Init — load all traffic layers; stylesVisibility sets initial state */
   useEffect(() => {
     const map = tt.map({
       key: API_KEY,
       container: containerRef.current,
       center: CENTER,
       zoom,
-      style: styleCfg,
+      style: {
+        map:              '2/basic_street-light-driving',
+        trafficFlow:      FLOW_STYLES[flowStyle],
+        trafficIncidents: '2/incidents_light',
+      },
+      stylesVisibility: {
+        trafficFlow:      flowOn,
+        trafficIncidents: incOn,
+      },
       scrollZoom: false,
       dragRotate: false,
       keyboard:   false,
@@ -66,15 +77,48 @@ function LiveTrafficMap({ styleCfg, zoom = 13 }) {
     return () => { map.remove(); mapRef.current = null; };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  /* Toggle flow layer */
   useEffect(() => {
-    const next = JSON.stringify(styleCfg);
-    if (next === prevCfgRef.current) return;
-    prevCfgRef.current = next;
     const map = mapRef.current;
     if (!map) return;
-    const apply = () => map.setStyle(styleCfg);
+    const apply = () => {
+      try { flowOn ? map.showTrafficFlow() : map.hideTrafficFlow(); } catch (_) {}
+    };
     map.loaded() ? apply() : map.once('load', apply);
-  }, [styleCfg]);
+  }, [flowOn]);
+
+  /* Toggle incidents layer */
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => {
+      try { incOn ? map.showTrafficIncidents() : map.hideTrafficIncidents(); } catch (_) {}
+    };
+    map.loaded() ? apply() : map.once('load', apply);
+  }, [incOn]);
+
+  /* Switch flow style (RELATIVE ↔ ABSOLUTE) — reload style, re-apply visibility */
+  const prevFlowStyleRef = useRef(flowStyle);
+  useEffect(() => {
+    if (flowStyle === prevFlowStyleRef.current) return;
+    prevFlowStyleRef.current = flowStyle;
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => {
+      map.setStyle({
+        map:              '2/basic_street-light-driving',
+        trafficFlow:      FLOW_STYLES[flowStyle],
+        trafficIncidents: '2/incidents_light',
+      });
+      map.once('style.load', () => {
+        try {
+          flowOnRef.current ? map.showTrafficFlow()      : map.hideTrafficFlow();
+          incOnRef.current  ? map.showTrafficIncidents() : map.hideTrafficIncidents();
+        } catch (_) {}
+      });
+    };
+    map.loaded() ? apply() : map.once('load', apply);
+  }, [flowStyle]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 }
@@ -141,11 +185,6 @@ function LayerConfigurator() {
   const [incOn,     setIncOn]     = useState(true);
   const [flowStyle, setFlowStyle] = useState('RELATIVE');
 
-  const styleCfg = useMemo(
-    () => buildStyle(flowOn, incOn, flowStyle),
-    [flowOn, incOn, flowStyle]
-  );
-
   const code = `mapView.setTrafficConfiguration(
     TrafficConfiguration(
         flowEnabled      = ${flowOn},
@@ -156,7 +195,7 @@ function LayerConfigurator() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <TabletFrame>
-        <LiveTrafficMap styleCfg={styleCfg} />
+        <LiveTrafficMap flowOn={flowOn} incOn={incOn} flowStyle={flowStyle} />
       </TabletFrame>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
@@ -199,11 +238,6 @@ function IncidentFilter() {
   const [enabled, setEnabled] = useState(INCIDENT_TYPES.map(t => t.id));
   const toggle = id => setEnabled(e => e.includes(id) ? e.filter(x => x !== id) : [...e, id]);
 
-  const incStyleCfg = useMemo(() => ({
-    map: '2/basic_street-light',
-    trafficIncidents: '2/incidents_light',
-  }), []);
-
   const code = `mapView.setIncidentFilter(
     IncidentFilter(
         types = setOf(
@@ -229,7 +263,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
           </>
         }
       >
-        <LiveTrafficMap styleCfg={incStyleCfg} zoom={13} />
+        <LiveTrafficMap flowOn={false} incOn={true} zoom={13} />
       </TabletFrame>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 }}>
