@@ -90,6 +90,7 @@ function LiveMap({ styleKey, pitch = 0, zoom = 14 }) {
   const mapRef       = useRef(null);
   const prevStyleRef = useRef(styleKey);
   const prevPitchRef = useRef(pitch);
+  const prevZoomRef  = useRef(zoom);
 
   /* init map once */
   useEffect(() => {
@@ -136,6 +137,16 @@ function LiveMap({ styleKey, pitch = 0, zoom = 14 }) {
     const apply = () => map.easeTo({ pitch, duration: 400 });
     map.loaded() ? apply() : map.once('load', apply);
   }, [pitch]);
+
+  /* zoom change */
+  useEffect(() => {
+    if (zoom === prevZoomRef.current) return;
+    prevZoomRef.current = zoom;
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => map.easeTo({ zoom, duration: 400 });
+    map.loaded() ? apply() : map.once('load', apply);
+  }, [zoom]);
 
   return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
 }
@@ -283,58 +294,55 @@ function StyleExplorer() {
 
 /* ─── Tilt demo ──────────────────────────────────────────────── */
 function TiltDemo() {
-  const [pitch,    setPitch]    = useState(35);
-  const [duration, setDuration] = useState(300);
+  const [pitch, setPitch] = useState(35);
+  const [zoom,  setZoom]  = useState(15);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-        {/* Wider map for tilt — shows 3D perspective better */}
-        <div style={{
-          width: 280, height: 220, borderRadius: 12, overflow: 'hidden',
-          border: '1px solid var(--border)', flexShrink: 0,
-          boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-        }}>
-          <LiveMap styleKey="drivingLight" pitch={pitch} zoom={15} />
+      {/* Full-width tablet frame — matches StyleExplorer height */}
+      <TabletFrame nipOverlay={true}>
+        <LiveMap styleKey="drivingLight" pitch={pitch} zoom={zoom} />
+      </TabletFrame>
+
+      {/* Controls row */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        {/* Tilt angle */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>Tilt angle</span>
+            <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{pitch}°</span>
+          </div>
+          <input type="range" min="0" max="60" value={pitch}
+            onChange={e => setPitch(Number(e.target.value))}
+            style={{ width: '100%', accentColor: 'var(--red)' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>0° top-down</span>
+            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>60° max perspective</span>
+          </div>
         </div>
 
-        <div style={{ flex: 1, minWidth: 200 }}>
-          <div style={{ marginBottom: 16 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>Tilt angle</span>
-              <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{pitch}°</span>
-            </div>
-            <input type="range" min="0" max="60" value={pitch}
-              onChange={e => setPitch(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--red)' }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-              <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>0° top-down</span>
-              <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>60° max perspective</span>
-            </div>
+        {/* Zoom level */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>Zoom level</span>
+            <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{zoom}</span>
           </div>
-
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-              <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>Animation duration</span>
-              <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{duration}ms</span>
-            </div>
-            <input type="range" min="0" max="800" step="50" value={duration}
-              onChange={e => setDuration(Number(e.target.value))}
-              style={{ width: '100%', accentColor: 'var(--red)' }}
-            />
+          <input type="range" min="10" max="18" step="0.5" value={zoom}
+            onChange={e => setZoom(Number(e.target.value))}
+            style={{ width: '100%', accentColor: 'var(--red)' }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>10 overview</span>
+            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>18 street level</span>
           </div>
         </div>
       </div>
 
       <CodeBlock tabs={['Kotlin']}>
         <pre>
-          {'mapView.'}<span className="hl-f">setTilt</span>{'(\n'}
-          {'    tilt      = '}<span className="hl-n">{pitch}</span><span className="hl-t">f</span>{',\n'}
-          {'    animation = '}<span className="hl-t">TiltAnimation</span>{'(\n'}
-          {'        type     = '}<span className="hl-t">AnimationType</span>{'.'}<span className="hl-n">EASE_IN_OUT</span>{',\n'}
-          {'        duration = '}<span className="hl-n">{duration}</span><span className="hl-t">L</span>{'\n'}
-          {'    )\n)'}
+          {'mapView.'}<span className="hl-f">setTilt</span>{'('}<span className="hl-n">{pitch}</span><span className="hl-t">f</span>{')\n'}
+          {'mapView.'}<span className="hl-f">setZoom</span>{'('}<span className="hl-n">{zoom}</span><span className="hl-t">f</span>{')'}
         </pre>
       </CodeBlock>
     </div>
