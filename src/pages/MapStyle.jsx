@@ -34,7 +34,7 @@ const MAP_DISPLAY_APIS = [
 ];
 
 const API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
-const CENTER  = [4.9041, 52.3676]; // Amsterdam
+const CENTER  = [-0.1276, 51.5074]; // London
 
 /* ─── TomTom MapStyleConfig objects ──────────────────────────── */
 const STYLE_CFG = {
