@@ -1076,6 +1076,12 @@ html.ai-panel-open .toc {
   pointer-events: none;
 }
 
+/* Page content left/right padding matches header (32px) when panel is open */
+html.ai-panel-open .page {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
 /* ─── Ask AI panel ───────────────────────────────────────────────────────── */
 .ai-panel {
   position: fixed;
