@@ -260,10 +260,23 @@ export default function EVNavUI() {
         <h2 className="sh" id="evui-range">{t('navUI.rangeRing.heading')}</h2>
         <p className="body">{t('navUI.rangeRing.body')}</p>
 
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          {Object.entries(SOC_STATES).map(([key, s]) => (
+            <button key={key} onClick={() => setSocState(key)} style={{
+              padding: '7px 16px', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.82rem',
+              background: socState === key ? s.color : 'var(--white)',
+              color: socState === key ? (key === 'low' ? '#000' : '#fff') : 'var(--black)',
+              border: socState === key ? `1.5px solid ${s.color}` : '1.5px solid var(--border)',
+              transition: 'all 0.15s',
+            }}>
+              {s.label} ({s.pct}%)
+            </button>
+          ))}
+        </div>
+
         <div style={{ marginBottom: 16 }}>
           <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>{t('navUI.rangeRing.mapLabel')}</div>
           <RangeRingMock state={socState} />
-          <div style={{ fontSize: '0.76rem', color: 'var(--muted)', marginTop: 8 }}>{t('navUI.rangeRing.hint')}</div>
         </div>
 
         <CodeBlock language="kotlin" code={CODE_RANGE_RING} />
