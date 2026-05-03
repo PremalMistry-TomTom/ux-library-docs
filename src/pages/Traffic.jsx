@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import tt from '@tomtom-international/web-sdk-maps';
+import '@tomtom-international/web-sdk-maps/dist/maps.css';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
@@ -31,105 +33,84 @@ const MAP_DISPLAY_APIS = [
   },
 ];
 
-/* ─── Shared map base ───────────────────────────────────────── */
-function MapBase({ children, height = 240 }) {
+const API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+const CENTER  = [4.9041, 52.3676]; // Amsterdam
+
+/* ─── Style builder ──────────────────────────────────────────── */
+function buildStyle(flowOn, incOn, flowStyle) {
+  const cfg = { map: '2/basic_street-light-driving' };
+  if (flowOn)  cfg.trafficFlow      = flowStyle === 'RELATIVE' ? '2/flow_relative-light' : '2/flow_absolute-light';
+  if (incOn)   cfg.trafficIncidents = '2/incidents_light';
+  return cfg;
+}
+
+/* ─── Live TomTom map ────────────────────────────────────────── */
+function LiveTrafficMap({ styleCfg, zoom = 13 }) {
+  const containerRef = useRef(null);
+  const mapRef       = useRef(null);
+  const prevCfgRef   = useRef(JSON.stringify(styleCfg));
+
+  useEffect(() => {
+    const map = tt.map({
+      key: API_KEY,
+      container: containerRef.current,
+      center: CENTER,
+      zoom,
+      style: styleCfg,
+      scrollZoom: false,
+      dragRotate: false,
+      keyboard:   false,
+      boxZoom:    false,
+    });
+    mapRef.current = map;
+    return () => { map.remove(); mapRef.current = null; };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const next = JSON.stringify(styleCfg);
+    if (next === prevCfgRef.current) return;
+    prevCfgRef.current = next;
+    const map = mapRef.current;
+    if (!map) return;
+    const apply = () => map.setStyle(styleCfg);
+    map.loaded() ? apply() : map.once('load', apply);
+  }, [styleCfg]);
+
+  return <div ref={containerRef} style={{ width: '100%', height: '100%' }} />;
+}
+
+/* ─── Tablet frame (same as MapStyle) ───────────────────────── */
+function TabletFrame({ children, overlayChildren }) {
   return (
     <div style={{
-      width: '100%', maxWidth: 340, height, background: '#1a2535',
-      borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
-      position: 'relative', overflow: 'hidden', flexShrink: 0,
+      position: 'relative', width: '100%',
+      background: '#181818', borderRadius: 18,
+      padding: '14px 16px',
+      boxShadow: '0 16px 48px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.15)',
+      border: '1px solid rgba(255,255,255,0.07)',
     }}>
-      {/* Base map */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
-        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 340 240" fill="none">
-          {/* Minor roads */}
-          <line x1="0" y1="60" x2="340" y2="58" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          <line x1="0" y1="120" x2="340" y2="118" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          <line x1="0" y1="180" x2="340" y2="182" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          <line x1="70" y1="0" x2="65" y2="240" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          <line x1="170" y1="0" x2="172" y2="240" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          <line x1="270" y1="0" x2="268" y2="240" stroke="rgba(255,255,255,0.06)" strokeWidth="1"/>
-          {/* Major roads (grey base) */}
-          <path d="M0 95 Q85 88 170 95 T340 91" stroke="rgba(255,255,255,0.14)" strokeWidth="4" strokeLinecap="round"/>
-          <path d="M110 0 Q114 95 115 150 T118 240" stroke="rgba(255,255,255,0.14)" strokeWidth="4" strokeLinecap="round"/>
-          <path d="M0 155 Q80 148 170 155 T340 150" stroke="rgba(255,255,255,0.1)" strokeWidth="3" strokeLinecap="round"/>
-        </svg>
+      {/* Camera */}
+      <div style={{ position: 'absolute', top: 7, left: '50%', transform: 'translateX(-50%)', width: 6, height: 6, borderRadius: '50%', background: '#2e2e2e', boxShadow: 'inset 0 0 0 1.5px #111' }} />
+      {/* Volume buttons */}
+      {[28, 52, 72].map((top, i) => (
+        <div key={i} style={{ position: 'absolute', left: -2, top, width: 3, height: i === 0 ? 16 : 22, background: '#242424', borderRadius: '2px 0 0 2px' }} />
+      ))}
+      {/* Power button */}
+      <div style={{ position: 'absolute', right: -2, top: 40, width: 3, height: 28, background: '#242424', borderRadius: '0 2px 2px 0' }} />
+      {/* Screen */}
+      <div style={{ borderRadius: 8, overflow: 'hidden', height: 380, position: 'relative', background: '#000' }}>
+        {children}
+        {overlayChildren}
+        {/* Home bar */}
+        <div style={{ position: 'absolute', bottom: 6, left: '50%', transform: 'translateX(-50%)', width: 100, height: 3, background: 'rgba(255,255,255,0.2)', borderRadius: 2, pointerEvents: 'none' }} />
       </div>
-      {/* Position dot */}
-      <div style={{ position: 'absolute', top: '42%', left: '34%', width: 9, height: 9, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 3px rgba(226,0,26,0.3)', zIndex: 5 }} />
-      {children}
     </div>
   );
 }
 
-/* ─── Flow colours ──────────────────────────────────────────── */
-const FLOW_COLOURS = {
-  free:    '#22c55e',
-  slow:    '#f59e0b',
-  heavy:   '#ef4444',
-  standst: '#7f1d1d',
-};
-
-function FlowOverlay({ visible, style: flowStyle }) {
-  if (!visible) return null;
-
-  const segments = flowStyle === 'RELATIVE'
-    ? [
-        { d: 'M0 95 Q40 90 80 94',        color: FLOW_COLOURS.free,    w: 4 },
-        { d: 'M80 94 Q110 92 140 96',      color: FLOW_COLOURS.slow,    w: 4 },
-        { d: 'M140 96 Q160 94 200 95',     color: FLOW_COLOURS.heavy,   w: 4 },
-        { d: 'M200 95 Q260 92 340 91',     color: FLOW_COLOURS.standst, w: 4 },
-        { d: 'M110 0 Q113 40 114 80',      color: FLOW_COLOURS.free,    w: 4 },
-        { d: 'M114 80 Q114 110 115 130',   color: FLOW_COLOURS.slow,    w: 4 },
-        { d: 'M115 130 Q116 160 117 200',  color: FLOW_COLOURS.heavy,   w: 4 },
-        { d: 'M117 200 Q118 220 118 240',  color: FLOW_COLOURS.free,    w: 4 },
-      ]
-    : [
-        { d: 'M0 95 Q85 88 170 95 T340 91',     color: FLOW_COLOURS.slow,  w: 4 },
-        { d: 'M110 0 Q114 95 115 150 T118 240', color: FLOW_COLOURS.heavy, w: 4 },
-      ];
-
+/* ─── Toggle switch ──────────────────────────────────────────── */
+function Toggle({ label, on, onToggle }) {
   return (
-    <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 340 240" fill="none">
-      {segments.map((seg, i) => (
-        <path key={i} d={seg.d} stroke={seg.color} strokeWidth={seg.w} strokeLinecap="round" opacity="0.85"/>
-      ))}
-    </svg>
-  );
-}
-
-/* ─── Incident icons ────────────────────────────────────────── */
-const INCIDENT_TYPES = [
-  { id: 'ACCIDENT',  icon: '💥', label: 'Accident',   x: '42%', y: '55%', color: '#ef4444' },
-  { id: 'ROAD_WORK', icon: '🚧', label: 'Road work',  x: '65%', y: '37%', color: '#f59e0b' },
-  { id: 'CLOSURE',   icon: '🚫', label: 'Closure',    x: '18%', y: '37%', color: '#94a3b8' },
-  { id: 'HAZARD',    icon: '⚠️', label: 'Hazard',    x: '70%', y: '68%', color: '#f97316' },
-  { id: 'WEATHER',   icon: '🌧', label: 'Weather',   x: '28%', y: '72%', color: '#60a5fa' },
-];
-
-function IncidentOverlay({ visible, enabled }) {
-  if (!visible) return null;
-  return (
-    <>
-      {INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => (
-        <div key={t.id} style={{
-          position: 'absolute', left: t.x, top: t.y,
-          transform: 'translate(-50%, -50%)',
-          fontSize: '0.9rem', zIndex: 6,
-          filter: 'drop-shadow(0 1px 3px rgba(0,0,0,0.6))',
-        }}>{t.icon}</div>
-      ))}
-    </>
-  );
-}
-
-/* ─── Traffic layer configurator ───────────────────────────── */
-function LayerConfigurator() {
-  const [flowOn, setFlowOn] = useState(true);
-  const [incOn, setIncOn]  = useState(true);
-  const [flowStyle, setFlowStyle] = useState('RELATIVE');
-
-  const Toggle = ({ label, on, onToggle }) => (
     <div onClick={onToggle} style={{
       display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
       borderRadius: 7, cursor: 'pointer', marginBottom: 6,
@@ -143,119 +124,144 @@ function LayerConfigurator() {
       <span style={{ marginLeft: 'auto', fontSize: '0.68rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'on' : 'off'}</span>
     </div>
   );
+}
+
+/* ─── Incident types ─────────────────────────────────────────── */
+const INCIDENT_TYPES = [
+  { id: 'ACCIDENT',  icon: '💥', label: 'Accident',  x: '42%', y: '52%' },
+  { id: 'ROAD_WORK', icon: '🚧', label: 'Road work', x: '63%', y: '36%' },
+  { id: 'CLOSURE',   icon: '🚫', label: 'Closure',   x: '22%', y: '38%' },
+  { id: 'HAZARD',    icon: '⚠️', label: 'Hazard',   x: '70%', y: '65%' },
+  { id: 'WEATHER',   icon: '🌧', label: 'Weather',  x: '30%', y: '70%' },
+];
+
+/* ─── Traffic layer configurator ─────────────────────────────── */
+function LayerConfigurator() {
+  const [flowOn,    setFlowOn]    = useState(true);
+  const [incOn,     setIncOn]     = useState(true);
+  const [flowStyle, setFlowStyle] = useState('RELATIVE');
+
+  const styleCfg = useMemo(
+    () => buildStyle(flowOn, incOn, flowStyle),
+    [flowOn, incOn, flowStyle]
+  );
+
+  const code = `mapView.setTrafficConfiguration(
+    TrafficConfiguration(
+        flowEnabled      = ${flowOn},
+        incidentsEnabled = ${incOn},${flowOn ? `\n        flowStyle       = FlowStyle.${flowStyle}` : ''}
+    )
+)`;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        <MapBase>
-          <FlowOverlay visible={flowOn} style={flowStyle} />
-          <IncidentOverlay visible={incOn} enabled={INCIDENT_TYPES.map(t => t.id)} />
-          {/* Flow legend */}
-          {flowOn && (
-            <div style={{ position: 'absolute', bottom: 8, right: 8, background: 'rgba(0,0,0,0.65)', borderRadius: 6, padding: '5px 8px' }}>
-              {[['Free flow', FLOW_COLOURS.free], ['Slow', FLOW_COLOURS.slow], ['Heavy', FLOW_COLOURS.heavy], ['Standstill', FLOW_COLOURS.standst]].map(([l, c]) => (
-                <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 2 }}>
-                  <div style={{ width: 14, height: 3, borderRadius: 2, background: c }} />
-                  <span style={{ fontSize: '0.45rem', color: 'rgba(255,255,255,0.7)', fontFamily: 'sans-serif' }}>{l}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </MapBase>
+      <TabletFrame>
+        <LiveTrafficMap styleCfg={styleCfg} />
+      </TabletFrame>
 
-        <div style={{ flex: 1, minWidth: 200 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+        {/* Layer toggles */}
+        <div>
           <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Layers</div>
-          <Toggle label="Traffic flow" on={flowOn} onToggle={() => setFlowOn(v => !v)} />
-          <Toggle label="Traffic incidents" on={incOn} onToggle={() => setIncOn(v => !v)} />
-
-          {flowOn && (
-            <>
-              <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', margin: '14px 0 8px' }}>Flow style</div>
-              {[{ id: 'RELATIVE', label: 'Relative', desc: 'Colours show speed as % of free-flow baseline' }, { id: 'ABSOLUTE', label: 'Absolute', desc: 'Colours map to fixed speed thresholds (km/h)' }].map(opt => (
-                <div key={opt.id} onClick={() => setFlowStyle(opt.id)} style={{
-                  padding: '7px 10px', borderRadius: 7, cursor: 'pointer', marginBottom: 5,
-                  background: flowStyle === opt.id ? '#fff5f5' : 'var(--bg)',
-                  border: `1px solid ${flowStyle === opt.id ? 'var(--red)' : 'var(--border)'}`,
-                  transition: 'all 0.1s',
-                }}>
-                  <div style={{ fontSize: '0.78rem', fontWeight: flowStyle === opt.id ? 600 : 400, color: flowStyle === opt.id ? 'var(--red)' : 'var(--black)' }}>{opt.label}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: 2 }}>{opt.desc}</div>
-                </div>
-              ))}
-            </>
-          )}
+          <Toggle label="Traffic flow"      on={flowOn} onToggle={() => setFlowOn(v => !v)} />
+          <Toggle label="Traffic incidents" on={incOn}  onToggle={() => setIncOn(v => !v)} />
         </div>
+
+        {/* Flow style */}
+        {flowOn && (
+          <div>
+            <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Flow style</div>
+            {[
+              { id: 'RELATIVE', label: 'Relative', desc: 'Speed as % of free-flow baseline' },
+              { id: 'ABSOLUTE', label: 'Absolute', desc: 'Fixed speed thresholds (km/h)' },
+            ].map(opt => (
+              <div key={opt.id} onClick={() => setFlowStyle(opt.id)} style={{
+                padding: '7px 10px', borderRadius: 7, cursor: 'pointer', marginBottom: 5,
+                background: flowStyle === opt.id ? '#fff5f5' : 'var(--bg)',
+                border: `1px solid ${flowStyle === opt.id ? 'var(--red)' : 'var(--border)'}`,
+                transition: 'all 0.1s',
+              }}>
+                <div style={{ fontSize: '0.78rem', fontWeight: flowStyle === opt.id ? 600 : 400, color: flowStyle === opt.id ? 'var(--red)' : 'var(--black)' }}>{opt.label}</div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: 2 }}>{opt.desc}</div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      <CodeBlock tabs={['Kotlin']}>
-        <pre>
-          {'mapView.'}<span className="hl-f">setTrafficConfiguration</span>{'(\n'}
-          {'    '}<span className="hl-t">TrafficConfiguration</span>{'(\n'}
-          {'        '}<span className="hl-f">flowEnabled</span>{'      = '}<span className="hl-n">{flowOn ? 'true' : 'false'}</span>{',\n'}
-          {'        '}<span className="hl-f">incidentsEnabled</span>{' = '}<span className="hl-n">{incOn ? 'true' : 'false'}</span>{',\n'}
-          {flowOn && <span>{'        '}<span className="hl-f">flowStyle</span>{'       = '}<span className="hl-t">FlowStyle</span>{'.'}<span className="hl-n">{flowStyle}</span>{'\n'}</span>}
-          {'    )\n)'}
-        </pre>
-      </CodeBlock>
+      <CodeBlock language="kotlin" code={code} />
     </div>
   );
 }
 
-/* ─── Incident type filter ──────────────────────────────────── */
+/* ─── Incident type filter ───────────────────────────────────── */
 function IncidentFilter() {
   const [enabled, setEnabled] = useState(INCIDENT_TYPES.map(t => t.id));
   const toggle = id => setEnabled(e => e.includes(id) ? e.filter(x => x !== id) : [...e, id]);
 
+  const incStyleCfg = useMemo(() => ({
+    map: '2/basic_street-light',
+    trafficIncidents: '2/incidents_light',
+  }), []);
+
+  const code = `mapView.setIncidentFilter(
+    IncidentFilter(
+        types = setOf(
+${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            IncidentType.${t.id}`).join(',\n')}
+        )
+    )
+)`;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
-        <MapBase>
-          <IncidentOverlay visible enabled={enabled} />
-        </MapBase>
+      <TabletFrame
+        overlayChildren={
+          <>
+            {INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => (
+              <div key={t.id} style={{
+                position: 'absolute', left: t.x, top: t.y,
+                transform: 'translate(-50%, -50%)',
+                fontSize: '1.1rem', zIndex: 6,
+                filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.7))',
+                pointerEvents: 'none',
+              }}>{t.icon}</div>
+            ))}
+          </>
+        }
+      >
+        <LiveTrafficMap styleCfg={incStyleCfg} zoom={13} />
+      </TabletFrame>
 
-        <div style={{ flex: 1, minWidth: 200 }}>
-          {INCIDENT_TYPES.map(t => {
-            const on = enabled.includes(t.id);
-            return (
-              <div key={t.id} onClick={() => toggle(t.id)} style={{
-                display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px',
-                borderRadius: 7, cursor: 'pointer', marginBottom: 6,
-                background: on ? '#fff' : 'var(--bg)', border: '1px solid var(--border)',
-                opacity: on ? 1 : 0.45, transition: 'all 0.12s',
-              }}>
-                <span style={{ fontSize: '1rem' }}>{t.icon}</span>
-                <span style={{ fontSize: '0.82rem', fontWeight: 500, flex: 1 }}>{t.label}</span>
-                <span style={{ fontSize: '0.65rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'shown' : 'hidden'}</span>
-              </div>
-            );
-          })}
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 }}>
+        {INCIDENT_TYPES.map(t => {
+          const on = enabled.includes(t.id);
+          return (
+            <div key={t.id} onClick={() => toggle(t.id)} style={{
+              display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
+              borderRadius: 7, cursor: 'pointer',
+              background: on ? '#fff' : 'var(--bg)', border: '1px solid var(--border)',
+              opacity: on ? 1 : 0.45, transition: 'all 0.12s',
+            }}>
+              <span style={{ fontSize: '1rem' }}>{t.icon}</span>
+              <span style={{ fontSize: '0.82rem', fontWeight: 500, flex: 1 }}>{t.label}</span>
+              <span style={{ fontSize: '0.65rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'shown' : 'hidden'}</span>
+            </div>
+          );
+        })}
       </div>
 
-      <CodeBlock tabs={['Kotlin']}>
-        <pre>
-          {'mapView.'}<span className="hl-f">setIncidentFilter</span>{'(\n'}
-          {'    '}<span className="hl-t">IncidentFilter</span>{'(\n'}
-          {'        '}<span className="hl-f">types</span>{' = setOf(\n'}
-          {INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map((t, i, arr) => (
-            <span key={t.id}>
-              {'            '}<span className="hl-t">IncidentType</span>{'.'}<span className="hl-n">{t.id}</span>{i < arr.length - 1 ? ',\n' : '\n'}
-            </span>
-          ))}
-          {'        )\n    )\n)'}
-        </pre>
-      </CodeBlock>
+      <CodeBlock language="kotlin" code={code} />
     </div>
   );
 }
 
-/* ─── Refresh interval demo ─────────────────────────────────── */
+/* ─── Refresh interval demo ──────────────────────────────────── */
 function RefreshDemo() {
   const PRESETS = [
-    { id: 30,  label: '30 s',   note: 'Near real-time. Higher data usage.' },
-    { id: 60,  label: '1 min',  note: 'Balanced. Recommended default.' },
-    { id: 120, label: '2 min',  note: 'Reduced data. Suitable for limited connectivity.' },
-    { id: 300, label: '5 min',  note: 'Minimal refresh. Best-effort traffic only.' },
+    { id: 30,  label: '30 s',  note: 'Near real-time. Higher data usage.' },
+    { id: 60,  label: '1 min', note: 'Balanced. Recommended default.' },
+    { id: 120, label: '2 min', note: 'Reduced data. Suitable for limited connectivity.' },
+    { id: 300, label: '5 min', note: 'Minimal refresh. Best-effort traffic only.' },
   ];
   const [interval, setInterval] = useState(60);
   const sel = PRESETS.find(p => p.id === interval);
@@ -278,21 +284,12 @@ function RefreshDemo() {
       <div style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 7, fontSize: '0.8rem', color: 'var(--mid)' }}>
         {sel?.note}
       </div>
-      <CodeBlock tabs={['Kotlin']}>
-        <pre>
-          {'mapView.'}<span className="hl-f">setTrafficConfiguration</span>{'(\n'}
-          {'    '}<span className="hl-t">TrafficConfiguration</span>{'(\n'}
-          {'        '}<span className="hl-f">flowEnabled</span>{'         = '}<span className="hl-n">true</span>{',\n'}
-          {'        '}<span className="hl-f">incidentsEnabled</span>{'     = '}<span className="hl-n">true</span>{',\n'}
-          {'        '}<span className="hl-f">refreshIntervalSec</span>{'   = '}<span className="hl-n">{interval}</span>{'\n'}
-          {'    )\n)'}
-        </pre>
-      </CodeBlock>
+      <CodeBlock language="kotlin" code={`mapView.setTrafficConfiguration(\n    TrafficConfiguration(\n        flowEnabled         = true,\n        incidentsEnabled     = true,\n        refreshIntervalSec   = ${interval}\n    )\n)`} />
     </div>
   );
 }
 
-/* ─── Main page ─────────────────────────────────────────────── */
+/* ─── Main page ──────────────────────────────────────────────── */
 export default function TrafficPage() {
   return (
     <div className="page">
@@ -331,7 +328,7 @@ export default function TrafficPage() {
         <h2 className="sh" id="tr-layers">Flow &amp; incidents layers</h2>
         <p className="body">
           Toggle the flow and incident layers independently and switch between relative and
-          absolute flow colouring. The map preview and code update live.
+          absolute flow colouring. The live map and code update instantly.
         </p>
         <LayerConfigurator />
       </div>
@@ -367,17 +364,7 @@ export default function TrafficPage() {
           formats expected by UX Library. Partial implementations (flow only, or incidents only)
           are supported — unused channels can return empty responses.
         </Callout>
-        <CodeBlock tabs={['Kotlin']}>
-          <pre>
-            <span className="hl-k">class</span>{' '}<span className="hl-t">MyTrafficProvider</span>{' : '}<span className="hl-t">TrafficProvider</span>{' {\n\n'}
-            {'    '}<span className="hl-k">override fun</span>{' '}<span className="hl-f">getFlowTileUrl</span>{'(zoom: '}<span className="hl-t">Int</span>{', x: '}<span className="hl-t">Int</span>{', y: '}<span className="hl-t">Int</span>{'): '}<span className="hl-t">String</span>{' =\n'}
-            {'        '}<span className="hl-s">{'"https://traffic.example.com/flow/$zoom/$x/$y.png"'}</span>{'\n\n'}
-            {'    '}<span className="hl-k">override fun</span>{' '}<span className="hl-f">getIncidentsFeedUrl</span>{'(): '}<span className="hl-t">String</span>{' =\n'}
-            {'        '}<span className="hl-s">{'"https://traffic.example.com/incidents.geojson"'}</span>{'\n}\n\n'}
-            <span className="hl-c">{'// Register before map init\n'}</span>
-            <span className="hl-t">TrafficConfiguration</span>{'.'}<span className="hl-f">setProvider</span>{'('}<span className="hl-t">MyTrafficProvider</span>{'())'}
-          </pre>
-        </CodeBlock>
+        <CodeBlock language="kotlin" code={`class MyTrafficProvider : TrafficProvider {\n\n    override fun getFlowTileUrl(zoom: Int, x: Int, y: Int): String =\n        "https://traffic.example.com/flow/\$zoom/\$x/\$y.png"\n\n    override fun getIncidentsFeedUrl(): String =\n        "https://traffic.example.com/incidents.geojson"\n}\n\n// Register before map init\nTrafficConfiguration.setProvider(MyTrafficProvider())`} />
       </div>
 
       <div className="zone">
