@@ -85,7 +85,7 @@ const STYLES = [
  *  A thin React wrapper around the TomTom Maps SDK.
  *  styleKey / pitch changes are applied via map.setStyle / easeTo.
  * ──────────────────────────────────────────────────────────────── */
-function LiveMap({ styleKey, pitch = 0, zoom = 14 }) {
+function LiveMap({ styleKey, pitch = 0, zoom = 12.5 }) {
   const containerRef = useRef(null);
   const mapRef       = useRef(null);
   const prevStyleRef = useRef(styleKey);
@@ -295,7 +295,7 @@ function StyleExplorer() {
 /* ─── Tilt demo ──────────────────────────────────────────────── */
 function TiltDemo() {
   const [pitch, setPitch] = useState(35);
-  const [zoom,  setZoom]  = useState(15);
+  const [zoom,  setZoom]  = useState(12.5);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>

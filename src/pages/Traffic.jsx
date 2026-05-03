@@ -42,7 +42,7 @@ const FLOW_STYLES = {
 };
 
 /* ─── Live TomTom map with SDK traffic methods ───────────────── */
-function LiveTrafficMap({ flowOn, incOn, flowStyle = 'RELATIVE', zoom = 13 }) {
+function LiveTrafficMap({ flowOn, incOn, flowStyle = 'RELATIVE', zoom = 12.5 }) {
   const containerRef  = useRef(null);
   const mapRef        = useRef(null);
   // Keep latest values accessible in closures without stale captures
@@ -263,7 +263,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
           </>
         }
       >
-        <LiveTrafficMap flowOn={false} incOn={true} zoom={13} />
+        <LiveTrafficMap flowOn={false} incOn={true} zoom={12.5} />
       </TabletFrame>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 }}>
