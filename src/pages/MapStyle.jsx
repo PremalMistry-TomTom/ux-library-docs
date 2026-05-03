@@ -339,12 +339,7 @@ function TiltDemo() {
         </div>
       </div>
 
-      <CodeBlock tabs={['Kotlin']}>
-        <pre>
-          {'mapView.'}<span className="hl-f">setTilt</span>{'('}<span className="hl-n">{pitch}</span><span className="hl-t">f</span>{')\n'}
-          {'mapView.'}<span className="hl-f">setZoom</span>{'('}<span className="hl-n">{zoom}</span><span className="hl-t">f</span>{')'}
-        </pre>
-      </CodeBlock>
+      <CodeBlock language="kotlin" code={`mapView.setTilt(${pitch}f)\nmapView.setZoom(${zoom}f)`} />
     </div>
   );
 }
@@ -472,12 +467,12 @@ export default function MapStyle() {
       </div>
 
       <div className="zone">
-        <h2 className="sh" id="ms-tilt">Adding tilt</h2>
+        <h2 className="sh" id="ms-tilt">Tilt and zoom</h2>
         <p className="body">
-          The map can be tilted to show a 3D perspective view — common in active guidance to
-          give a driver's-eye sense of the road ahead. Tilt angle ranges from{' '}
-          <strong>0° (top-down)</strong> to <strong>60° (maximum perspective)</strong>.
-          Drag the slider below to preview the effect live and generate the corresponding code.
+          Tilt angles the map into a 3D perspective — common during active guidance to give drivers
+          a sense of the road ahead. Zoom controls the level of detail, from a city overview down to
+          individual street level. Both are set independently and can be animated together.
+          Adjust the sliders to preview the live effect and see the generated Kotlin output update below.
         </p>
         <TiltDemo />
       </div>
