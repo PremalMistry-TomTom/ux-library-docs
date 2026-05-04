@@ -107,12 +107,12 @@ export default function PageActions() {
           <SparkleIcon /> Ask about this page
         </button>
         <span className="page-action-sep" aria-hidden="true" />
-        <button className="page-action-btn" onClick={handleCopy}>
+        <button className="page-action-btn page-action-btn--desktop" onClick={handleCopy}>
           {copied ? <CheckIcon /> : <ClipboardIcon />}
           {copied ? 'Copied!' : 'Copy for LLM'}
         </button>
-        <span className="page-action-sep" aria-hidden="true" />
-        <button className="page-action-btn" onClick={() => setShowMd(true)}>
+        <span className="page-action-sep page-action-btn--desktop" aria-hidden="true" />
+        <button className="page-action-btn page-action-btn--desktop" onClick={() => setShowMd(true)}>
           <MarkdownIcon /> View as Markdown
         </button>
       </div>
