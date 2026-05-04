@@ -68,16 +68,16 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
 
   return (
     <nav className="topnav" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-      {/* Docs nav toggle — mobile only */}
-      <button
-        className="topnav-nav-toggle"
-        aria-label="Open docs navigation"
-        onClick={onOpenNavDrawer}
-      >
-        <DocsNavIcon />
-      </button>
-
       <div className="topnav-crumb">
+        {/* Docs nav toggle — mobile only, sits left of breadcrumb text */}
+        <button
+          className="topnav-nav-toggle"
+          aria-label="Open docs navigation"
+          onClick={onOpenNavDrawer}
+        >
+          <DocsNavIcon />
+        </button>
+
         <span className="topnav-crumb-root" onClick={onHome}>UX Library</span>
 
         {/* Domain segment — shown for landing pages and their children */}
