@@ -59,7 +59,7 @@ function HamburgerIcon({ open }) {
 
 const NAV_LINKS = ['Products', 'Resources', 'Pricing'];
 
-export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave }) {
+export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, onProductsClick, docsPortalOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   /* Close menu on resize back to desktop */
@@ -92,7 +92,15 @@ export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave }) 
 
         <nav className="gh-nav">
           {NAV_LINKS.map(link => (
-            <a key={link} href="#" className="gh-nav-link" onClick={e => e.preventDefault()}>
+            <a
+              key={link}
+              href="#"
+              className={`gh-nav-link${link === 'Products' && docsPortalOpen ? ' gh-nav-link--active' : ''}`}
+              onClick={e => {
+                e.preventDefault();
+                if (link === 'Products' && onProductsClick) onProductsClick();
+              }}
+            >
               {link}
             </a>
           ))}

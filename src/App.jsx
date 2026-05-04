@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Topnav from './components/layout/Topnav';
 import GlobalHeader from './components/layout/GlobalHeader';
 import { useGlobalHeader } from './hooks/useGlobalHeader';
+import DocsPortal from './pages/DocsPortal';
 
 /* ─── Shared logo — pinned top-left, independent of both headers ─────────── */
 function FixedLogo({ onClick }) {
@@ -117,6 +118,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('overview');
   const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
+  const [docsPortalOpen, setDocsPortalOpen] = useState(false);
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {
@@ -139,31 +141,38 @@ export default function App() {
         isVisible={isGlobalVisible}
         onMouseEnter={onMouseEnterGlobal}
         onMouseLeave={onMouseLeaveGlobal}
+        onProductsClick={() => setDocsPortalOpen(v => !v)}
+        docsPortalOpen={docsPortalOpen}
       />
       <Topnav
         currentPage={currentPage}
-        onHome={() => navigate('overview')}
-        onNavigate={navigate}
+        onHome={() => { navigate('overview'); setDocsPortalOpen(false); }}
+        onNavigate={id => { navigate(id); setDocsPortalOpen(false); }}
         isDark={isDark}
         onToggleTheme={() => setIsDark(d => !d)}
         onMouseEnter={reveal}
         onMouseLeave={cancelReveal}
         onOpenNavDrawer={() => setNavDrawerOpen(true)}
       />
-      <div className="shell">
-        <Sidenav
-          currentPage={currentPage}
-          onNavigate={navigate}
-          drawerOpen={navDrawerOpen}
-          onDrawerClose={() => setNavDrawerOpen(false)}
-          isDark={isDark}
-          onToggleTheme={() => setIsDark(d => !d)}
-        />
-        <div className="content-area">
-          <PageContent pageId={currentPage} onNavigate={navigate} />
+
+      {docsPortalOpen ? (
+        <DocsPortal />
+      ) : (
+        <div className="shell">
+          <Sidenav
+            currentPage={currentPage}
+            onNavigate={navigate}
+            drawerOpen={navDrawerOpen}
+            onDrawerClose={() => setNavDrawerOpen(false)}
+            isDark={isDark}
+            onToggleTheme={() => setIsDark(d => !d)}
+          />
+          <div className="content-area">
+            <PageContent pageId={currentPage} onNavigate={navigate} />
+          </div>
+          <TOC currentPage={currentPage} />
         </div>
-        <TOC currentPage={currentPage} />
-      </div>
+      )}
     </>
   );
 }
