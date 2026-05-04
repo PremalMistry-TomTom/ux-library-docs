@@ -54,7 +54,7 @@ function SidebarIcon() {
   );
 }
 
-export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onNavAction }) {
+export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onNavAction, navCollapsed }) {
   const { t } = useTranslation('common');
   const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: PAGE_TITLES[currentPage] ?? currentPage });
   const ctx        = getPageContext(currentPage);
@@ -73,8 +73,8 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
       <div className="topnav-crumb">
         {/* Docs nav toggle — mobile only, sits left of breadcrumb text */}
         <button
-          className="topnav-nav-toggle"
-          aria-label="Toggle navigation"
+          className={`topnav-nav-toggle${navCollapsed ? ' topnav-nav-toggle--collapsed' : ''}`}
+          aria-label={navCollapsed ? 'Show navigation' : 'Hide navigation'}
           onClick={onNavAction}
         >
           <SidebarIcon />

@@ -857,14 +857,19 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 [data-theme="dark"] .adas-stack-output-oem { background: #0d1f38; border-color: #1e3a5c; }
 [data-theme="dark"] .adas-stack-output-oem .adas-stack-label { color: #93c5fd; }
 
+/* ── Sidenav collapse (desktop toggle) ── */
+.shell--nav-collapsed { grid-template-columns: 0 minmax(0,1fr) var(--toc-w); }
+.shell--nav-collapsed .sidenav:not(.sidenav-drawer) { overflow: hidden; padding-left: 0; padding-right: 0; border-right: none; }
+@media (max-width: 1100px) { .shell--nav-collapsed { grid-template-columns: 0 1fr; } }
+
+/* Rotate the icon when nav is collapsed to signal it can be expanded */
+.topnav-nav-toggle--collapsed .sidebar-panel-icon { transform: scaleX(-1); }
+
 /* ── Responsive ── */
 @media (max-width: 1100px) { .shell { grid-template-columns: var(--nav-w) 1fr; } .toc { display: none; } }
 @media (max-width: 900px)  { .page-action-btn--desktop { display: none !important; } }
 @media (max-width: 760px) { .shell { grid-template-columns: 1fr; } .sidenav:not(.sidenav-drawer) { display: none; } .page { padding: 20px 16px 48px; } }
 @media (max-width: 760px) { .type-category-grid { grid-template-columns: repeat(2,1fr); } }
-
-/* When the nav drawer is open on desktop, hide the static sidenav so they don't overlap */
-.shell--drawer-open .sidenav:not(.sidenav-drawer) { visibility: hidden; }
 
 /* ── Responsive 2-col grid utility — collapses to 1 col on mobile ── */
 .grid-2-col {
@@ -904,6 +909,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   transition: color 0.12s;
 }
 .topnav-nav-toggle:hover { color: var(--red); }
+.topnav-nav-toggle .sidebar-panel-icon { transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); }
 
 @media (max-width: 760px) {
   .topnav-nav-toggle { display: flex; }
@@ -946,7 +952,11 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   transform: translateX(0);
 }
 
-/* Drawer and backdrop are always available — shown on all breakpoints when open */
+/* Only show the drawer on mobile — hide on desktop where normal sidenav is visible */
+@media (min-width: 761px) {
+  .sidenav-drawer { display: none !important; }
+  .sidenav-drawer-backdrop { display: none !important; }
+}
 
 .sidenav-drawer-backdrop {
   position: fixed; inset: 0;
