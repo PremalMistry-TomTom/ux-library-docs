@@ -138,6 +138,40 @@ const TOC_MAP = {
     { id: 'ev-preferences',   label: 'Route preferences' },
     { id: 'ev-requirements',  label: 'Requirements' },
   ],
+  'ev-overview': [
+    { id: 'evo-arch',   label: 'Architecture' },
+    { id: 'evo-guide',  label: 'Setup guide' },
+    { id: 'evo-order',  label: 'Initialisation order' },
+  ],
+  'ev-battery': [
+    { id: 'evb-presets',  label: 'Vehicle presets' },
+    { id: 'evb-provider', label: 'Vehicle provider' },
+    { id: 'evb-aux',      label: 'Auxiliary consumption' },
+    { id: 'evb-offset',   label: 'Battery offset' },
+    { id: 'evb-params',   label: 'Parameter reference' },
+  ],
+  'ev-charging-search': [
+    { id: 'evcs-ui',      label: 'Search UI' },
+    { id: 'evcs-options', label: 'Search API options' },
+    { id: 'evcs-msp',     label: 'Preferred networks' },
+  ],
+  'ev-routing': [
+    { id: 'evr-strategy', label: 'Charging strategy' },
+    { id: 'evr-prefs',    label: 'Route preferences' },
+    { id: 'evr-api',      label: 'API request' },
+    { id: 'evr-response', label: 'Response fields' },
+    { id: 'evr-trip',     label: 'Trip summary' },
+  ],
+  'ev-nav-ui': [
+    { id: 'evui-soc',     label: 'SoC display' },
+    { id: 'evui-range',   label: 'Range ring' },
+    { id: 'evui-reroute', label: 'Rerouting' },
+  ],
+  'ev-requirements': [
+    { id: 'evreq-checklist',  label: 'Checklist' },
+    { id: 'evreq-deps',       label: 'Dependencies' },
+    { id: 'evreq-permissions', label: 'Permissions' },
+  ],
   'adas': [
     { id: 'adas-overview',      label: 'Overview' },
     { id: 'adas-capabilities',  label: 'Capabilities' },

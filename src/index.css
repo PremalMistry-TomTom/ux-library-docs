@@ -42,8 +42,8 @@
   --font-display:'Gilroy','Proxima Nova',-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
 }
 
-html { font-size: 15px; scroll-behavior: smooth; scrollbar-gutter: stable; }
-body { font-family: var(--font-sans); color: var(--black); background: var(--white); line-height: 1.6; }
+html { font-size: 15px; scroll-behavior: smooth; scrollbar-gutter: stable; overflow-x: clip; }
+body { font-family: var(--font-sans); color: var(--black); background: var(--white); line-height: 1.6; overflow-x: clip; }
 
 /* ── Layout shell ── */
 .shell {
@@ -862,6 +862,24 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 @media (max-width: 900px)  { .page-action-btn--desktop { display: none !important; } }
 @media (max-width: 760px) { .shell { grid-template-columns: 1fr; } .sidenav:not(.sidenav-drawer) { display: none; } .page { padding: 20px 16px 48px; } }
 @media (max-width: 760px) { .type-category-grid { grid-template-columns: repeat(2,1fr); } }
+
+/* ── Responsive 2-col grid utility — collapses to 1 col on mobile ── */
+.grid-2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .grid-2-col { grid-template-columns: 1fr; }
+}
+
+/* ── Scrollable table wrapper — prevents wide tables overflowing the page ── */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
 
 /* ── Mobile header alignment — match 16px content padding ── */
 @media (max-width: 760px) {
