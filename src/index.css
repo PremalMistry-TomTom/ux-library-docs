@@ -880,7 +880,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 
 /* ── Sidenav drawer (mobile slide-in) ── */
 .sidenav-drawer {
-  display: flex !important; /* always in DOM, visibility controlled by transform */
+  display: block !important; /* always in DOM, visibility controlled by transform */
   position: fixed;
   top: 0; left: 0; bottom: 0;
   width: var(--nav-w);
