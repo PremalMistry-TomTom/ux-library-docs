@@ -860,6 +860,71 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 @media (max-width: 760px) { .shell { grid-template-columns: 1fr; } .sidenav { display: none; } .page { padding: 20px 16px 48px; } }
 @media (max-width: 760px) { .type-category-grid { grid-template-columns: repeat(2,1fr); } }
 
+/* ── Global header — hamburger / mobile menu ── */
+.gh-hamburger  { display: none; }
+.gh-desktop-only { display: flex; }
+
+@media (max-width: 900px) {
+  /* Hide desktop nav and right-side items */
+  .gh-nav          { display: none; }
+  .gh-desktop-only { display: none !important; }
+
+  /* Show hamburger */
+  .gh-hamburger { display: flex; }
+
+  /* Header stays relative so the dropdown can anchor to it */
+  .global-header { position: fixed; flex-wrap: wrap; align-items: center; }
+
+  /* When menu is open, extend header height to accommodate dropdown */
+  .global-header--menu-open { padding-bottom: 0; }
+}
+
+/* Mobile dropdown */
+.gh-mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  z-index: 400;
+  padding: 8px 0;
+}
+
+.gh-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: none;
+  transition: background 0.1s;
+}
+.gh-mobile-link:hover { background: #f4f4f4; }
+
+.gh-mobile-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 6px 24px;
+}
+
+.gh-mobile-signin {
+  color: var(--red);
+}
+
+[data-theme="dark"] .gh-mobile-menu {
+  background: #1a1a1a;
+  border-color: var(--border);
+}
+[data-theme="dark"] .gh-mobile-link:hover { background: #252525; }
+
 /* ── Page Actions bar (Stripe-style) ── */
 .page-actions {
   display: flex;
