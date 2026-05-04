@@ -857,8 +857,85 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 
 /* ── Responsive ── */
 @media (max-width: 1100px) { .shell { grid-template-columns: var(--nav-w) 1fr; } .toc { display: none; } }
-@media (max-width: 760px) { .shell { grid-template-columns: 1fr; } .sidenav { display: none; } .page { padding: 20px 16px 48px; } }
+@media (max-width: 760px) { .shell { grid-template-columns: 1fr; } .sidenav:not(.sidenav-drawer) { display: none; } .page { padding: 20px 16px 48px; } }
 @media (max-width: 760px) { .type-category-grid { grid-template-columns: repeat(2,1fr); } }
+
+/* ── Topnav docs-nav toggle (mobile) ── */
+.topnav-nav-toggle {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 34px; height: 34px;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--black); border-radius: 8px;
+  flex-shrink: 0;
+  margin-right: 4px;
+  transition: background 0.12s;
+}
+.topnav-nav-toggle:hover { background: var(--bg); }
+
+@media (max-width: 760px) {
+  .topnav-nav-toggle { display: flex; }
+  .topnav-hide-mobile { display: none !important; }
+}
+
+/* ── Sidenav drawer (mobile slide-in) ── */
+.sidenav-drawer {
+  display: flex !important; /* always in DOM, visibility controlled by transform */
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--nav-w);
+  z-index: 600;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+  padding-top: 0; /* drawer has its own header */
+}
+.sidenav-drawer--open {
+  transform: translateX(0);
+}
+
+/* Only show the drawer on mobile — hide on desktop where normal sidenav is visible */
+@media (min-width: 761px) {
+  .sidenav-drawer { display: none !important; }
+  .sidenav-drawer-backdrop { display: none !important; }
+}
+
+.sidenav-drawer-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.32);
+  z-index: 590;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.sidenav-drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  height: 52px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  position: sticky; top: 0;
+  background: var(--white);
+  z-index: 1;
+}
+.sidenav-drawer-title {
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase;
+}
+.sidenav-drawer-close {
+  display: flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--black); border-radius: 6px;
+  transition: background 0.12s;
+}
+.sidenav-drawer-close:hover { background: var(--bg); }
+
+[data-theme="dark"] .sidenav-drawer { background: #1a1a1a; }
+[data-theme="dark"] .sidenav-drawer-header { background: #1a1a1a; }
 
 /* ── Global header — hamburger / mobile menu ── */
 .gh-hamburger  { display: none; }

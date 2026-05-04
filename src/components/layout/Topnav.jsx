@@ -41,7 +41,18 @@ function MoonIcon() {
   );
 }
 
-export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave }) {
+function DocsNavIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor"
+      strokeWidth="1.75" strokeLinecap="round">
+      <line x1="2" y1="4"  x2="16" y2="4"/>
+      <line x1="2" y1="9"  x2="10" y2="9"/>
+      <line x1="2" y1="14" x2="13" y2="14"/>
+    </svg>
+  );
+}
+
+export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onOpenNavDrawer }) {
   const { t } = useTranslation('common');
   const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: 'Overview' });
   const ctx        = getPageContext(currentPage);
@@ -57,6 +68,15 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
 
   return (
     <nav className="topnav" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+      {/* Docs nav toggle — mobile only */}
+      <button
+        className="topnav-nav-toggle"
+        aria-label="Open docs navigation"
+        onClick={onOpenNavDrawer}
+      >
+        <DocsNavIcon />
+      </button>
+
       <div className="topnav-crumb">
         <span className="topnav-crumb-root" onClick={onHome}>UX Library</span>
 
@@ -91,8 +111,8 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         )}
       </div>
       <div className="topnav-right">
-        <span className="topnav-badge">{t('ui.private')}</span>
-        <span className="topnav-version">{t('ui.version')}</span>
+        <span className="topnav-badge topnav-hide-mobile">{t('ui.private')}</span>
+        <span className="topnav-version topnav-hide-mobile">{t('ui.version')}</span>
         <button
           className="lang-toggle"
           onClick={toggleLang}

@@ -116,6 +116,7 @@ function PageContent({ pageId, onNavigate }) {
 export default function App() {
   const [currentPage, setCurrentPage] = useState('overview');
   const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
+  const [navDrawerOpen, setNavDrawerOpen] = useState(false);
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {
@@ -125,6 +126,7 @@ export default function App() {
 
   function navigate(pageId) {
     setCurrentPage(pageId);
+    setNavDrawerOpen(false);
     window.scrollTo(0, 0);
   }
 
@@ -146,9 +148,15 @@ export default function App() {
         onToggleTheme={() => setIsDark(d => !d)}
         onMouseEnter={reveal}
         onMouseLeave={cancelReveal}
+        onOpenNavDrawer={() => setNavDrawerOpen(true)}
       />
       <div className="shell">
-        <Sidenav currentPage={currentPage} onNavigate={navigate} />
+        <Sidenav
+          currentPage={currentPage}
+          onNavigate={navigate}
+          drawerOpen={navDrawerOpen}
+          onDrawerClose={() => setNavDrawerOpen(false)}
+        />
         <div className="content-area">
           <PageContent pageId={currentPage} onNavigate={navigate} />
         </div>

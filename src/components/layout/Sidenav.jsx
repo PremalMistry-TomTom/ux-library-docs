@@ -116,7 +116,7 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle }
 }
 
 /* ─── Sidenav ────────────────────────────────────────────────────────────────── */
-export default function Sidenav({ currentPage, onNavigate }) {
+export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, onDrawerClose }) {
   const { t } = useTranslation('common');
 
   // Derive the key of whichever group contains the active page
@@ -134,15 +134,23 @@ export default function Sidenav({ currentPage, onNavigate }) {
     if (activeGroupKey) setOpenKey(activeGroupKey);
   }, [activeGroupKey]);
 
+  // Close drawer on Escape
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const handler = (e) => { if (e.key === 'Escape') onDrawerClose?.(); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [drawerOpen, onDrawerClose]);
+
   const handleToggle = useCallback((groupKey, forceOpen) => {
     setOpenKey(prev => {
       if (forceOpen) return groupKey;
-      return prev === groupKey ? null : groupKey; // clicking open group closes it
+      return prev === groupKey ? null : groupKey;
     });
   }, []);
 
-  return (
-    <aside className="sidenav">
+  const navContent = (
+    <>
       {NAV.map((entry, i) => {
         if (entry.type === 'top') {
           const label = t(`nav.${entry.id}`, { defaultValue: entry.label });
@@ -168,6 +176,32 @@ export default function Sidenav({ currentPage, onNavigate }) {
           />
         );
       })}
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Normal sidenav — visible in grid on desktop/tablet */}
+      <aside className="sidenav">
+        {navContent}
+      </aside>
+
+      {/* Drawer overlay — mobile only */}
+      {drawerOpen && (
+        <div className="sidenav-drawer-backdrop" onClick={onDrawerClose} aria-hidden="true" />
+      )}
+      <aside className={`sidenav sidenav-drawer${drawerOpen ? ' sidenav-drawer--open' : ''}`}>
+        <div className="sidenav-drawer-header">
+          <span className="sidenav-drawer-title">Docs navigation</span>
+          <button className="sidenav-drawer-close" onClick={onDrawerClose} aria-label="Close navigation">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="4" y1="4" x2="14" y2="14"/>
+              <line x1="14" y1="4" x2="4" y2="14"/>
+            </svg>
+          </button>
+        </div>
+        {navContent}
+      </aside>
+    </>
   );
 }
