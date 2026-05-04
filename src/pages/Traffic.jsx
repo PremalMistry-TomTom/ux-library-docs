@@ -198,7 +198,7 @@ function LayerConfigurator() {
         <LiveTrafficMap flowOn={flowOn} incOn={incOn} flowStyle={flowStyle} />
       </TabletFrame>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="grid-2-col">
         {/* Layer toggles */}
         <div>
           <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Layers</div>

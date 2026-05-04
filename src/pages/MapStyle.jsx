@@ -305,7 +305,7 @@ function TiltDemo() {
       </TabletFrame>
 
       {/* Controls row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+      <div className="grid-2-col">
         {/* Tilt angle */}
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>

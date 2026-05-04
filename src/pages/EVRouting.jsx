@@ -211,7 +211,7 @@ function StopStrategyCalculator({ t }) {
   return (
     <div>
       {/* Sliders */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 24 }}>
+      <div className="grid-2-col" style={{ marginBottom: 24 }}>
         {[
           { label: t('routing.strategy.minAtStop'), val: minStop, set: setMinStop },
           { label: t('routing.strategy.minAtDest'), val: minDest, set: setMinDest },

@@ -66,7 +66,7 @@ export function ZonesDiagram({ t }) {
       </div>
 
       {/* Zone legend — 2×2 grid below mock */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+      <div className="grid-2-col" style={{ gap: 8 }}>
         {zones.map(z => (
           <div
             key={z.id}
@@ -121,7 +121,7 @@ export function ResizeDemo({ t }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Sliders — 2×2 grid above mock */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+      <div className="grid-2-col" style={{ gap: 12 }}>
         {SLIDER_SIDES.map(({ side, label }) => (
           <div key={side}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
@@ -319,7 +319,7 @@ navApp.uiState
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <StateMapMock state={state} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+      <div className="grid-2-col" style={{ gap: 12 }}>
         {Object.entries(stateDimensions).map(([dim, { label, values, desc }]) => (
           <div key={dim} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
             <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 2, color: 'var(--black)' }}>{label}</div>

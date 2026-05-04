@@ -76,7 +76,7 @@ export function ButtonBarConfig({ t }) {
 
       <div>
         <div style={{ fontSize: '0.76rem', fontWeight: 600, marginBottom: 8 }}>Button visibility</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+        <div className="grid-2-col" style={{ gap: 6 }}>
           {BTN_ORDER.map(icon => {
             const hidden = hiddenBtns.includes(icon);
             return (

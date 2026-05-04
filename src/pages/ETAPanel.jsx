@@ -131,7 +131,7 @@ export default function ETAPanel() {
         <p className="body">
           Toggle individual fields on or off. The panel width adapts to the visible set.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginBottom: 16 }}>
+        <div className="grid-2-col" style={{ gap: 6, marginBottom: 16 }}>
           {CONTENT_FIELDS.map(f => {
             const hidden = hiddenFields.includes(f.id);
             return (

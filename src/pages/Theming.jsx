@@ -127,7 +127,7 @@ export default function Theming() {
           <p className="body" style={{ marginBottom: 12 }}>
             The <strong>Automotive UI Toolkit</strong> contains all core UI components, experience stacks, and Tokens Studio configuration. The <strong>Visual Assets</strong> file is the single source of truth for every icon, graphic, and piece of signage — replace assets here and all exports for both the map and UI are generated automatically.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+          <div className="grid-2-col" style={{ gap: 12, marginBottom: 16 }}>
             <Figure
               src={`${BASE}theming/ui-toolkit.webp`}
               alt="Automotive UI Toolkit Figma file"
