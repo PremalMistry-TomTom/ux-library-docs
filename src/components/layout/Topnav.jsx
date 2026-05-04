@@ -44,7 +44,7 @@ function MoonIcon() {
 function SidebarIcon() {
   // Split-panel icon: left column = nav panel, right area = content
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+    <svg className="sidebar-panel-icon" width="18" height="18" viewBox="0 0 18 18" fill="none"
       stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       {/* Outer frame */}
       <rect x="1.5" y="2.5" width="15" height="13" rx="2"/>
@@ -54,7 +54,7 @@ function SidebarIcon() {
   );
 }
 
-export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onOpenNavDrawer }) {
+export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onNavAction, navCollapsed }) {
   const { t } = useTranslation('common');
   const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: PAGE_TITLES[currentPage] ?? currentPage });
   const ctx        = getPageContext(currentPage);
@@ -73,9 +73,9 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
       <div className="topnav-crumb">
         {/* Docs nav toggle — mobile only, sits left of breadcrumb text */}
         <button
-          className="topnav-nav-toggle"
-          aria-label="Open docs navigation"
-          onClick={onOpenNavDrawer}
+          className={`topnav-nav-toggle${navCollapsed ? ' topnav-nav-toggle--collapsed' : ''}`}
+          aria-label={navCollapsed ? 'Show navigation' : 'Hide navigation'}
+          onClick={onNavAction}
         >
           <SidebarIcon />
         </button>

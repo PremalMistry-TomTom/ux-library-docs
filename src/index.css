@@ -163,7 +163,7 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
   position: sticky; top: var(--app-top-offset);
   height: calc(100vh - var(--app-top-offset)); overflow-y: auto;
   padding: 8px 22px 24px 22px; border-right: 1px solid var(--border);
-  transition: top var(--header-transition), height var(--header-transition);
+  transition: top var(--header-transition), height var(--header-transition), padding 0.28s ease;
 }
 .sidenav-group { margin-bottom: 0; }
 .sidenav-plumbing-divider { height: 1px; background: var(--border); margin: 10px 10px 4px; opacity: 0.6; }
@@ -857,6 +857,14 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 [data-theme="dark"] .adas-stack-output-oem { background: #0d1f38; border-color: #1e3a5c; }
 [data-theme="dark"] .adas-stack-output-oem .adas-stack-label { color: #93c5fd; }
 
+/* ── Sidenav collapse (desktop toggle) ── */
+.shell--nav-collapsed { grid-template-columns: 0 minmax(0,1fr) var(--toc-w); }
+.shell--nav-collapsed .sidenav:not(.sidenav-drawer) { overflow: hidden; padding-left: 0; padding-right: 0; border-right: none; }
+@media (max-width: 1100px) { .shell--nav-collapsed { grid-template-columns: 0 1fr; } }
+
+/* Rotate the icon when nav is collapsed to signal it can be expanded */
+.topnav-nav-toggle--collapsed .sidebar-panel-icon { transform: scaleX(-1); }
+
 /* ── Responsive ── */
 @media (max-width: 1100px) { .shell { grid-template-columns: var(--nav-w) 1fr; } .toc { display: none; } }
 @media (max-width: 900px)  { .page-action-btn--desktop { display: none !important; } }
@@ -890,9 +898,9 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   html.ai-panel-open .page { padding-left: 16px; padding-right: 16px; }
 }
 
-/* ── Topnav docs-nav toggle (mobile) ── */
+/* ── Topnav docs-nav toggle ── */
 .topnav-nav-toggle {
-  display: none;
+  display: flex;
   align-items: center;
   padding: 5px 8px 5px 0; /* no left padding — icon flush with crumb left edge */
   border: none; background: transparent; cursor: pointer;
@@ -901,6 +909,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   transition: color 0.12s;
 }
 .topnav-nav-toggle:hover { color: var(--red); }
+.topnav-nav-toggle .sidebar-panel-icon { transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); }
 
 @media (max-width: 760px) {
   .topnav-nav-toggle { display: flex; }
