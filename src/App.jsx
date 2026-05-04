@@ -156,6 +156,8 @@ export default function App() {
           onNavigate={navigate}
           drawerOpen={navDrawerOpen}
           onDrawerClose={() => setNavDrawerOpen(false)}
+          isDark={isDark}
+          onToggleTheme={() => setIsDark(d => !d)}
         />
         <div className="content-area">
           <PageContent pageId={currentPage} onNavigate={navigate} />

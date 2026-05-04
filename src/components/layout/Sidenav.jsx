@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '../../i18n';
 import { NAV } from '../../data/navigation';
 
 /* ─── Tree connector icons (CSS, stretch to item height) ─────────────────────── */
@@ -116,8 +117,14 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle }
 }
 
 /* ─── Sidenav ────────────────────────────────────────────────────────────────── */
-export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, onDrawerClose }) {
+export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, onDrawerClose, isDark, onToggleTheme }) {
   const { t } = useTranslation('common');
+
+  const toggleLang = () => {
+    const next = i18n.language === 'en' ? 'zh' : 'en';
+    i18n.changeLanguage(next);
+    localStorage.setItem('ux-lang', next);
+  };
 
   // Derive the key of whichever group contains the active page
   const activeGroupKey = NAV.find(
@@ -201,6 +208,27 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, o
           </button>
         </div>
         {navContent}
+        <div className="sidenav-drawer-footer">
+          <button className="sidenav-drawer-footer-btn" onClick={toggleLang} aria-label="Switch language">
+            {t('ui.langToggle')}
+          </button>
+          <button className="sidenav-drawer-footer-btn" onClick={onToggleTheme} aria-label={isDark ? t('ui.switchToLight') : t('ui.switchToDark')}>
+            {isDark ? (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="4"/>
+                <line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            ) : (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
+            {isDark ? t('ui.switchToLight') : t('ui.switchToDark')}
+          </button>
+        </div>
       </aside>
     </>
   );

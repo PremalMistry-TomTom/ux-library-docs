@@ -114,7 +114,7 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         <span className="topnav-badge topnav-hide-mobile">{t('ui.private')}</span>
         <span className="topnav-version topnav-hide-mobile">{t('ui.version')}</span>
         <button
-          className="lang-toggle"
+          className="lang-toggle topnav-hide-mobile"
           onClick={toggleLang}
           title="Switch language"
           aria-label="Switch language"
@@ -122,7 +122,7 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
           {t('ui.langToggle')}
         </button>
         <button
-          className="theme-toggle"
+          className="theme-toggle topnav-hide-mobile"
           onClick={onToggleTheme}
           title={isDark ? t('ui.switchToLight') : t('ui.switchToDark')}
           aria-label={isDark ? t('ui.switchToLight') : t('ui.switchToDark')}
