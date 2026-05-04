@@ -912,7 +912,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .sidenav-drawer-header {
-  display: flex; align-items: center; justify-content: flex-end;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 0 12px;
   height: 44px;
   border-bottom: 1px solid var(--border);
@@ -920,6 +920,9 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   position: sticky; top: 0;
   background: var(--white);
   z-index: 1;
+}
+.sidenav-drawer-header-actions {
+  display: flex; align-items: center; gap: 6px;
 }
 .sidenav-drawer-close {
   display: flex; align-items: center; gap: 5px;
@@ -934,23 +937,6 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 [data-theme="dark"] .sidenav-drawer-header { background: #1a1a1a; }
 [data-theme="dark"] .sidenav-drawer-close { border-color: var(--border); }
 
-.sidenav-drawer-footer {
-  display: flex; gap: 8px;
-  padding: 16px 12px;
-  border-top: 1px solid var(--border);
-  margin-top: 8px;
-}
-.sidenav-drawer-footer-btn {
-  display: flex; align-items: center; gap: 6px;
-  flex: 1; justify-content: center;
-  padding: 8px 10px;
-  border: 1px solid var(--border); background: var(--bg);
-  border-radius: 8px; cursor: pointer;
-  font-size: 0.82rem; font-family: var(--font-sans); font-weight: 500;
-  color: var(--black);
-  transition: background 0.12s, border-color 0.12s;
-}
-.sidenav-drawer-footer-btn:hover { background: var(--white); border-color: var(--mid); }
 
 /* ── Global header — hamburger / mobile menu ── */
 .gh-hamburger  { display: none; }
