@@ -80,12 +80,12 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
           <SidebarIcon />
         </button>
 
-        <span className="topnav-crumb-root" onClick={onHome}>UX Library</span>
+        <span className="topnav-crumb-root topnav-crumb-hide-mobile" onClick={onHome}>UX Library</span>
 
         {/* Domain segment — shown for landing pages and their children */}
         {ctx.type !== 'top' && (
           <>
-            <span className="topnav-crumb-sep">›</span>
+            <span className="topnav-crumb-sep topnav-crumb-hide-mobile">›</span>
             {ctx.type === 'page' && ctx.landingId ? (
               <span className="topnav-crumb-domain" onClick={() => onNavigate(ctx.landingId)}>
                 {domainLabel}

@@ -142,6 +142,8 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
   padding-left: 16px;
   border-left: 1px solid rgba(224, 224, 224, var(--breadcrumb-sep-alpha, 0));
   margin-left: var(--breadcrumb-shift, -16px);
+  min-width: 0; /* allow shrinking */
+  overflow: hidden;
   transition:
     margin-left var(--header-transition),
     border-color var(--header-transition);
@@ -877,6 +879,17 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 @media (max-width: 760px) {
   .topnav-nav-toggle { display: flex; }
   .topnav-hide-mobile { display: none !important; }
+  /* Hide "UX Library ›" root — redundant with logo at this size */
+  .topnav-crumb-hide-mobile { display: none !important; }
+  /* Allow remaining crumb segments to truncate gracefully */
+  .topnav-crumb-domain,
+  .topnav-crumb-page {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .topnav-crumb-page { max-width: 40vw; }
 }
 
 /* ── Sidenav drawer (mobile slide-in) ── */
