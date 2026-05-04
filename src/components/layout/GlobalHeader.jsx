@@ -59,7 +59,7 @@ function HamburgerIcon({ open }) {
 
 const NAV_LINKS = ['Products', 'Resources', 'Pricing'];
 
-export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, onProductsClick, docsPortalOpen }) {
+export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, onProductsClick, onDocsClick, docsPortalOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   /* Close menu on resize back to desktop */
@@ -88,7 +88,7 @@ export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, on
       {/* Left — divider + "Docs" label + nav links (hidden on mobile) */}
       <div className="gh-left">
         <div className="gh-divider" />
-        <span className="gh-product-label">Docs</span>
+        <span className="gh-product-label" style={{ cursor: 'pointer' }} onClick={() => onDocsClick?.()}>Docs</span>
 
         <nav className="gh-nav">
           {NAV_LINKS.map(link => (
@@ -134,7 +134,16 @@ export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, on
       {menuOpen && (
         <div className="gh-mobile-menu">
           {NAV_LINKS.map(link => (
-            <a key={link} href="#" className="gh-mobile-link" onClick={e => { e.preventDefault(); setMenuOpen(false); }}>
+            <a
+              key={link}
+              href="#"
+              className={`gh-mobile-link${link === 'Products' && docsPortalOpen ? ' gh-mobile-link--active' : ''}`}
+              onClick={e => {
+                e.preventDefault();
+                setMenuOpen(false);
+                if (link === 'Products' && onProductsClick) onProductsClick();
+              }}
+            >
               {link}
             </a>
           ))}

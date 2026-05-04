@@ -54,6 +54,28 @@ const PAGE_DESCS = {
   'ev-requirements':    'SDK dependencies, Android permissions, and a step-by-step integration checklist.',
 };
 
+/* Related domains — shown at the bottom of the landing as a cross-link strip.
+   Each entry is { groupKey, label, desc, icon, pageId } where pageId is the
+   domain landing page to navigate to. */
+const RELATED_DOMAINS = {
+  vehicleIntegration: [
+    {
+      pageId: 'ev-charging',
+      label: 'EV & Charging',
+      desc: 'BMS wiring, battery modelling, charging search, long-distance routing, and the in-navigation EV driver UI.',
+      icon: '⚡',
+    },
+  ],
+  evCharging: [
+    {
+      pageId: 'vehicle-integration',
+      label: 'Vehicle Integration',
+      desc: 'Cluster display, HUD, ADAS horizon data, and other drivetrain connections that pair with your EV stack.',
+      icon: '🚗',
+    },
+  ],
+};
+
 /* Domain intro blurbs */
 const DOMAIN_INTROS = {
   assets:           'Design tokens, theming workflow, palettes, type, and icons — the foundation every component and OEM theme is built on.',
@@ -80,6 +102,7 @@ export default function DomainLanding({ groupKey, onNavigate }) {
 
   const groupLabel = t(`nav.groups.${groupKey}`, { defaultValue: group.label });
   const intro      = DOMAIN_INTROS[groupKey];
+  const related    = RELATED_DOMAINS[groupKey];
 
   return (
     <div className="page">
@@ -115,6 +138,37 @@ export default function DomainLanding({ groupKey, onNavigate }) {
           );
         })}
       </div>
+
+      {/* Related domains strip */}
+      {related?.length > 0 && (
+        <div style={{ marginTop: 48 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+            <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>
+              Related topics
+            </span>
+            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {related.map(item => (
+              <button
+                key={item.pageId}
+                onClick={() => onNavigate(item.pageId)}
+                style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 18px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, cursor: 'pointer', textAlign: 'left', width: '100%', transition: 'border-color 0.15s, box-shadow 0.15s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--red)'; e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none'; }}
+              >
+                <span style={{ fontSize: '1.5rem', lineHeight: 1, flexShrink: 0 }}>{item.icon}</span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--black)', marginBottom: 3 }}>{item.label}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{item.desc}</div>
+                </div>
+                <span style={{ color: 'var(--muted)', flexShrink: 0 }}><ArrowIcon /></span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

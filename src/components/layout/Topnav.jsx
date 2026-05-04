@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import { getPageContext, PAGE_TITLES } from '../../data/navigation';
+import { getPageContext, getProduct } from '../../data/products';
 
 function TomTomLogo() {
   return (
@@ -54,10 +54,11 @@ function SidebarIcon() {
   );
 }
 
-export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onOpenNavDrawer }) {
+export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onOpenNavDrawer, productId = 'ux-library', platform, onPlatformChange }) {
   const { t } = useTranslation('common');
-  const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: PAGE_TITLES[currentPage] ?? currentPage });
-  const ctx        = getPageContext(currentPage);
+  const product = getProduct(productId);
+  const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: product.pageTitles[currentPage] ?? currentPage });
+  const ctx        = getPageContext(currentPage, product.nav);
   const domainLabel = ctx.groupKey
     ? t(`nav.groups.${ctx.groupKey}`, { defaultValue: ctx.groupLabel })
     : null;
@@ -80,7 +81,27 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
           <SidebarIcon />
         </button>
 
-        <span className="topnav-crumb-root topnav-crumb-hide-mobile" onClick={onHome}>UX Library</span>
+        {productId === 'navsdk' && (
+          <div className="platform-switcher platform-switcher--mobile">
+            {['android', 'ios'].map(p => (
+              <button key={p} className={`platform-btn${platform === p ? ' active' : ''}`} onClick={() => onPlatformChange?.(p)}>
+                {p === 'android' ? 'Android' : 'iOS'}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <span className="topnav-crumb-root topnav-crumb-hide-mobile" onClick={onHome}>{product.name}</span>
+
+        {/* Platform segment — NavSDK only, shown in breadcrumb (not a switcher, just context) */}
+        {productId === 'navsdk' && platform && (
+          <>
+            <span className="topnav-crumb-sep topnav-crumb-hide-mobile">›</span>
+            <span className="topnav-crumb-domain topnav-crumb-hide-mobile" style={{ cursor: 'default' }}>
+              {platform === 'android' ? 'Android' : 'iOS'}
+            </span>
+          </>
+        )}
 
         {/* Domain segment — shown for landing pages and their children */}
         {ctx.type !== 'top' && (
@@ -113,6 +134,19 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         )}
       </div>
       <div className="topnav-right">
+        {productId === 'navsdk' && (
+          <div className="platform-switcher topnav-hide-mobile">
+            {['android', 'ios'].map(p => (
+              <button
+                key={p}
+                className={`platform-btn${platform === p ? ' active' : ''}`}
+                onClick={() => onPlatformChange?.(p)}
+              >
+                {p === 'android' ? 'Android' : 'iOS'}
+              </button>
+            ))}
+          </div>
+        )}
         <span className="topnav-badge topnav-hide-mobile">{t('ui.private')}</span>
         <span className="topnav-version topnav-hide-mobile">{t('ui.version')}</span>
         <button

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getProduct } from './data/products';
 import Topnav from './components/layout/Topnav';
 import GlobalHeader from './components/layout/GlobalHeader';
 import { useGlobalHeader } from './hooks/useGlobalHeader';
@@ -56,6 +57,8 @@ import Cluster from './pages/Cluster';
 import ADASIntegration from './pages/ADASIntegration';
 import ScreenshotAssets from './pages/ScreenshotAssets';
 import DomainLanding from './pages/DomainLanding';
+import NavSDKIntro from './pages/NavSDKIntro';
+import ANAIntro from './pages/ANAIntro';
 import Placeholder from './pages/Placeholder';
 
 const FULL_PAGES = new Set([
@@ -68,7 +71,7 @@ const FULL_PAGES = new Set([
   'screenshot-assets',
 ]);
 
-function PageContent({ pageId, onNavigate }) {
+function PageContent({ pageId, onNavigate, product, platform }) {
   switch (pageId) {
     case 'overview':           return <Overview onNavigate={onNavigate} />;
     case 'colour':             return <Colour />;
@@ -103,6 +106,10 @@ function PageContent({ pageId, onNavigate }) {
     case 'cluster':            return <Cluster />;
     case 'adas':               return <ADASIntegration />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
+    // NavSDK
+    case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
+    // ANA
+    case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
     // Domain landing pages
     case 'assets':                 return <DomainLanding groupKey="assets"             onNavigate={onNavigate} />;
     case 'map-customisation':      return <DomainLanding groupKey="mapCustomisation"   onNavigate={onNavigate} />;
@@ -110,15 +117,17 @@ function PageContent({ pageId, onNavigate }) {
     case 'ai-assistant':           return <DomainLanding groupKey="taia"               onNavigate={onNavigate} />;
     case 'vehicle-integration':    return <DomainLanding groupKey="vehicleIntegration" onNavigate={onNavigate} />;
     case 'release-support':        return <DomainLanding groupKey="releaseSupport"     onNavigate={onNavigate} />;
-    default:                       return <Placeholder pageId={pageId} />;
+    default:                       return <Placeholder pageId={pageId} pageTitles={product?.pageTitles} />;
   }
 }
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('overview');
+  const [currentProduct, setCurrentProduct] = useState('ux-library');
+  const [currentPlatform, setCurrentPlatform] = useState('android');
   const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
-  const [docsPortalOpen, setDocsPortalOpen] = useState(false);
+  const [docsPortalOpen, setDocsPortalOpen] = useState(true);
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {
@@ -126,37 +135,52 @@ export default function App() {
     localStorage.setItem('ux-theme', isDark ? 'dark' : 'light');
   }, [isDark]);
 
-  function navigate(pageId) {
+  function navigate(pageId, productId, platform) {
+    if (productId) setCurrentProduct(productId);
+    if (platform !== undefined && platform !== null) setCurrentPlatform(platform);
     setCurrentPage(pageId);
     setNavDrawerOpen(false);
     window.scrollTo(0, 0);
   }
 
+  const product = getProduct(currentProduct);
+
   return (
     <>
       {/* Single logo — stays pinned top-left regardless of header state */}
-      <FixedLogo onClick={() => navigate('overview')} />
+      <FixedLogo onClick={() => setDocsPortalOpen(true)} />
 
+      {/* GlobalHeader: always visible on DocsPortal, auto-hide on docs pages */}
       <GlobalHeader
-        isVisible={isGlobalVisible}
+        isVisible={docsPortalOpen ? true : isGlobalVisible}
         onMouseEnter={onMouseEnterGlobal}
         onMouseLeave={onMouseLeaveGlobal}
         onProductsClick={() => setDocsPortalOpen(v => !v)}
+        onDocsClick={() => setDocsPortalOpen(true)}
         docsPortalOpen={docsPortalOpen}
       />
-      <Topnav
-        currentPage={currentPage}
-        onHome={() => { navigate('overview'); setDocsPortalOpen(false); }}
-        onNavigate={id => { navigate(id); setDocsPortalOpen(false); }}
-        isDark={isDark}
-        onToggleTheme={() => setIsDark(d => !d)}
-        onMouseEnter={reveal}
-        onMouseLeave={cancelReveal}
-        onOpenNavDrawer={() => setNavDrawerOpen(true)}
-      />
+
+      {/* Topnav: only shown inside the UX Library docs, not on the DocsPortal */}
+      {!docsPortalOpen && (
+        <Topnav
+          currentPage={currentPage}
+          onHome={() => { navigate(product.defaultPage); setDocsPortalOpen(false); }}
+          onNavigate={id => { navigate(id); setDocsPortalOpen(false); }}
+          isDark={isDark}
+          onToggleTheme={() => setIsDark(d => !d)}
+          onMouseEnter={reveal}
+          onMouseLeave={cancelReveal}
+          onOpenNavDrawer={() => setNavDrawerOpen(true)}
+          productId={currentProduct}
+          platform={currentPlatform}
+          onPlatformChange={p => setCurrentPlatform(p)}
+        />
+      )}
 
       {docsPortalOpen ? (
-        <DocsPortal />
+        <DocsPortal
+          onNavigate={(pageId, productId, platform) => { navigate(pageId, productId, platform); setDocsPortalOpen(false); }}
+        />
       ) : (
         <div className="shell">
           <Sidenav
@@ -166,9 +190,11 @@ export default function App() {
             onDrawerClose={() => setNavDrawerOpen(false)}
             isDark={isDark}
             onToggleTheme={() => setIsDark(d => !d)}
+            nav={product.nav}
+            title={product.name}
           />
           <div className="content-area">
-            <PageContent pageId={currentPage} onNavigate={navigate} />
+            <PageContent pageId={currentPage} onNavigate={navigate} product={product} platform={currentPlatform} />
           </div>
           <TOC currentPage={currentPage} />
         </div>

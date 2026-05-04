@@ -2,6 +2,30 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
 
+/* ─── Cross-link helpers ─────────────────────────────────────────────────────── */
+function DocLink({ pageId, productId, onNavigate, children }) {
+  return (
+    <button
+      onClick={() => onNavigate?.(pageId, productId)}
+      style={{ background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer', color: 'var(--red)', textDecoration: 'underline', font: 'inherit', fontSize: 'inherit', lineHeight: 'inherit' }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function WhenCard({ icon, title, children }) {
+  return (
+    <div style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', background: 'var(--surface)' }}>
+      <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
+        <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
+        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
+      </div>
+      <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{children}</div>
+    </div>
+  );
+}
+
 /* ─── Mini mock thumbnails ──────────────────────────────────────────────────── */
 
 function ThumbEV() {
@@ -606,6 +630,37 @@ export default function Overview({ onNavigate }) {
         <h2 className="sh" id="ov-what">{t('what.heading')}</h2>
         <p className="body">{t('what.body1')}</p>
         <p className="body">{t('what.body2')}</p>
+      </div>
+
+      {/* When to choose UX Library */}
+      <div className="zone">
+        <h2 className="sh" id="ov-when">When to choose UX Library</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+          <WhenCard icon="✅" title="Ready-made navigation UI">
+            Complete Compose components for map display, guidance, search, ETA panel, and EV charging — no UI design from scratch.
+          </WhenCard>
+          <WhenCard icon="✅" title="Fully themeable">
+            Override colours, typography, corner radius, and icon sets via design tokens to match your OEM brand identity.
+          </WhenCard>
+          <WhenCard icon="✅" title="Built on NavSDK">
+            Sits directly on top of the{' '}
+            <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>.
+            All NavSDK capabilities remain accessible beneath the component layer.
+          </WhenCard>
+          <WhenCard icon="✅" title="Production-tested patterns">
+            Components follow the same UX patterns used in TomTom's own navigation application — proven in real vehicles.
+          </WhenCard>
+          <WhenCard icon="⚠️" title="Android only">
+            UX Library targets Jetpack Compose on Android. iOS is not currently supported — use the{' '}
+            <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>{' '}
+            directly on iOS.
+          </WhenCard>
+          <WhenCard icon="⚠️" title="TomTom UI structure">
+            The component architecture follows TomTom's UX patterns. For a completely bespoke layout, build directly on the{' '}
+            <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>{' '}
+            instead.
+          </WhenCard>
+        </div>
       </div>
 
       {/* Key use cases */}

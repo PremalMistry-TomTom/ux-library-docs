@@ -69,7 +69,7 @@ function MSPBuilder({ t }) {
 
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, alignItems: 'start' }}>
+      <div className="grid-2-col">
         {/* Available networks */}
         <div>
           <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
@@ -256,7 +256,7 @@ export default function EVChargingSearch() {
         <CodeBlock language="kotlin" code={CODE_POI_DETAILS} />
 
         <h3 className="sub">{t('evSearch.filterTable.heading')}</h3>
-        <div style={{ overflowX: 'auto' }}>
+        <div className="table-scroll">
           <table className="prop-table">
             <thead>
               <tr><th>{t('evSearch.filterTable.colOption')}</th><th>{t('evSearch.filterTable.colType')}</th><th>{t('evSearch.filterTable.colDesc')}</th></tr>

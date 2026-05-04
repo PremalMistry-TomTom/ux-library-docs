@@ -1,8 +1,9 @@
+import { UX_LIBRARY_PAGE_TITLES } from '../data/nav-ux-library';
 import Callout from '../components/ui/Callout';
-import { PAGE_TITLES } from '../data/navigation';
 
-export default function Placeholder({ pageId }) {
-  const title = PAGE_TITLES[pageId] || pageId;
+export default function Placeholder({ pageId, pageTitles }) {
+  const titles = pageTitles || UX_LIBRARY_PAGE_TITLES;
+  const title = titles[pageId] || pageId;
   return (
     <div className="page">
       <div className="page-header">

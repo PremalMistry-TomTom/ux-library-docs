@@ -24,8 +24,12 @@ export function useGlobalHeader() {
 
   const scheduleHide = useCallback(() => {
     clearTimer();
+    // Only hide via timeout when the page has actually scrolled — never time-out
+    // and collapse the header while the user is at the top of the page.
     timerRef.current = setTimeout(() => {
-      if (!mouseInGlobalRef.current) setIsVisible(false);
+      if (!mouseInGlobalRef.current && window.scrollY > SCROLL_SHOW_AT) {
+        setIsVisible(false);
+      }
     }, HOVER_HIDE_MS);
   }, [clearTimer]);
 

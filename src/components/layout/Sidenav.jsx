@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import { NAV } from '../../data/navigation';
 
 /* ─── Tree connector icons (CSS, stretch to item height) ─────────────────────── */
 const CONNECTOR_COLOR = '#D4D4D4';
@@ -117,7 +116,7 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle }
 }
 
 /* ─── Sidenav ────────────────────────────────────────────────────────────────── */
-export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, onDrawerClose, isDark, onToggleTheme }) {
+export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, onDrawerClose, isDark, onToggleTheme, title, nav }) {
   const { t } = useTranslation('common');
 
   const toggleLang = () => {
@@ -127,7 +126,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, o
   };
 
   // Derive the key of whichever group contains the active page
-  const activeGroupKey = NAV.find(
+  const activeGroupKey = (nav || []).find(
     e => e.type === 'group' && (
       e.items?.some(item => item.id === currentPage) ||
       e.landingId === currentPage
@@ -158,7 +157,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, o
 
   const navContent = (
     <>
-      {NAV.map((entry, i) => {
+      {(nav || []).map((entry, i) => {
         if (entry.type === 'top') {
           const label = t(`nav.${entry.id}`, { defaultValue: entry.label });
           return (
@@ -227,7 +226,18 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false, o
             Close
           </button>
         </div>
-        {navContent}
+
+        {/* Scrollable nav list */}
+        <div className="sidenav-drawer-scroll">
+          {title && <div className="sidenav-drawer-title">{title}</div>}
+          {navContent}
+        </div>
+
+        {/* Sticky footer — Private badge + version, docked to bottom */}
+        <div className="sidenav-drawer-footer">
+          <span className="topnav-badge">{t('ui.private')}</span>
+          <span className="topnav-version">{t('ui.version')}</span>
+        </div>
       </aside>
     </>
   );
