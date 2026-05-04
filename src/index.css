@@ -875,15 +875,14 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 /* ── Topnav docs-nav toggle (mobile) ── */
 .topnav-nav-toggle {
   display: none;
-  align-items: center; justify-content: center;
-  width: 34px; height: 34px;
+  align-items: center;
+  padding: 5px 8px 5px 0; /* no left padding — icon flush with crumb left edge */
   border: none; background: transparent; cursor: pointer;
-  color: var(--black); border-radius: 8px;
+  color: var(--black); border-radius: 6px;
   flex-shrink: 0;
-  margin-right: 4px;
-  transition: background 0.12s;
+  transition: color 0.12s;
 }
-.topnav-nav-toggle:hover { background: var(--bg); }
+.topnav-nav-toggle:hover { color: var(--red); }
 
 @media (max-width: 760px) {
   .topnav-nav-toggle { display: flex; }
