@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
-import { getPageContext } from '../../data/navigation';
+import { getPageContext, PAGE_TITLES } from '../../data/navigation';
 
 function TomTomLogo() {
   return (
@@ -56,7 +56,7 @@ function SidebarIcon() {
 
 export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onOpenNavDrawer }) {
   const { t } = useTranslation('common');
-  const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: 'Overview' });
+  const pageTitle  = t(`pageTitles.${currentPage}`, { defaultValue: PAGE_TITLES[currentPage] ?? currentPage });
   const ctx        = getPageContext(currentPage);
   const domainLabel = ctx.groupKey
     ? t(`nav.groups.${ctx.groupKey}`, { defaultValue: ctx.groupLabel })
