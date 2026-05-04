@@ -863,6 +863,15 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 @media (max-width: 760px) { .shell { grid-template-columns: 1fr; } .sidenav:not(.sidenav-drawer) { display: none; } .page { padding: 20px 16px 48px; } }
 @media (max-width: 760px) { .type-category-grid { grid-template-columns: repeat(2,1fr); } }
 
+/* ── Mobile header alignment — match 16px content padding ── */
+@media (max-width: 760px) {
+  .global-header  { padding: 0 16px; }
+  .fixed-logo     { left: 16px; }
+  .gh-left        { margin-left: 104px; } /* logo at 16px + ~100px wide + 4px gap - 16px padding */
+  .topnav         { padding: 0 16px; }
+  html.ai-panel-open .page { padding-left: 16px; padding-right: 16px; }
+}
+
 /* ── Topnav docs-nav toggle (mobile) ── */
 .topnav-nav-toggle {
   display: none;
