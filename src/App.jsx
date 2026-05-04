@@ -117,7 +117,6 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('overview');
   const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
-  const [navCollapsed, setNavCollapsed] = useState(() => localStorage.getItem('ux-nav-collapsed') === 'true');
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {
@@ -125,24 +124,15 @@ export default function App() {
     localStorage.setItem('ux-theme', isDark ? 'dark' : 'light');
   }, [isDark]);
 
-  // Persist nav collapsed state
-  useEffect(() => {
-    localStorage.setItem('ux-nav-collapsed', navCollapsed);
-  }, [navCollapsed]);
-
   function navigate(pageId) {
     setCurrentPage(pageId);
     setNavDrawerOpen(false);
     window.scrollTo(0, 0);
   }
 
-  // Desktop: toggle sidenav collapse. Mobile (≤760px): open drawer.
+  // Same drawer mechanism on all screen sizes — toggle open/close
   function handleNavAction() {
-    if (window.innerWidth <= 760) {
-      setNavDrawerOpen(true);
-    } else {
-      setNavCollapsed(c => !c);
-    }
+    setNavDrawerOpen(d => !d);
   }
 
   return (
@@ -164,9 +154,8 @@ export default function App() {
         onMouseEnter={reveal}
         onMouseLeave={cancelReveal}
         onNavAction={handleNavAction}
-        navCollapsed={navCollapsed}
       />
-      <div className={`shell${navCollapsed ? ' shell--nav-collapsed' : ''}`}>
+      <div className={`shell${navDrawerOpen ? ' shell--drawer-open' : ''}`}>
         <Sidenav
           currentPage={currentPage}
           onNavigate={navigate}
