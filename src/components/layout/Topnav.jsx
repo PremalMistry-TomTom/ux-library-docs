@@ -41,13 +41,15 @@ function MoonIcon() {
   );
 }
 
-function DocsNavIcon() {
+function SidebarIcon() {
+  // Split-panel icon: left column = nav panel, right area = content
   return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor"
-      strokeWidth="1.75" strokeLinecap="round">
-      <line x1="2" y1="4"  x2="16" y2="4"/>
-      <line x1="2" y1="9"  x2="10" y2="9"/>
-      <line x1="2" y1="14" x2="13" y2="14"/>
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+      stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      {/* Outer frame */}
+      <rect x="1.5" y="2.5" width="15" height="13" rx="2"/>
+      {/* Left panel divider */}
+      <line x1="6.5" y1="2.5" x2="6.5" y2="15.5"/>
     </svg>
   );
 }
@@ -75,7 +77,7 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
           aria-label="Open docs navigation"
           onClick={onOpenNavDrawer}
         >
-          <DocsNavIcon />
+          <SidebarIcon />
         </button>
 
         <span className="topnav-crumb-root" onClick={onHome}>UX Library</span>
