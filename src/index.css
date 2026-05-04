@@ -889,15 +889,13 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   .topnav-hide-mobile { display: none !important; }
   /* Hide "UX Library ›" root — redundant with logo at this size */
   .topnav-crumb-hide-mobile { display: none !important; }
-  /* Allow remaining crumb segments to truncate gracefully */
-  .topnav-crumb-domain,
-  .topnav-crumb-page {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
+  /* Domain truncates first — current page always shown in full */
+  .topnav-crumb-domain {
+    flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .topnav-crumb-page { max-width: 40vw; }
+  .topnav-crumb-page  { flex-shrink: 0; white-space: nowrap; }
+  .topnav-crumb-sep   { flex-shrink: 0; }
 }
 
 /* ── Sidenav drawer (mobile slide-in) ── */
