@@ -1,18 +1,6 @@
-import { useState } from 'react';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
-
-/* Wrap each line (plain text or pre-highlighted HTML) for CSS counter line numbers */
-const addLn = t => {
-  const lines = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').split('\n');
-  if (lines[lines.length - 1] === '') lines.pop();
-  return lines.map(l => `<span class="cb-line">${l}</span>`).join('\n');
-};
-const addLnHtml = html => {
-  const lines = html.split('\n');
-  if (lines[lines.length - 1] === '') lines.pop();
-  return lines.map(l => `<span class="cb-line">${l}</span>`).join('\n');
-};
+import ExampleCard from '../components/ui/ExampleCard';
 
 /* ─── Shared helpers ────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -27,7 +15,7 @@ function MethodBadge({ method }) {
 /* ─── Endpoint thumbnails ───────────────────────────────────────────────────── */
 function ThumbCalculateRoute() {
   return (
-    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M0 70 Q60 58 100 70 T200 63" stroke="#243040" strokeWidth="6"/>
@@ -54,7 +42,7 @@ function ThumbCalculateRoute() {
 
 function ThumbReachableRange() {
   return (
-    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M70 0 L68 130" stroke="#243040" strokeWidth="4" opacity="0.5"/>
@@ -78,7 +66,7 @@ function ThumbReachableRange() {
 
 function ThumbEVRoute() {
   return (
-    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38"
@@ -117,7 +105,7 @@ function ThumbBatchRouting() {
     { from: [20, 110], to: [155, 102], color: '#a78bfa', w: 95 },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch · 4 routes</div>
       {routes.map((r, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
@@ -140,7 +128,7 @@ function ThumbMatrix() {
   const SIZE = 4;
   const colors = ['rgba(226,0,26,0.8)', 'rgba(88,166,255,0.8)', 'rgba(63,185,80,0.6)', 'rgba(251,191,36,0.7)'];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>Matrix 4×4 · 16 cells</div>
       {Array.from({ length: SIZE }).map((_, row) => (
         <div key={row} style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -164,7 +152,7 @@ function ThumbMatrix() {
 
 function ThumbWaypointOpt() {
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', gap: 6, height: 'calc(100% - 20px)' }}>
         {/* Before */}
         <div style={{ flex: 1 }}>
@@ -198,7 +186,7 @@ function ThumbWaypointOpt() {
 
 function ThumbInstructions() {
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       {/* Route line with junction point */}
       <svg style={{ width: '100%', height: 70 }} viewBox="0 0 200 70" fill="none">
         <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -232,7 +220,7 @@ function ThumbRoadShields() {
     { cat: 4, ref: 'B14',  color: '#f59e0b', x: 30  },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields · iconCategory</div>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
         {shields.map(({ cat, ref, color }) => (
@@ -261,7 +249,7 @@ function ThumbLaneGuidance() {
     { dirs: ['→'],    drivable: true, recommended: true },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
       <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
         {lanes.map((lane, i) => (
@@ -298,7 +286,7 @@ function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavi
   return (
     <div
       onClick={clickable ? () => onNavigate(pageId) : undefined}
-      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 10, border: '1px solid var(--border)', overflow: 'hidden', background: available === false ? 'var(--surface)' : 'var(--white)', opacity: available === false ? 0.55 : 1, transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
+      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: available === false ? 'var(--surface)' : 'var(--white)', opacity: available === false ? 0.55 : 1, transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
       onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
       onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
     >
@@ -313,64 +301,13 @@ function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavi
         </div>
         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
         <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{path}</code>
-        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+        <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
     </div>
   );
 }
 
-/* ─── Platform comparison card ───────────────────────────────────────────────── */
-function PlatformCard({ id, label, version, badge, active, features, onNavigate, pageId }) {
-  return (
-    <div
-      onClick={pageId ? () => onNavigate?.(pageId) : undefined}
-      style={{ flex: 1, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, borderRadius: 10, padding: '16px 20px', background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', cursor: pageId ? 'pointer' : 'default', transition: 'border-color 0.2s' }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-            <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{label}</span>
-            <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(139,148,158,0.12)', color: 'var(--muted)', fontFamily: 'monospace' }}>{version}</span>
-            {badge && <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(167,139,250,0.12)', color: '#a78bfa', fontWeight: 600 }}>{badge}</span>}
-          </div>
-          {active && <span style={{ fontSize: '0.625rem', color: '#e2001a', fontWeight: 600 }}>Current</span>}
-        </div>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-        {features.map(([icon, text, ok]) => (
-          <div key={text} style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
-            <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>{icon}</span>
-            <span style={{ fontSize: '0.75rem', color: ok ? 'var(--black)' : 'var(--muted)', lineHeight: 1.4 }}>{text}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-/* ─── Code tab component ─────────────────────────────────────────────────────── */
-function CodeTabs({ tabs }) {
-  const [active, setActive] = useState(tabs[0].id);
-  const current = tabs.find(t => t.id === active);
-  return (
-    <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)' }}>
-      <div style={{ display: 'flex', background: '#0d1117', borderBottom: '1px solid rgba(255,255,255,0.07)', paddingLeft: 4 }}>
-        {tabs.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActive(tab.id)}
-            style={{ padding: '9px 16px', background: 'transparent', border: 'none', color: active === tab.id ? '#e2e8f0' : '#64748b', fontSize: '0.75rem', fontWeight: active === tab.id ? 600 : 400, cursor: 'pointer', borderBottom: `2px solid ${active === tab.id ? '#e2001a' : 'transparent'}`, transition: 'color 0.15s', whiteSpace: 'nowrap' }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-      <pre className="cb-pre">
-        <code dangerouslySetInnerHTML={{ __html: current.html ? addLnHtml(current.html) : addLn(current.code) }} />
-      </pre>
-    </div>
-  );
-}
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
 const ENDPOINTS_V1 = [
@@ -391,153 +328,10 @@ const ENDPOINTS_V2 = [
   { ...ENDPOINTS_V1[5], available: false },
 ];
 
-const TABS_TOMTOM = [
-  {
-    id: 'rest',
-    label: 'REST',
-    code: `# Route: Berlin Mitte (52.509, 13.429) → Checkpoint Charlie (52.503, 13.439)
-# Fastest car route with live traffic and turn-by-turn instructions
-
-curl "https://api.tomtom.com/routing/1/calculateRoute/\\
-  52.50931,13.42936:52.50274,13.43872/json\\
-  ?routeType=fastest\\
-  &travelMode=car\\
-  &traffic=true\\
-  &instructionsType=text\\
-  &language=en-GB\\
-  &key=YOUR_API_KEY"`,
-  },
-  {
-    id: 'kotlin',
-    label: 'Kotlin SDK',
-    code: `// Gradle: implementation("com.tomtom.sdk:routing-online:\$tomtomSdkVersion")
-// Route: Berlin Mitte → Checkpoint Charlie
-
-val routingClient = OnlineRoutingClient.create(
-    context  = applicationContext,
-    apiKey   = "YOUR_API_KEY"
-)
-
-val options = RoutePlanningOptions(
-    itinerary = Itinerary(
-        origin      = Place(GeoPoint(52.50931, 13.42936)),
-        destination = Place(GeoPoint(52.50274, 13.43872))
-    ),
-    routeType       = RouteType.Fastest,
-    travelMode      = TravelMode.Car,
-    considerTraffic = TrafficConsiderationMode.LiveAndHistoricTraffic
-)
-
-routingClient.planRoute(options) { result ->
-    result.fold(
-        onSuccess = { response ->
-            val route      = response.routes.first()
-            val travelTime = route.summary.travelTime.seconds   // 396
-            val distance   = route.summary.length.inMeters      // 1879
-        },
-        onFailure = { error -> Log.e("Routing", error.message) }
-    )
-}`,
-  },
-  {
-    id: 'response',
-    label: 'Response',
-    code: `{
-  "routes": [
-    {
-      "summary": {
-        "lengthInMeters": 1879,
-        "travelTimeInSeconds": 396,
-        "trafficDelayInSeconds": 34,
-        "trafficLengthInMeters": 421,
-        "departureTime": "2025-10-30T10:00:00+01:00",
-        "arrivalTime":   "2025-10-30T10:06:36+01:00"
-      },
-      "legs": [
-        {
-          "summary": {
-            "lengthInMeters": 1879,
-            "travelTimeInSeconds": 396
-          },
-          "points": [
-            { "latitude": 52.50931, "longitude": 13.42936 },
-            { "latitude": 52.50753, "longitude": 13.43201 },
-            { "latitude": 52.50274, "longitude": 13.43872 }
-          ]
-        }
-      ],
-      "sections": [
-        {
-          "startPointIndex": 0,
-          "endPointIndex": 6,
-          "sectionType": "TRAVEL_MODE",
-          "travelMode": "car"
-        },
-        {
-          "startPointIndex": 3,
-          "endPointIndex": 6,
-          "sectionType": "TRAFFIC",
-          "simpleCategory": "JAM",
-          "effectiveSpeedInKmh": 14,
-          "delayInSeconds": 34
-        }
-      ]
-    }
-  ]
-}`,
-  },
-];
-
-const TABS_ORBIS = [
-  {
-    id: 'rest',
-    label: 'REST',
-    code: `# Route: Berlin Mitte → Checkpoint Charlie
-# Orbis Maps v2 — requires TomTom-Api-Version header
-
-curl "https://api.tomtom.com/maps/orbis/routing/calculateRoute/\\
-  52.50931,13.42936:52.50274,13.43872/json\\
-  ?routeType=fast\\
-  &travelMode=car\\
-  &traffic=live\\
-  &key=YOUR_API_KEY" \\
-  -H "TomTom-Api-Version: 2"`,
-  },
-  {
-    id: 'response',
-    label: 'Response',
-    code: `{
-  "routes": [
-    {
-      "summary": {
-        "lengthInMeters": 1879,
-        "travelTimeInSeconds": 396,
-        "trafficDelayInSeconds": 0,
-        "departureTime": "2025-10-30T10:00:00+01:00",
-        "arrivalTime":   "2025-10-30T10:06:36+01:00"
-      },
-      "legs": [
-        {
-          "summary": { "lengthInMeters": 1879, "travelTimeInSeconds": 396 },
-          "points": [
-            { "latitude": 52.50931, "longitude": 13.42936 },
-            { "latitude": 52.50274, "longitude": 13.43872 }
-          ]
-        }
-      ]
-    }
-  ]
-}
-
-// Note: guidance, roadShields, noTrafficTravelTime
-// and historicTravelTime are not available in Orbis v2`,
-  },
-];
 
 export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }) {
   const isOrbis = platform === 'orbis-maps';
   const endpoints = isOrbis ? ENDPOINTS_V2 : ENDPOINTS_V1;
-  const codeTabs = isOrbis ? TABS_ORBIS : TABS_TOMTOM;
 
   return (
     <div className="page">
@@ -552,53 +346,31 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
           : 'Calculate optimal routes between waypoints with full support for vehicle profiles, real-time traffic, EV consumption modelling, reachable range, and batch processing across ~215 countries.'}
       </p>
 
+      {/* Capability tiles — inline under summary, v1 only */}
+      {!isOrbis && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
+          {[
+            ['🚗', 'Vehicle profiles', 'Truck routing with height, width, weight, axle load, ADR tunnel codes, and hazardous load types. Eight travel modes.'],
+            ['⚡', 'EV consumption model', 'Speed-to-kWh consumption tables, auxiliary power draw, and regenerative braking — for single-charge EV routes.'],
+            ['📡', 'Live + historic traffic', 'IQ Routes™ learns from historical patterns. Real-time incident data projects travel time up to 60 days forward.'],
+            ['🗣️', 'Turn-by-turn guidance', '40+ manoeuvre codes, lane guidance with separator types, road shield references, and phonetic street names.'],
+          ].map(([icon, title, desc]) => (
+            <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
+              <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
+                <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
+                <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
+              </div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
       {isOrbis && (
         <Callout type="warning">
           <strong>Public Preview</strong> — Orbis Maps v2 currently supports Calculate Route (car only). Reachable Range and Batch Routing are available on TomTom Maps (v1).
         </Callout>
       )}
-
-      {/* Platform comparison */}
-      <div className="zone">
-        <h2 className="sh" id="r-platforms">Platform versions</h2>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <PlatformCard
-            id="tomtom-maps"
-            label="TomTom Maps"
-            version="v1"
-            active={!isOrbis}
-            onNavigate={onNavigate}
-            pageId="routing-tomtom-maps"
-            features={[
-              ['✅', 'Calculate Route, Reachable Range, and Batch Routing endpoints', true],
-              ['✅', 'All travel modes: car, truck, taxi, bus, van, motorcycle, bicycle, pedestrian', true],
-              ['✅', 'Turn-by-turn guidance, lane info, road shields, and junction manoeuvre codes', true],
-              ['✅', 'Full vehicle profile: dimensions, axle weight, ADR tunnel codes, load types', true],
-              ['✅', 'Combustion and electric consumption models with efficiency parameters', true],
-              ['✅', 'JSON, XML, and JSONP response formats', true],
-              ['✅', '~215 countries, real-time traffic in 75+ countries', true],
-            ]}
-          />
-          <PlatformCard
-            id="orbis-maps"
-            label="Orbis Maps"
-            version="v2"
-            badge="Preview"
-            active={isOrbis}
-            onNavigate={onNavigate}
-            pageId="routing-orbis-maps"
-            features={[
-              ['✅', 'Calculate Route endpoint — streamlined for car routing', true],
-              ['✅', 'Traffic parameter as string: live or historical', true],
-              ['✅', 'Route types renamed: fast, short, efficient, thrilling', true],
-              ['✅', 'JSON-only responses; encoded polyline at precision 7', true],
-              ['⚠️', 'Car travel mode only — truck, bus, bicycle not yet supported', false],
-              ['⚠️', 'No guidance instructions or lane data in response', false],
-              ['⚠️', 'Reachable Range and Batch Routing not yet available', false],
-            ]}
-          />
-        </div>
-      </div>
 
       {/* Endpoint grid */}
       <div className="zone">
@@ -617,60 +389,174 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
         </div>
       </div>
 
-      {/* Key capabilities (v1 only — these are all TomTom Maps features) */}
-      {!isOrbis && (
-        <div className="zone">
-          <h2 className="sh" id="r-capabilities">Key capabilities</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-            {[
-              ['🚗', 'Vehicle profiles', 'Full truck routing with height, width, weight, axle load, ADR tunnel codes, and hazardous load types.'],
-              ['⚡', 'EV consumption model', 'Battery curve modelling with speed-to-kWh tables, auxiliary power, and regenerative braking — for single-charge EV route calculation.'],
-              ['📡', 'Live + historic traffic', 'IQ Routes™ learns from historical patterns. Real-time traffic projects up to 60 days forward.'],
-              ['🗺️', 'Isochrone / range', 'Time-, distance-, fuel-, or energy-budget polygons with optional smoothing levels.'],
-              ['🔀', 'Per-leg options', 'Override route type, avoidances, waypoint pause time, or supporting points on each individual leg via POST body.'],
-              ['🗣️', 'Turn-by-turn guidance', '40+ manoeuvre codes, lane guidance with separator types, road shield atlas references, and phonetic street names.'],
-              ['📦', 'Batch', 'Up to 700 Calculate Route or Reachable Range requests in a single call. Synchronous (≤100) and asynchronous modes.'],
-              ['🌍', 'Global coverage', '~215 countries and territories, vignette avoidance per country code, and South Korea regional endpoint.'],
-            ].map(([icon, title, desc]) => (
-              <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', background: 'var(--surface)' }}>
-                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 4 }}>
-                  <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Quick start code example */}
+      {/* SDK examples */}
       <div className="zone">
-        <h2 className="sh" id="r-quickstart">Quick start</h2>
-        <p className="body" style={{ marginBottom: 16 }}>
-          {isOrbis
-            ? 'Calculate a route on Orbis Maps v2 by adding the TomTom-Api-Version: 2 header and using the new base path and route type names.'
-            : 'The fastest path to a working route. Swap in your API key and two coordinate pairs — the response returns distance, travel time, and the polyline.'}
+        <h2 className="sh" id="r-examples">SDK examples</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          Live demos built with the{' '}
+          <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
+            TomTom Maps SDK for JavaScript
+          </a>{' '}
+          on top of the Routing API. Click <strong>Key config</strong> to see the API parameters in action.
         </p>
-        <CodeTabs tabs={codeTabs} />
+        <div className="examples-grid">
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/reachable-ranges"
+            title="Reachable ranges"
+            description="Calculate time-based accessibility zones from one or more origins and render them as colour-filled polygons on a live map."
+            tags={[
+              { label: 'Playground', variant: 'playground' },
+              { label: 'Routing', variant: 'feature' },
+              { label: 'Web', variant: 'platform' },
+            ]}
+            Thumb={() => (
+              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
+                <rect width="280" height="160" fill="#141c2b"/>
+                {/* Concentric reachable-range zones */}
+                <ellipse cx="140" cy="80" rx="108" ry="62" fill="rgba(226,0,26,0.08)" stroke="rgba(226,0,26,0.18)" strokeWidth="1"/>
+                <ellipse cx="140" cy="80" rx="78"  ry="44" fill="rgba(226,0,26,0.1)"  stroke="rgba(226,0,26,0.22)" strokeWidth="1"/>
+                <ellipse cx="140" cy="80" rx="50"  ry="28" fill="rgba(226,0,26,0.14)" stroke="rgba(226,0,26,0.3)"  strokeWidth="1"/>
+                <ellipse cx="140" cy="80" rx="24"  ry="13" fill="rgba(226,0,26,0.22)" stroke="rgba(226,0,26,0.45)" strokeWidth="1"/>
+                {/* Subtle map roads */}
+                <line x1="0" y1="80" x2="280" y2="80" stroke="rgba(255,255,255,0.04)" strokeWidth="6"/>
+                <line x1="140" y1="0" x2="140" y2="160" stroke="rgba(255,255,255,0.04)" strokeWidth="6"/>
+                {/* Origin pin */}
+                <circle cx="140" cy="80" r="5" fill="#e2001a"/>
+                <circle cx="140" cy="80" r="10" fill="rgba(226,0,26,0.25)"/>
+                {/* Time labels */}
+                <text x="236" y="83" fill="rgba(226,0,26,0.7)" fontSize="8" fontFamily="sans-serif">30 min</text>
+                <text x="210" y="83" fill="rgba(226,0,26,0.55)" fontSize="7" fontFamily="sans-serif">20</text>
+                <text x="184" y="83" fill="rgba(226,0,26,0.4)" fontSize="7" fontFamily="sans-serif">10</text>
+                <rect x="0" y="130" width="280" height="30" fill="rgba(8,14,26,0.85)"/>
+                <text x="14" y="143" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">budgetType</text>
+                <text x="80" y="143" fill="#94a3b8" fontSize="7.5" fontFamily="monospace">'timeMinutes'</text>
+                <text x="14" y="154" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">budget</text>
+                <text x="80" y="154" fill="#22c55e" fontSize="7.5" fontFamily="monospace">30</text>
+              </svg>
+            )}
+            snippet={`// Calculate time-based reachable range
+const ranges = await calculateReachableRanges({
+  origins: [{ lat: 52.3086, lon: 4.7641 }],
+  // Switch between 'timeMinutes', 'fuelBudgetInLiters',
+  // or 'energyBudgetInkWh' for EV range rings
+  budgets: [
+    { budgetType: 'timeMinutes', budget: 10 },
+    { budgetType: 'timeMinutes', budget: 20 },
+    { budgetType: 'timeMinutes', budget: 30 },
+  ],
+  vehicle: {
+    routeType: 'fastest',
+    travelMode: 'car',
+  },
+});
+// Render polygons with GeometriesModule
+geometriesModule.showGeometries(
+  ranges.map(r => reachableRangeGeometryConfig(r))
+);`}
+          />
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/route"
+            title="Route with waypoints"
+            description="Calculate and render an A–B route on an interactive map. Add intermediate waypoints, choose travel mode, and display route summary stats."
+            tags={[
+              { label: 'Getting Started', variant: 'start' },
+              { label: 'Routing', variant: 'feature' },
+              { label: 'Web', variant: 'platform' },
+            ]}
+            Thumb={() => (
+              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
+                <rect width="280" height="160" fill="#1a2535"/>
+                <line x1="0" y1="82" x2="280" y2="82" stroke="#243040" strokeWidth="5"/>
+                <line x1="0" y1="52" x2="280" y2="52" stroke="#243040" strokeWidth="3"/>
+                <line x1="90" y1="0" x2="90" y2="160" stroke="#243040" strokeWidth="4"/>
+                <line x1="185" y1="0" x2="185" y2="160" stroke="#243040" strokeWidth="4"/>
+                <path d="M30 125 Q65 110 90 90 Q118 68 145 60 Q172 52 205 38 Q230 28 255 22" stroke="rgba(226,0,26,0.2)" strokeWidth="11" strokeLinecap="round"/>
+                <path d="M30 125 Q65 110 90 90 Q118 68 145 60 Q172 52 205 38 Q230 28 255 22" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round"/>
+                {/* Waypoints */}
+                {[[90,90],[145,60],[205,38]].map(([cx,cy],i) => (
+                  <g key={i}>
+                    <circle cx={cx} cy={cy} r="5.5" fill="#0d1117" stroke="#58a6ff" strokeWidth="1.5"/>
+                    <text x={cx} y={cy+3.5} textAnchor="middle" fill="#58a6ff" fontSize="6" fontFamily="sans-serif" fontWeight="700">{i+1}</text>
+                  </g>
+                ))}
+                <circle cx="30"  cy="125" r="5" fill="#22c55e"/>
+                <circle cx="30"  cy="125" r="9" fill="rgba(34,197,94,0.2)"/>
+                <circle cx="255" cy="22"  r="5" fill="#e2001a"/>
+                <circle cx="255" cy="22"  r="9" fill="rgba(226,0,26,0.2)"/>
+                <rect x="0" y="120" width="280" height="40" fill="rgba(8,14,26,0.88)"/>
+                {[['3h 42m','Time'],['318 km','Distance'],['3 stops','Waypoints']].map(([v,l],i) => (
+                  <g key={l}>
+                    <text x={18+i*88} y="135" fill="#e2e8f0" fontSize="10" fontFamily="sans-serif" fontWeight="700">{v}</text>
+                    <text x={18+i*88} y="148" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">{l}</text>
+                  </g>
+                ))}
+              </svg>
+            )}
+            snippet={`// Calculate route with intermediate waypoints
+const route = await calculateRoute({
+  locations: [
+    { lat: 48.8566, lon: 2.3522  },  // Paris
+    { lat: 50.8503, lon: 4.3517  },  // Brussels (stop)
+    { lat: 51.2194, lon: 4.4025  },  // Antwerp (stop)
+    { lat: 52.3676, lon: 4.9041  },  // Amsterdam
+  ],
+  // Route options
+  routeType:  'fastest',
+  travelMode: 'car',
+  traffic:    true,
+  // Optional: avoid tolls, ferries, or motorways
+  avoid: ['unpavedRoads'],
+});
+// Stats are in the summary object
+const { travelTimeInSeconds, lengthInMeters } =
+  route.routes[0].summary;`}
+          />
+
+        </div>
       </div>
 
-      {/* Base URL */}
+      {/* Platform versions — compact row */}
       <div className="zone">
-        <h2 className="sh" id="r-baseurl">Base URL</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <h2 className="sh" id="r-platforms">Platform versions</h2>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {[
-            { label: 'TomTom Maps (v1)', url: 'https://api.tomtom.com', note: 'South Korea: kr-api.tomtom.com', active: !isOrbis },
-            { label: 'Orbis Maps (v2)', url: 'https://api.tomtom.com/maps/orbis/routing', note: 'Requires TomTom-Api-Version: 2 header', active: isOrbis },
-          ].map(({ label, url, note, active }) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: active ? 'rgba(226,0,26,0.04)' : 'var(--surface)', border: `1px solid ${active ? 'rgba(226,0,26,0.25)' : 'var(--border)'}`, borderRadius: 8 }}>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 2 }}>{label}</div>
-                <code style={{ fontSize: '0.75rem', color: 'var(--black)', fontFamily: 'var(--font-mono, monospace)' }}>{url}</code>
-              </div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--muted)', textAlign: 'right', flexShrink: 0 }}>{note}</div>
-            </div>
-          ))}
+            {
+              id: 'tomtom-maps', label: 'TomTom Maps', version: 'v1',
+              base: 'api.tomtom.com/routing/1/…',
+              status: 'GA', statusColor: '#22c55e',
+              summary: 'Full endpoint surface — Calculate Route, Reachable Range, Batch, guidance, all travel modes.',
+              pageId: 'routing-tomtom-maps',
+            },
+            {
+              id: 'orbis-maps', label: 'Orbis Maps', version: 'v2',
+              base: 'api.tomtom.com/maps/orbis/routing/…',
+              status: 'Preview', statusColor: '#a78bfa',
+              summary: 'Calculate Route (car only). Reachable Range and Batch not yet available. Requires TomTom-Api-Version: 2 header.',
+              pageId: 'routing-orbis-maps',
+            },
+          ].map(p => {
+            const active = isOrbis ? p.id === 'orbis-maps' : p.id === 'tomtom-maps';
+            return (
+              <button
+                key={p.id}
+                onClick={() => onNavigate?.(p.pageId)}
+                style={{ flex: '1 1 260px', textAlign: 'left', padding: '14px 16px', borderRadius: 20, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', cursor: 'pointer', transition: 'border-color 0.15s' }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = 'rgba(226,0,26,0.4)'; }}
+                onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = 'var(--border)'; }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{p.label}</span>
+                  <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(139,148,158,0.12)', color: 'var(--muted)', fontFamily: 'monospace' }}>{p.version}</span>
+                  <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: `${p.statusColor}18`, color: p.statusColor, fontWeight: 600, marginLeft: 'auto' }}>{p.status}</span>
+                </div>
+                <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'monospace', marginBottom: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.base}</code>
+                <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{p.summary}</p>
+                <span style={{ display: 'inline-block', marginTop: 8, fontSize: '0.875rem', color: 'var(--red)', fontWeight: 600 }}>Full comparison →</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -727,13 +613,13 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
             <button
               key={r.label}
               onClick={() => onNavigate?.(r.pageId, r.productId)}
-              style={{ textAlign: 'left', padding: '14px 16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', transition: 'border-color 0.15s' }}
+              style={{ textAlign: 'left', padding: '14px 16px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', transition: 'border-color 0.15s' }}
               onMouseEnter={e => e.currentTarget.style.borderColor = '#e2001a'}
               onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
             >
               <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>{r.tag}</div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{r.label} →</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--mid)', lineHeight: 1.5 }}>{r.desc}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{r.label} →</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{r.desc}</div>
             </button>
           ))}
         </div>

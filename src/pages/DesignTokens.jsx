@@ -163,7 +163,7 @@ export default function DesignTokens() {
             <div key={token} className="dt-sys-ex">
               <div className="dt-sys-dot" style={{ background: bg }} />
               <div className="dt-sys-info">
-                <code className="ic" style={{ fontSize: '0.625rem' }}>{token}</code>
+                <code className="ic" style={{ fontSize: '0.875rem' }}>{token}</code>
                 <span className="dt-sys-desc">{desc}</span>
               </div>
             </div>
@@ -219,13 +219,13 @@ export default function DesignTokens() {
             <div style={{ background: '#f8f8f8', padding: 0 }}>
               <div className="tm-bar" style={{ background: '#ffffff', borderBottom: '1px solid #e0e0e0' }}>
                 <div className="tm-dot" style={{ background: '#C82020' }} />
-                <span style={{ fontSize: '0.625rem', color: '#1a1a1a', fontWeight: 700 }}>TomTom</span>
+                <span style={{ fontSize: '0.875rem', color: '#1a1a1a', fontWeight: 700 }}>TomTom</span>
               </div>
               <div className="tm-btns">
                 <button className="tm-btn-primary">{dt('navigate')}</button>
                 <button className="tm-btn-secondary" style={{ color: '#4a4a4a', borderColor: '#e0e0e0' }}>{dt('search')}</button>
               </div>
-              <div style={{ padding: '0 10px 8px', fontSize: '0.625rem', color: '#767676', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ padding: '0 10px 8px', fontSize: '0.875rem', color: '#767676', fontFamily: 'var(--font-mono)' }}>
                 tt_sys_color_surface_primary → #F5F5F5
               </div>
             </div>
@@ -235,13 +235,13 @@ export default function DesignTokens() {
             <div style={{ background: '#0c1318', padding: 0 }}>
               <div className="tm-bar" style={{ background: '#171e24', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <div className="tm-dot" style={{ background: '#C82020' }} />
-                <span style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.9)', fontWeight: 700 }}>TomTom</span>
+                <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.9)', fontWeight: 700 }}>TomTom</span>
               </div>
               <div className="tm-btns">
                 <button className="tm-btn-primary">{dt('navigate')}</button>
                 <button className="tm-btn-secondary" style={{ color: 'rgba(255,255,255,0.6)', borderColor: 'rgba(255,255,255,0.15)' }}>{dt('search')}</button>
               </div>
-              <div style={{ padding: '0 10px 8px', fontSize: '0.625rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ padding: '0 10px 8px', fontSize: '0.875rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>
                 tt_sys_color_surface_primary → #0C1318
               </div>
             </div>

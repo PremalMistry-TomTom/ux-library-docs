@@ -181,7 +181,7 @@ export function ParamRow({
       {hasChildren && childrenOpen && (
         <div style={{
           marginTop: 10,
-          borderRadius: 8,
+          borderRadius: 20,
           border: '1px solid var(--border)',
           borderLeft: '3px solid var(--border)',
           background: 'var(--bg)',
@@ -283,7 +283,7 @@ function SectionPanel({ section, sectionSelected, panelLabel }) {
         {panelLabel}
       </div>
 
-      <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)', position: 'relative' }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', position: 'relative' }}>
 
         {/* ── Code panel header ── */}
         <div style={{

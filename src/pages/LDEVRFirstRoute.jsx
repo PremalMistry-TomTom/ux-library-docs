@@ -112,13 +112,13 @@ export default function LDEVRFirstRoute({ onNavigate }) {
           Long Distance EV Route uses <strong>POST</strong>. Route points go in the URL path;
           all other parameters go in the query string.
         </Callout>
-        <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)' }}>
+        <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)' }}>
           <div style={{
             padding: '8px 14px', background: '#161b22',
             borderBottom: '1px solid rgba(255,255,255,0.07)',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           }}>
-            <span style={{ fontSize: '0.625rem', color: '#94a3b8', fontWeight: 600 }}>
+            <span style={{ fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600 }}>
               Amsterdam → Paris · CCS2 · 45 kWh / 75 kWh
             </span>
             <div style={{ display: 'flex', gap: 5 }}>
@@ -150,22 +150,22 @@ export default function LDEVRFirstRoute({ onNavigate }) {
             { icon: '⚡', title: 'Station arrival UX',  body: 'Charging stop cards with plug type, network brand, and estimated charge time are rendered automatically' },
             { icon: '🔄', title: 'Replanning',          body: 'If traffic or battery conditions change significantly, the SDK triggers an automatic EV re-route silently' },
           ].map(f => (
-            <div key={f.title} style={{ padding: '14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--bg)' }}>
+            <div key={f.title} style={{ padding: '14px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)' }}>
               <div style={{ fontSize: '1.25rem', marginBottom: 7 }}>{f.icon}</div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{f.title}</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--mid)', lineHeight: 1.55 }}>{f.body}</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{f.body}</div>
             </div>
           ))}
         </div>
 
         {/* Kotlin code */}
-        <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)' }}>
+        <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)' }}>
           <div style={{
             padding: '8px 14px', background: '#161b22',
             borderBottom: '1px solid rgba(255,255,255,0.07)',
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           }}>
-            <span style={{ fontSize: '0.625rem', color: '#94a3b8', fontWeight: 600 }}>
+            <span style={{ fontSize: '0.875rem', color: '#94a3b8', fontWeight: 600 }}>
               Kotlin · Navigation SDK for Android
             </span>
             <div style={{ display: 'flex', gap: 5 }}>

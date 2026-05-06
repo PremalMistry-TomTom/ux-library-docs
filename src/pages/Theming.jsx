@@ -29,7 +29,7 @@ function Figure({ src, alt, caption }) {
         src={src}
         alt={alt}
         style={{
-          width: '100%', display: 'block', borderRadius: 8,
+          width: '100%', display: 'block', borderRadius: 20,
           border: '1px solid var(--border)',
         }}
         onError={e => { e.currentTarget.style.display = 'none'; }}
@@ -93,7 +93,7 @@ export default function Theming() {
         }}>
           {SCOPE.map(({ icon, label, note }) => (
             <div key={label} style={{
-              padding: '12px 14px', borderRadius: 8,
+              padding: '12px 14px', borderRadius: 20,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
               <div style={{ fontSize: '1rem', marginBottom: 4 }}>{icon}</div>
@@ -192,7 +192,7 @@ export default function Theming() {
             ['Export as variables', 'Once edits are finalised, export from Tokens Studio as Figma variables. This applies your changes across all components in the file.'],
           ].map(([title, desc]) => (
             <div key={title} style={{
-              padding: '12px 14px', borderRadius: 8,
+              padding: '12px 14px', borderRadius: 20,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
               <div style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: 4, color: 'var(--black)' }}>{title}</div>

@@ -26,7 +26,7 @@ export function ZonesDiagram({ t }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* IVI mock — full width */}
       <div style={{
-        width: '100%', height: 300, background: '#0c1318', borderRadius: 10,
+        width: '100%', height: 300, background: '#0c1318', borderRadius: 20,
         border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden',
         position: 'relative',
       }}>
@@ -48,7 +48,7 @@ export function ZonesDiagram({ t }) {
         }}>
           {['MEDIA','CLIMATE','PHONE'].map(w => (
             <div key={w} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>{w}</span>
+              <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>{w}</span>
             </div>
           ))}
         </div>
@@ -61,8 +61,8 @@ export function ZonesDiagram({ t }) {
         {/* Zone overlays */}
         {activeZone === 'display'  && <div style={{ position: 'absolute', inset: 0, right: '28%', border: `2px solid ${ZONE_COLORS.display.border}`,  background: ZONE_COLORS.display.bg,  borderRadius: '9px 0 0 9px', pointerEvents: 'none' }} />}
         {activeZone === 'nav'      && <div style={{ position: 'absolute', inset: 0, border: `2px solid ${ZONE_COLORS.nav.border}`,      background: ZONE_COLORS.nav.bg,      borderRadius: 9, pointerEvents: 'none' }} />}
-        {activeZone === 'safe'     && <div style={{ position: 'absolute', top: '5%', left: '8%', right: '31%', bottom: '5%', border: `2px solid ${ZONE_COLORS.safe.border}`, background: ZONE_COLORS.safe.bg, borderRadius: 8, pointerEvents: 'none' }} />}
-        {activeZone === 'controls' && <div style={{ position: 'absolute', top: '2%', bottom: '2%', left: '1%', width: '9%', border: `2px solid ${ZONE_COLORS.controls.border}`, background: ZONE_COLORS.controls.bg, borderRadius: 8, pointerEvents: 'none' }} />}
+        {activeZone === 'safe'     && <div style={{ position: 'absolute', top: '5%', left: '8%', right: '31%', bottom: '5%', border: `2px solid ${ZONE_COLORS.safe.border}`, background: ZONE_COLORS.safe.bg, borderRadius: 20, pointerEvents: 'none' }} />}
+        {activeZone === 'controls' && <div style={{ position: 'absolute', top: '2%', bottom: '2%', left: '1%', width: '9%', border: `2px solid ${ZONE_COLORS.controls.border}`, background: ZONE_COLORS.controls.bg, borderRadius: 20, pointerEvents: 'none' }} />}
       </div>
 
       {/* Zone legend — 2×2 grid below mock */}
@@ -72,7 +72,7 @@ export function ZonesDiagram({ t }) {
             key={z.id}
             onClick={() => setActiveZone(activeZone === z.id ? null : z.id)}
             style={{
-              padding: '10px 14px', borderRadius: 8, cursor: 'pointer',
+              padding: '10px 14px', borderRadius: 20, cursor: 'pointer',
               border: `1px solid ${activeZone === z.id ? z.border : 'var(--border)'}`,
               background: activeZone === z.id ? z.bg : 'var(--bg)',
               transition: 'all 0.15s',
@@ -145,7 +145,7 @@ export function ResizeDemo({ t }) {
         </button>
       </div>
       <div>
-        <div style={{ position: 'relative', width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden' }}>
+        <div style={{ position: 'relative', width: '100%', height: 300, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
             <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
               <path d="M20 90 Q80 60 150 95 T280 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -220,7 +220,7 @@ function StateMapMock({ state }) {
   const browsing   = state.map === 'BROWSING';
 
   return (
-    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 400 180" fill="none">
           {inGuidance && <path d="M20 100 Q100 70 200 100 T380 90" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>}
@@ -229,11 +229,11 @@ function StateMapMock({ state }) {
           <path d="M270 0 L260 180" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
         </svg>
         <div style={{ position: 'absolute', top: '50%', left: '52%', width: 10, height: 10, borderRadius: '50%', background: browsing ? '#f59e0b' : '#e2001a', boxShadow: `0 0 0 4px ${browsing ? 'rgba(245,158,11,0.3)' : 'rgba(226,0,26,0.3)'}` }} />
-        {browsing && <div style={{ position: 'absolute', top: '30%', right: '35%', fontSize: '0.625rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 4 }}>browsing…</div>}
+        {browsing && <div style={{ position: 'absolute', top: '30%', right: '35%', fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 4 }}>browsing…</div>}
       </div>
       {panelOpen && (
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,19,24,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{state.panel}</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{state.panel}</div>
           <div style={{ width: 160, height: 2, background: '#e2001a', borderRadius: 1 }} />
           <div style={{ width: 120, height: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 3 }} />
           <div style={{ width: 100, height: 6, background: 'rgba(255,255,255,0.07)', borderRadius: 3 }} />
@@ -244,7 +244,7 @@ function StateMapMock({ state }) {
           <span style={{ fontSize: '1.5rem', color: 'white' }}>↖</span>
           <div>
             <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-            <div style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.7)' }}>Oak Street North</div>
+            <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.7)' }}>Oak Street North</div>
           </div>
         </div>
       )}
@@ -256,8 +256,8 @@ function StateMapMock({ state }) {
       )}
       <div style={{
         position: 'absolute', bottom: 8, right: 8,
-        fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.06em',
-        padding: '3px 8px', borderRadius: 10,
+        fontSize: '0.875rem', fontWeight: 700, letterSpacing: '0.06em',
+        padding: '3px 8px', borderRadius: 20,
         background: passive ? 'rgba(22,163,74,0.3)' : 'rgba(226,0,26,0.3)',
         border: `1px solid ${passive ? 'rgba(22,163,74,0.5)' : 'rgba(226,0,26,0.5)'}`,
         color: passive ? '#86efac' : '#fca5a5',
@@ -321,16 +321,16 @@ navApp.uiState
 
       <div className="grid-2-col" style={{ gap: 12 }}>
         {Object.entries(stateDimensions).map(([dim, { label, values, desc }]) => (
-          <div key={dim} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
+          <div key={dim} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20 }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 2, color: 'var(--black)' }}>{label}</div>
-            <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginBottom: 10, lineHeight: 1.4 }}>{desc}</div>
+            <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 10, lineHeight: 1.4 }}>{desc}</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {values.map(v => (
                 <button
                   key={v}
                   onClick={() => set(dim, v)}
                   style={{
-                    fontSize: '0.625rem', fontFamily: 'var(--font-mono)', padding: '3px 7px',
+                    fontSize: '0.875rem', fontFamily: 'var(--font-mono)', padding: '3px 7px',
                     borderRadius: 4, cursor: 'pointer', fontWeight: state[dim] === v ? 700 : 400,
                     background: state[dim] === v ? 'var(--red)' : 'var(--white)',
                     color: state[dim] === v ? 'white' : 'var(--mid)',
@@ -348,7 +348,7 @@ navApp.uiState
 
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px',
-        borderRadius: 8,
+        borderRadius: 20,
         background: passive ? 'rgba(22,163,74,0.08)' : 'rgba(226,0,26,0.08)',
         border: `1px solid ${passive ? 'rgba(22,163,74,0.25)' : 'rgba(226,0,26,0.25)'}`,
       }}>
@@ -462,7 +462,7 @@ export default function HomeScreenLayout() {
                 <td style={{ fontWeight: 500 }}>{t(`homeScreen.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri.includes('P0') ? '#fff5f5' : 'var(--bg)',
                     color: pri.includes('P0') ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri.includes('P0') ? '#fecaca' : 'var(--border)'}`,

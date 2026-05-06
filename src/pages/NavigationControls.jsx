@@ -9,7 +9,7 @@ const BTN_ENUM  = { '🔍': 'SEARCH', '⚡': 'CHARGING', '🔇': 'MUTE', '⚙️
 
 function MapMockBase({ children }) {
   return (
-    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 175" fill="none">
           <path d="M20 90 Q80 60 140 90 T260 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -61,7 +61,7 @@ export function ButtonBarConfig({ t }) {
             transition: 'all 0.1s',
           }}>
             <div style={{ fontSize: '1rem', marginBottom: 3 }}>{p.icon}</div>
-            <div style={{ fontSize: '0.625rem', fontWeight: 600 }}>{p.label}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{p.label}</div>
           </button>
         ))}
       </div>
@@ -89,7 +89,7 @@ export function ButtonBarConfig({ t }) {
               }}>
                 <span style={{ fontSize: '0.875rem' }}>{icon}</span>
                 <span style={{ fontSize: '0.75rem', flex: 1 }}>{BTN_LABELS[icon]}</span>
-                <span style={{ fontSize: '0.625rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>
+                <span style={{ fontSize: '0.875rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>
                   {hidden ? t('navControls.buttons.hidden') : t('navControls.buttons.shown')}
                 </span>
               </div>
@@ -139,10 +139,10 @@ export function SearchEntryConfig({ t }) {
           ))}
         </div>
         {!asButton && (
-          <div style={{ position: 'absolute', bottom: 12, left: 40, right: 12, background: 'rgba(26,37,53,0.92)', borderRadius: 8, padding: '8px 10px', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ position: 'absolute', bottom: 12, left: 40, right: 12, background: 'rgba(26,37,53,0.92)', borderRadius: 20, padding: '8px 10px', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: '0.625rem' }}>🔍</span>
-              <span style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>Search destination…</span>
+              <span style={{ fontSize: '0.875rem' }}>🔍</span>
+              <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>Search destination…</span>
             </div>
           </div>
         )}
@@ -216,7 +216,7 @@ export default function NavigationControls() {
                 <td style={{ fontWeight: 500 }}>{t(`navControls.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,

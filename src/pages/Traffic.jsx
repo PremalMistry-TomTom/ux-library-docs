@@ -142,7 +142,7 @@ function TabletFrame({ children, overlayChildren }) {
       {/* Power button */}
       <div style={{ position: 'absolute', right: -2, top: 40, width: 3, height: 28, background: '#242424', borderRadius: '0 2px 2px 0' }} />
       {/* Screen */}
-      <div style={{ borderRadius: 8, overflow: 'hidden', height: 380, position: 'relative', background: '#000' }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', height: 380, position: 'relative', background: '#000' }}>
         {children}
         {overlayChildren}
         {/* Home bar */}
@@ -165,7 +165,7 @@ function Toggle({ label, on, onToggle }) {
         <div style={{ position: 'absolute', top: 2, left: on ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
       </div>
       <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{label}</span>
-      <span style={{ marginLeft: 'auto', fontSize: '0.625rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'on' : 'off'}</span>
+      <span style={{ marginLeft: 'auto', fontSize: '0.875rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'on' : 'off'}</span>
     </div>
   );
 }
@@ -221,7 +221,7 @@ function LayerConfigurator() {
                 transition: 'all 0.1s',
               }}>
                 <div style={{ fontSize: '0.75rem', fontWeight: flowStyle === opt.id ? 600 : 400, color: flowStyle === opt.id ? 'var(--red)' : 'var(--black)' }}>{opt.label}</div>
-                <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginTop: 2 }}>{opt.desc}</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginTop: 2 }}>{opt.desc}</div>
               </div>
             ))}
           </div>
@@ -278,7 +278,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
             }}>
               <span style={{ fontSize: '1rem' }}>{t.icon}</span>
               <span style={{ fontSize: '0.875rem', fontWeight: 500, flex: 1 }}>{t.label}</span>
-              <span style={{ fontSize: '0.625rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'shown' : 'hidden'}</span>
+              <span style={{ fontSize: '0.875rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'shown' : 'hidden'}</span>
             </div>
           );
         })}
@@ -421,7 +421,7 @@ export default function TrafficPage() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,

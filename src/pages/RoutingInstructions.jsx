@@ -202,8 +202,8 @@ export default function RoutingInstructions({ onNavigate }) {
                 display: 'flex', alignItems: 'center', gap: 8,
                 padding: '5px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)',
               }}>
-                <span style={{ fontSize: '0.625rem', fontWeight: 700, fontFamily: 'monospace', padding: '2px 7px', borderRadius: 20, background: 'var(--blue-light)', color: 'var(--blue)', flexShrink: 0, minWidth: 22, textAlign: 'center' }}>{code}</span>
-                <span style={{ fontSize: '0.6875rem', fontFamily: 'monospace', color: 'var(--mid)' }}>{text}</span>
+                <span style={{ fontSize: '0.875rem', fontWeight: 700, fontFamily: 'monospace', padding: '2px 7px', borderRadius: 20, background: 'var(--blue-light)', color: 'var(--blue)', flexShrink: 0, minWidth: 22, textAlign: 'center' }}>{code}</span>
+                <span style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--mid)' }}>{text}</span>
               </div>
             ))}
           </div>

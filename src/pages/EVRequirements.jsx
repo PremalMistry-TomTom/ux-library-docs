@@ -8,7 +8,7 @@ const REQUIREMENTS_APIS = [
   { name: 'Vehicle Integration API',          type: 'Android SDK', description: 'Vehicle battery, consumption, connector, and auxiliary power parameters supplied via VehicleInfoManager.', url: 'https://docs.tomtom.com/automotive-solutions/en/guides/ev-integration' },
   { name: 'Navigation SDK — Vehicle module',  type: 'Android SDK', description: 'com.tomtom.sdk.vehicle:vehicle-provider — VehicleProvider and live SoC update API.', url: 'https://docs.tomtom.com/navigation/android/guides/navigation/vehicle' },
   { name: 'Navigation SDK — Search module',   type: 'Android SDK', description: 'com.tomtom.sdk.search:search-ev — EV Search and POI Details APIs for station discovery.', url: 'https://docs.tomtom.com/navigation/android/guides/search/ev-search' },
-  { name: 'Long Distance EV Routing API',     type: 'REST API',    description: 'REST endpoint for multi-stop route planning with automatic charging stop insertion.', url: 'https://docs.tomtom.com/long-distance-ev-routing-api/documentation/tomtom-maps/long-distance-ev-routing' },
+  { name: 'Long Distance EV Routing API',     type: 'REST API',    description: 'REST endpoint for multi-stop route planning with automatic charging stop insertion.', pageId: 'ldevr-calculate-route', productId: 'ldevr' },
 ];
 
 const DEPS = [
@@ -113,7 +113,7 @@ function Checklist({ t }) {
       ))}
 
       {pct === 100 && (
-        <div style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', fontSize: '0.875rem', color: '#10b981', fontWeight: 600 }}>
+        <div style={{ padding: '12px 16px', borderRadius: 20, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', fontSize: '0.875rem', color: '#10b981', fontWeight: 600 }}>
           ✅ {t('requirements.checklist.complete')}
         </div>
       )}
@@ -121,7 +121,7 @@ function Checklist({ t }) {
   );
 }
 
-export default function EVRequirements() {
+export default function EVRequirements({ onNavigate }) {
   const { t } = useTranslation('ev');
 
   return (
@@ -132,7 +132,7 @@ export default function EVRequirements() {
       </div>
       <div className="quick-answer">{t('requirements.intro')}</div>
 
-      <ApiLinks items={REQUIREMENTS_APIS} />
+      <ApiLinks items={REQUIREMENTS_APIS} onNavigate={onNavigate} />
 
       {/* Integration checklist */}
       <div className="zone">

@@ -184,7 +184,7 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
 
       {/* Screen */}
       <div style={{
-        borderRadius: 8, overflow: 'hidden',
+        borderRadius: 20, overflow: 'hidden',
         height: 380, position: 'relative', background: '#000',
       }}>
         {children}
@@ -200,7 +200,7 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
             pointerEvents: 'none',
           }}>
             <div style={{
-              width: 44, height: 44, borderRadius: 10,
+              width: 44, height: 44, borderRadius: 20,
               background: 'rgba(255,255,255,0.12)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '1.5rem', color: 'white', flexShrink: 0,
@@ -221,7 +221,7 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
           <div style={{
             position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)',
             width: '52%', minWidth: 280,
-            background: 'white', borderRadius: 12,
+            background: 'white', borderRadius: 20,
             padding: '11px 18px',
             boxShadow: '0 6px 24px rgba(0,0,0,0.22)',
             display: 'flex', alignItems: 'center', gap: 10,
@@ -317,8 +317,8 @@ function TiltDemo() {
             style={{ width: '100%', accentColor: 'var(--red)' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>0° top-down</span>
-            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>60° max perspective</span>
+            <span style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>0° top-down</span>
+            <span style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>60° max perspective</span>
           </div>
         </div>
 
@@ -333,8 +333,8 @@ function TiltDemo() {
             style={{ width: '100%', accentColor: 'var(--red)' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>10 overview</span>
-            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>18 street level</span>
+            <span style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>10 overview</span>
+            <span style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>18 street level</span>
           </div>
         </div>
       </div>
@@ -433,7 +433,7 @@ export default function MapStyle() {
             { scheme: 'file://',  desc: 'Style on device storage. Requires appropriate read permissions.' },
             { scheme: 'content://', desc: 'Style exposed by an Android ContentProvider. Useful for shared/managed styles.' },
           ].map(({ scheme, desc }) => (
-            <div key={scheme} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
+            <div key={scheme} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20 }}>
               <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--red)', display: 'block', marginBottom: 6 }}>{scheme}</code>
               <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.55 }}>{desc}</div>
             </div>
@@ -495,7 +495,7 @@ export default function MapStyle() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,

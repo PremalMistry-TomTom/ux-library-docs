@@ -168,10 +168,10 @@ function CategoryTable() {
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--black)' }}>{name}</span>
+                <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{name}</span>
                 <span style={{ fontSize: '0.5625rem', color: 'var(--muted)', fontFamily: 'monospace' }}>{example}</span>
               </div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
             </div>
           </div>
         ))}

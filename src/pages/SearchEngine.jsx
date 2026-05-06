@@ -40,7 +40,7 @@ const RESULTS = [
 /* ─── Search panel mock ─────────────────────────────────────────────────────── */
 export function SearchMock({ isOnline = true, showAttribution = false, showEnrichment = false, showFilters = false }) {
   return (
-    <div style={{ background: M.bg, borderRadius: 10, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       {/* Search bar */}
       <div style={{ padding: '9px 12px', background: M.card, display: 'flex', alignItems: 'center', gap: 8, borderBottom: `1px solid ${M.line}` }}>
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5">
@@ -48,7 +48,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
         </svg>
         <span style={{ fontSize: '0.75rem', color: M.muted, flex: 1 }}>Search destination…</span>
         {showAttribution && (
-          <span style={{ fontSize: '0.625rem', color: M.dim, background: '#1e293b', padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '0.875rem', color: M.dim, background: '#1e293b', padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
             Powered by Google
           </span>
         )}
@@ -57,7 +57,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {/* Connectivity strip */}
       <div style={{ padding: '5px 12px', background: isOnline ? '#0f2a1a' : '#1f1505', display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: isOnline ? '#22c55e' : '#f97316', flexShrink: 0 }} />
-        <span style={{ fontSize: '0.625rem', color: isOnline ? M.green : M.orange }}>
+        <span style={{ fontSize: '0.875rem', color: isOnline ? M.green : M.orange }}>
           {isOnline ? '3rd-party search · online' : 'TomTom onboard · offline'}
         </span>
       </div>
@@ -66,7 +66,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {showFilters && (
         <div style={{ padding: '7px 12px', display: 'flex', gap: 5, borderBottom: `1px solid ${M.line}` }}>
           {['★ 4+', 'Open now', '€€', 'Italian'].map(f => (
-            <span key={f} style={{ fontSize: '0.625rem', background: '#1e293b', color: M.blue, padding: '2px 7px', borderRadius: 10, whiteSpace: 'nowrap', border: '1px solid #1e3a5f' }}>{f}</span>
+            <span key={f} style={{ fontSize: '0.875rem', background: '#1e293b', color: M.blue, padding: '2px 7px', borderRadius: 20, whiteSpace: 'nowrap', border: '1px solid #1e3a5f' }}>{f}</span>
           ))}
         </div>
       )}
@@ -81,13 +81,13 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 600, color: M.text, marginBottom: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</div>
-            <div style={{ fontSize: '0.625rem', color: M.muted }}>{r.addr}</div>
+            <div style={{ fontSize: '0.875rem', color: M.muted }}>{r.addr}</div>
             {showEnrichment && (
               <div style={{ display: 'flex', gap: 5, marginTop: 3 }}>
-                <span style={{ fontSize: '0.625rem', color: M.amber }}>★ {r.rating}</span>
-                <span style={{ fontSize: '0.625rem', color: M.muted }}>({r.reviews})</span>
-                <span style={{ fontSize: '0.625rem', color: M.dim }}>{r.price}</span>
-                <span style={{ fontSize: '0.625rem', color: r.open ? '#22c55e' : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
+                <span style={{ fontSize: '0.875rem', color: M.amber }}>★ {r.rating}</span>
+                <span style={{ fontSize: '0.875rem', color: M.muted }}>({r.reviews})</span>
+                <span style={{ fontSize: '0.875rem', color: M.dim }}>{r.price}</span>
+                <span style={{ fontSize: '0.875rem', color: r.open ? '#22c55e' : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
               </div>
             )}
           </div>
@@ -100,19 +100,19 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
 /* ─── Location Preview Panel mock ───────────────────────────────────────────── */
 export function LPPMock({ enriched = false, attribution = false }) {
   return (
-    <div style={{ background: M.card, borderRadius: 10, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
+    <div style={{ background: M.card, borderRadius: 20, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '14px 14px 10px' }}>
         <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text, marginBottom: 3 }}>Gianni's Ristorante</div>
         <div style={{ fontSize: '0.75rem', color: M.dim, marginBottom: enriched ? 8 : 10 }}>14 Via Roma, Milan · 0.3 km</div>
         {enriched && (
           <>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 5 }}>
-              <span style={{ fontSize: '0.625rem', color: M.amber }}>★ 4.6</span>
-              <span style={{ fontSize: '0.625rem', color: M.muted }}>(1,240 reviews)</span>
-              <span style={{ fontSize: '0.625rem', color: M.dim }}>€€ · Italian</span>
+              <span style={{ fontSize: '0.875rem', color: M.amber }}>★ 4.6</span>
+              <span style={{ fontSize: '0.875rem', color: M.muted }}>(1,240 reviews)</span>
+              <span style={{ fontSize: '0.875rem', color: M.dim }}>€€ · Italian</span>
             </div>
-            <div style={{ fontSize: '0.625rem', color: '#22c55e', marginBottom: 6 }}>Open · Closes 23:00</div>
-            <div style={{ fontSize: '0.625rem', color: M.dim, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
+            <div style={{ fontSize: '0.875rem', color: '#22c55e', marginBottom: 6 }}>Open · Closes 23:00</div>
+            <div style={{ fontSize: '0.875rem', color: M.dim, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
               "Amazing pasta, great atmosphere — highly recommend!"
             </div>
           </>
@@ -123,7 +123,7 @@ export function LPPMock({ enriched = false, attribution = false }) {
         <button style={{ flex: 1, padding: '7px 0', background: '#1e293b', color: M.blue, border: `1px solid ${M.line}`, borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Route</button>
       </div>
       {attribution && (
-        <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.625rem', color: M.muted }}>
+        <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.875rem', color: M.muted }}>
           Powered by Google
         </div>
       )}
@@ -138,7 +138,7 @@ function ProviderSetup() {
 
   return (
     <div>
-      <div style={{ display: 'flex', marginBottom: 16, background: 'var(--bg)', borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)', width: 'fit-content', padding: 3, gap: 3 }}>
+      <div style={{ display: 'flex', marginBottom: 16, background: 'var(--bg)', borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', width: 'fit-content', padding: 3, gap: 3 }}>
         {[['online', '🌐  Online (3rd party)'], ['offline', '📡  Offline only (TomTom)']].map(([id, label]) => (
           <button key={id} onClick={() => setMode(id)} style={{
             padding: '7px 18px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer',
@@ -241,30 +241,30 @@ export function TransitionExplorer() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 260, flexShrink: 0 }}>
         {TRANSITIONS.map((t, i) => (
           <button key={t.id} onClick={() => setActive(i)} style={{
-            padding: '9px 12px', borderRadius: 8, cursor: 'pointer', textAlign: 'left',
+            padding: '9px 12px', borderRadius: 20, cursor: 'pointer', textAlign: 'left',
             background: active === i ? 'var(--code-bg)' : 'transparent',
             border: active === i ? '1px solid var(--red)' : '1px solid var(--border)',
             color: active === i ? '#e2e8f0' : 'var(--mid)',
             fontSize: '0.75rem', fontWeight: active === i ? 600 : 400,
             transition: 'all 0.15s',
           }}>
-            <span style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontWeight: 400, marginBottom: 2 }}>Scenario {i + 1}</span>
+            <span style={{ display: 'block', fontSize: '0.875rem', color: 'var(--muted)', fontWeight: 400, marginBottom: 2 }}>Scenario {i + 1}</span>
             {t.label}
           </button>
         ))}
       </div>
 
       <div style={{ flex: 1, minWidth: 260 }}>
-        <div style={{ padding: '10px 14px', background: s.bg, borderRadius: 8, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+        <div style={{ padding: '10px 14px', background: s.bg, borderRadius: 20, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.dot, flexShrink: 0 }} />
           <span style={{ fontSize: '0.75rem', color: s.color, fontWeight: 600 }}>{s.label}</span>
         </div>
         <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: '0.625rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Trigger</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Trigger</div>
           <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65, margin: 0 }}>{scenario.trigger}</p>
         </div>
         <div>
-          <div style={{ fontSize: '0.625rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Expected behaviour</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Expected behaviour</div>
           <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65, margin: 0 }}>{scenario.behavior}</p>
         </div>
       </div>
@@ -363,7 +363,7 @@ export function SearchUICustomiser() {
 function Toggle({ value, onChange, label }) {
   return (
     <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: '0.875rem', color: 'var(--mid)', userSelect: 'none' }}>
-      <div onClick={() => onChange(!value)} style={{ width: 36, height: 20, borderRadius: 10, cursor: 'pointer', transition: 'background 0.2s', flexShrink: 0, background: value ? 'var(--red)' : 'var(--border)', position: 'relative' }}>
+      <div onClick={() => onChange(!value)} style={{ width: 36, height: 20, borderRadius: 20, cursor: 'pointer', transition: 'background 0.2s', flexShrink: 0, background: value ? 'var(--red)' : 'var(--border)', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 2, left: value ? 18 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left 0.2s' }} />
       </div>
       {label}
@@ -419,7 +419,7 @@ function Pri({ children }) {
   const isP0 = children.includes('P0');
   return (
     <span style={{
-      fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, whiteSpace: 'nowrap',
+      fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, whiteSpace: 'nowrap',
       background: isP0 ? '#fff5f5' : 'var(--bg)',
       color: isP0 ? 'var(--red)' : 'var(--muted)',
       border: `1px solid ${isP0 ? '#fecaca' : 'var(--border)'}`,
@@ -523,14 +523,14 @@ export default function SearchEngine() {
             ['5', 'Personal location',      'User opens a saved favourite or recent destination.',                  'source'],
             ['6', 'Add stop (route active)','User adds a waypoint while actively navigating.',                     'online'],
           ].map(([num, name, desc, type]) => (
-            <div key={num} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '10px 14px', background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
+            <div key={num} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '10px 14px', background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: 20 }}>
               <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--red)', color: '#fff', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{num}</div>
               <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 600, fontSize: '0.875rem', marginBottom: 2, color: '#e2e8f0' }}>{name}</div>
                 <div style={{ fontSize: '0.75rem', color: '#94a3b8', lineHeight: 1.5 }}>{desc}</div>
               </div>
               <span style={{
-                fontSize: '0.625rem', padding: '2px 8px', borderRadius: 4, flexShrink: 0, alignSelf: 'flex-start', marginTop: 2, fontWeight: 600,
+                fontSize: '0.875rem', padding: '2px 8px', borderRadius: 4, flexShrink: 0, alignSelf: 'flex-start', marginTop: 2, fontWeight: 600,
                 background: type === 'online' ? '#0f2a1a' : '#1e293b',
                 color: type === 'online' ? '#86efac' : '#93c5fd',
               }}>

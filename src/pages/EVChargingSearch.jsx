@@ -81,7 +81,7 @@ function MSPBuilder({ t }) {
               return (
                 <div key={n.id} style={{
                   display: 'flex', alignItems: 'center', gap: 10,
-                  padding: '8px 12px', borderRadius: 8,
+                  padding: '8px 12px', borderRadius: 20,
                   border: `1.5px solid ${on ? '#3b82f6' : 'var(--border)'}`,
                   background: on ? 'rgba(59,130,246,0.06)' : 'var(--white)',
                   cursor: 'pointer', transition: 'all 0.12s',
@@ -96,7 +96,7 @@ function MSPBuilder({ t }) {
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{n.id}</div>
-                    <div style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>{n.region} · {n.kw}</div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>{n.region} · {n.kw}</div>
                   </div>
                 </div>
               );
@@ -110,7 +110,7 @@ function MSPBuilder({ t }) {
             {t('chargingSearch.msp.priority')}
           </div>
           {active.length === 0 ? (
-            <div style={{ padding: '20px 14px', borderRadius: 8, border: '1px dashed var(--border)', color: 'var(--muted)', fontSize: '0.75rem', textAlign: 'center' }}>
+            <div style={{ padding: '20px 14px', borderRadius: 20, border: '1px dashed var(--border)', color: 'var(--muted)', fontSize: '0.75rem', textAlign: 'center' }}>
               {t('chargingSearch.msp.empty')}
             </div>
           ) : (
@@ -118,23 +118,23 @@ function MSPBuilder({ t }) {
               {active.map((id, i) => (
                 <div key={id} style={{
                   display: 'flex', alignItems: 'center', gap: 8,
-                  padding: '8px 12px', borderRadius: 8,
+                  padding: '8px 12px', borderRadius: 20,
                   border: '1.5px solid #3b82f6',
                   background: 'rgba(59,130,246,0.08)',
                 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.625rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
+                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
                   <span style={{ flex: 1, fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{id}</span>
                   <div style={{ display: 'flex', gap: 2 }}>
                     <button onClick={() => moveUp(id)} disabled={i === 0} style={{
                       width: 22, height: 22, borderRadius: 4, border: '1px solid var(--border)',
                       background: 'var(--white)', cursor: i === 0 ? 'default' : 'pointer',
-                      opacity: i === 0 ? 0.3 : 1, fontSize: '0.625rem', color: 'var(--black)',
+                      opacity: i === 0 ? 0.3 : 1, fontSize: '0.875rem', color: 'var(--black)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>↑</button>
                     <button onClick={() => moveDown(id)} disabled={i === active.length - 1} style={{
                       width: 22, height: 22, borderRadius: 4, border: '1px solid var(--border)',
                       background: 'var(--white)', cursor: i === active.length - 1 ? 'default' : 'pointer',
-                      opacity: i === active.length - 1 ? 0.3 : 1, fontSize: '0.625rem', color: 'var(--black)',
+                      opacity: i === active.length - 1 ? 0.3 : 1, fontSize: '0.875rem', color: 'var(--black)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>↓</button>
                   </div>

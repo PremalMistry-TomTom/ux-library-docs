@@ -231,7 +231,7 @@ export default function RoutingReachableRange({ onNavigate }) {
               { lib: 'GeoJSON', snippet: '{ "type": "Polygon", "coordinates": [ boundary.map(p => [p.longitude, p.latitude]) ] }' },
             ].map(({ lib, snippet }) => (
               <div key={lib} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 12px', background: 'var(--bg)' }}>
-                <code style={{ fontSize: '0.625rem', fontFamily: 'monospace', color: 'var(--blue)', fontWeight: 700 }}>{lib}</code>
+                <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--blue)', fontWeight: 700 }}>{lib}</code>
                 <div style={{ fontSize: '0.5rem', color: 'var(--muted)', marginTop: 4, lineHeight: 1.5, fontFamily: 'monospace', wordBreak: 'break-all' }}>{snippet}</div>
               </div>
             ))}
@@ -251,11 +251,11 @@ export default function RoutingReachableRange({ onNavigate }) {
           {RANGE_ERRORS.map(e => (
             <div key={e.code} style={{
               display: 'flex', alignItems: 'flex-start', gap: 14,
-              padding: '12px 14px', borderRadius: 10,
+              padding: '12px 14px', borderRadius: 20,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
               <span style={{
-                fontSize: '0.625rem', fontWeight: 700, padding: '3px 9px',
+                fontSize: '0.875rem', fontWeight: 700, padding: '3px 9px',
                 borderRadius: 20, background: 'rgba(226,0,26,0.08)',
                 color: '#e2001a', fontFamily: 'monospace', letterSpacing: '0.02em',
                 flexShrink: 0, marginTop: 1, whiteSpace: 'nowrap',

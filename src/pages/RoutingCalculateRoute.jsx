@@ -458,8 +458,8 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 8 }}>
         {ROUTING_SECTION_TYPES.map(({ type, fields }) => (
           <div key={type} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 12px', background: 'var(--bg)' }}>
-            <code style={{ fontSize: '0.625rem', fontFamily: 'monospace', color: 'var(--blue)', fontWeight: 700 }}>{type}</code>
-            <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.4 }}>{fields}</div>
+            <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--blue)', fontWeight: 700 }}>{type}</code>
+            <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.4 }}>{fields}</div>
           </div>
         ))}
       </div>
@@ -494,11 +494,11 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
           {ROUTING_ERRORS.map(e => (
             <div key={e.code} style={{
               display: 'flex', alignItems: 'flex-start', gap: 14,
-              padding: '12px 14px', borderRadius: 10,
+              padding: '12px 14px', borderRadius: 20,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
               <span style={{
-                fontSize: '0.625rem', fontWeight: 700, padding: '3px 9px',
+                fontSize: '0.875rem', fontWeight: 700, padding: '3px 9px',
                 borderRadius: 20, background: 'rgba(226,0,26,0.08)',
                 color: '#e2001a', fontFamily: 'monospace', letterSpacing: '0.02em',
                 flexShrink: 0, marginTop: 1, whiteSpace: 'nowrap',

@@ -181,8 +181,8 @@ const RESPONSE_SECTIONS_DATA = [
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 10 }}>
           {SECTION_TYPES.map(s => (
-            <div key={s.type} style={{ padding: '12px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)' }}>
-              <code style={{ fontSize: '0.625rem', color: s.type === 'CHARGING_STATION' ? '#22c55e' : 'var(--blue)', fontFamily: 'monospace', fontWeight: 700, display: 'block', marginBottom: 5 }}>{s.type}</code>
+            <div key={s.type} style={{ padding: '12px 14px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)' }}>
+              <code style={{ fontSize: '0.875rem', color: s.type === 'CHARGING_STATION' ? '#22c55e' : 'var(--blue)', fontFamily: 'monospace', fontWeight: 700, display: 'block', marginBottom: 5 }}>{s.type}</code>
               <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{s.desc}</div>
             </div>
           ))}
@@ -215,11 +215,11 @@ const RESPONSE_SECTIONS_DATA = [
         ].map(e => (
           <div key={e.code} style={{
             display: 'flex', alignItems: 'flex-start', gap: 14,
-            padding: '12px 14px', borderRadius: 10,
+            padding: '12px 14px', borderRadius: 20,
             border: '1px solid var(--border)', background: 'var(--bg)',
           }}>
             <span style={{
-              fontSize: '0.625rem', fontWeight: 700, padding: '3px 9px',
+              fontSize: '0.875rem', fontWeight: 700, padding: '3px 9px',
               borderRadius: 20, background: 'rgba(226,0,26,0.08)',
               color: '#e2001a', fontFamily: 'monospace', letterSpacing: '0.02em',
               flexShrink: 0, marginTop: 1, whiteSpace: 'nowrap',
@@ -310,15 +310,15 @@ curl -X POST \\
           <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 12, lineHeight: 1.6 }}>
             Pass one or more of these identifiers as a comma-separated value for <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.75rem' }}>connectorSet</code>.
           </p>
-          <div style={{ border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
             <div style={{ display: 'grid', gridTemplateColumns: '200px 160px 120px 1fr', background: 'var(--bg)', borderBottom: '1px solid var(--border)', padding: '8px 14px' }}>
               {['connectorSet value', 'Common name', 'Region', 'Typical power'].map(h => (
-                <span key={h} style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{h}</span>
+                <span key={h} style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{h}</span>
               ))}
             </div>
             {CONNECTORS.map((c, i) => (
               <div key={c.id} style={{ display: 'grid', gridTemplateColumns: '200px 160px 120px 1fr', padding: '9px 14px', borderBottom: i < CONNECTORS.length - 1 ? '1px solid var(--border)' : 'none', alignItems: 'center' }}>
-                <code style={{ fontSize: '0.625rem', color: 'var(--blue)', fontFamily: 'monospace' }}>{c.id}</code>
+                <code style={{ fontSize: '0.875rem', color: 'var(--blue)', fontFamily: 'monospace' }}>{c.id}</code>
                 <span style={{ fontSize: '0.75rem', color: 'var(--black)', fontWeight: 500 }}>{c.label}</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>{c.region}</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>{c.power}</span>
@@ -428,7 +428,7 @@ curl -X POST \\
       ) : (
         <div className="zone">
           <h2 className="sh" id="ev-platform">Platform status</h2>
-          <div style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)' }}>
+          <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)' }}>
             <pre className="cb-pre">
               <code dangerouslySetInnerHTML={{ __html: addLn(CODE_ORBIS) }} />
             </pre>

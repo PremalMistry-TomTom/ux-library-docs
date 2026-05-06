@@ -290,7 +290,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
     <div style={{
       width: '100%',
       background: '#060608',
-      borderRadius: 12,
+      borderRadius: 20,
       border: '2px solid #1c1c20',
       boxShadow: 'inset 0 0 30px rgba(0,0,0,0.6), 0 4px 20px rgba(0,0,0,0.4)',
       display: 'flex',
@@ -351,7 +351,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
         {/* Empty state */}
         {!showMap && !showNavCol && (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0c' }}>
-            <span style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.12)', fontFamily: 'var(--font-mono)' }}>
+            <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.12)', fontFamily: 'var(--font-mono)' }}>
               display off
             </span>
           </div>
@@ -501,11 +501,11 @@ export default function Cluster() {
                 border: '1px solid var(--border)', opacity: value ? 1 : 0.5,
                 transition: 'all 0.12s',
               }}>
-                <div style={{ width: 30, height: 16, borderRadius: 8, background: value ? 'var(--red)' : 'var(--border)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
+                <div style={{ width: 30, height: 16, borderRadius: 20, background: value ? 'var(--red)' : 'var(--border)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
                   <div style={{ position: 'absolute', top: 1.5, left: value ? 13 : 1.5, width: 13, height: 13, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
                 </div>
                 <span style={{ fontSize: '0.75rem', fontWeight: 500 }}>{label}</span>
-                <span style={{ marginLeft: 'auto', fontSize: '0.625rem', color: value ? '#16a34a' : 'var(--muted)', fontWeight: 600 }}>
+                <span style={{ marginLeft: 'auto', fontSize: '0.875rem', color: value ? '#16a34a' : 'var(--muted)', fontWeight: 600 }}>
                   {value ? t('cluster.shown') : t('cluster.hidden')}
                 </span>
               </div>
@@ -527,11 +527,11 @@ export default function Cluster() {
                   border: '1px solid var(--border)', opacity: (!showHp || !active) ? 0.4 : 1,
                   transition: 'all 0.12s',
                 }}>
-                  <div style={{ width: 28, height: 16, borderRadius: 8, background: active ? 'var(--red)' : 'var(--border)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
+                  <div style={{ width: 28, height: 16, borderRadius: 20, background: active ? 'var(--red)' : 'var(--border)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
                     <div style={{ position: 'absolute', top: 1.5, left: active ? 11 : 1.5, width: 13, height: 13, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
                   </div>
                   <span style={{ fontSize: '0.75rem', fontWeight: 600, minWidth: 28 }}>{id}</span>
-                  <span style={{ fontSize: '0.625rem', color: 'var(--muted)', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{desc}</span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--muted)', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{desc}</span>
                 </div>
               );
             })}
@@ -552,7 +552,7 @@ export default function Cluster() {
                 transition: 'all 0.1s',
               }}>
                 <div style={{ fontSize: '0.75rem' }}>{label}</div>
-                <div style={{ fontSize: '0.625rem', opacity: 0.6, marginTop: 2 }}>{desc}</div>
+                <div style={{ fontSize: '0.875rem', opacity: 0.6, marginTop: 2 }}>{desc}</div>
               </button>
             ))}
           </div>
@@ -572,7 +572,7 @@ export default function Cluster() {
                 transition: 'all 0.1s',
               }}>
                 <div style={{ fontSize: '0.75rem' }}>{label}</div>
-                <div style={{ fontSize: '0.625rem', opacity: 0.6, marginTop: 2 }}>{desc}</div>
+                <div style={{ fontSize: '0.875rem', opacity: 0.6, marginTop: 2 }}>{desc}</div>
               </button>
             ))}
           </div>
@@ -674,7 +674,7 @@ export default function Cluster() {
                 <td style={{ fontWeight: 500 }}>{t(`cluster.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,

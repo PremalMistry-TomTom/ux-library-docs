@@ -18,7 +18,7 @@ function DocLink({ children, pageId, productId, onNavigate }) {
 
 function WhenCard({ icon, title, children }) {
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', background: 'var(--surface)' }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
         <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
@@ -32,7 +32,7 @@ function WhenCard({ icon, title, children }) {
 
 function ThumbMapDisplay() {
   return (
-    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <rect width="200" height="130" fill="#1a2535"/>
@@ -68,7 +68,7 @@ function ThumbSearch() {
   const M = { bg: '#0f1117', card: '#1a1d27', line: '#2a2a3a', text: '#e2e8f0', dim: '#94a3b8', muted: '#64748b', blue: '#58a6ff' };
   const results = [['Amsterdam Centraal', '0.2 km'], ['Rijksmuseum', '1.4 km'], ['Vondelpark', '2.1 km']];
   return (
-    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
       <div style={{ padding: '7px 10px', background: M.card, display: 'flex', alignItems: 'center', gap: 6, borderBottom: `1px solid ${M.line}` }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <span style={{ fontSize: '0.5rem', color: M.muted }}>Search destination…</span>
@@ -91,7 +91,7 @@ function ThumbSearch() {
 function ThumbRouting() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950', red: '#e2001a' };
   return (
-    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Route Options</div>
       <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>Amsterdam → Berlin · 3 results</div>
       {[
@@ -113,7 +113,7 @@ function ThumbRouting() {
 
 function ThumbNavigation() {
   return (
-    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 100 Q60 70 100 72 T190 50" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
@@ -133,7 +133,7 @@ function ThumbNavigation() {
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['22 min', 'Time'], ['8.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
             <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
           </div>
         ))}
@@ -146,7 +146,7 @@ function ThumbOffline() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
   const regions = [['Western Europe', '1.2 GB', 100], ['Eastern Europe', '0.8 GB', 65], ['North America', '2.1 GB', 30]];
   return (
-    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 8 }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3fb950" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 2.09 4.18a2 2 0 0 1 2-2.18h3"/><path d="M16 2a4 4 0 0 1 4 4v1M16 7h6"/><line x1="23" y1="1" x2="1" y2="23" stroke="#ef4444" strokeWidth="1.5"/></svg>
         <span style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>Offline Maps</span>
@@ -169,7 +169,7 @@ function ThumbOffline() {
 
 function ThumbCarPlay() {
   return (
-    <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 80 Q55 58 100 72 T190 60" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
@@ -187,7 +187,7 @@ function ThumbCarPlay() {
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['18 min', 'Time'], ['6.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
             <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
           </div>
         ))}
@@ -198,7 +198,7 @@ function ThumbCarPlay() {
 
 function ThumbVirtualHorizon() {
   return (
-    <div style={{ background: '#060608', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: '#060608', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420,#101820)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           {/* Road perspective */}
@@ -231,7 +231,7 @@ function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
   const clickable = Boolean(pageId && onNavigate);
   return (
     <div
-      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 10, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
+      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
       onClick={clickable ? () => onNavigate(pageId) : undefined}
       onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
       onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
@@ -242,7 +242,7 @@ function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
       <div style={{ padding: '12px 14px', flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
           <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{title}</div>
-          {tag && <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(226,0,26,0.08)', color: '#e2001a', fontWeight: 600 }}>{tag}</span>}
+          {tag && <span style={{ fontSize: '0.875rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(226,0,26,0.08)', color: '#e2001a', fontWeight: 600 }}>{tag}</span>}
         </div>
         <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
@@ -261,9 +261,9 @@ function ArchDiagram() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 560 }}>
       {layers.map((layer, i) => (
-        <div key={layer.label} style={{ background: layer.bg, border: `1px solid ${layer.border}`, borderRadius: 8, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div key={layer.label} style={{ background: layer.bg, border: `1px solid ${layer.border}`, borderRadius: 20, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 28, height: 28, borderRadius: 6, background: layer.bg, border: `1.5px solid ${layer.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <span style={{ fontSize: '0.625rem', fontWeight: 700, color: layer.color }}>{i + 1}</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: layer.color }}>{i + 1}</span>
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>{layer.label}</div>
@@ -278,11 +278,11 @@ function ArchDiagram() {
 /* ─── Platform card ─────────────────────────────────────────────────────────── */
 function PlatformCard({ platform, icon, items, active }) {
   return (
-    <div style={{ flex: 1, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, borderRadius: 10, padding: '16px 20px', background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', transition: 'border-color 0.2s' }}>
+    <div style={{ flex: 1, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, borderRadius: 20, padding: '16px 20px', background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', transition: 'border-color 0.2s' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <span style={{ fontSize: '1.5rem' }}>{icon}</span>
         <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{platform}</span>
-        {active && <span style={{ marginLeft: 'auto', fontSize: '0.625rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>Current</span>}
+        {active && <span style={{ marginLeft: 'auto', fontSize: '0.875rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>Current</span>}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {items.map(([title, desc]) => (
@@ -372,7 +372,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       </p>
 
       {/* Hero */}
-      <div style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>
         <img
           src={`${BASE}navsdk_banner.png`}
           alt="Maps & Navigation SDK"

@@ -59,7 +59,7 @@ const COLOR_ROLES = [
 /* ─── Sub-components ───────────────────────────────────────────────────────── */
 function FamilyCard({ name, var: cssVar, stack, weights, usage, specimen, style }) {
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden', marginBottom: 16 }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', marginBottom: 16 }}>
       {/* Specimen */}
       <div style={{ padding: '28px 28px 20px', background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
         <div style={{ ...style, color: 'var(--black)', whiteSpace: 'pre-wrap' }}>{specimen}</div>
@@ -67,18 +67,18 @@ function FamilyCard({ name, var: cssVar, stack, weights, usage, specimen, style 
       {/* Meta */}
       <div style={{ padding: '16px 20px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px 24px' }}>
         <div>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Family</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Family</div>
           <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{name}</div>
           <code style={{ fontSize: '0.75rem', color: 'var(--blue)' }}>{cssVar}</code>
         </div>
         <div>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Weights available</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Weights available</div>
           {weights.map(w => (
             <div key={w} style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.6 }}>{w}</div>
           ))}
         </div>
         <div>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Used for</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Used for</div>
           <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.6 }}>{usage}</div>
         </div>
       </div>
@@ -103,7 +103,7 @@ function ScaleRow({ role, class: cls, size, weight, family, sample, usage }) {
       <div>
         <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)', marginBottom: 2 }}>{role}</div>
         <code style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{size}</code>
-        <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginTop: 2 }}>weight {weight} · {family}</div>
+        <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginTop: 2 }}>weight {weight} · {family}</div>
       </div>
       {/* Live specimen */}
       <div style={{
@@ -170,7 +170,7 @@ export default function Typography() {
         {/* Table header */}
         <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr 160px', gap: 16, padding: '8px 0 6px', borderBottom: '2px solid var(--border)' }}>
           {['Role / selector', 'Live specimen', 'Used in'].map(h => (
-            <div key={h} style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</div>
+            <div key={h} style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</div>
           ))}
         </div>
 
@@ -186,10 +186,10 @@ export default function Typography() {
 
         {/* Column headers */}
         <div style={{ display: 'grid', gridTemplateColumns: '48px 48px 180px 1fr', gap: 16, padding: '8px 0 6px', borderBottom: '2px solid var(--border)' }}>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Light</div>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Dark</div>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Token</div>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>When to use</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Light</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Dark</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Token</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>When to use</div>
         </div>
         {COLOR_ROLES.map(r => <ColorRow key={r.token} {...r} />)}
       </div>

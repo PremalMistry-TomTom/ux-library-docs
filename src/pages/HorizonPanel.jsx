@@ -43,7 +43,7 @@ export function GuidanceMock({ position, decomposed }) {
   const PANEL_W = 200;
 
   return (
-    <div style={{ width: '100%', height: 320, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 320, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 210" fill="none">
           <path d="M20 115 Q80 80 150 110 T280 100" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -60,22 +60,22 @@ export function GuidanceMock({ position, decomposed }) {
             <span style={{ fontSize: '1.5rem', color: 'white' }}>↖</span>
             <div>
               <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-              <div style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
+              <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
             </div>
           </div>
           {/* Upcoming Events — middle (floating) */}
-          <div style={{ position: 'absolute', top: 110, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.88)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <div style={{ fontSize: '0.625rem', color: '#94a3b8', marginBottom: 5, letterSpacing: '0.05em' }}>UPCOMING</div>
+          <div style={{ position: 'absolute', top: 110, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.88)', borderRadius: 20, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ fontSize: '0.875rem', color: '#94a3b8', marginBottom: 5, letterSpacing: '0.05em' }}>UPCOMING</div>
             <div style={{ display: 'flex', gap: 8 }}>
               {['🚧', '⛽', '☕'].map(e => <span key={e} style={{ fontSize: '0.875rem' }}>{e}</span>)}
             </div>
           </div>
           {/* ETA — bottom */}
-          <div style={{ position: 'absolute', bottom: 12, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.93)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: 14 }}>
+          <div style={{ position: 'absolute', bottom: 12, width: PANEL_W, ...panelStyle, background: 'rgba(15,26,40,0.93)', borderRadius: 20, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', gap: 14 }}>
             {[['14:32', 'ETA'], ['18m', 'Time'], ['6.4', 'km']].map(([v, l]) => (
               <div key={l} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-                <div style={{ fontSize: '0.625rem', color: '#64748b' }}>{l}</div>
+                <div style={{ fontSize: '0.875rem', color: '#64748b' }}>{l}</div>
               </div>
             ))}
           </div>
@@ -91,11 +91,11 @@ export function GuidanceMock({ position, decomposed }) {
             <span style={{ fontSize: '1.5rem', color: 'white' }}>↖</span>
             <div>
               <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-              <div style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
+              <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.6)' }}>Oak St North</div>
             </div>
           </div>
           <div style={{ flex: 1, padding: '10px 14px', borderTop: '1px solid rgba(255,255,255,0.08)', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-            <div style={{ fontSize: '0.625rem', color: '#64748b', marginBottom: 6, letterSpacing: '0.05em' }}>UPCOMING</div>
+            <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: 6, letterSpacing: '0.05em' }}>UPCOMING</div>
             <div style={{ display: 'flex', gap: 8 }}>
               {['🚧', '⛽', '☕'].map(e => <span key={e} style={{ fontSize: '0.875rem' }}>{e}</span>)}
             </div>
@@ -104,7 +104,7 @@ export function GuidanceMock({ position, decomposed }) {
             {[['14:32', 'ETA'], ['18m', 'Time'], ['6.4km', 'Dist']].map(([v, l]) => (
               <div key={l} style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-                <div style={{ fontSize: '0.625rem', color: '#64748b' }}>{l}</div>
+                <div style={{ fontSize: '0.875rem', color: '#64748b' }}>{l}</div>
               </div>
             ))}
           </div>
@@ -238,7 +238,7 @@ export default function HorizonPanel() {
                 <td style={{ fontWeight: 500 }}>{t(`horizonPanel.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,

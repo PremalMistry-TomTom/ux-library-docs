@@ -172,8 +172,8 @@ export default function RoutingBatch({ onNavigate }) {
               { status: '200 OK',         color: '#22c55e', desc: 'Batch complete. Response body contains all results.' },
               { status: '404 Not Found',  color: '#e2001a', desc: 'Batch ID is invalid or the result has expired (> 14 days).' },
             ].map(({ status, color, desc }) => (
-              <div key={status} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)' }}>
-                <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${color}18`, color, fontFamily: 'monospace', flexShrink: 0 }}>{status}</span>
+              <div key={status} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 12px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)' }}>
+                <span style={{ fontSize: '0.875rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${color}18`, color, fontFamily: 'monospace', flexShrink: 0 }}>{status}</span>
                 <span style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>{desc}</span>
               </div>
             ))}
@@ -210,11 +210,11 @@ export default function RoutingBatch({ onNavigate }) {
           {BATCH_ERRORS.map(e => (
             <div key={e.code} style={{
               display: 'flex', alignItems: 'flex-start', gap: 14,
-              padding: '12px 14px', borderRadius: 10,
+              padding: '12px 14px', borderRadius: 20,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
               <span style={{
-                fontSize: '0.625rem', fontWeight: 700, padding: '3px 9px',
+                fontSize: '0.875rem', fontWeight: 700, padding: '3px 9px',
                 borderRadius: 20, background: 'rgba(226,0,26,0.08)',
                 color: '#e2001a', fontFamily: 'monospace', letterSpacing: '0.02em',
                 flexShrink: 0, marginTop: 1, whiteSpace: 'nowrap',

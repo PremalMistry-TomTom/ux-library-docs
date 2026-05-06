@@ -26,7 +26,7 @@ function StatusBadge({ status }) {
   const s = STATUS[status] || STATUS.planned;
   return (
     <span style={{
-      fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
+      fontSize: '0.875rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
       background: s.bg, color: s.color, border: `1px solid ${s.border}`,
       whiteSpace: 'nowrap',
     }}>{s.label}</span>
@@ -39,7 +39,7 @@ function StateChips({ states }) {
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
       {states.map(s => (
         <span key={s} style={{
-          fontSize: '0.625rem', padding: '2px 7px', borderRadius: 12,
+          fontSize: '0.875rem', padding: '2px 7px', borderRadius: 20,
           background: 'var(--bg)', border: '1px solid var(--border)',
           color: 'var(--mid)', whiteSpace: 'nowrap',
         }}>{s}</span>
@@ -53,7 +53,7 @@ function PreviewCard({ name, component, desc, states, status, preview }) {
   return (
     <div style={{
       border: '1px solid var(--border)',
-      borderRadius: 10,
+      borderRadius: 20,
       overflow: 'hidden',
       background: 'var(--surface)',
       display: 'flex',
@@ -92,7 +92,7 @@ function PreviewCard({ name, component, desc, states, status, preview }) {
           <StatusBadge status={status || 'mock'} />
         </div>
         {component && (
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--muted)' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.875rem', color: 'var(--muted)' }}>
             {component}
           </div>
         )}
@@ -401,11 +401,11 @@ export default function ScreenshotAssets() {
           { label: 'Planned',       value: counts.planned, color: 'var(--muted)' },
         ].map(({ label, value, color }) => (
           <div key={label} style={{
-            padding: '10px 16px', borderRadius: 8, border: '1px solid var(--border)',
+            padding: '10px 16px', borderRadius: 20, border: '1px solid var(--border)',
             background: 'var(--bg)', minWidth: 110, textAlign: 'center',
           }}>
             <div style={{ fontSize: '1.5rem', fontWeight: 800, color, lineHeight: 1.1 }}>{value}</div>
-            <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.3 }}>{label}</div>
+            <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.3 }}>{label}</div>
           </div>
         ))}
       </div>
@@ -428,7 +428,7 @@ export default function ScreenshotAssets() {
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
           {Object.entries(STATUS).map(([key, s]) => (
             <span key={key} style={{
-              fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
+              fontSize: '0.875rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
               background: s.bg, color: s.color, border: `1px solid ${s.border}`,
             }}>{s.label}</span>
           ))}
@@ -443,7 +443,7 @@ export default function ScreenshotAssets() {
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
             <h2 className="sh" style={{ margin: 0 }}>{section.group}</h2>
             <span style={{
-              fontSize: '0.625rem', fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+              fontSize: '0.875rem', fontWeight: 600, padding: '2px 7px', borderRadius: 4,
               background: 'var(--bg)', color: 'var(--muted)', border: '1px solid var(--border)',
             }}>{section.navGroup}</span>
             <span style={{ fontSize: '0.75rem', color: 'var(--muted)', marginLeft: 'auto' }}>

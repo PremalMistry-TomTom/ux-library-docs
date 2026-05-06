@@ -172,7 +172,7 @@ export default function TAIAOverview() {
                 <td style={{ fontWeight: 500 }}>{t(`overview.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: '#fff5f5', color: 'var(--red)', border: '1px solid #fecaca',
                   }}>P1</span>
                 </td>

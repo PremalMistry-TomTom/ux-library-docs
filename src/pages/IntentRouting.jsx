@@ -114,7 +114,7 @@ function RoutingDiagram({ selected }) {
   const top = !!intent;
 
   return (
-    <div style={{ padding: '20px 16px', background: 'var(--bg)', borderRadius: 10, border: '1px solid var(--border)', marginTop: 16 }}>
+    <div style={{ padding: '20px 16px', background: 'var(--bg)', borderRadius: 20, border: '1px solid var(--border)', marginTop: 16 }}>
 
       {/* Row 1: Driver → STT → TAIA SDK → Classifier */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
@@ -136,7 +136,7 @@ function RoutingDiagram({ selected }) {
           <div style={node(!isOEM && top, taiaColor)}>TAIA Cloud</div>
           <span style={arrow(!isOEM && top, taiaColor)}>↓</span>
           <div style={node(!isOEM && top, taiaColor)}>Navigation App</div>
-          <div style={{ marginTop: 4, fontSize: '0.625rem', fontWeight: 600, color: !isOEM && top ? taiaColor : 'var(--border)', transition: 'color 0.25s' }}>
+          <div style={{ marginTop: 4, fontSize: '0.875rem', fontWeight: 600, color: !isOEM && top ? taiaColor : 'var(--border)', transition: 'color 0.25s' }}>
             TomTom owned
           </div>
         </div>
@@ -147,7 +147,7 @@ function RoutingDiagram({ selected }) {
           <div style={node(isOEM && top, oemColor)}>OEM Handler</div>
           <span style={arrow(isOEM && top, oemColor)}>↓</span>
           <div style={node(isOEM && top, oemColor)}>Vehicle Domain</div>
-          <div style={{ marginTop: 4, fontSize: '0.625rem', fontWeight: 600, color: isOEM && top ? oemColor : 'var(--border)', transition: 'color 0.25s' }}>
+          <div style={{ marginTop: 4, fontSize: '0.875rem', fontWeight: 600, color: isOEM && top ? oemColor : 'var(--border)', transition: 'color 0.25s' }}>
             OEM owned
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function IntentRouting() {
               key={it.id}
               onClick={() => setSelected(it.id)}
               style={{
-                padding: '10px 12px', borderRadius: 8, textAlign: 'left',
+                padding: '10px 12px', borderRadius: 20, textAlign: 'left',
                 border: `1.5px solid ${selected === it.id ? it.color : 'var(--border)'}`,
                 background: selected === it.id ? `${it.color}12` : 'var(--white)',
                 cursor: 'pointer', transition: 'all 0.15s',
@@ -220,7 +220,7 @@ export default function IntentRouting() {
               <span style={{ fontSize: '1rem', flexShrink: 0 }}>{it.icon}</span>
               <div>
                 <div style={{ fontSize: '0.75rem', fontWeight: 700, color: selected === it.id ? it.color : 'var(--black)', marginBottom: 1 }}>{it.label}</div>
-                <div style={{ fontSize: '0.625rem', fontWeight: 600, color: it.color }}>{it.ownerLabel}</div>
+                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: it.color }}>{it.ownerLabel}</div>
               </div>
             </button>
           ))}
@@ -231,12 +231,12 @@ export default function IntentRouting() {
 
         {/* Selected intent detail */}
         {intent && (
-          <div style={{ marginTop: 14, padding: '16px', borderRadius: 8, border: `1px solid ${intent.color}35`, background: `${intent.color}08` }}>
+          <div style={{ marginTop: 14, padding: '16px', borderRadius: 20, border: `1px solid ${intent.color}35`, background: `${intent.color}08` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
               <span style={{ fontSize: '1rem' }}>{intent.icon}</span>
               <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>{intent.label}</span>
               <span style={{
-                fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
+                fontSize: '0.875rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
                 background: `${intent.color}20`, color: intent.color,
               }}>
                 {intent.ownerLabel} owned
@@ -245,7 +245,7 @@ export default function IntentRouting() {
             <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 10px', lineHeight: 1.55 }}>{intent.description}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: intent.code ? 14 : 0 }}>
               {intent.examples.map(ex => (
-                <span key={ex} style={{ fontSize: '0.75rem', padding: '3px 9px', borderRadius: 12, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', fontStyle: 'italic' }}>
+                <span key={ex} style={{ fontSize: '0.75rem', padding: '3px 9px', borderRadius: 20, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', fontStyle: 'italic' }}>
                   "{ex}"
                 </span>
               ))}

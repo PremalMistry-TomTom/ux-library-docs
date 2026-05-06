@@ -37,11 +37,11 @@ export default function MatrixRoutingIntro({ onNavigate }) {
               use: 'Large planning matrices, overnight logistics batch runs',
             },
           ].map(m => (
-            <div key={m.title} style={{ padding: '16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
+            <div key={m.title} style={{ padding: '16px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--surface)' }}>
               <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 6 }}>{m.title}</div>
-              <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2001a', marginBottom: 8 }}>{m.limit}</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--mid)', marginBottom: 6, lineHeight: 1.5 }}><strong>Method:</strong> {m.method}</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--mid)', lineHeight: 1.5 }}><strong>Best for:</strong> {m.use}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2001a', marginBottom: 8 }}>{m.limit}</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 6, lineHeight: 1.5 }}><strong>Method:</strong> {m.method}</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}><strong>Best for:</strong> {m.use}</div>
             </div>
           ))}
         </div>
@@ -49,7 +49,7 @@ export default function MatrixRoutingIntro({ onNavigate }) {
 
       <div className="zone">
         <h2 className="sh" id="mx-endpoint">Base URL</h2>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--black)' }}>
+        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--black)' }}>
           POST https://api.tomtom.com/routing/matrix/2
         </div>
       </div>

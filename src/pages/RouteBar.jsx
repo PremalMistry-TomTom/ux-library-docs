@@ -171,7 +171,7 @@ export default function RouteBar() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P1' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P1' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P1' ? '#fecaca' : 'var(--border)'}`,

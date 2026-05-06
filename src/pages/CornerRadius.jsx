@@ -19,7 +19,7 @@ function RadiusCard({ token, dp, label }) {
     <div style={{
       display: 'flex', flexDirection: 'column', gap: 10,
       padding: '14px 16px', background: 'var(--bg)',
-      border: '1px solid var(--border)', borderRadius: 8,
+      border: '1px solid var(--border)', borderRadius: 20,
     }}>
       <div style={{
         width: '100%', aspectRatio: '3 / 2',
@@ -180,7 +180,7 @@ export default function CornerRadius() {
             <div key={label} style={{
               display: 'flex', gap: 16, alignItems: 'flex-start',
               padding: '14px 16px', background: 'var(--bg)',
-              border: '1px solid var(--border)', borderRadius: 8,
+              border: '1px solid var(--border)', borderRadius: 20,
             }}>
               <div style={{
                 flexShrink: 0, width: 52, height: 52,

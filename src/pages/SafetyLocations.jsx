@@ -36,7 +36,7 @@ function MapBase({ children, height = 260 }) {
   return (
     <div style={{
       width: '100%', maxWidth: 360, height, background: '#1a2535',
-      borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
+      borderRadius: 20, border: '1px solid rgba(255,255,255,0.1)',
       position: 'relative', overflow: 'hidden', flexShrink: 0,
     }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
@@ -243,7 +243,7 @@ function ZoneDiagram() {
         ].map(item => (
           <div key={item.label} style={{
             display: 'flex', gap: 12, alignItems: 'flex-start',
-            background: 'var(--bg)', borderRadius: 8, padding: 12,
+            background: 'var(--bg)', borderRadius: 20, padding: 12,
             border: `1px solid ${item.color}30`,
           }}>
             <div style={{ width: 32, height: 8, borderRadius: 4, background: item.color, opacity: 0.8, flexShrink: 0, marginTop: 6 }}/>
@@ -386,7 +386,7 @@ export default function SafetyLocations() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,

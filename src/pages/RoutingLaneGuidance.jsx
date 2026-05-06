@@ -100,7 +100,7 @@ const CODE_RENDER = `// Rendering lane arrows — React/web example
 
 function LaneBar({ lanes }) {
   return (
-    <div style={{ display: 'flex', gap: 4, padding: '8px 12px', background: '#1a1a2e', borderRadius: 8 }}>
+    <div style={{ display: 'flex', gap: 4, padding: '8px 12px', background: '#1a1a2e', borderRadius: 20 }}>
       {lanes.map((lane) => (
         <div
           key={lane.laneNumber}
@@ -157,14 +157,14 @@ function LaneDiagram() {
       </div>
       <div style={{
         display: 'flex', gap: 2, padding: '16px 20px',
-        background: '#1e1e2e', borderRadius: 10, justifyContent: 'center',
+        background: '#1e1e2e', borderRadius: 20, justifyContent: 'center',
       }}>
         {lanes.map((lane) => (
           <div
             key={lane.n}
             style={{
               display: 'flex', flexDirection: 'column', alignItems: 'center',
-              gap: 4, padding: '8px 12px', borderRadius: 8, minWidth: 52,
+              gap: 4, padding: '8px 12px', borderRadius: 20, minWidth: 52,
               background: lane.recommended ? 'rgba(234,179,8,0.15)' : lane.drivable ? 'rgba(255,255,255,0.06)' : 'transparent',
               border: lane.recommended ? '1px solid rgba(234,179,8,0.4)' : '1px solid rgba(255,255,255,0.08)',
               opacity: lane.drivable ? 1 : 0.28,
@@ -190,7 +190,7 @@ function LaneDiagram() {
         ].map(({ color, bg, label }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <div style={{ width: 12, height: 12, borderRadius: 3, background: bg, border: `1px solid ${color}`, flexShrink: 0 }} />
-            <span style={{ fontSize: '0.6875rem', color: 'var(--mid)' }}>{label}</span>
+            <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{label}</span>
           </div>
         ))}
       </div>
@@ -255,7 +255,7 @@ export default function RoutingLaneGuidance({ onNavigate }) {
             ].map(({ icon, label, tip }) => (
               <div key={label} style={{
                 display: 'flex', alignItems: 'flex-start', gap: 12,
-                padding: '10px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)',
+                padding: '10px 14px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)',
               }}>
                 <span style={{ fontSize: '1rem', lineHeight: 1, flexShrink: 0, marginTop: 1 }}>{icon}</span>
                 <div>

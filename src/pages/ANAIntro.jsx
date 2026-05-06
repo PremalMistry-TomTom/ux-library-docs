@@ -17,7 +17,7 @@ function DocLink({ children, pageId, productId, onNavigate }) {
 
 function WhenCard({ icon, title, children }) {
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', background: 'var(--surface)' }}>
+    <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
         <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
@@ -34,7 +34,7 @@ function IntegrationDiagram() {
       {/* OEM App layer */}
       <div style={{ background: 'rgba(0,102,204,0.09)', border: '1px solid rgba(0,102,204,0.3)', borderRadius: '8px 8px 0 0', padding: '12px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#0066cc', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Your Layer</span>
+          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0066cc', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Your Layer</span>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {['OEM HMI App', 'Vehicle ECU / IVI', 'EV Battery System', 'Dashboard Cluster'].map(item => (
@@ -57,24 +57,24 @@ function IntegrationDiagram() {
       {/* Integration layers */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
         <div style={{ background: 'rgba(63,185,80,0.08)', border: '1px solid rgba(63,185,80,0.3)', borderRadius: 6, padding: '10px 14px' }}>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#3fb950', marginBottom: 4 }}>VIL — Vehicle Integration Layer</div>
-          <div style={{ fontSize: '0.625rem', color: 'var(--muted)', lineHeight: 1.4 }}>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#3fb950', marginBottom: 4 }}>VIL — Vehicle Integration Layer</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.4 }}>
             Push vehicle data <em>into</em> ANA. Feed EV state, GDPR consent, speed, and cluster data to the navigation engine.
           </div>
           <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {['EV SoC', 'Connectors', 'Speed', 'GDPR', 'Cluster'].map(tag => (
-              <span key={tag} style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(63,185,80,0.1)', color: '#3fb950', border: '1px solid rgba(63,185,80,0.2)' }}>{tag}</span>
+              <span key={tag} style={{ fontSize: '0.875rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(63,185,80,0.1)', color: '#3fb950', border: '1px solid rgba(63,185,80,0.2)' }}>{tag}</span>
             ))}
           </div>
         </div>
         <div style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.3)', borderRadius: 6, padding: '10px 14px' }}>
-          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#a855f7', marginBottom: 4 }}>CIL — Car Integration Layer</div>
-          <div style={{ fontSize: '0.625rem', color: 'var(--muted)', lineHeight: 1.4 }}>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#a855f7', marginBottom: 4 }}>CIL — Car Integration Layer</div>
+          <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.4 }}>
             Control ANA <em>from</em> your app. Trigger navigation, set destinations, manage routes, and query nav state.
           </div>
           <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {['Navigate to', 'Route info', 'POI search', 'ETA', 'Cancel'].map(tag => (
-              <span key={tag} style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(168,85,247,0.1)', color: '#a855f7', border: '1px solid rgba(168,85,247,0.2)' }}>{tag}</span>
+              <span key={tag} style={{ fontSize: '0.875rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(168,85,247,0.1)', color: '#a855f7', border: '1px solid rgba(168,85,247,0.2)' }}>{tag}</span>
             ))}
           </div>
         </div>
@@ -89,9 +89,9 @@ function IntegrationDiagram() {
       <div style={{ background: 'rgba(226,0,26,0.08)', border: '1px solid rgba(226,0,26,0.3)', borderRadius: '0 0 8px 8px', padding: '12px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#e2001a' }}/>
-          <span style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2001a' }}>ANA — Automotive Navigation Application (APK)</span>
+          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2001a' }}>ANA — Automotive Navigation Application (APK)</span>
         </div>
-        <div style={{ fontSize: '0.625rem', color: 'var(--muted)', lineHeight: 1.4 }}>
+        <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.4 }}>
           TomTom-maintained navigation APK. Full AAOS navigation experience: map, search, routing, EV charging, guidance, cluster output, and OEM theming — all pre-built and tested.
         </div>
       </div>
@@ -127,7 +127,7 @@ function ScreenshotShowcase() {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
       {SCREENSHOTS.map(({ src, label, desc }) => (
-        <div key={src} style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div key={src} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
           <div style={{ height: 180, overflow: 'hidden', background: '#0d1117' }}>
             <img
               src={`${BASE}${src}`}
@@ -160,7 +160,7 @@ function ThumbVIL() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950' };
   const signals = [['Battery SoC', '74%', '#3fb950'], ['Connector type', 'CCS2', '#58a6ff'], ['Speed', '87 km/h', '#fbbf24'], ['GDPR consent', 'Granted', '#3fb950']];
   return (
-    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>VIL — Vehicle signals</div>
       <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 8 }}>← Feeding into ANA</div>
       {signals.map(([label, value, color]) => (
@@ -177,7 +177,7 @@ function ThumbCIL() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', purple: '#a855f7' };
   const cmds = [['navigateTo(destination)', 'Sets active route'], ['cancelNavigation()', 'Ends session'], ['searchNearby(query)', 'Returns POI list']];
   return (
-    <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>CIL — Control API</div>
       <div style={{ fontSize: '0.5rem', color: M.purple, marginBottom: 8 }}>→ Commanding ANA</div>
       {cmds.map(([fn, desc]) => (
@@ -197,7 +197,7 @@ function ThumbTheming() {
     { name: '--font-family', from: 'Roboto', to: 'Inter', text: true },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#8b949e', marginBottom: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM Theme tokens</div>
       {tokens.map(({ name, from, to, text }) => (
         <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
@@ -207,7 +207,7 @@ function ThumbTheming() {
                 <span style={{ fontSize: '0.5rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
               </div>}
           <span style={{ fontSize: '0.5rem', color: '#8b949e', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
-          <span style={{ fontSize: '0.625rem', color: '#374151' }}>→</span>
+          <span style={{ fontSize: '0.875rem', color: '#374151' }}>→</span>
           {!text
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: to, flexShrink: 0 }} />
             : <div style={{ width: 26, height: 14, borderRadius: 3, background: '#161b22', border: '1px solid #21262d', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -224,7 +224,7 @@ function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onN
   const clickable = Boolean(pageId && onNavigate);
   return (
     <div
-      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 10, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
+      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
       onClick={clickable ? () => onNavigate(pageId) : undefined}
       onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
       onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
@@ -238,7 +238,7 @@ function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onN
       <div style={{ padding: '12px 14px', flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
           <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{title}</div>
-          {tag && <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(226,0,26,0.08)', color: '#e2001a', fontWeight: 600 }}>{tag}</span>}
+          {tag && <span style={{ fontSize: '0.875rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(226,0,26,0.08)', color: '#e2001a', fontWeight: 600 }}>{tag}</span>}
         </div>
         <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
@@ -296,7 +296,7 @@ export default function ANAIntro({ onNavigate }) {
       </p>
 
       {/* Hero — real ANA UI screenshot */}
-      <div style={{ borderRadius: 12, overflow: 'hidden', marginBottom: 36, border: '1px solid var(--border)' }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, border: '1px solid var(--border)' }}>
         <img
           src={`${BASE}ana_live_traffic.png`}
           alt="ANA — live traffic and better route suggestion on AAOS"

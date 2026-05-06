@@ -94,6 +94,7 @@ export const UX_LIBRARY_NAV = [
     items: [
       { id: 'typography',        label: 'Typography system' },
       { id: 'screenshot-assets', label: 'Screenshot assets & states' },
+      { id: 'content-spacing',   label: 'Content spacing' },
     ],
   },
 ];
@@ -136,4 +137,5 @@ export const UX_LIBRARY_PAGE_TITLES = {
   'api-ref': 'API Reference',
   'typography': 'Typography system',
   'screenshot-assets': 'Screenshot assets & states',
+  'content-spacing': 'Content spacing',
 };

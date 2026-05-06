@@ -28,10 +28,10 @@ export default function WaypointOptIntro({ onNavigate }) {
             { icon: '⏰', title: 'Constraints', body: 'Time windows, stop priority/importance, and order constraints can be applied.' },
             { icon: '🔗', title: 'Output', body: 'Returns the optimized stop order. Pair with Calculate Route to build the full route.' },
           ].map(f => (
-            <div key={f.title} style={{ padding: '16px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)' }}>
+            <div key={f.title} style={{ padding: '16px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--surface)' }}>
               <div style={{ fontSize: '1.5rem', marginBottom: 7 }}>{f.icon}</div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{f.title}</div>
-              <div style={{ fontSize: '0.625rem', color: 'var(--mid)', lineHeight: 1.55 }}>{f.body}</div>
+              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{f.body}</div>
             </div>
           ))}
         </div>
@@ -39,7 +39,7 @@ export default function WaypointOptIntro({ onNavigate }) {
 
       <div className="zone">
         <h2 className="sh" id="wp-endpoint">Base URL</h2>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, color: 'var(--black)' }}>
+        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--black)' }}>
           POST https://api.tomtom.com/routing/waypointoptimization/1
         </div>
       </div>

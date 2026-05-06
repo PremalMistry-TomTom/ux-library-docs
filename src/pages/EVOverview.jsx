@@ -5,10 +5,10 @@ import { ApiLinks } from '../components/ui/ApiLinks';
 const EV_APIS = [
   { name: 'Vehicle Integration API',       type: 'Android SDK', description: 'Send battery, consumption, and connector data from BMS to the Navigation SDK.', url: 'https://docs.tomtom.com/automotive-solutions/en/guides/ev-integration' },
   { name: 'Navigation SDK — Vehicle',      type: 'Android SDK', description: 'Set and update vehicle type, charge level, and listen for state changes.',       url: 'https://docs.tomtom.com/navigation/android/guides/navigation/vehicle' },
-  { name: 'Long Distance EV Routing API',  type: 'REST API',    description: 'Calculate multi-stop routes with automatic charging stop planning.',             url: 'https://docs.tomtom.com/long-distance-ev-routing-api/documentation/tomtom-maps/long-distance-ev-routing' },
+  { name: 'Long Distance EV Routing API',  type: 'REST API',    description: 'Calculate multi-stop routes with automatic charging stop planning.',             pageId: 'ldevr-calculate-route', productId: 'ldevr' },
   { name: 'EV Search',                     type: 'Android SDK', description: 'Find compatible charging stations with power, connector, and availability filters.', url: 'https://docs.tomtom.com/navigation/android/guides/search/ev-search' },
   { name: 'EV POI Details',                type: 'Android SDK', description: 'Retrieve real-time connector availability and payment details by Place ID.',       url: 'https://docs.tomtom.com/navigation/android/guides/search/ev-poi-details' },
-  { name: 'EV Routing — Consumption Model',type: 'REST API',    description: 'Reference for battery curve, consumption curve, and efficiency parameter constraints.', url: 'https://docs.tomtom.com/electric-vehicle/ev-routing/introduction' },
+  { name: 'EV Routing — Consumption Model',type: 'REST API',    description: 'Reference for battery curve, consumption curve, and efficiency parameter constraints.', pageId: 'routing-calculate-route', productId: 'routing-api' },
 ];
 
 const SECTIONS = [
@@ -73,7 +73,7 @@ export default function EVOverview({ onNavigate }) {
 
       <div className="quick-answer">{t('overview.intro')}</div>
 
-      <ApiLinks items={EV_APIS} />
+      <ApiLinks items={EV_APIS} onNavigate={onNavigate} />
 
       {/* Architecture */}
       <div className="zone">
@@ -95,7 +95,7 @@ export default function EVOverview({ onNavigate }) {
               key={s.id}
               onClick={() => onNavigate && onNavigate(s.id)}
               style={{
-                padding: '14px 16px', borderRadius: 10, textAlign: 'left', cursor: 'pointer',
+                padding: '14px 16px', borderRadius: 20, textAlign: 'left', cursor: 'pointer',
                 border: `1.5px solid var(--border)`, background: 'var(--white)',
                 transition: 'all 0.15s',
               }}

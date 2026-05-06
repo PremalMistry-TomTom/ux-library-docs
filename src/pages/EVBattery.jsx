@@ -67,7 +67,7 @@ function ChargeCurve({ points, color, capacity }) {
 
   return (
     <div>
-      <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Charge rate curve</div>
+      <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Charge rate curve</div>
       <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
         <path d={fill} fill={`${color}18`} />
         <path d={d} stroke={color} strokeWidth="2" fill="none" strokeLinejoin="round" />
@@ -94,7 +94,7 @@ function ConsumptionCurve({ points, color }) {
 
   return (
     <div>
-      <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consumption (Wh/km)</div>
+      <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consumption (Wh/km)</div>
       <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
         <path d={d} stroke={color} strokeWidth="2" fill="none" strokeLinejoin="round" />
         {points.map((p, i) => (
@@ -345,7 +345,7 @@ export default function EVBattery() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
           {classes.map(c => (
             <button key={c} onClick={() => setCls(c)} style={{
-              padding: '8px 18px', borderRadius: 8, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem',
+              padding: '8px 18px', borderRadius: 20, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem',
               background: cls === c ? PRESETS[c].color : 'var(--white)',
               color: cls === c ? '#fff' : 'var(--black)',
               border: cls === c ? `1.5px solid ${PRESETS[c].color}` : '1.5px solid var(--border)',
@@ -364,7 +364,7 @@ export default function EVBattery() {
             ['📉', t('battery.presets.stats.highwayConsumed'), `${p.consumption[3][1]} Wh/km`],
             ['🔌', t('battery.presets.stats.aux'),         `${p.auxPower} W`],
           ].map(([icon, label, val]) => (
-            <div key={label} style={{ padding: '12px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)' }}>
+            <div key={label} style={{ padding: '12px 14px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)' }}>
               <div style={{ fontSize: '1rem', marginBottom: 4 }}>{icon}</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 2 }}>{label}</div>
               <div style={{ fontSize: '1rem', fontWeight: 700, color: p.color }}>{val}</div>
@@ -373,10 +373,10 @@ export default function EVBattery() {
         </div>
 
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 20 }}>
-          <div style={{ padding: '14px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
+          <div style={{ padding: '14px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20 }}>
             <ChargeCurve points={p.curve} color={p.color} capacity={p.capacity} />
           </div>
-          <div style={{ padding: '14px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
+          <div style={{ padding: '14px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20 }}>
             <ConsumptionCurve points={p.consumption} color={p.color} />
           </div>
         </div>

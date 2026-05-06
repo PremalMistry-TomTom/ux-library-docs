@@ -19,7 +19,7 @@ const M = {
 export function BoundaryDiagram() {
   return (
     <div style={{ margin: '24px 0', overflowX: 'auto' }}>
-      <svg viewBox="0 0 600 140" style={{ width: '100%', maxWidth: 600, display: 'block', background: M.bg, borderRadius: 10, border: `1px solid ${M.line}` }}>
+      <svg viewBox="0 0 600 140" style={{ width: '100%', maxWidth: 600, display: 'block', background: M.bg, borderRadius: 20, border: `1px solid ${M.line}` }}>
 
         {/* OEM side */}
         <rect x="10" y="15" width="280" height="110" rx="6" fill="none" stroke="#2a3a4a" strokeWidth="1" strokeDasharray="4 3" />
@@ -202,7 +202,7 @@ taiaClient.chat(chatRequest) { response ->
                   <td style={{ fontWeight: 500 }}>{t(`speechToText.requirementsTable.rows.${key}.req`)}</td>
                   <td>
                     <span style={{
-                      fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                      fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                       background: pri === 'P1' ? '#fff5f5' : 'var(--bg)',
                       color: pri === 'P1' ? 'var(--red)' : 'var(--muted)',
                       border: `1px solid ${pri === 'P1' ? '#fecaca' : 'var(--border)'}`,

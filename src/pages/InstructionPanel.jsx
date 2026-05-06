@@ -36,7 +36,7 @@ export function NIPMock({ position }) {
     : { borderRadius: '0 0 8px 8px', borderTop: 'none' };
 
   return (
-    <div style={{ width: '100%', height: 320, background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width: '100%', height: 320, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 200" fill="none">
           <path d="M20 110 Q80 75 150 105 T280 95" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -57,7 +57,7 @@ export function NIPMock({ position }) {
           <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.65)' }}>Oak Street North</div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.35)' }}>then</div>
+          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.35)' }}>then</div>
           <div style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.6)' }}>↗</div>
         </div>
       </div>
@@ -108,7 +108,7 @@ export default function InstructionPanel() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 6, marginBottom: 16 }}>
           {NIP_POSITIONS.map(p => (
             <button key={p.id} onClick={() => setPosition(p.id)} style={{
-              padding: '6px 4px', borderRadius: 7, cursor: 'pointer', fontSize: '0.625rem',
+              padding: '6px 4px', borderRadius: 7, cursor: 'pointer', fontSize: '0.875rem',
               fontWeight: position === p.id ? 600 : 400,
               background: position === p.id ? '#fff5f5' : 'var(--bg)',
               border: `1px solid ${position === p.id ? 'var(--red)' : 'var(--border)'}`,
@@ -144,7 +144,7 @@ export default function InstructionPanel() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.875rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,
