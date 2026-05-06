@@ -285,6 +285,73 @@ function ThumbWaypointOpt() {
   );
 }
 
+function ThumbInstructions() {
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      {/* Route line with junction point */}
+      <svg style={{ width: '100%', height: 70 }} viewBox="0 0 200 70" fill="none">
+        <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
+        <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="rgba(226,0,26,0.15)" strokeWidth="8" strokeLinecap="round"/>
+        {/* Junction maneuver point */}
+        <circle cx="100" cy="35" r="6" fill="#0d1117" stroke="#58a6ff" strokeWidth="1.5"/>
+        {/* Turn arrow */}
+        <path d="M100 35 L100 22 M96 26 L100 22 L104 26" stroke="#58a6ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="20" cy="55" r="4" fill="#3fb950"/>
+        <circle cx="180" cy="18" r="4" fill="#e2001a"/>
+      </svg>
+      {/* Instruction card */}
+      <div style={{ background: 'rgba(88,166,255,0.08)', border: '1px solid rgba(88,166,255,0.2)', borderRadius: 5, padding: '5px 8px' }}>
+        <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 2 }}>TURN_RIGHT · 340 m</div>
+        <div style={{ fontSize: '0.5625rem', color: '#e2e8f0', lineHeight: 1.3 }}>Turn right onto <span style={{ color: '#58a6ff' }}>Spreeufer</span></div>
+      </div>
+      <div style={{ display: 'flex', gap: 4, marginTop: 4 }}>
+        {['coded', 'text', 'tagged'].map(t => (
+          <span key={t} style={{ fontSize: '0.4375rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(255,255,255,0.06)', color: '#475569', fontFamily: 'monospace' }}>{t}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ThumbLaneGuidance() {
+  const lanes = [
+    { dirs: ['←'],    drivable: false },
+    { dirs: ['↑'],    drivable: false },
+    { dirs: ['↑','→'],drivable: true  },
+    { dirs: ['→'],    drivable: true, recommended: true },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
+      <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
+        {lanes.map((lane, i) => (
+          <div key={i} style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+            padding: '6px 10px', borderRadius: 6, minWidth: 36,
+            background: lane.recommended ? 'rgba(234,179,8,0.15)' : lane.drivable ? 'rgba(255,255,255,0.05)' : 'transparent',
+            border: lane.recommended ? '1px solid rgba(234,179,8,0.35)' : '1px solid rgba(255,255,255,0.07)',
+            opacity: lane.drivable || lane.recommended ? 1 : 0.28,
+          }}>
+            {lane.dirs.map(d => (
+              <span key={d} style={{ fontSize: '0.8125rem', lineHeight: 1, color: lane.recommended ? '#eab308' : lane.drivable ? '#e2e8f0' : '#475569' }}>{d}</span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          <div style={{ width: 6, height: 6, borderRadius: 2, background: 'rgba(234,179,8,0.15)', border: '1px solid rgba(234,179,8,0.35)' }}/>
+          <span style={{ fontSize: '0.4375rem', color: '#64748b' }}>recommended</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          <div style={{ width: 6, height: 6, borderRadius: 2, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}/>
+          <span style={{ fontSize: '0.4375rem', color: '#64748b' }}>drivable</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Endpoint card ──────────────────────────────────────────────────────────── */
 function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavigate, pageId }) {
   const clickable = Boolean(pageId && onNavigate && available !== false);
@@ -367,15 +434,19 @@ function CodeTabs({ tabs }) {
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
 const ENDPOINTS_V1 = [
-  { Thumb: ThumbCalculateRoute, title: 'Calculate Route', method: 'GET', path: '/routing/1/calculateRoute/{locations}/json', desc: 'Calculate one or more routes between waypoints with full vehicle profile, traffic, consumption model, and guidance support.', pageId: 'routing-calculate-route', available: true },
-  { Thumb: ThumbReachableRange, title: 'Reachable Range', method: 'GET', path: '/routing/1/calculateReachableRange/{origin}/json', desc: 'Calculate the isochrone polygon reachable within a given time, distance, fuel, or energy budget from an origin point.', pageId: 'routing-reachable-range', available: true },
-  { Thumb: ThumbBatchRouting,   title: 'Batch Routing',   method: 'POST', path: '/routing/1/batch/sync/json', desc: 'Submit up to 700 route or range calculations in a single request. Synchronous (100 items) and asynchronous modes.', pageId: 'routing-batch', available: true },
+  { Thumb: ThumbCalculateRoute, title: 'Calculate Route',           method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: 'Calculate one or more routes between waypoints with full vehicle profile, traffic, consumption model, and guidance support.', pageId: 'routing-calculate-route', available: true },
+  { Thumb: ThumbReachableRange, title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: 'Calculate the isochrone polygon reachable within a given time, distance, fuel, or energy budget from an origin point.',  pageId: 'routing-reachable-range', available: true },
+  { Thumb: ThumbBatchRouting,   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: 'Submit up to 700 route or range calculations in a single request. Synchronous (100 items) and asynchronous modes.',       pageId: 'routing-batch',           available: true },
+  { Thumb: ThumbInstructions,   title: 'Turn-by-Turn Instructions', method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: 'Activate maneuver-by-maneuver guidance on any Calculate Route call. Returns text, tagged, or coded maneuver arrays.',     pageId: 'routing-instructions',    available: true },
+  { Thumb: ThumbLaneGuidance,   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: 'Per-lane direction and drivability data at complex junctions. Requires instructionsType=tagged and sectionType=lanes.',   pageId: 'routing-lane-guidance',   available: true },
 ];
 
 const ENDPOINTS_V2 = [
   { ...ENDPOINTS_V1[0], available: true },
   { ...ENDPOINTS_V1[1], available: false, path: '/maps/orbis/routing/calculateReachableRange/{origin}/json' },
   { ...ENDPOINTS_V1[2], available: false },
+  { ...ENDPOINTS_V1[3], available: false },
+  { ...ENDPOINTS_V1[4], available: false },
 ];
 
 const TABS_TOMTOM = [
@@ -601,8 +672,8 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
         </h2>
         <p className="quick-answer" style={{ marginBottom: 20 }}>
           {isOrbis
-            ? 'One endpoint is available in Orbis Maps v2. Calculate Route and Reachable Range are accessible on TomTom Maps v1 today.'
-            : 'Three endpoints. Use only what you need — each can be called standalone.'}
+            ? 'One endpoint is available in Orbis Maps v2. The full endpoint surface — including Reachable Range, Batch, and guidance — is on TomTom Maps v1.'
+            : 'Three core endpoints plus two guidance surfaces. Each can be used independently.'}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
           {endpoints.map(ep => (
