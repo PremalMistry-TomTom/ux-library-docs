@@ -2538,7 +2538,8 @@ html.ai-panel-open .page {
 }
 .platform-btn.active { background: var(--black); color: var(--white); }
 .platform-btn:hover:not(.active) { color: var(--black); background: rgba(0,0,0,0.06); }
-[data-theme="dark"] .platform-btn.active { background: var(--white); color: #111; }
+[data-theme="dark"] .platform-btn.active { background: rgba(255,255,255,0.14); color: var(--black); }
+[data-theme="dark"] .platform-btn:hover:not(.active) { color: var(--black); background: rgba(255,255,255,0.06); }
 @media (max-width: 760px) {
   .platform-switcher--mobile { display: flex; margin-right: 8px; }
 }
