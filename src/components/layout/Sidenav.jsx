@@ -307,10 +307,18 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
             <Fragment key={entry.id}>
               <span
                 className={`sidenav-top-link${isActive ? ' active' : ''}`}
-                style={hasAnchors ? { display: 'flex', alignItems: 'center' } : undefined}
+                style={{ display: 'flex', alignItems: 'center' }}
                 onClick={handleClick}
               >
-                <span style={hasAnchors ? { flex: 1 } : undefined}>{label}</span>
+                <span style={{ flex: 1 }}>{label}</span>
+                {entry.ref && (
+                  <span style={{
+                    fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px',
+                    borderRadius: 3, background: 'rgba(88,166,255,0.12)',
+                    color: '#58a6ff', fontFamily: 'monospace',
+                    letterSpacing: '0.04em', flexShrink: 0, marginRight: 4,
+                  }}>REF</span>
+                )}
                 {hasAnchors && <ChevronIcon open={anchorOpen} />}
               </span>
               {hasAnchors && (

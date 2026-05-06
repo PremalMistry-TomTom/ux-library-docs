@@ -19,7 +19,7 @@ export const ROUTING_API_NAV = [
     ],
   },
   { type: 'section', label: 'Endpoints' },
-  { id: 'routing-calculate-route', label: 'Calculate Route', type: 'top', anchors: [
+  { id: 'routing-calculate-route', label: 'Calculate Route', type: 'top', ref: true, anchors: [
       { id: 'api-rc-route-planning', label: 'Route planning',              method: 'GET'  },
       { id: 'api-rc-vehicle',        label: 'Vehicle profile',             method: 'GET'  },
       { id: 'api-rc-combustion',     label: 'Combustion consumption model',method: 'GET'  },
@@ -28,7 +28,7 @@ export const ROUTING_API_NAV = [
       { id: 'api-rc-response',       label: 'Route summary' },
       { id: 'api-rc-errors',         label: 'Error codes' },
     ]},
-  { id: 'routing-reachable-range', label: 'Reachable Range', type: 'top', anchors: [
+  { id: 'routing-reachable-range', label: 'Reachable Range', type: 'top', ref: true, anchors: [
       { id: 'api-rr-budget',      label: 'Budget & origin',              method: 'GET' },
       { id: 'api-rr-vehicle',     label: 'Vehicle profile',              method: 'GET' },
       { id: 'api-rr-combustion',  label: 'Combustion consumption model', method: 'GET' },
@@ -36,18 +36,18 @@ export const ROUTING_API_NAV = [
       { id: 'api-rr-response',    label: 'Response' },
       { id: 'api-rr-errors',      label: 'Error codes' },
     ]},
-  { id: 'routing-batch', label: 'Batch Routing', type: 'top', anchors: [
+  { id: 'routing-batch', label: 'Batch Routing', type: 'top', ref: true, anchors: [
       { id: 'api-batch-sync',     label: 'Synchronous batch',  method: 'POST' },
       { id: 'api-batch-async',    label: 'Asynchronous batch', method: 'POST' },
       { id: 'api-batch-response', label: 'Response schema' },
       { id: 'api-batch-errors',   label: 'Error codes' },
     ]},
-  { id: 'routing-instructions', label: 'Turn-by-Turn Instructions', type: 'top', anchors: [
+  { id: 'routing-instructions', label: 'Turn-by-Turn Instructions', type: 'top', ref: true, anchors: [
       { id: 'api-instr-request',  label: 'Request parameters', method: 'GET' },
       { id: 'api-instr-response', label: 'Instruction object' },
       { id: 'api-instr-coded',    label: 'Coded mode' },
     ]},
-  { id: 'routing-lane-guidance', label: 'Lane Guidance', type: 'top', anchors: [
+  { id: 'routing-lane-guidance', label: 'Lane Guidance', type: 'top', ref: true, anchors: [
       { id: 'api-lane-request',  label: 'Enabling lane guidance', method: 'GET' },
       { id: 'api-lane-response', label: 'Lane object schema' },
       { id: 'api-lane-render',   label: 'Rendering guidance' },

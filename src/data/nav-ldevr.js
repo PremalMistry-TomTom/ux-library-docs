@@ -17,7 +17,7 @@ export const LDEVR_NAV = [
     ],
   },
   { type: 'section', label: 'Endpoints' },
-  { id: 'ldevr-calculate-route', label: 'Calculate EV Route', type: 'top', anchors: [
+  { id: 'ldevr-calculate-route', label: 'Calculate EV Route', type: 'top', ref: true, anchors: [
       { id: 'api-ldevr-route',             label: 'Route planning',              method: 'POST' },
       { id: 'api-ldevr-battery',           label: 'Electric vehicle & battery',  method: 'POST' },
       { id: 'api-ldevr-connector',         label: 'Charging connector & power',  method: 'POST' },
@@ -26,7 +26,7 @@ export const LDEVR_NAV = [
       { id: 'api-ldevr-response-station',  label: 'Charging stop details' },
       { id: 'api-ldevr-errors',            label: 'Error codes' },
     ]},
-  { id: 'ldevr-batch', label: 'Batch EV Route', type: 'top' },
+  { id: 'ldevr-batch', label: 'Batch EV Route', type: 'top', ref: true },
   { type: 'section', label: 'Reference' },
   {
     label: 'API Reference', key: 'ldEvrApiRef', type: 'group',
