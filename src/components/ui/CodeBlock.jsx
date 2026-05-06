@@ -25,22 +25,34 @@ function detectLang(label = '') {
   return LANG_MAP[label.toLowerCase()] || null;
 }
 
-function HighlightedPre({ code, lang }) {
+/** Wrap each line of highlighted (or plain-escaped) HTML in a <span class="cb-line"> */
+function addLineNumbers(html) {
+  const lines = html.split('\n');
+  if (lines[lines.length - 1] === '') lines.pop(); // trim trailing blank
+  return lines.map(l => `<span class="cb-line">${l}</span>`).join('\n');
+}
+
+function HighlightedPre({ code, lang, maxHeight }) {
   const ref = useRef(null);
 
   useEffect(() => {
     if (!ref.current) return;
     ref.current.removeAttribute('data-highlighted');
+    let html;
     if (lang && hljs.getLanguage(lang)) {
-      const result = hljs.highlight(code, { language: lang, ignoreIllegals: true });
-      ref.current.innerHTML = result.value;
+      html = hljs.highlight(code, { language: lang, ignoreIllegals: true }).value;
     } else {
-      ref.current.textContent = code;
+      // escape plain text so it's safe for innerHTML
+      html = code
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
     }
+    ref.current.innerHTML = addLineNumbers(html);
   }, [code, lang]);
 
   return (
-    <pre>
+    <pre className="cb-pre" style={maxHeight ? { maxHeight, overflowY: 'auto' } : undefined}>
       <code ref={ref} />
     </pre>
   );

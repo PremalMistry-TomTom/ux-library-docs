@@ -70,8 +70,8 @@ function Checklist({ t }) {
       {/* Progress bar */}
       <div style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--black)' }}>{t('requirements.checklist.progress')}</span>
-          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: pct === 100 ? '#10b981' : '#3b82f6' }}>{checked.size}/{allIds.length}</span>
+          <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{t('requirements.checklist.progress')}</span>
+          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: pct === 100 ? '#10b981' : '#3b82f6' }}>{checked.size}/{allIds.length}</span>
         </div>
         <div style={{ height: 6, borderRadius: 3, background: 'var(--border)', overflow: 'hidden' }}>
           <div style={{ height: '100%', width: `${pct}%`, background: pct === 100 ? '#10b981' : '#3b82f6', borderRadius: 3, transition: 'width 0.3s ease' }} />
@@ -81,8 +81,8 @@ function Checklist({ t }) {
       {steps.map((phase, pi) => (
         <div key={phase.phase} style={{ marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-            <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--red)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem', fontWeight: 700, flexShrink: 0 }}>{pi + 1}</div>
-            <span style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--black)' }}>{phase.phase}</span>
+            <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--red)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, flexShrink: 0 }}>{pi + 1}</div>
+            <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{phase.phase}</span>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6, paddingLeft: 32 }}>
             {phase.items.map(item => (
@@ -103,7 +103,7 @@ function Checklist({ t }) {
                     </svg>
                   )}
                 </div>
-                <span style={{ fontSize: '0.84rem', color: checked.has(item.id) ? 'var(--muted)' : 'var(--black)', textDecoration: checked.has(item.id) ? 'line-through' : 'none', lineHeight: 1.5, transition: 'all 0.15s' }}>
+                <span style={{ fontSize: '0.875rem', color: checked.has(item.id) ? 'var(--muted)' : 'var(--black)', textDecoration: checked.has(item.id) ? 'line-through' : 'none', lineHeight: 1.5, transition: 'all 0.15s' }}>
                   {item.text}
                 </span>
               </label>
@@ -113,7 +113,7 @@ function Checklist({ t }) {
       ))}
 
       {pct === 100 && (
-        <div style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', fontSize: '0.86rem', color: '#10b981', fontWeight: 600 }}>
+        <div style={{ padding: '12px 16px', borderRadius: 8, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)', fontSize: '0.875rem', color: '#10b981', fontWeight: 600 }}>
           ✅ {t('requirements.checklist.complete')}
         </div>
       )}
@@ -173,8 +173,8 @@ export default function EVRequirements() {
             <tbody>
               {PERMISSIONS.map(([perm, req, reason]) => (
                 <tr key={perm}>
-                  <td><code style={{ fontSize: '0.72rem' }}>{perm}</code></td>
-                  <td><span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--red)' }}>{req}</span></td>
+                  <td><code style={{ fontSize: '0.75rem' }}>{perm}</code></td>
+                  <td><span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--red)' }}>{req}</span></td>
                   <td style={{ color: 'var(--mid)' }}>{reason}</td>
                 </tr>
               ))}

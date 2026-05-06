@@ -126,14 +126,12 @@ const PRODUCTS = {
       docsId: 'navsdk-intro',
       productId: 'navsdk',
       links: ['Android', 'iOS'],
-      note: 'New to the SDK? Start with the Introduction.',
     },
     {
       name: 'Automotive Navigation App',
       desc: "TomTom's pre-built navigation APK for Android Automotive OS. Integrate via VIL and CIL — no navigation UI to build or maintain.",
       docsId: 'ana-intro',
       productId: 'ana',
-      note: 'New to ANA? Start with the Introduction.',
     },
     {
       name: 'Android UX Library',
@@ -147,10 +145,10 @@ const PRODUCTS = {
     },
   ],
   Navigation: [
-    { name: 'Routing API',                  desc: 'Calculate routes with vehicle and road settings, real-time traffic, and waypoint ordering' },
-    { name: 'Matrix Routing v2 API',        desc: 'Get route times and distances for many origin-destination pairs in a single request' },
-    { name: 'Waypoint Optimization API',    desc: 'Optimize waypoint order to find the fastest possible route across multiple stops' },
-    { name: 'Long Distance EV Routing API', desc: 'Plan long-distance EV trips with optimized charging stops based on battery state and connector availability' },
+    { name: 'Routing API',                  desc: 'Calculate routes with vehicle profiles, real-time traffic, reachable range, and batch routing. Available on TomTom Maps (v1) and Orbis Maps (v2).', docsId: 'routing-api-intro', productId: 'routing-api', links: ['TomTom Maps', 'Orbis Maps'], platformIds: ['tomtom-maps', 'orbis-maps'] },
+    { name: 'Matrix Routing v2 API',        desc: 'Get route times and distances for many origin-destination pairs in a single request.', docsId: 'matrix-intro', productId: 'matrix-routing' },
+    { name: 'Waypoint Optimization API',    desc: 'Optimize waypoint order to find the fastest possible route across multiple stops.', docsId: 'waypoint-intro', productId: 'waypoint-opt' },
+    { name: 'Long Distance EV Routing API', desc: 'Plan long-distance EV trips with optimized charging stops based on battery state and connector availability.', docsId: 'ldevr-intro', productId: 'ldevr' },
   ],
   Maps: [
     { name: 'Global Entity Matcher',        desc: 'Simplify data exchange and geospatial data management' },
@@ -249,9 +247,8 @@ const FOOTER_COL1 = ['Careers', 'Company', 'Newsroom', 'Investors'];
 const FOOTER_COL2 = ['Privacy Policy', 'Legal overview', 'Cookies', 'Terms and conditions', 'Deprecation policy'];
 
 /* ─── Sub-components ────────────────────────────────────────────────────────── */
-function ProductCard({ name, desc, docsId, productId, links, note, onNavigate }) {
+function ProductCard({ name, desc, docsId, productId, links, platformIds, note, onNavigate }) {
   const hasLink = Boolean(docsId && onNavigate);
-  // links = array of platform labels e.g. ['Android', 'iOS']
   const platformLinks = links && links.length > 0 ? links : null;
 
   return (
@@ -261,25 +258,15 @@ function ProductCard({ name, desc, docsId, productId, links, note, onNavigate })
     >
       <h2 className="dp2-product-name">{name}</h2>
       <div className="dp2-product-desc">{desc}</div>
-      {note && (
-        <div
-          style={{ display: 'flex', alignItems: 'center', gap: 6, margin: '10px 0 2px', padding: '7px 10px', background: 'rgba(226,0,26,0.06)', border: '1px solid rgba(226,0,26,0.15)', borderRadius: 6, cursor: hasLink ? 'pointer' : 'default' }}
-          onClick={e => { e.stopPropagation(); if (hasLink) onNavigate(docsId, productId); }}
-        >
-          <span style={{ fontSize: '0.7rem' }}>📖</span>
-          <span style={{ fontSize: '0.72rem', color: '#c0001a', lineHeight: 1.4 }}>{note}</span>
-          <span style={{ marginLeft: 'auto', fontSize: '0.68rem', color: '#c0001a', fontWeight: 600 }}>Read →</span>
-        </div>
-      )}
       <div className="dp2-product-footer">
         {platformLinks ? (
           <div className="dp2-product-doc-btns">
-            {platformLinks.map(label => (
+            {platformLinks.map((label, i) => (
               <a
                 key={label}
                 href="#"
                 className="dp2-product-doc-btn"
-                onClick={e => { e.preventDefault(); onNavigate(docsId, productId, label.toLowerCase()); }}
+                onClick={e => { e.preventDefault(); onNavigate(docsId, productId, platformIds?.[i] ?? label.toLowerCase()); }}
               >
                 {label}
               </a>

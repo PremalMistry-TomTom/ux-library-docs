@@ -29,13 +29,13 @@ function RadiusCard({ token, dp, label }) {
       }} />
       <div>
         <div style={{
-          fontFamily: 'var(--font-mono)', fontSize: '0.72rem',
+          fontFamily: 'var(--font-mono)', fontSize: '0.75rem',
           color: 'var(--blue)', fontWeight: 500, marginBottom: 3,
           whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>
           {token}
         </div>
-        <div style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
           {typeof dp === 'number' ? `${dp}dp` : dp}
         </div>
       </div>
@@ -189,10 +189,10 @@ export default function CornerRadius() {
               }} />
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontWeight: 700, fontSize: '0.84rem' }}>{label}.</span>
-                  <code className="ic" style={{ fontSize: '0.72rem' }}>{token}</code>
+                  <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>{label}.</span>
+                  <code className="ic" style={{ fontSize: '0.75rem' }}>{token}</code>
                 </div>
-                <p style={{ fontSize: '0.84rem', color: 'var(--mid)', lineHeight: 1.6, margin: 0 }}>
+                <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, margin: 0 }}>
                   {desc}
                 </p>
               </div>

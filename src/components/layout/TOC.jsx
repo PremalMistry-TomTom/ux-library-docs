@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const TOC_MAP = {
+export const TOC_MAP = {
   colour: [
     { id: 'c-global',    label: 'Global colours' },
     { id: 'c-extended',  label: 'Extended collection' },

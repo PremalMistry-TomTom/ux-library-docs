@@ -92,13 +92,13 @@ taiaClient.setStreamingListener { partial ->
                   <td style={{ fontWeight: 500 }}>{t(`voiceEngine.providersTable.rows.${key}.provider`)}</td>
                   <td>
                     <span style={{
-                      fontSize: '0.68rem', fontWeight: 600, padding: '2px 8px', borderRadius: 3,
+                      fontSize: '0.625rem', fontWeight: 600, padding: '2px 8px', borderRadius: 3,
                       background: isAvail ? '#f0fdf4' : 'var(--bg)',
                       color: isAvail ? '#15803d' : 'var(--muted)',
                       border: `1px solid ${isAvail ? '#bbf7d0' : 'var(--border)'}`,
                     }}>{status}</span>
                   </td>
-                  <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`voiceEngine.providersTable.rows.${key}.notes`)}</td>
+                  <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`voiceEngine.providersTable.rows.${key}.notes`)}</td>
                 </tr>
               );
             })}
@@ -124,13 +124,13 @@ taiaClient.setStreamingListener { partial ->
                   <td style={{ fontWeight: 500 }}>{t(`voiceEngine.requirementsTable.rows.${key}.req`)}</td>
                   <td>
                     <span style={{
-                      fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                      fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                       background: pri === 'P1' ? '#fff5f5' : 'var(--bg)',
                       color: pri === 'P1' ? 'var(--red)' : 'var(--muted)',
                       border: `1px solid ${pri === 'P1' ? '#fecaca' : 'var(--border)'}`,
                     }}>{pri}</span>
                   </td>
-                  <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`voiceEngine.requirementsTable.rows.${key}.notes`)}</td>
+                  <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`voiceEngine.requirementsTable.rows.${key}.notes`)}</td>
                 </tr>
               );
             })}

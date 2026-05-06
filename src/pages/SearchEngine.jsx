@@ -46,9 +46,9 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
-        <span style={{ fontSize: '0.78rem', color: M.muted, flex: 1 }}>Search destination…</span>
+        <span style={{ fontSize: '0.75rem', color: M.muted, flex: 1 }}>Search destination…</span>
         {showAttribution && (
-          <span style={{ fontSize: '0.58rem', color: M.dim, background: '#1e293b', padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '0.625rem', color: M.dim, background: '#1e293b', padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
             Powered by Google
           </span>
         )}
@@ -57,7 +57,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {/* Connectivity strip */}
       <div style={{ padding: '5px 12px', background: isOnline ? '#0f2a1a' : '#1f1505', display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: isOnline ? '#22c55e' : '#f97316', flexShrink: 0 }} />
-        <span style={{ fontSize: '0.64rem', color: isOnline ? M.green : M.orange }}>
+        <span style={{ fontSize: '0.625rem', color: isOnline ? M.green : M.orange }}>
           {isOnline ? '3rd-party search · online' : 'TomTom onboard · offline'}
         </span>
       </div>
@@ -66,7 +66,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {showFilters && (
         <div style={{ padding: '7px 12px', display: 'flex', gap: 5, borderBottom: `1px solid ${M.line}` }}>
           {['★ 4+', 'Open now', '€€', 'Italian'].map(f => (
-            <span key={f} style={{ fontSize: '0.62rem', background: '#1e293b', color: M.blue, padding: '2px 7px', borderRadius: 10, whiteSpace: 'nowrap', border: '1px solid #1e3a5f' }}>{f}</span>
+            <span key={f} style={{ fontSize: '0.625rem', background: '#1e293b', color: M.blue, padding: '2px 7px', borderRadius: 10, whiteSpace: 'nowrap', border: '1px solid #1e3a5f' }}>{f}</span>
           ))}
         </div>
       )}
@@ -80,14 +80,14 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
             </svg>
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '0.76rem', fontWeight: 600, color: M.text, marginBottom: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</div>
-            <div style={{ fontSize: '0.66rem', color: M.muted }}>{r.addr}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 600, color: M.text, marginBottom: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</div>
+            <div style={{ fontSize: '0.625rem', color: M.muted }}>{r.addr}</div>
             {showEnrichment && (
               <div style={{ display: 'flex', gap: 5, marginTop: 3 }}>
-                <span style={{ fontSize: '0.62rem', color: M.amber }}>★ {r.rating}</span>
-                <span style={{ fontSize: '0.62rem', color: M.muted }}>({r.reviews})</span>
-                <span style={{ fontSize: '0.62rem', color: M.dim }}>{r.price}</span>
-                <span style={{ fontSize: '0.62rem', color: r.open ? '#22c55e' : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
+                <span style={{ fontSize: '0.625rem', color: M.amber }}>★ {r.rating}</span>
+                <span style={{ fontSize: '0.625rem', color: M.muted }}>({r.reviews})</span>
+                <span style={{ fontSize: '0.625rem', color: M.dim }}>{r.price}</span>
+                <span style={{ fontSize: '0.625rem', color: r.open ? '#22c55e' : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
               </div>
             )}
           </div>
@@ -102,28 +102,28 @@ export function LPPMock({ enriched = false, attribution = false }) {
   return (
     <div style={{ background: M.card, borderRadius: 10, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '14px 14px 10px' }}>
-        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: M.text, marginBottom: 3 }}>Gianni's Ristorante</div>
-        <div style={{ fontSize: '0.72rem', color: M.dim, marginBottom: enriched ? 8 : 10 }}>14 Via Roma, Milan · 0.3 km</div>
+        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text, marginBottom: 3 }}>Gianni's Ristorante</div>
+        <div style={{ fontSize: '0.75rem', color: M.dim, marginBottom: enriched ? 8 : 10 }}>14 Via Roma, Milan · 0.3 km</div>
         {enriched && (
           <>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 5 }}>
-              <span style={{ fontSize: '0.7rem', color: M.amber }}>★ 4.6</span>
-              <span style={{ fontSize: '0.7rem', color: M.muted }}>(1,240 reviews)</span>
-              <span style={{ fontSize: '0.7rem', color: M.dim }}>€€ · Italian</span>
+              <span style={{ fontSize: '0.625rem', color: M.amber }}>★ 4.6</span>
+              <span style={{ fontSize: '0.625rem', color: M.muted }}>(1,240 reviews)</span>
+              <span style={{ fontSize: '0.625rem', color: M.dim }}>€€ · Italian</span>
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#22c55e', marginBottom: 6 }}>Open · Closes 23:00</div>
-            <div style={{ fontSize: '0.68rem', color: M.dim, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
+            <div style={{ fontSize: '0.625rem', color: '#22c55e', marginBottom: 6 }}>Open · Closes 23:00</div>
+            <div style={{ fontSize: '0.625rem', color: M.dim, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
               "Amazing pasta, great atmosphere — highly recommend!"
             </div>
           </>
         )}
       </div>
       <div style={{ padding: '0 14px 12px', display: 'flex', gap: 8 }}>
-        <button style={{ flex: 1, padding: '7px 0', background: 'var(--red)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer' }}>Drive</button>
-        <button style={{ flex: 1, padding: '7px 0', background: '#1e293b', color: M.blue, border: `1px solid ${M.line}`, borderRadius: 6, fontSize: '0.76rem', fontWeight: 600, cursor: 'pointer' }}>Route</button>
+        <button style={{ flex: 1, padding: '7px 0', background: 'var(--red)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Drive</button>
+        <button style={{ flex: 1, padding: '7px 0', background: '#1e293b', color: M.blue, border: `1px solid ${M.line}`, borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Route</button>
       </div>
       {attribution && (
-        <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.6rem', color: M.muted }}>
+        <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.625rem', color: M.muted }}>
           Powered by Google
         </div>
       )}
@@ -141,7 +141,7 @@ function ProviderSetup() {
       <div style={{ display: 'flex', marginBottom: 16, background: 'var(--bg)', borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border)', width: 'fit-content', padding: 3, gap: 3 }}>
         {[['online', '🌐  Online (3rd party)'], ['offline', '📡  Offline only (TomTom)']].map(([id, label]) => (
           <button key={id} onClick={() => setMode(id)} style={{
-            padding: '7px 18px', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer',
+            padding: '7px 18px', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer',
             border: mode === id ? '1px solid var(--red)' : '1px solid transparent',
             borderRadius: 6,
             background: mode === id ? 'var(--red)' : 'var(--white)',
@@ -152,7 +152,7 @@ function ProviderSetup() {
       </div>
 
       <SearchMock isOnline={isOnline} showAttribution={isOnline} />
-      <p style={{ fontSize: '0.82rem', color: 'var(--mid)', lineHeight: 1.7, margin: '12px 0' }}>
+      <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.7, margin: '12px 0' }}>
         {isOnline
           ? 'When online, all queries go to the 3rd-party provider. TomTom onboard search remains on standby as an automatic fallback — the orchestrator never needs to manage the switch.'
           : 'With no online provider set, TomTom onboard search handles all queries regardless of connectivity. Useful for OEMs that do not require a 3rd-party integration.'}
@@ -245,10 +245,10 @@ export function TransitionExplorer() {
             background: active === i ? 'var(--code-bg)' : 'transparent',
             border: active === i ? '1px solid var(--red)' : '1px solid var(--border)',
             color: active === i ? '#e2e8f0' : 'var(--mid)',
-            fontSize: '0.76rem', fontWeight: active === i ? 600 : 400,
+            fontSize: '0.75rem', fontWeight: active === i ? 600 : 400,
             transition: 'all 0.15s',
           }}>
-            <span style={{ display: 'block', fontSize: '0.68rem', color: 'var(--muted)', fontWeight: 400, marginBottom: 2 }}>Scenario {i + 1}</span>
+            <span style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontWeight: 400, marginBottom: 2 }}>Scenario {i + 1}</span>
             {t.label}
           </button>
         ))}
@@ -257,15 +257,15 @@ export function TransitionExplorer() {
       <div style={{ flex: 1, minWidth: 260 }}>
         <div style={{ padding: '10px 14px', background: s.bg, borderRadius: 8, display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.dot, flexShrink: 0 }} />
-          <span style={{ fontSize: '0.74rem', color: s.color, fontWeight: 600 }}>{s.label}</span>
+          <span style={{ fontSize: '0.75rem', color: s.color, fontWeight: 600 }}>{s.label}</span>
         </div>
         <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: '0.7rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Trigger</div>
-          <p style={{ fontSize: '0.84rem', color: 'var(--mid)', lineHeight: 1.65, margin: 0 }}>{scenario.trigger}</p>
+          <div style={{ fontSize: '0.625rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Trigger</div>
+          <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65, margin: 0 }}>{scenario.trigger}</p>
         </div>
         <div>
-          <div style={{ fontSize: '0.7rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Expected behaviour</div>
-          <p style={{ fontSize: '0.84rem', color: 'var(--mid)', lineHeight: 1.65, margin: 0 }}>{scenario.behavior}</p>
+          <div style={{ fontSize: '0.625rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 5 }}>Expected behaviour</div>
+          <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65, margin: 0 }}>{scenario.behavior}</p>
         </div>
       </div>
     </div>
@@ -289,7 +289,7 @@ export function SearchUICustomiser() {
       <div style={{ display: 'flex', gap: 6, marginBottom: 16, flexWrap: 'wrap' }}>
         {UI_TABS.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)} style={{
-            padding: '7px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
+            padding: '7px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
             background: tab === t.id ? 'var(--red)' : 'var(--white)',
             color: tab === t.id ? '#fff' : 'var(--black)',
             border: tab === t.id ? '1px solid var(--red)' : '1px solid var(--border)',
@@ -362,7 +362,7 @@ export function SearchUICustomiser() {
 /* ─── LPP customisation demo ────────────────────────────────────────────────── */
 function Toggle({ value, onChange, label }) {
   return (
-    <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: '0.82rem', color: 'var(--mid)', userSelect: 'none' }}>
+    <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: '0.875rem', color: 'var(--mid)', userSelect: 'none' }}>
       <div onClick={() => onChange(!value)} style={{ width: 36, height: 20, borderRadius: 10, cursor: 'pointer', transition: 'background 0.2s', flexShrink: 0, background: value ? 'var(--red)' : 'var(--border)', position: 'relative' }}>
         <div style={{ position: 'absolute', top: 2, left: value ? 18 : 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'left 0.2s' }} />
       </div>
@@ -419,7 +419,7 @@ function Pri({ children }) {
   const isP0 = children.includes('P0');
   return (
     <span style={{
-      fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, whiteSpace: 'nowrap',
+      fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, whiteSpace: 'nowrap',
       background: isP0 ? '#fff5f5' : 'var(--bg)',
       color: isP0 ? 'var(--red)' : 'var(--muted)',
       border: `1px solid ${isP0 ? '#fecaca' : 'var(--border)'}`,
@@ -524,13 +524,13 @@ export default function SearchEngine() {
             ['6', 'Add stop (route active)','User adds a waypoint while actively navigating.',                     'online'],
           ].map(([num, name, desc, type]) => (
             <div key={num} style={{ display: 'flex', gap: 12, alignItems: 'flex-start', padding: '10px 14px', background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
-              <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--red)', color: '#fff', fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{num}</div>
+              <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--red)', color: '#fff', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{num}</div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600, fontSize: '0.84rem', marginBottom: 2, color: '#e2e8f0' }}>{name}</div>
-                <div style={{ fontSize: '0.78rem', color: '#94a3b8', lineHeight: 1.5 }}>{desc}</div>
+                <div style={{ fontWeight: 600, fontSize: '0.875rem', marginBottom: 2, color: '#e2e8f0' }}>{name}</div>
+                <div style={{ fontSize: '0.75rem', color: '#94a3b8', lineHeight: 1.5 }}>{desc}</div>
               </div>
               <span style={{
-                fontSize: '0.66rem', padding: '2px 8px', borderRadius: 4, flexShrink: 0, alignSelf: 'flex-start', marginTop: 2, fontWeight: 600,
+                fontSize: '0.625rem', padding: '2px 8px', borderRadius: 4, flexShrink: 0, alignSelf: 'flex-start', marginTop: 2, fontWeight: 600,
                 background: type === 'online' ? '#0f2a1a' : '#1e293b',
                 color: type === 'online' ? '#86efac' : '#93c5fd',
               }}>
@@ -570,7 +570,7 @@ export default function SearchEngine() {
             ].map(([req, area, pri]) => (
               <tr key={req}>
                 <td style={{ fontWeight: 500 }}>{req}</td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{area}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{area}</td>
                 <td><Pri>{pri}</Pri></td>
               </tr>
             ))}

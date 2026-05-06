@@ -99,7 +99,7 @@ function RoutingDiagram({ selected }) {
 
   const node = (active, color, children) => ({
     padding: '8px 16px', borderRadius: 7, textAlign: 'center',
-    fontSize: '0.76rem', fontWeight: active ? 700 : 400,
+    fontSize: '0.75rem', fontWeight: active ? 700 : 400,
     border: `1.5px solid ${active ? color : 'var(--border)'}`,
     background: active ? `${color}18` : 'var(--bg)',
     color: active ? color : 'var(--muted)',
@@ -107,7 +107,7 @@ function RoutingDiagram({ selected }) {
   });
 
   const arrow = (active, color) => ({
-    fontSize: '1.1rem', transition: 'color 0.25s ease',
+    fontSize: '1rem', transition: 'color 0.25s ease',
     color: active ? color : 'var(--border)',
   });
 
@@ -136,7 +136,7 @@ function RoutingDiagram({ selected }) {
           <div style={node(!isOEM && top, taiaColor)}>TAIA Cloud</div>
           <span style={arrow(!isOEM && top, taiaColor)}>↓</span>
           <div style={node(!isOEM && top, taiaColor)}>Navigation App</div>
-          <div style={{ marginTop: 4, fontSize: '0.68rem', fontWeight: 600, color: !isOEM && top ? taiaColor : 'var(--border)', transition: 'color 0.25s' }}>
+          <div style={{ marginTop: 4, fontSize: '0.625rem', fontWeight: 600, color: !isOEM && top ? taiaColor : 'var(--border)', transition: 'color 0.25s' }}>
             TomTom owned
           </div>
         </div>
@@ -147,7 +147,7 @@ function RoutingDiagram({ selected }) {
           <div style={node(isOEM && top, oemColor)}>OEM Handler</div>
           <span style={arrow(isOEM && top, oemColor)}>↓</span>
           <div style={node(isOEM && top, oemColor)}>Vehicle Domain</div>
-          <div style={{ marginTop: 4, fontSize: '0.68rem', fontWeight: 600, color: isOEM && top ? oemColor : 'var(--border)', transition: 'color 0.25s' }}>
+          <div style={{ marginTop: 4, fontSize: '0.625rem', fontWeight: 600, color: isOEM && top ? oemColor : 'var(--border)', transition: 'color 0.25s' }}>
             OEM owned
           </div>
         </div>
@@ -217,10 +217,10 @@ export default function IntentRouting() {
                 display: 'flex', alignItems: 'center', gap: 8,
               }}
             >
-              <span style={{ fontSize: '1.1rem', flexShrink: 0 }}>{it.icon}</span>
+              <span style={{ fontSize: '1rem', flexShrink: 0 }}>{it.icon}</span>
               <div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: selected === it.id ? it.color : 'var(--black)', marginBottom: 1 }}>{it.label}</div>
-                <div style={{ fontSize: '0.66rem', fontWeight: 600, color: it.color }}>{it.ownerLabel}</div>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: selected === it.id ? it.color : 'var(--black)', marginBottom: 1 }}>{it.label}</div>
+                <div style={{ fontSize: '0.625rem', fontWeight: 600, color: it.color }}>{it.ownerLabel}</div>
               </div>
             </button>
           ))}
@@ -233,19 +233,19 @@ export default function IntentRouting() {
         {intent && (
           <div style={{ marginTop: 14, padding: '16px', borderRadius: 8, border: `1px solid ${intent.color}35`, background: `${intent.color}08` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-              <span style={{ fontSize: '1.1rem' }}>{intent.icon}</span>
-              <span style={{ fontWeight: 700, fontSize: '0.9rem' }}>{intent.label}</span>
+              <span style={{ fontSize: '1rem' }}>{intent.icon}</span>
+              <span style={{ fontWeight: 700, fontSize: '0.875rem' }}>{intent.label}</span>
               <span style={{
-                fontSize: '0.66rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
+                fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
                 background: `${intent.color}20`, color: intent.color,
               }}>
                 {intent.ownerLabel} owned
               </span>
             </div>
-            <p style={{ fontSize: '0.84rem', color: 'var(--mid)', margin: '0 0 10px', lineHeight: 1.55 }}>{intent.description}</p>
+            <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 10px', lineHeight: 1.55 }}>{intent.description}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: intent.code ? 14 : 0 }}>
               {intent.examples.map(ex => (
-                <span key={ex} style={{ fontSize: '0.73rem', padding: '3px 9px', borderRadius: 12, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', fontStyle: 'italic' }}>
+                <span key={ex} style={{ fontSize: '0.75rem', padding: '3px 9px', borderRadius: 12, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', fontStyle: 'italic' }}>
                   "{ex}"
                 </span>
               ))}

@@ -31,7 +31,7 @@ function MarkdownIcon() {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.02em',
+      fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.02em',
       border: '1.5px solid currentColor', borderRadius: 3,
       padding: '0 3px', lineHeight: '14px', opacity: 0.75,
     }}>M↓</span>

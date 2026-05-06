@@ -18,8 +18,8 @@ function WhenCard({ icon, title, children }) {
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
-        <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
-        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
+        <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
+        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
       </div>
       <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{children}</div>
     </div>
@@ -33,8 +33,8 @@ function ThumbEV() {
   const stations = [['Belib', '22 kW', '4/5'], ['Indigo', '50 kW', '2/2'], ['Saemes', '7 kW', '6/8']];
   return (
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
-      <div style={{ fontSize: '0.6rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Charging station</div>
-      <div style={{ fontSize: '0.55rem', color: M.green, marginBottom: 7 }}>Near you · Available now</div>
+      <div style={{ fontSize: '0.625rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Charging station</div>
+      <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 7 }}>Near you · Available now</div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
         {['⚡ Speed', '💳 Payment', '🍴 Services'].map((f, i) => (
           <span key={f} style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 4, background: i === 0 ? M.blue : M.card, color: i === 0 ? '#fff' : M.dim, border: `1px solid ${i === 0 ? M.blue : M.line}` }}>{f}</span>
@@ -42,9 +42,9 @@ function ThumbEV() {
       </div>
       {stations.map(([name, kw, avail], i) => (
         <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0', borderTop: i > 0 ? `1px solid ${M.line}` : 'none' }}>
-          <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.45rem', fontWeight: 700, color: '#000', flexShrink: 0 }}>{i + 1}</div>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', fontWeight: 700, color: '#000', flexShrink: 0 }}>{i + 1}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: '0.58rem', fontWeight: 700, color: M.text }}>{name}</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: M.text }}>{name}</div>
             <div style={{ fontSize: '0.5rem', color: M.dim }}>⚡ {kw} · <span style={{ color: M.green }}>{avail} avail.</span></div>
           </div>
         </div>
@@ -60,7 +60,7 @@ function ThumbSearch() {
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%' }}>
       <div style={{ padding: '7px 10px', background: M.card, display: 'flex', alignItems: 'center', gap: 6, borderBottom: `1px solid ${M.line}` }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <span style={{ fontSize: '0.58rem', color: M.muted }}>Search destination…</span>
+        <span style={{ fontSize: '0.625rem', color: M.muted }}>Search destination…</span>
       </div>
       <div style={{ padding: '3px 10px', background: '#0f2a1a', display: 'flex', alignItems: 'center', gap: 4 }}>
         <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} />
@@ -72,7 +72,7 @@ function ThumbSearch() {
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div>
-            <div style={{ fontSize: '0.58rem', fontWeight: 600, color: M.text }}>{name}</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 600, color: M.text }}>{name}</div>
             <div style={{ fontSize: '0.5rem', color: M.muted }}>{dist}</div>
           </div>
         </div>
@@ -95,7 +95,7 @@ function ThumbNavControls() {
       </div>
       <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 28, background: 'rgba(0,0,0,0.55)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, borderRight: '1px solid rgba(255,255,255,0.08)' }}>
         {buttons.map(b => (
-          <div key={b} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem' }}>{b}</div>
+          <div key={b} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{b}</div>
         ))}
       </div>
     </div>
@@ -107,7 +107,7 @@ function ThumbAI() {
   const bars = [3, 5, 8, 10, 7, 9, 6, 8, 5, 3, 7, 4];
   return (
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.55rem', color: M.dim, marginBottom: 8 }}>TAIA — in-vehicle voice</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>TAIA — in-vehicle voice</div>
       {/* Listening indicator */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
         <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#2d1f4a', border: `1px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -125,7 +125,7 @@ function ThumbAI() {
       </div>
       {/* AI response */}
       <div style={{ background: M.card, borderRadius: '6px 6px 2px 6px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '88%', border: `1px solid ${M.line}` }}>
-        <div style={{ fontSize: '0.44rem', color: M.green, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>NAVIGATE_TO_EV_CHARGING</div>
+        <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>NAVIGATE_TO_EV_CHARGING</div>
         <div style={{ fontSize: '0.5rem', color: M.dim }}>Ionity · 4.2 km · Route set ✓</div>
       </div>
     </div>
@@ -136,7 +136,7 @@ function ThumbRoute() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', red: '#f85149' };
   return (
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
-      <div style={{ fontSize: '0.58rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Routes</div>
+      <div style={{ fontSize: '0.625rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Routes</div>
       <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>9 hr 28 min · 679 km · <span style={{ color: M.red }}>⚡ 1 min</span></div>
       {[
         { label: '📍 Current location', type: 'origin' },
@@ -145,13 +145,13 @@ function ThumbRoute() {
         { leg: '53 min · 104 km' },
         { label: '🔌 Fastned', sub: '15% → 40% · 350 kW · 25 min', type: 'stop' },
       ].map((s, i) => s.leg ? (
-        <div key={i} style={{ fontSize: '0.48rem', color: M.dim, paddingLeft: 12, marginBottom: 3 }}>— {s.leg}</div>
+        <div key={i} style={{ fontSize: '0.5rem', color: M.dim, paddingLeft: 12, marginBottom: 3 }}>— {s.leg}</div>
       ) : s.type === 'origin' ? (
-        <div key={i} style={{ fontSize: '0.52rem', color: M.dim, marginBottom: 3 }}>{s.label}</div>
+        <div key={i} style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 3 }}>{s.label}</div>
       ) : (
         <div key={i} style={{ background: M.card, borderRadius: 4, padding: '4px 6px', marginBottom: 4, border: `1px solid ${M.line}` }}>
-          <div style={{ fontSize: '0.54rem', fontWeight: 700, color: M.text }}>{s.label}</div>
-          <div style={{ fontSize: '0.46rem', color: M.dim }}>{s.sub}</div>
+          <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{s.label}</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim }}>{s.sub}</div>
         </div>
       ))}
     </div>
@@ -169,7 +169,7 @@ function ThumbColour() {
         {[['Brand', '#e2001a'], ['Surface', '#1a1a2e'], ['Action', '#60a5fa']].map(([label, color]) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <div style={{ width: 12, height: 12, borderRadius: 3, background: color, flexShrink: 0 }} />
-            <span style={{ fontSize: '0.55rem', color: '#444', fontWeight: 600 }}>{label}</span>
+            <span style={{ fontSize: '0.5rem', color: '#444', fontWeight: 600 }}>{label}</span>
             <span style={{ fontSize: '0.5rem', color: '#999', fontFamily: 'monospace' }}>{color}</span>
           </div>
         ))}
@@ -192,17 +192,17 @@ function ThumbHorizonPanel() {
       <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 72, background: 'rgba(15,26,40,0.92)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column' }}>
         {/* NIP */}
         <div style={{ background: '#1a3d2b', padding: '7px 8px', display: 'flex', alignItems: 'center', gap: 5, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-          <span style={{ fontSize: '0.9rem', color: 'white' }}>↖</span>
+          <span style={{ fontSize: '0.875rem', color: 'white' }}>↖</span>
           <div>
-            <div style={{ fontSize: '0.55rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-            <div style={{ fontSize: '0.42rem', color: 'rgba(255,255,255,0.55)' }}>Oak St N</div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
+            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.55)' }}>Oak St N</div>
           </div>
         </div>
         {/* Upcoming */}
         <div style={{ flex: 1, padding: '6px 8px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-          <div style={{ fontSize: '0.38rem', color: '#64748b', marginBottom: 4, letterSpacing: '0.05em' }}>UPCOMING</div>
+          <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 4, letterSpacing: '0.05em' }}>UPCOMING</div>
           <div style={{ display: 'flex', gap: 4 }}>
-            {['🚧','⛽','☕'].map(e => <span key={e} style={{ fontSize: '0.55rem' }}>{e}</span>)}
+            {['🚧','⛽','☕'].map(e => <span key={e} style={{ fontSize: '0.5rem' }}>{e}</span>)}
           </div>
         </div>
         {/* ETA */}
@@ -210,7 +210,7 @@ function ThumbHorizonPanel() {
           {[['14:32','ETA'],['18m','Time'],['6.4','km']].map(([v,l]) => (
             <div key={l} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-              <div style={{ fontSize: '0.38rem', color: '#64748b' }}>{l}</div>
+              <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
             </div>
           ))}
         </div>
@@ -254,8 +254,8 @@ function ThumbCluster() {
           <svg width="8" height="8" viewBox="0 0 20 20" fill="rgba(255,255,255,0.9)">
             <path d="M3 20 L3 10 Q3 3 10 3 L15 3 L11.5 0 L20 0 L20 8 L16.5 5 Q13 5 13 10 L13 20 Z"/>
           </svg>
-          <span style={{ fontSize: '0.46rem', fontWeight: 700, color: 'white' }}>600 m</span>
-          <span style={{ fontSize: '0.38rem', color: 'rgba(255,255,255,0.45)', overflow: 'hidden', whiteSpace: 'nowrap' }}>Canary Wharf</span>
+          <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'white' }}>600 m</span>
+          <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.45)', overflow: 'hidden', whiteSpace: 'nowrap' }}>Canary Wharf</span>
         </div>
         {/* SLG lane arrows */}
         <div style={{ background: 'rgba(14,32,54,0.97)', padding: '3px 6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
@@ -268,8 +268,8 @@ function ThumbCluster() {
         </div>
         {/* ETA */}
         <div style={{ background: 'rgba(6,14,28,0.98)', padding: '3px 6px', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
-          <span style={{ fontSize: '0.44rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)' }}>10:59 PM</span>
-          <span style={{ fontSize: '0.38rem', color: 'rgba(255,255,255,0.3)', marginLeft: 3 }}>· 26.5 km</span>
+          <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.75)' }}>10:59 PM</span>
+          <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.3)', marginLeft: 3 }}>· 26.5 km</span>
         </div>
       </div>
 
@@ -323,12 +323,12 @@ function ThumbMapStyle() {
       {/* Divider */}
       <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 1.5, background: 'rgba(255,255,255,0.25)', zIndex: 1 }}/>
       {/* Labels */}
-      <div style={{ position: 'absolute', bottom: 7, left: 8, fontSize: '0.42rem', fontWeight: 700, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.06em' }}>DAY</div>
-      <div style={{ position: 'absolute', bottom: 7, right: 8, fontSize: '0.42rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}>NIGHT</div>
+      <div style={{ position: 'absolute', bottom: 7, left: 8, fontSize: '0.5rem', fontWeight: 700, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.06em' }}>DAY</div>
+      <div style={{ position: 'absolute', bottom: 7, right: 8, fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}>NIGHT</div>
       {/* Traffic legend */}
       <div style={{ position: 'absolute', top: 7, left: 8, display: 'flex', alignItems: 'center', gap: 3 }}>
         <div style={{ width: 12, height: 3, borderRadius: 2, background: '#22c55e' }}/>
-        <span style={{ fontSize: '0.4rem', color: 'rgba(0,0,0,0.4)', fontWeight: 600 }}>Free flow</span>
+        <span style={{ fontSize: '0.5rem', color: 'rgba(0,0,0,0.4)', fontWeight: 600 }}>Free flow</span>
       </div>
     </div>
   );
@@ -353,7 +353,7 @@ function ThumbHomeScreen() {
       {/* Controls zone (red) */}
       <div style={{ position: 'absolute', bottom: 14, left: 16, right: 16, height: 22, border: '1.5px dashed rgba(226,0,26,0.6)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
         {['🔍','⚡','🔇','⚙️'].map(b => (
-          <div key={b} style={{ width: 14, height: 14, borderRadius: 3, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.45rem' }}>{b}</div>
+          <div key={b} style={{ width: 14, height: 14, borderRadius: 3, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{b}</div>
         ))}
       </div>
       {/* Zone legend */}
@@ -361,7 +361,7 @@ function ThumbHomeScreen() {
         {[['#f59e0b','Nav area'],['#3b82f6','Safe area'],['#e2001a','Controls']].map(([c,l]) => (
           <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <div style={{ width: 6, height: 6, borderRadius: 1, background: c, opacity: 0.85 }} />
-            <span style={{ fontSize: '0.44rem', color: 'rgba(255,255,255,0.5)' }}>{l}</span>
+            <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.5)' }}>{l}</span>
           </div>
         ))}
       </div>
@@ -382,12 +382,12 @@ function ThumbETAPanel() {
         </svg>
       </div>
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.96)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '9px 14px' }}>
-        <div style={{ fontSize: '0.38rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
+        <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           {[['14:32', 'ETA'], ['18 min', 'Remaining'], ['6.4 km', 'Distance']].map(([val, label]) => (
             <div key={label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{val}</div>
-              <div style={{ fontSize: '0.42rem', color: '#475569', marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{val}</div>
+              <div style={{ fontSize: '0.5rem', color: '#475569', marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
             </div>
           ))}
         </div>
@@ -411,21 +411,21 @@ function ThumbTheming() {
           {color
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: from, flexShrink: 0 }} />
             : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <span style={{ fontSize: '0.4rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
+                <span style={{ fontSize: '0.5rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
               </div>}
-          <span style={{ fontSize: '0.44rem', color: M.dim, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
-          <span style={{ fontSize: '0.6rem', color: '#374151' }}>→</span>
+          <span style={{ fontSize: '0.5rem', color: M.dim, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
+          <span style={{ fontSize: '0.625rem', color: '#374151' }}>→</span>
           {color
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: to, flexShrink: 0 }} />
             : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <span style={{ fontSize: '0.4rem', color: '#0066cc', fontFamily: 'monospace' }}>{to}</span>
+                <span style={{ fontSize: '0.5rem', color: '#0066cc', fontFamily: 'monospace' }}>{to}</span>
               </div>}
         </div>
       ))}
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
-        <div style={{ padding: '4px 10px', borderRadius: 4, background: '#e2001a', fontSize: '0.48rem', color: '#fff', fontWeight: 700 }}>Default</div>
-        <span style={{ fontSize: '0.65rem', color: '#374151' }}>→</span>
-        <div style={{ padding: '4px 10px', borderRadius: 12, background: '#0066cc', fontSize: '0.48rem', color: '#fff', fontWeight: 700 }}>OEM Brand</div>
+        <div style={{ padding: '4px 10px', borderRadius: 4, background: '#e2001a', fontSize: '0.5rem', color: '#fff', fontWeight: 700 }}>Default</div>
+        <span style={{ fontSize: '0.625rem', color: '#374151' }}>→</span>
+        <div style={{ padding: '4px 10px', borderRadius: 12, background: '#0066cc', fontSize: '0.5rem', color: '#fff', fontWeight: 700 }}>OEM Brand</div>
       </div>
     </div>
   );
@@ -435,21 +435,21 @@ function ThumbChargingSearch() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950' };
   return (
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.52rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>EV Charging</div>
-      <div style={{ fontSize: '0.46rem', color: M.green, marginBottom: 7 }}>Near you · Connector matched</div>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>EV Charging</div>
+      <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 7 }}>Near you · Connector matched</div>
       <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
         {['⚡ Speed', '💳 Payment', '🍴 Services'].map((f, i) => (
-          <span key={f} style={{ fontSize: '0.46rem', padding: '2px 5px', borderRadius: 4, background: i === 0 ? M.blue : M.card, color: i === 0 ? '#fff' : M.dim, border: `1px solid ${i === 0 ? M.blue : M.line}` }}>{f}</span>
+          <span key={f} style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 4, background: i === 0 ? M.blue : M.card, color: i === 0 ? '#fff' : M.dim, border: `1px solid ${i === 0 ? M.blue : M.line}` }}>{f}</span>
         ))}
       </div>
       {[['Ionity', '350 kW', '3/4'], ['Fastned', '300 kW', '2/4'], ['bp pulse', '50 kW', '5/6']].map(([name, kw, avail], i) => (
         <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, padding: '4px 0', borderTop: i > 0 ? `1px solid ${M.line}` : 'none' }}>
-          <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.42rem', fontWeight: 700, color: '#000', flexShrink: 0 }}>{i+1}</div>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', fontWeight: 700, color: '#000', flexShrink: 0 }}>{i+1}</div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.54rem', fontWeight: 700, color: M.text }}>{name}</div>
-            <div style={{ fontSize: '0.46rem', color: M.dim }}>⚡ {kw}</div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{name}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>⚡ {kw}</div>
           </div>
-          <span style={{ fontSize: '0.46rem', color: M.green }}>{avail}</span>
+          <span style={{ fontSize: '0.5rem', color: M.green }}>{avail}</span>
         </div>
       ))}
     </div>
@@ -462,16 +462,16 @@ function ThumbConversationPersonality() {
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
         <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#1a1a4a', border: `1.5px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', flexShrink: 0 }}>✦</div>
-        <span style={{ fontSize: '0.58rem', fontWeight: 700, color: M.text }}>BMW Assistant</span>
-        <span style={{ fontSize: '0.4rem', color: M.purple, marginLeft: 'auto' }}>Custom name ✓</span>
+        <span style={{ fontSize: '0.625rem', fontWeight: 700, color: M.text }}>BMW Assistant</span>
+        <span style={{ fontSize: '0.5rem', color: M.purple, marginLeft: 'auto' }}>Custom name ✓</span>
       </div>
       <div style={{ background: M.card, borderRadius: '4px 10px 10px 4px', padding: '4px 8px', marginBottom: 6, maxWidth: '92%' }}>
-        <div style={{ fontSize: '0.4rem', color: M.dim, marginBottom: 1 }}>Default TomTom tone</div>
-        <div style={{ fontSize: '0.48rem', color: '#94a3b8', lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
+        <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 1 }}>Default TomTom tone</div>
+        <div style={{ fontSize: '0.5rem', color: '#94a3b8', lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
       </div>
       <div style={{ background: '#1a1a4a', borderRadius: '10px 4px 10px 10px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '92%', border: `1px solid ${M.purple}44` }}>
-        <div style={{ fontSize: '0.4rem', color: M.purple, marginBottom: 1 }}>OEM branded tone</div>
-        <div style={{ fontSize: '0.48rem', color: '#d4bbff', lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
+        <div style={{ fontSize: '0.5rem', color: M.purple, marginBottom: 1 }}>OEM branded tone</div>
+        <div style={{ fontSize: '0.5rem', color: '#d4bbff', lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
       </div>
     </div>
   );
@@ -500,11 +500,11 @@ function ThumbADAS() {
       </div>
       <div style={{ position: 'absolute', top: 8, left: 10, right: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'white', border: '3px solid #e2001a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontSize: '0.52rem', fontWeight: 800, color: '#111' }}>100</span>
+          <span style={{ fontSize: '0.5rem', fontWeight: 800, color: '#111' }}>100</span>
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'white' }}>600 m</div>
-          <div style={{ fontSize: '0.38rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Lane change</div>
+          <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Lane change</div>
         </div>
       </div>
     </div>
@@ -524,11 +524,11 @@ function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
         <Thumb />
       </div>
       <div style={{ padding: '12px 14px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
+        <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
         <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, marginBottom: 10, flex: 1 }}>{desc}</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           {pages.map(p => (
-            <span key={p} style={{ fontSize: '0.64rem', padding: '2px 7px', borderRadius: 4, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{p}</span>
+            <span key={p} style={{ fontSize: '0.625rem', padding: '2px 7px', borderRadius: 4, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{p}</span>
           ))}
         </div>
       </div>
@@ -565,8 +565,8 @@ function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
         <Thumb />
       </div>
       <div style={{ padding: '12px 14px', flex: 1 }}>
-        <div style={{ fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
-        <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
+        <div style={{ fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
+        <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
         <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
     </div>
@@ -621,7 +621,7 @@ export default function Overview({ onNavigate }) {
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
           </svg>
-          <span style={{ fontSize: '0.8rem' }}>Save your screenshot as <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>ux-library/public/hero.png</code></span>
+          <span style={{ fontSize: '0.75rem' }}>Save your screenshot as <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>ux-library/public/hero.png</code></span>
         </div>
       </div>
 

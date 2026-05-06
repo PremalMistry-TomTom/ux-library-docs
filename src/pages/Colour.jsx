@@ -86,7 +86,7 @@ export default function Colour() {
       <div className="zone">
         <h2 className="sh" id="c-extended">
           Extended Colour Collection{' '}
-          <span style={{ fontSize: '0.72rem', fontWeight: 400, color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 400, color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
             tt_glb_color_
           </span>
         </h2>

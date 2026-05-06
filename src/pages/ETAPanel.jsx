@@ -50,11 +50,11 @@ export function ETAMock({ position, visibleFields }) {
         display: 'flex', alignItems: 'center', gap: 16, minWidth: 120,
       }}>
         {visibleFields.length === 0
-          ? <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.2)' }}>all hidden</span>
+          ? <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.2)' }}>all hidden</span>
           : visibleFields.map(f => (
             <div key={f.id} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{f.value}</div>
-              <div style={{ fontSize: '0.62rem', color: '#64748b', marginTop: 3 }}>{f.label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{f.value}</div>
+              <div style={{ fontSize: '0.625rem', color: '#64748b', marginTop: 3 }}>{f.label}</div>
             </div>
           ))
         }
@@ -107,7 +107,7 @@ export default function ETAPanel() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6, marginBottom: 16 }}>
           {POSITIONS.map(p => (
             <button key={p.id} onClick={() => setPosition(p.id)} style={{
-              padding: '6px 4px', borderRadius: 7, cursor: 'pointer', fontSize: '0.72rem',
+              padding: '6px 4px', borderRadius: 7, cursor: 'pointer', fontSize: '0.75rem',
               fontWeight: position === p.id ? 600 : 400,
               background: position === p.id ? '#fff5f5' : 'var(--bg)',
               border: `1px solid ${position === p.id ? 'var(--red)' : 'var(--border)'}`,
@@ -145,8 +145,8 @@ export default function ETAPanel() {
                 <div style={{ width: 32, height: 18, borderRadius: 9, background: hidden ? 'var(--border)' : 'var(--red)', transition: 'background 0.15s', position: 'relative', flexShrink: 0 }}>
                   <div style={{ position: 'absolute', top: 2, left: hidden ? 2 : 14, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
                 </div>
-                <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>{f.label}</span>
-                <span style={{ marginLeft: 'auto', fontSize: '0.68rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>{hidden ? 'hidden' : 'shown'}</span>
+                <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{f.label}</span>
+                <span style={{ marginLeft: 'auto', fontSize: '0.625rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>{hidden ? 'hidden' : 'shown'}</span>
               </div>
             );
           })}
@@ -188,13 +188,13 @@ export default function ETAPanel() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,
                   }}>{pri}</span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{notes}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{notes}</td>
               </tr>
             ))}
           </tbody>

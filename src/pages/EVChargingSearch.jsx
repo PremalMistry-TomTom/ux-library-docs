@@ -72,7 +72,7 @@ function MSPBuilder({ t }) {
       <div className="grid-2-col">
         {/* Available networks */}
         <div>
-          <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
             {t('chargingSearch.msp.available')}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
@@ -95,8 +95,8 @@ function MSPBuilder({ t }) {
                     {on && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--black)' }}>{n.id}</div>
-                    <div style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>{n.region} · {n.kw}</div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{n.id}</div>
+                    <div style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>{n.region} · {n.kw}</div>
                   </div>
                 </div>
               );
@@ -106,11 +106,11 @@ function MSPBuilder({ t }) {
 
         {/* Priority order */}
         <div>
-          <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
             {t('chargingSearch.msp.priority')}
           </div>
           {active.length === 0 ? (
-            <div style={{ padding: '20px 14px', borderRadius: 8, border: '1px dashed var(--border)', color: 'var(--muted)', fontSize: '0.8rem', textAlign: 'center' }}>
+            <div style={{ padding: '20px 14px', borderRadius: 8, border: '1px dashed var(--border)', color: 'var(--muted)', fontSize: '0.75rem', textAlign: 'center' }}>
               {t('chargingSearch.msp.empty')}
             </div>
           ) : (
@@ -122,19 +122,19 @@ function MSPBuilder({ t }) {
                   border: '1.5px solid #3b82f6',
                   background: 'rgba(59,130,246,0.08)',
                 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
-                  <span style={{ flex: 1, fontSize: '0.82rem', fontWeight: 600, color: 'var(--black)' }}>{id}</span>
+                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.625rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
+                  <span style={{ flex: 1, fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{id}</span>
                   <div style={{ display: 'flex', gap: 2 }}>
                     <button onClick={() => moveUp(id)} disabled={i === 0} style={{
                       width: 22, height: 22, borderRadius: 4, border: '1px solid var(--border)',
                       background: 'var(--white)', cursor: i === 0 ? 'default' : 'pointer',
-                      opacity: i === 0 ? 0.3 : 1, fontSize: '0.7rem', color: 'var(--black)',
+                      opacity: i === 0 ? 0.3 : 1, fontSize: '0.625rem', color: 'var(--black)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>↑</button>
                     <button onClick={() => moveDown(id)} disabled={i === active.length - 1} style={{
                       width: 22, height: 22, borderRadius: 4, border: '1px solid var(--border)',
                       background: 'var(--white)', cursor: i === active.length - 1 ? 'default' : 'pointer',
-                      opacity: i === active.length - 1 ? 0.3 : 1, fontSize: '0.7rem', color: 'var(--black)',
+                      opacity: i === active.length - 1 ? 0.3 : 1, fontSize: '0.625rem', color: 'var(--black)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>↓</button>
                   </div>
@@ -144,7 +144,7 @@ function MSPBuilder({ t }) {
           )}
 
           <div style={{ marginTop: 16 }}>
-            <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
               {t('chargingSearch.msp.output')}
             </div>
             <CodeBlock language="json" code={code} />
@@ -230,7 +230,7 @@ export default function EVChargingSearch() {
         <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
           {['speed', 'payment', 'services'].map(f => (
             <button key={f} onClick={() => setActiveFilter(f)} style={{
-              padding: '6px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.78rem', fontWeight: 600,
+              padding: '6px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
               background: activeFilter === f ? 'var(--red)' : 'var(--white)',
               color: activeFilter === f ? '#fff' : 'var(--black)',
               border: activeFilter === f ? '1px solid var(--red)' : '1px solid var(--border)',

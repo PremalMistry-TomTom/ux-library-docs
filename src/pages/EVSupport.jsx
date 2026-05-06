@@ -136,14 +136,14 @@ export function EVSearchMock({ activeFilter = 'speed' }) {
     <div style={{ background: M.card, borderRadius: 12, overflow: 'hidden', width: 280, flexShrink: 0, border: `1px solid ${M.line}` }}>
       {/* Header */}
       <div style={{ padding: '10px 14px 8px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Charging station</div>
-        <div style={{ fontSize: '0.7rem', color: M.green }}>Near you · Available now</div>
+        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Charging station</div>
+        <div style={{ fontSize: '0.625rem', color: M.green }}>Near you · Available now</div>
       </div>
       {/* Filter tabs */}
       <div style={{ display: 'flex', borderBottom: `1px solid ${M.line}` }}>
         {filters.map(f => (
           <div key={f.id} style={{
-            flex: 1, padding: '7px 4px', textAlign: 'center', fontSize: '0.64rem', fontWeight: 600,
+            flex: 1, padding: '7px 4px', textAlign: 'center', fontSize: '0.625rem', fontWeight: 600,
             color: f.id === activeFilter ? M.blue : M.dim,
             borderBottom: f.id === activeFilter ? `2px solid ${M.blue}` : '2px solid transparent',
             cursor: 'pointer',
@@ -155,11 +155,11 @@ export function EVSearchMock({ activeFilter = 'speed' }) {
       {/* Filter content */}
       {activeFilter === 'speed' && (
         <div style={{ padding: '10px 12px', borderBottom: `1px solid ${M.line}` }}>
-          <div style={{ fontSize: '0.68rem', color: M.dim, marginBottom: 7 }}>Charging speed</div>
+          <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 7 }}>Charging speed</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {speedChips.map((c, i) => (
               <span key={c} style={{
-                fontSize: '0.66rem', padding: '4px 9px', borderRadius: 6, cursor: 'pointer',
+                fontSize: '0.625rem', padding: '4px 9px', borderRadius: 6, cursor: 'pointer',
                 background: i === 2 ? M.blue : M.card2,
                 color: i === 2 ? '#fff' : M.dim,
                 border: `1px solid ${i === 2 ? M.blue : M.line}`,
@@ -170,32 +170,32 @@ export function EVSearchMock({ activeFilter = 'speed' }) {
       )}
       {activeFilter === 'payment' && (
         <div style={{ padding: '10px 12px', borderBottom: `1px solid ${M.line}` }}>
-          <div style={{ fontSize: '0.68rem', color: M.dim, marginBottom: 7 }}>My preferred operators</div>
+          <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 7 }}>My preferred operators</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 10 }}>
             {operatorChips.map((c, i) => (
               <span key={c} style={{
-                fontSize: '0.66rem', padding: '4px 9px', borderRadius: 6,
+                fontSize: '0.625rem', padding: '4px 9px', borderRadius: 6,
                 background: i < 3 ? M.blue : M.card2,
                 color: i < 3 ? '#fff' : M.dim,
                 border: `1px solid ${i < 3 ? M.blue : M.line}`,
               }}>{c}</span>
             ))}
           </div>
-          <div style={{ fontSize: '0.68rem', color: M.dim, marginBottom: 7 }}>My charging cards</div>
+          <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 7 }}>My charging cards</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {cardChips.map(c => (
-              <span key={c} style={{ fontSize: '0.66rem', padding: '4px 9px', borderRadius: 6, background: M.card2, color: M.dim, border: `1px solid ${M.line}` }}>{c}</span>
+              <span key={c} style={{ fontSize: '0.625rem', padding: '4px 9px', borderRadius: 6, background: M.card2, color: M.dim, border: `1px solid ${M.line}` }}>{c}</span>
             ))}
           </div>
         </div>
       )}
       {activeFilter === 'services' && (
         <div style={{ padding: '10px 12px', borderBottom: `1px solid ${M.line}` }}>
-          <div style={{ fontSize: '0.68rem', color: M.dim, marginBottom: 7 }}>Services nearby</div>
+          <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 7 }}>Services nearby</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
             {serviceChips.map((c, i) => (
               <span key={c} style={{
-                fontSize: '0.66rem', padding: '4px 9px', borderRadius: 6,
+                fontSize: '0.625rem', padding: '4px 9px', borderRadius: 6,
                 background: i === 2 ? M.blue : M.card2,
                 color: i === 2 ? '#fff' : M.dim,
                 border: `1px solid ${i === 2 ? M.blue : M.line}`,
@@ -207,14 +207,14 @@ export function EVSearchMock({ activeFilter = 'speed' }) {
       {/* Results */}
       {STATIONS.map((s, i) => (
         <div key={i} style={{ padding: '9px 12px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-          <div style={{ width: 22, height: 22, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.62rem', fontWeight: 700, color: '#000' }}>{i + 1}</div>
+          <div style={{ width: 22, height: 22, borderRadius: '50%', background: M.green, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '0.625rem', fontWeight: 700, color: '#000' }}>{i + 1}</div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.74rem', fontWeight: 700, color: M.text }}>{s.n}</span>
-              <span style={{ fontSize: '0.66rem', color: M.dim }}>{s.dist}</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text }}>{s.n}</span>
+              <span style={{ fontSize: '0.625rem', color: M.dim }}>{s.dist}</span>
             </div>
-            <div style={{ fontSize: '0.64rem', color: M.muted, marginBottom: 2 }}>{s.addr}</div>
-            <div style={{ fontSize: '0.64rem', color: M.dim }}>⚡ {s.kw} · <span style={{ color: M.green }}>{s.avail}</span></div>
+            <div style={{ fontSize: '0.625rem', color: M.muted, marginBottom: 2 }}>{s.addr}</div>
+            <div style={{ fontSize: '0.625rem', color: M.dim }}>⚡ {s.kw} · <span style={{ color: M.green }}>{s.avail}</span></div>
           </div>
         </div>
       ))}
@@ -227,37 +227,37 @@ export function StationDetailMock() {
   return (
     <div style={{ background: M.card, borderRadius: 12, overflow: 'hidden', width: 260, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ fontSize: '0.64rem', color: M.green, marginBottom: 2 }}>Charging station</div>
-        <div style={{ fontSize: '0.9rem', fontWeight: 700, color: M.text }}>Indigo</div>
-        <div style={{ fontSize: '0.68rem', color: M.muted }}>Rue Soufflot, 75005 Paris</div>
+        <div style={{ fontSize: '0.625rem', color: M.green, marginBottom: 2 }}>Charging station</div>
+        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text }}>Indigo</div>
+        <div style={{ fontSize: '0.625rem', color: M.muted }}>Rue Soufflot, 75005 Paris</div>
         <div style={{ display: 'flex', gap: 5, marginTop: 5 }}>
           {['24/7', '🅿', '♿', '🚻'].map(t => (
-            <span key={t} style={{ fontSize: '0.62rem', background: M.card2, color: M.dim, padding: '2px 6px', borderRadius: 4, border: `1px solid ${M.line}` }}>{t}</span>
+            <span key={t} style={{ fontSize: '0.625rem', background: M.card2, color: M.dim, padding: '2px 6px', borderRadius: 4, border: `1px solid ${M.line}` }}>{t}</span>
           ))}
         </div>
       </div>
-      <div style={{ padding: '8px 14px', borderBottom: `1px solid ${M.line}`, display: 'flex', gap: 14, fontSize: '0.66rem', color: M.dim }}>
+      <div style={{ padding: '8px 14px', borderBottom: `1px solid ${M.line}`, display: 'flex', gap: 14, fontSize: '0.625rem', color: M.dim }}>
         <span>3 min · 370 m</span>
         <span style={{ color: M.green }}>38% at arrival</span>
       </div>
       <div style={{ display: 'flex', gap: 8, padding: '10px 14px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ flex: 1, background: M.card2, border: `1px solid ${M.line}`, borderRadius: 7, padding: '7px', textAlign: 'center', fontSize: '0.7rem', color: M.dim }}>Routes</div>
-        <div style={{ flex: 1, background: M.blue, borderRadius: 7, padding: '7px', textAlign: 'center', fontSize: '0.7rem', color: '#fff', fontWeight: 700 }}>Drive</div>
+        <div style={{ flex: 1, background: M.card2, border: `1px solid ${M.line}`, borderRadius: 7, padding: '7px', textAlign: 'center', fontSize: '0.625rem', color: M.dim }}>Routes</div>
+        <div style={{ flex: 1, background: M.blue, borderRadius: 7, padding: '7px', textAlign: 'center', fontSize: '0.625rem', color: '#fff', fontWeight: 700 }}>Drive</div>
       </div>
       {/* Compatible charge points */}
       <div style={{ padding: '8px 14px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontSize: '0.66rem', color: M.dim }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontSize: '0.625rem', color: M.dim }}>
           <span>Compatible charge points</span><span>∧</span>
         </div>
         {[{ type: 'Type 2 CCS', kw: '50 kW', avail: '2/2 available' }, { type: 'Type 2', kw: '7 kW', avail: '4/6 available' }].map(c => (
           <div key={c.type} style={{ marginBottom: 5 }}>
-            <div style={{ fontSize: '0.68rem', fontWeight: 600, color: M.text }}>⚡ {c.type}</div>
-            <div style={{ fontSize: '0.62rem', color: M.dim }}>{c.kw} · <span style={{ color: M.green }}>{c.avail}</span></div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 600, color: M.text }}>⚡ {c.type}</div>
+            <div style={{ fontSize: '0.625rem', color: M.dim }}>{c.kw} · <span style={{ color: M.green }}>{c.avail}</span></div>
           </div>
         ))}
       </div>
       {/* Payment */}
-      <div style={{ padding: '8px 14px', fontSize: '0.64rem' }}>
+      <div style={{ padding: '8px 14px', fontSize: '0.625rem' }}>
         <div style={{ color: M.dim, marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}><span>Payment</span><span>∧</span></div>
         <div style={{ color: M.text, fontWeight: 600, marginBottom: 1 }}>In Network</div>
         <div style={{ color: M.muted, marginBottom: 5 }}>Plugsurfing, Shell Recharge</div>
@@ -280,45 +280,45 @@ export function RouteMock() {
   return (
     <div style={{ background: M.card, borderRadius: 12, overflow: 'hidden', width: 270, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ fontSize: '0.76rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Routes</div>
-        <div style={{ fontSize: '0.68rem', color: M.dim }}>9 hr 28 min · 679 km · <span style={{ color: M.red }}>⚡ 1 min</span></div>
-        <div style={{ fontSize: '0.64rem', color: M.dim, marginTop: 2 }}>🔋 15% at arrival · 🔌 6 charges</div>
+        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Routes</div>
+        <div style={{ fontSize: '0.625rem', color: M.dim }}>9 hr 28 min · 679 km · <span style={{ color: M.red }}>⚡ 1 min</span></div>
+        <div style={{ fontSize: '0.625rem', color: M.dim, marginTop: 2 }}>🔋 15% at arrival · 🔌 6 charges</div>
       </div>
       <div style={{ padding: '8px 14px' }}>
         {stops.map((s, i) => {
           if (s.leg) return (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, paddingLeft: 10, marginBottom: 4 }}>
               <div style={{ width: 1, background: M.line, alignSelf: 'stretch', marginLeft: 4 }} />
-              <span style={{ fontSize: '0.62rem', color: M.dim }}>{s.leg}</span>
-              {s.toll && <span style={{ fontSize: '0.6rem', color: M.red }}>⚡ {s.toll}</span>}
+              <span style={{ fontSize: '0.625rem', color: M.dim }}>{s.leg}</span>
+              {s.toll && <span style={{ fontSize: '0.625rem', color: M.red }}>⚡ {s.toll}</span>}
             </div>
           );
           if (s.type === 'origin') return (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, fontSize: '0.7rem', color: M.dim }}>
-              <span style={{ fontSize: '0.8rem' }}>📍</span>{s.label}
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, fontSize: '0.625rem', color: M.dim }}>
+              <span style={{ fontSize: '0.75rem' }}>📍</span>{s.label}
             </div>
           );
           return (
             <div key={i} style={{ background: M.card2, borderRadius: 8, padding: '8px 10px', marginBottom: 6, border: `1px solid ${M.line}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
-                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: M.text }}>🔌 {s.label}</span>
-                <span style={{ fontSize: '0.64rem', color: M.muted }}>›</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text }}>🔌 {s.label}</span>
+                <span style={{ fontSize: '0.625rem', color: M.muted }}>›</span>
               </div>
-              <div style={{ fontSize: '0.62rem', color: M.dim, marginBottom: 2 }}>🕐 {s.time} · 🔋 {s.socIn} → {s.socOut}</div>
-              <div style={{ fontSize: '0.62rem', color: M.dim }}>{s.kw} · {s.chargeTime}</div>
+              <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 2 }}>🕐 {s.time} · 🔋 {s.socIn} → {s.socOut}</div>
+              <div style={{ fontSize: '0.625rem', color: M.dim }}>{s.kw} · {s.chargeTime}</div>
             </div>
           );
         })}
       </div>
       {/* Plan charging toggle */}
       <div style={{ padding: '8px 14px', borderTop: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: '0.68rem', color: M.dim }}>Plan charging automatically</span>
+        <span style={{ fontSize: '0.625rem', color: M.dim }}>Plan charging automatically</span>
         <div style={{ width: 34, height: 18, borderRadius: 9, background: M.blue, position: 'relative' }}>
           <div style={{ width: 14, height: 14, borderRadius: '50%', background: '#fff', position: 'absolute', top: 2, right: 2 }} />
         </div>
       </div>
       <div style={{ padding: '8px 14px', paddingTop: 0 }}>
-        <div style={{ background: M.card2, border: `1px solid ${M.line}`, borderRadius: 7, padding: '7px', textAlign: 'center', fontSize: '0.68rem', color: M.dim }}>⚙ Manage stops</div>
+        <div style={{ background: M.card2, border: `1px solid ${M.line}`, borderRadius: 7, padding: '7px', textAlign: 'center', fontSize: '0.625rem', color: M.dim }}>⚙ Manage stops</div>
       </div>
     </div>
   );
@@ -328,28 +328,28 @@ export function RouteMock() {
 export function PreferencesMock() {
   return (
     <div style={{ background: M.card, borderRadius: 12, overflow: 'hidden', width: 260, flexShrink: 0, border: `1px solid ${M.line}` }}>
-      <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}`, fontSize: '0.8rem', fontWeight: 700, color: M.text }}>Route preferences</div>
+      <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}`, fontSize: '0.75rem', fontWeight: 700, color: M.text }}>Route preferences</div>
       <div style={{ padding: '12px 14px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ fontSize: '0.66rem', color: M.dim, marginBottom: 10 }}>Minimum battery on arrival</div>
+        <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 10 }}>Minimum battery on arrival</div>
         {[{ label: 'At charging stop', val: '15%', pct: 15 }, { label: 'At destination', val: '15%', pct: 15 }].map(p => (
           <div key={p.label} style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: '0.68rem', color: M.text, marginBottom: 5 }}>{p.label}</div>
+            <div style={{ fontSize: '0.625rem', color: M.text, marginBottom: 5 }}>{p.label}</div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ flex: 1, height: 4, borderRadius: 2, background: M.line, position: 'relative' }}>
                 <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${p.pct}%`, background: M.blue, borderRadius: 2 }} />
                 <div style={{ position: 'absolute', top: -4, left: `${p.pct}%`, width: 12, height: 12, borderRadius: '50%', background: M.blue, border: '2px solid #fff', transform: 'translateX(-50%)' }} />
               </div>
-              <span style={{ fontSize: '0.68rem', color: M.blue, minWidth: 28, textAlign: 'right' }}>{p.val}</span>
+              <span style={{ fontSize: '0.625rem', color: M.blue, minWidth: 28, textAlign: 'right' }}>{p.val}</span>
             </div>
           </div>
         ))}
-        <div style={{ fontSize: '0.6rem', color: M.muted, lineHeight: 1.4 }}>While driving, arrival percentages might drop up to 2% below set value</div>
+        <div style={{ fontSize: '0.625rem', color: M.muted, lineHeight: 1.4 }}>While driving, arrival percentages might drop up to 2% below set value</div>
       </div>
       <div style={{ padding: '10px 14px' }}>
-        <div style={{ fontSize: '0.66rem', color: M.dim, marginBottom: 8 }}>Avoid on this route</div>
+        <div style={{ fontSize: '0.625rem', color: M.dim, marginBottom: 8 }}>Avoid on this route</div>
         {[{ icon: '🛣', label: 'Tolls' }, { icon: '🛤', label: 'Unpaved Roads' }].map(r => (
           <div key={r.label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: '0.7rem', color: M.text }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: '0.625rem', color: M.text }}>
               <span>{r.icon}</span>{r.label}
             </div>
             <div style={{ width: 34, height: 18, borderRadius: 9, background: M.line, position: 'relative', border: `1px solid ${M.muted}` }}>
@@ -359,7 +359,7 @@ export function PreferencesMock() {
         ))}
       </div>
       <div style={{ padding: '8px 14px', paddingTop: 0 }}>
-        <div style={{ background: M.blue, borderRadius: 7, padding: '8px', textAlign: 'center', fontSize: '0.7rem', color: '#fff', fontWeight: 700 }}>✈ Drive</div>
+        <div style={{ background: M.blue, borderRadius: 7, padding: '8px', textAlign: 'center', fontSize: '0.625rem', color: '#fff', fontWeight: 700 }}>✈ Drive</div>
       </div>
     </div>
   );
@@ -741,7 +741,7 @@ export default function EVSupport() {
             </thead>
             <tbody>
               {LDEVR_FIELDS.map(([field, desc]) => (
-                <tr key={field}><td><code style={{ fontSize: '0.72rem' }}>{field}</code></td><td>{desc}</td></tr>
+                <tr key={field}><td><code style={{ fontSize: '0.75rem' }}>{field}</code></td><td>{desc}</td></tr>
               ))}
             </tbody>
           </table>
@@ -768,7 +768,7 @@ export default function EVSupport() {
                 {PREF_ROWS.map(([key, param, def]) => (
                   <tr key={key}>
                     <td>{t(`preferences.rows.${key}`)}</td>
-                    <td><code style={{ fontSize: '0.72rem' }}>{param}</code></td>
+                    <td><code style={{ fontSize: '0.75rem' }}>{param}</code></td>
                     <td>{def}</td>
                   </tr>
                 ))}

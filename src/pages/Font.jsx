@@ -93,9 +93,9 @@ export default function Font() {
           </div>
           <div className="font-preview">
             <span style={{ fontSize: '2rem', fontWeight: 400 }}>Aa</span>
-            <span style={{ fontSize: '1.1rem', fontWeight: 400, color: 'var(--mid)' }}>Noto Sans — Regular</span>
-            <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--mid)' }}>Noto Sans — Bold</span>
-            <span style={{ fontSize: '0.8rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
+            <span style={{ fontSize: '1rem', fontWeight: 400, color: 'var(--mid)' }}>Noto Sans — Regular</span>
+            <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--mid)' }}>Noto Sans — Bold</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>
               ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789
             </span>
           </div>
@@ -110,11 +110,11 @@ export default function Font() {
           </div>
           <div className="weight-preview">
             <div className="wp-item">
-              <span style={{ fontWeight: 400, fontSize: '1.2rem' }}>Navigation</span>
+              <span style={{ fontWeight: 400, fontSize: '1.25rem' }}>Navigation</span>
               <span className="wp-label">weight_regular · 400</span>
             </div>
             <div className="wp-item">
-              <span style={{ fontWeight: 700, fontSize: '1.2rem' }}>Navigation</span>
+              <span style={{ fontWeight: 700, fontSize: '1.25rem' }}>Navigation</span>
               <span className="wp-label">weight_bold · 700</span>
             </div>
           </div>
@@ -219,7 +219,7 @@ export default function Font() {
           <tbody>
             {FONT_CMP_ROWS.map(([component, token, sysRef]) => (
               <tr key={token}>
-                <td style={{ fontSize: '0.84rem', color: 'var(--mid)' }}>{component}</td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{component}</td>
                 <td><code className="ic" style={{ cursor: 'pointer' }}>{token}</code></td>
                 <td><code className="ic">{sysRef}</code></td>
               </tr>
@@ -254,12 +254,12 @@ export default function Font() {
           </div>
           <div className="smt-row">
             <span><code className="ic">S</code></span>
-            <span className="smt-val" style={{ fontSize: '1.4rem', fontWeight: 700 }}>28dp</span>
+            <span className="smt-val" style={{ fontSize: '1.5rem', fontWeight: 700 }}>28dp</span>
             <span className="smt-ctx">Compact in-dash displays, cluster views</span>
           </div>
           <div className="smt-row smt-highlight">
             <span><code className="ic">M</code> <span className="smt-default">default</span></span>
-            <span className="smt-val" style={{ fontSize: '1.6rem', fontWeight: 700 }}>32dp</span>
+            <span className="smt-val" style={{ fontSize: '1.5rem', fontWeight: 700 }}>32dp</span>
             <span className="smt-ctx">Standard IVI screen (8–10")</span>
           </div>
           <div className="smt-row">

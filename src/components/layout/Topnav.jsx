@@ -81,11 +81,11 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
           <SidebarIcon />
         </button>
 
-        {productId === 'navsdk' && (
+        {product.platforms?.length > 0 && (
           <div className="platform-switcher platform-switcher--mobile">
-            {['android', 'ios'].map(p => (
+            {product.platforms.map(p => (
               <button key={p} className={`platform-btn${platform === p ? ' active' : ''}`} onClick={() => onPlatformChange?.(p)}>
-                {p === 'android' ? 'Android' : 'iOS'}
+                {product.platformLabels?.[p] ?? p}
               </button>
             ))}
           </div>
@@ -93,12 +93,12 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
 
         <span className="topnav-crumb-root topnav-crumb-hide-mobile" onClick={onHome}>{product.name}</span>
 
-        {/* Platform segment — NavSDK only, shown in breadcrumb (not a switcher, just context) */}
-        {productId === 'navsdk' && platform && (
+        {/* Platform segment — any product with platforms, shown in breadcrumb */}
+        {product.platforms?.length > 0 && platform && (
           <>
             <span className="topnav-crumb-sep topnav-crumb-hide-mobile">›</span>
             <span className="topnav-crumb-domain topnav-crumb-hide-mobile" style={{ cursor: 'default' }}>
-              {platform === 'android' ? 'Android' : 'iOS'}
+              {product.platformLabels?.[platform] ?? platform}
             </span>
           </>
         )}
@@ -134,15 +134,15 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         )}
       </div>
       <div className="topnav-right">
-        {productId === 'navsdk' && (
+        {product.platforms?.length > 0 && (
           <div className="platform-switcher topnav-hide-mobile">
-            {['android', 'ios'].map(p => (
+            {product.platforms.map(p => (
               <button
                 key={p}
                 className={`platform-btn${platform === p ? ' active' : ''}`}
                 onClick={() => onPlatformChange?.(p)}
               >
-                {p === 'android' ? 'Android' : 'iOS'}
+                {product.platformLabels?.[p] ?? p}
               </button>
             ))}
           </div>

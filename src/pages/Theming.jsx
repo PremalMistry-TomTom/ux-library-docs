@@ -12,7 +12,7 @@ function Step({ n, title, children }) {
           width: 28, height: 28, borderRadius: '50%',
           background: 'var(--red)', color: '#fff',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '0.78rem', fontWeight: 700, flexShrink: 0,
+          fontSize: '0.75rem', fontWeight: 700, flexShrink: 0,
         }}>{n}</div>
         <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, fontFamily: 'var(--font-display)' }}>{title}</h3>
       </div>
@@ -35,7 +35,7 @@ function Figure({ src, alt, caption }) {
         onError={e => { e.currentTarget.style.display = 'none'; }}
       />
       {caption && (
-        <figcaption style={{ fontSize: '0.76rem', color: 'var(--muted)', marginTop: 6 }}>
+        <figcaption style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 6 }}>
           {caption}
         </figcaption>
       )}
@@ -48,7 +48,7 @@ function Checklist({ items }) {
   return (
     <ul style={{ listStyle: 'none', margin: '12px 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
       {items.map((item, i) => (
-        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: '0.86rem', color: 'var(--mid)' }}>
+        <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: '0.875rem', color: 'var(--mid)' }}>
           <span style={{ color: 'var(--red)', fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
           <span>{item}</span>
         </li>
@@ -96,9 +96,9 @@ export default function Theming() {
               padding: '12px 14px', borderRadius: 8,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
-              <div style={{ fontSize: '1.1rem', marginBottom: 4 }}>{icon}</div>
-              <div style={{ fontWeight: 700, fontSize: '0.84rem', marginBottom: 3 }}>{label}</div>
-              <div style={{ fontSize: '0.76rem', color: 'var(--muted)', lineHeight: 1.5 }}>{note}</div>
+              <div style={{ fontSize: '1rem', marginBottom: 4 }}>{icon}</div>
+              <div style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{note}</div>
             </div>
           ))}
         </div>
@@ -195,8 +195,8 @@ export default function Theming() {
               padding: '12px 14px', borderRadius: 8,
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
-              <div style={{ fontWeight: 700, fontSize: '0.82rem', marginBottom: 4, color: 'var(--black)' }}>{title}</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--muted)', lineHeight: 1.55 }}>{desc}</div>
+              <div style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: 4, color: 'var(--black)' }}>{title}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.55 }}>{desc}</div>
             </div>
           ))}
         </div>

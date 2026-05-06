@@ -202,13 +202,13 @@ taiaClient.chat(chatRequest) { response ->
                   <td style={{ fontWeight: 500 }}>{t(`speechToText.requirementsTable.rows.${key}.req`)}</td>
                   <td>
                     <span style={{
-                      fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                      fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                       background: pri === 'P1' ? '#fff5f5' : 'var(--bg)',
                       color: pri === 'P1' ? 'var(--red)' : 'var(--muted)',
                       border: `1px solid ${pri === 'P1' ? '#fecaca' : 'var(--border)'}`,
                     }}>{pri}</span>
                   </td>
-                  <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`speechToText.requirementsTable.rows.${key}.notes`)}</td>
+                  <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`speechToText.requirementsTable.rows.${key}.notes`)}</td>
                 </tr>
               );
             })}

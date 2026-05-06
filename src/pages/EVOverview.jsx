@@ -102,11 +102,11 @@ export default function EVOverview({ onNavigate }) {
               onMouseEnter={e => { e.currentTarget.style.borderColor = s.color; e.currentTarget.style.background = `${s.color}0d`; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--white)'; }}
             >
-              <div style={{ fontSize: '1.4rem', marginBottom: 6 }}>{s.icon}</div>
-              <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--black)', marginBottom: 4 }}>
+              <div style={{ fontSize: '1.5rem', marginBottom: 6 }}>{s.icon}</div>
+              <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>
                 {t(`overview.sections.${s.id.replace('ev-', '').replace(/-/g, '_')}.label`)}
               </div>
-              <div style={{ fontSize: '0.76rem', color: 'var(--mid)', lineHeight: 1.5 }}>
+              <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>
                 {t(`overview.sections.${s.id.replace('ev-', '').replace(/-/g, '_')}.desc`)}
               </div>
             </button>
@@ -122,12 +122,12 @@ export default function EVOverview({ onNavigate }) {
           {[0,1,2,3,4].map(i => (
             <div key={i} style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--red)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
+                <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--red)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
                 {i < 4 && <div style={{ width: 2, height: 28, background: 'var(--border)', margin: '2px 0' }} />}
               </div>
               <div style={{ paddingTop: 6, paddingBottom: i < 4 ? 0 : 0 }}>
-                <div style={{ fontWeight: 700, fontSize: '0.86rem', color: 'var(--black)', marginBottom: 2 }}>{t(`overview.order.steps.s${i}.title`)}</div>
-                <div style={{ fontSize: '0.8rem', color: 'var(--mid)', lineHeight: 1.55, marginBottom: i < 4 ? 16 : 0 }}>{t(`overview.order.steps.s${i}.desc`)}</div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 2 }}>{t(`overview.order.steps.s${i}.title`)}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55, marginBottom: i < 4 ? 16 : 0 }}>{t(`overview.order.steps.s${i}.desc`)}</div>
               </div>
             </div>
           ))}

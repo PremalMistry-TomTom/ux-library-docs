@@ -48,7 +48,7 @@ export function ZonesDiagram({ t }) {
         }}>
           {['MEDIA','CLIMATE','PHONE'].map(w => (
             <div key={w} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>{w}</span>
+              <span style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>{w}</span>
             </div>
           ))}
         </div>
@@ -80,15 +80,15 @@ export function ZonesDiagram({ t }) {
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ width: 10, height: 10, borderRadius: 2, background: z.color, flexShrink: 0 }} />
-              <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--black)' }}>{z.label}</span>
+              <span style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{z.label}</span>
             </div>
             {activeZone === z.id && (
-              <p style={{ fontSize: '0.78rem', color: 'var(--mid)', margin: '6px 0 0 18px', lineHeight: 1.5 }}>{z.desc}</p>
+              <p style={{ fontSize: '0.75rem', color: 'var(--mid)', margin: '6px 0 0 18px', lineHeight: 1.5 }}>{z.desc}</p>
             )}
           </div>
         ))}
       </div>
-      <p style={{ fontSize: '0.72rem', color: 'var(--muted)', margin: '-4px 0 0' }}>Click a zone to highlight it on the diagram</p>
+      <p style={{ fontSize: '0.75rem', color: 'var(--muted)', margin: '-4px 0 0' }}>Click a zone to highlight it on the diagram</p>
     </div>
   );
 }
@@ -125,8 +125,8 @@ export function ResizeDemo({ t }) {
         {SLIDER_SIDES.map(({ side, label }) => (
           <div key={side}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 500 }}>{label}</span>
-              <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{insets[side]}%</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 500 }}>{label}</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{insets[side]}%</span>
             </div>
             <input
               type="range" min="0" max="50" value={insets[side]}
@@ -139,7 +139,7 @@ export function ResizeDemo({ t }) {
       <div>
         <button
           onClick={() => setInsets({ top: 0, right: 30, bottom: 0, left: 0 })}
-          style={{ fontSize: '0.76rem', padding: '4px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 5, cursor: 'pointer' }}
+          style={{ fontSize: '0.75rem', padding: '4px 10px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 5, cursor: 'pointer' }}
         >
           {t('homeScreen.sliders.reset')}
         </button>
@@ -161,25 +161,25 @@ export function ResizeDemo({ t }) {
             bottom: `${insets.bottom}%`, left: `${insets.left}%`,
             border: '2px solid #f59e0b', borderRadius: 4,
           }}>
-            <span style={{ position: 'absolute', top: 3, left: 4, fontSize: '0.45rem', color: '#f59e0b', fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.6)', padding: '1px 3px', borderRadius: 2 }}>nav app area</span>
+            <span style={{ position: 'absolute', top: 3, left: 4, fontSize: '0.5rem', color: '#f59e0b', fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.6)', padding: '1px 3px', borderRadius: 2 }}>nav app area</span>
           </div>
           {insets.right > 5 && (
             <div style={{ position: 'absolute', top: 0, right: 0, width: `${insets.right}%`, height: '100%', background: 'rgba(0,0,0,0.6)', borderLeft: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', padding: 4, gap: 3 }}>
               {['MEDIA','PHONE'].map(w => (
                 <div key={w} style={{ flex: 1, background: 'rgba(255,255,255,0.05)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: '0.38rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>{w}</span>
+                  <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>{w}</span>
                 </div>
               ))}
             </div>
           )}
           {insets.top > 5 && (
             <div style={{ position: 'absolute', top: 0, left: 0, right: `${insets.right}%`, height: `${insets.top}%`, background: 'rgba(0,0,0,0.55)', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '0.45rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>STATUS BAR</span>
+              <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>STATUS BAR</span>
             </div>
           )}
           {insets.bottom > 5 && (
             <div style={{ position: 'absolute', bottom: 0, left: 0, right: `${insets.right}%`, height: `${insets.bottom}%`, background: 'rgba(0,0,0,0.55)', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontSize: '0.45rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>BOTTOM BAR</span>
+              <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>BOTTOM BAR</span>
             </div>
           )}
         </div>
@@ -229,11 +229,11 @@ function StateMapMock({ state }) {
           <path d="M270 0 L260 180" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
         </svg>
         <div style={{ position: 'absolute', top: '50%', left: '52%', width: 10, height: 10, borderRadius: '50%', background: browsing ? '#f59e0b' : '#e2001a', boxShadow: `0 0 0 4px ${browsing ? 'rgba(245,158,11,0.3)' : 'rgba(226,0,26,0.3)'}` }} />
-        {browsing && <div style={{ position: 'absolute', top: '30%', right: '35%', fontSize: '0.6rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 4 }}>browsing…</div>}
+        {browsing && <div style={{ position: 'absolute', top: '30%', right: '35%', fontSize: '0.625rem', color: 'rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.5)', padding: '2px 6px', borderRadius: 4 }}>browsing…</div>}
       </div>
       {panelOpen && (
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,19,24,0.92)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-          <div style={{ fontSize: '0.65rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{state.panel}</div>
+          <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'rgba(255,255,255,0.6)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>{state.panel}</div>
           <div style={{ width: 160, height: 2, background: '#e2001a', borderRadius: 1 }} />
           <div style={{ width: 120, height: 6, background: 'rgba(255,255,255,0.1)', borderRadius: 3 }} />
           <div style={{ width: 100, height: 6, background: 'rgba(255,255,255,0.07)', borderRadius: 3 }} />
@@ -241,22 +241,22 @@ function StateMapMock({ state }) {
       )}
       {inGuidance && !panelOpen && (
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, background: '#1a6040', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: '1.4rem', color: 'white' }}>↖</span>
+          <span style={{ fontSize: '1.5rem', color: 'white' }}>↖</span>
           <div>
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-            <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.7)' }}>Oak Street North</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
+            <div style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.7)' }}>Oak Street North</div>
           </div>
         </div>
       )}
       {inArrival && !panelOpen && (
         <div style={{ position: 'absolute', inset: 0, background: 'rgba(12,19,24,0.85)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
-          <div style={{ fontSize: '1.2rem' }}>📍</div>
-          <div style={{ fontSize: '0.78rem', fontWeight: 700, color: 'white' }}>You have arrived</div>
+          <div style={{ fontSize: '1.25rem' }}>📍</div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'white' }}>You have arrived</div>
         </div>
       )}
       <div style={{
         position: 'absolute', bottom: 8, right: 8,
-        fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.06em',
+        fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.06em',
         padding: '3px 8px', borderRadius: 10,
         background: passive ? 'rgba(22,163,74,0.3)' : 'rgba(226,0,26,0.3)',
         border: `1px solid ${passive ? 'rgba(22,163,74,0.5)' : 'rgba(226,0,26,0.5)'}`,
@@ -322,15 +322,15 @@ navApp.uiState
       <div className="grid-2-col" style={{ gap: 12 }}>
         {Object.entries(stateDimensions).map(([dim, { label, values, desc }]) => (
           <div key={dim} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
-            <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 2, color: 'var(--black)' }}>{label}</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginBottom: 10, lineHeight: 1.4 }}>{desc}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 2, color: 'var(--black)' }}>{label}</div>
+            <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginBottom: 10, lineHeight: 1.4 }}>{desc}</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
               {values.map(v => (
                 <button
                   key={v}
                   onClick={() => set(dim, v)}
                   style={{
-                    fontSize: '0.65rem', fontFamily: 'var(--font-mono)', padding: '3px 7px',
+                    fontSize: '0.625rem', fontFamily: 'var(--font-mono)', padding: '3px 7px',
                     borderRadius: 4, cursor: 'pointer', fontWeight: state[dim] === v ? 700 : 400,
                     background: state[dim] === v ? 'var(--red)' : 'var(--white)',
                     color: state[dim] === v ? 'white' : 'var(--mid)',
@@ -354,10 +354,10 @@ navApp.uiState
       }}>
         <div style={{ width: 10, height: 10, borderRadius: '50%', background: passive ? '#16a34a' : '#e2001a', flexShrink: 0 }} />
         <div>
-          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: passive ? '#15803d' : '#e2001a' }}>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: passive ? '#15803d' : '#e2001a' }}>
             {passive ? t('homeScreen.passive') : t('homeScreen.active')}
           </span>
-          <span style={{ fontSize: '0.78rem', color: 'var(--mid)', marginLeft: 8 }}>
+          <span style={{ fontSize: '0.75rem', color: 'var(--mid)', marginLeft: 8 }}>
             {passive ? t('homeScreen.passiveDesc') : t('homeScreen.activeDesc')}
           </span>
         </div>
@@ -462,7 +462,7 @@ export default function HomeScreenLayout() {
                 <td style={{ fontWeight: 500 }}>{t(`homeScreen.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri.includes('P0') ? '#fff5f5' : 'var(--bg)',
                     color: pri.includes('P0') ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri.includes('P0') ? '#fecaca' : 'var(--border)'}`,
@@ -471,7 +471,7 @@ export default function HomeScreenLayout() {
                     {t(`homeScreen.requirementsTable.rows.${key}.pri`)}
                   </span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`homeScreen.requirementsTable.rows.${key}.notes`)}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`homeScreen.requirementsTable.rows.${key}.notes`)}</td>
               </tr>
             ))}
           </tbody>

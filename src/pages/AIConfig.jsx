@@ -119,11 +119,11 @@ export default function AIConfig() {
             {CONTEXT_FIELDS.map(f => (
               <tr key={f.field}>
                 <td><code>{f.field}</code></td>
-                <td style={{ fontSize: '0.78rem', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{f.type}</td>
-                <td style={{ textAlign: 'center', color: f.required ? 'var(--red)' : 'var(--muted)', fontWeight: f.required ? 600 : 400, fontSize: '0.8rem' }}>
+                <td style={{ fontSize: '0.75rem', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{f.type}</td>
+                <td style={{ textAlign: 'center', color: f.required ? 'var(--red)' : 'var(--muted)', fontWeight: f.required ? 600 : 400, fontSize: '0.75rem' }}>
                   {f.required ? 'Yes' : 'No'}
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{f.desc}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{f.desc}</td>
               </tr>
             ))}
           </tbody>
@@ -201,13 +201,13 @@ taiaClient.chat(TaiaChatRequest(
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P1' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P1' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P1' ? '#fecaca' : 'var(--border)'}`,
                   }}>{pri}</span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{notes}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{notes}</td>
               </tr>
             ))}
           </tbody>

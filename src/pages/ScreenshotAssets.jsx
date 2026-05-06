@@ -26,7 +26,7 @@ function StatusBadge({ status }) {
   const s = STATUS[status] || STATUS.planned;
   return (
     <span style={{
-      fontSize: '0.67rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
+      fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
       background: s.bg, color: s.color, border: `1px solid ${s.border}`,
       whiteSpace: 'nowrap',
     }}>{s.label}</span>
@@ -39,7 +39,7 @@ function StateChips({ states }) {
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
       {states.map(s => (
         <span key={s} style={{
-          fontSize: '0.67rem', padding: '2px 7px', borderRadius: 12,
+          fontSize: '0.625rem', padding: '2px 7px', borderRadius: 12,
           background: 'var(--bg)', border: '1px solid var(--border)',
           color: 'var(--mid)', whiteSpace: 'nowrap',
         }}>{s}</span>
@@ -88,15 +88,15 @@ function PreviewCard({ name, component, desc, states, status, preview }) {
       {/* Metadata strip */}
       <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 6 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-          <span style={{ fontWeight: 700, fontSize: '0.82rem', color: 'var(--text)' }}>{name}</span>
+          <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text)' }}>{name}</span>
           <StatusBadge status={status || 'mock'} />
         </div>
         {component && (
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.68rem', color: 'var(--muted)' }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', color: 'var(--muted)' }}>
             {component}
           </div>
         )}
-        <p style={{ margin: 0, fontSize: '0.77rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</p>
+        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</p>
         <StateChips states={states} />
       </div>
     </div>
@@ -405,7 +405,7 @@ export default function ScreenshotAssets() {
             background: 'var(--bg)', minWidth: 110, textAlign: 'center',
           }}>
             <div style={{ fontSize: '1.5rem', fontWeight: 800, color, lineHeight: 1.1 }}>{value}</div>
-            <div style={{ fontSize: '0.68rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.3 }}>{label}</div>
+            <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.3 }}>{label}</div>
           </div>
         ))}
       </div>
@@ -428,7 +428,7 @@ export default function ScreenshotAssets() {
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
           {Object.entries(STATUS).map(([key, s]) => (
             <span key={key} style={{
-              fontSize: '0.67rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
+              fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
               background: s.bg, color: s.color, border: `1px solid ${s.border}`,
             }}>{s.label}</span>
           ))}
@@ -443,10 +443,10 @@ export default function ScreenshotAssets() {
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 6 }}>
             <h2 className="sh" style={{ margin: 0 }}>{section.group}</h2>
             <span style={{
-              fontSize: '0.67rem', fontWeight: 600, padding: '2px 7px', borderRadius: 4,
+              fontSize: '0.625rem', fontWeight: 600, padding: '2px 7px', borderRadius: 4,
               background: 'var(--bg)', color: 'var(--muted)', border: '1px solid var(--border)',
             }}>{section.navGroup}</span>
-            <span style={{ fontSize: '0.72rem', color: 'var(--muted)', marginLeft: 'auto' }}>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted)', marginLeft: 'auto' }}>
               {section.screens.length} screen{section.screens.length !== 1 ? 's' : ''}{' · '}
               {section.screens.reduce((n, s) => n + s.states.length, 0)} states
             </span>

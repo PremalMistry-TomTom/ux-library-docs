@@ -61,7 +61,7 @@ export function ButtonBarConfig({ t }) {
             transition: 'all 0.1s',
           }}>
             <div style={{ fontSize: '1rem', marginBottom: 3 }}>{p.icon}</div>
-            <div style={{ fontSize: '0.68rem', fontWeight: 600 }}>{p.label}</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 600 }}>{p.label}</div>
           </button>
         ))}
       </div>
@@ -75,7 +75,7 @@ export function ButtonBarConfig({ t }) {
       </MapMockBase>
 
       <div>
-        <div style={{ fontSize: '0.76rem', fontWeight: 600, marginBottom: 8 }}>Button visibility</div>
+        <div style={{ fontSize: '0.75rem', fontWeight: 600, marginBottom: 8 }}>Button visibility</div>
         <div className="grid-2-col" style={{ gap: 6 }}>
           {BTN_ORDER.map(icon => {
             const hidden = hiddenBtns.includes(icon);
@@ -87,9 +87,9 @@ export function ButtonBarConfig({ t }) {
                 border: '1px solid var(--border)', opacity: hidden ? 0.5 : 1,
                 transition: 'all 0.1s',
               }}>
-                <span style={{ fontSize: '0.85rem' }}>{icon}</span>
-                <span style={{ fontSize: '0.78rem', flex: 1 }}>{BTN_LABELS[icon]}</span>
-                <span style={{ fontSize: '0.65rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>
+                <span style={{ fontSize: '0.875rem' }}>{icon}</span>
+                <span style={{ fontSize: '0.75rem', flex: 1 }}>{BTN_LABELS[icon]}</span>
+                <span style={{ fontSize: '0.625rem', color: hidden ? 'var(--muted)' : '#16a34a', fontWeight: 600 }}>
                   {hidden ? t('navControls.buttons.hidden') : t('navControls.buttons.shown')}
                 </span>
               </div>
@@ -122,7 +122,7 @@ export function SearchEntryConfig({ t }) {
       <div style={{ display: 'flex', gap: 8 }}>
         {[{ v: false, key: 'panel' }, { v: true, key: 'button' }].map(({ v, key }) => (
           <button key={String(v)} onClick={() => setAsButton(v)} style={{
-            padding: '7px 14px', borderRadius: 7, cursor: 'pointer', fontSize: '0.8rem',
+            padding: '7px 14px', borderRadius: 7, cursor: 'pointer', fontSize: '0.75rem',
             fontWeight: asButton === v ? 600 : 400,
             background: asButton === v ? '#fff5f5' : 'var(--bg)',
             border: `1px solid ${asButton === v ? 'var(--red)' : 'var(--border)'}`,
@@ -135,14 +135,14 @@ export function SearchEntryConfig({ t }) {
       <MapMockBase>
         <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 32, background: 'rgba(0,0,0,0.55)', borderRight: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: 4, padding: 6 }}>
           {(asButton ? ['🔍', '⚡', '🔇', '⚙️'] : ['⚡', '🔇', '⚙️']).map(icon => (
-            <div key={icon} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem' }}>{icon}</div>
+            <div key={icon} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{icon}</div>
           ))}
         </div>
         {!asButton && (
           <div style={{ position: 'absolute', bottom: 12, left: 40, right: 12, background: 'rgba(26,37,53,0.92)', borderRadius: 8, padding: '8px 10px', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: '0.6rem' }}>🔍</span>
-              <span style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>Search destination…</span>
+              <span style={{ fontSize: '0.625rem' }}>🔍</span>
+              <span style={{ fontSize: '0.625rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>Search destination…</span>
             </div>
           </div>
         )}
@@ -216,13 +216,13 @@ export default function NavigationControls() {
                 <td style={{ fontWeight: 500 }}>{t(`navControls.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,
                   }}>{pri}</span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`navControls.requirementsTable.rows.${key}.notes`)}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`navControls.requirementsTable.rows.${key}.notes`)}</td>
               </tr>
             ))}
           </tbody>

@@ -207,11 +207,11 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
             }}>↖</div>
             <div>
               <div style={{ fontSize: '1rem', fontWeight: 700, color: 'white', lineHeight: 1.2 }}>Turn left onto Oak Street</div>
-              <div style={{ fontSize: '0.76rem', color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>in 0.4 mi</div>
+              <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', marginTop: 2 }}>in 0.4 mi</div>
             </div>
             <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
-              <div style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.45)' }}>ETA</div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'white' }}>2:34 PM</div>
+              <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.45)' }}>ETA</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'white' }}>2:34 PM</div>
             </div>
           </div>
         )}
@@ -231,7 +231,7 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
               <circle cx="6.5" cy="6.5" r="4.5" stroke="#111" strokeWidth="1.5"/>
               <path d="M10 10l3 3" stroke="#111" strokeWidth="1.5" strokeLinecap="round"/>
             </svg>
-            <span style={{ fontSize: '0.8rem', color: '#9ca3af' }}>Search destination…</span>
+            <span style={{ fontSize: '0.75rem', color: '#9ca3af' }}>Search destination…</span>
           </div>
         )}
 
@@ -258,7 +258,7 @@ function StyleExplorer() {
         {STYLES.map(s => (
           <button key={s.id} onClick={() => setActiveId(s.id)} style={{
             flex: 1, padding: '8px 4px', borderRadius: 7, cursor: 'pointer',
-            fontSize: '0.8rem', fontWeight: activeId === s.id ? 600 : 400,
+            fontSize: '0.75rem', fontWeight: activeId === s.id ? 600 : 400,
             background: activeId === s.id ? '#fff5f5' : 'var(--bg)',
             border: `1px solid ${activeId === s.id ? 'var(--red)' : 'var(--border)'}`,
             color: activeId === s.id ? 'var(--red)' : 'var(--mid)',
@@ -274,10 +274,10 @@ function StyleExplorer() {
 
       {/* Description */}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginTop: 2 }}>
-        <span style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', flexShrink: 0 }}>
+        <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', flexShrink: 0 }}>
           MapStyle.{style.sdkName}
         </span>
-        <span style={{ fontSize: '0.84rem', color: 'var(--mid)', lineHeight: 1.6 }}>
+        <span style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6 }}>
           {style.desc}
         </span>
       </div>
@@ -309,32 +309,32 @@ function TiltDemo() {
         {/* Tilt angle */}
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-            <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>Tilt angle</span>
-            <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{pitch}°</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Tilt angle</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{pitch}°</span>
           </div>
           <input type="range" min="0" max="60" value={pitch}
             onChange={e => setPitch(Number(e.target.value))}
             style={{ width: '100%', accentColor: 'var(--red)' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>0° top-down</span>
-            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>60° max perspective</span>
+            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>0° top-down</span>
+            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>60° max perspective</span>
           </div>
         </div>
 
         {/* Zoom level */}
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
-            <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>Zoom level</span>
-            <span style={{ fontSize: '0.76rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{zoom}</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Zoom level</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{zoom}</span>
           </div>
           <input type="range" min="10" max="18" step="0.5" value={zoom}
             onChange={e => setZoom(Number(e.target.value))}
             style={{ width: '100%', accentColor: 'var(--red)' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>10 overview</span>
-            <span style={{ fontSize: '0.68rem', color: 'var(--muted)' }}>18 street level</span>
+            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>10 overview</span>
+            <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>18 street level</span>
           </div>
         </div>
       </div>
@@ -360,7 +360,7 @@ function StyleURIDemo() {
       <div style={{ display: 'flex', gap: 8 }}>
         {Object.entries(snippets).map(([k, v]) => (
           <button key={k} onClick={() => setSource(k)} style={{
-            padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: '0.76rem',
+            padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: '0.75rem',
             fontWeight: source === k ? 600 : 400,
             background: source === k ? '#fff5f5' : 'var(--bg)',
             border: `1px solid ${source === k ? 'var(--red)' : 'var(--border)'}`,
@@ -434,8 +434,8 @@ export default function MapStyle() {
             { scheme: 'content://', desc: 'Style exposed by an Android ContentProvider. Useful for shared/managed styles.' },
           ].map(({ scheme, desc }) => (
             <div key={scheme} style={{ padding: '12px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8 }}>
-              <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.78rem', color: 'var(--red)', display: 'block', marginBottom: 6 }}>{scheme}</code>
-              <div style={{ fontSize: '0.76rem', color: 'var(--muted)', lineHeight: 1.55 }}>{desc}</div>
+              <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--red)', display: 'block', marginBottom: 6 }}>{scheme}</code>
+              <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.55 }}>{desc}</div>
             </div>
           ))}
         </div>
@@ -495,13 +495,13 @@ export default function MapStyle() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,
                   }}>{pri}</span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{notes}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{notes}</td>
               </tr>
             ))}
           </tbody>

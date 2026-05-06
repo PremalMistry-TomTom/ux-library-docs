@@ -23,7 +23,7 @@ function FixedLogo({ onClick }) {
   );
 }
 import Sidenav from './components/layout/Sidenav';
-import TOC from './components/layout/TOC';
+import TOC, { TOC_MAP } from './components/layout/TOC';
 import Overview from './pages/Overview';
 import Colour from './pages/Colour';
 import HomeScreenLayout from './pages/HomeScreenLayout';
@@ -56,9 +56,17 @@ import EVRequirements from './pages/EVRequirements';
 import Cluster from './pages/Cluster';
 import ADASIntegration from './pages/ADASIntegration';
 import ScreenshotAssets from './pages/ScreenshotAssets';
+import Typography from './pages/Typography';
 import DomainLanding from './pages/DomainLanding';
 import NavSDKIntro from './pages/NavSDKIntro';
 import ANAIntro from './pages/ANAIntro';
+import RoutingAPIIntro from './pages/RoutingAPIIntro';
+import RoutingCalculateRoute from './pages/RoutingCalculateRoute';
+import LDEVRIntro from './pages/LDEVRIntro';
+import LDEVRFirstRoute from './pages/LDEVRFirstRoute';
+import LDEVRCalculateRoute from './pages/RoutingEVRoute';
+import MatrixRoutingIntro from './pages/MatrixRoutingIntro';
+import WaypointOptIntro from './pages/WaypointOptIntro';
 import Placeholder from './pages/Placeholder';
 
 const FULL_PAGES = new Set([
@@ -68,7 +76,7 @@ const FULL_PAGES = new Set([
   'ai-overview', 'ai-personality', 'intent-routing', 'voice-engine', 'speech-to-text', 'ai-config',
   'ev', 'cluster', 'adas',
   'ev-overview', 'ev-battery', 'ev-charging-search', 'ev-routing', 'ev-nav-ui', 'ev-requirements',
-  'screenshot-assets',
+  'screenshot-assets', 'typography',
 ]);
 
 function PageContent({ pageId, onNavigate, product, platform }) {
@@ -105,11 +113,23 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ev-charging':        return <DomainLanding groupKey="evCharging" onNavigate={onNavigate} />;
     case 'cluster':            return <Cluster />;
     case 'adas':               return <ADASIntegration />;
+    case 'typography':             return <Typography />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
     // NavSDK
     case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
     // ANA
     case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
+    // Routing API
+    case 'routing-api-intro':      return <RoutingAPIIntro onNavigate={onNavigate} platform={platform} />;
+    case 'routing-calculate-route':return <RoutingCalculateRoute onNavigate={onNavigate} platform={platform} />;
+    // Long Distance EV Routing API
+    case 'ldevr-intro':            return <LDEVRIntro onNavigate={onNavigate} />;
+    case 'ldevr-first-route':      return <LDEVRFirstRoute onNavigate={onNavigate} />;
+    case 'ldevr-calculate-route':  return <LDEVRCalculateRoute onNavigate={onNavigate} platform="tomtom-maps" />;
+    // Matrix Routing v2
+    case 'matrix-intro':           return <MatrixRoutingIntro onNavigate={onNavigate} />;
+    // Waypoint Optimization
+    case 'waypoint-intro':         return <WaypointOptIntro onNavigate={onNavigate} />;
     // Domain landing pages
     case 'assets':                 return <DomainLanding groupKey="assets"             onNavigate={onNavigate} />;
     case 'map-customisation':      return <DomainLanding groupKey="mapCustomisation"   onNavigate={onNavigate} />;
@@ -136,8 +156,13 @@ export default function App() {
   }, [isDark]);
 
   function navigate(pageId, productId, platform) {
-    if (productId) setCurrentProduct(productId);
-    if (platform !== undefined && platform !== null) setCurrentPlatform(platform);
+    if (productId && productId !== currentProduct) {
+      setCurrentProduct(productId);
+      const targetProduct = getProduct(productId);
+      setCurrentPlatform(platform ?? targetProduct.defaultPlatform ?? 'android');
+    } else if (platform !== undefined && platform !== null) {
+      setCurrentPlatform(platform);
+    }
     setCurrentPage(pageId);
     setNavDrawerOpen(false);
     window.scrollTo(0, 0);
@@ -182,7 +207,7 @@ export default function App() {
           onNavigate={(pageId, productId, platform) => { navigate(pageId, productId, platform); setDocsPortalOpen(false); }}
         />
       ) : (
-        <div className="shell">
+        <div className={`shell${!(TOC_MAP[currentPage]?.length) ? ' shell--no-toc' : ''}`}>
           <Sidenav
             currentPage={currentPage}
             onNavigate={navigate}

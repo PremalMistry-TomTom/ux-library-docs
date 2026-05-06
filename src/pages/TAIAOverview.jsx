@@ -84,7 +84,7 @@ function CapabilityGrid({ capabilities }) {
           border: '1px solid var(--border)', borderRadius: 6,
         }}>
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--teal, #5eead4)', flexShrink: 0 }} />
-          <span style={{ fontSize: '0.82rem', color: 'var(--text)' }}>{cap}</span>
+          <span style={{ fontSize: '0.875rem', color: 'var(--text)' }}>{cap}</span>
         </div>
       ))}
     </div>
@@ -143,7 +143,7 @@ export default function TAIAOverview() {
                 <td style={{ fontWeight: 500 }}>{t(`overview.scopeTable.rows.${key}.area`)}</td>
                 <td style={{ textAlign: 'center', fontSize: '1rem', color: taiaCols[key] === '✓' ? 'var(--green, #22c55e)' : 'var(--muted)' }}>{taiaCols[key]}</td>
                 <td style={{ textAlign: 'center', fontSize: '1rem', color: oemCols[key] === '✓' ? 'var(--green, #22c55e)' : 'var(--muted)' }}>{oemCols[key]}</td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`overview.scopeTable.rows.${key}.notes`)}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`overview.scopeTable.rows.${key}.notes`)}</td>
               </tr>
             ))}
           </tbody>
@@ -172,11 +172,11 @@ export default function TAIAOverview() {
                 <td style={{ fontWeight: 500 }}>{t(`overview.requirementsTable.rows.${key}.req`)}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: '#fff5f5', color: 'var(--red)', border: '1px solid #fecaca',
                   }}>P1</span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{t(`overview.requirementsTable.rows.${key}.notes`)}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{t(`overview.requirementsTable.rows.${key}.notes`)}</td>
               </tr>
             ))}
           </tbody>

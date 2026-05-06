@@ -144,7 +144,7 @@ export default function DomainLanding({ groupKey, onNavigate }) {
         <div style={{ marginTop: 48 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
             <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
-            <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>
               Related topics
             </span>
             <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
@@ -160,7 +160,7 @@ export default function DomainLanding({ groupKey, onNavigate }) {
               >
                 <span style={{ fontSize: '1.5rem', lineHeight: 1, flexShrink: 0 }}>{item.icon}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 700, color: 'var(--black)', marginBottom: 3 }}>{item.label}</div>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 3 }}>{item.label}</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{item.desc}</div>
                 </div>
                 <span style={{ color: 'var(--muted)', flexShrink: 0 }}><ArrowIcon /></span>

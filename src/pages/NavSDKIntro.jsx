@@ -20,8 +20,8 @@ function WhenCard({ icon, title, children }) {
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 8, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
-        <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
-        <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
+        <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
+        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
       </div>
       <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{children}</div>
     </div>
@@ -58,7 +58,7 @@ function ThumbMapDisplay() {
       {/* Layer pill */}
       <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.6)', borderRadius: 4, padding: '3px 7px', display: 'flex', gap: 4, alignItems: 'center' }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#3fb950' }}/>
-        <span style={{ fontSize: '0.42rem', color: '#e2e8f0', fontWeight: 600 }}>Map Display</span>
+        <span style={{ fontSize: '0.5rem', color: '#e2e8f0', fontWeight: 600 }}>Map Display</span>
       </div>
     </div>
   );
@@ -71,7 +71,7 @@ function ThumbSearch() {
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%' }}>
       <div style={{ padding: '7px 10px', background: M.card, display: 'flex', alignItems: 'center', gap: 6, borderBottom: `1px solid ${M.line}` }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <span style={{ fontSize: '0.55rem', color: M.muted }}>Search destination…</span>
+        <span style={{ fontSize: '0.5rem', color: M.muted }}>Search destination…</span>
       </div>
       {results.map(([name, dist], i) => (
         <div key={name} style={{ padding: '6px 10px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -79,8 +79,8 @@ function ThumbSearch() {
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.55rem', fontWeight: 600, color: M.text }}>{name}</div>
-            <div style={{ fontSize: '0.46rem', color: M.muted }}>{dist}</div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 600, color: M.text }}>{name}</div>
+            <div style={{ fontSize: '0.5rem', color: M.muted }}>{dist}</div>
           </div>
         </div>
       ))}
@@ -92,8 +92,8 @@ function ThumbRouting() {
   const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950', red: '#e2001a' };
   return (
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
-      <div style={{ fontSize: '0.55rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Route Options</div>
-      <div style={{ fontSize: '0.46rem', color: M.dim, marginBottom: 8 }}>Amsterdam → Berlin · 3 results</div>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Route Options</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>Amsterdam → Berlin · 3 results</div>
       {[
         { label: 'Fastest', time: '5h 52m', dist: '573 km', tag: 'Recommended', color: M.green },
         { label: 'Eco', time: '6h 10m', dist: '558 km', tag: '–12% fuel', color: M.blue },
@@ -101,10 +101,10 @@ function ThumbRouting() {
       ].map((r, i) => (
         <div key={r.label} style={{ background: i === 0 ? 'rgba(63,185,80,0.08)' : M.card, border: `1px solid ${i === 0 ? 'rgba(63,185,80,0.25)' : M.line}`, borderRadius: 5, padding: '5px 7px', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 7 }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.52rem', fontWeight: 700, color: M.text }}>{r.time}</div>
-            <div style={{ fontSize: '0.44rem', color: M.dim }}>{r.dist}</div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{r.time}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>{r.dist}</div>
           </div>
-          <span style={{ fontSize: '0.42rem', padding: '2px 5px', borderRadius: 3, background: 'rgba(255,255,255,0.06)', color: r.color, fontWeight: 600 }}>{r.tag}</span>
+          <span style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 3, background: 'rgba(255,255,255,0.06)', color: r.color, fontWeight: 600 }}>{r.tag}</span>
         </div>
       ))}
     </div>
@@ -125,16 +125,16 @@ function ThumbNavigation() {
       <div style={{ position: 'absolute', top: 8, left: 8, background: '#1a3d2b', borderRadius: 6, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid rgba(63,185,80,0.3)' }}>
         <span style={{ fontSize: '1rem', lineHeight: 1 }}>↖</span>
         <div>
-          <div style={{ fontSize: '0.55rem', fontWeight: 700, color: '#fff' }}>800 m</div>
-          <div style={{ fontSize: '0.42rem', color: 'rgba(255,255,255,0.55)' }}>Turn left · Keizersgracht</div>
+          <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#fff' }}>800 m</div>
+          <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.55)' }}>Turn left · Keizersgracht</div>
         </div>
       </div>
       {/* ETA bar */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['22 min', 'Time'], ['8.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.6rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-            <div style={{ fontSize: '0.38rem', color: '#64748b' }}>{l}</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
           </div>
         ))}
       </div>
@@ -149,14 +149,14 @@ function ThumbOffline() {
     <div style={{ background: M.bg, borderRadius: 8, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 8 }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3fb950" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 2.09 4.18a2 2 0 0 1 2-2.18h3"/><path d="M16 2a4 4 0 0 1 4 4v1M16 7h6"/><line x1="23" y1="1" x2="1" y2="23" stroke="#ef4444" strokeWidth="1.5"/></svg>
-        <span style={{ fontSize: '0.52rem', fontWeight: 700, color: M.text }}>Offline Maps</span>
-        <span style={{ fontSize: '0.42rem', color: '#3fb950', marginLeft: 'auto' }}>Active</span>
+        <span style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>Offline Maps</span>
+        <span style={{ fontSize: '0.5rem', color: '#3fb950', marginLeft: 'auto' }}>Active</span>
       </div>
       {regions.map(([name, size, pct]) => (
         <div key={name} style={{ marginBottom: 7 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
             <span style={{ fontSize: '0.5rem', color: M.text }}>{name}</span>
-            <span style={{ fontSize: '0.46rem', color: M.dim }}>{size}</span>
+            <span style={{ fontSize: '0.5rem', color: M.dim }}>{size}</span>
           </div>
           <div style={{ height: 4, background: M.card, borderRadius: 2 }}>
             <div style={{ height: '100%', width: `${pct}%`, background: pct === 100 ? '#3fb950' : M.blue, borderRadius: 2 }}/>
@@ -180,15 +180,15 @@ function ThumbCarPlay() {
       {/* CarPlay chrome */}
       <div style={{ position: 'absolute', top: 8, left: 8, right: 8, background: 'rgba(0,0,0,0.7)', borderRadius: 5, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,0.1)' }}>
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        <span style={{ fontSize: '0.42rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600, letterSpacing: '0.04em' }}>CarPlay</span>
+        <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600, letterSpacing: '0.04em' }}>CarPlay</span>
         <div style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}/>
       </div>
       {/* ETA bar */}
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['18 min', 'Time'], ['6.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.6rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-            <div style={{ fontSize: '0.38rem', color: '#64748b' }}>{l}</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
           </div>
         ))}
       </div>
@@ -217,8 +217,8 @@ function ThumbVirtualHorizon() {
       <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', flexDirection: 'column', gap: 3 }}>
         {[['🚧','Roadwork', '#fbbf24'], ['⚠️','Sharp curve', '#ef4444'], ['⛽','Station 800m', '#60a5fa']].map(([icon, label, color]) => (
           <div key={label} style={{ background: 'rgba(0,0,0,0.65)', borderRadius: 4, padding: '2px 6px', display: 'flex', gap: 4, alignItems: 'center', border: `1px solid ${color}33` }}>
-            <span style={{ fontSize: '0.45rem' }}>{icon}</span>
-            <span style={{ fontSize: '0.42rem', color }}>{label}</span>
+            <span style={{ fontSize: '0.5rem' }}>{icon}</span>
+            <span style={{ fontSize: '0.5rem', color }}>{label}</span>
           </div>
         ))}
       </div>
@@ -241,8 +241,8 @@ function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
       </div>
       <div style={{ padding: '12px 14px', flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-          <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--black)' }}>{title}</div>
-          {tag && <span style={{ fontSize: '0.62rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(226,0,26,0.08)', color: '#e2001a', fontWeight: 600 }}>{tag}</span>}
+          <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{title}</div>
+          {tag && <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: 'rgba(226,0,26,0.08)', color: '#e2001a', fontWeight: 600 }}>{tag}</span>}
         </div>
         <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
@@ -263,11 +263,11 @@ function ArchDiagram() {
       {layers.map((layer, i) => (
         <div key={layer.label} style={{ background: layer.bg, border: `1px solid ${layer.border}`, borderRadius: 8, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 28, height: 28, borderRadius: 6, background: layer.bg, border: `1.5px solid ${layer.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: layer.color }}>{i + 1}</span>
+            <span style={{ fontSize: '0.625rem', fontWeight: 700, color: layer.color }}>{i + 1}</span>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>{layer.label}</div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>{layer.desc}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>{layer.label}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{layer.desc}</div>
           </div>
         </div>
       ))}
@@ -280,16 +280,16 @@ function PlatformCard({ platform, icon, items, active }) {
   return (
     <div style={{ flex: 1, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, borderRadius: 10, padding: '16px 20px', background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', transition: 'border-color 0.2s' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-        <span style={{ fontSize: '1.4rem' }}>{icon}</span>
-        <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--black)' }}>{platform}</span>
-        {active && <span style={{ marginLeft: 'auto', fontSize: '0.62rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>Current</span>}
+        <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+        <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{platform}</span>
+        {active && <span style={{ marginLeft: 'auto', fontSize: '0.625rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>Current</span>}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {items.map(([title, desc]) => (
           <div key={title} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
             <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#e2001a', marginTop: 6, flexShrink: 0 }}/>
             <div>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--black)' }}>{title}</span>
+              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--black)' }}>{title}</span>
               {desc && <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}> — {desc}</span>}
             </div>
           </div>
@@ -362,7 +362,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Introduction</h1>
+        <h1>Maps &amp; Navigation SDK</h1>
         <PageActions />
       </div>
       <p className="quick-answer">
@@ -383,7 +383,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
           </svg>
-          <span style={{ fontSize: '0.8rem' }}>Maps &amp; Navigation SDK</span>
+          <span style={{ fontSize: '0.75rem' }}>Maps &amp; Navigation SDK</span>
         </div>
       </div>
 
@@ -515,7 +515,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
             className="page-action-btn"
-            style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.82rem', cursor: 'pointer' }}
+            style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
             onClick={() => onNavigate?.('navsdk-project-setup')}
           >
             Get started

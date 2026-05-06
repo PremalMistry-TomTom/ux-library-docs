@@ -1,8 +1,6 @@
 # TomTom UX Library — Documentation Site
 
-Interactive documentation for the TomTom UX Library SDK — a composable Android UI layer built on top of NavSDK for automotive, IVI, and fleet navigation applications.
-
-This site is built as a high-fidelity prototype to communicate the SDK's capabilities to OEM partners and internal stakeholders. Every page pairs written documentation with live interactive demos — sliders, toggles, and configuration builders that generate real Kotlin output — so the integration story is tangible rather than abstract. Pages are organised across six integration domains, each with its own landing page and sub-pages covering architecture, configuration, API references, and annotated code examples. The site supports full Simplified Chinese localisation, dark mode, and a contextual AI chat panel on every page.
+High-fidelity documentation prototype spanning the TomTom developer ecosystem — from the UX Library SDK for automotive OEMs to the Routing API, Long Distance EV Routing API, Matrix Routing, and Waypoint Optimisation. Built to explore and demonstrate what great developer docs UX looks like at TomTom: one product, one audience, one clear path to working code.
 
 ![Overview](docs/screenshots/01-overview.png)
 
@@ -10,7 +8,11 @@ This site is built as a high-fidelity prototype to communicate the SDK's capabil
 
 ## What's inside
 
+### UX Library SDK
+
 The UX Library gives OEMs a production-ready baseline for every visible layer of the navigation experience — colours, typography, map styles, navigation panels, search, cluster display, AI assistant integration, and vehicle systems — all overridable without forking the SDK.
+
+Every page pairs written documentation with live interactive demos — sliders, toggles, and configuration builders that generate real Kotlin output — so the integration story is tangible rather than abstract.
 
 Six integration domains:
 
@@ -23,6 +25,26 @@ Six integration domains:
 | **Vehicle Integration** | Instrument cluster, head-up display, ADAS integration, truck support |
 | **TomTom AI Assistant** | Overview, voice engine, speech-to-text, configuration |
 
+### API Documentation
+
+Standalone documentation products for TomTom's routing and navigation APIs — each built as an independent doc set with its own introduction, quick start, and full API reference. This section demonstrates the principle of audience-first documentation: one guide, one integration track, one path to a working outcome.
+
+| Product | Pages |
+|---|---|
+| **Routing API** | Introduction, Quick Start (authentication, first route, response structure), Core Concepts (route types, travel modes, vehicle profiles, consumption models), Calculate Route reference, Reachable Range, Batch Routing, Guidance (turn-by-turn, lane guidance), Advanced (reconstruction, avoid areas, tolls), Platform Reference (TomTom Maps v1, Orbis Maps v2, migration guide), API Reference |
+| **Long Distance EV Routing API** | Introduction, Quick Start (authentication, first EV route with cURL + Kotlin SDK), Core Concepts (charging stop selection, battery model, connector types), Calculate EV Route reference, Batch EV Route |
+| **Matrix Routing v2 API** | Introduction |
+| **Waypoint Optimization API** | Introduction |
+
+### Navigation SDK & Automotive Navigation App
+
+Platform-aware introduction pages for the TomTom Navigation SDK and Automotive Navigation Application, with cross-linking between integration tracks.
+
+| Product | Pages |
+|---|---|
+| **Navigation SDK** | Introduction with platform capabilities, quick start, and integration guidance |
+| **Automotive Navigation App** | Introduction with deployment model and customisation overview |
+
 ### Key use cases
 Eight of the most commonly customised capabilities, each with a visual preview. Click any card to jump directly to that page.
 
@@ -32,6 +54,46 @@ Eight of the most commonly customised capabilities, each with a visual preview. 
 Six integration domains with page-pill navigation — each card links directly to its sub-pages.
 
 ![Explore by domain](docs/screenshots/14-overview-domains.png)
+
+---
+
+## Two-column API reference layout
+
+API reference pages use a custom `ApiRefTwoCol` component — a parallax two-column layout with sticky section headers and sticky code panels. Each section pairs parameter documentation on the left with a live code example on the right that stays pinned as you scroll through the parameters.
+
+Key behaviours:
+- **Sticky code panel** — code stays in view as parameters scroll; max-height prevents sticky-from-bottom behaviour on tall viewboxes
+- **Expand / collapse** — long code blocks detect overflow automatically and show a fade gradient hint; an expand button breaks the panel out of its sticky container to reveal the full response
+- **Method badges** — GET / POST badges on sidenav anchors match the endpoint method, giving quick orientation while navigating
+- **Error code cards** — Chargetrip-style error cards (HTTP badge + bold title + description) replace plain tables in all error code sections, with a matching JSON error response in the code panel
+- **Section types grid** — response sections include a compact grid of all `sectionType` values with their fields, rendered as an `extra` slot below the parameter table
+
+### Routing API — Calculate Route
+
+Full two-column API reference for `GET /routing/1/calculateRoute` covering route planning, vehicle profile, combustion and electric consumption models, POST body, response summary (with section types grid), and error codes. Platform-aware: content switches between TomTom Maps v1 and Orbis Maps v2 via the platform toggle.
+
+### LDEVR — Calculate EV Route
+
+Full two-column reference for `POST /routing/1/calculateLongDistanceEVRoute` covering route planning, electric vehicle & battery, charging connector & power, energy consumption model, route & battery summary response, charging stop details, and error codes.
+
+### LDEVR — Quick Start
+
+Dedicated quick start page (`ldevr-first-route`) with a working cURL example (Amsterdam → Paris, 75 kWh battery, CCS Combo 2) and a full Kotlin SDK integration using `OnlineRoutePlanner`, covering dependency setup, live SoC, station arrival UX, and automatic replanning.
+
+---
+
+## Hero illustrations
+
+Both API introduction pages open with custom SVG hero illustrations that make the product immediately legible:
+
+- **LDEVR intro** — Amsterdam → Paris EV route with two charging stops (Fastned, Ionity), battery state arcs showing charge level between stops, dwell times, and a segmented battery bar at the bottom
+- **Routing API intro** — Amsterdam → Brussels fastest route with a live traffic jam segment in amber, a dashed alternative "shortest route", waypoint B marker, travel mode chips, and a route summary card
+
+---
+
+## DocsPortal
+
+A replica of the `docs.tomtom.com` navigation shell, accessible from the Products link in the top nav. Demonstrates how the individual product doc sets would sit inside TomTom's real developer portal — with the left-hand product picker, breadcrumb, and page structure matching the live site.
 
 ---
 
@@ -231,11 +293,35 @@ npm run dev
 
 ```
 src/
-├── pages/          # One file per doc page
+├── pages/
+│   ├── RoutingAPIIntro.jsx         # Routing API introduction + hero illustration
+│   ├── RoutingCalculateRoute.jsx   # Calculate Route — full two-column API reference
+│   ├── LDEVRIntro.jsx              # LDEVR introduction + hero illustration
+│   ├── LDEVRFirstRoute.jsx         # LDEVR quick start (cURL + Kotlin SDK)
+│   ├── RoutingEVRoute.jsx          # Calculate EV Route — full two-column API reference
+│   ├── MatrixRoutingIntro.jsx      # Matrix Routing introduction
+│   ├── WaypointOptIntro.jsx        # Waypoint Optimisation introduction
+│   ├── NavSDKIntro.jsx             # Navigation SDK introduction
+│   ├── ANAIntro.jsx                # Automotive Navigation App introduction
+│   ├── DocsPortal.jsx              # docs.tomtom.com shell replica
+│   └── ...                         # UX Library SDK pages (EV, Cluster, Map, TAIA…)
 ├── components/
 │   ├── layout/     # Topnav, Sidenav, TOC, GlobalHeader
-│   └── ui/         # Callout, CodeBlock, ApiLinks, Swatch
-├── data/           # navigation.js — single source of truth for nav + page titles
+│   └── ui/
+│       ├── ApiRefTwoCol.jsx        # Two-column parallax API reference layout
+│       ├── Callout.jsx
+│       ├── CodeBlock.jsx
+│       ├── PageActions.jsx
+│       └── ...
+├── data/
+│   ├── nav-routing-api.js          # Routing API nav + page titles
+│   ├── nav-ldevr.js                # LDEVR nav + page titles
+│   ├── nav-matrix.js               # Matrix Routing nav
+│   ├── nav-waypoint.js             # Waypoint Optimisation nav
+│   ├── nav-navsdk.js               # Navigation SDK nav
+│   ├── nav-ana.js                  # Automotive Navigation App nav
+│   ├── nav-ux-library.js           # UX Library SDK nav
+│   └── products.js                 # Top-level product registry
 ├── hooks/          # useGlobalHeader
 ├── locales/        # EN + ZH i18n strings
 └── index.css       # Design system — 4pt scale, CSS custom properties, dark mode

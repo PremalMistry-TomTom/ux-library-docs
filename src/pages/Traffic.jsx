@@ -164,8 +164,8 @@ function Toggle({ label, on, onToggle }) {
       <div style={{ width: 32, height: 18, borderRadius: 9, background: on ? 'var(--red)' : 'var(--border)', position: 'relative', flexShrink: 0, transition: 'background 0.15s' }}>
         <div style={{ position: 'absolute', top: 2, left: on ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.15s' }} />
       </div>
-      <span style={{ fontSize: '0.82rem', fontWeight: 500 }}>{label}</span>
-      <span style={{ marginLeft: 'auto', fontSize: '0.68rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'on' : 'off'}</span>
+      <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{label}</span>
+      <span style={{ marginLeft: 'auto', fontSize: '0.625rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'on' : 'off'}</span>
     </div>
   );
 }
@@ -201,7 +201,7 @@ function LayerConfigurator() {
       <div className="grid-2-col">
         {/* Layer toggles */}
         <div>
-          <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Layers</div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Layers</div>
           <Toggle label="Traffic flow"      on={flowOn} onToggle={() => setFlowOn(v => !v)} />
           <Toggle label="Traffic incidents" on={incOn}  onToggle={() => setIncOn(v => !v)} />
         </div>
@@ -209,7 +209,7 @@ function LayerConfigurator() {
         {/* Flow style */}
         {flowOn && (
           <div>
-            <div style={{ fontSize: '0.72rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Flow style</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 8 }}>Flow style</div>
             {[
               { id: 'RELATIVE', label: 'Relative', desc: 'Speed as % of free-flow baseline' },
               { id: 'ABSOLUTE', label: 'Absolute', desc: 'Fixed speed thresholds (km/h)' },
@@ -220,8 +220,8 @@ function LayerConfigurator() {
                 border: `1px solid ${flowStyle === opt.id ? 'var(--red)' : 'var(--border)'}`,
                 transition: 'all 0.1s',
               }}>
-                <div style={{ fontSize: '0.78rem', fontWeight: flowStyle === opt.id ? 600 : 400, color: flowStyle === opt.id ? 'var(--red)' : 'var(--black)' }}>{opt.label}</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--muted)', marginTop: 2 }}>{opt.desc}</div>
+                <div style={{ fontSize: '0.75rem', fontWeight: flowStyle === opt.id ? 600 : 400, color: flowStyle === opt.id ? 'var(--red)' : 'var(--black)' }}>{opt.label}</div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--muted)', marginTop: 2 }}>{opt.desc}</div>
               </div>
             ))}
           </div>
@@ -255,7 +255,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
               <div key={t.id} style={{
                 position: 'absolute', left: t.x, top: t.y,
                 transform: 'translate(-50%, -50%)',
-                fontSize: '1.1rem', zIndex: 6,
+                fontSize: '1rem', zIndex: 6,
                 filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.7))',
                 pointerEvents: 'none',
               }}>{t.icon}</div>
@@ -277,8 +277,8 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
               opacity: on ? 1 : 0.45, transition: 'all 0.12s',
             }}>
               <span style={{ fontSize: '1rem' }}>{t.icon}</span>
-              <span style={{ fontSize: '0.82rem', fontWeight: 500, flex: 1 }}>{t.label}</span>
-              <span style={{ fontSize: '0.65rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'shown' : 'hidden'}</span>
+              <span style={{ fontSize: '0.875rem', fontWeight: 500, flex: 1 }}>{t.label}</span>
+              <span style={{ fontSize: '0.625rem', fontWeight: 600, color: on ? '#16a34a' : 'var(--muted)' }}>{on ? 'shown' : 'hidden'}</span>
             </div>
           );
         })}
@@ -311,11 +311,11 @@ function RefreshDemo() {
             color: interval === p.id ? 'var(--red)' : 'var(--mid)',
             transition: 'all 0.1s',
           }}>
-            <div style={{ fontSize: '0.88rem', fontWeight: 700 }}>{p.label}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700 }}>{p.label}</div>
           </button>
         ))}
       </div>
-      <div style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 7, fontSize: '0.8rem', color: 'var(--mid)' }}>
+      <div style={{ padding: '10px 14px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 7, fontSize: '0.75rem', color: 'var(--mid)' }}>
         {sel?.note}
       </div>
       <CodeBlock language="kotlin" code={`mapView.setTrafficConfiguration(\n    TrafficConfiguration(\n        flowEnabled         = true,\n        incidentsEnabled     = true,\n        refreshIntervalSec   = ${interval}\n    )\n)`} />
@@ -421,13 +421,13 @@ export default function TrafficPage() {
                 <td style={{ fontWeight: 500 }}>{req}</td>
                 <td>
                   <span style={{
-                    fontSize: '0.68rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
+                    fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3,
                     background: pri === 'P0' ? '#fff5f5' : 'var(--bg)',
                     color: pri === 'P0' ? 'var(--red)' : 'var(--muted)',
                     border: `1px solid ${pri === 'P0' ? '#fecaca' : 'var(--border)'}`,
                   }}>{pri}</span>
                 </td>
-                <td style={{ color: 'var(--mid)', fontSize: '0.82rem' }}>{notes}</td>
+                <td style={{ color: 'var(--mid)', fontSize: '0.875rem' }}>{notes}</td>
               </tr>
             ))}
           </tbody>

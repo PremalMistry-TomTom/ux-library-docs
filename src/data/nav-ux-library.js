@@ -92,6 +92,7 @@ export const UX_LIBRARY_NAV = [
   {
     label: 'Plumbing', key: 'plumbing', type: 'group', defaultOpen: true, plumbing: true,
     items: [
+      { id: 'typography',        label: 'Typography system' },
       { id: 'screenshot-assets', label: 'Screenshot assets & states' },
     ],
   },
@@ -133,5 +134,6 @@ export const UX_LIBRARY_PAGE_TITLES = {
   'homescreen-example': 'Home Screen UI Customisation',
   'release-notes': 'Release Notes', migration: 'Migration Guide',
   'api-ref': 'API Reference',
+  'typography': 'Typography system',
   'screenshot-assets': 'Screenshot assets & states',
 };

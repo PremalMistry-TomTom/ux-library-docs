@@ -52,22 +52,22 @@ function ChatPreview({ name, tone }) {
     <div style={{ background: '#0c1318', borderRadius: 10, border: '1px solid rgba(255,255,255,0.08)', overflow: 'hidden', height: '100%' }}>
       <div style={{ padding: '10px 16px', background: '#171e24', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', gap: 8 }}>
         <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#C82020' }} />
-        <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.9)' }}>{name.trim() || 'TAIA'}</span>
-        <span style={{ marginLeft: 'auto', fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>live preview</span>
+        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'rgba(255,255,255,0.9)' }}>{name.trim() || 'TAIA'}</span>
+        <span style={{ marginLeft: 'auto', fontSize: '0.625rem', color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>live preview</span>
       </div>
       <div style={{ padding: '14px 14px', display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto' }}>
         {samples.map((s, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <div style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)', borderRadius: '10px 10px 2px 10px', padding: '6px 11px', fontSize: '0.76rem', maxWidth: '82%' }}>
+              <div style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)', borderRadius: '10px 10px 2px 10px', padding: '6px 11px', fontSize: '0.75rem', maxWidth: '82%' }}>
                 {s.user}
               </div>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-              <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#C82020', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.58rem', fontWeight: 700, color: '#fff', marginTop: 1 }}>
+              <div style={{ width: 22, height: 22, borderRadius: '50%', background: '#C82020', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.625rem', fontWeight: 700, color: '#fff', marginTop: 1 }}>
                 {initial}
               </div>
-              <div style={{ background: 'rgba(30,138,212,0.18)', color: 'rgba(255,255,255,0.85)', borderRadius: '2px 10px 10px 10px', padding: '6px 11px', fontSize: '0.76rem', maxWidth: '88%', lineHeight: 1.55, transition: 'all 0.2s ease' }}>
+              <div style={{ background: 'rgba(30,138,212,0.18)', color: 'rgba(255,255,255,0.85)', borderRadius: '2px 10px 10px 10px', padding: '6px 11px', fontSize: '0.75rem', maxWidth: '88%', lineHeight: 1.55, transition: 'all 0.2s ease' }}>
                 {s.bot(name.trim() || 'TAIA')}
               </div>
             </div>
@@ -112,9 +112,9 @@ export default function ConversationPersonality() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 8, margin: '12px 0' }}>
           {CONFIG_SCOPE.map(({ icon, label, note }) => (
             <div key={label} style={{ padding: '12px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)' }}>
-              <div style={{ fontSize: '1.1rem', marginBottom: 4 }}>{icon}</div>
-              <div style={{ fontWeight: 700, fontSize: '0.84rem', marginBottom: 3 }}>{label}</div>
-              <div style={{ fontSize: '0.76rem', color: 'var(--muted)', lineHeight: 1.5 }}>{note}</div>
+              <div style={{ fontSize: '1rem', marginBottom: 4 }}>{icon}</div>
+              <div style={{ fontWeight: 700, fontSize: '0.875rem', marginBottom: 3 }}>{label}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{note}</div>
             </div>
           ))}
         </div>
@@ -131,7 +131,7 @@ export default function ConversationPersonality() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {/* Name */}
             <div>
-              <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
                 Assistant name
               </div>
               <input
@@ -144,7 +144,7 @@ export default function ConversationPersonality() {
                   width: '100%', padding: '8px 12px', boxSizing: 'border-box',
                   border: '1.5px solid var(--border)', borderRadius: 7,
                   background: 'var(--white)', color: 'var(--black)',
-                  fontSize: '0.88rem', fontFamily: 'var(--font-body)',
+                  fontSize: '0.875rem', fontFamily: 'var(--font-body)',
                   outline: 'none', transition: 'border-color 0.12s',
                 }}
                 onFocus={e => e.target.style.borderColor = 'var(--red)'}
@@ -154,7 +154,7 @@ export default function ConversationPersonality() {
 
             {/* Tone */}
             <div>
-              <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
                 Response tone
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -172,8 +172,8 @@ export default function ConversationPersonality() {
                   >
                     <span style={{ fontSize: '1rem', flexShrink: 0 }}>{t.emoji}</span>
                     <div>
-                      <div style={{ fontSize: '0.82rem', fontWeight: 700, color: tone === t.id ? 'var(--red)' : 'var(--black)', marginBottom: 1 }}>{t.label}</div>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--muted)', lineHeight: 1.4 }}>{t.desc}</div>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: tone === t.id ? 'var(--red)' : 'var(--black)', marginBottom: 1 }}>{t.label}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.4 }}>{t.desc}</div>
                     </div>
                   </button>
                 ))}
@@ -187,7 +187,7 @@ export default function ConversationPersonality() {
 
         {/* Generated config */}
         <div style={{ marginTop: 20 }}>
-          <div style={{ fontSize: '0.72rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, marginBottom: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
             Generated configuration
           </div>
           <CodeBlock language="kotlin" code={configCode} />
