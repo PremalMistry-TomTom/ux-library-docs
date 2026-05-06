@@ -52,6 +52,11 @@ export const ROUTING_API_NAV = [
       { id: 'api-lane-response', label: 'Lane object schema' },
       { id: 'api-lane-render',   label: 'Rendering guidance' },
     ]},
+  { id: 'routing-road-shields', label: 'Road Shield Notes', type: 'top', ref: true, anchors: [
+      { id: 'api-shields-request', label: 'Enabling road shields', method: 'GET' },
+      { id: 'api-shields-section', label: 'Road shield section' },
+      { id: 'api-shields-object',  label: 'Shield object' },
+    ]},
   { type: 'section', label: 'Advanced & Reference' },
   {
     label: 'Advanced', key: 'routingAdvanced', type: 'group', landingId: 'routing-advanced',
@@ -112,6 +117,10 @@ export const ROUTING_API_PAGE_TITLES = {
   'api-lane-request':            'Enabling lane guidance',
   'api-lane-response':           'Lane object schema',
   'api-lane-render':             'Rendering guidance',
+  'routing-road-shields':        'Road Shield Notes',
+  'api-shields-request':         'Enabling road shields',
+  'api-shields-section':         'Road shield section',
+  'api-shields-object':          'Shield object',
   'routing-advanced':            'Advanced',
   'routing-reconstruction':      'Route Reconstruction',
   'routing-avoid-areas':         'Avoiding Areas',

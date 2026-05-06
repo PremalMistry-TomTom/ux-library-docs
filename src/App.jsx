@@ -66,6 +66,7 @@ import RoutingReachableRange from './pages/RoutingReachableRange';
 import RoutingBatch from './pages/RoutingBatch';
 import RoutingInstructions from './pages/RoutingInstructions';
 import RoutingLaneGuidance from './pages/RoutingLaneGuidance';
+import RoutingRoadShields from './pages/RoutingRoadShields';
 import LDEVRIntro from './pages/LDEVRIntro';
 import LDEVRFirstRoute from './pages/LDEVRFirstRoute';
 import LDEVRCalculateRoute from './pages/RoutingEVRoute';
@@ -131,6 +132,7 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'routing-batch':            return <RoutingBatch onNavigate={onNavigate} />;
     case 'routing-instructions':     return <RoutingInstructions onNavigate={onNavigate} />;
     case 'routing-lane-guidance':    return <RoutingLaneGuidance onNavigate={onNavigate} />;
+    case 'routing-road-shields':     return <RoutingRoadShields onNavigate={onNavigate} />;
     // Long Distance EV Routing API
     case 'ldevr-intro':            return <LDEVRIntro onNavigate={onNavigate} />;
     case 'ldevr-first-route':      return <LDEVRFirstRoute onNavigate={onNavigate} />;

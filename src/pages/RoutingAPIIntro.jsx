@@ -224,6 +224,35 @@ function ThumbInstructions() {
   );
 }
 
+function ThumbRoadShields() {
+  const shields = [
+    { cat: 2, ref: 'A10',  color: '#1d4ed8', x: 30  },
+    { cat: 1, ref: 'E35',  color: '#22c55e', x: 82  },
+    { cat: 3, ref: 'N7',   color: '#e2001a', x: 134 },
+    { cat: 4, ref: 'B14',  color: '#f59e0b', x: 30  },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields · iconCategory</div>
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
+        {shields.map(({ cat, ref, color }) => (
+          <div key={ref} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+            <div style={{ width: 34, height: 22, borderRadius: 4, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.15)' }}>
+              <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#fff', fontFamily: 'monospace' }}>{ref}</span>
+            </div>
+            <span style={{ fontSize: '0.4375rem', color: '#475569', fontFamily: 'monospace' }}>cat {cat}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 8, padding: '4px 7px', background: 'rgba(255,255,255,0.04)', borderRadius: 4, border: '1px solid rgba(255,255,255,0.07)' }}>
+        <span style={{ fontSize: '0.4375rem', color: '#64748b', fontFamily: 'monospace' }}>Take the </span>
+        <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: '#60a5fa', fontFamily: 'monospace', background: 'rgba(29,78,216,0.3)', padding: '1px 4px', borderRadius: 2 }}>A10</span>
+        <span style={{ fontSize: '0.4375rem', color: '#64748b', fontFamily: 'monospace' }}> towards Charlottenburg</span>
+      </div>
+    </div>
+  );
+}
+
 function ThumbLaneGuidance() {
   const lanes = [
     { dirs: ['←'],    drivable: false },
@@ -350,6 +379,7 @@ const ENDPOINTS_V1 = [
   { Thumb: ThumbBatchRouting,   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: 'Submit up to 700 route or range calculations in a single request. Synchronous (100 items) and asynchronous modes.',       pageId: 'routing-batch',           available: true },
   { Thumb: ThumbInstructions,   title: 'Turn-by-Turn Instructions', method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: 'Activate maneuver-by-maneuver guidance on any Calculate Route call. Returns text, tagged, or coded maneuver arrays.',     pageId: 'routing-instructions',    available: true },
   { Thumb: ThumbLaneGuidance,   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: 'Per-lane direction and drivability data at complex junctions. Requires instructionsType=tagged and sectionType=lanes.',   pageId: 'routing-lane-guidance',   available: true },
+  { Thumb: ThumbRoadShields,    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: 'Shield shape category, road reference, and display text for every road segment. Use iconCategory to select the correct sign asset.', pageId: 'routing-road-shields', available: true },
 ];
 
 const ENDPOINTS_V2 = [
@@ -358,6 +388,7 @@ const ENDPOINTS_V2 = [
   { ...ENDPOINTS_V1[2], available: false },
   { ...ENDPOINTS_V1[3], available: false },
   { ...ENDPOINTS_V1[4], available: false },
+  { ...ENDPOINTS_V1[5], available: false },
 ];
 
 const TABS_TOMTOM = [
