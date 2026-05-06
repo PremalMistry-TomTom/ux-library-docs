@@ -62,6 +62,8 @@ import NavSDKIntro from './pages/NavSDKIntro';
 import ANAIntro from './pages/ANAIntro';
 import RoutingAPIIntro from './pages/RoutingAPIIntro';
 import RoutingCalculateRoute from './pages/RoutingCalculateRoute';
+import RoutingReachableRange from './pages/RoutingReachableRange';
+import RoutingBatch from './pages/RoutingBatch';
 import LDEVRIntro from './pages/LDEVRIntro';
 import LDEVRFirstRoute from './pages/LDEVRFirstRoute';
 import LDEVRCalculateRoute from './pages/RoutingEVRoute';
@@ -120,8 +122,10 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     // ANA
     case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
     // Routing API
-    case 'routing-api-intro':      return <RoutingAPIIntro onNavigate={onNavigate} platform={platform} />;
-    case 'routing-calculate-route':return <RoutingCalculateRoute onNavigate={onNavigate} platform={platform} />;
+    case 'routing-api-intro':        return <RoutingAPIIntro onNavigate={onNavigate} platform={platform} />;
+    case 'routing-calculate-route':  return <RoutingCalculateRoute onNavigate={onNavigate} platform={platform} />;
+    case 'routing-reachable-range':  return <RoutingReachableRange onNavigate={onNavigate} />;
+    case 'routing-batch':            return <RoutingBatch onNavigate={onNavigate} />;
     // Long Distance EV Routing API
     case 'ldevr-intro':            return <LDEVRIntro onNavigate={onNavigate} />;
     case 'ldevr-first-route':      return <LDEVRFirstRoute onNavigate={onNavigate} />;
