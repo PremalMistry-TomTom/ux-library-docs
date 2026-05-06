@@ -24,95 +24,6 @@ function MethodBadge({ method }) {
   );
 }
 
-/* ─── Hero illustration ──────────────────────────────────────────────────────── */
-function HeroRouting() {
-  return (
-    <svg width="100%" height="100%" viewBox="0 0 520 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="520" height="260" fill="#0d1117"/>
-
-      {/* Subtle road grid */}
-      <line x1="130" y1="0" x2="128" y2="260" stroke="#1a2535" strokeWidth="3"/>
-      <line x1="260" y1="0" x2="258" y2="260" stroke="#1a2535" strokeWidth="3"/>
-      <line x1="390" y1="0" x2="388" y2="260" stroke="#1a2535" strokeWidth="3"/>
-      <line x1="0" y1="90" x2="520" y2="88" stroke="#1a2535" strokeWidth="3"/>
-      <line x1="0" y1="175" x2="520" y2="173" stroke="#1a2535" strokeWidth="3"/>
-
-      {/* Alternative route (dashed, dimmer) */}
-      <path d="M 50 210 Q 140 200 220 170 Q 310 140 470 60"
-        stroke="#334155" strokeWidth="2" fill="none" strokeDasharray="6 4"/>
-
-      {/* Route halo */}
-      <path d="M 50 210 Q 100 195 170 165 Q 240 135 300 105 Q 380 75 470 60"
-        stroke="#e2001a" strokeWidth="10" fill="none" opacity="0.10"/>
-
-      {/* Traffic segment halo (amber) */}
-      <path d="M 170 165 Q 240 135 300 105"
-        stroke="#f59e0b" strokeWidth="7" fill="none" opacity="0.20"/>
-
-      {/* Main route */}
-      <path d="M 50 210 Q 100 195 170 165 Q 240 135 300 105 Q 380 75 470 60"
-        stroke="#e2001a" strokeWidth="2.5" fill="none" opacity="0.95"/>
-
-      {/* Traffic segment overlay */}
-      <path d="M 170 165 Q 240 135 300 105"
-        stroke="#f59e0b" strokeWidth="2.5" fill="none" opacity="0.75"/>
-
-      {/* Origin marker */}
-      <circle cx="50" cy="210" r="8" fill="#3fb950"/>
-      <circle cx="50" cy="210" r="4" fill="white"/>
-      <circle cx="50" cy="210" r="14" fill="#3fb950" opacity="0.15"/>
-
-      {/* Waypoint B */}
-      <circle cx="235" cy="138" r="8" fill="#0d1117" stroke="#58a6ff" strokeWidth="2"/>
-      <text x="235" y="142" textAnchor="middle" fontSize="7" fill="#58a6ff" fontFamily="system-ui" fontWeight="700">B</text>
-
-      {/* Destination marker */}
-      <circle cx="470" cy="60" r="8" fill="#e2001a"/>
-      <circle cx="470" cy="60" r="4" fill="white"/>
-      <circle cx="470" cy="60" r="14" fill="#e2001a" opacity="0.15"/>
-
-      {/* Traffic badge */}
-      <rect x="178" y="117" width="84" height="18" rx="4" fill="#f59e0b" opacity="0.12"/>
-      <rect x="178" y="117" width="84" height="18" rx="4" fill="none" stroke="#f59e0b" strokeWidth="1" opacity="0.45"/>
-      <text x="220" y="130" textAnchor="middle" fontSize="8" fill="#f59e0b" fontFamily="monospace">+18 min · traffic jam</text>
-
-      {/* Alternative route label */}
-      <text x="340" y="178" fontSize="8" fill="#334155" fontFamily="monospace">shortest route</text>
-      <line x1="326" y1="174" x2="338" y2="174" stroke="#334155" strokeWidth="1.5" strokeDasharray="3 2"/>
-
-      {/* City labels */}
-      <text x="44" y="228" fontSize="9" fill="#64748b" fontFamily="system-ui" textAnchor="middle">Amsterdam</text>
-      <text x="470" y="48" fontSize="9" fill="#64748b" fontFamily="system-ui" textAnchor="middle">Brussels</text>
-
-      {/* Summary card */}
-      <rect x="28" y="18" width="176" height="54" rx="7" fill="#0a0f1a" stroke="#1e293b" strokeWidth="1"/>
-      <text x="44" y="36" fontSize="8.5" fill="#64748b" fontFamily="system-ui">Routing API · fastest route</text>
-      <text x="44" y="56" fontSize="22" fill="#e2e8f0" fontFamily="system-ui" fontWeight="700">2h 14m</text>
-      <text x="128" y="56" fontSize="9" fill="#64748b" fontFamily="system-ui">· 189 km</text>
-      <text x="44" y="68" fontSize="8" fill="#f59e0b" fontFamily="monospace">+18 min traffic delay</text>
-
-      {/* Travel mode chips */}
-      <text x="332" y="222" fontSize="8.5" fill="#475569" fontFamily="system-ui">Travel modes</text>
-      {[
-        { x: 328, label: '🚗', active: true  },
-        { x: 360, label: '🚛', active: false },
-        { x: 392, label: '🚲', active: false },
-        { x: 424, label: '🚶', active: false },
-      ].map(({ x, label, active }) => (
-        <g key={x}>
-          <rect x={x} y="228" width="26" height="22" rx="4" fill={active ? '#22c55e22' : '#1e293b'} stroke={active ? '#22c55e' : '#1e293b'} strokeWidth="1"/>
-          <text x={x + 13} y="244" textAnchor="middle" fontSize="11" fontFamily="system-ui">{label}</text>
-        </g>
-      ))}
-
-      {/* Bottom caption */}
-      <text x="260" y="253" textAnchor="middle" fontSize="9" fill="#334155" fontFamily="monospace">
-        fastest · shortest · eco · thrilling · live traffic · 215 countries
-      </text>
-    </svg>
-  );
-}
-
 /* ─── Endpoint thumbnails ───────────────────────────────────────────────────── */
 function ThumbCalculateRoute() {
   return (
@@ -614,13 +525,6 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
         <Callout type="warning">
           <strong>Public Preview</strong> — Orbis Maps v2 currently supports Calculate Route (car only). Reachable Range and Batch Routing are available on TomTom Maps (v1).
         </Callout>
-      )}
-
-      {/* Hero illustration */}
-      {!isOrbis && (
-        <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)', background: '#0d1117', height: 260, marginBottom: 36 }}>
-          <HeroRouting />
-        </div>
       )}
 
       {/* Platform comparison */}

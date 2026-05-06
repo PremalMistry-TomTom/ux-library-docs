@@ -1,73 +1,6 @@
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 
-/* ─── Hero illustration ──────────────────────────────────────────────────────── */
-function HeroIllustration() {
-  return (
-    <svg width="100%" height="100%" viewBox="0 0 520 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="520" height="260" fill="#0d1117"/>
-      {/* Road / route line halo */}
-      <path d="M 40 200 C 100 200 120 130 180 120 C 240 110 260 160 320 140 C 370 125 400 80 470 80" stroke="#e2001a" strokeWidth="8" fill="none" opacity="0.12"/>
-      {/* Road / route line */}
-      <path d="M 40 200 C 100 200 120 130 180 120 C 240 110 260 160 320 140 C 370 125 400 80 470 80" stroke="#e2001a" strokeWidth="2.5" fill="none"/>
-
-      {/* Origin marker */}
-      <circle cx="40" cy="200" r="8" fill="#e2001a"/>
-      <circle cx="40" cy="200" r="4" fill="white"/>
-
-      {/* Charging stop 1 */}
-      <circle cx="180" cy="120" r="13" fill="#0d1117" stroke="#22c55e" strokeWidth="2"/>
-      <text x="180" y="125" textAnchor="middle" fontSize="11" fill="#22c55e" fontFamily="system-ui" fontWeight="700">⚡</text>
-      <rect x="148" y="96" width="64" height="16" rx="3" fill="#22c55e" opacity="0.15"/>
-      <text x="180" y="108" textAnchor="middle" fontSize="8" fill="#22c55e" fontFamily="monospace">Fastned · 45 min</text>
-
-      {/* Battery arc 1 — arriving low */}
-      <path d="M 100 185 Q 140 165 178 130" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="4 2" fill="none" opacity="0.6"/>
-      <text x="110" y="177" fontSize="7.5" fill="#f59e0b" fontFamily="monospace" opacity="0.9">12%</text>
-
-      {/* Battery arc 2 — departing charged */}
-      <path d="M 182 110 Q 240 90 318 140" stroke="#22c55e" strokeWidth="1.5" fill="none" opacity="0.5"/>
-      <text x="242" y="92" fontSize="7.5" fill="#22c55e" fontFamily="monospace" opacity="0.9">78%</text>
-
-      {/* Charging stop 2 */}
-      <circle cx="320" cy="140" r="13" fill="#0d1117" stroke="#22c55e" strokeWidth="2"/>
-      <text x="320" y="145" textAnchor="middle" fontSize="11" fill="#22c55e" fontFamily="system-ui" fontWeight="700">⚡</text>
-      <rect x="290" y="116" width="60" height="16" rx="3" fill="#22c55e" opacity="0.15"/>
-      <text x="320" y="128" textAnchor="middle" fontSize="8" fill="#22c55e" fontFamily="monospace">Ionity · 28 min</text>
-
-      {/* Battery arc 3 — low again */}
-      <path d="M 325 130 Q 390 110 465 83" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="4 2" fill="none" opacity="0.6"/>
-      <text x="388" y="103" fontSize="7.5" fill="#f59e0b" fontFamily="monospace" opacity="0.9">18%</text>
-
-      {/* Destination marker */}
-      <circle cx="470" cy="80" r="8" fill="#e2001a"/>
-      <circle cx="470" cy="80" r="4" fill="white"/>
-
-      {/* City labels */}
-      <text x="34" y="220" fontSize="9" fill="#64748b" fontFamily="system-ui" textAnchor="middle">Amsterdam</text>
-      <text x="470" y="68" fontSize="9" fill="#64748b" fontFamily="system-ui" textAnchor="middle">Paris</text>
-
-      {/* Battery bar */}
-      <rect x="30" y="235" width="460" height="6" rx="3" fill="#1e293b"/>
-      <rect x="30" y="235" width="110" height="6" rx="3" fill="#22c55e"/>
-      <rect x="158" y="235" width="4" height="6" fill="#0d1117"/>
-      <rect x="162" y="235" width="110" height="6" rx="0" fill="#22c55e"/>
-      <rect x="272" y="235" width="4" height="6" fill="#0d1117"/>
-      <rect x="276" y="235" width="120" height="6" rx="0" fill="#22c55e"/>
-
-      {/* Legend */}
-      <circle cx="32" cy="252" r="3" fill="#22c55e"/>
-      <text x="40" y="256" fontSize="8" fill="#64748b" fontFamily="monospace">Driving</text>
-      <circle cx="88" cy="252" r="3" fill="#22c55e" stroke="#22c55e"/>
-      <text x="96" y="256" fontSize="8" fill="#64748b" fontFamily="monospace">Charging stop</text>
-
-      {/* Title */}
-      <text x="260" y="22" textAnchor="middle" fontSize="11" fill="#94a3b8" fontFamily="system-ui" fontWeight="600">Long Distance EV Route — Amsterdam → Paris</text>
-      <text x="260" y="38" textAnchor="middle" fontSize="9" fill="#475569" fontFamily="monospace">2 charging stops · 503 km · 6h 54 min total</text>
-    </svg>
-  );
-}
-
 /* ─── Endpoint thumbnail ─────────────────────────────────────────────────────── */
 function ThumbEVRoute() {
   return (
@@ -126,11 +59,6 @@ export default function LDEVRIntro({ onNavigate }) {
           Routing API — Calculate Route
         </button>.
       </Callout>
-
-      {/* Hero illustration */}
-      <div style={{ borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)', background: '#0d1117', height: 260, marginBottom: 36 }}>
-        <HeroIllustration />
-      </div>
 
       {/* The endpoint */}
       <div className="zone">
