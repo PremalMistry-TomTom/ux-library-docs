@@ -43,8 +43,16 @@ export const ROUTING_API_NAV = [
   {
     label: 'Guidance', key: 'routingGuidance', type: 'group', landingId: 'routing-guidance',
     items: [
-      { id: 'routing-instructions',  label: 'Turn-by-Turn Instructions' },
-      { id: 'routing-lane-guidance', label: 'Lane Guidance' },
+      { id: 'routing-instructions',  label: 'Turn-by-Turn Instructions', anchors: [
+          { id: 'api-instr-request',  label: 'Request parameters', method: 'GET' },
+          { id: 'api-instr-response', label: 'Instruction object' },
+          { id: 'api-instr-coded',    label: 'Coded mode' },
+        ]},
+      { id: 'routing-lane-guidance', label: 'Lane Guidance', anchors: [
+          { id: 'api-lane-request',  label: 'Enabling lane guidance', method: 'GET' },
+          { id: 'api-lane-response', label: 'Lane object schema' },
+          { id: 'api-lane-render',   label: 'Rendering guidance' },
+        ]},
     ],
   },
   {
@@ -100,7 +108,13 @@ export const ROUTING_API_PAGE_TITLES = {
   'api-batch-errors':            'Error codes',
   'routing-guidance':            'Guidance',
   'routing-instructions':        'Turn-by-Turn Instructions',
+  'api-instr-request':           'Request parameters',
+  'api-instr-response':          'Instruction object',
+  'api-instr-coded':             'Coded mode',
   'routing-lane-guidance':       'Lane Guidance',
+  'api-lane-request':            'Enabling lane guidance',
+  'api-lane-response':           'Lane object schema',
+  'api-lane-render':             'Rendering guidance',
   'routing-advanced':            'Advanced',
   'routing-reconstruction':      'Route Reconstruction',
   'routing-avoid-areas':         'Avoiding Areas',
