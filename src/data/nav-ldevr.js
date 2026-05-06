@@ -26,7 +26,12 @@ export const LDEVR_NAV = [
       { id: 'api-ldevr-response-station',  label: 'Charging stop details' },
       { id: 'api-ldevr-errors',            label: 'Error codes' },
     ]},
-  { id: 'ldevr-batch', label: 'Batch EV Route', type: 'top', ref: true },
+  { id: 'ldevr-batch', label: 'Batch EV Route', type: 'top', ref: true, anchors: [
+      { id: 'api-ldevr-batch-sync',     label: 'Synchronous batch',  method: 'POST' },
+      { id: 'api-ldevr-batch-async',    label: 'Asynchronous batch', method: 'POST' },
+      { id: 'api-ldevr-batch-response', label: 'Response schema' },
+      { id: 'api-ldevr-batch-errors',   label: 'Error codes' },
+    ]},
   { type: 'section', label: 'Reference' },
   {
     label: 'API Reference', key: 'ldEvrApiRef', type: 'group',
@@ -47,7 +52,11 @@ export const LDEVR_PAGE_TITLES = {
   'ldevr-battery-model':  'Battery & Consumption Model',
   'ldevr-connectors':     'Connector Types',
   'ldevr-calculate-route':'Calculate EV Route',
-  'ldevr-batch':          'Batch EV Route',
+  'ldevr-batch':                'Batch EV Route',
+  'api-ldevr-batch-sync':       'Synchronous batch',
+  'api-ldevr-batch-async':      'Asynchronous batch',
+  'api-ldevr-batch-response':   'Response schema',
+  'api-ldevr-batch-errors':     'Error codes',
   'ldevr-errors':         'Error Codes',
   'ldevr-coverage':       'Market Coverage',
 };

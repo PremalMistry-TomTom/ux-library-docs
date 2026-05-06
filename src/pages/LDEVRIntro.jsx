@@ -1,7 +1,7 @@
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 
-/* ─── Endpoint thumbnail ─────────────────────────────────────────────────────── */
+/* ─── Endpoint thumbnails ────────────────────────────────────────────────────── */
 function ThumbEVRoute() {
   return (
     <div style={{ background: '#0c1318', borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -28,6 +28,35 @@ function ThumbEVRoute() {
         <div style={{ height: 3, background: '#1e293b', borderRadius: 2 }}>
           <div style={{ height: '100%', width: '78%', background: 'linear-gradient(90deg, #22c55e, #3fb950)', borderRadius: 2 }}/>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbBatchEV() {
+  const routes = [
+    { color: '#22c55e', stops: 2, w: 85 },
+    { color: '#3fb950', stops: 1, w: 62 },
+    { color: '#58a6ff', stops: 2, w: 91 },
+    { color: '#a78bfa', stops: 3, w: 74 },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 8, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch EV · 4 routes</div>
+      {routes.map((r, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+          <div style={{ width: 5, height: 5, borderRadius: '50%', background: r.color, flexShrink: 0 }}/>
+          <div style={{ flex: 1, height: 3, background: '#1e293b', borderRadius: 2 }}>
+            <div style={{ height: '100%', width: `${r.w}%`, background: r.color, borderRadius: 2, opacity: 0.8 }}/>
+          </div>
+          <span style={{ fontSize: '0.4375rem', color: '#475569', fontFamily: 'monospace', flexShrink: 0 }}>
+            {r.stops}⚡
+          </span>
+        </div>
+      ))}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}/>
+        <span style={{ fontSize: '0.5rem', color: '#22c55e' }}>4/4 completed · async</span>
       </div>
     </div>
   );
@@ -60,34 +89,49 @@ export default function LDEVRIntro({ onNavigate }) {
         </button>.
       </Callout>
 
-      {/* The endpoint */}
+      {/* Endpoints */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-endpoint">The endpoint</h2>
-        <div
-          onClick={() => onNavigate?.('ldevr-calculate-route')}
-          style={{ cursor: 'pointer', borderRadius: 10, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', display: 'grid', gridTemplateColumns: '200px 1fr', transition: 'box-shadow 0.15s, border-color 0.15s' }}
-          onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
-          onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-        >
-          <div style={{ background: '#0d1117', overflow: 'hidden', padding: 8 }}>
-            <ThumbEVRoute />
-          </div>
-          <div style={{ padding: '16px 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-              <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(88,166,255,0.12)', color: '#58a6ff', fontFamily: 'monospace', letterSpacing: '0.04em' }}>POST</span>
+        <h2 className="sh" id="ldevr-endpoints">Endpoints</h2>
+        <p className="quick-answer" style={{ marginBottom: 20 }}>Two endpoints. Use only what you need — each can be called standalone.</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
+          {[
+            {
+              Thumb: ThumbEVRoute,
+              method: 'POST',
+              title: 'Calculate EV Route',
+              path: '/routing/1/calculateLongDistanceEVRoute/{locations}/json',
+              desc: 'Plan a multi-leg EV route with automatic charging stop selection. Returns a complete itinerary with station names, connector details, dwell times, and battery state at every leg boundary.',
+              pageId: 'ldevr-calculate-route',
+            },
+            {
+              Thumb: ThumbBatchEV,
+              method: 'POST',
+              title: 'Batch EV Route',
+              path: '/routing/1/calculateLongDistanceEVRoute/batch/sync/json',
+              desc: 'Submit up to 700 EV route calculations in a single call. Synchronous (100 items) and asynchronous modes. Each item carries its own vehicle and battery parameters.',
+              pageId: 'ldevr-batch',
+            },
+          ].map(({ Thumb, method, title, path, desc, pageId }) => (
+            <div
+              key={title}
+              onClick={() => onNavigate?.(pageId)}
+              style={{ cursor: 'pointer', borderRadius: 10, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.15s, border-color 0.15s' }}
+              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
+              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+            >
+              <div style={{ height: 120, background: '#0d1117', overflow: 'hidden', padding: 8, flexShrink: 0 }}>
+                <Thumb />
+              </div>
+              <div style={{ padding: '12px 14px', flex: 1 }}>
+                <div style={{ marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(88,166,255,0.12)', color: '#58a6ff', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
+                <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{path}</code>
+                <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+              </div>
             </div>
-            <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--black)', marginBottom: 4 }}>Calculate EV Route</div>
-            <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 10 }}>
-              /routing/1/calculateLongDistanceEVRoute/{'{locations}'}/json
-            </code>
-            <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.6 }}>
-              Plan a multi-leg EV route with automatic charging stop selection. Returns a complete itinerary including
-              station names, connector details, dwell times, and battery state at every leg boundary.
-            </div>
-            <div style={{ marginTop: 12, fontSize: '0.625rem', color: 'var(--red)', fontWeight: 600 }}>
-              View full reference →
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 

@@ -69,6 +69,7 @@ import RoutingLaneGuidance from './pages/RoutingLaneGuidance';
 import LDEVRIntro from './pages/LDEVRIntro';
 import LDEVRFirstRoute from './pages/LDEVRFirstRoute';
 import LDEVRCalculateRoute from './pages/RoutingEVRoute';
+import LDEVRBatch from './pages/LDEVRBatch';
 import MatrixRoutingIntro from './pages/MatrixRoutingIntro';
 import WaypointOptIntro from './pages/WaypointOptIntro';
 import Placeholder from './pages/Placeholder';
@@ -134,6 +135,7 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ldevr-intro':            return <LDEVRIntro onNavigate={onNavigate} />;
     case 'ldevr-first-route':      return <LDEVRFirstRoute onNavigate={onNavigate} />;
     case 'ldevr-calculate-route':  return <LDEVRCalculateRoute onNavigate={onNavigate} platform="tomtom-maps" />;
+    case 'ldevr-batch':            return <LDEVRBatch onNavigate={onNavigate} />;
     // Matrix Routing v2
     case 'matrix-intro':           return <MatrixRoutingIntro onNavigate={onNavigate} />;
     // Waypoint Optimization
