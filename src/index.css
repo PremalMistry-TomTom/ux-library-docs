@@ -227,12 +227,12 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 
 .sidenav-top-link {
   display: block; padding: 8px 10px; margin-bottom: 1px;
-  color: var(--mid); text-decoration: none;
-  font-family: var(--font-display); font-size: 0.875rem; font-weight: 600;
+  color: var(--black); text-decoration: none;
+  font-family: var(--font-display); font-size: 0.875rem; font-weight: 700;
   cursor: pointer; border-radius: 8px; transition: background 0.1s;
 }
-.sidenav-top-link:hover { background: var(--bg); color: var(--black); }
-.sidenav-top-link.active { background: #f0f0f0; color: var(--black); font-weight: 700; }
+.sidenav-top-link:hover { background: var(--bg); }
+.sidenav-top-link.active { background: #f0f0f0; }
 
 /* ── Content area ── */
 .content-area { min-width: 0; display: flex; justify-content: center; }

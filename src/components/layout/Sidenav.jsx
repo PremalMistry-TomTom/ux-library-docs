@@ -193,6 +193,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
       if (forceOpen) return groupKey;
       return prev === groupKey ? null : groupKey;
     });
+    setAnchorOpenId(null); // close any open top-level anchor list
   }, []);
 
   /* ── Anchor open/close ── */
@@ -278,8 +279,11 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                 onNavigate(entry.id);
                 setAnchorOpenId(entry.id);
               }
+              setOpenKey(null); // close any open group
             } else {
               onNavigate(entry.id);
+              setAnchorOpenId(null);
+              setOpenKey(null);
             }
           };
 
