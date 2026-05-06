@@ -265,6 +265,22 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
   const navContent = (
     <>
       {(nav || []).map((entry, i) => {
+        if (entry.type === 'section') {
+          return (
+            <div key={`section-${i}`} style={{
+              padding: '16px 10px 4px',
+              fontSize: '0.6875rem',
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              color: 'var(--muted)',
+              userSelect: 'none',
+            }}>
+              {entry.label}
+            </div>
+          );
+        }
+
         if (entry.type === 'top') {
           const label     = t(`nav.${entry.id}`, { defaultValue: entry.label });
           const isActive  = currentPage === entry.id;

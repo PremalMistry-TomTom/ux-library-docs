@@ -1,5 +1,6 @@
 export const LDEVR_NAV = [
   { id: 'ldevr-intro', label: 'Introduction', type: 'top' },
+  { type: 'section', label: 'Getting Started' },
   {
     label: 'Quick Start', key: 'ldEvrQuickStart', type: 'group', landingId: 'ldevr-quickstart',
     items: [
@@ -15,6 +16,7 @@ export const LDEVR_NAV = [
       { id: 'ldevr-connectors',      label: 'Connector Types' },
     ],
   },
+  { type: 'section', label: 'Endpoints' },
   { id: 'ldevr-calculate-route', label: 'Calculate EV Route', type: 'top', anchors: [
       { id: 'api-ldevr-route',             label: 'Route planning',              method: 'POST' },
       { id: 'api-ldevr-battery',           label: 'Electric vehicle & battery',  method: 'POST' },
@@ -25,6 +27,7 @@ export const LDEVR_NAV = [
       { id: 'api-ldevr-errors',            label: 'Error codes' },
     ]},
   { id: 'ldevr-batch', label: 'Batch EV Route', type: 'top' },
+  { type: 'section', label: 'Reference' },
   {
     label: 'API Reference', key: 'ldEvrApiRef', type: 'group',
     items: [
