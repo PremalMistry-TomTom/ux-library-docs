@@ -57,37 +57,99 @@ Six integration domains with page-pill navigation — each card links directly t
 
 ---
 
-## Two-column API reference layout
+## LDEVR — Introduction
 
-API reference pages use a custom `ApiRefTwoCol` component — a parallax two-column layout with sticky section headers and sticky code panels. Each section pairs parameter documentation on the left with a live code example on the right that stays pinned as you scroll through the parameters.
+Hero SVG illustration showing the Amsterdam → Paris route with two charging stops (Fastned, Ionity), battery state arcs per segment, dwell times, and a segmented charge bar. Endpoint card links directly to the full reference. Lean layout matching the Routing API intro pattern.
 
-Key behaviours:
-- **Sticky code panel** — code stays in view as parameters scroll; max-height prevents sticky-from-bottom behaviour on tall viewboxes
-- **Expand / collapse** — long code blocks detect overflow automatically and show a fade gradient hint; an expand button breaks the panel out of its sticky container to reveal the full response
-- **Method badges** — GET / POST badges on sidenav anchors match the endpoint method, giving quick orientation while navigating
-- **Error code cards** — Chargetrip-style error cards (HTTP badge + bold title + description) replace plain tables in all error code sections, with a matching JSON error response in the code panel
-- **Section types grid** — response sections include a compact grid of all `sectionType` values with their fields, rendered as an `extra` slot below the parameter table
-
-### Routing API — Calculate Route
-
-Full two-column API reference for `GET /routing/1/calculateRoute` covering route planning, vehicle profile, combustion and electric consumption models, POST body, response summary (with section types grid), and error codes. Platform-aware: content switches between TomTom Maps v1 and Orbis Maps v2 via the platform toggle.
-
-### LDEVR — Calculate EV Route
-
-Full two-column reference for `POST /routing/1/calculateLongDistanceEVRoute` covering route planning, electric vehicle & battery, charging connector & power, energy consumption model, route & battery summary response, charging stop details, and error codes.
-
-### LDEVR — Quick Start
-
-Dedicated quick start page (`ldevr-first-route`) with a working cURL example (Amsterdam → Paris, 75 kWh battery, CCS Combo 2) and a full Kotlin SDK integration using `OnlineRoutePlanner`, covering dependency setup, live SoC, station arrival UX, and automatic replanning.
+![LDEVR Introduction](docs/screenshots/30-ldevr-intro.png)
 
 ---
 
-## Hero illustrations
+### LDEVR — Endpoint card
 
-Both API introduction pages open with custom SVG hero illustrations that make the product immediately legible:
+Single-endpoint showcase card (landscape layout with thumbnail) positioned directly below the hero — the primary entry point to the API reference.
 
-- **LDEVR intro** — Amsterdam → Paris EV route with two charging stops (Fastned, Ionity), battery state arcs showing charge level between stops, dwell times, and a segmented battery bar at the bottom
-- **Routing API intro** — Amsterdam → Brussels fastest route with a live traffic jam segment in amber, a dashed alternative "shortest route", waypoint B marker, travel mode chips, and a route summary card
+![LDEVR Endpoint card](docs/screenshots/31-ldevr-intro-endpoint.png)
+
+---
+
+### LDEVR — Quick Start
+
+Dedicated quick start page with a working cURL example (Amsterdam → Paris, 75 kWh battery, CCS Combo 2) and full Kotlin SDK integration using `OnlineRoutePlanner`.
+
+![LDEVR Quick Start](docs/screenshots/32-ldevr-quickstart.png)
+
+---
+
+### LDEVR — Calculate EV Route reference
+
+Full two-column API reference covering route planning, electric vehicle & battery, charging connector & power, and energy consumption model.
+
+![Calculate EV Route](docs/screenshots/33-ldevr-calculate-ev-route.png)
+
+---
+
+### LDEVR — Response section
+
+Route & battery summary response in the two-column layout — parameter table on the left, sticky JSON example on the right.
+
+![LDEVR Response section](docs/screenshots/34-ldevr-response-section.png)
+
+---
+
+### LDEVR — Error codes
+
+Chargetrip-style error cards (HTTP badge + bold title + description) with a matching JSON error response in the code panel.
+
+![LDEVR Error codes](docs/screenshots/35-ldevr-error-codes.png)
+
+---
+
+## Routing API — Introduction
+
+Hero SVG illustration showing Amsterdam → Brussels fastest route with a traffic jam segment in amber, a dashed alternative route, waypoint B, travel mode chips, and a route summary card. Platform toggle switches between TomTom Maps v1 and Orbis Maps v2.
+
+![Routing API Introduction](docs/screenshots/36-routing-api-intro.png)
+
+---
+
+### Routing API — Endpoint grid
+
+Three endpoint cards (Calculate Route, Reachable Range, Batch Routing) with visual thumbnails. Platform-aware: cards dim on features unavailable in Orbis v2.
+
+![Routing API Endpoints](docs/screenshots/38-routing-api-endpoints.png)
+
+---
+
+### Routing API — Calculate Route reference
+
+Full two-column reference for `GET /routing/1/calculateRoute` — 15 route planning parameters, vehicle profile, combustion + electric consumption models, POST body, response summary, and error codes.
+
+![Calculate Route reference](docs/screenshots/39-routing-calculate-route.png)
+
+---
+
+### Two-column API reference layout — parameters
+
+Sticky code panel stays in view as parameters scroll. Method badges (GET / POST) on sidenav anchors. Possible values shown as clickable chips.
+
+![Two-column params](docs/screenshots/40-routing-two-col-params.png)
+
+---
+
+### Routing API — Error codes
+
+Five error cards with response codes, titles, and descriptions. Matching JSON error response in the right-hand panel.
+
+![Routing API Error codes](docs/screenshots/42-routing-error-codes.png)
+
+---
+
+### Expand / collapse code panel
+
+Long code blocks detect overflow automatically and show a bottom fade gradient hint. The Expand button breaks the panel out of its sticky container to show the full response inline.
+
+![Code panel expanded](docs/screenshots/43-code-panel-expanded.png)
 
 ---
 
