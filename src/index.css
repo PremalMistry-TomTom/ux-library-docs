@@ -559,7 +559,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 
 /* ── Large: auto-fill up to 4 columns ── */
 .api-links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0; padding-top: 4px; }
-.api-links-card { display: flex; flex-direction: column; gap: 5px; padding: 16px 24px; border-right: 1px solid var(--border); text-decoration: none; color: inherit; transition: background 0.12s; }
+.api-links-card { display: flex; flex-direction: column; gap: 5px; padding: 16px 24px; border: none; border-right: 1px solid var(--border); text-decoration: none; color: inherit; transition: background 0.12s; background: none; font-family: var(--font-sans); font-size: 1rem; }
 .api-links-card:hover { background: var(--bg); }
 .api-links-card:nth-child(4n+1) { padding-left: 0; }
 .api-links-card:nth-child(4n)   { border-right: none; padding-right: 0; }
