@@ -299,6 +299,66 @@ export default function RoutingReachableRange({ onNavigate }) {
         <ApiRefTwoCol sections={responseData} panelLabel="Response example" />
       </div>
 
+      <div className="zone">
+        <h2 className="sh" id="rr-model-scope">What the API models — and what it doesn't</h2>
+        <p className="body">
+          The accuracy of the returned polygon depends directly on the quality of the consumption model you supply.
+          Several real-world factors are intentionally left to the caller — this section clarifies the boundary.
+        </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12, marginTop: 4 }}>
+          {[
+            {
+              topic: 'Ambient temperature',
+              status: 'caller',
+              body: 'Temperature is not a direct input. Model it by adjusting your consumption curve per-request — higher kWh/100 km values in cold or hot conditions. This gives you full control over how aggressively temperature degrades range.',
+            },
+            {
+              topic: 'Battery degradation',
+              status: 'caller',
+              body: 'Pass current usable capacity in maxChargeInkWh, not nameplate. TomTom uses whatever values you provide — accounting for pack ageing, cell wear, and usable SoC window is your responsibility before calling the API.',
+            },
+            {
+              topic: 'PHEV (combined range)',
+              status: 'workaround',
+              body: 'There is no single-call PHEV mode. Issue two requests — one with vehicleEngineType=electric and one with vehicleEngineType=combustion — then composite the two polygons client-side. The battery-only polygon is the inner bound; the combined range is the outer.',
+            },
+            {
+              topic: 'Dynamic HVAC load',
+              status: 'static',
+              body: 'auxiliaryPowerInkW accepts a fixed continuous draw per request. Dynamic HVAC modelling (varying load by zone, speed, or cabin temperature delta) is not supported — encode a representative steady-state value or issue separate requests for different load scenarios.',
+            },
+            {
+              topic: 'Elevation: consumption vs road selection',
+              status: 'both',
+              body: 'When you supply consumptionInkWhPerkmAltitudeGain / recuperationInkWhPerkmAltitudeLoss, elevation affects both consumption estimates and road selection — hillier candidate routes cost more energy and may be excluded. The two effects are not separable.',
+            },
+            {
+              topic: 'Range confidence / accuracy',
+              status: 'none',
+              body: 'The API returns no confidence score or accuracy band. Polygon fidelity depends on the resolution of your consumption curve — more speed/consumption pairs means better accuracy. Typical production deployments see ±5–15% depending on model quality.',
+            },
+          ].map(({ topic, status, body }) => {
+            const badge = {
+              caller:     { label: 'Caller responsibility', bg: 'rgba(59,130,246,0.08)',  color: '#2563eb' },
+              workaround: { label: 'Workaround available',  bg: 'rgba(245,158,11,0.08)',  color: '#b45309' },
+              static:     { label: 'Static only',           bg: 'rgba(100,116,139,0.08)', color: '#475569' },
+              both:       { label: 'Both',                  bg: 'rgba(16,185,129,0.08)',  color: '#047857' },
+              none:       { label: 'Not exposed',           bg: 'rgba(226,0,26,0.08)',    color: '#e2001a' },
+            }[status];
+            return (
+              <div key={topic} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '16px 18px', background: 'var(--surface, var(--white))' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+                  <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', lineHeight: 1.3 }}>{topic}</span>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: badge.bg, color: badge.color, whiteSpace: 'nowrap', flexShrink: 0 }}>{badge.label}</span>
+                </div>
+                <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, margin: 0 }}>{body}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="zone" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
         <button className="page-action-btn" onClick={() => onNavigate?.('routing-calculate-route')}>
           Calculate Route →
