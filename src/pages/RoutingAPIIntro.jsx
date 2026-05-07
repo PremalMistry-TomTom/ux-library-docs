@@ -285,15 +285,13 @@ function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavi
   const clickable = Boolean(pageId && onNavigate && available !== false);
   return (
     <div
+      className={`nav-card${available === false ? ' nav-card--disabled' : ''}`}
       onClick={clickable ? () => onNavigate(pageId) : undefined}
-      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: available === false ? 'var(--surface)' : 'var(--white)', opacity: available === false ? 0.55 : 1, transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
-      onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
     >
-      <div style={{ height: 120, background: '#0d1117', overflow: 'hidden', padding: 8, flexShrink: 0 }}>
+      <div className="nav-card-thumb">
         <Thumb />
       </div>
-      <div style={{ padding: '12px 14px', flex: 1 }}>
+      <div className="nav-card-body">
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <MethodBadge method={method} />
           {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: tag === 'Preview' ? 'rgba(167,139,250,0.12)' : 'rgba(226,0,26,0.08)', color: tag === 'Preview' ? '#a78bfa' : '#e2001a', fontWeight: 600 }}>{tag}</span>}
@@ -489,10 +487,9 @@ const { travelTimeInSeconds, lengthInMeters } =
             return (
               <button
                 key={p.id}
+                className={`text-card${active ? ' text-card--active' : ''}`}
+                style={{ flex: '1 1 260px' }}
                 onClick={() => onNavigate?.(p.pageId)}
-                style={{ flex: '1 1 260px', textAlign: 'left', padding: '14px 16px', borderRadius: 20, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', cursor: 'pointer', transition: 'border-color 0.15s' }}
-                onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = 'rgba(226,0,26,0.4)'; }}
-                onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = 'var(--border)'; }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                   <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{p.label}</span>
@@ -560,10 +557,8 @@ const { travelTimeInSeconds, lengthInMeters } =
           ].map(r => (
             <button
               key={r.label}
+              className="text-card"
               onClick={() => onNavigate?.(r.pageId, r.productId)}
-              style={{ textAlign: 'left', padding: '14px 16px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', transition: 'border-color 0.15s' }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = '#e2001a'}
-              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
             >
               <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>{r.tag}</div>
               <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{r.label} →</div>

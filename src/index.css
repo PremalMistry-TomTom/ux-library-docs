@@ -361,50 +361,48 @@ p.body { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-botto
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
 }
-.example-card {
+/* ── Shared thumbnail-card base (endpoint, domain, use-case, example) ── */
+.nav-card {
   border-radius: 20px;
   border: 1px solid var(--border);
   background: var(--white);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
+  text-align: left;
+  width: 100%;
 }
-.example-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.1); border-color: rgba(0,0,0,0.18); transform: translateY(-2px); }
-[data-theme="dark"] .example-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.2); }
-.example-card-thumb {
-  display: block;
-  height: 160px;
-  background: #1a2535;
-  overflow: hidden;
-  flex-shrink: 0;
+.nav-card:hover {
+  border-color: var(--black);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
 }
-.example-card-body {
-  padding: 14px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
+[data-theme="dark"] .nav-card:hover { border-color: rgba(255,255,255,0.3); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+.nav-card--disabled { opacity: 0.55; cursor: default; pointer-events: none; }
+.nav-card-thumb { height: 130px; background: #0d1117; overflow: hidden; padding: 8px; flex-shrink: 0; }
+.nav-card-body { padding: 12px 14px; flex: 1; display: flex; flex-direction: column; }
+
+/* ── Text-only card (platform versions, related APIs — no thumbnail) ── */
+.text-card {
+  text-align: left; padding: 14px 16px; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--surface);
+  cursor: pointer; font-family: var(--font-sans); font-size: 1rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
-.example-card-title {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--black);
-  line-height: 1.3;
-}
+.text-card:hover { border-color: var(--black); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.text-card--active { border-color: var(--red); background: rgba(226,0,26,0.03); }
+.text-card--active:hover { border-color: var(--red); }
+
+/* example-card extends nav-card — just overrides specific to SDK examples */
+.example-card { text-decoration: none; color: inherit; }
+.example-card-thumb { display: block; height: 160px; background: #1a2535; overflow: hidden; flex-shrink: 0; }
+.example-card-body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.example-card-title { font-size: 0.875rem; font-weight: 700; color: var(--black); line-height: 1.3; }
 .example-card:hover .example-card-title { color: var(--red); }
-.example-card-desc {
-  font-size: 0.875rem;
-  color: var(--mid);
-  line-height: 1.55;
-  margin: 0;
-}
-.example-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 2px;
-}
+.example-card-desc { font-size: 0.875rem; color: var(--mid); line-height: 1.55; margin: 0; }
+.example-card-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 2px; }
 @media (max-width: 600px) {
   .examples-grid { grid-template-columns: 1fr; }
 }

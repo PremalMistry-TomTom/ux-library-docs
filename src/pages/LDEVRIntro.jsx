@@ -123,15 +123,13 @@ export default function LDEVRIntro({ onNavigate }) {
           ].map(({ Thumb, method, title, path, desc, pageId }) => (
             <div
               key={title}
+              className="nav-card"
               onClick={() => onNavigate?.(pageId)}
-              style={{ cursor: 'pointer', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', display: 'flex', flexDirection: 'column', transition: 'box-shadow 0.15s, border-color 0.15s' }}
-              onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
-              onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
             >
-              <div style={{ height: 120, background: '#0d1117', overflow: 'hidden', padding: 8, flexShrink: 0 }}>
+              <div className="nav-card-thumb">
                 <Thumb />
               </div>
-              <div style={{ padding: '12px 14px', flex: 1 }}>
+              <div className="nav-card-body">
                 <div style={{ marginBottom: 6 }}>
                   <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(88,166,255,0.12)', color: '#58a6ff', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
                 </div>

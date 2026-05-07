@@ -37,11 +37,10 @@ function Tag({ label, variant = 'feature' }) {
 export default function ExampleCard({ title, description, href, tags = [], Thumb, imgSrc }) {
   return (
     <a
-      className="example-card"
+      className="nav-card example-card"
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ textDecoration: 'none', color: 'inherit', display: 'block', cursor: 'pointer' }}
     >
       {/* Thumbnail */}
       <div className="example-card-thumb">

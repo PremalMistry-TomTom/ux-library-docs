@@ -514,21 +514,16 @@ function ThumbADAS() {
 /* ─── Domain card ────────────────────────────────────────────────────────────── */
 function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
   return (
-    <div
-      onClick={() => onNavigate(id)}
-      style={{ cursor: 'pointer', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-    >
-      <div style={{ height: 130, background: '#0d1117', overflow: 'hidden', padding: 10, flexShrink: 0 }}>
+    <div className="nav-card" onClick={() => onNavigate(id)}>
+      <div className="nav-card-thumb">
         <Thumb />
       </div>
-      <div style={{ padding: '12px 14px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div className="nav-card-body">
         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, marginBottom: 10, flex: 1 }}>{desc}</div>
+        <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5, marginBottom: 10, flex: 1 }}>{desc}</div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           {pages.map(p => (
-            <span key={p} style={{ fontSize: '0.875rem', padding: '2px 7px', borderRadius: 4, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{p}</span>
+            <span key={p} style={{ fontSize: '0.75rem', padding: '2px 7px', borderRadius: 4, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', whiteSpace: 'nowrap' }}>{p}</span>
           ))}
         </div>
       </div>
@@ -555,19 +550,14 @@ const DOMAIN_CARDS = [
 /* ─── Use-case card (thumbnail + group tag + title + desc) ──────────────────── */
 function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
   return (
-    <div
-      onClick={() => onNavigate(id)}
-      style={{ cursor: 'pointer', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-    >
-      <div style={{ height: 130, background: '#0d1117', overflow: 'hidden', padding: 10, flexShrink: 0 }}>
+    <div className="nav-card" onClick={() => onNavigate(id)}>
+      <div className="nav-card-thumb">
         <Thumb />
       </div>
-      <div style={{ padding: '12px 14px', flex: 1 }}>
-        <div style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
+      <div className="nav-card-body">
+        <div style={{ fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>{label}</div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+        <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
     </div>
   );
