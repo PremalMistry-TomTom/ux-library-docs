@@ -410,31 +410,7 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
               { label: 'Routing', variant: 'feature' },
               { label: 'Web', variant: 'platform' },
             ]}
-            Thumb={() => (
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
-                <rect width="280" height="160" fill="#141c2b"/>
-                {/* Concentric reachable-range zones */}
-                <ellipse cx="140" cy="80" rx="108" ry="62" fill="rgba(226,0,26,0.08)" stroke="rgba(226,0,26,0.18)" strokeWidth="1"/>
-                <ellipse cx="140" cy="80" rx="78"  ry="44" fill="rgba(226,0,26,0.1)"  stroke="rgba(226,0,26,0.22)" strokeWidth="1"/>
-                <ellipse cx="140" cy="80" rx="50"  ry="28" fill="rgba(226,0,26,0.14)" stroke="rgba(226,0,26,0.3)"  strokeWidth="1"/>
-                <ellipse cx="140" cy="80" rx="24"  ry="13" fill="rgba(226,0,26,0.22)" stroke="rgba(226,0,26,0.45)" strokeWidth="1"/>
-                {/* Subtle map roads */}
-                <line x1="0" y1="80" x2="280" y2="80" stroke="rgba(255,255,255,0.04)" strokeWidth="6"/>
-                <line x1="140" y1="0" x2="140" y2="160" stroke="rgba(255,255,255,0.04)" strokeWidth="6"/>
-                {/* Origin pin */}
-                <circle cx="140" cy="80" r="5" fill="#e2001a"/>
-                <circle cx="140" cy="80" r="10" fill="rgba(226,0,26,0.25)"/>
-                {/* Time labels */}
-                <text x="236" y="83" fill="rgba(226,0,26,0.7)" fontSize="8" fontFamily="sans-serif">30 min</text>
-                <text x="210" y="83" fill="rgba(226,0,26,0.55)" fontSize="7" fontFamily="sans-serif">20</text>
-                <text x="184" y="83" fill="rgba(226,0,26,0.4)" fontSize="7" fontFamily="sans-serif">10</text>
-                <rect x="0" y="130" width="280" height="30" fill="rgba(8,14,26,0.85)"/>
-                <text x="14" y="143" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">budgetType</text>
-                <text x="80" y="143" fill="#94a3b8" fontSize="7.5" fontFamily="monospace">'timeMinutes'</text>
-                <text x="14" y="154" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">budget</text>
-                <text x="80" y="154" fill="#22c55e" fontSize="7.5" fontFamily="monospace">30</text>
-              </svg>
-            )}
+            imgSrc="/example-thumbs/reachable-ranges.png"
             snippet={`// Calculate time-based reachable range
 const ranges = await calculateReachableRanges({
   origins: [{ lat: 52.3086, lon: 4.7641 }],
@@ -465,35 +441,7 @@ geometriesModule.showGeometries(
               { label: 'Routing', variant: 'feature' },
               { label: 'Web', variant: 'platform' },
             ]}
-            Thumb={() => (
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
-                <rect width="280" height="160" fill="#1a2535"/>
-                <line x1="0" y1="82" x2="280" y2="82" stroke="#243040" strokeWidth="5"/>
-                <line x1="0" y1="52" x2="280" y2="52" stroke="#243040" strokeWidth="3"/>
-                <line x1="90" y1="0" x2="90" y2="160" stroke="#243040" strokeWidth="4"/>
-                <line x1="185" y1="0" x2="185" y2="160" stroke="#243040" strokeWidth="4"/>
-                <path d="M30 125 Q65 110 90 90 Q118 68 145 60 Q172 52 205 38 Q230 28 255 22" stroke="rgba(226,0,26,0.2)" strokeWidth="11" strokeLinecap="round"/>
-                <path d="M30 125 Q65 110 90 90 Q118 68 145 60 Q172 52 205 38 Q230 28 255 22" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round"/>
-                {/* Waypoints */}
-                {[[90,90],[145,60],[205,38]].map(([cx,cy],i) => (
-                  <g key={i}>
-                    <circle cx={cx} cy={cy} r="5.5" fill="#0d1117" stroke="#58a6ff" strokeWidth="1.5"/>
-                    <text x={cx} y={cy+3.5} textAnchor="middle" fill="#58a6ff" fontSize="6" fontFamily="sans-serif" fontWeight="700">{i+1}</text>
-                  </g>
-                ))}
-                <circle cx="30"  cy="125" r="5" fill="#22c55e"/>
-                <circle cx="30"  cy="125" r="9" fill="rgba(34,197,94,0.2)"/>
-                <circle cx="255" cy="22"  r="5" fill="#e2001a"/>
-                <circle cx="255" cy="22"  r="9" fill="rgba(226,0,26,0.2)"/>
-                <rect x="0" y="120" width="280" height="40" fill="rgba(8,14,26,0.88)"/>
-                {[['3h 42m','Time'],['318 km','Distance'],['3 stops','Waypoints']].map(([v,l],i) => (
-                  <g key={l}>
-                    <text x={18+i*88} y="135" fill="#e2e8f0" fontSize="10" fontFamily="sans-serif" fontWeight="700">{v}</text>
-                    <text x={18+i*88} y="148" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">{l}</text>
-                  </g>
-                ))}
-              </svg>
-            )}
+            imgSrc="/example-thumbs/route.png"
             snippet={`// Calculate route with intermediate waypoints
 const route = await calculateRoute({
   locations: [

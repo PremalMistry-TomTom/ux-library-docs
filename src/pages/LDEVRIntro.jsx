@@ -165,34 +165,7 @@ export default function LDEVRIntro({ onNavigate }) {
               { label: 'Electric Vehicles', variant: 'feature' },
               { label: 'Web', variant: 'platform' },
             ]}
-            Thumb={() => (
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
-                <rect width="280" height="160" fill="#1a2535"/>
-                <line x1="0" y1="90" x2="280" y2="90" stroke="#243040" strokeWidth="5"/>
-                <line x1="0" y1="55" x2="280" y2="55" stroke="#243040" strokeWidth="3"/>
-                <line x1="85" y1="0" x2="85" y2="160" stroke="#243040" strokeWidth="4"/>
-                <line x1="190" y1="0" x2="190" y2="160" stroke="#243040" strokeWidth="4"/>
-                <path d="M35 132 Q75 112 108 90 Q148 64 190 44 Q222 30 252 22" stroke="rgba(226,0,26,0.18)" strokeWidth="11" strokeLinecap="round"/>
-                <path d="M35 132 Q75 112 108 90 Q148 64 190 44 Q222 30 252 22" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round"/>
-                {[[108,90],[190,44]].map(([cx,cy],i) => (
-                  <g key={i}>
-                    <circle cx={cx} cy={cy} r="7.5" fill="#0d1117" stroke="#22c55e" strokeWidth="1.5"/>
-                    <text x={cx} y={cy+3.5} textAnchor="middle" fill="#22c55e" fontSize="7" fontFamily="sans-serif">⚡</text>
-                  </g>
-                ))}
-                <circle cx="35" cy="132" r="5" fill="#22c55e"/>
-                <circle cx="35" cy="132" r="9" fill="rgba(34,197,94,0.2)"/>
-                <circle cx="252" cy="22" r="5" fill="#e2001a"/>
-                <circle cx="252" cy="22" r="9" fill="rgba(226,0,26,0.2)"/>
-                <text x="46" y="129" fill="#64748b" fontSize="9" fontFamily="sans-serif">Paris</text>
-                <text x="214" y="19" fill="#64748b" fontSize="9" fontFamily="sans-serif">Amsterdam</text>
-                <rect x="0" y="126" width="280" height="34" fill="rgba(8,14,26,0.85)"/>
-                <text x="14" y="140" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">variantId</text>
-                <text x="14" y="152" fill="#94a3b8" fontSize="7" fontFamily="monospace">54B969E8-E28D-11EC-…</text>
-                <text x="160" y="140" fill="#64748b" fontSize="7.5" fontFamily="sans-serif">currentCharge</text>
-                <text x="160" y="152" fill="#22c55e" fontSize="8" fontFamily="monospace" fontWeight="700">25 kWh</text>
-              </svg>
-            )}
+            imgSrc="/example-thumbs/ldevr-model-id.png"
             snippet={`// LDEVR with registered vehicle model
 const route = await calculateRoute({
   locations: await Promise.all(
@@ -228,39 +201,7 @@ routingModule.showRoutes(route);`}
               { label: 'Electric Vehicles', variant: 'feature' },
               { label: 'Web', variant: 'platform' },
             ]}
-            Thumb={() => (
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
-                <rect width="280" height="160" fill="#1a2535"/>
-                <line x1="0" y1="85" x2="280" y2="85" stroke="#243040" strokeWidth="5"/>
-                <line x1="100" y1="0" x2="100" y2="160" stroke="#243040" strokeWidth="4"/>
-                <line x1="185" y1="0" x2="185" y2="160" stroke="#243040" strokeWidth="4"/>
-                <path d="M28 138 Q70 118 103 96 Q138 72 175 52 Q210 35 255 20" stroke="rgba(226,0,26,0.18)" strokeWidth="11" strokeLinecap="round"/>
-                <path d="M28 138 Q70 118 103 96 Q138 72 175 52 Q210 35 255 20" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round"/>
-                {/* Slow charger */}
-                <rect x="96" y="88" width="14" height="18" rx="2" fill="#0d1117" stroke="#94a3b8" strokeWidth="1.2"/>
-                <text x="103" y="101" textAnchor="middle" fill="#94a3b8" fontSize="7" fontFamily="sans-serif">⚡</text>
-                {/* Regular charger */}
-                <rect x="131" y="68" width="14" height="18" rx="2" fill="#0d1117" stroke="#3b82f6" strokeWidth="1.2"/>
-                <text x="138" y="81" textAnchor="middle" fill="#3b82f6" fontSize="7" fontFamily="sans-serif">⚡</text>
-                {/* Fast charger */}
-                <rect x="171" y="44" width="14" height="18" rx="2" fill="#0d1117" stroke="#22c55e" strokeWidth="1.5"/>
-                <text x="178" y="57" textAnchor="middle" fill="#22c55e" fontSize="7" fontFamily="sans-serif">⚡</text>
-                <circle cx="28" cy="138" r="5" fill="#22c55e"/>
-                <circle cx="28" cy="138" r="9" fill="rgba(34,197,94,0.2)"/>
-                <circle cx="255" cy="20" r="5" fill="#e2001a"/>
-                <circle cx="255" cy="20" r="9" fill="rgba(226,0,26,0.2)"/>
-                <text x="38" y="135" fill="#64748b" fontSize="9" fontFamily="sans-serif">Munich</text>
-                <text x="216" y="17" fill="#64748b" fontSize="9" fontFamily="sans-serif">Paris</text>
-                <rect x="0" y="126" width="280" height="34" fill="rgba(8,14,26,0.85)"/>
-                <circle cx="16" cy="136" r="4" fill="#0d1117" stroke="#94a3b8" strokeWidth="1.2"/>
-                <text x="24" y="139" fill="#94a3b8" fontSize="7" fontFamily="sans-serif">slow</text>
-                <circle cx="56" cy="136" r="4" fill="#0d1117" stroke="#3b82f6" strokeWidth="1.2"/>
-                <text x="64" y="139" fill="#3b82f6" fontSize="7" fontFamily="sans-serif">regular</text>
-                <circle cx="106" cy="136" r="4" fill="#0d1117" stroke="#22c55e" strokeWidth="1.5"/>
-                <text x="114" y="139" fill="#22c55e" fontSize="7" fontFamily="sans-serif">fast / ultra-fast</text>
-                <text x="14" y="152" fill="#475569" fontSize="7" fontFamily="monospace">icon.mapping.basedOn: 'chargingSpeed'</text>
-              </svg>
-            )}
+            imgSrc="/example-thumbs/ldevr-custom-charging-stops.png"
             snippet={`// Map custom SVG icons to charger speed
 const routingModule = await RoutingModule.get(map, {
   chargingStops: {
@@ -299,40 +240,7 @@ const routingModule = await RoutingModule.get(map, {
               { label: 'Electric Vehicles', variant: 'feature' },
               { label: 'Web', variant: 'platform' },
             ]}
-            Thumb={() => (
-              <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 160" fill="none">
-                <rect width="280" height="160" fill="#1a2535"/>
-                <line x1="0" y1="88" x2="280" y2="88" stroke="#243040" strokeWidth="5"/>
-                <line x1="88" y1="0" x2="88" y2="160" stroke="#243040" strokeWidth="4"/>
-                <line x1="192" y1="0" x2="192" y2="160" stroke="#243040" strokeWidth="4"/>
-                <path d="M35 132 Q76 112 108 90 Q148 64 190 44 Q222 30 250 22" stroke="rgba(226,0,26,0.18)" strokeWidth="11" strokeLinecap="round"/>
-                <path d="M35 132 Q76 112 108 90 Q148 64 190 44 Q222 30 250 22" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round"/>
-                {[[108,90],[190,44]].map(([cx,cy],i) => (
-                  <g key={i}>
-                    <circle cx={cx} cy={cy} r="7.5" fill="#0d1117" stroke="#22c55e" strokeWidth="1.5"/>
-                    <text x={cx} y={cy+3.5} textAnchor="middle" fill="#22c55e" fontSize="7" fontFamily="sans-serif">⚡</text>
-                  </g>
-                ))}
-                <circle cx="35" cy="132" r="5" fill="#22c55e"/>
-                <circle cx="35" cy="132" r="9" fill="rgba(34,197,94,0.2)"/>
-                <circle cx="250" cy="22" r="5" fill="#e2001a"/>
-                <circle cx="250" cy="22" r="9" fill="rgba(226,0,26,0.2)"/>
-                {/* Vehicle spec panel */}
-                <rect x="156" y="68" width="118" height="60" rx="4" fill="rgba(8,14,26,0.92)" stroke="rgba(255,255,255,0.07)" strokeWidth="0.8"/>
-                <text x="165" y="80" fill="#475569" fontSize="6.5" fontFamily="sans-serif">Vehicle spec</text>
-                {[
-                  ['maxCharge','77.4 kWh'],
-                  ['connectors','CCS, Type2'],
-                  ['auxPower','1.7 kW'],
-                  ['efficiency','~6.5 km/kWh'],
-                ].map(([k,v],i) => (
-                  <g key={k}>
-                    <text x="165" y={90+i*10} fill="#64748b" fontSize="6.5" fontFamily="monospace">{k}</text>
-                    <text x="230" y={90+i*10} fill="#94a3b8" fontSize="6.5" fontFamily="monospace">{v}</text>
-                  </g>
-                ))}
-              </svg>
-            )}
+            imgSrc="/example-thumbs/ldevr-detailed-vehicle.png"
             snippet={`// Full vehicle specification — no model variantId needed
 const route = await calculateRoute({
   locations: await Promise.all(
