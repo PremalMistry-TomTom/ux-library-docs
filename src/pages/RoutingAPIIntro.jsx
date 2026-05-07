@@ -389,9 +389,9 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
         </div>
       </div>
 
-      {/* SDK examples */}
+      {/* See demos */}
       <div className="zone">
-        <h2 className="sh" id="r-examples">SDK examples</h2>
+        <h2 className="sh" id="r-examples">See demos</h2>
         <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
           Live demos built with the{' '}
           <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
