@@ -200,10 +200,16 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 
 /* ── In-nav collapse bar (desktop only) ── */
 .sidenav-collapse-bar {
+  position: sticky;
+  bottom: 0;
   display: flex;
   justify-content: flex-end;
-  padding: 4px 0 6px;
+  padding: 10px 0 6px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  background: var(--white);
 }
+[data-theme="dark"] .sidenav-collapse-bar { background: var(--white); }
 .sidenav-collapse-btn {
   width: 28px;
   height: 28px;

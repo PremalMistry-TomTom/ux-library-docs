@@ -168,7 +168,8 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle,
 
 /* ─── Sidenav ────────────────────────────────────────────────────────────────── */
 export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
-                                  onDrawerClose, isDark, onToggleTheme, title, nav }) {
+                                  onDrawerClose, isDark, onToggleTheme, title, nav,
+                                  navCollapsed = false, onCollapse }) {
   const { t } = useTranslation('common');
 
   const toggleLang = () => {
@@ -354,7 +355,23 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
 
   return (
     <>
-      <aside className="sidenav">{navContent}</aside>
+      <aside className={`sidenav${navCollapsed ? ' sidenav--collapsed' : ''}`}>
+        {navContent}
+        {/* Collapse trigger — docked to bottom of nav */}
+        <div className="sidenav-collapse-bar">
+          <button
+            className="sidenav-collapse-btn"
+            onClick={onCollapse}
+            title="Hide sidebar  [ ]"
+            aria-label="Hide sidebar"
+          >
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M10 2L6 6l4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M6 2L2 6l4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </aside>
 
       {drawerOpen && (
         <div className="sidenav-drawer-backdrop" onClick={onDrawerClose} aria-hidden="true" />
