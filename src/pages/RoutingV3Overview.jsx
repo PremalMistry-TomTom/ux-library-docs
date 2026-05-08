@@ -1,3 +1,5 @@
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+
 /* ─── Routing API v3 Overview ────────────────────────────────────────────── */
 export default function RoutingV3Overview({ onNavigate }) {
   const services = [
@@ -23,21 +25,7 @@ export default function RoutingV3Overview({ onNavigate }) {
 
   return (
     <div className="zone" style={{ maxWidth: 820 }}>
-      {/* Public preview notice */}
-      <div style={{
-        display: 'flex', gap: 12, padding: '14px 16px', borderRadius: 8,
-        background: 'rgba(0,112,205,0.06)', border: '1px solid rgba(0,112,205,0.2)',
-        marginBottom: 32,
-      }}>
-        <div style={{ fontSize: '1rem', flexShrink: 0, marginTop: 1 }}>ℹ️</div>
-        <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.65 }}>
-          <strong style={{ color: 'var(--black)' }}>Public Preview.</strong>{' '}
-          Routing API v3 is powered by TomTom Orbis Maps and is available in public preview.
-          The API uses the same TomTom API key as v1/v2 but requires the{' '}
-          <code style={{ fontFamily: 'monospace', fontSize: '0.75rem' }}>TomTom-Api-Version: 3</code>{' '}
-          header or the Orbis Maps endpoint. The API may change before general availability.
-        </div>
-      </div>
+      <PrivatePreviewBanner api="Routing API v3" />
 
       {/* Purpose */}
       <h2 style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 12 }}>Purpose</h2>

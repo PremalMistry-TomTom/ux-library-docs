@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
 
 /* ─── Request parameters ─────────────────────────────────────────────────── */
 const PARAMS_ROUTE = [
@@ -319,11 +320,14 @@ export default function RoutingV3CalculateRoute() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Calculate Route"
-      description="Full Routing API v3 calculateRoute reference. Supports GET and POST with the same comprehensive vehicle profile, consumption model, and guidance parameters as v1, with v3 URL patterns and header-based authentication."
-      version="v3-public"
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <ApiRefTwoCol
+        title="Calculate Route"
+        description="Full Routing API v3 calculateRoute reference. Supports GET and POST with the same comprehensive vehicle profile, consumption model, and guidance parameters as v1, with v3 URL patterns and header-based authentication."
+        version="v3-private"
+        sections={sections}
+      />
+    </>
   );
 }

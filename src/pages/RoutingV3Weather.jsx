@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
 
 const PUBLIC_PREVIEW_NOTE = (
   <>
@@ -119,7 +120,6 @@ export default function RoutingV3Weather() {
       id: 'routing-v3-weather-request',
       heading: 'Request parameters',
       method: 'POST',
-      note: PUBLIC_PREVIEW_NOTE,
       params: PARAMS_WEATHER_REQUEST,
       code: CODE_USER_SPECIFIED,
       lang: 'bash',
@@ -156,11 +156,14 @@ export default function RoutingV3Weather() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Weather Consideration"
-      description="Adapt the EV consumption curve for outside temperature on Routing API v3 Calculate Route and Reachable Range requests. Use forecast for automatic location-based weather, or userSpecified to provide a specific temperature. Requires an electric vehicle consumption model."
-      version="v3-public"
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <ApiRefTwoCol
+        title="Weather Consideration"
+        description="Adapt the EV consumption curve for outside temperature on Routing API v3 Calculate Route and Reachable Range requests. Use forecast for automatic location-based weather, or userSpecified to provide a specific temperature. Requires an electric vehicle consumption model."
+        version="v3-private"
+        sections={sections}
+      />
+    </>
   );
 }

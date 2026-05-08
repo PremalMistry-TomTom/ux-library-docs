@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
 
 const PUBLIC_PREVIEW_NOTE = (
   <>
@@ -121,7 +122,6 @@ export default function RoutingV3ComputeToll() {
       id: 'routing-v3-toll-get',
       heading: 'Request parameters (GET)',
       method: 'GET',
-      note: PUBLIC_PREVIEW_NOTE,
       params: PARAMS_REQUEST,
       code: CODE_GET,
       lang: 'bash',
@@ -145,11 +145,14 @@ export default function RoutingV3ComputeToll() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Compute Toll Amounts"
-      description="Calculate total toll costs along a Routing API v3 route. Available in both GET and POST request formats. Returns a totalTollAmounts array with per-currency cost breakdowns, accounting for ETC transponder availability."
-      version="v3-public"
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <ApiRefTwoCol
+        title="Compute Toll Amounts"
+        description="Calculate total toll costs along a Routing API v3 route. Available in both GET and POST request formats. Returns a totalTollAmounts array with per-currency cost breakdowns, accounting for ETC transponder availability."
+        version="v3-private"
+        sections={sections}
+      />
+    </>
   );
 }

@@ -89,7 +89,7 @@ export const ROUTING_API_NAV = [
       { id: 'routing-v2-freshness-response', label: 'Response data' },
     ]},
 
-  { type: 'section', label: 'Version 3', badge: 'v3-public' },
+  { type: 'section', label: 'Version 3', badge: 'v3-private' },
   { id: 'routing-v3-overview', label: 'Routing API v3', type: 'top' },
   { id: 'routing-v3-calculate-route', label: 'Calculate Route', type: 'top', ref: true, anchors: [
       { id: 'routing-v3-route',      label: 'Route planning',               method: 'GET'  },

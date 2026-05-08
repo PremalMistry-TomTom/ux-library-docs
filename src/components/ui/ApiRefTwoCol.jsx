@@ -398,6 +398,13 @@ const VERSION_BADGES = {
     color: '#15803d',
     dot: '#22c55e',
   },
+  'v3-private': {
+    label: 'v3 · Private Preview',
+    bg: 'rgba(234,179,8,0.07)',
+    border: 'rgba(234,179,8,0.35)',
+    color: '#92400e',
+    dot: '#d97706',
+  },
 };
 
 function VersionBadge({ version }) {

@@ -4,10 +4,11 @@ import i18n from '../../i18n';
 
 /* ─── Nav section version badge ─────────────────────────────────────────────── */
 const NAV_VERSION_BADGES = {
-  'v1':        { label: 'Production',     color: '#15803d', bg: 'rgba(34,197,94,0.12)'  },
-  'v2-public': { label: 'Public Preview', color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  },
-  'v3-public': { label: 'Public Preview', color: '#1d4ed8', bg: 'rgba(0,112,205,0.1)'   },
-  'v2-private':{ label: 'Private Preview',color: '#92400e', bg: 'rgba(234,179,8,0.12)'  },
+  'v1':         { label: 'Production',      color: '#15803d', bg: 'rgba(34,197,94,0.12)'  },
+  'v2-public':  { label: 'Public Preview',  color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  },
+  'v3-public':  { label: 'Public Preview',  color: '#1d4ed8', bg: 'rgba(0,112,205,0.1)'   },
+  'v2-private': { label: 'Private Preview', color: '#92400e', bg: 'rgba(234,179,8,0.12)'  },
+  'v3-private': { label: 'Private Preview', color: '#92400e', bg: 'rgba(234,179,8,0.12)'  },
 };
 
 /* ─── Tree connector icons ───────────────────────────────────────────────────── */

@@ -460,9 +460,9 @@ const { travelTimeInSeconds, lengthInMeters } =
               pageId: 'ldevr-weather',
             },
             {
-              version: 'v3 · Public Preview',
+              version: 'v3 · Private Preview',
               base: 'api.tomtom.com/maps/orbis/routing/v3/calculateRoute',
-              status: 'Public Preview', statusColor: '#1d4ed8',
+              status: 'Private Preview', statusColor: '#d97706',
               summary: 'POST-only, legs-based request format. Toll amounts and weather consumption adaptation available today.',
               active: false,
               pageId: 'routing-v3-overview',
