@@ -185,8 +185,6 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
             ))}
           </div>
         )}
-        <span className="topnav-badge topnav-hide-mobile">{t('ui.private')}</span>
-        <span className="topnav-version topnav-hide-mobile">{t('ui.version')}</span>
         <button
           className="lang-toggle topnav-hide-mobile"
           onClick={toggleLang}

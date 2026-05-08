@@ -6,8 +6,8 @@ import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
 
 const ROUTING_APIS = [
-  { name: 'Long Distance EV Routing API', type: 'REST API',    description: 'Calculate multi-stop routes with automatic charging stop insertion, MSP preference, and battery curve awareness.', url: 'https://docs.tomtom.com/long-distance-ev-routing-api/documentation/tomtom-maps/long-distance-ev-routing' },
-  { name: 'EV Routing — Consumption Model', type: 'REST API',  description: 'Reference for the battery curve, consumption curve, and efficiency parameter constraints used in route calculation.', url: 'https://docs.tomtom.com/electric-vehicle/ev-routing/introduction' },
+  { name: 'Long Distance EV Routing API', type: 'REST API',    description: 'Calculate multi-stop routes with automatic charging stop insertion, MSP preference, and battery curve awareness.', pageId: 'ldevr-calculate-route', productId: 'ldevr' },
+  { name: 'EV Routing — Consumption Model', type: 'REST API',  description: 'Reference for the battery curve, consumption curve, and efficiency parameter constraints used in route calculation.', pageId: 'ldevr-battery-model', productId: 'ldevr' },
   { name: 'Navigation SDK — VehicleProvider', type: 'Android SDK', description: 'Vehicle parameters set via VehicleInfoManager are automatically forwarded to the routing engine — no manual wiring required.', url: 'https://docs.tomtom.com/navigation/android/guides/navigation/vehicle' },
 ];
 
@@ -383,7 +383,7 @@ const PREF_ROWS = [
   ['avoidUnpaved', 'avoid=unpavedRoads',                  'Off'],
 ];
 
-export default function EVRouting() {
+export default function EVRouting({ onNavigate }) {
   const { t } = useTranslation('ev');
 
   return (
@@ -394,7 +394,7 @@ export default function EVRouting() {
       </div>
       <div className="quick-answer">{t('routing.intro')}</div>
 
-      <ApiLinks items={ROUTING_APIS} />
+      <ApiLinks items={ROUTING_APIS} onNavigate={onNavigate} />
 
       {/* Charging stop strategy — automatic vs manual */}
       <div className="zone">

@@ -2119,6 +2119,8 @@ html.ai-panel-open .page {
 .dp2-product-card--linked:hover { border-color: #DF1B12; box-shadow: 0 4px 20px rgba(223,27,18,0.12); }
 .dp2-product-card--stub { cursor: default; opacity: 0.6; }
 .dp2-product-card--stub:hover { box-shadow: none; border-color: #e5e5e5; }
+.dp2-product-card--in-progress { opacity: 0.7; }
+.dp2-product-card--in-progress:hover { opacity: 1; }
 .dp2-product-badge {
   display: inline-block;
   background: rgba(223,27,18,0.08);

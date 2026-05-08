@@ -379,7 +379,9 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
   return (
     <>
       <aside className={`sidenav${navCollapsed ? ' sidenav--collapsed' : ''}`}>
+        <div className="sidenav-inner">
         {navContent}
+        </div>
         {/* Collapse trigger — docked to bottom of nav */}
         <div className="sidenav-collapse-bar">
           <button
@@ -432,10 +434,6 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
         <div className="sidenav-drawer-scroll">
           {title && <div className="sidenav-drawer-title">{title}</div>}
           {navContent}
-        </div>
-        <div className="sidenav-drawer-footer">
-          <span className="topnav-badge">{t('ui.private')}</span>
-          <span className="topnav-version">{t('ui.version')}</span>
         </div>
       </aside>
     </>

@@ -121,23 +121,25 @@ const SECTION_ICONS = {
 const PRODUCTS = {
   Automotive: [
     {
+      name: 'Android UX Library',
+      desc: 'A complete, customisable UI component library for TomTom automotive navigation apps on Android — covering maps, EV, ADAS, and in-car experiences.',
+      docsId: 'overview',
+      productId: 'ux-library',
+    },
+    {
       name: 'Maps & Navigation SDK',
       desc: 'A modular SDK for building a fully custom automotive navigation experience on Android and iOS — map rendering, routing, turn-by-turn guidance, offline maps, and Virtual Horizon.',
       docsId: 'navsdk-intro',
       productId: 'navsdk',
       links: ['Android', 'iOS'],
+      inProgress: true,
     },
     {
       name: 'Automotive Navigation App',
       desc: "TomTom's pre-built navigation APK for Android Automotive OS. Integrate via VIL and CIL — no navigation UI to build or maintain.",
       docsId: 'ana-intro',
       productId: 'ana',
-    },
-    {
-      name: 'Android UX Library',
-      desc: 'A complete, customisable UI component library for TomTom automotive navigation apps on Android — covering maps, EV, ADAS, and in-car experiences.',
-      docsId: 'overview',
-      productId: 'ux-library',
+      inProgress: true,
     },
     {
       name: 'ADAS SDK',
@@ -146,9 +148,9 @@ const PRODUCTS = {
   ],
   Navigation: [
     { name: 'Routing API',                  desc: 'Calculate routes with vehicle profiles, real-time traffic, reachable range, and batch routing.', docsId: 'routing-api-intro', productId: 'routing-api' },
-    { name: 'Matrix Routing v2 API',        desc: 'Get route times and distances for many origin-destination pairs in a single request.', docsId: 'matrix-intro', productId: 'matrix-routing' },
-    { name: 'Waypoint Optimization API',    desc: 'Optimize waypoint order to find the fastest possible route across multiple stops.', docsId: 'waypoint-intro', productId: 'waypoint-opt' },
     { name: 'Long Distance EV Routing API', desc: 'Plan long-distance EV trips with optimized charging stops based on battery state and connector availability.', docsId: 'ldevr-intro', productId: 'ldevr' },
+    { name: 'Matrix Routing v2 API',        desc: 'Get route times and distances for many origin-destination pairs in a single request.', docsId: 'matrix-intro', productId: 'matrix-routing', inProgress: true },
+    { name: 'Waypoint Optimization API',    desc: 'Optimize waypoint order to find the fastest possible route across multiple stops.', docsId: 'waypoint-intro', productId: 'waypoint-opt', inProgress: true },
   ],
   Maps: [
     { name: 'Global Entity Matcher',        desc: 'Simplify data exchange and geospatial data management' },
@@ -247,18 +249,30 @@ const FOOTER_COL1 = ['Careers', 'Company', 'Newsroom', 'Investors'];
 const FOOTER_COL2 = ['Privacy Policy', 'Legal overview', 'Cookies', 'Terms and conditions', 'Deprecation policy'];
 
 /* ─── Sub-components ────────────────────────────────────────────────────────── */
-function ProductCard({ name, desc, docsId, productId, links, platformIds, note, onNavigate }) {
+function ProductCard({ name, desc, docsId, productId, links, platformIds, note, inProgress, onNavigate }) {
   const hasLink = Boolean(docsId && onNavigate);
   const platformLinks = links && links.length > 0 ? links : null;
 
   return (
     <div
-      className={`dp2-product-card${hasLink ? ' dp2-product-card--linked' : ' dp2-product-card--stub'}`}
+      className={`dp2-product-card${hasLink ? ' dp2-product-card--linked' : ' dp2-product-card--stub'}${inProgress ? ' dp2-product-card--in-progress' : ''}`}
       onClick={hasLink && !platformLinks ? () => onNavigate(docsId, productId) : undefined}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
         <h2 className="dp2-product-name">{name}</h2>
-        {!hasLink && (
+        {inProgress ? (
+          <span style={{
+            flexShrink: 0,
+            fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            padding: '3px 7px', borderRadius: 4,
+            background: 'rgba(234,179,8,0.12)', color: '#92400e',
+            marginTop: 2,
+            whiteSpace: 'nowrap',
+          }}>
+            In progress
+          </span>
+        ) : !hasLink ? (
           <span style={{
             flexShrink: 0,
             fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.05em',
@@ -270,7 +284,7 @@ function ProductCard({ name, desc, docsId, productId, links, platformIds, note, 
           }}>
             Not in prototype
           </span>
-        )}
+        ) : null}
       </div>
       <div className="dp2-product-desc">{desc}</div>
       <div className="dp2-product-footer">
