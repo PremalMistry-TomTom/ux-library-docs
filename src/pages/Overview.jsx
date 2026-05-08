@@ -1,6 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import {
+  makeThumb,
+  L_ColourSystem, L_MapStyle, L_HomeScreen, L_EV, L_Cluster, L_AIVoice,
+  L_ETAPanel, L_SearchResult, L_ThemingTokens, L_ChargingSearch, L_ConversationPersonality, L_ADAS,
+} from '../illustrations/lightVariants';
 
 /* ─── Cross-link helpers ─────────────────────────────────────────────────────── */
 function DocLink({ pageId, productId, onNavigate, children }) {
@@ -513,9 +519,10 @@ function ThumbADAS() {
 
 /* ─── Domain card ────────────────────────────────────────────────────────────── */
 function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
+  const { theme, palette } = useIlloStyle();
   return (
     <div className="nav-card" onClick={() => onNavigate(id)}>
-      <div className="nav-card-thumb">
+      <div className="nav-card-thumb" style={theme !== 'dark' ? { background: palette.bg, padding: 0 } : undefined}>
         <Thumb />
       </div>
       <div className="nav-card-body">
@@ -533,25 +540,26 @@ function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
 
 /* ─── Domain data (one card per nav group, in nav order) ─────────────────────── */
 const DOMAIN_CARDS = [
-  { id: 'assets',              key: 'assets',             Thumb: ThumbColour,
+  { id: 'assets',              key: 'assets',             Thumb: makeThumb(ThumbColour,    L_ColourSystem),
     pages: ['Colour', 'Font', 'Corner Radius', 'Icons', 'Design Tokens'] },
-  { id: 'map-customisation',   key: 'mapCustomisation',   Thumb: ThumbMapStyle,
+  { id: 'map-customisation',   key: 'mapCustomisation',   Thumb: makeThumb(ThumbMapStyle,  L_MapStyle),
     pages: ['Map Style', 'Traffic', 'Safety Locations', 'Route', 'Map Markers'] },
-  { id: 'app-customisation',   key: 'appCustomisation',   Thumb: ThumbHomeScreen,
+  { id: 'app-customisation',   key: 'appCustomisation',   Thumb: makeThumb(ThumbHomeScreen,L_HomeScreen),
     pages: ['Home Screen Layout', 'Search Engine', 'Nav Controls', 'Horizon Panel'] },
-  { id: 'ev-charging',         key: 'evCharging',         Thumb: ThumbEV,
+  { id: 'ev-charging',         key: 'evCharging',         Thumb: makeThumb(ThumbEV,        L_EV),
     pages: ['Vehicle & Battery', 'Charging Search', 'Long-Distance Routing', 'In-Navigation UI'] },
-  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: ThumbCluster,
+  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: makeThumb(ThumbCluster,   L_Cluster),
     pages: ['Basics', 'Cluster', 'Head-Up Display', 'ADAS Integration', 'Truck Support'] },
-  { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: ThumbAI,
+  { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: makeThumb(ThumbAI,        L_AIVoice),
     pages: ['Overview', 'Voice Engine', 'Speech to Text', 'Configuration'] },
 ];
 
 /* ─── Use-case card (thumbnail + group tag + title + desc) ──────────────────── */
 function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
+  const { theme, palette } = useIlloStyle();
   return (
     <div className="nav-card" onClick={() => onNavigate(id)}>
-      <div className="nav-card-thumb">
+      <div className="nav-card-thumb" style={theme !== 'dark' ? { background: palette.bg, padding: 0 } : undefined}>
         <Thumb />
       </div>
       <div className="nav-card-body">
@@ -564,14 +572,14 @@ function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
 }
 
 const USE_CASE_CARDS = [
-  { id: 'home-screen-layout', key: 'homeScreenLayout', Thumb: ThumbHomeScreen },
-  { id: 'eta-panel',          key: 'etaPanel',         Thumb: ThumbETAPanel },
-  { id: 'search-engine',      key: 'searchEngine',     Thumb: ThumbSearch },
-  { id: 'theming',            key: 'theming',          Thumb: ThumbTheming },
-  { id: 'ev-charging-search', key: 'evChargingSearch', Thumb: ThumbChargingSearch },
-  { id: 'cluster',            key: 'cluster',          Thumb: ThumbCluster },
-  { id: 'ai-personality',     key: 'aiPersonality',    Thumb: ThumbConversationPersonality },
-  { id: 'adas',               key: 'adas',             Thumb: ThumbADAS },
+  { id: 'home-screen-layout', key: 'homeScreenLayout', Thumb: makeThumb(ThumbHomeScreen,             L_HomeScreen) },
+  { id: 'eta-panel',          key: 'etaPanel',         Thumb: makeThumb(ThumbETAPanel,               L_ETAPanel) },
+  { id: 'search-engine',      key: 'searchEngine',     Thumb: makeThumb(ThumbSearch,                 L_SearchResult) },
+  { id: 'theming',            key: 'theming',          Thumb: makeThumb(ThumbTheming,                L_ThemingTokens) },
+  { id: 'ev-charging-search', key: 'evChargingSearch', Thumb: makeThumb(ThumbChargingSearch,         L_ChargingSearch) },
+  { id: 'cluster',            key: 'cluster',          Thumb: makeThumb(ThumbCluster,                L_Cluster) },
+  { id: 'ai-personality',     key: 'aiPersonality',    Thumb: makeThumb(ThumbConversationPersonality,L_ConversationPersonality) },
+  { id: 'adas',               key: 'adas',             Thumb: makeThumb(ThumbADAS,                   L_ADAS) },
 ];
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */

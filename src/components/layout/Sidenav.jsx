@@ -146,10 +146,13 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle,
             }
           };
 
+          // Suppress parent highlight when a child anchor is the active item
+          const showAsActive = isActive && !(anchorOpen && activeAnchor);
+
           return (
             <Fragment key={item.id}>
               <span
-                className={`sidenav-item${isActive ? ' active' : ''}`}
+                className={`sidenav-item${showAsActive ? ' active' : ''}`}
                 onClick={handleItemClick}
               >
                 {/* Use corner only on true-last item that has no open sub-list */}
@@ -233,24 +236,36 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
 
   useEffect(() => {
     if (!currentAnchors.length) { setActiveAnchor(null); return; }
-    setActiveAnchor(currentAnchors[0].id);
-    let obs;
-    const timer = setTimeout(() => {
-      obs = new IntersectionObserver(
-        (entries) => {
-          const topmost = entries
-            .filter(e => e.isIntersecting)
-            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-          if (topmost) setActiveAnchor(topmost.target.id);
-        },
-        { rootMargin: '-5% 0px -60% 0px', threshold: 0 }
-      );
-      currentAnchors.forEach(anchor => {
-        const el = document.getElementById(anchor.id);
-        if (el) obs.observe(el);
+    setActiveAnchor(null);
+
+    const getStickThreshold = () =>
+      parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue('--app-top-offset') || '102') + 28;
+
+    let rafId;
+    const handleScroll = () => {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        // At the very top: highlight the page title, not any anchor
+        if (window.scrollY < 80) { setActiveAnchor(null); return; }
+        const threshold = getStickThreshold();
+        // Walk anchors in reverse — first one whose top has reached/passed the
+        // sticky line is the section currently pinned at the top
+        const active = [...currentAnchors].reverse().find(a => {
+          const el = document.getElementById(a.id);
+          return el && el.getBoundingClientRect().top <= threshold;
+        });
+        setActiveAnchor(active ? active.id : null);
       });
-    }, 120);
-    return () => { clearTimeout(timer); obs?.disconnect(); };
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run immediately in case the page is already scrolled (e.g. back-navigation)
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [currentPage, currentAnchors]);
 
   /* ── Scroll to anchor ── */
@@ -260,7 +275,9 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
     const offset = parseInt(
       getComputedStyle(document.documentElement).getPropertyValue('--app-top-offset') || '102'
     );
-    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset - 24, behavior: 'smooth' });
+    // Highlight immediately on click — don't wait for the scroll listener to catch up
+    setActiveAnchor(anchorId);
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset - 24 });
   }, []);
 
   /* ── Escape closes drawer ── */
@@ -310,6 +327,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
           const isActive  = currentPage === entry.id;
           const hasAnchors = entry.anchors?.length > 0;
           const anchorOpen = hasAnchors && anchorOpenId === entry.id;
+          const showAsActive = isActive && !(anchorOpen && activeAnchor);
 
           const handleClick = () => {
             if (hasAnchors) {
@@ -330,7 +348,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
           return (
             <Fragment key={entry.id}>
               <span
-                className={`sidenav-top-link${isActive ? ' active' : ''}`}
+                className={`sidenav-top-link${showAsActive ? ' active' : ''}`}
                 style={{ display: 'flex', alignItems: 'center' }}
                 onClick={handleClick}
               >

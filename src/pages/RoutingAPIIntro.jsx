@@ -2,6 +2,12 @@ import { useTranslation } from 'react-i18next';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import ExampleCard from '../components/ui/ExampleCard';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import {
+  makeThumb,
+  L_CalculateRoute, L_ReachableRange, L_BatchRouting, L_TurnInstructions, L_LaneGuidance, L_RoadShields,
+  L_RoutingComputeToll, L_RoutingWeather, L_RoutingDataFreshness,
+} from '../illustrations/lightVariants';
 
 /* ─── Shared helpers ────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -281,15 +287,86 @@ function ThumbLaneGuidance() {
   );
 }
 
+function ThumbComputeToll() {
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll Amounts</div>
+      <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
+        <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
+        <rect x="98" y="16" width="4" height="28" rx="2" fill="#475569"/>
+        <rect x="100" y="16" width="48" height="5" rx="2" fill="#e2001a" opacity="0.85"/>
+        <rect x="82" y="10" width="18" height="30" rx="3" fill="#1e293b"/>
+      </svg>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3 }}>
+        {[['Base toll', '€2.40', '#e2e8f0'], ['EV discount', '–€0.60', '#22c55e'], ['Total', '€1.80', '#58a6ff']].map(([label, val, col]) => (
+          <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '0.4375rem', color: '#475569' }}>{label}</span>
+            <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: col, fontFamily: 'monospace' }}>{val}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ThumbWeather() {
+  return (
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+        <rect width="200" height="130" fill="#1a2535"/>
+        <path d="M20 70 Q60 54 90 50" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
+        <path d="M90 50 Q130 44 165 38" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" opacity="0.8" strokeDasharray="5 3"/>
+        <ellipse cx="130" cy="32" rx="22" ry="11" fill="#475569" opacity="0.5"/>
+        <ellipse cx="116" cy="35" rx="16" ry="9" fill="#475569" opacity="0.5"/>
+        {[108, 118, 128, 138, 148].map((x, i) => (
+          <line key={i} x1={x} y1={43} x2={x - 3} y2={53} stroke="#58a6ff" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
+        ))}
+        <circle cx="20" cy="70" r="5" fill="#3fb950"/>
+        <circle cx="165" cy="38" r="5" fill="#e2001a"/>
+      </svg>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '5px 10px', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: '0.5rem', color: '#e2e8f0' }}>Rain · Route adjusted</span>
+        <span style={{ fontSize: '0.5rem', color: '#fbbf24', fontWeight: 700 }}>7°C</span>
+      </div>
+    </div>
+  );
+}
+
+function ThumbDataFreshness() {
+  const items = [
+    { label: 'Traffic data',  pct: 100, color: '#22c55e' },
+    { label: 'Road closures', pct: 75,  color: '#22c55e' },
+    { label: 'Speed limits',  pct: 40,  color: '#fbbf24' },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
+      {items.map((item) => (
+        <div key={item.label} style={{ marginBottom: 8 }}>
+          <span style={{ fontSize: '0.4375rem', color: '#94a3b8', display: 'block', marginBottom: 2 }}>{item.label}</span>
+          <div style={{ height: 5, background: '#1e293b', borderRadius: 2 }}>
+            <div style={{ height: '100%', width: `${item.pct}%`, background: item.color, borderRadius: 2, opacity: 0.85 }}/>
+          </div>
+        </div>
+      ))}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 4 }}>
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }}/>
+        <span style={{ fontSize: '0.4375rem', color: '#22c55e' }}>Live feed · auto-refresh</span>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Endpoint card ──────────────────────────────────────────────────────────── */
 function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavigate, pageId }) {
   const clickable = Boolean(pageId && onNavigate && available !== false);
+  const { theme, palette } = useIlloStyle();
   return (
     <div
       className={`nav-card${available === false ? ' nav-card--disabled' : ''}`}
       onClick={clickable ? () => onNavigate(pageId) : undefined}
     >
-      <div className="nav-card-thumb">
+      <div className="nav-card-thumb" style={theme !== 'dark' ? { background: palette.bg, padding: 0 } : undefined}>
         <Thumb />
       </div>
       <div className="nav-card-body">
@@ -312,12 +389,15 @@ export default function RoutingAPIIntro({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const ENDPOINTS_V1 = [
-    { Thumb: ThumbCalculateRoute, title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
-    { Thumb: ThumbReachableRange, title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
-    { Thumb: ThumbBatchRouting,   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
-    { Thumb: ThumbInstructions,   title: 'Turn-by-Turn Instructions', method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
-    { Thumb: ThumbLaneGuidance,   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
-    { Thumb: ThumbRoadShields,    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
+    { Thumb: makeThumb(ThumbCalculateRoute, L_CalculateRoute), title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
+    { Thumb: makeThumb(ThumbReachableRange, L_ReachableRange), title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
+    { Thumb: makeThumb(ThumbBatchRouting,   L_BatchRouting),   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
+    { Thumb: makeThumb(ThumbInstructions,   L_TurnInstructions),title: 'Turn-by-Turn Instructions',method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
+    { Thumb: makeThumb(ThumbLaneGuidance,   L_LaneGuidance),   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
+    { Thumb: makeThumb(ThumbRoadShields,    L_RoadShields),    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
+    { Thumb: makeThumb(ThumbComputeToll,    L_RoutingComputeToll), title: 'Compute Toll Amounts',  method: 'GET',  path: '/routing/2/calculateRoute/…?computeTravelTimeFor=all', desc: t('routingIntro.endpointDescs.computeTollAmounts', { defaultValue: 'Calculate per-road-class toll costs along the route, with EV discount and currency breakdown.' }), pageId: 'routing-compute-toll',    available: true, tag: 'v2+' },
+    { Thumb: makeThumb(ThumbWeather,        L_RoutingWeather), title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',   desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-weather',         available: true, tag: 'v3' },
+    { Thumb: makeThumb(ThumbDataFreshness,  L_RoutingDataFreshness), title: 'Dynamic Data Freshness', method: 'GET', path: '/routing/2/calculateRoute/…?dateFreshness=true',     desc: t('routingIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control how fresh traffic, closure, and speed-limit data must be before the route is recalculated.' }), pageId: 'routing-data-freshness', available: true, tag: 'v2+' },
   ];
 
   const endpoints = ENDPOINTS_V1;

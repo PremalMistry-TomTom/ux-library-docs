@@ -1,6 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import {
+  makeThumb,
+  L_MapDisplay, L_SDKSearch, L_RouteOptions, L_NavGuidance, L_VirtualHorizon, L_OfflineMaps, L_CarPlay,
+} from '../illustrations/lightVariants';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -229,6 +234,7 @@ function ThumbVirtualHorizon() {
 /* ─── Capability card ────────────────────────────────────────────────────────── */
 function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
   const clickable = Boolean(pageId && onNavigate);
+  const { theme, palette } = useIlloStyle();
   return (
     <div
       style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
@@ -236,7 +242,7 @@ function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
       onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
       onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
     >
-      <div style={{ height: 130, background: '#0d1117', overflow: 'hidden', padding: 10, flexShrink: 0 }}>
+      <div style={{ height: 130, background: theme !== 'dark' ? palette.bg : '#0d1117', overflow: 'hidden', padding: theme !== 'dark' ? 0 : 10, flexShrink: 0 }}>
         <Thumb />
       </div>
       <div style={{ padding: '12px 14px', flex: 1 }}>
@@ -306,31 +312,31 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
 
   const CAPABILITIES_SHARED = [
     {
-      Thumb: ThumbMapDisplay,
+      Thumb: makeThumb(ThumbMapDisplay,   L_MapDisplay),
       title: t('navsdkIntro.capabilities.mapDisplay.title'),
       desc: t('navsdkIntro.capabilities.mapDisplay.desc'),
       pageId: 'navsdk-map-display',
     },
     {
-      Thumb: ThumbSearch,
+      Thumb: makeThumb(ThumbSearch,       L_SDKSearch),
       title: t('navsdkIntro.capabilities.search.title'),
       desc: t('navsdkIntro.capabilities.search.desc'),
       pageId: 'navsdk-search',
     },
     {
-      Thumb: ThumbRouting,
+      Thumb: makeThumb(ThumbRouting,      L_RouteOptions),
       title: t('navsdkIntro.capabilities.routing.title'),
       desc: t('navsdkIntro.capabilities.routing.desc'),
       pageId: 'navsdk-routing',
     },
     {
-      Thumb: ThumbNavigation,
+      Thumb: makeThumb(ThumbNavigation,   L_NavGuidance),
       title: t('navsdkIntro.capabilities.navigation.title'),
       desc: t('navsdkIntro.capabilities.navigation.desc'),
       pageId: 'navsdk-nav-guidance',
     },
     {
-      Thumb: ThumbVirtualHorizon,
+      Thumb: makeThumb(ThumbVirtualHorizon, L_VirtualHorizon),
       title: t('navsdkIntro.capabilities.virtualHorizon.title'),
       desc: t('navsdkIntro.capabilities.virtualHorizon.desc'),
       pageId: 'navsdk-vh-overview',
@@ -340,7 +346,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
   const CAPABILITIES_ANDROID = [
     ...CAPABILITIES_SHARED,
     {
-      Thumb: ThumbOffline,
+      Thumb: makeThumb(ThumbOffline,      L_OfflineMaps),
       title: t('navsdkIntro.capabilities.offlineMaps.title'),
       desc: t('navsdkIntro.capabilities.offlineMaps.desc'),
       pageId: 'navsdk-offline-overview',
@@ -351,7 +357,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
   const CAPABILITIES_IOS = [
     ...CAPABILITIES_SHARED,
     {
-      Thumb: ThumbCarPlay,
+      Thumb: makeThumb(ThumbCarPlay,      L_CarPlay),
       title: t('navsdkIntro.capabilities.carPlay.title'),
       desc: t('navsdkIntro.capabilities.carPlay.desc'),
       pageId: 'navsdk-carplay',

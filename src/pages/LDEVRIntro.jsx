@@ -1,6 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import PageActions from '../components/ui/PageActions';
 import ExampleCard from '../components/ui/ExampleCard';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import {
+  makeThumb,
+  L_LDEVRRoute, L_LDEVRBatch,
+  L_LDEVRVehicleBrand, L_LDEVROemEmsp, L_LDEVRComputeToll,
+  L_LDEVRChargingParks, L_LDEVRWeather, L_LDEVRDataFreshness,
+} from '../illustrations/lightVariants';
 
 /* ─── Endpoint thumbnails ────────────────────────────────────────────────────── */
 function ThumbEVRoute() {
@@ -63,9 +70,145 @@ function ThumbBatchEV() {
   );
 }
 
+function ThumbVehicleBrand() {
+  const brands = [
+    { name: 'BMW',   color: '#1c69d4', selected: true  },
+    { name: 'Tesla', color: '#cc0000', selected: false },
+    { name: 'Audi',  color: '#bb0a14', selected: false },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Vehicle Brand Lookup</div>
+      {brands.map((b, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5, padding: '4px 6px', borderRadius: 5, background: b.selected ? 'rgba(88,166,255,0.08)' : 'transparent', border: b.selected ? '1px solid rgba(88,166,255,0.2)' : '1px solid transparent' }}>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', background: b.color, flexShrink: 0 }}/>
+          <span style={{ fontSize: '0.5rem', color: b.selected ? '#e2e8f0' : '#64748b', fontWeight: b.selected ? 700 : 400, flex: 1 }}>{b.name}</span>
+          {b.selected && <span style={{ fontSize: '0.4375rem', color: '#22c55e' }}>✓</span>}
+        </div>
+      ))}
+      <div style={{ marginTop: 4, padding: '3px 6px', background: 'rgba(255,255,255,0.04)', borderRadius: 3, fontFamily: 'monospace', fontSize: '0.4375rem', color: '#475569' }}>variantId: 54B9…</div>
+    </div>
+  );
+}
+
+function ThumbOemEmsp() {
+  const networks = [
+    { name: 'Ionity',    kw: '350 kW', compat: true  },
+    { name: 'Fastned',   kw: '300 kW', compat: true  },
+    { name: 'bp pulse',  kw: '50 kW',  compat: false },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM EMSP Networks</div>
+      {networks.map((n, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', background: n.compat ? '#22c55e' : '#475569', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: '0.5rem', color: '#fff' }}>{n.compat ? '⚡' : '—'}</span>
+          </div>
+          <span style={{ fontSize: '0.4375rem', color: n.compat ? '#94a3b8' : '#475569', flex: 1 }}>{n.name}</span>
+          <span style={{ fontSize: '0.4375rem', color: n.compat ? '#22c55e' : '#475569', fontFamily: 'monospace' }}>{n.compat ? 'OEM' : '—'}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ThumbComputeTollLDEVR() {
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll · EV</div>
+      <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
+        <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
+        <rect x="98" y="16" width="4" height="28" rx="2" fill="#475569"/>
+        <rect x="100" y="16" width="48" height="5" rx="2" fill="#e2001a" opacity="0.85"/>
+        <rect x="82" y="10" width="18" height="30" rx="3" fill="#1e293b"/>
+        <circle cx="172" cy="22" r="10" fill="rgba(34,197,94,0.1)" stroke="#22c55e" strokeWidth="1.5"/>
+        <text x="172" y="26" textAnchor="middle" fill="#22c55e" style={{ fontSize: 8, fontWeight: 700 }}>EV</text>
+      </svg>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3 }}>
+        {[['Base toll', '€2.40', '#e2e8f0'], ['EV exemption', '–€1.20', '#22c55e'], ['Total', '€1.20', '#58a6ff']].map(([label, val, col]) => (
+          <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span style={{ fontSize: '0.4375rem', color: '#475569' }}>{label}</span>
+            <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: col, fontFamily: 'monospace' }}>{val}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ThumbChargingParks() {
+  const hours = [['Mon–Fri', '06:00–22:00'], ['Sat', '07:00–21:00'], ['Sun', '08:00–20:00']];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 7 }}>
+        <span style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Park Hours</span>
+        <span style={{ fontSize: '0.5rem', color: '#22c55e', fontWeight: 700 }}>12/16 free</span>
+      </div>
+      {hours.map(([day, hrs], i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, padding: '3px 6px', background: 'rgba(255,255,255,0.04)', borderRadius: 4 }}>
+          <span style={{ fontSize: '0.4375rem', color: '#94a3b8' }}>{day}</span>
+          <span style={{ fontSize: '0.4375rem', color: '#475569', fontFamily: 'monospace' }}>{hrs}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ThumbWeatherLDEVR() {
+  return (
+    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+        <rect width="200" height="130" fill="#1a2535"/>
+        <path d="M20 68 Q60 52 90 48" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
+        <path d="M90 48 Q130 42 165 36" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" opacity="0.8" strokeDasharray="5 3"/>
+        {[[90, 48], [140, 42]].map(([cx, cy], i) => (
+          <g key={i}>
+            <circle cx={cx} cy={cy} r="8" fill="#0d1117" stroke="#22c55e" strokeWidth="1.5"/>
+            <text x={cx} y={cy + 3.5} textAnchor="middle" fill="#22c55e" style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
+          </g>
+        ))}
+        <ellipse cx="128" cy="30" rx="20" ry="10" fill="#475569" opacity="0.4"/>
+        {[112, 122, 132, 142].map((x, i) => (
+          <line key={i} x1={x} y1={40} x2={x - 3} y2={50} stroke="#58a6ff" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
+        ))}
+        <circle cx="20" cy="68" r="4" fill="#3fb950"/>
+        <circle cx="165" cy="36" r="4" fill="#e2001a"/>
+      </svg>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '5px 10px', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: '0.5rem', color: '#e2e8f0' }}>Cold weather · EV</span>
+        <span style={{ fontSize: '0.5rem', color: '#fbbf24', fontWeight: 700 }}>–12% range</span>
+      </div>
+    </div>
+  );
+}
+
+function ThumbDataFreshnessLDEVR() {
+  const items = [
+    { label: 'Charger status', pct: 100, color: '#22c55e' },
+    { label: 'Park capacity',  pct: 80,  color: '#22c55e' },
+    { label: 'Pricing',        pct: 55,  color: '#fbbf24' },
+    { label: 'Amenities',      pct: 15,  color: '#f85149' },
+  ];
+  return (
+    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
+      {items.map((item) => (
+        <div key={item.label} style={{ marginBottom: 6 }}>
+          <span style={{ fontSize: '0.4375rem', color: '#64748b', display: 'block', marginBottom: 1 }}>{item.label}</span>
+          <div style={{ height: 4, background: '#1e293b', borderRadius: 2 }}>
+            <div style={{ height: '100%', width: `${item.pct}%`, background: item.color, borderRadius: 2, opacity: 0.85 }}/>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Main component ─────────────────────────────────────────────────────────── */
 export default function LDEVRIntro({ onNavigate }) {
   const { t } = useTranslation('pages');
+  const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
 
   return (
     <div className="page">
@@ -103,38 +246,29 @@ export default function LDEVRIntro({ onNavigate }) {
         <p className="quick-answer" style={{ marginBottom: 20 }}>{t('ldevrIntro.endpointsSubtitle')}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
           {[
-            {
-              Thumb: ThumbEVRoute,
-              method: 'POST',
-              title: t('ldevrIntro.exampleTitles.ldevrModelId', { defaultValue: 'Calculate EV Route' }),
-              titleKey: 'calculateEvRoute',
-              path: '/routing/1/calculateLongDistanceEVRoute/{locations}/json',
-              desc: t('ldevrIntro.endpointDescs.calculateEvRoute'),
-              pageId: 'ldevr-calculate-route',
-            },
-            {
-              Thumb: ThumbBatchEV,
-              method: 'POST',
-              title: 'Batch EV Route',
-              titleKey: 'batchEvRoute',
-              path: '/routing/1/calculateLongDistanceEVRoute/batch/sync/json',
-              desc: t('ldevrIntro.endpointDescs.batchEvRoute'),
-              pageId: 'ldevr-batch',
-            },
-          ].map(({ Thumb, method, titleKey, path, desc, pageId }) => (
+            { Thumb: makeThumb(ThumbEVRoute,           L_LDEVRRoute),           method: 'POST', titleKey: 'calculateEvRoute',      path: '/routing/1/calculateLongDistanceEVRoute/{locations}/json',       desc: t('ldevrIntro.endpointDescs.calculateEvRoute'),                                                                                          pageId: 'ldevr-calculate-route' },
+            { Thumb: makeThumb(ThumbBatchEV,            L_LDEVRBatch),           method: 'POST', titleKey: 'batchEvRoute',          path: '/routing/1/calculateLongDistanceEVRoute/batch/sync/json',        desc: t('ldevrIntro.endpointDescs.batchEvRoute'),                                                                                                  pageId: 'ldevr-batch'           },
+            { Thumb: makeThumb(ThumbVehicleBrand,       L_LDEVRVehicleBrand),    method: 'GET',  titleKey: 'vehicleBrandLookup',    path: '/maps/orbis/routing/v2/vehicles/brands',                         desc: t('ldevrIntro.endpointDescs.vehicleBrandLookup',   { defaultValue: 'Look up registered EV brands and model variants to resolve battery and connector specs automatically.' }), pageId: 'ldevr-vehicle-brand',  tag: 'v2' },
+            { Thumb: makeThumb(ThumbOemEmsp,            L_LDEVROemEmsp),         method: 'GET',  titleKey: 'oemEmspSupport',        path: '/maps/orbis/routing/v2/vehicles/emsp',                           desc: t('ldevrIntro.endpointDescs.oemEmspSupport',       { defaultValue: 'Retrieve OEM-contracted EMSP charging networks compatible with the selected vehicle brand.' }),          pageId: 'ldevr-oem-emsp',       tag: 'v2' },
+            { Thumb: makeThumb(ThumbComputeTollLDEVR,  L_LDEVRComputeToll),     method: 'POST', titleKey: 'computeTollAmounts',    path: '/maps/orbis/routing/v2/…?computeTravelTimeFor=all',              desc: t('ldevrIntro.endpointDescs.computeTollAmounts',   { defaultValue: 'Include per-road-class toll costs and EV exemptions in the long-distance route response.' }),             pageId: 'ldevr-compute-toll',   tag: 'v2' },
+            { Thumb: makeThumb(ThumbChargingParks,      L_LDEVRChargingParks),   method: 'GET',  titleKey: 'chargingParksHours',    path: '/maps/orbis/routing/v2/chargingparks/{id}/hours',                desc: t('ldevrIntro.endpointDescs.chargingParksHours',   { defaultValue: 'Fetch opening hours and real-time availability for a specific charging park along the route.' }),           pageId: 'ldevr-charging-parks', tag: 'v2' },
+            { Thumb: makeThumb(ThumbWeatherLDEVR,       L_LDEVRWeather),         method: 'POST', titleKey: 'weatherConsideration',  path: '/maps/orbis/routing/v2/…?weatherConsideration=true',             desc: t('ldevrIntro.endpointDescs.weatherConsideration', { defaultValue: 'Factor in temperature and precipitation data to refine EV range estimates and stop selection.' }),             pageId: 'ldevr-weather',        tag: 'v2' },
+            { Thumb: makeThumb(ThumbDataFreshnessLDEVR, L_LDEVRDataFreshness),  method: 'POST', titleKey: 'dynamicDataFreshness',  path: '/maps/orbis/routing/v2/…?dateFreshness=true',                    desc: t('ldevrIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control the freshness of charger-status, park-capacity, and pricing data used during route planning.' }),         pageId: 'ldevr-data-freshness', tag: 'v2' },
+          ].map(({ Thumb, method, titleKey, path, desc, pageId, tag }) => (
             <div
               key={pageId}
               className="nav-card"
               onClick={() => onNavigate?.(pageId)}
             >
-              <div className="nav-card-thumb">
+              <div className="nav-card-thumb" style={illoTheme !== 'dark' ? { background: illoPalette.bg, padding: 0 } : undefined}>
                 <Thumb />
               </div>
               <div className="nav-card-body">
-                <div style={{ marginBottom: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
                   <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(88,166,255,0.12)', color: '#58a6ff', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
+                  {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(34,197,94,0.08)', color: '#22c55e', fontWeight: 600 }}>{tag}</span>}
                 </div>
-                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{t(`ldevrIntro.tableRows.${titleKey}`)}</div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{t(`ldevrIntro.tableRows.${titleKey}`, { defaultValue: titleKey })}</div>
                 <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{path}</code>
                 <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
               </div>

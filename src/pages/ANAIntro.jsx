@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import { makeThumb, L_VIL, L_CIL, L_ANATheming, L_ANA_Traffic, L_ANA_Map, L_ANA_EVSearch, L_ANA_LDRoute, L_ANA_DriverExp } from '../illustrations/lightVariants';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -100,6 +102,150 @@ function IntegrationDiagram({ t }) {
   );
 }
 
+/* ─── New dark Thumb components for hero illustrations ───────────────────────── */
+function ThumbANATraffic() {
+  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  return (
+    <div style={{ background: M.bg, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <svg width="100%" height="100%" viewBox="0 0 100 70" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute' }}>
+          <rect width="100" height="70" fill={M.bg}/>
+          <path d="M5 65 Q35 42 55 36 T95 18" stroke={M.blue} strokeWidth="2.5" strokeLinecap="round" fill="none" opacity="0.65"/>
+          <path d="M5 65 Q40 30 68 26 T95 18" stroke={M.green} strokeWidth="1.5" strokeLinecap="round" strokeDasharray="5 3" fill="none" opacity="0.55"/>
+          <circle cx="55" cy="36" r="4" fill={M.blue} opacity="0.8"/>
+        </svg>
+      </div>
+      <div style={{ padding: '6px 8px', background: M.dark, borderTop: `1px solid ${M.line}` }}>
+        <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Better route</div>
+        <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 5 }}>6 min faster · Less traffic</div>
+        <div style={{ display: 'flex', gap: 4 }}>
+          <div style={{ flex: 1, background: M.blue, borderRadius: 3, padding: '3px 0', textAlign: 'center', fontSize: '0.45rem', color: '#fff', fontWeight: 600 }}>Accept</div>
+          <div style={{ flex: 1, background: 'transparent', border: `1px solid ${M.line}`, borderRadius: 3, padding: '3px 0', textAlign: 'center', fontSize: '0.45rem', color: M.dim }}>Dismiss</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbANAMap() {
+  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  return (
+    <div style={{ background: M.bg, height: '100%', position: 'relative', overflow: 'hidden' }}>
+      <svg width="100%" height="100%" viewBox="0 0 120 80" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute' }}>
+        <rect width="120" height="80" fill={M.bg}/>
+        {/* Road grid */}
+        <path d="M0 42 Q30 38 60 42 T120 38" stroke={M.card} strokeWidth="5"/>
+        <line x1="45" y1="0" x2="44" y2="80" stroke={M.card} strokeWidth="4"/>
+        <line x1="88" y1="0" x2="86" y2="80" stroke={M.card} strokeWidth="4"/>
+        {/* Buildings */}
+        <rect x="6" y="12" width="20" height="16" rx="1" fill={M.line}/>
+        <rect x="28" y="8" width="12" height="20" rx="1" fill={M.line}/>
+        <rect x="52" y="6" width="16" height="24" rx="1" fill={M.card}/>
+        <rect x="92" y="10" width="18" height="17" rx="1" fill={M.line}/>
+        {/* Route */}
+        <path d="M12 72 Q40 50 60 44 T108 24" stroke={M.blue} strokeWidth="2.5" strokeLinecap="round" opacity="0.8"/>
+        <circle cx="60" cy="44" r="4" fill={M.blue}/>
+        <circle cx="60" cy="44" r="2" fill={M.dark}/>
+      </svg>
+      <div style={{ position: 'absolute', top: 6, left: 6, background: M.dark, borderRadius: 4, padding: '2px 5px' }}>
+        <span style={{ fontSize: '0.4rem', color: M.text, fontWeight: 600 }}>3D Vector Map</span>
+      </div>
+    </div>
+  );
+}
+
+function ThumbANAEVSearch() {
+  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const stations = [['Ionity','350 kW','3/4'], ['Fastned','300 kW','2/4'], ['bp pulse','50 kW','5/6']];
+  return (
+    <div style={{ background: M.bg, height: '100%', padding: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ background: M.card, border: `1px solid ${M.line}`, borderRadius: 4, padding: '3px 6px', fontSize: '0.45rem', color: M.dim }}>🔍 Charging stations near me…</div>
+      <div style={{ flex: 1, display: 'flex', gap: 4 }}>
+        <div style={{ width: '42%', background: M.card, borderRadius: 4, position: 'relative', overflow: 'hidden' }}>
+          <svg width="100%" height="100%" viewBox="0 0 40 60" style={{ position: 'absolute' }}>
+            <rect width="40" height="60" fill={M.card}/>
+            {[[12,22,M.green],[22,14,M.blue],[30,32,M.blue]].map(([cx,cy,col],i) => (
+              <g key={i}><circle cx={cx} cy={cy} r="5" fill={col} opacity="0.8"/><text x={cx} y={cy+2} textAnchor="middle" fill="#fff" style={{fontSize:5}}>⚡</text></g>
+            ))}
+          </svg>
+        </div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {stations.map(([name, kw, avail], i) => (
+            <div key={name} style={{ background: M.card, border: `1px solid ${i===0?M.green:M.line}`, borderRadius: 3, padding: '3px 4px' }}>
+              <div style={{ fontSize: '0.45rem', fontWeight: 600, color: M.text }}>{name}</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '0.4rem', color: M.dim }}>⚡ {kw}</span>
+                <span style={{ fontSize: '0.4rem', color: M.green }}>{avail}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbANALDRoute() {
+  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  return (
+    <div style={{ background: M.bg, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+        <svg width="100%" height="100%" viewBox="0 0 120 75" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute' }}>
+          <rect width="120" height="75" fill={M.bg}/>
+          <path d="M10 68 Q35 48 56 42 Q78 36 96 30 T116 18" stroke={M.blue} strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.75"/>
+          {[[56,42],[96,30]].map(([cx,cy],i) => (
+            <g key={i}><circle cx={cx} cy={cy} r="7" fill={M.card} stroke={M.green} strokeWidth="1.5"/><text x={cx} y={cy+2} textAnchor="middle" fill={M.green} style={{fontSize:6}}>⚡</text></g>
+          ))}
+          <circle cx="10" cy="68" r="5" fill={M.green}/>
+          <circle cx="116" cy="18" r="5" fill={M.blue}/>
+        </svg>
+      </div>
+      <div style={{ padding: '5px 8px', background: M.card, borderTop: `1px solid ${M.line}` }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+          <span style={{ fontSize: '0.45rem', color: M.text, fontWeight: 600 }}>5 hr 26 min · 513 km</span>
+          <span style={{ fontSize: '0.45rem', color: M.green }}>78% arrival</span>
+        </div>
+        <div style={{ background: M.line, borderRadius: 3, height: 5, overflow: 'hidden' }}>
+          <div style={{ background: M.green, width: '78%', height: '100%', borderRadius: 3 }}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ThumbANADriverExp() {
+  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  return (
+    <div style={{ background: M.dark, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      {/* NIP */}
+      <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: 5, borderBottom: `1px solid ${M.card}` }}>
+        <div style={{ fontSize: '0.6rem', color: M.text }}>↱</div>
+        <div>
+          <div style={{ fontSize: '0.45rem', fontWeight: 700, color: M.text }}>Turn right · 320 m</div>
+          <div style={{ fontSize: '0.4rem', color: M.dim }}>onto Main St</div>
+        </div>
+      </div>
+      {/* Map */}
+      <div style={{ flex: 1, background: M.bg, position: 'relative', overflow: 'hidden' }}>
+        <svg width="100%" height="100%" viewBox="0 0 100 50" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute' }}>
+          <rect width="100" height="50" fill={M.bg}/>
+          <path d="M5 45 Q40 28 65 32 T98 18" stroke={M.blue} strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.65"/>
+          <circle cx="65" cy="32" r="4" fill={M.blue}/><circle cx="65" cy="32" r="2" fill={M.dark}/>
+        </svg>
+      </div>
+      {/* ETA bar */}
+      <div style={{ display: 'flex', padding: '4px 8px', gap: 0, justifyContent: 'space-around', borderTop: `1px solid ${M.card}` }}>
+        {[['14:32','ETA'],['22m','Time'],['8.4km','Dist']].map(([v,l]) => (
+          <div key={l} style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{v}</div>
+            <div style={{ fontSize: '0.4rem', color: M.dim }}>{l}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ─── Feature card thumbnails ────────────────────────────────────────────────── */
 function ThumbPhoto({ src, objectPosition = 'center top' }) {
   return (
@@ -177,6 +323,7 @@ function ThumbTheming() {
 /* ─── Feature card ───────────────────────────────────────────────────────────── */
 function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onNavigate }) {
   const clickable = Boolean(pageId && onNavigate);
+  const { theme, palette } = useIlloStyle();
   return (
     <div
       style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
@@ -184,10 +331,10 @@ function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onN
       onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
       onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
     >
-      <div style={{ height: 130, background: '#0d1117', overflow: 'hidden', flexShrink: 0 }}>
+      <div style={{ height: 130, background: theme !== 'dark' && !src ? palette.bg : '#0d1117', overflow: 'hidden', flexShrink: 0 }}>
         {src
           ? <ThumbPhoto src={src} objectPosition={objectPosition} />
-          : <div style={{ padding: 10, height: '100%' }}><Thumb /></div>
+          : <div style={{ padding: theme !== 'dark' ? 0 : 10, height: '100%' }}><Thumb /></div>
         }
       </div>
       <div style={{ padding: '12px 14px', flex: 1 }}>
@@ -201,24 +348,21 @@ function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onN
   );
 }
 
-/* ─── Screenshot showcase ────────────────────────────────────────────────────── */
+/* ─── In-car showcase ────────────────────────────────────────────────────────── */
 function ScreenshotShowcase({ t }) {
-  const SCREENSHOTS = [
-    { src: 'ana_live_traffic.png',    labelKey: 'liveTraffic'  },
-    { src: 'ana_pmd.png',             labelKey: 'premiumMap'   },
-    { src: 'ana_ev_charging.png',     labelKey: 'evCharging'   },
-    { src: 'ana_automatic_routes.png',labelKey: 'ldEvRoute'    },
+  const { theme, palette } = useIlloStyle();
+  const ITEMS = [
+    { labelKey: 'liveTraffic', Thumb: makeThumb(ThumbANATraffic,   L_ANA_Traffic)   },
+    { labelKey: 'premiumMap',  Thumb: makeThumb(ThumbANAMap,       L_ANA_Map)        },
+    { labelKey: 'evCharging',  Thumb: makeThumb(ThumbANAEVSearch,  L_ANA_EVSearch)   },
+    { labelKey: 'ldEvRoute',   Thumb: makeThumb(ThumbANALDRoute,   L_ANA_LDRoute)    },
   ];
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
-      {SCREENSHOTS.map(({ src, labelKey }) => (
-        <div key={src} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
-          <div style={{ height: 180, overflow: 'hidden', background: '#0d1117' }}>
-            <img
-              src={`${BASE}${src}`}
-              alt={t(`anaIntro.screenshots.${labelKey}.label`)}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
-            />
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+      {ITEMS.map(({ labelKey, Thumb }) => (
+        <div key={labelKey} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
+          <div style={{ height: 160, overflow: 'hidden', background: theme !== 'dark' ? palette.bg : '#0d1117' }}>
+            <Thumb />
           </div>
           <div style={{ padding: '10px 12px' }}>
             <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{t(`anaIntro.screenshots.${labelKey}.label`)}</div>
@@ -236,34 +380,32 @@ export default function ANAIntro({ onNavigate }) {
 
   const FEATURES = [
     {
-      src: 'ana_live_traffic.png',
-      objectPosition: 'center 30%',
+      Thumb: makeThumb(ThumbANADriverExp, L_ANA_DriverExp),
       title: t('anaIntro.features.driverExperience.title'),
       desc: t('anaIntro.features.driverExperience.desc'),
       pageId: 'ana-driver-experience',
     },
     {
-      Thumb: ThumbVIL,
+      Thumb: makeThumb(ThumbVIL,    L_VIL),
       title: t('anaIntro.features.vil.title'),
       desc: t('anaIntro.features.vil.desc'),
       pageId: 'ana-vil',
     },
     {
-      Thumb: ThumbCIL,
+      Thumb: makeThumb(ThumbCIL,    L_CIL),
       title: t('anaIntro.features.cil.title'),
       desc: t('anaIntro.features.cil.desc'),
       pageId: 'ana-cil',
       tag: t('anaIntro.features.cil.tag'),
     },
     {
-      Thumb: ThumbTheming,
+      Thumb: makeThumb(ThumbTheming,L_ANATheming),
       title: t('anaIntro.features.theming.title'),
       desc: t('anaIntro.features.theming.desc'),
       pageId: 'ana-theming',
     },
     {
-      src: 'ana_ev_charging.png',
-      objectPosition: 'center 20%',
+      Thumb: makeThumb(ThumbANAEVSearch, L_ANA_EVSearch),
       title: t('anaIntro.features.evSupport.title'),
       desc: t('anaIntro.features.evSupport.desc'),
       pageId: 'ana-vil-ev',

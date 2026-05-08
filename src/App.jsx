@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getProduct } from './data/products';
+import { IlloStyleProvider } from './context/IlloStyleContext';
 import Topnav from './components/layout/Topnav';
 import GlobalHeader from './components/layout/GlobalHeader';
 import { useGlobalHeader } from './hooks/useGlobalHeader';
@@ -75,6 +76,8 @@ import Cluster from './pages/Cluster';
 import ADASIntegration from './pages/ADASIntegration';
 import ScreenshotAssets from './pages/ScreenshotAssets';
 import Typography from './pages/Typography';
+import IntroIllustrations from './pages/IntroIllustrations';
+import StyleSamples from './pages/StyleSamples';
 import DomainLanding from './pages/DomainLanding';
 import NavSDKIntro from './pages/NavSDKIntro';
 import ANAIntro from './pages/ANAIntro';
@@ -162,6 +165,8 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'adas':               return <ADASIntegration />;
     case 'typography':             return <Typography />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
+    case 'intro-illustrations':    return <IntroIllustrations />;
+    case 'style-samples':          return <StyleSamples />;
     // NavSDK
     case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
     // ANA
@@ -260,7 +265,7 @@ export default function App() {
   const product = getProduct(currentProduct);
 
   return (
-    <>
+    <IlloStyleProvider>
       {/* Single logo — stays pinned top-left regardless of header state */}
       <FixedLogo onClick={() => setDocsPortalOpen(true)} />
 
@@ -316,6 +321,6 @@ export default function App() {
           <TOC currentPage={currentPage} />
         </div>
       )}
-    </>
+    </IlloStyleProvider>
   );
 }
