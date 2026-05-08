@@ -221,23 +221,6 @@ export default function LDEVRIntro({ onNavigate }) {
         {t('ldevrIntro.quickAnswer')}
       </p>
 
-      {/* Capability tiles — inline under summary */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
-        {[
-          ['🔋', t('ldevrIntro.capabilities.batteryModelling.title'), t('ldevrIntro.capabilities.batteryModelling.desc')],
-          ['⚡', t('ldevrIntro.capabilities.stopSelection.title'), t('ldevrIntro.capabilities.stopSelection.desc')],
-          ['🔌', t('ldevrIntro.capabilities.connectorMatching.title'), t('ldevrIntro.capabilities.connectorMatching.desc')],
-          ['🗺️', t('ldevrIntro.capabilities.trafficEnergy.title'), t('ldevrIntro.capabilities.trafficEnergy.desc')],
-        ].map(([icon, title, desc]) => (
-          <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
-            <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
-              <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-            </div>
-            <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</div>
-          </div>
-        ))}
-      </div>
 
 
       {/* Endpoints */}
