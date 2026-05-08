@@ -438,52 +438,73 @@ const { travelTimeInSeconds, lengthInMeters } =
         </div>
       </div>
 
-      {/* Platform versions — compact row */}
+      {/* Version comparison table */}
       <div className="zone">
         <h2 className="sh" id="r-platforms">API versions</h2>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          {[
-            {
-              version: 'v1',
-              base: 'api.tomtom.com/routing/1/…',
-              status: 'Production', statusColor: '#22c55e',
-              summary: 'Full endpoint surface — Calculate Route, Reachable Range, Batch, guidance, all travel modes.',
-              active: true,
-              pageId: null,
-            },
-            {
-              version: 'v2 · Private Preview',
-              base: 'api.tomtom.com/maps/orbis/routing/calculateLongDistanceEV',
-              status: 'Private Preview', statusColor: '#d97706',
-              summary: 'LDEVR v2 extensions — weather adaptation, toll amounts, charging park opening hours, OEM eMSP filtering, and dynamic data freshness.',
-              active: false,
-              pageId: 'ldevr-weather',
-            },
-            {
-              version: 'v3 · Private Preview',
-              base: 'api.tomtom.com/maps/orbis/routing/v3/calculateRoute',
-              status: 'Private Preview', statusColor: '#d97706',
-              summary: 'POST-only, legs-based request format. Toll amounts and weather consumption adaptation available today.',
-              active: false,
-              pageId: 'routing-v3-overview',
-            },
-          ].map(p => (
-            <button
-              key={p.version}
-              className={`text-card${p.active ? ' text-card--active' : ''}`}
-              style={{ flex: '1 1 220px' }}
-              onClick={() => p.pageId && onNavigate?.(p.pageId)}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(139,148,158,0.12)', color: 'var(--muted)', fontFamily: 'monospace' }}>{p.version}</span>
-                <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: `${p.statusColor}18`, color: p.statusColor, fontWeight: 600, marginLeft: 'auto' }}>{p.status}</span>
-              </div>
-              <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'monospace', marginBottom: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.base}</code>
-              <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{p.summary}</p>
-              {p.pageId && <span style={{ display: 'inline-block', marginTop: 8, fontSize: '0.875rem', color: 'var(--red)', fontWeight: 600 }}>View reference →</span>}
-            </button>
-          ))}
-        </div>
+        {(() => {
+          const V1 = { label: 'Version 1', version: 'v1', status: 'Production',     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',   color: '#15803d', bg: 'rgba(34,197,94,0.1)'   };
+          const V2 = { label: 'Version 2', version: 'v2', status: 'Public Preview',  statusColor: '#7c3aed', statusBg: 'rgba(168,85,247,0.12)',  color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  };
+          const V3 = { label: 'Version 3', version: 'v3', status: 'Private Preview', statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)',   color: '#92400e', bg: 'rgba(234,179,8,0.1)'   };
+          const Y = '✓'; const N = '—';
+          const rows = [
+            { label: 'Map platform',          v1: 'TomTom Maps',              v2: 'Orbis Maps',                      v3: 'Orbis Maps'                          },
+            { label: 'HTTP method',           v1: 'GET or POST',              v2: 'GET or POST',                     v3: 'POST only'                           },
+            { label: 'Route waypoints',       v1: 'Path parameters',          v2: 'Path params or POST body',        v3: 'POST body legs array'                },
+            { label: 'Response fields',       v1: 'Full response',            v2: 'Full response',                   v3: 'Attributes header — selected fields' },
+            { label: 'Base endpoint',         v1: '/routing/1/…',             v2: '/routing/2/…',                    v3: '/maps/orbis/routing/v3/…'            },
+            { label: 'Calculate Route',       v1: Y, v2: Y, v3: Y },
+            { label: 'Reachable Range',       v1: Y, v2: Y, v3: Y },
+            { label: 'Batch Routing',         v1: Y, v2: N, v3: N },
+            { label: 'Guidance Instructions', v1: Y, v2: Y, v3: Y },
+            { label: 'Lane Guidance',         v1: Y, v2: Y, v3: Y },
+            { label: 'Road Shield Notes',     v1: Y, v2: N, v3: N },
+            { label: 'Compute Toll Amounts',  v1: N, v2: Y, v3: Y },
+            { label: 'Weather Consideration', v1: N, v2: N, v3: Y },
+            { label: 'Dynamic Data Freshness',v1: N, v2: Y, v3: N },
+          ];
+          const cell = (val, col) => {
+            const isTick = val === Y, isDash = val === N;
+            return (
+              <td key={col.label} style={{
+                padding: '9px 14px', fontSize: '0.8125rem', textAlign: 'left',
+                color: isTick ? col.color : isDash ? 'var(--border)' : 'var(--mid)',
+                fontWeight: isTick ? 700 : 400,
+                borderBottom: '1px solid var(--border)',
+              }}>
+                {val}
+              </td>
+            );
+          };
+          return (
+            <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid var(--border)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+                <thead>
+                  <tr style={{ background: 'var(--bg)' }}>
+                    <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: 'var(--muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border)', width: '34%' }} />
+                    {[V1, V2, V3].map(v => (
+                      <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '22%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+                          <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--muted)' }}>{v.label}</span>
+                          <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, i) => (
+                    <tr key={row.label} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                      <td style={{ padding: '9px 14px', fontWeight: 600, color: 'var(--black)', borderBottom: '1px solid var(--border)', fontSize: '0.8125rem' }}>{row.label}</td>
+                      {cell(row.v1, V1)}
+                      {cell(row.v2, V2)}
+                      {cell(row.v3, V3)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Getting started */}
