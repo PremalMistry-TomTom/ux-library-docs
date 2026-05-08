@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getProduct } from './data/products';
+import { trackPage } from './utils/analytics';
 import Topnav from './components/layout/Topnav';
 import GlobalHeader from './components/layout/GlobalHeader';
 import { useGlobalHeader } from './hooks/useGlobalHeader';
@@ -244,7 +245,13 @@ export default function App() {
     localStorage.setItem('ux-theme', isDark ? 'dark' : 'light');
   }, [isDark]);
 
+  // Track initial pageview on mount
+  useEffect(() => {
+    trackPage('portal', 'portal');
+  }, []);
+
   function navigate(pageId, productId, platform) {
+    const resolvedProduct = productId || currentProduct;
     if (productId && productId !== currentProduct) {
       setCurrentProduct(productId);
       const targetProduct = getProduct(productId);
@@ -255,6 +262,7 @@ export default function App() {
     setCurrentPage(pageId);
     setNavDrawerOpen(false);
     window.scrollTo(0, 0);
+    trackPage(pageId, resolvedProduct);
   }
 
   const product = getProduct(currentProduct);
