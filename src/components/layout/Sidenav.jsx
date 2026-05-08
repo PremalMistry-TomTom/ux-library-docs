@@ -2,6 +2,14 @@ import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 
+/* ─── Nav section version badge ─────────────────────────────────────────────── */
+const NAV_VERSION_BADGES = {
+  'v1':        { label: 'Production',     color: '#15803d', bg: 'rgba(34,197,94,0.12)'  },
+  'v2-public': { label: 'Public Preview', color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  },
+  'v3-public': { label: 'Public Preview', color: '#1d4ed8', bg: 'rgba(0,112,205,0.1)'   },
+  'v2-private':{ label: 'Private Preview',color: '#92400e', bg: 'rgba(234,179,8,0.12)'  },
+};
+
 /* ─── Tree connector icons ───────────────────────────────────────────────────── */
 const CONNECTOR_COLOR = '#D4D4D4';
 
@@ -267,17 +275,31 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
     <>
       {(nav || []).map((entry, i) => {
         if (entry.type === 'section') {
+          const badgeCfg = entry.badge ? NAV_VERSION_BADGES[entry.badge] : null;
           return (
             <div key={`section-${i}`} style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               padding: '16px 10px 4px',
-              fontSize: '0.6875rem',
-              fontWeight: 600,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: 'var(--muted)',
               userSelect: 'none',
             }}>
-              {entry.label}
+              <span style={{
+                fontSize: '0.6875rem', fontWeight: 600,
+                letterSpacing: '0.06em', textTransform: 'uppercase',
+                color: 'var(--muted)',
+              }}>
+                {entry.label}
+              </span>
+              {badgeCfg && (
+                <span style={{
+                  fontSize: '0.6rem', fontWeight: 700,
+                  letterSpacing: '0.04em', textTransform: 'uppercase',
+                  padding: '2px 7px', borderRadius: 4,
+                  background: badgeCfg.bg, color: badgeCfg.color,
+                  whiteSpace: 'nowrap',
+                }}>
+                  {badgeCfg.label}
+                </span>
+              )}
             </div>
           );
         }

@@ -16,7 +16,7 @@ export const LDEVR_NAV = [
       { id: 'ldevr-connectors',      label: 'Connector Types' },
     ],
   },
-  { type: 'section', label: 'v1 · Production' },
+  { type: 'section', label: 'Version 1', badge: 'v1' },
   { id: 'ldevr-calculate-route', label: 'Calculate EV Route', type: 'top', ref: true, anchors: [
       { id: 'api-ldevr-route',             label: 'Route planning',              method: 'POST' },
       { id: 'api-ldevr-battery',           label: 'Electric vehicle & battery',  method: 'POST' },
@@ -32,7 +32,7 @@ export const LDEVR_NAV = [
       { id: 'api-ldevr-batch-response', label: 'Response schema' },
       { id: 'api-ldevr-batch-errors',   label: 'Error codes' },
     ]},
-  { type: 'section', label: 'v2 · Private Preview' },
+  { type: 'section', label: 'Version 2', badge: 'v2-private' },
   { id: 'ldevr-weather',        label: 'Weather Consideration',         type: 'top', ref: true, anchors: [
       { id: 'ldevr-weather-request-params', label: 'Request parameters',       method: 'POST' },
       { id: 'ldevr-weather-body-params',    label: 'POST body parameters',     method: 'POST' },

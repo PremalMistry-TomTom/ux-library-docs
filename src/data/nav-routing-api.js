@@ -18,7 +18,7 @@ export const ROUTING_API_NAV = [
       { id: 'routing-consumption',      label: 'Consumption Models' },
     ],
   },
-  { type: 'section', label: 'v1 · Production' },
+  { type: 'section', label: 'Version 1', badge: 'v1' },
   { id: 'routing-calculate-route', label: 'Calculate Route', type: 'top', ref: true, anchors: [
       { id: 'api-rc-route-planning', label: 'Route planning',              method: 'GET'  },
       { id: 'api-rc-vehicle',        label: 'Vehicle profile',             method: 'GET'  },
@@ -57,7 +57,7 @@ export const ROUTING_API_NAV = [
       { id: 'api-shields-section', label: 'Road shield section' },
       { id: 'api-shields-object',  label: 'Shield object' },
     ]},
-  { type: 'section', label: 'v2 · Public Preview' },
+  { type: 'section', label: 'Version 2', badge: 'v2-public' },
   { id: 'routing-v2-calculate-route', label: 'Calculate Route', type: 'top', ref: true, anchors: [
       { id: 'routing-v2-route',      label: 'Route planning',               method: 'GET'  },
       { id: 'routing-v2-headers',    label: 'Request headers'                              },
@@ -89,7 +89,7 @@ export const ROUTING_API_NAV = [
       { id: 'routing-v2-freshness-response', label: 'Response data' },
     ]},
 
-  { type: 'section', label: 'v3 · Public Preview' },
+  { type: 'section', label: 'Version 3', badge: 'v3-public' },
   { id: 'routing-v3-overview', label: 'Routing API v3', type: 'top' },
   { id: 'routing-v3-calculate-route', label: 'Calculate Route', type: 'top', ref: true, anchors: [
       { id: 'routing-v3-route',      label: 'Route planning',               method: 'GET'  },
