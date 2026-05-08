@@ -189,24 +189,24 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ldevr-battery-model':    return <LDEVRBatteryModel />;
     case 'ldevr-connectors':       return <LDEVRConnectors />;
     // LDEVR v2 Extensions
-    case 'ldevr-weather':          return <LDEVRWeather />;
-    case 'ldevr-vehicle-brand':    return <LDEVRVehicleBrand />;
-    case 'ldevr-compute-toll':     return <LDEVRComputeToll />;
-    case 'ldevr-charging-parks':   return <LDEVRChargingParks />;
-    case 'ldevr-oem-emsp':         return <LDEVROemEmsp />;
-    case 'ldevr-data-freshness':   return <LDEVRDataFreshness />;
-    // Routing API v3
-    case 'routing-v2-calculate-route': return <RoutingV2CalculateRoute />;
-    case 'routing-v2-reachable-range': return <RoutingV2ReachableRange />;
-    case 'routing-v2-compute-toll':    return <RoutingV2ComputeToll />;
-    case 'routing-v2-guidance':        return <RoutingV2Guidance />;
-    case 'routing-v2-data-freshness':  return <RoutingV2DataFreshness />;
-    case 'routing-v3-overview':        return <RoutingV3Overview onNavigate={onNavigate} />;
-    case 'routing-v3-calculate-route': return <RoutingV3CalculateRoute />;
-    case 'routing-v3-guidance':        return <RoutingV3Guidance />;
-    case 'routing-v3-reachable-range': return <RoutingV3ReachableRange />;
-    case 'routing-v3-compute-toll':    return <RoutingV3ComputeToll />;
-    case 'routing-v3-weather':         return <RoutingV3Weather />;
+    case 'ldevr-weather':          return <LDEVRWeather          onNavigate={onNavigate} />;
+    case 'ldevr-vehicle-brand':    return <LDEVRVehicleBrand     onNavigate={onNavigate} />;
+    case 'ldevr-compute-toll':     return <LDEVRComputeToll      onNavigate={onNavigate} />;
+    case 'ldevr-charging-parks':   return <LDEVRChargingParks    onNavigate={onNavigate} />;
+    case 'ldevr-oem-emsp':         return <LDEVROemEmsp          onNavigate={onNavigate} />;
+    case 'ldevr-data-freshness':   return <LDEVRDataFreshness    onNavigate={onNavigate} />;
+    // Routing API v2 / v3
+    case 'routing-v2-calculate-route': return <RoutingV2CalculateRoute  onNavigate={onNavigate} />;
+    case 'routing-v2-reachable-range': return <RoutingV2ReachableRange  onNavigate={onNavigate} />;
+    case 'routing-v2-compute-toll':    return <RoutingV2ComputeToll     onNavigate={onNavigate} />;
+    case 'routing-v2-guidance':        return <RoutingV2Guidance        onNavigate={onNavigate} />;
+    case 'routing-v2-data-freshness':  return <RoutingV2DataFreshness   onNavigate={onNavigate} />;
+    case 'routing-v3-overview':        return <RoutingV3Overview        onNavigate={onNavigate} />;
+    case 'routing-v3-calculate-route': return <RoutingV3CalculateRoute  onNavigate={onNavigate} />;
+    case 'routing-v3-guidance':        return <RoutingV3Guidance        onNavigate={onNavigate} />;
+    case 'routing-v3-reachable-range': return <RoutingV3ReachableRange  onNavigate={onNavigate} />;
+    case 'routing-v3-compute-toll':    return <RoutingV3ComputeToll     onNavigate={onNavigate} />;
+    case 'routing-v3-weather':         return <RoutingV3Weather         onNavigate={onNavigate} />;
     // Matrix Routing v2
     case 'matrix-intro':           return <MatrixRoutingIntro onNavigate={onNavigate} />;
     // Waypoint Optimization

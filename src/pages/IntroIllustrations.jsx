@@ -1,3 +1,4 @@
+import React from 'react';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
@@ -2885,27 +2886,172 @@ function StyleToggle({ value, onChange }) {
   );
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Figma plugin download panel
+   ───────────────────────────────────────────────────────────────────────────── */
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function FigmaPluginPanel({ onClose }) {
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 1000,
+      background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: 24,
+    }}
+      onClick={e => e.target === e.currentTarget && onClose()}
+    >
+      <div style={{
+        background: 'var(--surface)', border: '1px solid var(--border)',
+        borderRadius: 20, padding: 28, maxWidth: 520, width: '100%',
+        boxShadow: '0 24px 80px rgba(0,0,0,0.35)',
+      }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 20 }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: 12, flexShrink: 0,
+            background: 'linear-gradient(135deg,#0B2D5C,#2878CC)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.25rem',
+          }}>🎨</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--black)', marginBottom: 2 }}>
+              Figma Illustration Scaffold
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>
+              50 components · 4 theme modes · named layers · token variables
+            </div>
+          </div>
+          <button onClick={onClose} style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontSize: '1.25rem', color: 'var(--mid)', padding: '0 2px', lineHeight: 1,
+          }}>✕</button>
+        </div>
+
+        {/* Downloads */}
+        <div style={{ display: 'flex', gap: 10, marginBottom: 20 }}>
+          <a
+            href={`${BASE}/figma-plugin/code.js`}
+            download="code.js"
+            style={{
+              flex: 1, display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 14px', borderRadius: 10,
+              background: 'linear-gradient(135deg,#0B2D5C,#2878CC)',
+              color: '#fff', textDecoration: 'none', fontWeight: 600, fontSize: '0.8125rem',
+            }}
+          >
+            <span style={{ fontSize: '1rem' }}>⬇</span> Download code.js
+          </a>
+          <a
+            href={`${BASE}/figma-plugin/manifest.json`}
+            download="manifest.json"
+            style={{
+              flex: 1, display: 'flex', alignItems: 'center', gap: 8,
+              padding: '10px 14px', borderRadius: 10,
+              border: '1px solid var(--border)', background: 'var(--bg)',
+              color: 'var(--black)', textDecoration: 'none', fontWeight: 600, fontSize: '0.8125rem',
+            }}
+          >
+            <span style={{ fontSize: '1rem' }}>⬇</span> Download manifest.json
+          </a>
+        </div>
+
+        {/* Steps */}
+        <div style={{
+          background: 'var(--bg)', borderRadius: 12, padding: '14px 16px',
+          border: '1px solid var(--border)', marginBottom: 16,
+        }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 10 }}>
+            Setup instructions
+          </div>
+          {[
+            ['1', 'Save both files into a new folder on your machine'],
+            ['2', 'Figma Desktop → Plugins → Development → New Plugin'],
+            ['3', 'Choose "Link existing plugin" → select the folder'],
+            ['4', 'Run: Plugins → Development → UX Library — Illustration Scaffold'],
+          ].map(([n, step]) => (
+            <div key={n} style={{ display: 'flex', gap: 10, marginBottom: 7, alignItems: 'flex-start' }}>
+              <div style={{
+                width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
+                background: 'var(--border)', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', fontSize: '0.625rem', fontWeight: 700, color: 'var(--black)',
+              }}>{n}</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, paddingTop: 2 }}>{step}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* What you get */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          {[
+            ['📐', '50 components', 'All 5 product sections'],
+            ['🎨', '4 theme modes', 'Blueprint L/D · Day · Night'],
+            ['🏷️', 'Named layers', '/bg /route /card /badge …'],
+            ['🔗', 'Token variables', 'Every fill bound to a variable'],
+          ].map(([emoji, title, sub]) => (
+            <div key={title} style={{
+              background: 'var(--bg)', borderRadius: 10, padding: '10px 12px',
+              border: '1px solid var(--border)',
+            }}>
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 2 }}>
+                <span style={{ fontSize: '0.875rem' }}>{emoji}</span>
+                <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
+              </div>
+              <div style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>{sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function IntroIllustrations() {
   const { theme: styleMode, setTheme: setStyleMode } = useIlloStyle();
+  const [showPlugin, setShowPlugin] = React.useState(false);
 
   return (
     <div className="page">
+      {showPlugin && <FigmaPluginPanel onClose={() => setShowPlugin(false)} />}
+
       <div className="page-header">
         <h1>Intro Hero Illustrations</h1>
         <PageActions />
       </div>
 
       <p className="quick-answer">
-        All 36 hero illustrations across every product intro page. Toggle between the classic dark style and the themed flat illustration system. Adding a new theme is one palette object — every illustration updates automatically.
+        All 50 hero illustrations across every product intro page. Toggle between the classic dark style and the themed flat illustration system. Adding a new theme is one palette object — every illustration updates automatically.
       </p>
 
-      {/* ── Style toggle ── */}
+      {/* ── Style toggle + Figma plugin button ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32, padding: '16px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16 }}>
         <div>
           <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 2 }}>Illustration theme</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>Switches all 36 heroes simultaneously — add new themes in <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>IlloStyleContext.jsx → THEMES</code></div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>Switches all 50 heroes simultaneously — add new themes in <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>IlloStyleContext.jsx → THEMES</code></div>
         </div>
-        <div style={{ marginLeft: 'auto' }}>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            onClick={() => setShowPlugin(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 7,
+              padding: '8px 16px', borderRadius: 100,
+              border: '1px solid var(--border)', background: 'var(--bg)',
+              cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
+              color: 'var(--black)', transition: 'all 0.15s',
+              whiteSpace: 'nowrap',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.borderColor = '#2878CC'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
+          >
+            <svg width="14" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+              <path d="M19 28.5C19 25.9804 20.0009 23.5641 21.7825 21.7825C23.5641 20.0009 25.9804 19 28.5 19C31.0196 19 33.4359 20.0009 35.2175 21.7825C36.9991 23.5641 38 25.9804 38 28.5C38 31.0196 36.9991 33.4359 35.2175 35.2175C33.4359 36.9991 31.0196 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
+              <path d="M0 47.5C0 44.9804 1.00089 42.5641 2.78249 40.7825C4.56408 39.0009 6.98044 38 9.5 38H19V47.5C19 50.0196 17.9991 52.4359 16.2175 54.2175C14.4359 55.9991 12.0196 57 9.5 57C6.98044 57 4.56408 55.9991 2.78249 54.2175C1.00089 52.4359 0 50.0196 0 47.5Z" fill="#0ACF83"/>
+              <path d="M19 0V19H28.5C31.0196 19 33.4359 17.9991 35.2175 16.2175C36.9991 14.4359 38 12.0196 38 9.5C38 6.98044 36.9991 4.56408 35.2175 2.78249C33.4359 1.00089 31.0196 0 28.5 0H19Z" fill="#FF7262"/>
+              <path d="M0 9.5C0 12.0196 1.00089 14.4359 2.78249 16.2175C4.56408 17.9991 6.98044 19 9.5 19H19V0H9.5C6.98044 0 4.56408 1.00089 2.78249 2.78249C1.00089 4.56408 0 6.98044 0 9.5Z" fill="#F24E1E"/>
+              <path d="M0 28.5C0 31.0196 1.00089 33.4359 2.78249 35.2175C4.56408 36.9991 6.98044 38 9.5 38H19V19H9.5C6.98044 19 4.56408 20.0009 2.78249 21.7825C1.00089 23.5641 0 25.9804 0 28.5Z" fill="#A259FF"/>
+            </svg>
+            Get Figma Plugin
+          </button>
           <StyleToggle value={styleMode} onChange={setStyleMode} />
         </div>
       </div>
