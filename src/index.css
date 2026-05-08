@@ -2372,6 +2372,46 @@ html.ai-panel-open .page {
   .dp2-block-container { padding: 0 16px; }
 }
 
+/* ── Dark mode overrides for DocsPortal (dp2-) ── */
+[data-theme="dark"] .dp2-root                { background: #141414; color: #e2e8f0; }
+[data-theme="dark"] .dp2-hero                { border-bottom-color: #2a2a2a; }
+[data-theme="dark"] .dp2-hero-heading        { color: #f1f5f9; }
+[data-theme="dark"] .dp2-search-bar          { background: #1e1e1e; border-color: #333; }
+[data-theme="dark"] .dp2-search-icon         { color: #64748b; }
+[data-theme="dark"] .dp2-search-placeholder  { color: #475569; }
+[data-theme="dark"] .dp2-tabbar-wrap         { background: #141414; }
+[data-theme="dark"] .dp2-tabbar-pill         { background: #1e1e1e; }
+[data-theme="dark"] .dp2-tab-btn             { color: #94a3b8; }
+[data-theme="dark"] .dp2-tab-btn:hover       { background: #2a2a2a; }
+[data-theme="dark"] .dp2-section-heading     { color: #f1f5f9; }
+[data-theme="dark"] .dp2-navsdk-card         { background: #1e1e1e; border-color: #333; }
+[data-theme="dark"] .dp2-navsdk-title        { color: #f1f5f9; }
+[data-theme="dark"] .dp2-navsdk-sub          { color: #94a3b8; }
+[data-theme="dark"] .dp2-product-card        { background: #1e1e1e; border-color: #2a2a2a; }
+[data-theme="dark"] .dp2-product-card:hover  { border-color: #444; box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+[data-theme="dark"] .dp2-product-card--linked:hover { border-color: #DF1B12; }
+[data-theme="dark"] .dp2-product-card--stub:hover   { border-color: #2a2a2a; box-shadow: none; }
+[data-theme="dark"] .dp2-product-name        { color: #f1f5f9; }
+[data-theme="dark"] .dp2-product-desc        { color: #94a3b8; }
+[data-theme="dark"] .dp2-product-doc-btn     { background: #252525; border-color: #3a3a3a; color: #e2e8f0; }
+[data-theme="dark"] .dp2-product-doc-btn:hover { background: #2e2e2e; border-color: #4a4a4a; }
+[data-theme="dark"] .dp2-product-doc-btn--disabled { background: #1a1a1a; border-color: #2a2a2a; color: #3a3a3a; }
+[data-theme="dark"] .dp2-tools-section       { border-top-color: #2a2a2a; }
+[data-theme="dark"] .dp2-tools-heading       { color: #f1f5f9; }
+[data-theme="dark"] .dp2-tools-sub           { color: #94a3b8; }
+[data-theme="dark"] .dp2-tool-grid           { border-bottom-color: #2a2a2a; }
+[data-theme="dark"] .dp2-tool-card           { background: #1e1e1e; border-color: #2a2a2a; }
+[data-theme="dark"] .dp2-tool-card:hover     { box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+[data-theme="dark"] .dp2-tool-name           { color: #f1f5f9; }
+[data-theme="dark"] .dp2-tool-desc           { color: #94a3b8; }
+[data-theme="dark"] .dp2-resource-icon-area  { background: #252525; color: #64748b; }
+[data-theme="dark"] .dp2-resource-card:hover .dp2-resource-icon-area { background: #2e2e2e; }
+[data-theme="dark"] .dp2-resource-name       { color: #f1f5f9; }
+[data-theme="dark"] .dp2-resource-desc       { color: #94a3b8; }
+[data-theme="dark"] .dp2-support-card        { background: #1e1e1e; border-color: #2a2a2a; }
+[data-theme="dark"] .dp2-support-card:hover  { box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+[data-theme="dark"] .dp2-support-desc        { color: #94a3b8; }
+
 /* ── Keep old dp- classes working (legacy) ── */
 .dp-root {
   min-height: 100vh;
