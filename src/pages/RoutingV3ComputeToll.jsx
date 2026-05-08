@@ -145,14 +145,12 @@ export default function RoutingV3ComputeToll() {
   ];
 
   return (
-    <>
-      <PrivatePreviewBanner api="Routing API v3" />
-      <ApiRefTwoCol
-        title="Compute Toll Amounts"
-        description="Calculate total toll costs along a Routing API v3 route. Available in both GET and POST request formats. Returns a totalTollAmounts array with per-currency cost breakdowns, accounting for ETC transponder availability."
-        version="v3-private"
-        sections={sections}
-      />
-    </>
+    <ApiRefTwoCol
+      title="Compute Toll Amounts"
+      description="Calculate total toll costs along a Routing API v3 route. Available in both GET and POST request formats. Returns a totalTollAmounts array with per-currency cost breakdowns, accounting for ETC transponder availability."
+      version="v3-private"
+      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
+      sections={sections}
+    />
   );
 }

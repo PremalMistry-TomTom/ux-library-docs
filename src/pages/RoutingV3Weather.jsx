@@ -156,14 +156,12 @@ export default function RoutingV3Weather() {
   ];
 
   return (
-    <>
-      <PrivatePreviewBanner api="Routing API v3" />
-      <ApiRefTwoCol
-        title="Weather Consideration"
-        description="Adapt the EV consumption curve for outside temperature on Routing API v3 Calculate Route and Reachable Range requests. Use forecast for automatic location-based weather, or userSpecified to provide a specific temperature. Requires an electric vehicle consumption model."
-        version="v3-private"
-        sections={sections}
-      />
-    </>
+    <ApiRefTwoCol
+      title="Weather Consideration"
+      description="Adapt the EV consumption curve for outside temperature on Routing API v3 Calculate Route and Reachable Range requests. Use forecast for automatic location-based weather, or userSpecified to provide a specific temperature. Requires an electric vehicle consumption model."
+      version="v3-private"
+      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
+      sections={sections}
+    />
   );
 }

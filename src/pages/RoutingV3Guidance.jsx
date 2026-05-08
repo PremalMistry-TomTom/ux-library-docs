@@ -118,14 +118,12 @@ export default function RoutingV3Guidance() {
   ];
 
   return (
-    <>
-      <PrivatePreviewBanner api="Routing API v3" />
-      <ApiRefTwoCol
-        title="Guidance Instructions"
-        description="Turn-by-turn instruction schema returned in the guidance object of a Routing API v3 Calculate Route response. Enable with instructionsType=text, tagged, or coded. Includes lane information when sectionType=lanes is also set."
-        version="v3-private"
-        sections={sections}
-      />
-    </>
+    <ApiRefTwoCol
+      title="Guidance Instructions"
+      description="Turn-by-turn instruction schema returned in the guidance object of a Routing API v3 Calculate Route response. Enable with instructionsType=text, tagged, or coded. Includes lane information when sectionType=lanes is also set."
+      version="v3-private"
+      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
+      sections={sections}
+    />
   );
 }

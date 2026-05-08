@@ -320,14 +320,12 @@ export default function RoutingV3CalculateRoute() {
   ];
 
   return (
-    <>
-      <PrivatePreviewBanner api="Routing API v3" />
-      <ApiRefTwoCol
-        title="Calculate Route"
-        description="Full Routing API v3 calculateRoute reference. Supports GET and POST with the same comprehensive vehicle profile, consumption model, and guidance parameters as v1, with v3 URL patterns and header-based authentication."
-        version="v3-private"
-        sections={sections}
-      />
-    </>
+    <ApiRefTwoCol
+      title="Calculate Route"
+      description="Full Routing API v3 calculateRoute reference. Supports GET and POST with the same comprehensive vehicle profile, consumption model, and guidance parameters as v1, with v3 URL patterns and header-based authentication."
+      version="v3-private"
+      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
+      sections={sections}
+    />
   );
 }

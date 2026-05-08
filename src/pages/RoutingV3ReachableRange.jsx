@@ -280,14 +280,12 @@ export default function RoutingV3ReachableRange() {
   ];
 
   return (
-    <>
-      <PrivatePreviewBanner api="Routing API v3" />
-      <ApiRefTwoCol
-        title="Reachable Range"
-        description="Calculate a polygon showing all reachable locations within a time, distance, fuel, or energy budget from an origin point. Returns a boundary array of lat/lon coordinates forming the isochrone polygon."
-        version="v3-private"
-        sections={sections}
-      />
-    </>
+    <ApiRefTwoCol
+      title="Reachable Range"
+      description="Calculate a polygon showing all reachable locations within a time, distance, fuel, or energy budget from an origin point. Returns a boundary array of lat/lon coordinates forming the isochrone polygon."
+      version="v3-private"
+      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
+      sections={sections}
+    />
   );
 }

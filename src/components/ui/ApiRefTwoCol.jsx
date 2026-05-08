@@ -426,7 +426,7 @@ function VersionBadge({ version }) {
 }
 
 /* ─── Main layout ────────────────────────────────────────────────────────────── */
-export default function ApiRefTwoCol({ sections, panelLabel = 'Example', version, title, description }) {
+export default function ApiRefTwoCol({ sections, panelLabel = 'Example', version, title, description, topBanner }) {
   /* ── Per-section selected values: { [sectionId]: { [paramName]: value } } ── */
   const [selected, setSelected] = useState({});
 
@@ -502,6 +502,7 @@ export default function ApiRefTwoCol({ sections, panelLabel = 'Example', version
         {description && (
           <p className="quick-answer">{description}</p>
         )}
+        {topBanner}
         {sectionsContent}
       </div>
     );
