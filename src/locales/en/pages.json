@@ -331,5 +331,443 @@
         "displayPx":     { "req": "Pixel vs density-independent dimensions",      "notes": "displayPX — use true for fixed-res clusters" }
       }
     }
+  },
+  "routingIntro": {
+    "title": "Routing API",
+    "quickAnswer": "Calculate optimal routes between waypoints with full support for vehicle profiles, real-time traffic, EV consumption modelling, reachable range, and batch processing across ~215 countries.",
+    "capabilities": {
+      "vehicleProfiles": {
+        "title": "Vehicle profiles",
+        "desc": "Truck routing with height, width, weight, axle load, ADR tunnel codes, and hazardous load types. Eight travel modes."
+      },
+      "evConsumption": {
+        "title": "EV consumption model",
+        "desc": "Speed-to-kWh consumption tables, auxiliary power draw, and regenerative braking — for single-charge EV routes."
+      },
+      "traffic": {
+        "title": "Live + historic traffic",
+        "desc": "IQ Routes™ learns from historical patterns. Real-time incident data projects travel time up to 60 days forward."
+      },
+      "guidance": {
+        "title": "Turn-by-turn guidance",
+        "desc": "40+ manoeuvre codes, lane guidance with separator types, road shield references, and phonetic street names."
+      }
+    },
+    "endpointsTitle": "All endpoints",
+    "endpointsSubtitle": "Three core endpoints plus two guidance surfaces. Each can be used independently.",
+    "demosTitle": "See demos",
+    "demosIntro": "Live demos built with the TomTom Maps SDK for JavaScript on top of the Routing API. Click Key config to see the API parameters in action.",
+    "demosIntroLinkText": "TomTom Maps SDK for JavaScript",
+    "demosIntroKeyConfig": "Key config",
+    "versionsTitle": "API versions",
+    "versionLabels": {
+      "v1": "Version 1",
+      "v2": "Version 2",
+      "v3": "Version 3"
+    },
+    "versionStatuses": {
+      "production": "Production",
+      "publicPreview": "Public Preview",
+      "privatePreview": "Private Preview"
+    },
+    "tableRows": {
+      "mapPlatform": "Map platform",
+      "httpMethod": "HTTP method",
+      "routeWaypoints": "Route waypoints",
+      "responseFields": "Response fields",
+      "baseEndpoint": "Base endpoint",
+      "calculateRoute": "Calculate Route",
+      "reachableRange": "Reachable Range",
+      "batchRouting": "Batch Routing",
+      "guidanceInstructions": "Guidance Instructions",
+      "laneGuidance": "Lane Guidance",
+      "roadShieldNotes": "Road Shield Notes",
+      "computeTollAmounts": "Compute Toll Amounts",
+      "weatherConsideration": "Weather Consideration",
+      "dynamicDataFreshness": "Dynamic Data Freshness"
+    },
+    "readyTitle": "Ready to build?",
+    "readyBody": "The Quick Start walks through authentication and your first route request in under 5 minutes.",
+    "ctaQuickStart": "Quick Start",
+    "ctaCalculateRoute": "Calculate Route reference",
+    "relatedTitle": "Related APIs",
+    "relatedBody": "These APIs are separate products — each with their own endpoint, quota, and documentation.",
+    "relatedLdevr": {
+      "label": "Long Distance EV Routing API",
+      "desc": "Automatic charging stop selection for trips beyond a single charge. Separate product with its own quota and tier.",
+      "tag": "Separate product"
+    },
+    "relatedMatrix": {
+      "label": "Matrix Routing v2 API",
+      "desc": "Travel time and distance for every origin–destination combination. Up to 100M cells asynchronously.",
+      "tag": "Separate product"
+    },
+    "relatedWaypoint": {
+      "label": "Waypoint Optimization API",
+      "desc": "Reorder 2–12 stops for minimum travel time. Feed the result back into Calculate Route.",
+      "tag": "Separate product"
+    },
+    "callout": "Coverage data, changelog, and deprecation notices are in Market Coverage and the Platform Reference section.",
+    "calloutLinkText": "Market Coverage",
+    "endpointDescs": {
+      "calculateRoute": "Calculate one or more routes between waypoints with full vehicle profile, traffic, consumption model, and guidance support.",
+      "reachableRange": "Calculate the isochrone polygon reachable within a given time, distance, fuel, or energy budget from an origin point.",
+      "batchRouting": "Submit up to 700 route or range calculations in a single request. Synchronous (100 items) and asynchronous modes.",
+      "instructions": "Activate maneuver-by-maneuver guidance on any Calculate Route call. Returns text, tagged, or coded maneuver arrays.",
+      "laneGuidance": "Per-lane direction and drivability data at complex junctions. Requires instructionsType=tagged and sectionType=lanes.",
+      "roadShields": "Shield shape category, road reference, and display text for every road segment. Use iconCategory to select the correct sign asset."
+    },
+    "exampleTitles": {
+      "reachableRanges": "Reachable ranges",
+      "routeWithWaypoints": "Route with waypoints"
+    },
+    "exampleDescs": {
+      "reachableRanges": "Calculate time-based accessibility zones from one or more origins and render them as colour-filled polygons on a live map.",
+      "routeWithWaypoints": "Calculate and render an A–B route on an interactive map. Add intermediate waypoints, choose travel mode, and display route summary stats."
+    },
+    "tagLabels": {
+      "playground": "Playground",
+      "routing": "Routing",
+      "web": "Web",
+      "gettingStarted": "Getting Started"
+    }
+  },
+  "ldevrIntro": {
+    "title": "Long Distance EV Routing API",
+    "quickAnswer": "Plan routes for electric vehicles over distances that exceed a single charge. The API automatically selects optimal charging stops — factoring in connector type, charger power, detour cost, and battery state — and returns a complete itinerary with dwell times and station details ready to render in-app.",
+    "capabilities": {
+      "batteryModelling": {
+        "title": "Battery state modelling",
+        "desc": "Simulates charge level along every road segment — accounting for speed, elevation, auxiliary power draw, and regenerative braking."
+      },
+      "stopSelection": {
+        "title": "Automatic stop selection",
+        "desc": "Picks the combination of charging stops that minimises total journey time, including dwell at each charger."
+      },
+      "connectorMatching": {
+        "title": "Connector matching",
+        "desc": "Pass the connectors your vehicle supports (CCS, CHAdeMO, GB/T…) and only compatible stations are considered."
+      },
+      "trafficEnergy": {
+        "title": "Traffic-aware energy",
+        "desc": "Real-time and historic traffic affects modelled consumption — stop-and-go driving uses more energy than free-flow."
+      }
+    },
+    "endpointsTitle": "Endpoints",
+    "endpointsSubtitle": "Two endpoints. Use only what you need — each can be called standalone.",
+    "endpointDescs": {
+      "calculateEvRoute": "Plan a multi-leg EV route with automatic charging stop selection. Returns a complete itinerary with station names, connector details, dwell times, and battery state at every leg boundary.",
+      "batchEvRoute": "Submit up to 700 EV route calculations in a single call. Synchronous (100 items) and asynchronous modes. Each item carries its own vehicle and battery parameters."
+    },
+    "demosTitle": "See demos",
+    "demosIntro": "Live demos built with the TomTom Maps SDK for JavaScript on top of the LDEVR API. Click Key config to see the API parameters in action.",
+    "demosIntroLinkText": "TomTom Maps SDK for JavaScript",
+    "demosIntroKeyConfig": "Key config",
+    "exampleTitles": {
+      "ldevrModelId": "LDEVR with model ID",
+      "customChargingStops": "Custom charging stop icons",
+      "ldevrDetailedVehicle": "LDEVR with detailed vehicle"
+    },
+    "exampleDescs": {
+      "ldevrModelId": "A–B Long Distance EV Route from Paris to Amsterdam with automatic charging stops, using a registered vehicle model variant.",
+      "customChargingStops": "Munich to Paris EV route with charging stops rendered using custom SVG icons mapped by charger speed — slow, regular and fast.",
+      "ldevrDetailedVehicle": "Paris to Amsterdam EV route with a fully specified vehicle — battery capacity, connector types, consumption curves and auxiliary power load."
+    },
+    "tagLabels": {
+      "gettingStarted": "Getting Started",
+      "electricVehicles": "Electric Vehicles",
+      "web": "Web",
+      "customisation": "Customisation"
+    },
+    "baseUrlTitle": "Base URL & authentication",
+    "baseUrlRows": {
+      "endpoint": "Endpoint",
+      "auth": "Auth",
+      "authDesc": "API key via ?key= query parameter or Authorization: apiKey header",
+      "method": "Method",
+      "methodDesc": "POST — route points in the URL path; all vehicle and EV parameters in the JSON request body",
+      "planTier": "Plan tier",
+      "planTierDesc": "Developer, Flex, Enterprise — not included in the free Routing API quota"
+    },
+    "whenTitle": "When to use this API",
+    "whenUseTitle": "Use LDEVR when",
+    "whenUseItems": [
+      "The trip exceeds the vehicle's single-charge range",
+      "You want the API to select charging stops automatically",
+      "You need station brand, power, and connector data in the response",
+      "You are building an IVI or companion app with charging UX",
+      "You use the TomTom Navigation SDK and want charging stop cards"
+    ],
+    "whenNotTitle": "Use Routing API instead when",
+    "whenNotItems": [
+      "The trip fits within a single charge",
+      "You only need to model battery consumption, not plan stops",
+      "You are routing a combustion or hybrid vehicle",
+      "You need Orbis Maps v2 compatibility today",
+      "You want alternatives, truck routing, or bicycle/pedestrian modes"
+    ],
+    "versionsTitle": "API versions",
+    "versionLabels": {
+      "v1": "Version 1",
+      "v2": "Version 2"
+    },
+    "versionStatuses": {
+      "production": "Production",
+      "privatePreview": "Private Preview"
+    },
+    "tableRows": {
+      "mapPlatform": "Map platform",
+      "baseEndpoint": "Base endpoint",
+      "calculateEvRoute": "Calculate EV Route",
+      "batchEvRoute": "Batch EV Route",
+      "batteryConsumption": "Battery & consumption model",
+      "vehicleModelId": "Vehicle model ID",
+      "vehicleBrandLookup": "Vehicle brand lookup",
+      "connectorMatching": "Connector matching",
+      "oemEmspSupport": "OEM eMSP support",
+      "computeTollAmounts": "Compute toll amounts",
+      "chargingParksHours": "Charging parks hours",
+      "weatherConsideration": "Weather consideration",
+      "dynamicDataFreshness": "Dynamic data freshness"
+    },
+    "readyTitle": "Ready to build?",
+    "readyBody": "The Quick Start walks through authentication and your first EV route request — with a working cURL example and Kotlin SDK snippet — in under 5 minutes.",
+    "ctaQuickStart": "Quick Start",
+    "ctaCalculateRoute": "Calculate EV Route reference",
+    "ctaBatteryModel": "Battery & consumption model"
+  },
+  "anaIntro": {
+    "title": "Automotive Navigation Application",
+    "quickAnswer": "The Automotive Navigation Application (ANA) is TomTom's pre-built navigation APK for Android Automotive OS. OEMs integrate it as a complete navigation solution and connect to it through two lightweight layers — VIL and CIL — rather than building navigation from scratch.",
+    "heroAlt": "ANA — live traffic and better route suggestion on AAOS",
+    "whenTitle": "When to choose ANA",
+    "whenCards": {
+      "fastTimeToMarket": {
+        "title": "Fast time to market",
+        "desc": "No navigation UI to build or test — integration is measured in weeks, not months."
+      },
+      "tomtomMaintained": {
+        "title": "TomTom-maintained UX",
+        "desc": "Map content, routing algorithms, and UI improvements ship as APK updates with no OEM effort."
+      },
+      "fullEvSupport": {
+        "title": "Full EV support",
+        "desc": "Battery-integrated route planning, connector-aware search, and SoC display are included out of the box."
+      },
+      "aaOsCertified": {
+        "title": "AAOS-certified",
+        "desc": "ANA is designed and tested for Android Automotive OS and passes AAOS compatibility requirements."
+      },
+      "limitedCustomisation": {
+        "title": "Limited UI customisation",
+        "descPart1": "ANA supports token-based theming but the navigation UI layout is fixed. For more UI flexibility, see ",
+        "uxLibraryLink": "UX Library",
+        "descPart2": " for customisable pre-built components, or the ",
+        "navSdkLink": "Maps & Navigation SDK",
+        "descPart3": " for a fully custom experience."
+      },
+      "apkDependency": {
+        "title": "APK dependency",
+        "desc": "Your IVI integrates ANA as a separate APK via two lightweight APIs — VIL feeds vehicle data in, CIL lets other vehicle software control the app. You do not own the navigation source code."
+      }
+    },
+    "screenshotsTitle": "In-car experience",
+    "screenshotsSubtitle": "ANA delivers a complete AAOS navigation experience out of the box — from premium map rendering to automated EV route planning.",
+    "screenshots": {
+      "liveTraffic": {
+        "label": "Live Traffic & Smart Rerouting",
+        "desc": "Real-time traffic overlays with automatic better-route suggestions during active navigation."
+      },
+      "premiumMap": {
+        "label": "Premium Map Display",
+        "desc": "High-fidelity 3D vector maps with day and night modes, fully styled to OEM brand guidelines."
+      },
+      "evCharging": {
+        "label": "EV Charging Station Search",
+        "desc": "Connector-aware search shows nearby stations with live availability and power ratings."
+      },
+      "ldEvRoute": {
+        "label": "Long-Distance EV Route Planning",
+        "desc": "Automatic charging stop insertion based on battery state and connector compatibility."
+      }
+    },
+    "featuresTitle": "What's included",
+    "featuresSubtitle": "ANA ships with a complete set of navigation features. OEMs configure rather than build.",
+    "features": {
+      "driverExperience": {
+        "title": "Driver Experience",
+        "desc": "Full turn-by-turn navigation UI — search, route planning, guidance, ETA panel, traffic alerts, and arrival — all pre-built and tested."
+      },
+      "vil": {
+        "title": "Vehicle Integration Layer",
+        "desc": "Feed vehicle signals into ANA: EV battery state, connector type, GDPR consent, and cluster output. VIL is your data pipe into the navigation engine."
+      },
+      "cil": {
+        "title": "Car Integration Layer",
+        "desc": "Command ANA from your app: trigger navigation to a destination, cancel routes, search nearby POIs, and query live navigation state.",
+        "tag": "Control API"
+      },
+      "theming": {
+        "title": "OEM Theming",
+        "desc": "Override design tokens — colours, typography, corner radius, and icon sets — to match your brand without touching ANA internals."
+      },
+      "evSupport": {
+        "title": "EV Support",
+        "desc": "Connector-aware charging station search, battery-integrated long-range routing, and real-time SoC display built in from day one.",
+        "tag": "EV"
+      }
+    },
+    "archTitle": "Integration architecture",
+    "archBody": "ANA sits between your vehicle software and the TomTom platform. VIL flows data up; CIL sends commands down. Your HMI app never calls TomTom APIs directly.",
+    "archLayers": {
+      "yourLayer": "Your Layer",
+      "vilTitle": "VIL — Vehicle Integration Layer",
+      "vilDesc": "Push vehicle data into ANA. Feed EV state, GDPR consent, speed, and cluster data to the navigation engine.",
+      "cilTitle": "CIL — Car Integration Layer",
+      "cilDesc": "Control ANA from your app. Trigger navigation, set destinations, manage routes, and query nav state.",
+      "anaTitle": "ANA — Automotive Navigation Application (APK)",
+      "anaDesc": "TomTom-maintained navigation APK. Full AAOS navigation experience: map, search, routing, EV charging, guidance, cluster output, and OEM theming — all pre-built and tested."
+    },
+    "readyTitle": "Ready to integrate?",
+    "readyBody": "Start with the System Overview to understand how ANA fits into your IVI stack, then follow the Quick Start guide to get navigation running in your first session.",
+    "ctaSystemOverview": "System Overview",
+    "ctaQuickStart": "Quick Start",
+    "callout": "ANA is targeted at Android Automotive OS. It is not a general Android app and does not run on standard Android phones or tablets. For phone or tablet navigation, use the Maps & Navigation SDK."
+  },
+  "navsdkIntro": {
+    "title": "Maps & Navigation SDK",
+    "quickAnswerAndroid": "Build a fully custom Android navigation experience from the ground up. The SDK gives you independent, composable layers — vector map rendering, multi-waypoint routing with EV and traffic support, full turn-by-turn guidance, ADAS-quality virtual horizon data, and offline maps — so you use only what you need and own every detail of the UI.",
+    "quickAnswerIos": "Build a fully custom iOS navigation experience from the ground up. The SDK gives you independent, composable layers — vector map rendering, multi-waypoint routing with EV and traffic support, full turn-by-turn guidance, ADAS-quality virtual horizon data, and native CarPlay integration — so you use only what you need and own every detail of the UI.",
+    "heroAlt": "Maps & Navigation SDK",
+    "heroFallback": "Maps & Navigation SDK",
+    "whenTitle": "When to choose the Maps & Navigation SDK",
+    "whenCards": {
+      "fullUiOwnership": {
+        "title": "Full UI ownership",
+        "desc": "Design and maintain your own navigation experience end to end. No TomTom UI patterns to inherit — your designers own every pixel."
+      },
+      "modularByDesign": {
+        "title": "Modular by design",
+        "desc": "Use only the layers you need: just map rendering, just routing, or the full guidance stack. Pay no overhead for features you don't ship."
+      },
+      "androidAndIos": {
+        "title": "Android & iOS",
+        "desc": "One SDK family covers both platforms — Compose and Views on Android, SwiftUI and UIKit on iOS — with a consistent API surface."
+      },
+      "extensible": {
+        "title": "Extensible",
+        "desc": "Plug in your own search provider, custom route post-processing, third-party voice engine, or ADAS data feed alongside the SDK."
+      },
+      "youBuildUiAndroid": {
+        "title": "You build the UI",
+        "descPart1": "Significant development investment. For ready-made navigation components on Android, ",
+        "uxLibraryLink": "UX Library",
+        "descPart2": " gives you a full Compose UI stack built on top of this SDK."
+      },
+      "youBuildUiIos": {
+        "title": "You build the UI",
+        "desc": "Significant development investment. There is no pre-built UI library for iOS — your team designs and builds all navigation UI on top of the SDK primitives."
+      },
+      "longerTimeAndroid": {
+        "title": "Longer time to market",
+        "descPart1": "Expect months of development for a production-grade experience. For faster delivery on Android, start with ",
+        "uxLibraryLink": "UX Library",
+        "descPart2": ". For a fully pre-built solution, consider ",
+        "anaLink": "ANA",
+        "descPart3": "."
+      },
+      "longerTimeIos": {
+        "title": "Longer time to market",
+        "descPart1": "Expect months of development for a production-grade iOS experience. For a fully pre-built automotive navigation solution, consider ",
+        "anaLink": "ANA",
+        "descPart2": " (Android only)."
+      }
+    },
+    "capabilitiesTitle": "Key capabilities",
+    "capabilitiesSubtitleAndroid": "Each capability is independently usable. Use only the map, or combine all layers to build a complete Android navigation application.",
+    "capabilitiesSubtitleIos": "Each capability is independently usable. Use only the map, or combine all layers to build a complete iOS navigation application.",
+    "capabilities": {
+      "mapDisplay": {
+        "title": "Map Display",
+        "desc": "Render TomTom vector maps with full control over style, camera, layers, markers, and traffic overlays."
+      },
+      "search": {
+        "title": "Search",
+        "desc": "Plug in address search, fuzzy POI search, and EV charging search through a unified search interface."
+      },
+      "routing": {
+        "title": "Routing",
+        "desc": "Calculate multi-waypoint routes with vehicle profiles, traffic, EV range, and alternative route support."
+      },
+      "navigation": {
+        "title": "Navigation",
+        "desc": "Full turn-by-turn guidance with voice announcements, lane guidance, and real-time re-routing."
+      },
+      "virtualHorizon": {
+        "title": "Virtual Horizon",
+        "desc": "Access ADAS-quality road attribute data ahead of the vehicle for speed limit, curve, and hazard warnings."
+      },
+      "offlineMaps": {
+        "title": "Offline Maps",
+        "desc": "Download regional map packages for full offline navigation without a data connection.",
+        "tag": "Android"
+      },
+      "carPlay": {
+        "title": "CarPlay",
+        "desc": "Integrate with Apple CarPlay using a navigation session API built for the CarPlay framework.",
+        "tag": "iOS"
+      }
+    },
+    "archTitle": "SDK architecture",
+    "archBody": "The SDK is structured as four co-operating layers. Your application sits at the top and depends only on the layers below it — TomTom platform calls are fully abstracted.",
+    "archLayers": {
+      "yourApp": {
+        "label": "Your App",
+        "desc": "Custom UI & Business Logic"
+      },
+      "navigationEngine": {
+        "label": "Navigation Engine",
+        "desc": "Turn-by-turn · Guidance · Announcements"
+      },
+      "mapRoutingSdk": {
+        "label": "Map & Routing SDK",
+        "desc": "Map Display · Search · Routing · Location"
+      },
+      "tomtomPlatform": {
+        "label": "TomTom Platform",
+        "desc": "Maps · Traffic · POI · EV Data · ADAS"
+      }
+    },
+    "platformsTitle": "Platform support",
+    "platforms": {
+      "android": {
+        "label": "Android",
+        "current": "Current",
+        "items": {
+          "compose": ["Jetpack Compose", "First-class Compose API for MapDisplay and all UI components"],
+          "views": ["XML Views", "Full Views-based API for existing codebases and AAOS systems"],
+          "minSdk": ["Min SDK", "Android 8.0 (API level 26)"],
+          "offline": ["Offline maps", "Downloadable region packages"],
+          "uxLibrary": ["UX Library", "Optional pre-built Compose navigation components"]
+        }
+      },
+      "ios": {
+        "label": "iOS",
+        "items": {
+          "swiftui": ["SwiftUI", "Native SwiftUI MapView and composable navigation components"],
+          "uikit": ["UIKit", "UIKit-compatible APIs for existing applications"],
+          "minVersion": ["Min version", "iOS 14.0+"],
+          "carplay": ["CarPlay", "CarPlay-compatible navigation session support"]
+        }
+      }
+    },
+    "readyTitle": "Ready to get started?",
+    "readyBodyAndroid": "The quickest path to a working map is the Getting Started guide — it walks through project setup, SDK initialisation, and displaying your first map in under 15 minutes.",
+    "readyBodyIos": "Follow the iOS Getting Started guide to configure your Xcode project, add the Swift Package, and display your first map.",
+    "ctaGetStarted": "Get started",
+    "ctaRunExampleAndroid": "Run the Example App",
+    "ctaRunExampleIos": "Run the Sample App",
+    "callout": "This documentation covers SDK v2. If you are migrating from SDK v1, see the Migration Guide in Getting Started.",
+    "calloutMigrationGuide": "Migration Guide"
   }
 }

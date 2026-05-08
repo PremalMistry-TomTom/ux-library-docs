@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import PageActions from '../components/ui/PageActions';
 import ExampleCard from '../components/ui/ExampleCard';
 
@@ -64,27 +65,26 @@ function ThumbBatchEV() {
 
 /* ─── Main component ─────────────────────────────────────────────────────────── */
 export default function LDEVRIntro({ onNavigate }) {
+  const { t } = useTranslation('pages');
+
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Long Distance EV Routing API</h1>
+        <h1>{t('ldevrIntro.title')}</h1>
         <PageActions />
       </div>
 
       <p className="quick-answer">
-        Plan routes for electric vehicles over distances that exceed a single charge.
-        The API automatically selects optimal charging stops — factoring in connector type,
-        charger power, detour cost, and battery state — and returns a complete itinerary
-        with dwell times and station details ready to render in-app.
+        {t('ldevrIntro.quickAnswer')}
       </p>
 
       {/* Capability tiles — inline under summary */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
         {[
-          ['🔋', 'Battery state modelling', 'Simulates charge level along every road segment — accounting for speed, elevation, auxiliary power draw, and regenerative braking.'],
-          ['⚡', 'Automatic stop selection', 'Picks the combination of charging stops that minimises total journey time, including dwell at each charger.'],
-          ['🔌', 'Connector matching', 'Pass the connectors your vehicle supports (CCS, CHAdeMO, GB/T…) and only compatible stations are considered.'],
-          ['🗺️', 'Traffic-aware energy', 'Real-time and historic traffic affects modelled consumption — stop-and-go driving uses more energy than free-flow.'],
+          ['🔋', t('ldevrIntro.capabilities.batteryModelling.title'), t('ldevrIntro.capabilities.batteryModelling.desc')],
+          ['⚡', t('ldevrIntro.capabilities.stopSelection.title'), t('ldevrIntro.capabilities.stopSelection.desc')],
+          ['🔌', t('ldevrIntro.capabilities.connectorMatching.title'), t('ldevrIntro.capabilities.connectorMatching.desc')],
+          ['🗺️', t('ldevrIntro.capabilities.trafficEnergy.title'), t('ldevrIntro.capabilities.trafficEnergy.desc')],
         ].map(([icon, title, desc]) => (
           <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
             <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
@@ -99,29 +99,31 @@ export default function LDEVRIntro({ onNavigate }) {
 
       {/* Endpoints */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-endpoints">Endpoints</h2>
-        <p className="quick-answer" style={{ marginBottom: 20 }}>Two endpoints. Use only what you need — each can be called standalone.</p>
+        <h2 className="sh" id="ldevr-endpoints">{t('ldevrIntro.endpointsTitle')}</h2>
+        <p className="quick-answer" style={{ marginBottom: 20 }}>{t('ldevrIntro.endpointsSubtitle')}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
           {[
             {
               Thumb: ThumbEVRoute,
               method: 'POST',
-              title: 'Calculate EV Route',
+              title: t('ldevrIntro.exampleTitles.ldevrModelId', { defaultValue: 'Calculate EV Route' }),
+              titleKey: 'calculateEvRoute',
               path: '/routing/1/calculateLongDistanceEVRoute/{locations}/json',
-              desc: 'Plan a multi-leg EV route with automatic charging stop selection. Returns a complete itinerary with station names, connector details, dwell times, and battery state at every leg boundary.',
+              desc: t('ldevrIntro.endpointDescs.calculateEvRoute'),
               pageId: 'ldevr-calculate-route',
             },
             {
               Thumb: ThumbBatchEV,
               method: 'POST',
               title: 'Batch EV Route',
+              titleKey: 'batchEvRoute',
               path: '/routing/1/calculateLongDistanceEVRoute/batch/sync/json',
-              desc: 'Submit up to 700 EV route calculations in a single call. Synchronous (100 items) and asynchronous modes. Each item carries its own vehicle and battery parameters.',
+              desc: t('ldevrIntro.endpointDescs.batchEvRoute'),
               pageId: 'ldevr-batch',
             },
-          ].map(({ Thumb, method, title, path, desc, pageId }) => (
+          ].map(({ Thumb, method, titleKey, path, desc, pageId }) => (
             <div
-              key={title}
+              key={pageId}
               className="nav-card"
               onClick={() => onNavigate?.(pageId)}
             >
@@ -132,7 +134,7 @@ export default function LDEVRIntro({ onNavigate }) {
                 <div style={{ marginBottom: 6 }}>
                   <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(88,166,255,0.12)', color: '#58a6ff', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
                 </div>
-                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{t(`ldevrIntro.tableRows.${titleKey}`)}</div>
                 <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{path}</code>
                 <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
               </div>
@@ -143,24 +145,24 @@ export default function LDEVRIntro({ onNavigate }) {
 
       {/* See demos */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-examples">See demos</h2>
+        <h2 className="sh" id="ldevr-examples">{t('ldevrIntro.demosTitle')}</h2>
         <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
-          Live demos built with the{' '}
+          {t('ldevrIntro.demosIntro').split(t('ldevrIntro.demosIntroLinkText'))[0]}
           <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
-            TomTom Maps SDK for JavaScript
-          </a>{' '}
-          on top of the LDEVR API. Click <strong>Key config</strong> to see the API parameters in action.
+            {t('ldevrIntro.demosIntroLinkText')}
+          </a>
+          {t('ldevrIntro.demosIntro').split(t('ldevrIntro.demosIntroLinkText'))[1]}
         </p>
         <div className="examples-grid">
 
           <ExampleCard
             href="https://docs.tomtom.com/maps-sdk-js/examples/ldevr-model-id"
-            title="LDEVR with model ID"
-            description="A–B Long Distance EV Route from Paris to Amsterdam with automatic charging stops, using a registered vehicle model variant."
+            title={t('ldevrIntro.exampleTitles.ldevrModelId')}
+            description={t('ldevrIntro.exampleDescs.ldevrModelId')}
             tags={[
-              { label: 'Getting Started', variant: 'start' },
-              { label: 'Electric Vehicles', variant: 'feature' },
-              { label: 'Web', variant: 'platform' },
+              { label: t('ldevrIntro.tagLabels.gettingStarted'), variant: 'start' },
+              { label: t('ldevrIntro.tagLabels.electricVehicles'), variant: 'feature' },
+              { label: t('ldevrIntro.tagLabels.web'), variant: 'platform' },
             ]}
             imgSrc="/example-thumbs/ldevr-model-id.png"
             snippet={`// LDEVR with registered vehicle model
@@ -191,12 +193,12 @@ routingModule.showRoutes(route);`}
 
           <ExampleCard
             href="https://docs.tomtom.com/maps-sdk-js/examples/ldevr-custom-charging-stops"
-            title="Custom charging stop icons"
-            description="Munich to Paris EV route with charging stops rendered using custom SVG icons mapped by charger speed — slow, regular and fast."
+            title={t('ldevrIntro.exampleTitles.customChargingStops')}
+            description={t('ldevrIntro.exampleDescs.customChargingStops')}
             tags={[
-              { label: 'Customisation', variant: 'custom' },
-              { label: 'Electric Vehicles', variant: 'feature' },
-              { label: 'Web', variant: 'platform' },
+              { label: t('ldevrIntro.tagLabels.customisation'), variant: 'custom' },
+              { label: t('ldevrIntro.tagLabels.electricVehicles'), variant: 'feature' },
+              { label: t('ldevrIntro.tagLabels.web'), variant: 'platform' },
             ]}
             imgSrc="/example-thumbs/ldevr-custom-charging-stops.png"
             snippet={`// Map custom SVG icons to charger speed
@@ -230,12 +232,12 @@ const routingModule = await RoutingModule.get(map, {
 
           <ExampleCard
             href="https://docs.tomtom.com/maps-sdk-js/examples/ldevr-detailed-vehicle"
-            title="LDEVR with detailed vehicle"
-            description="Paris to Amsterdam EV route with a fully specified vehicle — battery capacity, connector types, consumption curves and auxiliary power load."
+            title={t('ldevrIntro.exampleTitles.ldevrDetailedVehicle')}
+            description={t('ldevrIntro.exampleDescs.ldevrDetailedVehicle')}
             tags={[
-              { label: 'Getting Started', variant: 'start' },
-              { label: 'Electric Vehicles', variant: 'feature' },
-              { label: 'Web', variant: 'platform' },
+              { label: t('ldevrIntro.tagLabels.gettingStarted'), variant: 'start' },
+              { label: t('ldevrIntro.tagLabels.electricVehicles'), variant: 'feature' },
+              { label: t('ldevrIntro.tagLabels.web'), variant: 'platform' },
             ]}
             imgSrc="/example-thumbs/ldevr-detailed-vehicle.png"
             snippet={`// Full vehicle specification — no model variantId needed
@@ -271,13 +273,13 @@ const route = await calculateRoute({
 
       {/* Base URL + auth */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-base">Base URL &amp; authentication</h2>
+        <h2 className="sh" id="ldevr-base">{t('ldevrIntro.baseUrlTitle')}</h2>
         <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
           {[
-            { label: 'Endpoint', content: <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--black)' }}>POST https://api.tomtom.com/routing/1/calculateLongDistanceEVRoute/{'{locations}'}/json</code> },
-            { label: 'Auth', content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>API key via <code style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}>?key=</code> query parameter or <code style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}>Authorization: apiKey</code> header</span> },
-            { label: 'Method', content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>POST — route points in the URL path; all vehicle and EV parameters in the JSON request body</span> },
-            { label: 'Plan tier', content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Developer, Flex, Enterprise — not included in the free Routing API quota</span> },
+            { label: t('ldevrIntro.baseUrlRows.endpoint'), content: <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--black)' }}>POST https://api.tomtom.com/routing/1/calculateLongDistanceEVRoute/{'{locations}'}/json</code> },
+            { label: t('ldevrIntro.baseUrlRows.auth'), content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{t('ldevrIntro.baseUrlRows.authDesc')}</span> },
+            { label: t('ldevrIntro.baseUrlRows.method'), content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{t('ldevrIntro.baseUrlRows.methodDesc')}</span> },
+            { label: t('ldevrIntro.baseUrlRows.planTier'), content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{t('ldevrIntro.baseUrlRows.planTierDesc')}</span> },
           ].map(({ label, content }, i, arr) => (
             <div key={label} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', borderBottom: i < arr.length - 1 ? '1px solid var(--border)' : 'none' }}>
               <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRight: '1px solid var(--border)', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center' }}>{label}</div>
@@ -289,36 +291,24 @@ const route = await calculateRoute({
 
       {/* When to use */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-when">When to use this API</h2>
+        <h2 className="sh" id="ldevr-when">{t('ldevrIntro.whenTitle')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
           <div style={{ padding: '16px', borderRadius: 20, border: '1px solid #22c55e44', background: 'var(--bg)' }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#22c55e', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>✅ Use LDEVR when</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#22c55e', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>✅ {t('ldevrIntro.whenUseTitle')}</div>
             <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-              {[
-                'The trip exceeds the vehicle\'s single-charge range',
-                'You want the API to select charging stops automatically',
-                'You need station brand, power, and connector data in the response',
-                'You are building an IVI or companion app with charging UX',
-                'You use the TomTom Navigation SDK and want charging stop cards',
-              ].map(i => (
-                <li key={i} style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, display: 'flex', gap: 7, marginBottom: 3 }}>
-                  <span style={{ color: '#22c55e', flexShrink: 0 }}>›</span> {i}
+              {t('ldevrIntro.whenUseItems', { returnObjects: true }).map(item => (
+                <li key={item} style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, display: 'flex', gap: 7, marginBottom: 3 }}>
+                  <span style={{ color: '#22c55e', flexShrink: 0 }}>›</span> {item}
                 </li>
               ))}
             </ul>
           </div>
           <div style={{ padding: '16px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)' }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Use Routing API instead when</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.04em' }}>{t('ldevrIntro.whenNotTitle')}</div>
             <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-              {[
-                'The trip fits within a single charge',
-                'You only need to model battery consumption, not plan stops',
-                'You are routing a combustion or hybrid vehicle',
-                'You need Orbis Maps v2 compatibility today',
-                'You want alternatives, truck routing, or bicycle/pedestrian modes',
-              ].map(i => (
-                <li key={i} style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, display: 'flex', gap: 7, marginBottom: 3 }}>
-                  <span style={{ color: 'var(--muted)', flexShrink: 0 }}>›</span> {i}
+              {t('ldevrIntro.whenNotItems', { returnObjects: true }).map(item => (
+                <li key={item} style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, display: 'flex', gap: 7, marginBottom: 3 }}>
+                  <span style={{ color: 'var(--muted)', flexShrink: 0 }}>›</span> {item}
                 </li>
               ))}
             </ul>
@@ -328,25 +318,25 @@ const route = await calculateRoute({
 
       {/* Version comparison table */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-platforms">API versions</h2>
+        <h2 className="sh" id="ldevr-platforms">{t('ldevrIntro.versionsTitle')}</h2>
         {(() => {
-          const V1 = { label: 'Version 1', status: 'Production',     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',  color: '#15803d' };
-          const V2 = { label: 'Version 2', status: 'Private Preview', statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)', color: '#92400e' };
+          const V1 = { label: t('ldevrIntro.versionLabels.v1'), status: t('ldevrIntro.versionStatuses.production'),     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',  color: '#15803d' };
+          const V2 = { label: t('ldevrIntro.versionLabels.v2'), status: t('ldevrIntro.versionStatuses.privatePreview'), statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)', color: '#92400e' };
           const Y = '✓'; const N = '—';
           const rows = [
-            { label: 'Map platform',              v1: 'TomTom Maps',                               v2: 'Orbis Maps'                                       },
-            { label: 'Base endpoint',             v1: '/routing/1/calculateLongDistanceEVRoute/…', v2: '/maps/orbis/routing/v2/…'                         },
-            { label: 'Calculate EV Route',        v1: Y, v2: Y },
-            { label: 'Batch EV Route',            v1: Y, v2: N },
-            { label: 'Battery & consumption model', v1: Y, v2: Y },
-            { label: 'Vehicle model ID',          v1: Y, v2: Y },
-            { label: 'Vehicle brand lookup',      v1: N, v2: Y },
-            { label: 'Connector matching',        v1: Y, v2: Y },
-            { label: 'OEM eMSP support',          v1: N, v2: Y },
-            { label: 'Compute toll amounts',      v1: N, v2: Y },
-            { label: 'Charging parks hours',      v1: N, v2: Y },
-            { label: 'Weather consideration',     v1: N, v2: Y },
-            { label: 'Dynamic data freshness',    v1: N, v2: Y },
+            { label: t('ldevrIntro.tableRows.mapPlatform'),          v1: 'TomTom Maps',                               v2: 'Orbis Maps'                                       },
+            { label: t('ldevrIntro.tableRows.baseEndpoint'),         v1: '/routing/1/calculateLongDistanceEVRoute/…', v2: '/maps/orbis/routing/v2/…'                         },
+            { label: t('ldevrIntro.tableRows.calculateEvRoute'),     v1: Y, v2: Y },
+            { label: t('ldevrIntro.tableRows.batchEvRoute'),         v1: Y, v2: N },
+            { label: t('ldevrIntro.tableRows.batteryConsumption'),   v1: Y, v2: Y },
+            { label: t('ldevrIntro.tableRows.vehicleModelId'),       v1: Y, v2: Y },
+            { label: t('ldevrIntro.tableRows.vehicleBrandLookup'),   v1: N, v2: Y },
+            { label: t('ldevrIntro.tableRows.connectorMatching'),    v1: Y, v2: Y },
+            { label: t('ldevrIntro.tableRows.oemEmspSupport'),       v1: N, v2: Y },
+            { label: t('ldevrIntro.tableRows.computeTollAmounts'),   v1: N, v2: Y },
+            { label: t('ldevrIntro.tableRows.chargingParksHours'),   v1: N, v2: Y },
+            { label: t('ldevrIntro.tableRows.weatherConsideration'), v1: N, v2: Y },
+            { label: t('ldevrIntro.tableRows.dynamicDataFreshness'), v1: N, v2: Y },
           ];
           const cell = (val, col) => {
             const isTick = val === Y, isDash = val === N;
@@ -394,9 +384,9 @@ const route = await calculateRoute({
 
       {/* Ready to build */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-start">Ready to build?</h2>
+        <h2 className="sh" id="ldevr-start">{t('ldevrIntro.readyTitle')}</h2>
         <p className="body" style={{ marginBottom: 16 }}>
-          The Quick Start walks through authentication and your first EV route request — with a working cURL example and Kotlin SDK snippet — in under 5 minutes.
+          {t('ldevrIntro.readyBody')}
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
@@ -404,13 +394,13 @@ const route = await calculateRoute({
             style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
             onClick={() => onNavigate?.('ldevr-first-route')}
           >
-            Quick Start
+            {t('ldevrIntro.ctaQuickStart')}
           </button>
           <button className="page-action-btn" onClick={() => onNavigate?.('ldevr-calculate-route')}>
-            Calculate EV Route reference
+            {t('ldevrIntro.ctaCalculateRoute')}
           </button>
           <button className="page-action-btn" onClick={() => onNavigate?.('ldevr-battery-model')}>
-            Battery &amp; consumption model
+            {t('ldevrIntro.ctaBatteryModel')}
           </button>
         </div>
       </div>

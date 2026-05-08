@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import ExampleCard from '../components/ui/ExampleCard';
@@ -306,38 +307,39 @@ function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavi
 }
 
 
-
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
-const ENDPOINTS_V1 = [
-  { Thumb: ThumbCalculateRoute, title: 'Calculate Route',           method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: 'Calculate one or more routes between waypoints with full vehicle profile, traffic, consumption model, and guidance support.', pageId: 'routing-calculate-route', available: true },
-  { Thumb: ThumbReachableRange, title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: 'Calculate the isochrone polygon reachable within a given time, distance, fuel, or energy budget from an origin point.',  pageId: 'routing-reachable-range', available: true },
-  { Thumb: ThumbBatchRouting,   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: 'Submit up to 700 route or range calculations in a single request. Synchronous (100 items) and asynchronous modes.',       pageId: 'routing-batch',           available: true },
-  { Thumb: ThumbInstructions,   title: 'Turn-by-Turn Instructions', method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: 'Activate maneuver-by-maneuver guidance on any Calculate Route call. Returns text, tagged, or coded maneuver arrays.',     pageId: 'routing-instructions',    available: true },
-  { Thumb: ThumbLaneGuidance,   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: 'Per-lane direction and drivability data at complex junctions. Requires instructionsType=tagged and sectionType=lanes.',   pageId: 'routing-lane-guidance',   available: true },
-  { Thumb: ThumbRoadShields,    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: 'Shield shape category, road reference, and display text for every road segment. Use iconCategory to select the correct sign asset.', pageId: 'routing-road-shields', available: true },
-];
-
 export default function RoutingAPIIntro({ onNavigate }) {
+  const { t } = useTranslation('pages');
+
+  const ENDPOINTS_V1 = [
+    { Thumb: ThumbCalculateRoute, title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
+    { Thumb: ThumbReachableRange, title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
+    { Thumb: ThumbBatchRouting,   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
+    { Thumb: ThumbInstructions,   title: 'Turn-by-Turn Instructions', method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
+    { Thumb: ThumbLaneGuidance,   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
+    { Thumb: ThumbRoadShields,    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
+  ];
+
   const endpoints = ENDPOINTS_V1;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Routing API</h1>
+        <h1>{t('routingIntro.title')}</h1>
         <PageActions />
       </div>
 
       <p className="quick-answer">
-        Calculate optimal routes between waypoints with full support for vehicle profiles, real-time traffic, EV consumption modelling, reachable range, and batch processing across ~215 countries.
+        {t('routingIntro.quickAnswer')}
       </p>
 
       {/* Capability tiles */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
         {[
-          ['🚗', 'Vehicle profiles', 'Truck routing with height, width, weight, axle load, ADR tunnel codes, and hazardous load types. Eight travel modes.'],
-          ['⚡', 'EV consumption model', 'Speed-to-kWh consumption tables, auxiliary power draw, and regenerative braking — for single-charge EV routes.'],
-          ['📡', 'Live + historic traffic', 'IQ Routes™ learns from historical patterns. Real-time incident data projects travel time up to 60 days forward.'],
-          ['🗣️', 'Turn-by-turn guidance', '40+ manoeuvre codes, lane guidance with separator types, road shield references, and phonetic street names.'],
+          ['🚗', t('routingIntro.capabilities.vehicleProfiles.title'), t('routingIntro.capabilities.vehicleProfiles.desc')],
+          ['⚡', t('routingIntro.capabilities.evConsumption.title'), t('routingIntro.capabilities.evConsumption.desc')],
+          ['📡', t('routingIntro.capabilities.traffic.title'), t('routingIntro.capabilities.traffic.desc')],
+          ['🗣️', t('routingIntro.capabilities.guidance.title'), t('routingIntro.capabilities.guidance.desc')],
         ].map(([icon, title, desc]) => (
           <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
             <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
@@ -351,37 +353,37 @@ export default function RoutingAPIIntro({ onNavigate }) {
 
       {/* Endpoint grid */}
       <div className="zone">
-        <h2 className="sh" id="r-endpoints">All endpoints</h2>
+        <h2 className="sh" id="r-endpoints">{t('routingIntro.endpointsTitle')}</h2>
         <p className="quick-answer" style={{ marginBottom: 20 }}>
-          Three core endpoints plus two guidance surfaces. Each can be used independently.
+          {t('routingIntro.endpointsSubtitle')}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
           {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} onNavigate={onNavigate} />
+            <EndpointCard key={ep.pageId} {...ep} onNavigate={onNavigate} />
           ))}
         </div>
       </div>
 
       {/* See demos */}
       <div className="zone">
-        <h2 className="sh" id="r-examples">See demos</h2>
+        <h2 className="sh" id="r-examples">{t('routingIntro.demosTitle')}</h2>
         <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
-          Live demos built with the{' '}
+          {t('routingIntro.demosIntro').split(t('routingIntro.demosIntroLinkText'))[0]}
           <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
-            TomTom Maps SDK for JavaScript
-          </a>{' '}
-          on top of the Routing API. Click <strong>Key config</strong> to see the API parameters in action.
+            {t('routingIntro.demosIntroLinkText')}
+          </a>
+          {t('routingIntro.demosIntro').split(t('routingIntro.demosIntroLinkText'))[1]}
         </p>
         <div className="examples-grid">
 
           <ExampleCard
             href="https://docs.tomtom.com/maps-sdk-js/examples/reachable-ranges"
-            title="Reachable ranges"
-            description="Calculate time-based accessibility zones from one or more origins and render them as colour-filled polygons on a live map."
+            title={t('routingIntro.exampleTitles.reachableRanges')}
+            description={t('routingIntro.exampleDescs.reachableRanges')}
             tags={[
-              { label: 'Playground', variant: 'playground' },
-              { label: 'Routing', variant: 'feature' },
-              { label: 'Web', variant: 'platform' },
+              { label: t('routingIntro.tagLabels.playground'), variant: 'playground' },
+              { label: t('routingIntro.tagLabels.routing'), variant: 'feature' },
+              { label: t('routingIntro.tagLabels.web'), variant: 'platform' },
             ]}
             imgSrc="/example-thumbs/reachable-ranges.png"
             snippet={`// Calculate time-based reachable range
@@ -407,12 +409,12 @@ geometriesModule.showGeometries(
 
           <ExampleCard
             href="https://docs.tomtom.com/maps-sdk-js/examples/route"
-            title="Route with waypoints"
-            description="Calculate and render an A–B route on an interactive map. Add intermediate waypoints, choose travel mode, and display route summary stats."
+            title={t('routingIntro.exampleTitles.routeWithWaypoints')}
+            description={t('routingIntro.exampleDescs.routeWithWaypoints')}
             tags={[
-              { label: 'Getting Started', variant: 'start' },
-              { label: 'Routing', variant: 'feature' },
-              { label: 'Web', variant: 'platform' },
+              { label: t('routingIntro.tagLabels.gettingStarted'), variant: 'start' },
+              { label: t('routingIntro.tagLabels.routing'), variant: 'feature' },
+              { label: t('routingIntro.tagLabels.web'), variant: 'platform' },
             ]}
             imgSrc="/example-thumbs/route.png"
             snippet={`// Calculate route with intermediate waypoints
@@ -440,27 +442,27 @@ const { travelTimeInSeconds, lengthInMeters } =
 
       {/* Version comparison table */}
       <div className="zone">
-        <h2 className="sh" id="r-platforms">API versions</h2>
+        <h2 className="sh" id="r-platforms">{t('routingIntro.versionsTitle')}</h2>
         {(() => {
-          const V1 = { label: 'Version 1', version: 'v1', status: 'Production',     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',   color: '#15803d', bg: 'rgba(34,197,94,0.1)'   };
-          const V2 = { label: 'Version 2', version: 'v2', status: 'Public Preview',  statusColor: '#7c3aed', statusBg: 'rgba(168,85,247,0.12)',  color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  };
-          const V3 = { label: 'Version 3', version: 'v3', status: 'Private Preview', statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)',   color: '#92400e', bg: 'rgba(234,179,8,0.1)'   };
+          const V1 = { label: t('routingIntro.versionLabels.v1'), version: 'v1', status: t('routingIntro.versionStatuses.production'),     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',   color: '#15803d', bg: 'rgba(34,197,94,0.1)'   };
+          const V2 = { label: t('routingIntro.versionLabels.v2'), version: 'v2', status: t('routingIntro.versionStatuses.publicPreview'),  statusColor: '#7c3aed', statusBg: 'rgba(168,85,247,0.12)',  color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  };
+          const V3 = { label: t('routingIntro.versionLabels.v3'), version: 'v3', status: t('routingIntro.versionStatuses.privatePreview'), statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)',   color: '#92400e', bg: 'rgba(234,179,8,0.1)'   };
           const Y = '✓'; const N = '—';
           const rows = [
-            { label: 'Map platform',          v1: 'TomTom Maps',              v2: 'Orbis Maps',                      v3: 'Orbis Maps'                          },
-            { label: 'HTTP method',           v1: 'GET or POST',              v2: 'GET or POST',                     v3: 'POST only'                           },
-            { label: 'Route waypoints',       v1: 'Path parameters',          v2: 'Path params or POST body',        v3: 'POST body legs array'                },
-            { label: 'Response fields',       v1: 'Full response',            v2: 'Full response',                   v3: 'Attributes header — selected fields' },
-            { label: 'Base endpoint',         v1: '/routing/1/…',             v2: '/routing/2/…',                    v3: '/maps/orbis/routing/v3/…'            },
-            { label: 'Calculate Route',       v1: Y, v2: Y, v3: Y },
-            { label: 'Reachable Range',       v1: Y, v2: Y, v3: Y },
-            { label: 'Batch Routing',         v1: Y, v2: N, v3: N },
-            { label: 'Guidance Instructions', v1: Y, v2: Y, v3: Y },
-            { label: 'Lane Guidance',         v1: Y, v2: Y, v3: Y },
-            { label: 'Road Shield Notes',     v1: Y, v2: N, v3: N },
-            { label: 'Compute Toll Amounts',  v1: N, v2: Y, v3: Y },
-            { label: 'Weather Consideration', v1: N, v2: N, v3: Y },
-            { label: 'Dynamic Data Freshness',v1: N, v2: Y, v3: N },
+            { label: t('routingIntro.tableRows.mapPlatform'),          v1: 'TomTom Maps',              v2: 'Orbis Maps',                      v3: 'Orbis Maps'                          },
+            { label: t('routingIntro.tableRows.httpMethod'),           v1: 'GET or POST',              v2: 'GET or POST',                     v3: 'POST only'                           },
+            { label: t('routingIntro.tableRows.routeWaypoints'),       v1: 'Path parameters',          v2: 'Path params or POST body',        v3: 'POST body legs array'                },
+            { label: t('routingIntro.tableRows.responseFields'),       v1: 'Full response',            v2: 'Full response',                   v3: 'Attributes header — selected fields' },
+            { label: t('routingIntro.tableRows.baseEndpoint'),         v1: '/routing/1/…',             v2: '/routing/2/…',                    v3: '/maps/orbis/routing/v3/…'            },
+            { label: t('routingIntro.tableRows.calculateRoute'),       v1: Y, v2: Y, v3: Y },
+            { label: t('routingIntro.tableRows.reachableRange'),       v1: Y, v2: Y, v3: Y },
+            { label: t('routingIntro.tableRows.batchRouting'),         v1: Y, v2: N, v3: N },
+            { label: t('routingIntro.tableRows.guidanceInstructions'), v1: Y, v2: Y, v3: Y },
+            { label: t('routingIntro.tableRows.laneGuidance'),         v1: Y, v2: Y, v3: Y },
+            { label: t('routingIntro.tableRows.roadShieldNotes'),      v1: Y, v2: N, v3: N },
+            { label: t('routingIntro.tableRows.computeTollAmounts'),   v1: N, v2: Y, v3: Y },
+            { label: t('routingIntro.tableRows.weatherConsideration'), v1: N, v2: N, v3: Y },
+            { label: t('routingIntro.tableRows.dynamicDataFreshness'), v1: N, v2: Y, v3: N },
           ];
           const cell = (val, col) => {
             const isTick = val === Y, isDash = val === N;
@@ -509,9 +511,9 @@ const { travelTimeInSeconds, lengthInMeters } =
 
       {/* Getting started */}
       <div className="zone">
-        <h2 className="sh" id="r-start">Ready to build?</h2>
+        <h2 className="sh" id="r-start">{t('routingIntro.readyTitle')}</h2>
         <p className="body" style={{ marginBottom: 16 }}>
-          The Quick Start walks through authentication and your first route request in under 5 minutes.
+          {t('routingIntro.readyBody')}
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
@@ -519,42 +521,42 @@ const { travelTimeInSeconds, lengthInMeters } =
             style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
             onClick={() => onNavigate?.('routing-first-route')}
           >
-            Quick Start
+            {t('routingIntro.ctaQuickStart')}
           </button>
           <button className="page-action-btn" onClick={() => onNavigate?.('routing-calculate-route')}>
-            Calculate Route reference
+            {t('routingIntro.ctaCalculateRoute')}
           </button>
         </div>
       </div>
 
       {/* Related standalone APIs */}
       <div className="zone">
-        <h2 className="sh" id="r-related">Related APIs</h2>
+        <h2 className="sh" id="r-related">{t('routingIntro.relatedTitle')}</h2>
         <p className="body" style={{ marginBottom: 16 }}>
-          These APIs are separate products — each with their own endpoint, quota, and documentation.
+          {t('routingIntro.relatedBody')}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
           {[
             {
               productId: 'ldevr',
               pageId:    'ldevr-intro',
-              label:     'Long Distance EV Routing API',
-              desc:      'Automatic charging stop selection for trips beyond a single charge. Separate product with its own quota and tier.',
-              tag:       'Separate product',
+              label:     t('routingIntro.relatedLdevr.label'),
+              desc:      t('routingIntro.relatedLdevr.desc'),
+              tag:       t('routingIntro.relatedLdevr.tag'),
             },
             {
               productId: 'matrix-routing',
               pageId:    'matrix-intro',
-              label:     'Matrix Routing v2 API',
-              desc:      'Travel time and distance for every origin–destination combination. Up to 100M cells asynchronously.',
-              tag:       'Separate product',
+              label:     t('routingIntro.relatedMatrix.label'),
+              desc:      t('routingIntro.relatedMatrix.desc'),
+              tag:       t('routingIntro.relatedMatrix.tag'),
             },
             {
               productId: 'waypoint-opt',
               pageId:    'waypoint-intro',
-              label:     'Waypoint Optimization API',
-              desc:      'Reorder 2–12 stops for minimum travel time. Feed the result back into Calculate Route.',
-              tag:       'Separate product',
+              label:     t('routingIntro.relatedWaypoint.label'),
+              desc:      t('routingIntro.relatedWaypoint.desc'),
+              tag:       t('routingIntro.relatedWaypoint.tag'),
             },
           ].map(r => (
             <button
@@ -571,11 +573,11 @@ const { travelTimeInSeconds, lengthInMeters } =
       </div>
 
       <Callout type="info">
-        Coverage data, changelog, and deprecation notices are in{' '}
+        {t('routingIntro.callout').split(t('routingIntro.calloutLinkText'))[0]}
         <button onClick={() => onNavigate?.('routing-coverage')} style={{ background: 'none', border: 'none', padding: 0, color: 'var(--red)', fontWeight: 600, cursor: 'pointer', fontSize: 'inherit', textDecoration: 'underline' }}>
-          Market Coverage
-        </button>{' '}
-        and the Platform Reference section.
+          {t('routingIntro.calloutLinkText')}
+        </button>
+        {t('routingIntro.callout').split(t('routingIntro.calloutLinkText'))[1]}
       </Callout>
     </div>
   );

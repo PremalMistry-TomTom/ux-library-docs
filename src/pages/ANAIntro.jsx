@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
 
@@ -28,13 +29,13 @@ function WhenCard({ icon, title, children }) {
 }
 
 /* ─── Integration layer diagram ─────────────────────────────────────────────── */
-function IntegrationDiagram() {
+function IntegrationDiagram({ t }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0, maxWidth: 600 }}>
       {/* OEM App layer */}
       <div style={{ background: 'rgba(0,102,204,0.09)', border: '1px solid rgba(0,102,204,0.3)', borderRadius: '8px 8px 0 0', padding: '12px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0066cc', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Your Layer</span>
+          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#0066cc', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{t('anaIntro.archLayers.yourLayer')}</span>
         </div>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           {['OEM HMI App', 'Vehicle ECU / IVI', 'EV Battery System', 'Dashboard Cluster'].map(item => (
@@ -57,9 +58,9 @@ function IntegrationDiagram() {
       {/* Integration layers */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
         <div style={{ background: 'rgba(63,185,80,0.08)', border: '1px solid rgba(63,185,80,0.3)', borderRadius: 6, padding: '10px 14px' }}>
-          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#3fb950', marginBottom: 4 }}>VIL — Vehicle Integration Layer</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#3fb950', marginBottom: 4 }}>{t('anaIntro.archLayers.vilTitle')}</div>
           <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.4 }}>
-            Push vehicle data <em>into</em> ANA. Feed EV state, GDPR consent, speed, and cluster data to the navigation engine.
+            {t('anaIntro.archLayers.vilDesc')}
           </div>
           <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {['EV SoC', 'Connectors', 'Speed', 'GDPR', 'Cluster'].map(tag => (
@@ -68,9 +69,9 @@ function IntegrationDiagram() {
           </div>
         </div>
         <div style={{ background: 'rgba(168,85,247,0.08)', border: '1px solid rgba(168,85,247,0.3)', borderRadius: 6, padding: '10px 14px' }}>
-          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#a855f7', marginBottom: 4 }}>CIL — Car Integration Layer</div>
+          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#a855f7', marginBottom: 4 }}>{t('anaIntro.archLayers.cilTitle')}</div>
           <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.4 }}>
-            Control ANA <em>from</em> your app. Trigger navigation, set destinations, manage routes, and query nav state.
+            {t('anaIntro.archLayers.cilDesc')}
           </div>
           <div style={{ marginTop: 8, display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {['Navigate to', 'Route info', 'POI search', 'ETA', 'Cancel'].map(tag => (
@@ -89,58 +90,12 @@ function IntegrationDiagram() {
       <div style={{ background: 'rgba(226,0,26,0.08)', border: '1px solid rgba(226,0,26,0.3)', borderRadius: '0 0 8px 8px', padding: '12px 16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#e2001a' }}/>
-          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2001a' }}>ANA — Automotive Navigation Application (APK)</span>
+          <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2001a' }}>{t('anaIntro.archLayers.anaTitle')}</span>
         </div>
         <div style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.4 }}>
-          TomTom-maintained navigation APK. Full AAOS navigation experience: map, search, routing, EV charging, guidance, cluster output, and OEM theming — all pre-built and tested.
+          {t('anaIntro.archLayers.anaDesc')}
         </div>
       </div>
-    </div>
-  );
-}
-
-/* ─── Screenshot showcase ────────────────────────────────────────────────────── */
-const SCREENSHOTS = [
-  {
-    src: 'ana_live_traffic.png',
-    label: 'Live Traffic & Smart Rerouting',
-    desc: 'Real-time traffic overlays with automatic better-route suggestions during active navigation.',
-  },
-  {
-    src: 'ana_pmd.png',
-    label: 'Premium Map Display',
-    desc: 'High-fidelity 3D vector maps with day and night modes, fully styled to OEM brand guidelines.',
-  },
-  {
-    src: 'ana_ev_charging.png',
-    label: 'EV Charging Station Search',
-    desc: 'Connector-aware search shows nearby stations with live availability and power ratings.',
-  },
-  {
-    src: 'ana_automatic_routes.png',
-    label: 'Long-Distance EV Route Planning',
-    desc: 'Automatic charging stop insertion based on battery state and connector compatibility.',
-  },
-];
-
-function ScreenshotShowcase() {
-  return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
-      {SCREENSHOTS.map(({ src, label, desc }) => (
-        <div key={src} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
-          <div style={{ height: 180, overflow: 'hidden', background: '#0d1117' }}>
-            <img
-              src={`${BASE}${src}`}
-              alt={label}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
-            />
-          </div>
-          <div style={{ padding: '10px 12px' }}>
-            <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{label}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{desc}</div>
-          </div>
-        </div>
-      ))}
     </div>
   );
 }
@@ -246,129 +201,160 @@ function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onN
   );
 }
 
-/* ─── Page ──────────────────────────────────────────────────────────────────── */
-const FEATURES = [
-  {
-    src: 'ana_live_traffic.png',
-    objectPosition: 'center 30%',
-    title: 'Driver Experience',
-    desc: 'Full turn-by-turn navigation UI — search, route planning, guidance, ETA panel, traffic alerts, and arrival — all pre-built and tested.',
-    pageId: 'ana-driver-experience',
-  },
-  {
-    Thumb: ThumbVIL,
-    title: 'Vehicle Integration Layer',
-    desc: 'Feed vehicle signals into ANA: EV battery state, connector type, GDPR consent, and cluster output. VIL is your data pipe into the navigation engine.',
-    pageId: 'ana-vil',
-  },
-  {
-    Thumb: ThumbCIL,
-    title: 'Car Integration Layer',
-    desc: 'Command ANA from your app: trigger navigation to a destination, cancel routes, search nearby POIs, and query live navigation state.',
-    pageId: 'ana-cil',
-    tag: 'Control API',
-  },
-  {
-    Thumb: ThumbTheming,
-    title: 'OEM Theming',
-    desc: 'Override design tokens — colours, typography, corner radius, and icon sets — to match your brand without touching ANA internals.',
-    pageId: 'ana-theming',
-  },
-  {
-    src: 'ana_ev_charging.png',
-    objectPosition: 'center 20%',
-    title: 'EV Support',
-    desc: 'Connector-aware charging station search, battery-integrated long-range routing, and real-time SoC display built in from day one.',
-    pageId: 'ana-vil-ev',
-    tag: 'EV',
-  },
-];
+/* ─── Screenshot showcase ────────────────────────────────────────────────────── */
+function ScreenshotShowcase({ t }) {
+  const SCREENSHOTS = [
+    { src: 'ana_live_traffic.png',    labelKey: 'liveTraffic'  },
+    { src: 'ana_pmd.png',             labelKey: 'premiumMap'   },
+    { src: 'ana_ev_charging.png',     labelKey: 'evCharging'   },
+    { src: 'ana_automatic_routes.png',labelKey: 'ldEvRoute'    },
+  ];
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+      {SCREENSHOTS.map(({ src, labelKey }) => (
+        <div key={src} style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--surface)' }}>
+          <div style={{ height: 180, overflow: 'hidden', background: '#0d1117' }}>
+            <img
+              src={`${BASE}${src}`}
+              alt={t(`anaIntro.screenshots.${labelKey}.label`)}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+            />
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{t(`anaIntro.screenshots.${labelKey}.label`)}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{t(`anaIntro.screenshots.${labelKey}.desc`)}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
+/* ─── Page ──────────────────────────────────────────────────────────────────── */
 export default function ANAIntro({ onNavigate }) {
+  const { t } = useTranslation('pages');
+
+  const FEATURES = [
+    {
+      src: 'ana_live_traffic.png',
+      objectPosition: 'center 30%',
+      title: t('anaIntro.features.driverExperience.title'),
+      desc: t('anaIntro.features.driverExperience.desc'),
+      pageId: 'ana-driver-experience',
+    },
+    {
+      Thumb: ThumbVIL,
+      title: t('anaIntro.features.vil.title'),
+      desc: t('anaIntro.features.vil.desc'),
+      pageId: 'ana-vil',
+    },
+    {
+      Thumb: ThumbCIL,
+      title: t('anaIntro.features.cil.title'),
+      desc: t('anaIntro.features.cil.desc'),
+      pageId: 'ana-cil',
+      tag: t('anaIntro.features.cil.tag'),
+    },
+    {
+      Thumb: ThumbTheming,
+      title: t('anaIntro.features.theming.title'),
+      desc: t('anaIntro.features.theming.desc'),
+      pageId: 'ana-theming',
+    },
+    {
+      src: 'ana_ev_charging.png',
+      objectPosition: 'center 20%',
+      title: t('anaIntro.features.evSupport.title'),
+      desc: t('anaIntro.features.evSupport.desc'),
+      pageId: 'ana-vil-ev',
+      tag: t('anaIntro.features.evSupport.tag'),
+    },
+  ];
+
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Automotive Navigation Application</h1>
+        <h1>{t('anaIntro.title')}</h1>
         <PageActions />
       </div>
       <p className="quick-answer">
-        The Automotive Navigation Application (ANA) is TomTom's pre-built navigation APK for Android Automotive OS. OEMs integrate it as a complete navigation solution and connect to it through two lightweight layers — VIL and CIL — rather than building navigation from scratch.
+        {t('anaIntro.quickAnswer')}
       </p>
 
       {/* Hero — real ANA UI screenshot */}
       <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, border: '1px solid var(--border)' }}>
         <img
           src={`${BASE}ana_live_traffic.png`}
-          alt="ANA — live traffic and better route suggestion on AAOS"
+          alt={t('anaIntro.heroAlt')}
           style={{ width: '100%', display: 'block' }}
         />
       </div>
 
       {/* When to choose ANA */}
       <div className="zone">
-        <h2 className="sh" id="ana-when">When to choose ANA</h2>
+        <h2 className="sh" id="ana-when">{t('anaIntro.whenTitle')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-          <WhenCard icon="✅" title="Fast time to market">
-            No navigation UI to build or test — integration is measured in weeks, not months.
+          <WhenCard icon="✅" title={t('anaIntro.whenCards.fastTimeToMarket.title')}>
+            {t('anaIntro.whenCards.fastTimeToMarket.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title="TomTom-maintained UX">
-            Map content, routing algorithms, and UI improvements ship as APK updates with no OEM effort.
+          <WhenCard icon="✅" title={t('anaIntro.whenCards.tomtomMaintained.title')}>
+            {t('anaIntro.whenCards.tomtomMaintained.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title="Full EV support">
-            Battery-integrated route planning, connector-aware search, and SoC display are included out of the box.
+          <WhenCard icon="✅" title={t('anaIntro.whenCards.fullEvSupport.title')}>
+            {t('anaIntro.whenCards.fullEvSupport.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title="AAOS-certified">
-            ANA is designed and tested for Android Automotive OS and passes AAOS compatibility requirements.
+          <WhenCard icon="✅" title={t('anaIntro.whenCards.aaOsCertified.title')}>
+            {t('anaIntro.whenCards.aaOsCertified.desc')}
           </WhenCard>
-          <WhenCard icon="⚠️" title="Limited UI customisation">
-            ANA supports token-based theming but the navigation UI layout is fixed. For more UI flexibility, see{' '}
-            <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>UX Library</DocLink> for
-            customisable pre-built components, or the{' '}
-            <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>{' '}
-            for a fully custom experience.
+          <WhenCard icon="⚠️" title={t('anaIntro.whenCards.limitedCustomisation.title')}>
+            {t('anaIntro.whenCards.limitedCustomisation.descPart1')}
+            <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>{t('anaIntro.whenCards.limitedCustomisation.uxLibraryLink')}</DocLink>
+            {t('anaIntro.whenCards.limitedCustomisation.descPart2')}
+            <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>{t('anaIntro.whenCards.limitedCustomisation.navSdkLink')}</DocLink>
+            {t('anaIntro.whenCards.limitedCustomisation.descPart3')}
           </WhenCard>
-          <WhenCard icon="⚠️" title="APK dependency">
-            Your IVI integrates ANA as a separate APK via two lightweight APIs — VIL feeds vehicle data in, CIL lets other vehicle software control the app. You do not own the navigation source code.
+          <WhenCard icon="⚠️" title={t('anaIntro.whenCards.apkDependency.title')}>
+            {t('anaIntro.whenCards.apkDependency.desc')}
           </WhenCard>
         </div>
       </div>
 
       {/* Screenshot showcase */}
       <div className="zone">
-        <h2 className="sh" id="ana-screenshots">In-car experience</h2>
+        <h2 className="sh" id="ana-screenshots">{t('anaIntro.screenshotsTitle')}</h2>
         <p className="quick-answer" style={{ marginBottom: 20 }}>
-          ANA delivers a complete AAOS navigation experience out of the box — from premium map rendering to automated EV route planning.
+          {t('anaIntro.screenshotsSubtitle')}
         </p>
-        <ScreenshotShowcase />
+        <ScreenshotShowcase t={t} />
       </div>
 
       {/* Features */}
       <div className="zone">
-        <h2 className="sh" id="ana-features">What's included</h2>
+        <h2 className="sh" id="ana-features">{t('anaIntro.featuresTitle')}</h2>
         <p className="quick-answer" style={{ marginBottom: 20 }}>
-          ANA ships with a complete set of navigation features. OEMs configure rather than build.
+          {t('anaIntro.featuresSubtitle')}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
           {FEATURES.map(f => (
-            <FeatureCard key={f.title} {...f} onNavigate={onNavigate} />
+            <FeatureCard key={f.pageId} {...f} onNavigate={onNavigate} />
           ))}
         </div>
       </div>
 
       {/* Integration architecture */}
       <div className="zone">
-        <h2 className="sh" id="ana-arch">Integration architecture</h2>
+        <h2 className="sh" id="ana-arch">{t('anaIntro.archTitle')}</h2>
         <p className="body" style={{ marginBottom: 20 }}>
-          ANA sits between your vehicle software and the TomTom platform. VIL flows data up; CIL sends commands down. Your HMI app never calls TomTom APIs directly.
+          {t('anaIntro.archBody')}
         </p>
-        <IntegrationDiagram />
+        <IntegrationDiagram t={t} />
       </div>
 
       {/* Getting started CTA */}
       <div className="zone">
-        <h2 className="sh" id="ana-start">Ready to integrate?</h2>
+        <h2 className="sh" id="ana-start">{t('anaIntro.readyTitle')}</h2>
         <p className="body" style={{ marginBottom: 16 }}>
-          Start with the System Overview to understand how ANA fits into your IVI stack, then follow the Quick Start guide to get navigation running in your first session.
+          {t('anaIntro.readyBody')}
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
@@ -376,19 +362,19 @@ export default function ANAIntro({ onNavigate }) {
             style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
             onClick={() => onNavigate?.('ana-system-overview')}
           >
-            System Overview
+            {t('anaIntro.ctaSystemOverview')}
           </button>
           <button
             className="page-action-btn"
             onClick={() => onNavigate?.('ana-quick-start')}
           >
-            Quick Start
+            {t('anaIntro.ctaQuickStart')}
           </button>
         </div>
       </div>
 
       <Callout type="info">
-        ANA is targeted at Android Automotive OS. It is not a general Android app and does not run on standard Android phones or tablets. For phone or tablet navigation, use the Maps &amp; Navigation SDK.
+        {t('anaIntro.callout')}
       </Callout>
     </div>
   );

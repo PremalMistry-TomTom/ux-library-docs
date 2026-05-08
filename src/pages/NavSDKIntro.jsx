@@ -251,23 +251,23 @@ function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
 }
 
 /* ─── Architecture diagram ──────────────────────────────────────────────────── */
-function ArchDiagram() {
+function ArchDiagram({ t }) {
   const layers = [
-    { label: 'Your App', color: '#0066cc', bg: 'rgba(0,102,204,0.1)', border: 'rgba(0,102,204,0.35)', desc: 'Custom UI & Business Logic' },
-    { label: 'Navigation Engine', color: '#e2001a', bg: 'rgba(226,0,26,0.1)', border: 'rgba(226,0,26,0.3)', desc: 'Turn-by-turn · Guidance · Announcements' },
-    { label: 'Map & Routing SDK', color: '#3fb950', bg: 'rgba(63,185,80,0.08)', border: 'rgba(63,185,80,0.3)', desc: 'Map Display · Search · Routing · Location' },
-    { label: 'TomTom Platform', color: '#8b949e', bg: 'rgba(139,148,158,0.06)', border: 'rgba(139,148,158,0.2)', desc: 'Maps · Traffic · POI · EV Data · ADAS' },
+    { labelKey: 'yourApp',         color: '#0066cc', bg: 'rgba(0,102,204,0.1)',  border: 'rgba(0,102,204,0.35)' },
+    { labelKey: 'navigationEngine',color: '#e2001a', bg: 'rgba(226,0,26,0.1)',   border: 'rgba(226,0,26,0.3)'   },
+    { labelKey: 'mapRoutingSdk',   color: '#3fb950', bg: 'rgba(63,185,80,0.08)', border: 'rgba(63,185,80,0.3)'  },
+    { labelKey: 'tomtomPlatform',  color: '#8b949e', bg: 'rgba(139,148,158,0.06)',border: 'rgba(139,148,158,0.2)'},
   ];
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 560 }}>
       {layers.map((layer, i) => (
-        <div key={layer.label} style={{ background: layer.bg, border: `1px solid ${layer.border}`, borderRadius: 20, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div key={layer.labelKey} style={{ background: layer.bg, border: `1px solid ${layer.border}`, borderRadius: 20, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 28, height: 28, borderRadius: 6, background: layer.bg, border: `1.5px solid ${layer.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <span style={{ fontSize: '0.875rem', fontWeight: 700, color: layer.color }}>{i + 1}</span>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>{layer.label}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{layer.desc}</div>
+            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>{t(`navsdkIntro.archLayers.${layer.labelKey}.label`)}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{t(`navsdkIntro.archLayers.${layer.labelKey}.desc`)}</div>
           </div>
         </div>
       ))}
@@ -276,13 +276,13 @@ function ArchDiagram() {
 }
 
 /* ─── Platform card ─────────────────────────────────────────────────────────── */
-function PlatformCard({ platform, icon, items, active }) {
+function PlatformCard({ platform, icon, items, active, currentLabel }) {
   return (
     <div style={{ flex: 1, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, borderRadius: 20, padding: '16px 20px', background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', transition: 'border-color 0.2s' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
         <span style={{ fontSize: '1.5rem' }}>{icon}</span>
         <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{platform}</span>
-        {active && <span style={{ marginLeft: 'auto', fontSize: '0.875rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>Current</span>}
+        {active && <span style={{ marginLeft: 'auto', fontSize: '0.875rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>{currentLabel}</span>}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {items.map(([title, desc]) => (
@@ -300,82 +300,84 @@ function PlatformCard({ platform, icon, items, active }) {
 }
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
-const CAPABILITIES_SHARED = [
-  {
-    Thumb: ThumbMapDisplay,
-    title: 'Map Display',
-    desc: 'Render TomTom vector maps with full control over style, camera, layers, markers, and traffic overlays.',
-    pageId: 'navsdk-map-display',
-  },
-  {
-    Thumb: ThumbSearch,
-    title: 'Search',
-    desc: 'Plug in address search, fuzzy POI search, and EV charging search through a unified search interface.',
-    pageId: 'navsdk-search',
-  },
-  {
-    Thumb: ThumbRouting,
-    title: 'Routing',
-    desc: 'Calculate multi-waypoint routes with vehicle profiles, traffic, EV range, and alternative route support.',
-    pageId: 'navsdk-routing',
-  },
-  {
-    Thumb: ThumbNavigation,
-    title: 'Navigation',
-    desc: 'Full turn-by-turn guidance with voice announcements, lane guidance, and real-time re-routing.',
-    pageId: 'navsdk-nav-guidance',
-  },
-  {
-    Thumb: ThumbVirtualHorizon,
-    title: 'Virtual Horizon',
-    desc: 'Access ADAS-quality road attribute data ahead of the vehicle for speed limit, curve, and hazard warnings.',
-    pageId: 'navsdk-vh-overview',
-  },
-];
-
-const CAPABILITIES_ANDROID = [
-  ...CAPABILITIES_SHARED,
-  {
-    Thumb: ThumbOffline,
-    title: 'Offline Maps',
-    desc: 'Download regional map packages for full offline navigation without a data connection.',
-    pageId: 'navsdk-offline-overview',
-    tag: 'Android',
-  },
-];
-
-const CAPABILITIES_IOS = [
-  ...CAPABILITIES_SHARED,
-  {
-    Thumb: ThumbCarPlay,
-    title: 'CarPlay',
-    desc: 'Integrate with Apple CarPlay using a navigation session API built for the CarPlay framework.',
-    pageId: 'navsdk-carplay',
-    tag: 'iOS',
-  },
-];
-
 export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
+  const { t } = useTranslation('pages');
   const isAndroid = platform !== 'ios';
+
+  const CAPABILITIES_SHARED = [
+    {
+      Thumb: ThumbMapDisplay,
+      title: t('navsdkIntro.capabilities.mapDisplay.title'),
+      desc: t('navsdkIntro.capabilities.mapDisplay.desc'),
+      pageId: 'navsdk-map-display',
+    },
+    {
+      Thumb: ThumbSearch,
+      title: t('navsdkIntro.capabilities.search.title'),
+      desc: t('navsdkIntro.capabilities.search.desc'),
+      pageId: 'navsdk-search',
+    },
+    {
+      Thumb: ThumbRouting,
+      title: t('navsdkIntro.capabilities.routing.title'),
+      desc: t('navsdkIntro.capabilities.routing.desc'),
+      pageId: 'navsdk-routing',
+    },
+    {
+      Thumb: ThumbNavigation,
+      title: t('navsdkIntro.capabilities.navigation.title'),
+      desc: t('navsdkIntro.capabilities.navigation.desc'),
+      pageId: 'navsdk-nav-guidance',
+    },
+    {
+      Thumb: ThumbVirtualHorizon,
+      title: t('navsdkIntro.capabilities.virtualHorizon.title'),
+      desc: t('navsdkIntro.capabilities.virtualHorizon.desc'),
+      pageId: 'navsdk-vh-overview',
+    },
+  ];
+
+  const CAPABILITIES_ANDROID = [
+    ...CAPABILITIES_SHARED,
+    {
+      Thumb: ThumbOffline,
+      title: t('navsdkIntro.capabilities.offlineMaps.title'),
+      desc: t('navsdkIntro.capabilities.offlineMaps.desc'),
+      pageId: 'navsdk-offline-overview',
+      tag: t('navsdkIntro.capabilities.offlineMaps.tag'),
+    },
+  ];
+
+  const CAPABILITIES_IOS = [
+    ...CAPABILITIES_SHARED,
+    {
+      Thumb: ThumbCarPlay,
+      title: t('navsdkIntro.capabilities.carPlay.title'),
+      desc: t('navsdkIntro.capabilities.carPlay.desc'),
+      pageId: 'navsdk-carplay',
+      tag: t('navsdkIntro.capabilities.carPlay.tag'),
+    },
+  ];
+
   const capabilities = isAndroid ? CAPABILITIES_ANDROID : CAPABILITIES_IOS;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Maps &amp; Navigation SDK</h1>
+        <h1>{t('navsdkIntro.title')}</h1>
         <PageActions />
       </div>
       <p className="quick-answer">
         {isAndroid
-          ? 'Build a fully custom Android navigation experience from the ground up. The SDK gives you independent, composable layers — vector map rendering, multi-waypoint routing with EV and traffic support, full turn-by-turn guidance, ADAS-quality virtual horizon data, and offline maps — so you use only what you need and own every detail of the UI.'
-          : 'Build a fully custom iOS navigation experience from the ground up. The SDK gives you independent, composable layers — vector map rendering, multi-waypoint routing with EV and traffic support, full turn-by-turn guidance, ADAS-quality virtual horizon data, and native CarPlay integration — so you use only what you need and own every detail of the UI.'}
+          ? t('navsdkIntro.quickAnswerAndroid')
+          : t('navsdkIntro.quickAnswerIos')}
       </p>
 
       {/* Hero */}
       <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>
         <img
           src={`${BASE}navsdk_banner.png`}
-          alt="Maps & Navigation SDK"
+          alt={t('navsdkIntro.heroAlt')}
           style={{ width: '100%', display: 'block', maxHeight: 320, objectFit: 'cover', objectPosition: 'center 30%' }}
           onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
         />
@@ -383,49 +385,50 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
           </svg>
-          <span style={{ fontSize: '0.75rem' }}>Maps &amp; Navigation SDK</span>
+          <span style={{ fontSize: '0.75rem' }}>{t('navsdkIntro.heroFallback')}</span>
         </div>
       </div>
 
       {/* When to choose */}
       <div className="zone">
-        <h2 className="sh" id="ns-when">When to choose the Maps &amp; Navigation SDK</h2>
+        <h2 className="sh" id="ns-when">{t('navsdkIntro.whenTitle')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-          <WhenCard icon="✅" title="Full UI ownership">
-            Design and maintain your own navigation experience end to end. No TomTom UI patterns to inherit — your designers own every pixel.
+          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.fullUiOwnership.title')}>
+            {t('navsdkIntro.whenCards.fullUiOwnership.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title="Modular by design">
-            Use only the layers you need: just map rendering, just routing, or the full guidance stack. Pay no overhead for features you don't ship.
+          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.modularByDesign.title')}>
+            {t('navsdkIntro.whenCards.modularByDesign.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title="Android & iOS">
-            One SDK family covers both platforms — Compose and Views on Android, SwiftUI and UIKit on iOS — with a consistent API surface.
+          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.androidAndIos.title')}>
+            {t('navsdkIntro.whenCards.androidAndIos.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title="Extensible">
-            Plug in your own search provider, custom route post-processing, third-party voice engine, or ADAS data feed alongside the SDK.
+          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.extensible.title')}>
+            {t('navsdkIntro.whenCards.extensible.desc')}
           </WhenCard>
           {isAndroid ? (
-            <WhenCard icon="⚠️" title="You build the UI">
-              Significant development investment. For ready-made navigation components on Android,{' '}
-              <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>UX Library</DocLink>{' '}
-              gives you a full Compose UI stack built on top of this SDK.
+            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.youBuildUiAndroid.title')}>
+              {t('navsdkIntro.whenCards.youBuildUiAndroid.descPart1')}
+              <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.youBuildUiAndroid.uxLibraryLink')}</DocLink>
+              {t('navsdkIntro.whenCards.youBuildUiAndroid.descPart2')}
             </WhenCard>
           ) : (
-            <WhenCard icon="⚠️" title="You build the UI">
-              Significant development investment. There is no pre-built UI library for iOS — your team designs and builds all navigation UI on top of the SDK primitives.
+            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.youBuildUiIos.title')}>
+              {t('navsdkIntro.whenCards.youBuildUiIos.desc')}
             </WhenCard>
           )}
           {isAndroid ? (
-            <WhenCard icon="⚠️" title="Longer time to market">
-              Expect months of development for a production-grade experience. For faster delivery on Android, start with{' '}
-              <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>UX Library</DocLink>. For a
-              fully pre-built solution, consider{' '}
-              <DocLink pageId="ana-intro" productId="ana" onNavigate={onNavigate}>ANA</DocLink>.
+            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.longerTimeAndroid.title')}>
+              {t('navsdkIntro.whenCards.longerTimeAndroid.descPart1')}
+              <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.longerTimeAndroid.uxLibraryLink')}</DocLink>
+              {t('navsdkIntro.whenCards.longerTimeAndroid.descPart2')}
+              <DocLink pageId="ana-intro" productId="ana" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.longerTimeAndroid.anaLink')}</DocLink>
+              {t('navsdkIntro.whenCards.longerTimeAndroid.descPart3')}
             </WhenCard>
           ) : (
-            <WhenCard icon="⚠️" title="Longer time to market">
-              Expect months of development for a production-grade iOS experience. For a fully pre-built automotive navigation solution, consider{' '}
-              <DocLink pageId="ana-intro" productId="ana" onNavigate={onNavigate}>ANA</DocLink>{' '}
-              (Android only).
+            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.longerTimeIos.title')}>
+              {t('navsdkIntro.whenCards.longerTimeIos.descPart1')}
+              <DocLink pageId="ana-intro" productId="ana" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.longerTimeIos.anaLink')}</DocLink>
+              {t('navsdkIntro.whenCards.longerTimeIos.descPart2')}
             </WhenCard>
           )}
         </div>
@@ -433,11 +436,11 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
 
       {/* Capabilities */}
       <div className="zone">
-        <h2 className="sh" id="ns-capabilities">Key capabilities</h2>
+        <h2 className="sh" id="ns-capabilities">{t('navsdkIntro.capabilitiesTitle')}</h2>
         <p className="quick-answer" style={{ marginBottom: 20 }}>
           {isAndroid
-            ? 'Each capability is independently usable. Use only the map, or combine all layers to build a complete Android navigation application.'
-            : 'Each capability is independently usable. Use only the map, or combine all layers to build a complete iOS navigation application.'}
+            ? t('navsdkIntro.capabilitiesSubtitleAndroid')
+            : t('navsdkIntro.capabilitiesSubtitleIos')}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
           {capabilities.map(cap => (
@@ -448,38 +451,40 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
 
       {/* Architecture */}
       <div className="zone">
-        <h2 className="sh" id="ns-arch">SDK architecture</h2>
+        <h2 className="sh" id="ns-arch">{t('navsdkIntro.archTitle')}</h2>
         <p className="body" style={{ marginBottom: 20 }}>
-          The SDK is structured as four co-operating layers. Your application sits at the top and depends only on the layers below it — TomTom platform calls are fully abstracted.
+          {t('navsdkIntro.archBody')}
         </p>
-        <ArchDiagram />
+        <ArchDiagram t={t} />
       </div>
 
       {/* Platform support */}
       <div className="zone">
-        <h2 className="sh" id="ns-platforms">Platform support</h2>
+        <h2 className="sh" id="ns-platforms">{t('navsdkIntro.platformsTitle')}</h2>
         <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
           <PlatformCard
-            platform="Android"
+            platform={t('navsdkIntro.platforms.android.label')}
             icon="🤖"
             active={isAndroid}
+            currentLabel={t('navsdkIntro.platforms.android.current')}
             items={[
-              ['Jetpack Compose', 'First-class Compose API for MapDisplay and all UI components'],
-              ['XML Views', 'Full Views-based API for existing codebases and AAOS systems'],
-              ['Min SDK', 'Android 8.0 (API level 26)'],
-              ['Offline maps', 'Downloadable region packages'],
-              ['UX Library', 'Optional pre-built Compose navigation components'],
+              [t('navsdkIntro.platforms.android.items.compose.0'), t('navsdkIntro.platforms.android.items.compose.1')],
+              [t('navsdkIntro.platforms.android.items.views.0'), t('navsdkIntro.platforms.android.items.views.1')],
+              [t('navsdkIntro.platforms.android.items.minSdk.0'), t('navsdkIntro.platforms.android.items.minSdk.1')],
+              [t('navsdkIntro.platforms.android.items.offline.0'), t('navsdkIntro.platforms.android.items.offline.1')],
+              [t('navsdkIntro.platforms.android.items.uxLibrary.0'), t('navsdkIntro.platforms.android.items.uxLibrary.1')],
             ]}
           />
           <PlatformCard
-            platform="iOS"
+            platform={t('navsdkIntro.platforms.ios.label')}
             icon=""
             active={!isAndroid}
+            currentLabel={t('navsdkIntro.platforms.android.current')}
             items={[
-              ['SwiftUI', 'Native SwiftUI MapView and composable navigation components'],
-              ['UIKit', 'UIKit-compatible APIs for existing applications'],
-              ['Min version', 'iOS 14.0+'],
-              ['CarPlay', 'CarPlay-compatible navigation session support'],
+              [t('navsdkIntro.platforms.ios.items.swiftui.0'), t('navsdkIntro.platforms.ios.items.swiftui.1')],
+              [t('navsdkIntro.platforms.ios.items.uikit.0'), t('navsdkIntro.platforms.ios.items.uikit.1')],
+              [t('navsdkIntro.platforms.ios.items.minVersion.0'), t('navsdkIntro.platforms.ios.items.minVersion.1')],
+              [t('navsdkIntro.platforms.ios.items.carplay.0'), t('navsdkIntro.platforms.ios.items.carplay.1')],
             ]}
           />
         </div>
@@ -487,11 +492,11 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
 
       {/* Getting started */}
       <div className="zone">
-        <h2 className="sh" id="ns-start">Ready to get started?</h2>
+        <h2 className="sh" id="ns-start">{t('navsdkIntro.readyTitle')}</h2>
         <p className="body" style={{ marginBottom: 16 }}>
           {isAndroid
-            ? 'The quickest path to a working map is the Getting Started guide — it walks through project setup, SDK initialisation, and displaying your first map in under 15 minutes.'
-            : 'Follow the iOS Getting Started guide to configure your Xcode project, add the Swift Package, and display your first map.'}
+            ? t('navsdkIntro.readyBodyAndroid')
+            : t('navsdkIntro.readyBodyIos')}
         </p>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           <button
@@ -499,19 +504,21 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
             style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
             onClick={() => onNavigate?.('navsdk-project-setup')}
           >
-            Get started
+            {t('navsdkIntro.ctaGetStarted')}
           </button>
           <button
             className="page-action-btn"
             onClick={() => onNavigate?.('navsdk-example-quickstart')}
           >
-            {isAndroid ? 'Run the Example App' : 'Run the Sample App'}
+            {isAndroid ? t('navsdkIntro.ctaRunExampleAndroid') : t('navsdkIntro.ctaRunExampleIos')}
           </button>
         </div>
       </div>
 
       <Callout type="info">
-        This documentation covers SDK v2. If you are migrating from SDK v1, see the <strong>Migration Guide</strong> in Getting Started.
+        {t('navsdkIntro.callout').split(t('navsdkIntro.calloutMigrationGuide'))[0]}
+        <strong>{t('navsdkIntro.calloutMigrationGuide')}</strong>
+        {t('navsdkIntro.callout').split(t('navsdkIntro.calloutMigrationGuide'))[1]}
       </Callout>
     </div>
   );

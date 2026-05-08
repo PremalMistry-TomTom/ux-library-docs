@@ -331,5 +331,443 @@
         "displayPx":     { "req": "像素 vs 密度无关尺寸",                       "notes": "displayPX — 固定分辨率仪表盘请设置为 true" }
       }
     }
+  },
+  "routingIntro": {
+    "title": "路径规划 API",
+    "quickAnswer": "在途经点之间计算最优路线，完整支持车辆配置文件、实时交通路况、电动车能耗建模、可达范围计算以及覆盖约 215 个国家/地区的批量处理。",
+    "capabilities": {
+      "vehicleProfiles": {
+        "title": "车辆配置文件",
+        "desc": "支持高度、宽度、重量、轴载、ADR 隧道代码和危险货物类型的货车路径规划。八种出行模式。"
+      },
+      "evConsumption": {
+        "title": "电动车能耗模型",
+        "desc": "速度-千瓦时能耗表、辅助功耗和再生制动——适用于单次充电的电动车路线。"
+      },
+      "traffic": {
+        "title": "实时及历史交通路况",
+        "desc": "IQ Routes™ 从历史模式中学习。实时事故数据可将行程时间预测延伸至未来 60 天。"
+      },
+      "guidance": {
+        "title": "逐向导航指令",
+        "desc": "40+ 种转向代码、含分隔类型的车道引导、道路标志参考以及街道名称音标。"
+      }
+    },
+    "endpointsTitle": "所有接口",
+    "endpointsSubtitle": "三个核心接口加两个导航面。每个均可独立使用。",
+    "demosTitle": "查看演示",
+    "demosIntro": "基于路径规划 API 的实时演示，使用 TomTom Maps SDK for JavaScript 构建。点击「关键配置」查看 API 参数效果。",
+    "demosIntroLinkText": "TomTom Maps SDK for JavaScript",
+    "demosIntroKeyConfig": "关键配置",
+    "versionsTitle": "API 版本",
+    "versionLabels": {
+      "v1": "版本 1",
+      "v2": "版本 2",
+      "v3": "版本 3"
+    },
+    "versionStatuses": {
+      "production": "正式版",
+      "publicPreview": "公开预览",
+      "privatePreview": "私有预览"
+    },
+    "tableRows": {
+      "mapPlatform": "地图平台",
+      "httpMethod": "HTTP 方法",
+      "routeWaypoints": "路线途经点",
+      "responseFields": "响应字段",
+      "baseEndpoint": "基础接口",
+      "calculateRoute": "计算路线",
+      "reachableRange": "可达范围",
+      "batchRouting": "批量路径规划",
+      "guidanceInstructions": "导航指令",
+      "laneGuidance": "车道引导",
+      "roadShieldNotes": "道路标志说明",
+      "computeTollAmounts": "计算通行费",
+      "weatherConsideration": "天气考量",
+      "dynamicDataFreshness": "动态数据新鲜度"
+    },
+    "readyTitle": "准备好开始了吗？",
+    "readyBody": "快速开始指南将在 5 分钟内引导您完成身份认证和首个路线请求。",
+    "ctaQuickStart": "快速开始",
+    "ctaCalculateRoute": "计算路线参考文档",
+    "relatedTitle": "相关 API",
+    "relatedBody": "这些 API 是独立产品——各有其接口、配额和文档。",
+    "relatedLdevr": {
+      "label": "长途电动车路径规划 API",
+      "desc": "为超出单次充电范围的行程自动选择最优充电站。独立产品，拥有自己的配额和套餐。",
+      "tag": "独立产品"
+    },
+    "relatedMatrix": {
+      "label": "Matrix Routing v2 API",
+      "desc": "计算每个出发地-目的地组合的行程时间和距离。支持异步模式处理多达 1 亿个单元格。",
+      "tag": "独立产品"
+    },
+    "relatedWaypoint": {
+      "label": "途经点优化 API",
+      "desc": "对 2–12 个停靠点重新排序以最小化行程时间。将结果传回计算路线接口使用。",
+      "tag": "独立产品"
+    },
+    "callout": "覆盖数据、更新日志和弃用通知请见市场覆盖和平台参考部分。",
+    "calloutLinkText": "市场覆盖",
+    "endpointDescs": {
+      "calculateRoute": "计算途经点之间的一条或多条路线，完整支持车辆配置文件、交通路况、能耗模型和导航指令。",
+      "reachableRange": "计算从起点出发在给定时间、距离、燃油或能量预算内可达的等时线多边形。",
+      "batchRouting": "在单个请求中提交最多 700 个路线或范围计算。支持同步（100 项）和异步模式。",
+      "instructions": "在任何计算路线请求中激活逐转向导航。返回文本、标记或编码的转向操作数组。",
+      "laneGuidance": "在复杂路口提供每车道方向和可行驶数据。需要 instructionsType=tagged 和 sectionType=lanes。",
+      "roadShields": "每条道路路段的标志形状类别、道路参考和显示文本。使用 iconCategory 选择正确的标志资产。"
+    },
+    "exampleTitles": {
+      "reachableRanges": "可达范围",
+      "routeWithWaypoints": "含途经点的路线"
+    },
+    "exampleDescs": {
+      "reachableRanges": "计算一个或多个起点的基于时间的可达区域，并在实时地图上以彩色填充多边形呈现。",
+      "routeWithWaypoints": "在交互式地图上计算并渲染 A–B 路线。添加中间途经点，选择出行模式，并显示路线摘要统计。"
+    },
+    "tagLabels": {
+      "playground": "演练场",
+      "routing": "路径规划",
+      "web": "Web",
+      "gettingStarted": "快速开始"
+    }
+  },
+  "ldevrIntro": {
+    "title": "长途电动车路径规划 API",
+    "quickAnswer": "为超出单次充电范围的电动车规划路线。API 自动选择最优充电站——综合考量连接器类型、充电功率、绕路成本和电池状态——并返回包含停留时间和站点详情的完整行程单，可直接在应用内渲染。",
+    "capabilities": {
+      "batteryModelling": {
+        "title": "电池状态建模",
+        "desc": "模拟每条道路路段的电量水平——考量速度、海拔、辅助功耗和再生制动。"
+      },
+      "stopSelection": {
+        "title": "自动充电站选择",
+        "desc": "选择使总行程时间（含每个充电站停留时间）最短的充电站组合。"
+      },
+      "connectorMatching": {
+        "title": "连接器匹配",
+        "desc": "传入车辆支持的连接器（CCS、CHAdeMO、GB/T……），仅考虑兼容的充电站。"
+      },
+      "trafficEnergy": {
+        "title": "交通感知能耗",
+        "desc": "实时和历史交通路况影响建模能耗——走走停停比畅通行驶耗电更多。"
+      }
+    },
+    "endpointsTitle": "接口",
+    "endpointsSubtitle": "两个接口。按需使用——每个均可独立调用。",
+    "endpointDescs": {
+      "calculateEvRoute": "规划含自动充电站选择的多段电动车路线。返回包含站点名称、连接器详情、停留时间和每段边界电池状态的完整行程单。",
+      "batchEvRoute": "在单次调用中提交最多 700 个电动车路线计算。支持同步（100 项）和异步模式。每项携带各自的车辆和电池参数。"
+    },
+    "demosTitle": "查看演示",
+    "demosIntro": "基于长途电动车路径规划 API 的实时演示，使用 TomTom Maps SDK for JavaScript 构建。点击「关键配置」查看 API 参数效果。",
+    "demosIntroLinkText": "TomTom Maps SDK for JavaScript",
+    "demosIntroKeyConfig": "关键配置",
+    "exampleTitles": {
+      "ldevrModelId": "使用车型 ID 的长途电动车路线",
+      "customChargingStops": "自定义充电站图标",
+      "ldevrDetailedVehicle": "使用详细车辆信息的长途电动车路线"
+    },
+    "exampleDescs": {
+      "ldevrModelId": "使用已注册车辆型号变体，从巴黎到阿姆斯特丹的 A–B 长途电动车路线，含自动充电站。",
+      "customChargingStops": "慕尼黑到巴黎的电动车路线，充电站使用按充电速度（慢速、普通、快速）映射的自定义 SVG 图标渲染。",
+      "ldevrDetailedVehicle": "巴黎到阿姆斯特丹的电动车路线，包含完整车辆规格——电池容量、连接器类型、能耗曲线和辅助功耗。"
+    },
+    "tagLabels": {
+      "gettingStarted": "快速开始",
+      "electricVehicles": "电动车",
+      "web": "Web",
+      "customisation": "定制"
+    },
+    "baseUrlTitle": "基础 URL 和认证",
+    "baseUrlRows": {
+      "endpoint": "接口",
+      "auth": "认证",
+      "authDesc": "通过 ?key= 查询参数或 Authorization: apiKey 请求头传入 API 密钥",
+      "method": "方法",
+      "methodDesc": "POST——路线点在 URL 路径中；所有车辆和电动车参数在 JSON 请求体中",
+      "planTier": "套餐层级",
+      "planTierDesc": "开发者版、弹性版、企业版——不包含在免费路径规划 API 配额中"
+    },
+    "whenTitle": "何时使用此 API",
+    "whenUseTitle": "使用长途电动车路径规划 API 的场景",
+    "whenUseItems": [
+      "行程超出车辆单次充电续航范围",
+      "希望 API 自动选择充电站",
+      "需要在响应中获取充电站品牌、功率和连接器数据",
+      "正在构建含充电用户体验的车载信息娱乐系统或伴侣应用",
+      "使用 TomTom 导航 SDK 并需要充电站卡片"
+    ],
+    "whenNotTitle": "改用路径规划 API 的场景",
+    "whenNotItems": [
+      "行程在单次充电范围内",
+      "仅需要建模电池能耗，无需规划充电站",
+      "为燃油或混动车辆规划路线",
+      "当前需要 Orbis Maps v2 兼容性",
+      "需要备选路线、货车路径规划或自行车/步行模式"
+    ],
+    "versionsTitle": "API 版本",
+    "versionLabels": {
+      "v1": "版本 1",
+      "v2": "版本 2"
+    },
+    "versionStatuses": {
+      "production": "正式版",
+      "privatePreview": "私有预览"
+    },
+    "tableRows": {
+      "mapPlatform": "地图平台",
+      "baseEndpoint": "基础接口",
+      "calculateEvRoute": "计算电动车路线",
+      "batchEvRoute": "批量电动车路线",
+      "batteryConsumption": "电池与能耗模型",
+      "vehicleModelId": "车型 ID",
+      "vehicleBrandLookup": "车辆品牌查询",
+      "connectorMatching": "连接器匹配",
+      "oemEmspSupport": "OEM 电动出行服务支持",
+      "computeTollAmounts": "计算通行费",
+      "chargingParksHours": "充电站开放时间",
+      "weatherConsideration": "天气考量",
+      "dynamicDataFreshness": "动态数据新鲜度"
+    },
+    "readyTitle": "准备好开始了吗？",
+    "readyBody": "快速开始指南包含可运行的 cURL 示例和 Kotlin SDK 代码片段，将在 5 分钟内引导您完成认证和首个电动车路线请求。",
+    "ctaQuickStart": "快速开始",
+    "ctaCalculateRoute": "计算电动车路线参考文档",
+    "ctaBatteryModel": "电池与能耗模型"
+  },
+  "anaIntro": {
+    "title": "汽车导航应用",
+    "quickAnswer": "汽车导航应用（ANA）是 TomTom 为 Android Automotive OS 预构建的导航 APK。OEM 将其作为完整导航解决方案集成，并通过两个轻量层——VIL 和 CIL——与其连接，而无需从零开始构建导航。",
+    "heroAlt": "ANA——在 AAOS 上实时显示交通状况和更优路线建议",
+    "whenTitle": "何时选择 ANA",
+    "whenCards": {
+      "fastTimeToMarket": {
+        "title": "快速上市",
+        "desc": "无需构建或测试导航界面——集成周期以周计，而非月计。"
+      },
+      "tomtomMaintained": {
+        "title": "TomTom 维护的用户体验",
+        "desc": "地图内容、路径规划算法和界面改进随 APK 更新推送，OEM 无需额外投入。"
+      },
+      "fullEvSupport": {
+        "title": "完整的电动车支持",
+        "desc": "开箱即用：电池集成的路线规划、连接器感知搜索和实时电量显示。"
+      },
+      "aaOsCertified": {
+        "title": "AAOS 认证",
+        "desc": "ANA 专为 Android Automotive OS 设计和测试，通过 AAOS 兼容性要求。"
+      },
+      "limitedCustomisation": {
+        "title": "有限的界面定制",
+        "descPart1": "ANA 支持基于令牌的主题化，但导航界面布局固定。如需更多界面灵活性，请参阅",
+        "uxLibraryLink": "UX Library",
+        "descPart2": "（提供可定制的预构建组件），或",
+        "navSdkLink": "地图与导航 SDK",
+        "descPart3": "（提供完全自定义体验）。"
+      },
+      "apkDependency": {
+        "title": "APK 依赖",
+        "desc": "您的车载信息娱乐系统通过两个轻量 API 集成 ANA 作为独立 APK——VIL 向导航引擎传入车辆数据，CIL 允许其他车辆软件控制应用。您不拥有导航源代码。"
+      }
+    },
+    "screenshotsTitle": "车内体验",
+    "screenshotsSubtitle": "ANA 开箱即提供完整的 AAOS 导航体验——从高保真地图渲染到自动化电动车路线规划。",
+    "screenshots": {
+      "liveTraffic": {
+        "label": "实时交通与智能重新规划",
+        "desc": "实时交通叠加层，导航过程中自动提示更优路线建议。"
+      },
+      "premiumMap": {
+        "label": "高端地图显示",
+        "desc": "高保真 3D 矢量地图，支持日夜模式，完全根据 OEM 品牌指南进行样式定制。"
+      },
+      "evCharging": {
+        "label": "电动车充电站搜索",
+        "desc": "连接器感知搜索，显示附近充电站的实时可用性和充电功率。"
+      },
+      "ldEvRoute": {
+        "label": "长途电动车路线规划",
+        "desc": "根据电池状态和连接器兼容性自动插入充电站。"
+      }
+    },
+    "featuresTitle": "功能包含",
+    "featuresSubtitle": "ANA 搭载完整的导航功能集。OEM 配置而非构建。",
+    "features": {
+      "driverExperience": {
+        "title": "驾驶体验",
+        "desc": "完整的逐向导航界面——搜索、路线规划、导航引导、预计到达时间面板、交通提醒和到达——全部预构建并经过测试。"
+      },
+      "vil": {
+        "title": "车辆集成层",
+        "desc": "向 ANA 传入车辆信号：电动车电池状态、连接器类型、GDPR 同意和仪表盘输出。VIL 是您向导航引擎传入数据的管道。"
+      },
+      "cil": {
+        "title": "车机集成层",
+        "desc": "从您的应用控制 ANA：触发导航至目的地、取消路线、搜索附近兴趣点，以及查询实时导航状态。",
+        "tag": "控制 API"
+      },
+      "theming": {
+        "title": "OEM 主题化",
+        "desc": "覆盖设计令牌——颜色、字体排印、圆角和图标集——以匹配您的品牌，无需修改 ANA 内部代码。"
+      },
+      "evSupport": {
+        "title": "电动车支持",
+        "desc": "连接器感知充电站搜索、电池集成的长途路线规划，以及从第一天起内置的实时电量显示。",
+        "tag": "电动车"
+      }
+    },
+    "archTitle": "集成架构",
+    "archBody": "ANA 位于您的车辆软件与 TomTom 平台之间。VIL 向上传输数据；CIL 向下发送指令。您的 HMI 应用无需直接调用 TomTom API。",
+    "archLayers": {
+      "yourLayer": "您的层",
+      "vilTitle": "VIL——车辆集成层",
+      "vilDesc": "向 ANA 推送车辆数据。向导航引擎传入电动车状态、GDPR 同意、车速和仪表盘数据。",
+      "cilTitle": "CIL——车机集成层",
+      "cilDesc": "从您的应用控制 ANA。触发导航、设置目的地、管理路线，以及查询导航状态。",
+      "anaTitle": "ANA——汽车导航应用（APK）",
+      "anaDesc": "TomTom 维护的导航 APK。完整的 AAOS 导航体验：地图、搜索、路径规划、电动车充电、导航引导、仪表盘输出和 OEM 主题化——全部预构建并经过测试。"
+    },
+    "readyTitle": "准备好集成了吗？",
+    "readyBody": "从系统概览开始，了解 ANA 如何融入您的车载信息娱乐系统，然后按照快速开始指南在第一个会话中运行导航。",
+    "ctaSystemOverview": "系统概览",
+    "ctaQuickStart": "快速开始",
+    "callout": "ANA 面向 Android Automotive OS。它不是通用 Android 应用，无法在标准 Android 手机或平板电脑上运行。如需手机或平板电脑导航，请使用地图与导航 SDK。"
+  },
+  "navsdkIntro": {
+    "title": "地图与导航 SDK",
+    "quickAnswerAndroid": "从零开始构建完全自定义的 Android 导航体验。SDK 提供独立、可组合的层——矢量地图渲染、支持电动车和交通路况的多途经点路径规划、完整的逐向导航引导、ADAS 级虚拟视野数据和离线地图——让您按需使用，完全掌控界面的每个细节。",
+    "quickAnswerIos": "从零开始构建完全自定义的 iOS 导航体验。SDK 提供独立、可组合的层——矢量地图渲染、支持电动车和交通路况的多途经点路径规划、完整的逐向导航引导、ADAS 级虚拟视野数据和原生 CarPlay 集成——让您按需使用，完全掌控界面的每个细节。",
+    "heroAlt": "地图与导航 SDK",
+    "heroFallback": "地图与导航 SDK",
+    "whenTitle": "何时选择地图与导航 SDK",
+    "whenCards": {
+      "fullUiOwnership": {
+        "title": "完全掌控界面",
+        "desc": "端到端地设计和维护您自己的导航体验。无需继承任何 TomTom 界面模式——您的设计师掌控每一个像素。"
+      },
+      "modularByDesign": {
+        "title": "模块化设计",
+        "desc": "按需使用：仅地图渲染、仅路径规划，或完整的导航引导栈。不为您不发布的功能付出额外开销。"
+      },
+      "androidAndIos": {
+        "title": "Android 和 iOS",
+        "desc": "一套 SDK 覆盖两个平台——Android 的 Compose 和 Views，iOS 的 SwiftUI 和 UIKit——具有一致的 API 接口。"
+      },
+      "extensible": {
+        "title": "可扩展",
+        "desc": "可与 SDK 配合插入您自己的搜索提供商、自定义路线后处理、第三方语音引擎或 ADAS 数据源。"
+      },
+      "youBuildUiAndroid": {
+        "title": "您负责构建界面",
+        "descPart1": "需要大量开发投入。在 Android 上获取即用型导航组件，",
+        "uxLibraryLink": "UX Library",
+        "descPart2": " 提供基于此 SDK 构建的完整 Compose 界面栈。"
+      },
+      "youBuildUiIos": {
+        "title": "您负责构建界面",
+        "desc": "需要大量开发投入。iOS 没有预构建的界面库——您的团队需要在 SDK 基础上设计并构建所有导航界面。"
+      },
+      "longerTimeAndroid": {
+        "title": "较长的上市周期",
+        "descPart1": "生产级体验需要数月开发时间。在 Android 上加快交付，请从",
+        "uxLibraryLink": "UX Library",
+        "descPart2": " 开始。如需完整预构建解决方案，请考虑",
+        "anaLink": "ANA",
+        "descPart3": "。"
+      },
+      "longerTimeIos": {
+        "title": "较长的上市周期",
+        "descPart1": "iOS 生产级体验需要数月开发时间。如需完整预构建的汽车导航解决方案，请考虑",
+        "anaLink": "ANA",
+        "descPart2": "（仅 Android）。"
+      }
+    },
+    "capabilitiesTitle": "核心功能",
+    "capabilitiesSubtitleAndroid": "每项功能均可独立使用。仅使用地图，或组合所有层构建完整的 Android 导航应用。",
+    "capabilitiesSubtitleIos": "每项功能均可独立使用。仅使用地图，或组合所有层构建完整的 iOS 导航应用。",
+    "capabilities": {
+      "mapDisplay": {
+        "title": "地图显示",
+        "desc": "渲染 TomTom 矢量地图，完全控制样式、摄像机、图层、标记和交通叠加层。"
+      },
+      "search": {
+        "title": "搜索",
+        "desc": "通过统一搜索接口接入地址搜索、模糊兴趣点搜索和电动车充电搜索。"
+      },
+      "routing": {
+        "title": "路径规划",
+        "desc": "计算含车辆配置文件、交通路况、电动车续航和备选路线支持的多途经点路线。"
+      },
+      "navigation": {
+        "title": "导航",
+        "desc": "完整的逐向导航引导，含语音播报、车道引导和实时重新规划。"
+      },
+      "virtualHorizon": {
+        "title": "虚拟视野",
+        "desc": "获取车辆前方 ADAS 级道路属性数据，用于限速、弯道和危险预警。"
+      },
+      "offlineMaps": {
+        "title": "离线地图",
+        "desc": "下载区域地图包，无需数据连接即可完整离线导航。",
+        "tag": "Android"
+      },
+      "carPlay": {
+        "title": "CarPlay",
+        "desc": "使用专为 CarPlay 框架构建的导航会话 API 集成 Apple CarPlay。",
+        "tag": "iOS"
+      }
+    },
+    "archTitle": "SDK 架构",
+    "archBody": "SDK 由四个协同工作的层组成。您的应用位于顶层，仅依赖其下方的层——TomTom 平台调用已完全抽象。",
+    "archLayers": {
+      "yourApp": {
+        "label": "您的应用",
+        "desc": "自定义界面与业务逻辑"
+      },
+      "navigationEngine": {
+        "label": "导航引擎",
+        "desc": "逐向导航 · 引导 · 语音播报"
+      },
+      "mapRoutingSdk": {
+        "label": "地图与路径规划 SDK",
+        "desc": "地图显示 · 搜索 · 路径规划 · 位置"
+      },
+      "tomtomPlatform": {
+        "label": "TomTom 平台",
+        "desc": "地图 · 交通 · 兴趣点 · 电动车数据 · ADAS"
+      }
+    },
+    "platformsTitle": "平台支持",
+    "platforms": {
+      "android": {
+        "label": "Android",
+        "current": "当前",
+        "items": {
+          "compose": ["Jetpack Compose", "为 MapDisplay 和所有界面组件提供一流的 Compose API"],
+          "views": ["XML Views", "为现有代码库和 AAOS 系统提供完整的 Views API"],
+          "minSdk": ["最低 SDK", "Android 8.0（API 级别 26）"],
+          "offline": ["离线地图", "可下载的区域地图包"],
+          "uxLibrary": ["UX Library", "可选的预构建 Compose 导航组件"]
+        }
+      },
+      "ios": {
+        "label": "iOS",
+        "items": {
+          "swiftui": ["SwiftUI", "原生 SwiftUI MapView 和可组合导航组件"],
+          "uikit": ["UIKit", "适用于现有应用的 UIKit 兼容 API"],
+          "minVersion": ["最低版本", "iOS 14.0+"],
+          "carplay": ["CarPlay", "兼容 CarPlay 的导航会话支持"]
+        }
+      }
+    },
+    "readyTitle": "准备好开始了吗？",
+    "readyBodyAndroid": "最快上手路径是快速开始指南——在 15 分钟内完成项目配置、SDK 初始化和第一张地图的显示。",
+    "readyBodyIos": "按照 iOS 快速开始指南配置您的 Xcode 项目、添加 Swift Package 并显示第一张地图。",
+    "ctaGetStarted": "开始使用",
+    "ctaRunExampleAndroid": "运行示例应用",
+    "ctaRunExampleIos": "运行示例应用",
+    "callout": "本文档涵盖 SDK v2。如果您正在从 SDK v1 迁移，请参阅快速开始中的迁移指南。",
+    "calloutMigrationGuide": "迁移指南"
   }
 }
