@@ -253,10 +253,25 @@ function ProductCard({ name, desc, docsId, productId, links, platformIds, note, 
 
   return (
     <div
-      className={`dp2-product-card${hasLink ? ' dp2-product-card--linked' : ''}`}
+      className={`dp2-product-card${hasLink ? ' dp2-product-card--linked' : ' dp2-product-card--stub'}`}
       onClick={hasLink && !platformLinks ? () => onNavigate(docsId, productId) : undefined}
     >
-      <h2 className="dp2-product-name">{name}</h2>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+        <h2 className="dp2-product-name">{name}</h2>
+        {!hasLink && (
+          <span style={{
+            flexShrink: 0,
+            fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            padding: '3px 7px', borderRadius: 4,
+            background: 'rgba(0,0,0,0.05)', color: 'var(--muted)',
+            marginTop: 2,
+            whiteSpace: 'nowrap',
+          }}>
+            Not in prototype
+          </span>
+        )}
+      </div>
       <div className="dp2-product-desc">{desc}</div>
       <div className="dp2-product-footer">
         {platformLinks ? (
@@ -272,14 +287,18 @@ function ProductCard({ name, desc, docsId, productId, links, platformIds, note, 
               </a>
             ))}
           </div>
-        ) : (
+        ) : hasLink ? (
           <a
             href="#"
             className="dp2-product-doc-btn"
-            onClick={e => { e.preventDefault(); if (hasLink) onNavigate(docsId, productId); }}
+            onClick={e => { e.preventDefault(); onNavigate(docsId, productId); }}
           >
             Documentation
           </a>
+        ) : (
+          <span className="dp2-product-doc-btn dp2-product-doc-btn--disabled">
+            Documentation
+          </span>
         )}
       </div>
     </div>

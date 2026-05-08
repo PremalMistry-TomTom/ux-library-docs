@@ -2117,6 +2117,8 @@ html.ai-panel-open .page {
 .dp2-product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: #ccc; }
 .dp2-product-card--linked { cursor: pointer; }
 .dp2-product-card--linked:hover { border-color: #DF1B12; box-shadow: 0 4px 20px rgba(223,27,18,0.12); }
+.dp2-product-card--stub { cursor: default; opacity: 0.6; }
+.dp2-product-card--stub:hover { box-shadow: none; border-color: #e5e5e5; }
 .dp2-product-badge {
   display: inline-block;
   background: rgba(223,27,18,0.08);
@@ -2167,6 +2169,10 @@ html.ai-panel-open .page {
   transition: background 0.12s, border-color 0.12s;
 }
 .dp2-product-doc-btn:hover { background: #f5f5f5; border-color: #bbb; }
+.dp2-product-doc-btn--disabled {
+  color: #aaa; border-color: #e5e5e5; background: #fafafa;
+  cursor: default; pointer-events: none;
+}
 
 /* Tool / support cards — inline text link with arrow */
 .dp2-doc-link {
