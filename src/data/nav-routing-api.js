@@ -18,7 +18,7 @@ export const ROUTING_API_NAV = [
       { id: 'routing-consumption',      label: 'Consumption Models' },
     ],
   },
-  { type: 'section', label: 'Endpoints' },
+  { type: 'section', label: 'v1 · Production' },
   { id: 'routing-calculate-route', label: 'Calculate Route', type: 'top', ref: true, anchors: [
       { id: 'api-rc-route-planning', label: 'Route planning',              method: 'GET'  },
       { id: 'api-rc-vehicle',        label: 'Vehicle profile',             method: 'GET'  },

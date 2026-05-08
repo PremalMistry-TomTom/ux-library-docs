@@ -16,7 +16,7 @@ export const LDEVR_NAV = [
       { id: 'ldevr-connectors',      label: 'Connector Types' },
     ],
   },
-  { type: 'section', label: 'Endpoints' },
+  { type: 'section', label: 'v1 · Production' },
   { id: 'ldevr-calculate-route', label: 'Calculate EV Route', type: 'top', ref: true, anchors: [
       { id: 'api-ldevr-route',             label: 'Route planning',              method: 'POST' },
       { id: 'api-ldevr-battery',           label: 'Electric vehicle & battery',  method: 'POST' },
