@@ -1,5 +1,4 @@
 import PageActions from '../components/ui/PageActions';
-import Callout from '../components/ui/Callout';
 import ExampleCard from '../components/ui/ExampleCard';
 
 /* ─── Endpoint thumbnails ────────────────────────────────────────────────────── */
@@ -327,38 +326,70 @@ const route = await calculateRoute({
         </div>
       </div>
 
-      {/* Platform availability */}
+      {/* Version comparison table */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-platforms">Platform availability</h2>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <div style={{ flex: '1 1 260px', padding: '20px', borderRadius: 20, border: '2px solid #e2001a', background: 'var(--bg)', position: 'relative' }}>
-            <div style={{ position: 'absolute', top: 14, right: 14, fontSize: '0.625rem', fontWeight: 700, padding: '3px 8px', borderRadius: 20, background: '#e2001a22', color: '#e2001a' }}>Available</div>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>TomTom Maps</div>
-            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--black)', marginBottom: 12 }}>Service Version 1</div>
-            <div style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: 'var(--mid)', background: '#0d1117', padding: '8px 12px', borderRadius: 6, marginBottom: 14 }}>
-              api.tomtom.com/routing/1/calculateLongDistanceEVRoute/
+        <h2 className="sh" id="ldevr-platforms">API versions</h2>
+        {(() => {
+          const V1 = { label: 'Version 1', status: 'Production',     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',  color: '#15803d' };
+          const V2 = { label: 'Version 2', status: 'Private Preview', statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)', color: '#92400e' };
+          const Y = '✓'; const N = '—';
+          const rows = [
+            { label: 'Map platform',              v1: 'TomTom Maps',                               v2: 'Orbis Maps'                                       },
+            { label: 'Base endpoint',             v1: '/routing/1/calculateLongDistanceEVRoute/…', v2: '/maps/orbis/routing/v2/…'                         },
+            { label: 'Calculate EV Route',        v1: Y, v2: Y },
+            { label: 'Batch EV Route',            v1: Y, v2: N },
+            { label: 'Battery & consumption model', v1: Y, v2: Y },
+            { label: 'Vehicle model ID',          v1: Y, v2: Y },
+            { label: 'Vehicle brand lookup',      v1: N, v2: Y },
+            { label: 'Connector matching',        v1: Y, v2: Y },
+            { label: 'OEM eMSP support',          v1: N, v2: Y },
+            { label: 'Compute toll amounts',      v1: N, v2: Y },
+            { label: 'Charging parks hours',      v1: N, v2: Y },
+            { label: 'Weather consideration',     v1: N, v2: Y },
+            { label: 'Dynamic data freshness',    v1: N, v2: Y },
+          ];
+          const cell = (val, col) => {
+            const isTick = val === Y, isDash = val === N;
+            return (
+              <td key={col.label} style={{
+                padding: '9px 14px', fontSize: '0.8125rem', textAlign: 'left',
+                color: isTick ? col.color : isDash ? 'var(--border)' : 'var(--mid)',
+                fontWeight: isTick ? 700 : 400,
+                borderBottom: '1px solid var(--border)',
+              }}>
+                {val}
+              </td>
+            );
+          };
+          return (
+            <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid var(--border)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+                <thead>
+                  <tr style={{ background: 'var(--bg)' }}>
+                    <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: 'var(--muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border)', width: '44%' }} />
+                    {[V1, V2].map(v => (
+                      <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '28%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+                          <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--muted)' }}>{v.label}</span>
+                          <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row, i) => (
+                    <tr key={row.label} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                      <td style={{ padding: '9px 14px', fontWeight: 600, color: 'var(--black)', borderBottom: '1px solid var(--border)', fontSize: '0.8125rem' }}>{row.label}</td>
+                      {cell(row.v1, V1)}
+                      {cell(row.v2, V2)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            {[
-              'Full battery consumption model',
-              'Connector type matching (CCS, CHAdeMO, GB/T…)',
-              'Minimum charger power filter',
-              'Batch EV routing (up to 700 parallel)',
-              'Kotlin SDK + Android Navigation SDK',
-              '~215 countries',
-            ].map(f => (
-              <div key={f} style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, display: 'flex', alignItems: 'flex-start', gap: 7, marginBottom: 3 }}>
-                <span style={{ color: '#22c55e', flexShrink: 0 }}>✓</span> {f}
-              </div>
-            ))}
-          </div>
-          <div style={{ flex: '1 1 260px', padding: '20px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)', opacity: 0.7 }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 }}>Orbis Maps</div>
-            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--black)', marginBottom: 12 }}>Service Version 2</div>
-            <Callout type="warning" title="Not yet available">
-              EV routing is planned for Orbis Maps v2 in Q3 2025. All EV routing should use the TomTom Maps (v1) endpoint.
-            </Callout>
-          </div>
-        </div>
+          );
+        })()}
       </div>
 
       {/* Ready to build */}
