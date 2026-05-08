@@ -34,7 +34,10 @@ function Tag({ label, variant = 'feature' }) {
  *   Thumb       React component — SVG map illustration for the card thumbnail
  *   imgSrc      string   – static image path (takes priority over Thumb)
  */
+const BASE = import.meta.env.BASE_URL;
+
 export default function ExampleCard({ title, description, href, tags = [], Thumb, imgSrc }) {
+  const resolvedSrc = imgSrc ? `${BASE}${imgSrc.replace(/^\//, '')}` : null;
   return (
     <a
       className="nav-card example-card"
@@ -44,8 +47,8 @@ export default function ExampleCard({ title, description, href, tags = [], Thumb
     >
       {/* Thumbnail */}
       <div className="example-card-thumb">
-        {imgSrc
-          ? <img src={imgSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+        {resolvedSrc
+          ? <img src={resolvedSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
           : Thumb && <Thumb />}
       </div>
 
