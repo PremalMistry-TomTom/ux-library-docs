@@ -413,24 +413,6 @@ export default function RoutingAPIIntro({ onNavigate }) {
         {t('routingIntro.quickAnswer')}
       </p>
 
-      {/* Capability tiles */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
-        {[
-          ['🚗', t('routingIntro.capabilities.vehicleProfiles.title'), t('routingIntro.capabilities.vehicleProfiles.desc')],
-          ['⚡', t('routingIntro.capabilities.evConsumption.title'), t('routingIntro.capabilities.evConsumption.desc')],
-          ['📡', t('routingIntro.capabilities.traffic.title'), t('routingIntro.capabilities.traffic.desc')],
-          ['🗣️', t('routingIntro.capabilities.guidance.title'), t('routingIntro.capabilities.guidance.desc')],
-        ].map(([icon, title, desc]) => (
-          <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
-            <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
-              <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-            </div>
-            <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</div>
-          </div>
-        ))}
-      </div>
-
       {/* Endpoint grid */}
       <div className="zone">
         <h2 className="sh" id="r-endpoints">{t('routingIntro.endpointsTitle')}</h2>
