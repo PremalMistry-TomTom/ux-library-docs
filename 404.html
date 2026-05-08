@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>UX Library</title>
+    <script>
+      // GitHub Pages SPA fallback.
+      // Saves the attempted URL to sessionStorage, then redirects to the app root.
+      // index.html reads it back and restores the path via history.replaceState.
+      sessionStorage.setItem('spa-redirect', window.location.href);
+      var base = window.location.pathname.split('/').slice(0, 2).join('/');
+      window.location.replace(base + '/');
+    </script>
+  </head>
+  <body></body>
+</html>
