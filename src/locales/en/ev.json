@@ -11,6 +11,10 @@
       "body": "EV support in the UX Library spans five layers: the vehicle's BMS feeds live battery data upward through the Vehicle Integration API into the Navigation SDK. From there, the LDEVR API plans optimal charging stops, the EV Search API surfaces compatible stations, and the in-navigation UI keeps the driver informed throughout the journey.",
       "body2": "Each layer is independently configurable — you can deploy charging search without LDEVR, or enable range-ring overlays without custom consumption models."
     },
+    "monitoring": {
+      "heading": "In-drive monitoring",
+      "body": "Once the vehicle departs, the SDK continuously monitors state of charge and re-evaluates the charging plan. The events below trigger automatic re-routing or plan updates — no OEM code required."
+    },
     "guide": {
       "heading": "In this section",
       "body": "Five pages cover the full integration journey. Start with Vehicle & Battery to establish accurate range predictions, then build outward."
@@ -66,7 +70,28 @@
     },
     "offset": {
       "heading": "Charging time offset",
-      "body": "The chargingTimeOffset accounts for the time spent physically connecting and disconnecting the charge cable — typically 60–180 seconds. The default is 60 s. For premium vehicles with automated charging arms, or for fleet deployments where cable handling time is documented, adjust this value to improve total journey time accuracy in route planning."
+      "body": "The chargingTimeOffset accounts for overhead at each stop: exiting the vehicle, walking to the charger, connecting the cable, and initiating the session. The default differs by integration — 60 s for the Online Routing API and 180 s for the Navigation SDK and ANA. A non-configurable minimum charge time of 300 s (5 minutes) is always added on top, even if less charge is needed."
+    },
+    "capacity": {
+      "heading": "Battery capacity: nominal vs current",
+      "body": "The routing engine uses three distinct energy values. Understanding the difference matters — using the wrong capacity causes systematic errors in range prediction and charging stop placement.",
+      "stabilityCallout": "Keep currentBatteryCapacity stable throughout a trip. Fluctuations above 0.3% cause perceived instability in charging stop placement — the station selected based on one capacity reading may become unreachable if the value shifts mid-route. A 5% fluctuation during a trip is enough for drivers to notice stops appearing or disappearing unexpectedly."
+    },
+    "chargingParams": {
+      "heading": "Charging parameters",
+      "body": "Alongside the consumption model, accurate charging parameters are essential for realistic stop-time estimates. Three elements define how fast a vehicle charges at any given stop: the charging curve, the connector types, and the effective power limit.",
+      "curve": {
+        "heading": "Charging curve (SoE → power)",
+        "body": "The charging curve is a piecewise-linear function mapping state of energy to maximum acceptable charging power. It determines how long a stop takes — the area under the curve between arrival and target SoC is the charging energy. Define 2–20 data points; the first must be at 0 kWh. Piecewise-constant curves are accepted but piecewise-linear is recommended for accuracy."
+      },
+      "power": {
+        "heading": "Effective charging power",
+        "body": "The actual power delivered to the battery is constrained by both the vehicle and the station. The formula below calculates the effective rate at any SoC — used by the routing engine to compute stop duration."
+      },
+      "connectors": {
+        "heading": "Connector compatibility",
+        "body": "Set vehicleConnectors with all connector types the vehicle supports physically. This list drives EV Search filtering — stations are automatically matched or excluded based on plug type and current type (AC1, AC3, or DC). Include both AC and DC types if the vehicle supports both."
+      }
     }
   },
 
@@ -87,6 +112,11 @@
   "routing": {
     "title": "Long-Distance Routing",
     "intro": "The LDEVR API calculates the optimal sequence of charging stops for routes beyond single-charge range. Adjust the minimum SoC thresholds below to see how they affect stop count, total charge time, and journey duration.",
+    "chargingStrategy": {
+      "heading": "Charging stop strategy",
+      "body": "LDEVR supports two planning modes, configured via the chargingStopsStrategy parameter. The choice affects whether stop locations are determined by the routing engine or by the driver.",
+      "callout": "The 'Plan charging automatically' toggle in the route preview UI maps directly to this parameter. The default state (on/off) can be set in SDK configuration — most deployments leave automatic mode on by default."
+    },
     "trip": {
       "heading": "Real-world trip: Berlin → Amsterdam",
       "body": "A 679 km motorway route with a 75 kWh family EV starting at 78% SoC. LDEVR automatically inserts two charging stops — no routing code required from the OEM.",
@@ -142,6 +172,10 @@
   "requirements": {
     "title": "Requirements",
     "intro": "SDK dependencies, Android permissions, and a step-by-step integration checklist — everything needed before going live with EV features.",
+    "vehicleIdentity": {
+      "heading": "Vehicle identity — Brand, Model, Variant",
+      "body": "TomTom organises vehicle profiles in a three-tier hierarchy. A Variant is the unit of configuration — it groups all parameters that meaningfully affect range, charging, or routing. Create a new Variant when any parameter that impacts consumption, charging characteristics, or physical dimensions changes."
+    },
     "heading": "SDK dependencies",
     "colDep": "Dependency",
     "colVersion": "Version / Detail",

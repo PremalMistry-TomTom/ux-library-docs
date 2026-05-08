@@ -145,7 +145,7 @@ const PRODUCTS = {
     },
   ],
   Navigation: [
-    { name: 'Routing API',                  desc: 'Calculate routes with vehicle profiles, real-time traffic, reachable range, and batch routing. Available on TomTom Maps (v1) and Orbis Maps (v2).', docsId: 'routing-api-intro', productId: 'routing-api', links: ['TomTom Maps', 'Orbis Maps'], platformIds: ['tomtom-maps', 'orbis-maps'] },
+    { name: 'Routing API',                  desc: 'Calculate routes with vehicle profiles, real-time traffic, reachable range, and batch routing.', docsId: 'routing-api-intro', productId: 'routing-api' },
     { name: 'Matrix Routing v2 API',        desc: 'Get route times and distances for many origin-destination pairs in a single request.', docsId: 'matrix-intro', productId: 'matrix-routing' },
     { name: 'Waypoint Optimization API',    desc: 'Optimize waypoint order to find the fastest possible route across multiple stops.', docsId: 'waypoint-intro', productId: 'waypoint-opt' },
     { name: 'Long Distance EV Routing API', desc: 'Plan long-distance EV trips with optimized charging stops based on battery state and connector availability.', docsId: 'ldevr-intro', productId: 'ldevr' },

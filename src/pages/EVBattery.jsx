@@ -8,46 +8,47 @@ import { ApiLinks } from '../components/ui/ApiLinks';
 const BATTERY_APIS = [
   { name: 'Vehicle Integration API',        type: 'Android SDK', description: 'Send battery capacity, charge curve, consumption, connectors, and auxiliary load to the SDK via VehicleInfoManager.', url: 'https://docs.tomtom.com/automotive-solutions/en/guides/ev-integration' },
   { name: 'Navigation SDK — VehicleProvider', type: 'Android SDK', description: 'Set the initial vehicle type and charge level, then push live SoC updates from your BMS at runtime.', url: 'https://docs.tomtom.com/navigation/android/guides/navigation/vehicle' },
-  { name: 'EV Routing — Consumption Model', type: 'REST API',    description: 'Reference for battery curve, consumption curve, and efficiency parameter constraints used by the routing engine.', url: 'https://docs.tomtom.com/electric-vehicle/ev-routing/introduction' },
+  { name: 'EV Routing — Consumption Model', type: 'REST API',    description: 'Reference for battery curve, consumption curve, and efficiency parameter constraints used by the routing engine.', url: 'https://docs.tomtom.com/electric-vehicle/ev-routing/consumption-model-integration' },
 ];
 
 /* ─── Vehicle class preset data ─────────────────────────────────────────────── */
+// nominalKwh  — spec-sheet maximum at 20°C (fixed for vehicle variant)
+// capacity    — usable after aging (current battery capacity, stable during trip)
+// soe         — demo starting state of energy
+// consumption — [[speed km/h, Wh/km], ...] baseline: 20°C, flat, no HVAC
+//               7 points from 10→120 km/h. REST API equivalent: Wh/km ÷ 10 = kWh/100km.
 const PRESETS = {
   city: {
-    capacity: 40,
-    soe: 28,
+    nominalKwh: 44, capacity: 40, soe: 28,
     curve: [[0,30],[10,80],[28,40],[36,15]],
-    consumption: [[10,120],[50,140],[80,160],[120,220]],
+    consumption: [[10,114],[30,92],[50,95],[70,112],[90,135],[110,165],[120,185]],
     uphill: 0.91, downhill: 0.88, accel: 0.92, decel: 0.85,
     auxPower: 400,
     connectors: ['IEC_62196_TYPE_2_CABLE'],
     color: '#10b981',
   },
   family: {
-    capacity: 75,
-    soe: 45,
+    nominalKwh: 82, capacity: 75, soe: 45,
     curve: [[0,50],[20,150],[56,75],[72,20]],
-    consumption: [[10,150],[50,170],[80,200],[120,280]],
+    consumption: [[10,138],[30,108],[50,115],[70,136],[90,165],[110,200],[120,225]],
     uphill: 0.92, downhill: 0.88, accel: 0.90, decel: 0.85,
     auxPower: 500,
     connectors: ['IEC_62196_TYPE_2_COMBO', 'IEC_62196_TYPE_2_CABLE'],
     color: '#3b82f6',
   },
   performance: {
-    capacity: 100,
-    soe: 75,
+    nominalKwh: 109, capacity: 100, soe: 75,
     curve: [[0,80],[30,250],[70,120],[92,25]],
-    consumption: [[10,180],[50,200],[80,220],[120,320]],
+    consumption: [[10,152],[30,118],[50,125],[70,148],[90,178],[110,215],[120,245]],
     uphill: 0.93, downhill: 0.89, accel: 0.91, decel: 0.87,
     auxPower: 600,
     connectors: ['IEC_62196_TYPE_2_COMBO', 'IEC_62196_TYPE_2_CABLE'],
     color: '#ef4444',
   },
   suv: {
-    capacity: 90,
-    soe: 60,
+    nominalKwh: 98, capacity: 90, soe: 60,
     curve: [[0,60],[25,180],[65,90],[85,22]],
-    consumption: [[10,170],[50,195],[80,230],[120,310]],
+    consumption: [[10,162],[30,128],[50,138],[70,164],[90,198],[110,240],[120,270]],
     uphill: 0.91, downhill: 0.87, accel: 0.89, decel: 0.84,
     auxPower: 550,
     connectors: ['IEC_62196_TYPE_2_COMBO', 'IEC_62196_TYPE_2_CABLE', 'CHADEM_O'],
@@ -74,7 +75,6 @@ function ChargeCurve({ points, color, capacity }) {
         {points.map((p, i) => (
           <circle key={i} cx={toX(p[0])} cy={toY(p[1])} r="3.5" fill={color} />
         ))}
-        {/* Axis labels */}
         <text x={PAD} y={H} fontSize="9" fill="var(--muted)">0%</text>
         <text x={W - PAD} y={H} fontSize="9" fill="var(--muted)" textAnchor="end">100%</text>
         <text x={0} y={PAD + 4} fontSize="9" fill="var(--muted)">{Math.round(maxKw / 1.1)} kW</text>
@@ -94,11 +94,11 @@ function ConsumptionCurve({ points, color }) {
 
   return (
     <div>
-      <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Consumption (Wh/km)</div>
+      <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Speed consumption (Wh/km)</div>
       <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
         <path d={d} stroke={color} strokeWidth="2" fill="none" strokeLinejoin="round" />
         {points.map((p, i) => (
-          <circle key={i} cx={toX(p[0])} cy={toY(p[1])} r="3.5" fill={color} />
+          <circle key={i} cx={toX(p[0])} cy={toY(p[1])} r="3" fill={color} />
         ))}
         <text x={PAD} y={H} fontSize="9" fill="var(--muted)">10</text>
         <text x={W - PAD} y={H} fontSize="9" fill="var(--muted)" textAnchor="end">{maxSpd} km/h</text>
@@ -107,10 +107,42 @@ function ConsumptionCurve({ points, color }) {
   );
 }
 
-/* ─── Generated code ─────────────────────────────────────────────────────────── */
+/* ─── Default charging curve shape ──────────────────────────────────────────── */
+// Reference percentages from TomTom EV routing docs — use when measured data is unavailable.
+// X = SoC %, Y = % of peak charging power.
+const DEFAULT_CURVE_SHAPE = [[0,35],[5,90],[10,100],[35,100],[50,90],[70,50],[100,5]];
+
+function DefaultChargeCurveViz({ color }) {
+  const W = 260, H = 90, PL = 16, PR = 16, PT = 16, PB = 24;
+  const iW = W - PL - PR, iH = H - PT - PB;
+  const toX = soc => PL + (soc / 100) * iW;
+  const toY = pct => H - PB - (pct / 100) * iH;
+  const d = DEFAULT_CURVE_SHAPE.map(([s, p], i) => `${i===0?'M':'L'} ${toX(s).toFixed(1)} ${toY(p).toFixed(1)}`).join(' ');
+  const fill = d + ` L ${toX(100).toFixed(1)} ${H-PB} L ${toX(0).toFixed(1)} ${H-PB} Z`;
+
+  return (
+    <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
+      <path d={fill} fill={`${color}18`} />
+      <path d={d} stroke={color} strokeWidth="2" fill="none" strokeLinejoin="round" />
+      {DEFAULT_CURVE_SHAPE.map(([s, p], i) => (
+        <circle key={i} cx={toX(s)} cy={toY(p)} r="3" fill={color} />
+      ))}
+      {/* Guide dashes: flat-top range 10%–35% */}
+      <line x1={toX(10)} y1={toY(100)} x2={toX(10)} y2={H-PB} stroke="var(--border)" strokeWidth="1" strokeDasharray="3,3" />
+      <line x1={toX(35)} y1={toY(100)} x2={toX(35)} y2={H-PB} stroke="var(--border)" strokeWidth="1" strokeDasharray="3,3" />
+      <text x={toX(0)}   y={H-8} fontSize="9" fill="var(--muted)" textAnchor="middle">0%</text>
+      <text x={toX(10)}  y={H-8} fontSize="9" fill={color}        textAnchor="middle">10%</text>
+      <text x={toX(35)}  y={H-8} fontSize="9" fill={color}        textAnchor="middle">35%</text>
+      <text x={toX(70)}  y={H-8} fontSize="9" fill="var(--muted)" textAnchor="middle">70%</text>
+      <text x={toX(100)} y={H-8} fontSize="9" fill="var(--muted)" textAnchor="middle">100%</text>
+      <text x={PL} y={PT+2} fontSize="9" fill="var(--muted)">Peak power</text>
+    </svg>
+  );
+}
+
+/* ─── Generated configuration code ──────────────────────────────────────────── */
 function buildCode(cls, p) {
   const clsName = cls.charAt(0).toUpperCase() + cls.slice(1);
-  const nominalCap = Math.round(p.capacity * 1.09); // typical nominal is ~9% above usable
   const curvePts = p.curve.map(([kwh, kw], i) => {
     const socPct = Math.round((kwh / p.capacity) * 100);
     const comments = {
@@ -125,9 +157,9 @@ function buildCode(cls, p) {
 
   const consumpPts = p.consumption.map(([spd, wh]) => {
     const label =
-      spd <= 20  ? '// urban crawl'  :
-      spd <= 60  ? '// city/suburban':
-      spd <= 100 ? '// motorway'     : '// high-speed motorway';
+      spd <= 20  ? '// urban crawl'   :
+      spd <= 60  ? '// city/suburban' :
+      spd <= 100 ? '// motorway'      : '// high-speed motorway';
     return `        EvSpeedConsumptionPoint(Speed.kilometersPerHour(${spd}.0), ${wh}.0)  ${label}`;
   }).join(',\n');
 
@@ -143,7 +175,7 @@ function buildCode(cls, p) {
  *
  * Static vehicle programme parameters — sourced from EV Spec Sheet.
  * Update only when the vehicle programme changes, not at runtime.
- * Nominal capacity: ${nominalCap} kWh  |  Usable: ${p.capacity} kWh
+ * Nominal capacity: ${p.nominalKwh} kWh  |  Current usable: ${p.capacity} kWh
  */
 class ${clsName}EVConfiguration(
     private val vehicleInfoManager: VehicleInfoManager
@@ -177,8 +209,8 @@ class ${clsName}EVConfiguration(
     }
 
     // ── Battery capacity & charge curve ──────────────────────────────────────
-    // Curve maps State-of-Energy (kWh) → max charge rate (kW).
-    // Measured at 25°C on WLTP cycle. Do NOT extrapolate beyond the last point.
+    // currentBatteryCapacity = usable after aging; lower than the spec-sheet nominal.
+    // Curve maps State-of-Energy (kWh) → max charge rate (kW). 2–20 points.
     private fun buildBatteryParams() = BatteryInfoParameters.Builder()
         .currentBatteryCapacity(Energy.kilowattHours(${p.capacity}.0))
         .batteryChargeCurve(listOf(
@@ -187,7 +219,8 @@ ${curvePts}
         .build()
 
     // ── Speed → energy consumption (Wh/km) ───────────────────────────────────
-    // Baseline at 20°C, flat road, solo occupant, no payload.
+    // Baseline at 20°C, flat road, solo occupant, no payload, no HVAC.
+    // REST API equivalent: Wh/km ÷ 10 = kWh/100km.
     // 15–25 points required; must span 10 km/h → vehicle v_max.
     private fun buildConsumptionParams() = ConsumptionCurveParameters.Builder()
         .speedConsumptionCurve(EvSpeedConsumptionCurve(listOf(
@@ -196,12 +229,13 @@ ${consumpPts}
         .build()
 
     // ── Drivetrain efficiency factors ─────────────────────────────────────────
-    // All values in range [0, 1]. Use vehicle programme dyno data where available.
+    // All values in range [0, 1]. Defaults to 0.9 if unavailable.
+    // Use vehicle programme dyno data (typical scenario: 2% slope at 80 km/h).
     private fun buildEfficiencyParams() = EvEfficiencyParameters.Builder()
-        .uphillEfficiency(${p.uphill}f)          // % of electrical energy converted to kinetic
-        .downhillEfficiency(${p.downhill}f)       // % of kinetic energy recovered via regen
-        .accelerationEfficiency(${p.accel}f)     // KineticEnergyGained / ElectricEnergyConsumed
-        .decelerationEfficiency(${p.decel}f)     // ElectricEnergyGained / KineticEnergyLost
+        .uphillEfficiency(${p.uphill}f)         // PotentialEnergyGained / ElectricEnergyConsumed
+        .downhillEfficiency(${p.downhill}f)      // ElectricEnergyGained / PotentialEnergyLost
+        .accelerationEfficiency(${p.accel}f)    // KineticEnergyGained / ElectricEnergyConsumed
+        .decelerationEfficiency(${p.decel}f)    // ElectricEnergyGained / KineticEnergyLost
         .build()
 
     // ── Supported connector types ─────────────────────────────────────────────
@@ -213,8 +247,8 @@ ${connectorLines}
         .build()
 
     // ── Auxiliary electrical load ─────────────────────────────────────────────
-    // 5-minute rolling average covering HVAC, infotainment, lighting, and ADAS.
-    // Winter peak can reach ${Math.round(p.auxPower * 2.4)} W — adjust per climate deployment.
+    // 5-minute rolling average: HVAC, infotainment, lighting, seat heating, ADAS.
+    // Default 500 W when not supplied. Winter peak: ~${Math.round(p.auxPower * 2.4)} W.
     private fun buildAuxiliaryParams() = AuxiliaryPowerParameters.Builder()
         .auxiliaryPower(Power.watts(${p.auxPower}.0))
         .build()
@@ -309,21 +343,21 @@ export default function EVBattery() {
   const { t } = useTranslation('ev');
   const [cls, setCls] = useState('family');
   const p = PRESETS[cls];
-
   const classes = ['city', 'family', 'performance', 'suv'];
 
   const PARAMS = [
-    ['currentBatteryCapacity', 'Energy (Wh)',          t('vehicleSetup.paramsTable.params.currentBatteryCapacity')],
-    ['stateOfEnergy',          'Energy (Wh)',          t('vehicleSetup.paramsTable.params.stateOfEnergy')],
-    ['batteryChargeCurve',     'List<Point(SoE, kW)>', t('vehicleSetup.paramsTable.params.batteryChargeCurve')],
-    ['speedConsumptionCurve',  'List<(km/h, Wh/km)>', t('vehicleSetup.paramsTable.params.speedConsumptionCurve')],
-    ['uphillEfficiency',       'Float (0–1)',          t('vehicleSetup.paramsTable.params.uphillEfficiency')],
-    ['downhillEfficiency',     'Float (0–1)',          t('vehicleSetup.paramsTable.params.downhillEfficiency')],
-    ['accelerationEfficiency', 'Float (0–1)',          t('vehicleSetup.paramsTable.params.accelerationEfficiency')],
-    ['decelerationEfficiency', 'Float (0–1)',          t('vehicleSetup.paramsTable.params.decelerationEfficiency')],
-    ['vehicleConnectors',      'List<ConnectorInfo>',  t('vehicleSetup.paramsTable.params.vehicleConnectors')],
-    ['auxiliaryPower',         'Power (W)',            t('vehicleSetup.paramsTable.params.auxiliaryPower')],
-    ['chargingTimeOffset',     'Duration (s)',         t('vehicleSetup.paramsTable.params.chargingTimeOffset')],
+    ['nominalBatteryCapacity',  'Energy (kWh)',         'Spec-sheet maximum at 20°C. Fixed for the vehicle variant. Never changes at runtime.'],
+    ['currentBatteryCapacity',  'Energy (kWh)',         'Usable after aging. Must stay stable during a trip — fluctuations above 0.3% cause stop instability.'],
+    ['stateOfEnergy',           'Energy (kWh)',         'Current charge. Update at 1 Hz; fluctuation < 0.3%. Range: [0, currentBatteryCapacity].'],
+    ['batteryChargeCurve',      'List<Point(SoE, kW)>', '2–20 entries. Piecewise-linear. First point must be at 0 kWh. Piecewise-constant also accepted.'],
+    ['speedConsumptionCurve',   'List<(km/h, Wh/km)>', '15–25 points. Must span 10 km/h → v_max. Baseline: 20°C, flat, no HVAC.'],
+    ['uphillEfficiency',        'Float (0–1)',          'PotentialEnergyGained / ElectricEnergyConsumed. Default 0.9.'],
+    ['downhillEfficiency',      'Float (0–1)',          'ElectricEnergyGained / PotentialEnergyLost. Default 0.9.'],
+    ['accelerationEfficiency',  'Float (0–1)',          'KineticEnergyGained / ElectricEnergyConsumed. Default 0.9.'],
+    ['decelerationEfficiency',  'Float (0–1)',          'ElectricEnergyGained / KineticEnergyLost. Default 0.9.'],
+    ['vehicleConnectors',       'List<ConnectorInfo>',  'Drives station compatibility filtering in EV Search. Include all physically supported types.'],
+    ['auxiliaryPower',          'Power (W)',            'Default 500 W. 5-minute rolling average. Includes HVAC, infotainment, lighting, ADAS.'],
+    ['chargingTimeOffset',      'Duration (s)',         'Plug-in/out overhead. Default: 60 s (REST API), 180 s (Navigation SDK / ANA).'],
   ];
 
   return (
@@ -336,12 +370,11 @@ export default function EVBattery() {
 
       <ApiLinks items={BATTERY_APIS} />
 
-      {/* Vehicle class preset builder */}
+      {/* ── 1. Vehicle class preset builder ─────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="evb-presets">{t('battery.presets.heading')}</h2>
         <p className="body">{t('battery.presets.body')}</p>
 
-        {/* Class selector */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
           {classes.map(c => (
             <button key={c} onClick={() => setCls(c)} style={{
@@ -356,18 +389,17 @@ export default function EVBattery() {
           ))}
         </div>
 
-        {/* Stats + curves */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, marginBottom: 20 }}>
           {[
-            ['🔋', t('battery.presets.stats.capacity'),    `${p.capacity} kWh`],
-            ['⚡', t('battery.presets.stats.peakCharge'),  `${Math.max(...p.curve.map(([,kw]) => kw))} kW`],
-            ['📉', t('battery.presets.stats.highwayConsumed'), `${p.consumption[3][1]} Wh/km`],
-            ['🔌', t('battery.presets.stats.aux'),         `${p.auxPower} W`],
+            ['🔋', t('battery.presets.stats.capacity'),       `${p.capacity} kWh usable`],
+            ['⚡', t('battery.presets.stats.peakCharge'),     `${Math.max(...p.curve.map(([,kw]) => kw))} kW`],
+            ['📉', t('battery.presets.stats.highwayConsumed'),`${p.consumption[p.consumption.length-1][1]} Wh/km (${(p.consumption[p.consumption.length-1][1]/10).toFixed(1)} kWh/100km)`],
+            ['🔌', t('battery.presets.stats.aux'),            `${p.auxPower} W`],
           ].map(([icon, label, val]) => (
             <div key={label} style={{ padding: '12px 14px', borderRadius: 20, border: '1px solid var(--border)', background: 'var(--bg)' }}>
               <div style={{ fontSize: '1rem', marginBottom: 4 }}>{icon}</div>
               <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 2 }}>{label}</div>
-              <div style={{ fontSize: '1rem', fontWeight: 700, color: p.color }}>{val}</div>
+              <div style={{ fontSize: '0.9375rem', fontWeight: 700, color: p.color }}>{val}</div>
             </div>
           ))}
         </div>
@@ -388,14 +420,153 @@ export default function EVBattery() {
         <Callout type="info">{t('battery.presets.callout')}</Callout>
       </div>
 
-      {/* Navigation SDK VehicleProvider */}
+      {/* ── 2. Battery capacity — nominal vs current ─────────────────────────── */}
+      <div className="zone">
+        <h2 className="sh" id="evb-capacity">{t('battery.capacity.heading')}</h2>
+        <p className="body">{t('battery.capacity.body')}</p>
+        <div style={{ overflowX: 'auto', marginBottom: 16 }}>
+          <table className="prop-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Value — {t(`battery.presets.classes.${cls}`)}</th>
+                <th>What it represents</th>
+                <th>When to update</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>nominalBatteryCapacity</code></td>
+                <td><span style={{ color: 'var(--mid)', fontWeight: 700 }}>{p.nominalKwh} kWh</span></td>
+                <td>Maximum extractable energy at 20°C — the value on the spec sheet. Fixed for the vehicle variant.</td>
+                <td style={{ color: 'var(--muted)' }}>Set once per vehicle variant. Never changes at runtime.</td>
+              </tr>
+              <tr>
+                <td><code>currentBatteryCapacity</code></td>
+                <td><span style={{ color: '#d29922', fontWeight: 700 }}>{p.capacity} kWh</span></td>
+                <td>Usable capacity after aging. Batteries lose 2–3% per year. This is the value the routing engine uses for range calculations.</td>
+                <td style={{ color: 'var(--muted)' }}>Set at session start from OEM SoH data. Do not update mid-trip.</td>
+              </tr>
+              <tr>
+                <td><code>stateOfEnergy</code></td>
+                <td><span style={{ color: p.color, fontWeight: 700 }}>{p.soe} kWh</span></td>
+                <td>Current charge. Maps linearly to the driver-facing percentage: 0 kWh = 0%, {p.capacity} kWh = 100%.</td>
+                <td style={{ color: 'var(--muted)' }}>Update continuously at 1 Hz from BMS. Keep fluctuation below 0.3%.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <Callout type="warn">{t('battery.capacity.stabilityCallout')}</Callout>
+      </div>
+
+      {/* ── 3. Navigation SDK VehicleProvider ───────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="evb-provider">{t('vehicleSetup.vehicleProvider.heading')}</h2>
         <p className="body">{t('vehicleSetup.vehicleProvider.body')}</p>
         <CodeBlock language="kotlin" code={CODE_SDK_VEHICLE} />
       </div>
 
-      {/* Auxiliary power */}
+      {/* ── 4. Charging parameters ───────────────────────────────────────────── */}
+      <div className="zone">
+        <h2 className="sh" id="evb-charging-params">{t('battery.chargingParams.heading')}</h2>
+        <p className="body">{t('battery.chargingParams.body')}</p>
+
+        {/* Charging curve */}
+        <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: '20px 0 8px' }}>{t('battery.chargingParams.curve.heading')}</h3>
+        <p className="body" style={{ marginBottom: 16 }}>{t('battery.chargingParams.curve.body')}</p>
+
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 20, alignItems: 'flex-start' }}>
+          <div style={{ padding: '14px 16px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20 }}>
+            <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Default curve shape</div>
+            <DefaultChargeCurveViz color={p.color} />
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 6, maxWidth: 260 }}>
+              Flat top at 10–35% SoC, then tapering to protect cell health above 70%.
+            </div>
+          </div>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: 8, color: 'var(--mid)' }}>Default reference points</div>
+            <table className="prop-table" style={{ fontSize: '0.8125rem' }}>
+              <thead><tr><th>SoC</th><th>% of peak power</th></tr></thead>
+              <tbody>
+                {DEFAULT_CURVE_SHAPE.map(([soc, pct]) => (
+                  <tr key={soc}>
+                    <td>{soc}%</td>
+                    <td><code className="ic">{pct}%</code></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+              Use only when supplier-provided curve data is unavailable. Always prefer measured battery data for production.
+            </div>
+          </div>
+        </div>
+
+        {/* Effective charging power */}
+        <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: '20px 0 8px' }}>{t('battery.chargingParams.power.heading')}</h3>
+        <p className="body" style={{ marginBottom: 12 }}>{t('battery.chargingParams.power.body')}</p>
+
+        <div style={{
+          background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 12,
+          padding: '14px 20px', fontFamily: 'var(--font-mono)', fontSize: '1rem',
+          marginBottom: 16, letterSpacing: '0.01em',
+        }}>
+          <span style={{ color: '#58a6ff' }}>P</span>
+          <span style={{ color: 'var(--fg)' }}>(SoE)</span>
+          <span style={{ color: 'var(--muted)' }}> = </span>
+          <span style={{ color: '#79c0ff' }}>efficiency</span>
+          <span style={{ color: 'var(--muted)' }}> × min(</span>
+          <span style={{ color: '#3fb950' }}>curve(SoE)</span>
+          <span style={{ color: 'var(--muted)' }}>, </span>
+          <span style={{ color: '#d29922' }}>P_available</span>
+          <span style={{ color: 'var(--muted)' }}> − baseLoad)</span>
+        </div>
+
+        <table className="prop-table" style={{ marginBottom: 24 }}>
+          <thead><tr><th>Variable</th><th>Typical value</th><th>Description</th></tr></thead>
+          <tbody>
+            {[
+              ['efficiency',   'AC: 0.90 / DC: ~1.0',        'Fraction of station power reaching the battery after cable and charger losses.'],
+              ['curve(SoE)',   'Vehicle-specific',             'Maximum power the battery accepts at the current state of energy — from the charging curve.'],
+              ['P_available',  'Station-reported (kW)',        'Rated output of the connected charging station.'],
+              ['baseLoad',     'AC: 0.1–0.5 kW / DC: 0.4–1.0 kW', 'Power drawn by on-vehicle systems during charging: BMS, HVAC pre-conditioning, cabin systems.'],
+            ].map(([v, val, desc]) => (
+              <tr key={v}>
+                <td><code>{v}</code></td>
+                <td style={{ whiteSpace: 'nowrap', color: 'var(--mid)' }}>{val}</td>
+                <td style={{ fontSize: '0.875rem' }}>{desc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Connector compatibility */}
+        <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: '20px 0 8px' }}>{t('battery.chargingParams.connectors.heading')}</h3>
+        <p className="body" style={{ marginBottom: 12 }}>{t('battery.chargingParams.connectors.body')}</p>
+
+        <table className="prop-table">
+          <thead><tr><th>Plug type</th><th>Current type</th><th>Typical use</th></tr></thead>
+          <tbody>
+            {[
+              ['IEC_62196_TYPE_2_CABLE', 'AC (AC1 / AC3)',    'Home, destination, and AC public charging — Europe standard'],
+              ['IEC_62196_TYPE_2_COMBO', 'DC',                'CCS2 — standard DC rapid charging across Europe'],
+              ['IEC_62196_TYPE_1',       'AC (AC1)',           'Type 1 markets: Japan, North America'],
+              ['IEC_62196_TYPE_1_COMBO', 'DC',                'CCS1 — DC rapid charging in North America and Japan'],
+              ['CHADEM_O',               'DC',                'CHAdeMO — legacy DC, some Japanese OEMs'],
+              ['GBT_AC',                 'AC',                'China market — GB/T AC standard'],
+              ['GBT_DC',                 'DC',                'China market — GB/T DC rapid charging'],
+            ].map(([plug, ct, use]) => (
+              <tr key={plug}>
+                <td><code className="ic">{plug}</code></td>
+                <td style={{ color: 'var(--mid)', whiteSpace: 'nowrap' }}>{ct}</td>
+                <td style={{ fontSize: '0.875rem' }}>{use}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* ── 5. Auxiliary power ───────────────────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="evb-aux">{t('battery.aux.heading')}</h2>
         <p className="body">{t('battery.aux.body')}</p>
@@ -403,25 +574,42 @@ export default function EVBattery() {
           <thead><tr><th>{t('battery.aux.colVehicle')}</th><th>{t('battery.aux.colLoad')}</th><th>{t('battery.aux.colImpact')}</th></tr></thead>
           <tbody>
             {[
-              ['City EV (summer)',      '250 – 400 W',  '~5% range reduction'],
-              ['City EV (winter)',      '600 – 1200 W', '~15–25% range reduction'],
-              ['Family EV (summer)',    '400 – 600 W',  '~6% range reduction'],
-              ['Family EV (winter)',    '800 – 1500 W', '~18–28% range reduction'],
-              ['Performance EV (HVAC)','600 – 900 W',  '~8% range reduction'],
-              ['SUV (cold climate)',    '1000 – 2000 W','~20–35% range reduction'],
+              ['City EV (summer)',       '250–400 W',   '~5% range reduction'],
+              ['City EV (winter)',       '600–1200 W',  '~15–25% range reduction'],
+              ['Family EV (summer)',     '400–600 W',   '~6% range reduction'],
+              ['Family EV (winter)',     '800–1500 W',  '~18–28% range reduction'],
+              ['Performance EV (HVAC)', '600–900 W',   '~8% range reduction'],
+              ['SUV (cold climate)',     '1000–2000 W', '~20–35% range reduction'],
             ].map(([v, l, i]) => <tr key={v}><td>{v}</td><td><code className="ic">{l}</code></td><td style={{ color: 'var(--mid)' }}>{i}</td></tr>)}
           </tbody>
         </table>
         <Callout type="warn">{t('battery.aux.callout')}</Callout>
       </div>
 
-      {/* Charging time offset */}
+      {/* ── 6. Charging time offset ──────────────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="evb-offset">{t('battery.offset.heading')}</h2>
         <p className="body">{t('battery.offset.body')}</p>
+        <table className="prop-table" style={{ marginTop: 16 }}>
+          <thead><tr><th>Integration</th><th>Default offset</th><th>Notes</th></tr></thead>
+          <tbody>
+            {[
+              ['Online Routing API (REST)',        '60 s',  'Lower default — assumes automated or fast cable connection scenarios.'],
+              ['Navigation SDK',                   '180 s', 'Higher default — accounts for exiting the vehicle, walking to the charger, and session initiation.'],
+              ['Automotive Navigation Application','180 s', 'Same as Navigation SDK.'],
+              ['Minimum charge time',              '300 s', 'Non-configurable floor. The SDK always adds at least 5 minutes at any stop, even if less charge is needed.'],
+            ].map(([integ, def, note]) => (
+              <tr key={integ}>
+                <td>{integ}</td>
+                <td><code className="ic">{def}</code></td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>{note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      {/* Full params table */}
+      {/* ── 7. Full parameters reference ────────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="evb-params">{t('vehicleSetup.paramsTable.heading')}</h2>
         <div style={{ overflowX: 'auto' }}>

@@ -161,6 +161,97 @@ export default function EVRequirements({ onNavigate }) {
         </div>
       </div>
 
+      {/* Vehicle identity — Brand → Model → Variant */}
+      <div className="zone">
+        <h2 className="sh" id="evreq-vehicle-identity">{t('requirements.vehicleIdentity.heading')}</h2>
+        <p className="body">{t('requirements.vehicleIdentity.body')}</p>
+
+        {/* Hierarchy diagram */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 0, margin: '20px 0', flexWrap: 'wrap' }}>
+          {[
+            { label: 'Brand', example: 'Toyota', note: 'Manufacturer', color: '#3b82f6' },
+            { label: 'Model', example: 'bZ4X', note: 'OEM-assigned name', color: '#8b5cf6' },
+            { label: 'Variant', example: 'Comfort 4×2', note: 'Specific configuration', color: '#10b981' },
+          ].map((tier, i, arr) => (
+            <div key={tier.label} style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+              <div style={{ padding: '12px 18px', borderRadius: 12, background: `${tier.color}12`, border: `1.5px solid ${tier.color}44`, textAlign: 'center', minWidth: 120 }}>
+                <div style={{ fontSize: '0.75rem', color: tier.color, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 4 }}>{tier.label}</div>
+                <div style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--black)', marginBottom: 2 }}>{tier.example}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{tier.note}</div>
+              </div>
+              {i < arr.length - 1 && (
+                <div style={{ padding: '0 10px', color: 'var(--muted)', fontSize: '1rem', flexShrink: 0 }}>→</div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <table className="prop-table" style={{ marginBottom: 16 }}>
+          <thead>
+            <tr>
+              <th>Manufacturer</th>
+              <th>Model</th>
+              <th>Variant</th>
+              <th>Drivetrain</th>
+              <th>WLTP range</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[
+              ['Toyota', 'bZ4X', 'Comfort',      '4×2', '514 km'],
+              ['Toyota', 'bZ4X', 'Comfort AWD',  '4×4', '504 km'],
+              ['Tesla',  'Model 3', 'Long Range', '4×2', '584 km'],
+              ['Tesla',  'Model 3', 'Performance','4×4', '479 km'],
+            ].map(([make, model, variant, drive, range]) => (
+              <tr key={`${make}-${variant}`}>
+                <td>{make}</td>
+                <td>{model}</td>
+                <td style={{ fontWeight: 600 }}>{variant}</td>
+                <td style={{ color: 'var(--muted)' }}>{drive}</td>
+                <td style={{ color: 'var(--mid)' }}>{range}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 16 }}>Example data from publicly available sources — illustrative only.</p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
+          {[
+            {
+              heading: 'Create a new variant when…',
+              color: '#f85149',
+              items: [
+                'Consumption characteristics differ measurably',
+                'Charging curve or peak power changes',
+                'Physical dimensions differ (affects road restrictions)',
+                'Vehicle weight differs significantly',
+                'Drivetrain type changes (2WD vs 4WD)',
+              ],
+            },
+            {
+              heading: 'No new variant needed when…',
+              color: '#3fb950',
+              items: [
+                'Brand or model name changes (rebadging)',
+                'Production dates differ (from/to)',
+                'Software version or trim level changes only',
+                'Colour or interior specification varies',
+              ],
+            },
+          ].map(col => (
+            <div key={col.heading} style={{ padding: '14px 16px', borderRadius: 20, border: `1px solid ${col.color}33`, background: `${col.color}08` }}>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: col.color, marginBottom: 10 }}>{col.heading}</div>
+              {col.items.map(item => (
+                <div key={item} style={{ display: 'flex', gap: 8, marginBottom: 6, alignItems: 'flex-start' }}>
+                  <span style={{ color: col.color, fontSize: '0.75rem', marginTop: 2, flexShrink: 0 }}>•</span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Android permissions */}
       <div className="zone">
         <h2 className="sh" id="evreq-permissions">{t('requirements.permissions.heading')}</h2>

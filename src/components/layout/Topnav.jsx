@@ -54,6 +54,30 @@ function SidebarIcon() {
   );
 }
 
+function ChevronDownIcon() {
+  return (
+    <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
+      <path d="M1.5 3l3 3 3-3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function CompactPlatformSwitcher({ platforms, platformLabels, platform, onPlatformChange }) {
+  const idx = platforms.indexOf(platform);
+  const next = platforms[(idx + 1) % platforms.length];
+  const label = platformLabels?.[platform] ?? platform;
+  return (
+    <button
+      className="platform-btn-compact"
+      onClick={() => onPlatformChange?.(next)}
+      title={`Switch to ${platformLabels?.[next] ?? next}`}
+    >
+      <span>{label}</span>
+      <ChevronDownIcon />
+    </button>
+  );
+}
+
 export default function Topnav({ currentPage, onHome, onNavigate, isDark, onToggleTheme, onMouseEnter, onMouseLeave, onOpenNavDrawer, productId = 'ux-library', platform, onPlatformChange }) {
   const { t } = useTranslation('common');
   const product = getProduct(productId);
@@ -62,6 +86,11 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
   const domainLabel = ctx.groupKey
     ? t(`nav.groups.${ctx.groupKey}`, { defaultValue: ctx.groupLabel })
     : null;
+
+  // At ≤900px we collapse the breadcrumb to "Product … Page".
+  // The ellipsis only appears when there are hidden middle segments
+  // (a platform, or a domain group between the product and the current page).
+  const showEllipsis = ctx.type === 'page' || (product.platforms?.length > 0 && !!platform);
 
   const toggleLang = () => {
     const next = i18n.language === 'en' ? 'zh' : 'en';
@@ -81,23 +110,29 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
           <SidebarIcon />
         </button>
 
+        {/* Compact platform switcher — visible at ≤900px */}
         {product.platforms?.length > 0 && (
-          <div className="platform-switcher platform-switcher--mobile">
-            {product.platforms.map(p => (
-              <button key={p} className={`platform-btn${platform === p ? ' active' : ''}`} onClick={() => onPlatformChange?.(p)}>
-                {product.platformLabels?.[p] ?? p}
-              </button>
-            ))}
-          </div>
+          <CompactPlatformSwitcher
+            platforms={product.platforms}
+            platformLabels={product.platformLabels}
+            platform={platform}
+            onPlatformChange={onPlatformChange}
+          />
         )}
 
-        <span className="topnav-crumb-root topnav-crumb-hide-mobile" onClick={onHome}>{product.name}</span>
+        {/* Product name — always visible */}
+        <span className="topnav-crumb-root" onClick={onHome}>{product.name}</span>
 
-        {/* Platform segment — any product with platforms, shown in breadcrumb */}
+        {/* Ellipsis — shown at ≤900px only when middle segments are hidden */}
+        {showEllipsis && (
+          <span className="topnav-crumb-sep topnav-crumb-show-tablet" aria-hidden="true">…</span>
+        )}
+
+        {/* Platform segment — hidden at ≤900px (compact switcher handles this) */}
         {product.platforms?.length > 0 && platform && (
           <>
-            <span className="topnav-crumb-sep topnav-crumb-hide-mobile">›</span>
-            <span className="topnav-crumb-domain topnav-crumb-hide-mobile" style={{ cursor: 'default' }}>
+            <span className="topnav-crumb-sep topnav-crumb-hide-tablet">›</span>
+            <span className="topnav-crumb-domain topnav-crumb-hide-tablet" style={{ cursor: 'default' }}>
               {product.platformLabels?.[platform] ?? platform}
             </span>
           </>
@@ -106,9 +141,10 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         {/* Domain segment — shown for landing pages and their children */}
         {ctx.type !== 'top' && (
           <>
-            <span className="topnav-crumb-sep topnav-crumb-hide-mobile">›</span>
+            {/* Sep is hidden at tablet if ellipsis replaces it; visible otherwise (landing page, no platform) */}
+            <span className={`topnav-crumb-sep${showEllipsis ? ' topnav-crumb-hide-tablet' : ''}`}>›</span>
             {ctx.type === 'page' && ctx.landingId ? (
-              <span className="topnav-crumb-domain" onClick={() => onNavigate(ctx.landingId)}>
+              <span className="topnav-crumb-domain topnav-crumb-hide-tablet" onClick={() => onNavigate(ctx.landingId)}>
                 {domainLabel}
               </span>
             ) : (
@@ -120,7 +156,8 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         {/* Page segment — only shown when not on the landing page itself */}
         {ctx.type === 'page' && (
           <>
-            <span className="topnav-crumb-sep">›</span>
+            {/* Always hidden at tablet — ellipsis already appears before this */}
+            <span className="topnav-crumb-sep topnav-crumb-hide-tablet">›</span>
             <span className="topnav-crumb-page">{pageTitle}</span>
           </>
         )}
@@ -128,14 +165,15 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         {/* Top-level pages (Overview, Quickstart) */}
         {ctx.type === 'top' && (
           <>
-            <span className="topnav-crumb-sep">›</span>
+            {/* Hidden at tablet only if ellipsis (platform) replaces it */}
+            <span className={`topnav-crumb-sep${showEllipsis ? ' topnav-crumb-hide-tablet' : ''}`}>›</span>
             <span className="topnav-crumb-page">{pageTitle}</span>
           </>
         )}
       </div>
       <div className="topnav-right">
         {product.platforms?.length > 0 && (
-          <div className="platform-switcher topnav-hide-mobile">
+          <div className="platform-switcher topnav-hide-tablet">
             {product.platforms.map(p => (
               <button
                 key={p}

@@ -5,11 +5,15 @@ import kotlin from 'highlight.js/lib/languages/kotlin';
 import json from 'highlight.js/lib/languages/json';
 import xml from 'highlight.js/lib/languages/xml';
 import bash from 'highlight.js/lib/languages/bash';
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
 
 hljs.registerLanguage('kotlin', kotlin);
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('xml', xml);
 hljs.registerLanguage('bash', bash);
+hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
 
 // Map tab label → hljs language id
 const LANG_MAP = {
@@ -19,6 +23,10 @@ const LANG_MAP = {
   'xml':          'xml',
   'bash':         'bash',
   'shell':        'bash',
+  'javascript':   'javascript',
+  'js':           'javascript',
+  'typescript':   'typescript',
+  'ts':           'typescript',
 };
 
 function detectLang(label = '') {

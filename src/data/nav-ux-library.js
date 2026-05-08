@@ -1,5 +1,5 @@
 export const UX_LIBRARY_NAV = [
-  { id: 'overview',   label: 'Overview',   type: 'top' },
+  { id: 'overview',   label: 'Introduction',   type: 'top' },
   { id: 'quickstart', label: 'Quickstart', type: 'top' },
   {
     label: 'Design System', key: 'assets', type: 'group', defaultOpen: false, landingId: 'assets',
@@ -100,7 +100,7 @@ export const UX_LIBRARY_NAV = [
 ];
 
 export const UX_LIBRARY_PAGE_TITLES = {
-  overview: 'Overview', quickstart: 'Quickstart',
+  overview: 'Introduction', quickstart: 'Quickstart',
   'assets': 'Design System',
   'theming': 'Theming',
   'map-customisation': 'Map Customisation',

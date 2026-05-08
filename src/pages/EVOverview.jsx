@@ -85,6 +85,36 @@ export default function EVOverview({ onNavigate }) {
         <p className="body" style={{ marginTop: 16 }}>{t('overview.arch.body2')}</p>
       </div>
 
+      {/* In-drive monitoring loop */}
+      <div className="zone">
+        <h2 className="sh" id="evo-monitoring">{t('overview.monitoring.heading')}</h2>
+        <p className="body">{t('overview.monitoring.body')}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 0, marginTop: 16 }}>
+          {[
+            { trigger: 'SoC updated (1 Hz from BMS)', action: 'SDK updates range ring and verifies charging stop plan is still reachable.', severity: 'normal' },
+            { trigger: 'Consumption diverges from model', action: 'Arrival SoC estimate revised. If a stop becomes unreachable, nearest compatible charger substituted.', severity: 'warn' },
+            { trigger: 'SoC drops below minChargeAtChargingStops', action: 'Route re-evaluated. New charging stop inserted ahead of current position.', severity: 'warn' },
+            { trigger: 'Driver skips a planned charging stop', action: 'Full route recalculated from current position. SoC at destination re-evaluated with updated stop sequence.', severity: 'warn' },
+            { trigger: 'betterRoute detected during navigation', action: 'SDK may suggest route replacement with fewer or faster stops if traffic or consumption data improves the plan.', severity: 'info' },
+          ].map(({ trigger, action, severity }, i, arr) => {
+            const colors = { normal: '#3fb950', warn: '#d29922', info: '#58a6ff' };
+            const c = colors[severity];
+            return (
+              <div key={trigger} style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                  <div style={{ width: 10, height: 10, borderRadius: '50%', background: c, border: `2px solid ${c}`, marginTop: 6, flexShrink: 0 }} />
+                  {i < arr.length - 1 && <div style={{ width: 2, height: 40, background: 'var(--border)', margin: '2px 0' }} />}
+                </div>
+                <div style={{ paddingBottom: i < arr.length - 1 ? 0 : 0 }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.875rem', color: c, marginBottom: 2 }}>{trigger}</div>
+                  <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55, marginBottom: i < arr.length - 1 ? 16 : 0 }}>{action}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Section guide */}
       <div className="zone">
         <h2 className="sh" id="evo-guide">{t('overview.guide.heading')}</h2>

@@ -304,26 +304,6 @@ export default function ANAIntro({ onNavigate }) {
         />
       </div>
 
-      {/* What is ANA */}
-      <div className="zone">
-        <h2 className="sh" id="ana-what">What is ANA?</h2>
-        <p className="body">
-          ANA is a fully functional navigation application delivered as an Android APK. TomTom maintains the application — including maps, routing engine, UI, and feature updates — and ships it to OEMs as a versioned release. OEMs do not build or maintain the navigation UI themselves.
-        </p>
-        <p className="body">
-          Instead of exposing a large SDK surface, ANA offers two narrow integration points: the <strong>Vehicle Integration Layer (VIL)</strong> for feeding vehicle data into the app, and the <strong>Car Integration Layer (CIL)</strong> for controlling the app from other vehicle software. Both are lightweight APIs that can be implemented in a few days.
-        </p>
-      </div>
-
-      {/* Screenshot showcase */}
-      <div className="zone">
-        <h2 className="sh" id="ana-screenshots">In-car experience</h2>
-        <p className="quick-answer" style={{ marginBottom: 20 }}>
-          ANA delivers a complete AAOS navigation experience out of the box — from premium map rendering to automated EV route planning.
-        </p>
-        <ScreenshotShowcase />
-      </div>
-
       {/* When to choose ANA */}
       <div className="zone">
         <h2 className="sh" id="ana-when">When to choose ANA</h2>
@@ -348,18 +328,18 @@ export default function ANAIntro({ onNavigate }) {
             for a fully custom experience.
           </WhenCard>
           <WhenCard icon="⚠️" title="APK dependency">
-            Your IVI integrates ANA as a separate APK. You do not own the navigation source code.
+            Your IVI integrates ANA as a separate APK via two lightweight APIs — VIL feeds vehicle data in, CIL lets other vehicle software control the app. You do not own the navigation source code.
           </WhenCard>
         </div>
       </div>
 
-      {/* Integration architecture */}
+      {/* Screenshot showcase */}
       <div className="zone">
-        <h2 className="sh" id="ana-arch">Integration architecture</h2>
-        <p className="body" style={{ marginBottom: 20 }}>
-          ANA sits between your vehicle software and the TomTom platform. VIL flows data up; CIL sends commands down. Your HMI app never calls TomTom APIs directly.
+        <h2 className="sh" id="ana-screenshots">In-car experience</h2>
+        <p className="quick-answer" style={{ marginBottom: 20 }}>
+          ANA delivers a complete AAOS navigation experience out of the box — from premium map rendering to automated EV route planning.
         </p>
-        <IntegrationDiagram />
+        <ScreenshotShowcase />
       </div>
 
       {/* Features */}
@@ -373,6 +353,15 @@ export default function ANAIntro({ onNavigate }) {
             <FeatureCard key={f.title} {...f} onNavigate={onNavigate} />
           ))}
         </div>
+      </div>
+
+      {/* Integration architecture */}
+      <div className="zone">
+        <h2 className="sh" id="ana-arch">Integration architecture</h2>
+        <p className="body" style={{ marginBottom: 20 }}>
+          ANA sits between your vehicle software and the TomTom platform. VIL flows data up; CIL sends commands down. Your HMI app never calls TomTom APIs directly.
+        </p>
+        <IntegrationDiagram />
       </div>
 
       {/* Getting started CTA */}

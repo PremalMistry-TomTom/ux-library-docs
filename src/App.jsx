@@ -1,9 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getProduct } from './data/products';
 import Topnav from './components/layout/Topnav';
 import GlobalHeader from './components/layout/GlobalHeader';
 import { useGlobalHeader } from './hooks/useGlobalHeader';
 import DocsPortal from './pages/DocsPortal';
+
+/* ─── Sidebar collapse toggle button ────────────────────────────────────── */
+/* Re-expand tab — fixed to left edge, only visible when sidebar is collapsed */
+function NavExpandBtn({ onExpand }) {
+  return (
+    <button
+      className="nav-expand-btn"
+      onClick={onExpand}
+      title="Show sidebar  [ ]"
+      aria-label="Show sidebar"
+    >
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M2 2l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M6 2l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+  );
+}
 
 /* ─── Shared logo — pinned top-left, independent of both headers ─────────── */
 function FixedLogo({ onClick }) {
@@ -71,6 +89,29 @@ import LDEVRIntro from './pages/LDEVRIntro';
 import LDEVRFirstRoute from './pages/LDEVRFirstRoute';
 import LDEVRCalculateRoute from './pages/RoutingEVRoute';
 import LDEVRBatch from './pages/LDEVRBatch';
+import LDEVRChargingStops from './pages/LDEVRChargingStops';
+import LDEVRBatteryModel from './pages/LDEVRBatteryModel';
+import LDEVRConnectors from './pages/LDEVRConnectors';
+// LDEVR v2 Extensions
+import LDEVRWeather from './pages/LDEVRWeather';
+import LDEVRVehicleBrand from './pages/LDEVRVehicleBrand';
+import LDEVRComputeToll from './pages/LDEVRComputeToll';
+import LDEVRChargingParks from './pages/LDEVRChargingParks';
+import LDEVROemEmsp from './pages/LDEVROemEmsp';
+import LDEVRDataFreshness from './pages/LDEVRDataFreshness';
+// Routing API v2
+import RoutingV2CalculateRoute from './pages/RoutingV2CalculateRoute';
+import RoutingV2ReachableRange from './pages/RoutingV2ReachableRange';
+import RoutingV2ComputeToll from './pages/RoutingV2ComputeToll';
+import RoutingV2Guidance from './pages/RoutingV2Guidance';
+import RoutingV2DataFreshness from './pages/RoutingV2DataFreshness';
+// Routing API v3
+import RoutingV3Overview from './pages/RoutingV3Overview';
+import RoutingV3CalculateRoute from './pages/RoutingV3CalculateRoute';
+import RoutingV3Guidance from './pages/RoutingV3Guidance';
+import RoutingV3ReachableRange from './pages/RoutingV3ReachableRange';
+import RoutingV3ComputeToll from './pages/RoutingV3ComputeToll';
+import RoutingV3Weather from './pages/RoutingV3Weather';
 import MatrixRoutingIntro from './pages/MatrixRoutingIntro';
 import WaypointOptIntro from './pages/WaypointOptIntro';
 import Placeholder from './pages/Placeholder';
@@ -114,8 +155,8 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ev-battery':         return <EVBattery />;
     case 'ev-charging-search': return <EVChargingSearch />;
     case 'ev-routing':         return <EVRouting />;
-    case 'ev-nav-ui':          return <EVNavUI />;
-    case 'ev-requirements':    return <EVRequirements />;
+    case 'ev-nav-ui':          return <EVNavUI onNavigate={onNavigate} />;
+    case 'ev-requirements':    return <EVRequirements onNavigate={onNavigate} />;
     case 'ev-charging':        return <DomainLanding groupKey="evCharging" onNavigate={onNavigate} />;
     case 'cluster':            return <Cluster />;
     case 'adas':               return <ADASIntegration />;
@@ -138,6 +179,29 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ldevr-first-route':      return <LDEVRFirstRoute onNavigate={onNavigate} />;
     case 'ldevr-calculate-route':  return <LDEVRCalculateRoute onNavigate={onNavigate} platform="tomtom-maps" />;
     case 'ldevr-batch':            return <LDEVRBatch onNavigate={onNavigate} />;
+    case 'ldevr-concepts':         return <DomainLanding groupKey="ldEvrConcepts" onNavigate={onNavigate} />;
+    case 'ldevr-charging-stops':   return <LDEVRChargingStops onNavigate={onNavigate} />;
+    case 'ldevr-battery-model':    return <LDEVRBatteryModel />;
+    case 'ldevr-connectors':       return <LDEVRConnectors />;
+    // LDEVR v2 Extensions
+    case 'ldevr-weather':          return <LDEVRWeather />;
+    case 'ldevr-vehicle-brand':    return <LDEVRVehicleBrand />;
+    case 'ldevr-compute-toll':     return <LDEVRComputeToll />;
+    case 'ldevr-charging-parks':   return <LDEVRChargingParks />;
+    case 'ldevr-oem-emsp':         return <LDEVROemEmsp />;
+    case 'ldevr-data-freshness':   return <LDEVRDataFreshness />;
+    // Routing API v3
+    case 'routing-v2-calculate-route': return <RoutingV2CalculateRoute />;
+    case 'routing-v2-reachable-range': return <RoutingV2ReachableRange />;
+    case 'routing-v2-compute-toll':    return <RoutingV2ComputeToll />;
+    case 'routing-v2-guidance':        return <RoutingV2Guidance />;
+    case 'routing-v2-data-freshness':  return <RoutingV2DataFreshness />;
+    case 'routing-v3-overview':        return <RoutingV3Overview onNavigate={onNavigate} />;
+    case 'routing-v3-calculate-route': return <RoutingV3CalculateRoute />;
+    case 'routing-v3-guidance':        return <RoutingV3Guidance />;
+    case 'routing-v3-reachable-range': return <RoutingV3ReachableRange />;
+    case 'routing-v3-compute-toll':    return <RoutingV3ComputeToll />;
+    case 'routing-v3-weather':         return <RoutingV3Weather />;
     // Matrix Routing v2
     case 'matrix-intro':           return <MatrixRoutingIntro onNavigate={onNavigate} />;
     // Waypoint Optimization
@@ -160,6 +224,19 @@ export default function App() {
   const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
   const [docsPortalOpen, setDocsPortalOpen] = useState(true);
+  const [navCollapsed, setNavCollapsed] = useState(false);
+
+  // [ key toggles sidebar on desktop
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      if (e.key === '[' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        setNavCollapsed(c => !c);
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {
@@ -219,7 +296,8 @@ export default function App() {
           onNavigate={(pageId, productId, platform) => { navigate(pageId, productId, platform); setDocsPortalOpen(false); }}
         />
       ) : (
-        <div className={`shell${!(TOC_MAP[currentPage]?.length) ? ' shell--no-toc' : ''}`}>
+        <div className={`shell${navCollapsed ? ' shell--nav-collapsed' : ''}${!(TOC_MAP[currentPage]?.length) ? ' shell--no-toc' : ''}`}>
+          {navCollapsed && <NavExpandBtn onExpand={() => setNavCollapsed(false)} />}
           <Sidenav
             currentPage={currentPage}
             onNavigate={navigate}
@@ -229,6 +307,8 @@ export default function App() {
             onToggleTheme={() => setIsDark(d => !d)}
             nav={product.nav}
             title={product.name}
+            navCollapsed={navCollapsed}
+            onCollapse={() => setNavCollapsed(true)}
           />
           <div className="content-area">
             <PageContent pageId={currentPage} onNavigate={navigate} product={product} platform={currentPlatform} />

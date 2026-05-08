@@ -2,6 +2,9 @@ import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 
+/* ─── Version dot colours ────────────────────────────────────────────────────── */
+const VERSION_DOT = { v1: '#4ade80', v2: '#a78bfa', v3: '#60a5fa' };
+
 /* ─── Tree connector icons ───────────────────────────────────────────────────── */
 const CONNECTOR_COLOR = '#D4D4D4';
 
@@ -166,6 +169,113 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle,
   );
 }
 
+/* ─── Endpoint group (cross-version accordion) ───────────────────────────────── */
+function EndpointGroup({ group, currentPage, onNavigate, isOpen, onToggle,
+                         activeAnchor, onAnchorClick, anchorOpenId, onAnchorToggle }) {
+  const isAnyActive = group.versions?.some(v => v.id === currentPage);
+
+  return (
+    <div style={{ marginBottom: 0 }}>
+      {/* Group header */}
+      <div
+        onClick={() => onToggle(group.key)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 7,
+          padding: '5px 10px',
+          fontSize: '0.8125rem',
+          fontWeight: isAnyActive ? 600 : 500,
+          color: isAnyActive ? 'var(--fg)' : 'var(--fg)',
+          cursor: 'pointer',
+          borderRadius: 6,
+          userSelect: 'none',
+          transition: 'background 0.1s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.background = 'var(--sidenav-hover)'}
+        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+      >
+        {/* Triangle ▸ / ▾ */}
+        <svg
+          width="8" height="8" viewBox="0 0 8 8" fill="none"
+          style={{
+            flexShrink: 0,
+            transition: 'transform 0.15s',
+            transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+            opacity: 0.55,
+          }}
+        >
+          <path d="M2 1L6 4L2 7" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        <span style={{ flex: 1 }}>{group.label}</span>
+      </div>
+
+      {/* Version rows */}
+      {isOpen && (
+        <div style={{ paddingLeft: 8, paddingBottom: 2 }}>
+          {(group.versions || []).map(ver => {
+            const isActive  = currentPage === ver.id;
+            const hasAnchors = ver.anchors?.length > 0;
+            const anchorOpen = hasAnchors && anchorOpenId === ver.id;
+            const dot = VERSION_DOT[ver.version] ?? '#888';
+
+            const handleClick = () => {
+              if (hasAnchors) {
+                if (isActive) {
+                  onAnchorToggle(anchorOpen ? null : ver.id);
+                } else {
+                  onNavigate(ver.id);
+                  onAnchorToggle(ver.id);
+                }
+              } else {
+                onNavigate(ver.id);
+              }
+            };
+
+            return (
+              <Fragment key={ver.id}>
+                <div
+                  onClick={handleClick}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '4px 8px 4px 16px',
+                    borderRadius: 6,
+                    cursor: 'pointer',
+                    fontSize: '0.75rem',
+                    fontWeight: isActive ? 600 : 400,
+                    color: isActive ? 'var(--fg)' : 'var(--muted)',
+                    background: isActive ? 'var(--sidenav-active-bg, rgba(88,166,255,0.08))' : 'transparent',
+                    transition: 'background 0.1s, color 0.1s',
+                    userSelect: 'none',
+                  }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'var(--sidenav-hover)'; }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = 'transparent'; }}
+                >
+                  <span style={{
+                    width: 7, height: 7, borderRadius: '50%',
+                    background: dot, flexShrink: 0,
+                    boxShadow: isActive ? `0 0 6px ${dot}88` : 'none',
+                  }} />
+                  <span style={{ flex: 1 }}>{ver.label}</span>
+                  {hasAnchors && <ChevronIcon open={anchorOpen} />}
+                </div>
+
+                {hasAnchors && (
+                  <AnchorItems
+                    anchors={ver.anchors}
+                    activeAnchor={activeAnchor}
+                    onAnchorClick={onAnchorClick}
+                    open={anchorOpen}
+                    extraIndent
+                  />
+                )}
+              </Fragment>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─── Sidenav ────────────────────────────────────────────────────────────────── */
 export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                                   onDrawerClose, isDark, onToggleTheme, title, nav,
@@ -177,6 +287,73 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
     i18n.changeLanguage(next);
     localStorage.setItem('ux-lang', next);
   };
+
+  /* ── Collapsible section labels ── */
+  // Build a map of pageId → section label so we can auto-expand when navigating
+  const pageToSection = useMemo(() => {
+    const map = {};
+    let current = null;
+    for (const entry of (nav || [])) {
+      if (entry.type === 'section') { current = entry.label; continue; }
+      if (!current) continue;
+      if (entry.type === 'top')   { map[entry.id] = current; }
+      if (entry.type === 'group') {
+        if (entry.landingId) map[entry.landingId] = current;
+        (entry.items || []).forEach(item => { map[item.id] = current; });
+      }
+      // endpoint groups are intentionally NOT under any collapsible section
+    }
+    return map;
+  }, [nav]);
+
+  const [collapsedSections, setCollapsedSections] = useState(new Set());
+
+  const toggleSection = useCallback((label) => {
+    setCollapsedSections(prev => {
+      const next = new Set(prev);
+      next.has(label) ? next.delete(label) : next.add(label);
+      return next;
+    });
+  }, []);
+
+  // Auto-expand the section that contains the current page
+  useEffect(() => {
+    const sec = pageToSection[currentPage];
+    if (sec) {
+      setCollapsedSections(prev => {
+        if (!prev.has(sec)) return prev;
+        const next = new Set(prev);
+        next.delete(sec);
+        return next;
+      });
+    }
+  }, [currentPage, pageToSection]);
+
+  /* ── Endpoint group open/close ── */
+  const [openEndpointKeys, setOpenEndpointKeys] = useState(new Set());
+
+  const toggleEndpoint = useCallback((key) => {
+    setOpenEndpointKeys(prev => {
+      const next = new Set(prev);
+      next.has(key) ? next.delete(key) : next.add(key);
+      return next;
+    });
+  }, []);
+
+  // Auto-open the endpoint group that contains the current page
+  useEffect(() => {
+    const entry = (nav || []).find(
+      e => e.type === 'endpoint' && e.versions?.some(v => v.id === currentPage)
+    );
+    if (entry?.key) {
+      setOpenEndpointKeys(prev => {
+        if (prev.has(entry.key)) return prev;
+        const next = new Set(prev);
+        next.add(entry.key);
+        return next;
+      });
+    }
+  }, [currentPage, nav]);
 
   /* ── Group open/close ── */
   const activeGroupKey = (nav || []).find(
@@ -200,7 +377,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
   /* ── Anchor open/close ── */
   const [anchorOpenId, setAnchorOpenId] = useState(null);
 
-  // Find anchors for the current page (top-level or group item)
+  // Find anchors for the current page (top-level, group item, or endpoint version)
   const currentAnchors = useMemo(() => {
     for (const entry of (nav || [])) {
       if (entry.type === 'top' && entry.id === currentPage && entry.anchors?.length) {
@@ -209,6 +386,10 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
       if (entry.type === 'group') {
         const item = entry.items?.find(i => i.id === currentPage);
         if (item?.anchors?.length) return item.anchors;
+      }
+      if (entry.type === 'endpoint') {
+        const ver = entry.versions?.find(v => v.id === currentPage);
+        if (ver?.anchors?.length) return ver.anchors;
       }
     }
     return [];
@@ -263,24 +444,70 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
   }, [drawerOpen, onDrawerClose]);
 
   /* ── Nav content ── */
-  const navContent = (
+  const navContent = (() => {
+    let sectionCollapsed = false;
+    return (
     <>
       {(nav || []).map((entry, i) => {
         if (entry.type === 'section') {
+          const collapsed = collapsedSections.has(entry.label);
+          sectionCollapsed = collapsed;
           return (
-            <div key={`section-${i}`} style={{
-              padding: '16px 10px 4px',
-              fontSize: '0.6875rem',
-              fontWeight: 600,
-              letterSpacing: '0.06em',
-              textTransform: 'uppercase',
-              color: 'var(--muted)',
-              userSelect: 'none',
-            }}>
+            <button
+              key={`section-${i}`}
+              onClick={() => toggleSection(entry.label)}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                width: '100%',
+                padding: '16px 10px 4px',
+                fontSize: '0.6875rem',
+                fontWeight: 600,
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                color: 'var(--muted)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                textAlign: 'left',
+              }}
+            >
               {entry.label}
-            </div>
+              <svg
+                width="12" height="12" viewBox="0 0 16 16" fill="none"
+                style={{
+                  flexShrink: 0,
+                  transition: 'transform 0.15s',
+                  transform: collapsed ? 'rotate(-90deg)' : 'none',
+                  opacity: 0.5,
+                }}
+              >
+                <path fillRule="evenodd" clipRule="evenodd"
+                  d="M7.9999 11.1011L3.41064 6.51189L4.58916 5.33337L7.9999 8.74412L11.4106 5.33337L12.5892 6.51189L7.9999 11.1011Z"
+                  fill="currentColor"/>
+              </svg>
+            </button>
           );
         }
+
+        // Endpoint groups are never hidden by section collapsing
+        if (entry.type === 'endpoint') {
+          return (
+            <EndpointGroup
+              key={entry.key}
+              group={entry}
+              currentPage={currentPage}
+              onNavigate={onNavigate}
+              isOpen={openEndpointKeys.has(entry.key)}
+              onToggle={toggleEndpoint}
+              activeAnchor={activeAnchor}
+              onAnchorClick={handleAnchorClick}
+              anchorOpenId={anchorOpenId}
+              onAnchorToggle={setAnchorOpenId}
+            />
+          );
+        }
+
+        if (sectionCollapsed) return null;
 
         if (entry.type === 'top') {
           const label     = t(`nav.${entry.id}`, { defaultValue: entry.label });
@@ -352,12 +579,15 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
       })}
     </>
   );
+  })();
 
   return (
     <>
       <aside className={`sidenav${navCollapsed ? ' sidenav--collapsed' : ''}`}>
-        {navContent}
-        {/* Collapse trigger — docked to bottom of nav */}
+        <div className="sidenav-inner">
+          {navContent}
+        </div>
+        {/* Collapse trigger — fixed to bottom-left of viewport, outside transform layer */}
         <div className="sidenav-collapse-bar">
           <button
             className="sidenav-collapse-btn"

@@ -17,7 +17,7 @@
     "ios": "iOS"
   },
   "nav": {
-    "overview": "概览",
+    "overview": "简介",
     "quickstart": "快速入门",
     "groups": {
       "assets": "资源",
@@ -185,7 +185,7 @@
     }
   },
   "pageTitles": {
-    "overview": "概览",
+    "overview": "简介",
     "quickstart": "快速入门",
     "design-tokens": "设计令牌",
     "colour": "颜色",

@@ -317,19 +317,8 @@ const ENDPOINTS_V1 = [
   { Thumb: ThumbRoadShields,    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: 'Shield shape category, road reference, and display text for every road segment. Use iconCategory to select the correct sign asset.', pageId: 'routing-road-shields', available: true },
 ];
 
-const ENDPOINTS_V2 = [
-  { ...ENDPOINTS_V1[0], available: true },
-  { ...ENDPOINTS_V1[1], available: false, path: '/maps/orbis/routing/calculateReachableRange/{origin}/json' },
-  { ...ENDPOINTS_V1[2], available: false },
-  { ...ENDPOINTS_V1[3], available: false },
-  { ...ENDPOINTS_V1[4], available: false },
-  { ...ENDPOINTS_V1[5], available: false },
-];
-
-
-export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }) {
-  const isOrbis = platform === 'orbis-maps';
-  const endpoints = isOrbis ? ENDPOINTS_V2 : ENDPOINTS_V1;
+export default function RoutingAPIIntro({ onNavigate }) {
+  const endpoints = ENDPOINTS_V1;
 
   return (
     <div className="page">
@@ -339,46 +328,32 @@ export default function RoutingAPIIntro({ onNavigate, platform = 'tomtom-maps' }
       </div>
 
       <p className="quick-answer">
-        {isOrbis
-          ? 'The Routing API on Orbis Maps (v2) calculates routes for cars with a streamlined parameter set and JSON-only responses. Currently in Public Preview.'
-          : 'Calculate optimal routes between waypoints with full support for vehicle profiles, real-time traffic, EV consumption modelling, reachable range, and batch processing across ~215 countries.'}
+        Calculate optimal routes between waypoints with full support for vehicle profiles, real-time traffic, EV consumption modelling, reachable range, and batch processing across ~215 countries.
       </p>
 
-      {/* Capability tiles — inline under summary, v1 only */}
-      {!isOrbis && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
-          {[
-            ['🚗', 'Vehicle profiles', 'Truck routing with height, width, weight, axle load, ADR tunnel codes, and hazardous load types. Eight travel modes.'],
-            ['⚡', 'EV consumption model', 'Speed-to-kWh consumption tables, auxiliary power draw, and regenerative braking — for single-charge EV routes.'],
-            ['📡', 'Live + historic traffic', 'IQ Routes™ learns from historical patterns. Real-time incident data projects travel time up to 60 days forward.'],
-            ['🗣️', 'Turn-by-turn guidance', '40+ manoeuvre codes, lane guidance with separator types, road shield references, and phonetic street names.'],
-          ].map(([icon, title, desc]) => (
-            <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
-              <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
-                <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
-                <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-              </div>
-              <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</div>
+      {/* Capability tiles */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10, margin: '20px 0 0' }}>
+        {[
+          ['🚗', 'Vehicle profiles', 'Truck routing with height, width, weight, axle load, ADR tunnel codes, and hazardous load types. Eight travel modes.'],
+          ['⚡', 'EV consumption model', 'Speed-to-kWh consumption tables, auxiliary power draw, and regenerative braking — for single-charge EV routes.'],
+          ['📡', 'Live + historic traffic', 'IQ Routes™ learns from historical patterns. Real-time incident data projects travel time up to 60 days forward.'],
+          ['🗣️', 'Turn-by-turn guidance', '40+ manoeuvre codes, lane guidance with separator types, road shield references, and phonetic street names.'],
+        ].map(([icon, title, desc]) => (
+          <div key={title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
+            <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 5 }}>
+              <span style={{ fontSize: '0.9rem', lineHeight: 1.2 }}>{icon}</span>
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
             </div>
-          ))}
-        </div>
-      )}
-
-      {isOrbis && (
-        <Callout type="warning">
-          <strong>Public Preview</strong> — Orbis Maps v2 currently supports Calculate Route (car only). Reachable Range and Batch Routing are available on TomTom Maps (v1).
-        </Callout>
-      )}
+            <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</div>
+          </div>
+        ))}
+      </div>
 
       {/* Endpoint grid */}
       <div className="zone">
-        <h2 className="sh" id="r-endpoints">
-          {isOrbis ? 'Available endpoints' : 'All endpoints'}
-        </h2>
+        <h2 className="sh" id="r-endpoints">All endpoints</h2>
         <p className="quick-answer" style={{ marginBottom: 20 }}>
-          {isOrbis
-            ? 'One endpoint is available in Orbis Maps v2. The full endpoint surface — including Reachable Range, Batch, and guidance — is on TomTom Maps v1.'
-            : 'Three core endpoints plus two guidance surfaces. Each can be used independently.'}
+          Three core endpoints plus two guidance surfaces. Each can be used independently.
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
           {endpoints.map(ep => (
@@ -465,43 +440,49 @@ const { travelTimeInSeconds, lengthInMeters } =
 
       {/* Platform versions — compact row */}
       <div className="zone">
-        <h2 className="sh" id="r-platforms">Platform versions</h2>
+        <h2 className="sh" id="r-platforms">API versions</h2>
         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
           {[
             {
-              id: 'tomtom-maps', label: 'TomTom Maps', version: 'v1',
+              version: 'v1',
               base: 'api.tomtom.com/routing/1/…',
-              status: 'GA', statusColor: '#22c55e',
+              status: 'Production', statusColor: '#22c55e',
               summary: 'Full endpoint surface — Calculate Route, Reachable Range, Batch, guidance, all travel modes.',
-              pageId: 'routing-tomtom-maps',
+              active: true,
+              pageId: null,
             },
             {
-              id: 'orbis-maps', label: 'Orbis Maps', version: 'v2',
-              base: 'api.tomtom.com/maps/orbis/routing/…',
-              status: 'Preview', statusColor: '#a78bfa',
-              summary: 'Calculate Route (car only). Reachable Range and Batch not yet available. Requires TomTom-Api-Version: 2 header.',
-              pageId: 'routing-orbis-maps',
+              version: 'v2 · Private Preview',
+              base: 'api.tomtom.com/maps/orbis/routing/calculateLongDistanceEV',
+              status: 'Private Preview', statusColor: '#d97706',
+              summary: 'LDEVR v2 extensions — weather adaptation, toll amounts, charging park opening hours, OEM eMSP filtering, and dynamic data freshness.',
+              active: false,
+              pageId: 'ldevr-weather',
             },
-          ].map(p => {
-            const active = isOrbis ? p.id === 'orbis-maps' : p.id === 'tomtom-maps';
-            return (
-              <button
-                key={p.id}
-                className={`text-card${active ? ' text-card--active' : ''}`}
-                style={{ flex: '1 1 260px' }}
-                onClick={() => onNavigate?.(p.pageId)}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                  <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{p.label}</span>
-                  <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(139,148,158,0.12)', color: 'var(--muted)', fontFamily: 'monospace' }}>{p.version}</span>
-                  <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: `${p.statusColor}18`, color: p.statusColor, fontWeight: 600, marginLeft: 'auto' }}>{p.status}</span>
-                </div>
-                <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'monospace', marginBottom: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.base}</code>
-                <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{p.summary}</p>
-                <span style={{ display: 'inline-block', marginTop: 8, fontSize: '0.875rem', color: 'var(--red)', fontWeight: 600 }}>Full comparison →</span>
-              </button>
-            );
-          })}
+            {
+              version: 'v3 · Public Preview',
+              base: 'api.tomtom.com/maps/orbis/routing/v3/calculateRoute',
+              status: 'Public Preview', statusColor: '#1d4ed8',
+              summary: 'POST-only, legs-based request format. Toll amounts and weather consumption adaptation available today.',
+              active: false,
+              pageId: 'routing-v3-overview',
+            },
+          ].map(p => (
+            <button
+              key={p.version}
+              className={`text-card${p.active ? ' text-card--active' : ''}`}
+              style={{ flex: '1 1 220px' }}
+              onClick={() => p.pageId && onNavigate?.(p.pageId)}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(139,148,158,0.12)', color: 'var(--muted)', fontFamily: 'monospace' }}>{p.version}</span>
+                <span style={{ fontSize: '0.625rem', padding: '1px 6px', borderRadius: 3, background: `${p.statusColor}18`, color: p.statusColor, fontWeight: 600, marginLeft: 'auto' }}>{p.status}</span>
+              </div>
+              <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'monospace', marginBottom: 8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.base}</code>
+              <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{p.summary}</p>
+              {p.pageId && <span style={{ display: 'inline-block', marginTop: 8, fontSize: '0.875rem', color: 'var(--red)', fontWeight: 600 }}>View reference →</span>}
+            </button>
+          ))}
         </div>
       </div>
 

@@ -230,9 +230,9 @@ export default function RoutingReachableRange({ onNavigate }) {
               { lib: 'Android SDK', snippet: 'TomtomPolygon(boundary.map { LatLng(it.latitude, it.longitude) })' },
               { lib: 'GeoJSON', snippet: '{ "type": "Polygon", "coordinates": [ boundary.map(p => [p.longitude, p.latitude]) ] }' },
             ].map(({ lib, snippet }) => (
-              <div key={lib} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 12px', background: 'var(--bg)' }}>
-                <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--blue)', fontWeight: 700 }}>{lib}</code>
-                <div style={{ fontSize: '0.5rem', color: 'var(--muted)', marginTop: 4, lineHeight: 1.5, fontFamily: 'monospace', wordBreak: 'break-all' }}>{snippet}</div>
+              <div key={lib} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 12px', background: 'var(--bg)', fontFamily: 'monospace' }}>
+                <div style={{ fontSize: '0.75rem', color: 'var(--blue)', fontWeight: 700, marginBottom: 4 }}>{lib}</div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, wordBreak: 'break-all' }}>{snippet}</div>
               </div>
             ))}
           </div>
@@ -255,10 +255,10 @@ export default function RoutingReachableRange({ onNavigate }) {
               border: '1px solid var(--border)', background: 'var(--bg)',
             }}>
               <span style={{
-                fontSize: '0.875rem', fontWeight: 700, padding: '3px 9px',
-                borderRadius: 20, background: 'rgba(226,0,26,0.08)',
+                fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px',
+                borderRadius: 4, background: 'rgba(226,0,26,0.08)',
                 color: '#e2001a', fontFamily: 'monospace', letterSpacing: '0.02em',
-                flexShrink: 0, marginTop: 1, whiteSpace: 'nowrap',
+                flexShrink: 0, marginTop: 2, whiteSpace: 'nowrap',
               }}>{e.code}</span>
               <div>
                 <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 4 }}>{e.title}</div>
@@ -295,7 +295,6 @@ export default function RoutingReachableRange({ onNavigate }) {
       </div>
 
       <div className="zone">
-        <h2 className="sh" id="rr-response">Response</h2>
         <ApiRefTwoCol sections={responseData} panelLabel="Response example" />
       </div>
 

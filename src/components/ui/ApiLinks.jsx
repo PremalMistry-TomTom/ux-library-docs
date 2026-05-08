@@ -1,7 +1,9 @@
 /* ─── ApiLinks + ApiRef ─────────────────────────────────────────────────────
  *
  *  ApiLinks  — page-top (or section) block listing all referenced APIs.
- *              Pass an array of { name, type, description, url } objects.
+ *              Pass an array of { name, type, description, url?, pageId?, productId? } objects.
+ *              Items with pageId/productId navigate internally via onNavigate prop.
+ *              Items with url navigate externally (open in new tab).
  *
  *  ApiRef    — inline chip linking a single API within prose or code context.
  *              Usage: <ApiRef name="LDEVR API" url="https://..." />
@@ -26,9 +28,17 @@ function ExternalIcon() {
   );
 }
 
+function InternalIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.6 }}>
+      <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 const MAX_COLS = 4;
 
-export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
+export function ApiLinks({ items = [], title = 'APIs used on this page', onNavigate }) {
   // Pad the last row only when there IS a second row — single-row layouts need no spacers
   const hasMultipleRows = items.length > MAX_COLS;
   const remainder       = items.length % MAX_COLS;
@@ -40,17 +50,13 @@ export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
       <div className="api-links-grid">
         {items.map(item => {
           const col = TYPE_COLORS[item.type] || DEFAULT_COLOR;
-          return (
-            <a
-              key={item.name}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="api-links-card"
-            >
+          const isInternal = !!(item.pageId && onNavigate);
+
+          const cardContent = (
+            <>
               <div className="api-links-card-top">
                 <span className="api-links-name">{item.name}</span>
-                <ExternalIcon />
+                {isInternal ? <InternalIcon /> : <ExternalIcon />}
               </div>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
                 {item.description && (
@@ -60,6 +66,31 @@ export function ApiLinks({ items = [], title = 'APIs used on this page' }) {
                   {item.type}
                 </span>
               </div>
+            </>
+          );
+
+          if (isInternal) {
+            return (
+              <button
+                key={item.name}
+                onClick={() => onNavigate(item.pageId, item.productId)}
+                className="api-links-card api-links-card--internal"
+                style={{ textAlign: 'left', background: 'none', cursor: 'pointer' }}
+              >
+                {cardContent}
+              </button>
+            );
+          }
+
+          return (
+            <a
+              key={item.name}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="api-links-card"
+            >
+              {cardContent}
             </a>
           );
         })}

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import PageActions from './PageActions';
 import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
@@ -60,91 +61,79 @@ export function ParamRow({
   const hasChildren = childParams?.length > 0;
 
   // Split on last dot → muted prefix + bold leaf  (e.g. "legs[].routeStop" → "legs[]." + "routeStop")
-  const lastDot = name.lastIndexOf('.');
-  const prefix  = lastDot > -1 ? name.slice(0, lastDot) : null;
-  const leaf    = lastDot > -1 ? name.slice(lastDot + 1) : name;
+  const safeName = name ?? '';
+  const lastDot  = safeName.lastIndexOf('.');
+  const prefix   = lastDot > -1 ? safeName.slice(0, lastDot) : null;
+  const leaf     = lastDot > -1 ? safeName.slice(lastDot + 1) : safeName;
 
   // Which pill is "active" (user chose) vs "default" (shown in code by default)
   const activeValue  = selectedValue;
   const defaultValue = def;
 
   return (
-    <div className={depth === 0 ? 'param-card' : undefined} style={depth > 0 ? { padding: '12px 0' } : undefined}>
+    <div className={depth === 0 ? 'param-card' : undefined} style={depth > 0 ? { padding: '12px 0' } : { position: 'relative' }}>
 
-      {/* ── Name + meta ── */}
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: '5px 10px', marginBottom: 8 }}>
-        <code style={{ fontSize: depth > 0 ? '0.75rem' : '0.875rem', color: ATTR_COLOR, fontFamily: 'monospace', fontWeight: 700 }}>
-          {prefix && <span style={{ fontWeight: 400, color: 'var(--muted)' }}>{prefix}.</span>}
+      {required && depth === 0 && (
+        <span style={{
+          position: 'absolute', top: 12, right: 12,
+          fontSize: '0.5625rem', fontWeight: 700, letterSpacing: '0.06em',
+          textTransform: 'uppercase',
+          color: '#e2001a',
+          background: 'rgba(226,0,26,0.08)',
+          border: '1px solid rgba(226,0,26,0.2)',
+          borderRadius: 4,
+          padding: '2px 6px',
+          lineHeight: 1.4,
+        }}>required</span>
+      )}
+
+      {/* ── Name + meta ── all tokens use monospace for visual consistency ── */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: '4px 10px', marginBottom: 6, fontFamily: 'monospace' }}>
+        <span style={{ fontSize: '0.875rem', color: ATTR_COLOR, fontWeight: 700 }}>
+          {prefix && <span style={{ fontWeight: 400, opacity: 0.35 }}>{prefix}.</span>}
           {leaf}
-        </code>
-        {required && (
-          <span style={{ fontSize: '0.625rem', color: '#e2001a', fontWeight: 700, letterSpacing: '0.02em' }}>required</span>
-        )}
-        <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{type}</span>
+        </span>
+        {type && <><span style={{ color: 'var(--muted)', fontWeight: 400 }}>·</span><span style={{ fontSize: '0.875rem', color: 'var(--mid)', fontWeight: 400 }}>{type}</span></>}
         {def !== undefined && (
-          <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>
-            Default: <code style={{ fontFamily: 'monospace', color: 'var(--mid)', fontSize: '0.75rem' }}>{String(def)}</code>
-          </span>
+          <><span style={{ color: 'var(--muted)', fontWeight: 400 }}>·</span><span style={{ fontSize: '0.875rem', color: 'var(--mid)', fontWeight: 400 }}>
+            default: <span style={{ color: 'var(--black)' }}>{String(def)}</span>
+          </span></>
         )}
       </div>
 
       {/* ── Description ── */}
-      <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.7 }}>{desc}</p>
+      <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65 }}>{desc}</p>
 
       {/* ── Possible values ── */}
       {values && values.length > 0 && (
-        <div style={{ marginTop: 12, paddingTop: 10, borderTop: '1px dashed var(--border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-              Possible values
-            </div>
-            {onSelect && (
-              <div style={{ fontSize: '0.625rem', color: 'var(--muted)', fontStyle: 'italic' }}>
-                click to try in example →
-              </div>
-            )}
-          </div>
+        <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {values.map(v => {
               const isActive  = activeValue === v;
               const isDefault = !activeValue && v === defaultValue;
 
-              const pillStyle = {
+              const pillBase = {
                 fontSize: '0.75rem',
-                padding: '3px 10px',
+                padding: '2px 8px',
                 borderRadius: 4,
                 fontFamily: 'monospace',
+                fontWeight: 500,
                 transition: 'background 0.12s, border-color 0.12s, color 0.12s',
                 cursor: onSelect ? 'pointer' : 'default',
-                // Active (user-selected)
-                ...(isActive ? {
-                  background: 'rgba(226,0,26,0.1)',
-                  border: '1px solid #e2001a',
-                  color: '#e2001a',
-                  fontWeight: 600,
-                } : isDefault ? {
-                  // Default value — slightly emphasised border so it reads as "currently in the code"
-                  background: 'var(--bg)',
-                  border: '1px solid var(--mid)',
-                  color: 'var(--mid)',
-                  fontWeight: 500,
-                } : {
-                  background: 'var(--bg)',
-                  border: '1px solid var(--border)',
-                  color: 'var(--mid)',
-                  fontWeight: 400,
-                }),
+              };
+              const pillStyle = {
+                ...pillBase,
+                ...(isActive
+                  ? { background: 'rgba(226,0,26,0.08)', border: '1px solid #e2001a', color: '#e2001a' }
+                  : isDefault
+                  ? { background: 'var(--bg)', border: '1px solid var(--mid)', color: 'var(--black)' }
+                  : { background: 'transparent', border: '1px solid var(--border)', color: 'var(--mid)' }
+                ),
               };
 
               return onSelect ? (
-                <button
-                  key={v}
-                  onClick={() => onSelect(v)}
-                  style={pillStyle}
-                  title={isActive ? 'Click to reset' : `Use ${v} in the example`}
-                >
+                <button key={v} onClick={() => onSelect(v)} style={pillStyle} title={isActive ? 'Click to reset' : `Try ${v}`}>
                   {v}
-                  {isActive && <span style={{ marginLeft: 4, fontSize: '0.625rem', opacity: 0.7 }}>×</span>}
                 </button>
               ) : (
                 <code key={v} style={pillStyle}>{v}</code>
@@ -278,11 +267,6 @@ function SectionPanel({ section, sectionSelected, panelLabel }) {
 
   return (
     <div ref={outerRef} className="api-ref-section-code" style={panelStyle}>
-      {/* Panel eyebrow label */}
-      <div style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 }}>
-        {panelLabel}
-      </div>
-
       <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)', position: 'relative' }}>
 
         {/* ── Code panel header ── */}
@@ -384,8 +368,58 @@ function SectionPanel({ section, sectionSelected, panelLabel }) {
   );
 }
 
+/* ─── Version badge config ───────────────────────────────────────────────────── */
+const VERSION_BADGES = {
+  'v2-private': {
+    label: 'v2 · Private Preview',
+    bg: 'rgba(234,179,8,0.1)',
+    border: 'rgba(234,179,8,0.35)',
+    color: '#92400e',
+    dot: '#d97706',
+  },
+  'v3-public': {
+    label: 'v3 · Public Preview',
+    bg: 'rgba(0,112,205,0.07)',
+    border: 'rgba(0,112,205,0.25)',
+    color: '#1d4ed8',
+    dot: '#0070cd',
+  },
+  'v2-public': {
+    label: 'v2 · Public Preview',
+    bg: 'rgba(168,85,247,0.07)',
+    border: 'rgba(168,85,247,0.25)',
+    color: '#7c3aed',
+    dot: '#a855f7',
+  },
+  'v1': {
+    label: 'v1 · Production',
+    bg: 'rgba(34,197,94,0.07)',
+    border: 'rgba(34,197,94,0.25)',
+    color: '#15803d',
+    dot: '#22c55e',
+  },
+};
+
+function VersionBadge({ version }) {
+  const cfg = VERSION_BADGES[version];
+  if (!cfg) return null;
+  return (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 6,
+      padding: '4px 10px', borderRadius: 6,
+      background: cfg.bg, border: `1px solid ${cfg.border}`,
+      marginBottom: 20,
+    }}>
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: cfg.dot, flexShrink: 0 }} />
+      <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', color: cfg.color }}>
+        {cfg.label}
+      </span>
+    </div>
+  );
+}
+
 /* ─── Main layout ────────────────────────────────────────────────────────────── */
-export default function ApiRefTwoCol({ sections, panelLabel = 'Example' }) {
+export default function ApiRefTwoCol({ sections, panelLabel = 'Example', version, title, description }) {
   /* ── Per-section selected values: { [sectionId]: { [paramName]: value } } ── */
   const [selected, setSelected] = useState({});
 
@@ -401,24 +435,29 @@ export default function ApiRefTwoCol({ sections, panelLabel = 'Example' }) {
     });
   }
 
-  return (
+  const sectionsContent = (
     <div className="api-ref-sections">
+      {version && (
+        <div style={{ padding: '16px 0 0' }}>
+          <VersionBadge version={version} />
+        </div>
+      )}
       {sections.map((section) => (
         <div key={section.id} className="api-ref-section" id={section.id}>
 
           {/* Full-width sticky title row — spans both columns */}
           <div className="api-ref-section-header">
-            <SectionHeader title={section.heading} count={section.params.length} method={section.method} />
+            <SectionHeader title={section.heading} count={(section.params ?? []).length} method={section.method} />
           </div>
 
           {/* Left: optional note + param list */}
           <div className="api-ref-section-left">
             {section.note && (
-              <p style={{ margin: '0 0 16px', fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, padding: '9px 12px', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 6 }}>
+              <p style={{ margin: '0 0 20px', fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65 }}>
                 {section.note}
               </p>
             )}
-            {section.params.map(p => (
+            {(section.params ?? []).map(p => (
               <ParamRow
                 key={p.name}
                 {...p}
@@ -444,4 +483,22 @@ export default function ApiRefTwoCol({ sections, panelLabel = 'Example' }) {
       ))}
     </div>
   );
+
+  /* When a title is provided, wrap in a full page layout */
+  if (title) {
+    return (
+      <div className="page page--wide">
+        <div className="page-header">
+          <h1>{title}</h1>
+          <PageActions />
+        </div>
+        {description && (
+          <p className="quick-answer">{description}</p>
+        )}
+        {sectionsContent}
+      </div>
+    );
+  }
+
+  return sectionsContent;
 }

@@ -396,6 +396,46 @@ export default function EVRouting() {
 
       <ApiLinks items={ROUTING_APIS} />
 
+      {/* Charging stop strategy — automatic vs manual */}
+      <div className="zone">
+        <h2 className="sh" id="evr-charging-strategy">{t('routing.chargingStrategy.heading')}</h2>
+        <p className="body">{t('routing.chargingStrategy.body')}</p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12, marginBottom: 20 }}>
+          {[
+            {
+              icon: '⚡',
+              title: 'Automatic (default)',
+              desc: 'LDEVR calculates the optimal number and location of charging stops based on battery state, consumption model, and network coverage. The driver receives a complete plan before departure — no routing code required from the OEM.',
+              badge: 'Recommended',
+              badgeColor: '#3fb950',
+              param: 'chargingStopsStrategy: "automaticFastest"',
+            },
+            {
+              icon: '🗺️',
+              title: 'Manual',
+              desc: 'The driver selects specific charging stops along the route. LDEVR optimises the duration and target SoC at each manually chosen stop, but stop locations are driver-controlled. Suitable for drivers with specific network preferences.',
+              badge: 'Advanced',
+              badgeColor: '#d29922',
+              param: 'chargingStopsStrategy: "manualFastest"',
+            },
+          ].map(s => (
+            <div key={s.title} style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '16px 18px', background: 'var(--bg)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: '1.125rem' }}>{s.icon}</span>
+                  <span style={{ fontWeight: 700, fontSize: '0.9375rem' }}>{s.title}</span>
+                </div>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20, background: `${s.badgeColor}22`, color: s.badgeColor, border: `1px solid ${s.badgeColor}55` }}>{s.badge}</span>
+              </div>
+              <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, marginBottom: 12 }}>{s.desc}</p>
+              <code style={{ fontSize: '0.75rem', color: 'var(--muted)', background: 'var(--white)', padding: '3px 7px', borderRadius: 6, border: '1px solid var(--border)' }}>{s.param}</code>
+            </div>
+          ))}
+        </div>
+        <Callout type="info">{t('routing.chargingStrategy.callout')}</Callout>
+      </div>
+
       {/* Stop strategy calculator */}
       <div className="zone">
         <h2 className="sh" id="evr-strategy">{t('routing.strategy.heading')}</h2>
@@ -408,6 +448,28 @@ export default function EVRouting() {
       <div className="zone">
         <h2 className="sh" id="evr-prefs">{t('preferences.heading')}</h2>
         <p className="body">{t('preferences.body')}</p>
+
+        {/* SoC defaults reference */}
+        <table className="prop-table" style={{ marginBottom: 24 }}>
+          <thead>
+            <tr><th>Preference</th><th>Default</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            {[
+              ['Min SoC at charging stop',        '15%',  'Floor battery level on arrival at each charging stop. Adjust higher for safety margin in markets with lower charger density.'],
+              ['Min SoC at destination',           '15%',  'Floor battery level on arrival at the final destination. Increase for long drives or uncertain final-mile conditions.'],
+              ['Critical min at home destination', '35% of min', 'Reduced buffer for destinations with a private charger (home/workplace). Avoids unnecessary en-route stops when the driver will charge on arrival.'],
+              ['Minimum charge time',              '300 s', 'Non-configurable. The SDK always adds at least 5 minutes at any stop, even if less charge is mathematically needed.'],
+            ].map(([pref, def, note]) => (
+              <tr key={pref}>
+                <td style={{ fontWeight: 600 }}>{pref}</td>
+                <td><code className="ic">{def}</code></td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--muted)' }}>{note}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', marginBottom: 24 }}>
           <PreferencesMock />
           <div style={{ maxWidth: 360, flex: 1 }}>

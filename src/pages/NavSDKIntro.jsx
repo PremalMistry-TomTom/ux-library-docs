@@ -367,8 +367,8 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       </div>
       <p className="quick-answer">
         {isAndroid
-          ? 'The Maps & Navigation SDK gives you the building blocks for a fully custom Android navigation experience — from vector map rendering to full turn-by-turn guidance, with optional Jetpack Compose UI components.'
-          : 'The Maps & Navigation SDK gives you the building blocks for a fully custom iOS navigation experience — from vector map rendering to full turn-by-turn guidance, with native SwiftUI and UIKit APIs.'}
+          ? 'Build a fully custom Android navigation experience from the ground up. The SDK gives you independent, composable layers — vector map rendering, multi-waypoint routing with EV and traffic support, full turn-by-turn guidance, ADAS-quality virtual horizon data, and offline maps — so you use only what you need and own every detail of the UI.'
+          : 'Build a fully custom iOS navigation experience from the ground up. The SDK gives you independent, composable layers — vector map rendering, multi-waypoint routing with EV and traffic support, full turn-by-turn guidance, ADAS-quality virtual horizon data, and native CarPlay integration — so you use only what you need and own every detail of the UI.'}
       </p>
 
       {/* Hero */}
@@ -384,55 +384,6 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
           </svg>
           <span style={{ fontSize: '0.75rem' }}>Maps &amp; Navigation SDK</span>
-        </div>
-      </div>
-
-      {/* What is the SDK */}
-      <div className="zone">
-        <h2 className="sh" id="ns-what">What is the Maps &amp; Navigation SDK?</h2>
-        <p className="body">
-          The Maps &amp; Navigation SDK is TomTom's modular development toolkit for OEMs and automotive software teams who need precise control over every aspect of the in-car navigation experience. Unlike a pre-built application, the SDK provides lower-level primitives — map rendering, routing engine, navigation session management — that you compose into your own UI.
-        </p>
-        {isAndroid ? (
-          <p className="body">
-            The Android SDK supports both Jetpack Compose and the traditional XML Views system, making it suitable for new Compose-first projects and existing AAOS codebases alike. For teams who want ready-made navigation components, the{' '}
-            <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>UX Library</DocLink>{' '}
-            sits directly on top of this SDK and removes the UI build from scratch.
-          </p>
-        ) : (
-          <p className="body">
-            The iOS SDK targets SwiftUI and UIKit with native Swift APIs. It supports CarPlay integration, giving you a navigation session that adapts to both the head unit and the CarPlay display from a single codebase.
-          </p>
-        )}
-      </div>
-
-      {/* Platform support */}
-      <div className="zone">
-        <h2 className="sh" id="ns-platforms">Platform support</h2>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <PlatformCard
-            platform="Android"
-            icon="🤖"
-            active={isAndroid}
-            items={[
-              ['Jetpack Compose', 'First-class Compose API for MapDisplay and all UI components'],
-              ['XML Views', 'Full Views-based API for existing codebases and AAOS systems'],
-              ['Min SDK', 'Android 8.0 (API level 26)'],
-              ['Offline maps', 'Downloadable region packages'],
-              ['UX Library', 'Optional pre-built Compose navigation components'],
-            ]}
-          />
-          <PlatformCard
-            platform="iOS"
-            icon=""
-            active={!isAndroid}
-            items={[
-              ['SwiftUI', 'Native SwiftUI MapView and composable navigation components'],
-              ['UIKit', 'UIKit-compatible APIs for existing applications'],
-              ['Min version', 'iOS 14.0+'],
-              ['CarPlay', 'CarPlay-compatible navigation session support'],
-            ]}
-          />
         </div>
       </div>
 
@@ -480,15 +431,6 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
         </div>
       </div>
 
-      {/* Architecture */}
-      <div className="zone">
-        <h2 className="sh" id="ns-arch">SDK architecture</h2>
-        <p className="body" style={{ marginBottom: 20 }}>
-          The SDK is structured as four co-operating layers. Your application sits at the top and depends only on the layers below it — TomTom platform calls are fully abstracted.
-        </p>
-        <ArchDiagram />
-      </div>
-
       {/* Capabilities */}
       <div className="zone">
         <h2 className="sh" id="ns-capabilities">Key capabilities</h2>
@@ -501,6 +443,45 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
           {capabilities.map(cap => (
             <CapabilityCard key={cap.title} {...cap} onNavigate={onNavigate} />
           ))}
+        </div>
+      </div>
+
+      {/* Architecture */}
+      <div className="zone">
+        <h2 className="sh" id="ns-arch">SDK architecture</h2>
+        <p className="body" style={{ marginBottom: 20 }}>
+          The SDK is structured as four co-operating layers. Your application sits at the top and depends only on the layers below it — TomTom platform calls are fully abstracted.
+        </p>
+        <ArchDiagram />
+      </div>
+
+      {/* Platform support */}
+      <div className="zone">
+        <h2 className="sh" id="ns-platforms">Platform support</h2>
+        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+          <PlatformCard
+            platform="Android"
+            icon="🤖"
+            active={isAndroid}
+            items={[
+              ['Jetpack Compose', 'First-class Compose API for MapDisplay and all UI components'],
+              ['XML Views', 'Full Views-based API for existing codebases and AAOS systems'],
+              ['Min SDK', 'Android 8.0 (API level 26)'],
+              ['Offline maps', 'Downloadable region packages'],
+              ['UX Library', 'Optional pre-built Compose navigation components'],
+            ]}
+          />
+          <PlatformCard
+            platform="iOS"
+            icon=""
+            active={!isAndroid}
+            items={[
+              ['SwiftUI', 'Native SwiftUI MapView and composable navigation components'],
+              ['UIKit', 'UIKit-compatible APIs for existing applications'],
+              ['Min version', 'iOS 14.0+'],
+              ['CarPlay', 'CarPlay-compatible navigation session support'],
+            ]}
+          />
         </div>
       </div>
 

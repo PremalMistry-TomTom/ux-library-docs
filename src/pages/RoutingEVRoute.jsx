@@ -20,6 +20,7 @@ const PARAMS_ROUTE = [
   { name: 'routeType', type: 'string', default: 'fastest', values: ['fastest', 'eco'], desc: 'eco optimises for minimum energy consumption — recommended for EVs. fastest minimises travel time but may use more battery.' },
   { name: 'avoid', type: 'string', desc: 'Comma-separated list of features to avoid. Values: tollRoads, motorways, ferries, unpavedRoads, carpools, alreadyUsedRoads.' },
   { name: 'maxAlternatives', type: 'integer', default: 0, desc: 'Up to 5 alternative routes. Each alternative will also include charging stop candidates.' },
+  { name: 'chargingStopsStrategy', type: 'string', default: 'automaticFastest', values: ['automaticFastest', 'manualFastest'], desc: 'Controls how charging stops are selected. automaticFastest (default) lets the API pick the optimal stops for the fastest total journey. manualFastest requires you to specify stops via chargingWaypoints in the POST body.' },
 ];
 
 const PARAMS_EV = [
@@ -38,13 +39,13 @@ const PARAMS_CONNECTOR = [
 ];
 
 const PARAMS_CONSUMPTION = [
-  { name: 'constantSpeedConsumptionInkWhPerHundredkm', required: true, type: 'string (CSV pairs)', desc: 'Speed-to-consumption lookup table. Space-separated speed:kWh pairs. Example: "50,8.2:90,14.6:120,21.0". At least 2 entries required. API interpolates between entries.' },
+  { name: 'constantSpeedConsumptionInkWhPerHundredkm', required: true, type: 'string (CSV pairs)', desc: 'Speed-to-consumption lookup table. Colon-separated speed:kWh pairs. Example: "50,8.2:90,14.6:120,21.0". 1–25 speed/consumption pairs required. API interpolates between entries; extrapolates beyond range.' },
   { name: 'currentFuelInLiters', type: 'float', desc: 'For range-extended EVs (REX): current fuel level in litres. Ignored for pure BEV.' },
   { name: 'auxiliaryPowerInkW', type: 'float', default: 0, desc: 'Constant auxiliary draw in kW (HVAC, lighting, infotainment). Added to consumption at every segment. Typical value: 1.5–3.0 kW.' },
-  { name: 'accelerationEfficiency', type: 'float', default: 0.33, desc: 'Efficiency coefficient for kinetic energy recovered during acceleration phases. Range 0–1.' },
-  { name: 'decelerationEfficiency', type: 'float', default: 0.33, desc: 'Efficiency coefficient for kinetic energy recovered during regenerative braking. Range 0–1. Higher = better regen.' },
-  { name: 'uphillEfficiency', type: 'float', default: 0.333, desc: 'Efficiency of converting stored energy to potential energy on uphill segments. Range 0–1.' },
-  { name: 'downhillEfficiency', type: 'float', default: 0.333, desc: 'Efficiency of converting potential energy back to stored energy on downhill segments (regen). Range 0–1.' },
+  { name: 'accelerationEfficiency', type: 'float', default: 0.9, desc: 'Fraction of electrical energy converted to kinetic energy during acceleration. Range 0–1. Default 0.9.' },
+  { name: 'decelerationEfficiency', type: 'float', default: 0.9, desc: 'Fraction of kinetic energy recovered as electrical energy during regenerative braking. Range 0–1. Default 0.9. Higher = better regen capture.' },
+  { name: 'uphillEfficiency', type: 'float', default: 0.9, desc: 'Fraction of electrical energy converted to potential energy on uphill segments. Range 0–1. Default 0.9.' },
+  { name: 'downhillEfficiency', type: 'float', default: 0.9, desc: 'Fraction of potential energy recovered as electrical energy on downhill segments (regen). Range 0–1. Default 0.9.' },
 ];
 
 /* ─── Connector types ─────────────────────────────────────────────────────────── */
@@ -141,25 +142,6 @@ const CODE_RESPONSE = `{
   }]
 }`;
 
-const CODE_ORBIS = `# Long Distance EV Route — Orbis Maps v2 (Public Preview)
-# Note: EV routing is not yet available in Orbis Maps v2.
-# Use TomTom Maps v1 for production EV routing.
-
-# Planned endpoint (subject to change):
-# POST https://api.tomtom.com/routing/2/calculateLongDistanceEVRoute/{locations}/json
-#   Orbis-Platform: orbis-2
-#   x-api-key: YOUR_API_KEY
-#
-# Feature parity timeline:
-#   EV routing (battery model + charging stops) — Planned Q3 2025
-#   Connector filtering                          — Planned Q3 2025
-#   Kotlin SDK support                           — Planned Q4 2025
-
-# In the meantime, continue using v1:
-curl -X POST \\
-  "https://api.tomtom.com/routing/1/calculateLongDistanceEVRoute/\\
-52.3676,4.9041:48.8566,2.3522/json?key=YOUR_API_KEY" \\
-  -H "Content-Type: application/json"`;
 
 /* ─── Response sections ──────────────────────────────────────────────────────── */
 const RESPONSE_SECTIONS_DATA = [
@@ -219,10 +201,10 @@ const RESPONSE_SECTIONS_DATA = [
             border: '1px solid var(--border)', background: 'var(--bg)',
           }}>
             <span style={{
-              fontSize: '0.875rem', fontWeight: 700, padding: '3px 9px',
-              borderRadius: 20, background: 'rgba(226,0,26,0.08)',
+              fontSize: '0.75rem', fontWeight: 700, padding: '2px 8px',
+              borderRadius: 4, background: 'rgba(226,0,26,0.08)',
               color: '#e2001a', fontFamily: 'monospace', letterSpacing: '0.02em',
-              flexShrink: 0, marginTop: 1, whiteSpace: 'nowrap',
+              flexShrink: 0, marginTop: 2, whiteSpace: 'nowrap',
             }}>{e.code}</span>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 4 }}>{e.title}</div>
@@ -249,9 +231,41 @@ const RESPONSE_SECTIONS_DATA = [
   },
 ];
 
+/* ─── Cross-reference chip ───────────────────────────────────────────────────── */
+function SeeAlso({ label, desc, onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      style={{
+        display: 'flex', alignItems: 'flex-start', gap: 12,
+        padding: '10px 14px', borderRadius: 12,
+        border: '1px solid var(--border)', background: 'var(--bg)',
+        marginBottom: 16, cursor: 'pointer',
+        transition: 'border-color 0.15s, background 0.15s',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--blue)'; e.currentTarget.style.background = 'rgba(0,112,205,0.04)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--bg)'; }}
+      role="link"
+      tabIndex={0}
+      onKeyDown={e => e.key === 'Enter' && onClick?.()}
+    >
+      <span style={{ fontSize: '0.875rem', color: 'var(--blue)', marginTop: 1, flexShrink: 0 }}>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style={{ display: 'block' }}>
+          <path d="M2 8h10M8 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--blue)', marginBottom: 3 }}>
+          Core Concepts: {label}
+        </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Main component ─────────────────────────────────────────────────────────── */
-export default function RoutingEVRoute({ onNavigate, platform = 'tomtom-maps' }) {
-  const isOrbis = platform === 'orbis-maps';
+export default function RoutingEVRoute({ onNavigate }) {
 
   /* ─── Parameter sections — each with its own contextual code example ── */
   const sections = [
@@ -264,6 +278,13 @@ export default function RoutingEVRoute({ onNavigate, platform = 'tomtom-maps' })
         routeType: 'routeType=eco',
         travelMode: 'travelMode=car',
       },
+      extra: (
+        <SeeAlso
+          label="Charging Stop Selection"
+          desc="How automaticFastest and manualFastest affect stop placement, SoC thresholds, and manual waypoints."
+          onClick={() => onNavigate?.('ldevr-charging-stops', 'ldevr')}
+        />
+      ),
       code: `# Route: Amsterdam (52.3676, 4.9041) → Paris (48.8566, 2.3522)
 # Long distance EV route with live traffic and toll avoidance
 
@@ -304,26 +325,38 @@ curl -X POST \\
       params: PARAMS_CONNECTOR,
       extra: (
         <div style={{ marginTop: 8 }}>
+          <SeeAlso
+            label="Connector Types"
+            desc="Plug type codes for the POST body, currentType values, effective charging power formula, and connector compatibility by region."
+            onClick={() => onNavigate?.('ldevr-connectors', 'ldevr')}
+          />
           <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 8, paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
             Connector types reference
           </div>
-          <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 12, lineHeight: 1.6 }}>
-            Pass one or more of these identifiers as a comma-separated value for <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.75rem' }}>connectorSet</code>.
+          <p style={{ fontSize: '0.75rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.6 }}>
+            Pass one or more of these identifiers as a comma-separated value for <code className="ic" style={{ fontSize: '0.75rem' }}>connectorSet</code>.
           </p>
-          <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '200px 160px 120px 1fr', background: 'var(--bg)', borderBottom: '1px solid var(--border)', padding: '8px 14px' }}>
-              {['connectorSet value', 'Common name', 'Region', 'Typical power'].map(h => (
-                <span key={h} style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{h}</span>
-              ))}
-            </div>
-            {CONNECTORS.map((c, i) => (
-              <div key={c.id} style={{ display: 'grid', gridTemplateColumns: '200px 160px 120px 1fr', padding: '9px 14px', borderBottom: i < CONNECTORS.length - 1 ? '1px solid var(--border)' : 'none', alignItems: 'center' }}>
-                <code style={{ fontSize: '0.875rem', color: 'var(--blue)', fontFamily: 'monospace' }}>{c.id}</code>
-                <span style={{ fontSize: '0.75rem', color: 'var(--black)', fontWeight: 500 }}>{c.label}</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>{c.region}</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>{c.power}</span>
-              </div>
-            ))}
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            <table className="prop-table" style={{ minWidth: 360 }}>
+              <thead>
+                <tr>
+                  <th>connectorSet value</th>
+                  <th>Common name</th>
+                  <th>Region</th>
+                  <th>Typical power</th>
+                </tr>
+              </thead>
+              <tbody>
+                {CONNECTORS.map(c => (
+                  <tr key={c.id}>
+                    <td><code style={{ fontSize: '0.75rem' }}>{c.id}</code></td>
+                    <td style={{ fontWeight: 500 }}>{c.label}</td>
+                    <td style={{ color: 'var(--mid)', whiteSpace: 'nowrap' }}>{c.region}</td>
+                    <td style={{ color: 'var(--mid)', whiteSpace: 'nowrap' }}>{c.power}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       ),
@@ -369,6 +402,13 @@ curl -X POST \\
       heading: 'Energy consumption model',
       method: 'POST',
       params: PARAMS_CONSUMPTION,
+      extra: (
+        <SeeAlso
+          label="Battery & Consumption Model"
+          desc="How to build accurate consumption curves, set the battery charge curve, configure efficiency parameters, and model auxiliary power loads."
+          onClick={() => onNavigate?.('ldevr-battery-model', 'ldevr')}
+        />
+      ),
       code: `# Speed-to-consumption table (speed km/h : kWh per 100 km)
 # Values below are typical for a mid-size EV sedan
 
@@ -383,10 +423,10 @@ curl -X POST \\
   &minPowerKW=50\\
   &constantSpeedConsumptionInkWhPerHundredkm=50,8.2:90,14.6:120,21.0\\
   &auxiliaryPowerInkW=1.5\\
-  &accelerationEfficiency=0.33\\
-  &decelerationEfficiency=0.33\\
-  &uphillEfficiency=0.333\\
-  &downhillEfficiency=0.333\\
+  &accelerationEfficiency=0.9\\
+  &decelerationEfficiency=0.9\\
+  &uphillEfficiency=0.9\\
+  &downhillEfficiency=0.9\\
   &key=YOUR_API_KEY" \\
   -H "Content-Type: application/json"`,
     },
@@ -402,51 +442,28 @@ curl -X POST \\
 
       {/* ── Description ── */}
       <p className="quick-answer">
-        {isOrbis
-          ? 'Long Distance EV Routing is not yet available on Orbis Maps v2. Use TomTom Maps v1 for production EV routing today.'
-          : 'Plans multi-stop EV routes across distances that exceed a single charge. Pass battery state, connector types, and a speed–consumption table; the API selects optimal charging stops and returns a full itinerary with station details and dwell times.'}
+        Plans multi-stop EV routes across distances that exceed a single charge. Pass battery state, connector types, and a speed–consumption table; the API selects optimal charging stops and returns a full itinerary with station details and dwell times.
       </p>
-      {isOrbis && (
-        <Callout type="warning" title="Not available in Orbis Maps v2">
-          Long Distance EV Routing is currently only available on TomTom Maps v1. Planned for Orbis Maps v2 in Q3 2025.
-          Switch to TomTom Maps to use this endpoint today.
-        </Callout>
-      )}
 
       {/* ── Two-column: params left, sticky code right ── */}
-      {!isOrbis ? (
-        <div className="zone">
-
-          <Callout type="info" title="Request format">
-            Long Distance EV Route uses <strong>POST</strong>. Route points are passed in the URL path; all other parameters go in the query string.
-          </Callout>
-          <ApiRefTwoCol
-            sections={sections}
-            panelLabel="Example"
-          />
-        </div>
-      ) : (
-        <div className="zone">
-          <h2 className="sh" id="ev-platform">Platform status</h2>
-          <div style={{ borderRadius: 20, overflow: 'hidden', border: '1px solid var(--border)' }}>
-            <pre className="cb-pre">
-              <code dangerouslySetInnerHTML={{ __html: addLn(CODE_ORBIS) }} />
-            </pre>
-          </div>
-        </div>
-      )}
-
+      <div className="zone">
+        <Callout type="info" title="Request format">
+          Long Distance EV Route uses <strong>POST</strong>. Route points are passed in the URL path; all other parameters go in the query string.
+        </Callout>
+        <ApiRefTwoCol
+          sections={sections}
+          panelLabel="Example"
+        />
+      </div>
 
       {/* ── Response + Error codes ── */}
-      {!isOrbis && (
-        <div className="zone">
-          <h2 className="sh" id="ev-response">Response</h2>
-          <ApiRefTwoCol
-            sections={RESPONSE_SECTIONS_DATA}
-            panelLabel="Response example"
-          />
-        </div>
-      )}
+      <div className="zone">
+        <h2 className="sh" id="ev-response">Response</h2>
+        <ApiRefTwoCol
+          sections={RESPONSE_SECTIONS_DATA}
+          panelLabel="Response example"
+        />
+      </div>
 
       {/* ── Related ── */}
       <div className="zone" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>

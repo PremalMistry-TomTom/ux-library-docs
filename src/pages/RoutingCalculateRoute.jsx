@@ -287,37 +287,14 @@ const CODE_RESPONSE = `{
   }]
 }`;
 
-export default function RoutingCalculateRoute({ onNavigate, platform = 'tomtom-maps' }) {
-  const isOrbis = platform === 'orbis-maps';
-
+export default function RoutingCalculateRoute({ onNavigate }) {
   /* ─── Parameter sections — each carries its own contextual code example ──── */
-  const routeParams = isOrbis
-    ? PARAMS_ROUTE
-        .map(p => p.name === 'routeType'
-          ? { ...p, values: ['fast', 'short', 'efficient', 'thrilling'] }
-          : p.name === 'traffic'
-            ? { ...p, type: 'string', default: undefined, values: ['live', 'historical'], desc: 'Traffic model to apply. live uses real-time incidents and flow data. historical uses IQ Routes patterns.' }
-            : p
-        )
-        .filter(p => !['computeTravelTimeFor', 'instructionsType'].includes(p.name))
-    : PARAMS_ROUTE;
-
-  const CODE_ORBIS_BASIC = `curl "https://api.tomtom.com/maps/orbis/routing/calculateRoute/\\
-52.50931,13.42936:52.50274,13.43872/json\\
-?routeType=fast\\
-&traffic=live\\
-&travelMode=car\\
-&key=YOUR_API_KEY" \\
-  -H "TomTom-Api-Version: 2"`;
-
-  const sections = isOrbis
-    ? [{ id: 'api-rc-route-planning', heading: 'Route planning', method: 'GET', params: routeParams, code: CODE_ORBIS_BASIC }]
-    : [
+  const sections = [
         {
           id: 'api-rc-route-planning',
           heading: 'Route planning',
           method: 'GET',
-          params: routeParams,
+          params: PARAMS_ROUTE,
           tokens: {
             routeType: 'routeType=fastest',
             travelMode: 'travelMode=car',
@@ -444,27 +421,27 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
       ];
 
   /* ─── Response + Error sections ── */
-  const sectionTypesExtra = !isOrbis ? (
+  const sectionTypesExtra = (
     <div style={{ marginTop: 8 }}>
-      <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 8, paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
+      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 8, paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
         Section types
       </div>
-      <p style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, marginBottom: 12 }}>
+      <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.65, marginBottom: 12 }}>
         Sections divide the route into typed segments. Each has{' '}
-        <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.75rem' }}>startPointIndex</code> and{' '}
-        <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.75rem' }}>endPointIndex</code>{' '}
+        <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.875rem' }}>startPointIndex</code> and{' '}
+        <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.875rem' }}>endPointIndex</code>{' '}
         into the legs points array, plus type-specific fields.
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 8 }}>
         {ROUTING_SECTION_TYPES.map(({ type, fields }) => (
-          <div key={type} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 12px', background: 'var(--bg)' }}>
-            <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--blue)', fontWeight: 700 }}>{type}</code>
-            <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginTop: 3, lineHeight: 1.4 }}>{fields}</div>
+          <div key={type} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 12px', background: 'var(--bg)', fontFamily: 'monospace' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--blue)', fontWeight: 700, marginBottom: 4 }}>{type}</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{fields}</div>
           </div>
         ))}
       </div>
     </div>
-  ) : undefined;
+  );
 
   const responseData = [
     {
@@ -479,7 +456,7 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
           and <code style={{ fontFamily: 'monospace', color: 'var(--blue)', fontSize: '0.75rem' }}>guidance</code> object.
         </>
       ),
-      params: isOrbis ? SUMMARY_FIELDS_BASE : SUMMARY_FIELDS_V1,
+      params: SUMMARY_FIELDS_V1,
       extra: sectionTypesExtra,
       code: CODE_RESPONSE,
       lang: 'json',
@@ -525,16 +502,8 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
 
 
       <p className="quick-answer">
-        {isOrbis
-          ? 'Calculates an optimal car route between two or more waypoints using the Orbis Maps v2 engine. Returns a JSON route with summary, leg data, and a coordinate polyline.'
-          : 'Calculates one or more optimal routes between waypoints. Supports full vehicle profiles, real-time and historic traffic, combustion and electric consumption models, turn-by-turn guidance, and up to 5 alternative routes.'}
+        Calculates one or more optimal routes between waypoints. Supports full vehicle profiles, real-time and historic traffic, combustion and electric consumption models, turn-by-turn guidance, and up to 5 alternative routes.
       </p>
-
-      {isOrbis && (
-        <Callout type="info">
-          Orbis Maps v2 supports <strong>car</strong> routing only. Route types use new names: <code style={{ fontFamily: 'monospace' }}>fast</code>, <code style={{ fontFamily: 'monospace' }}>short</code>, <code style={{ fontFamily: 'monospace' }}>efficient</code>, <code style={{ fontFamily: 'monospace' }}>thrilling</code>. Guidance instructions and road shield sections are not available.
-        </Callout>
-      )}
 
       {/* ── Two-column: params left, sticky code right ── */}
       <div className="zone">
@@ -555,19 +524,18 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
 
       {/* Related */}
       <div className="zone" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-        {!isOrbis && (
-          <button className="page-action-btn" onClick={() => onNavigate?.('ldevr-calculate-route', 'ldevr')}>
-            Long Distance EV Routing →
-          </button>
-        )}
+        <button className="page-action-btn" onClick={() => onNavigate?.('ldevr-calculate-route', 'ldevr')}>
+          Long Distance EV Routing →
+        </button>
         <button className="page-action-btn" onClick={() => onNavigate?.('routing-reachable-range')}>
           Reachable Range →
         </button>
-        {!isOrbis && (
-          <button className="page-action-btn" onClick={() => onNavigate?.('routing-batch')}>
-            Batch Routing →
-          </button>
-        )}
+        <button className="page-action-btn" onClick={() => onNavigate?.('routing-batch')}>
+          Batch Routing →
+        </button>
+        <button className="page-action-btn" onClick={() => onNavigate?.('routing-v3-overview')}>
+          Routing API v3 →
+        </button>
       </div>
     </div>
   );

@@ -32,6 +32,34 @@ export const LDEVR_NAV = [
       { id: 'api-ldevr-batch-response', label: 'Response schema' },
       { id: 'api-ldevr-batch-errors',   label: 'Error codes' },
     ]},
+  { type: 'section', label: 'v2 · Private Preview' },
+  { id: 'ldevr-weather',        label: 'Weather Consideration',         type: 'top', ref: true, anchors: [
+      { id: 'ldevr-weather-request-params', label: 'Request parameters',       method: 'POST' },
+      { id: 'ldevr-weather-body-params',    label: 'POST body parameters',     method: 'POST' },
+      { id: 'ldevr-weather-response',       label: 'Response data' },
+    ]},
+  { id: 'ldevr-vehicle-brand',  label: 'Vehicle Brand',                 type: 'top', ref: true, anchors: [
+      { id: 'ldevr-vehicle-brand-params',   label: 'Request parameters',       method: 'POST' },
+      { id: 'ldevr-vehicle-brand-response', label: 'Response data' },
+    ]},
+  { id: 'ldevr-compute-toll',   label: 'Compute Toll Amounts',          type: 'top', ref: true, anchors: [
+      { id: 'ldevr-toll-request',  label: 'Request parameters',                method: 'POST' },
+      { id: 'ldevr-toll-response', label: 'Response data' },
+    ]},
+  { id: 'ldevr-charging-parks', label: 'Charging Parks Opening Hours',  type: 'top', ref: true, anchors: [
+      { id: 'ldevr-parks-request',  label: 'Request parameters',               method: 'POST' },
+      { id: 'ldevr-parks-response', label: 'Response data' },
+    ]},
+  { id: 'ldevr-oem-emsp',       label: 'OEM eMSP Support',              type: 'top', ref: true, anchors: [
+      { id: 'ldevr-emsp-headers', label: 'Request headers',                    method: 'POST' },
+      { id: 'ldevr-emsp-sev',     label: 'SEV entitlement key' },
+      { id: 'ldevr-emsp-response', label: 'Response data' },
+    ]},
+  { id: 'ldevr-data-freshness', label: 'Dynamic Data Freshness',        type: 'top', ref: true, anchors: [
+      { id: 'ldevr-freshness-request', label: 'Request parameters',            method: 'GET' },
+      { id: 'ldevr-freshness-post',    label: 'POST usage',                    method: 'POST' },
+      { id: 'ldevr-freshness-response', label: 'Response data' },
+    ]},
   { type: 'section', label: 'Reference' },
   {
     label: 'API Reference', key: 'ldEvrApiRef', type: 'group',
@@ -59,4 +87,11 @@ export const LDEVR_PAGE_TITLES = {
   'api-ldevr-batch-errors':     'Error codes',
   'ldevr-errors':         'Error Codes',
   'ldevr-coverage':       'Market Coverage',
+  // v2 Extensions
+  'ldevr-weather':        'Weather Consideration',
+  'ldevr-vehicle-brand':  'Vehicle Brand',
+  'ldevr-compute-toll':   'Compute Toll Amounts',
+  'ldevr-charging-parks': 'Charging Parks Opening Hours',
+  'ldevr-oem-emsp':       'OEM eMSP Support',
+  'ldevr-data-freshness': 'Dynamic Data Freshness',
 };

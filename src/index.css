@@ -65,11 +65,6 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 .shell--nav-collapsed.shell--no-toc {
   grid-template-columns: 0 minmax(0,1fr);
 }
-/* When sidebar is gone, left-align so content fills from the left edge
-   rather than staying centered in the now-wider content area */
-.shell--nav-collapsed .content-area {
-  justify-content: flex-start;
-}
 
 /* ── Global (site-level) header ── */
 .global-header {
@@ -179,32 +174,45 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
   width: var(--nav-w);
   min-width: 0;
   position: sticky; top: var(--app-top-offset);
-  height: calc(100vh - var(--app-top-offset)); overflow-y: auto; overflow-x: hidden;
-  padding: 8px 22px 24px 22px; border-right: 1px solid var(--border);
+  height: calc(100vh - var(--app-top-offset));
+  overflow: hidden;
+  border-right: 1px solid var(--border);
   transition:
     top var(--header-transition),
     height var(--header-transition),
     width 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-    padding 0.32s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.32s;
 }
-/* Collapse: shrink width to 0 and clip — grid column change expands the content area */
+/* Inner scroll + slide container */
+.sidenav-inner {
+  width: var(--nav-w);
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 22px 24px 22px;
+  transform: translateX(0);
+  opacity: 1;
+  transition:
+    transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease;
+}
+/* Collapse: shrink width to 0 and slide inner content out to the left */
 .sidenav--collapsed {
   width: 0;
-  padding-left: 0;
-  padding-right: 0;
   border-right-color: transparent;
-  overflow: hidden;
   pointer-events: none;
+}
+.sidenav--collapsed .sidenav-inner {
+  transform: translateX(-100%);
+  opacity: 0;
 }
 
 /* ── In-nav collapse bar (desktop only) ── */
 .sidenav-collapse-bar {
   position: fixed;
   bottom: 20px;
-  left: calc(var(--nav-w) - 44px);
+  left: 16px;
   z-index: 50;
-  transition: left 0.32s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .sidenav--collapsed .sidenav-collapse-bar { display: none; }
 .sidenav-collapse-btn {
@@ -231,22 +239,22 @@ body { font-family: var(--font-sans); color: var(--black); background: var(--whi
 /* ── Re-expand tab — fixed to left edge, shown only when nav is collapsed ── */
 .nav-expand-btn {
   position: fixed;
-  left: 0;
-  top: calc(var(--app-top-offset) + 12px);
+  left: 16px;
+  bottom: 20px;
+  top: unset;
   z-index: 200;
-  width: 24px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   padding: 0;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px;
   border: 1px solid var(--border);
-  border-left: none;
   background: var(--white);
   color: var(--mid);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: background 0.15s, color 0.15s;
 }
 .nav-expand-btn:hover {
@@ -353,7 +361,10 @@ h2.sh::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 h3.sub { font-size: 0.875rem; font-weight: 600; margin: 20px 0 8px; scroll-margin-top: calc(var(--app-top-offset) + 20px); font-family: var(--font-display); }
 p.body { font-size: 0.875rem; color: var(--mid); line-height: 1.75; margin-bottom: 12px; }
 
-.zone { margin-top: 40px; margin-bottom: 40px; }
+.zone { margin-top: 40px; margin-bottom: 40px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+/* Zones that contain an API reference grid must not form a scroll boundary —
+   position:sticky on section headers relies on the page scroll container */
+.zone:has(.api-ref-sections) { overflow-x: visible; }
 
 .quick-answer { background: none; border: none; border-radius: 0; padding: 0; margin: 16px 0 28px; font-size: 1.25rem; font-weight: 400; color: var(--mid); line-height: 1.45; }
 .quick-answer strong { color: var(--black); }
@@ -594,6 +605,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 
 /* Param card — wraps each top-level parameter row */
 .param-card {
+  position: relative;
   padding: 14px 16px;
   border-radius: 20px;
   background: #F2F2F2;
@@ -648,7 +660,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 
 /* Prop table */
 .prop-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
-.prop-table th { text-align: left; padding: 8px 12px; font-size: 0.625rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; }
+.prop-table th { text-align: left; padding: 8px 12px; font-size: 0.625rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border); font-weight: 600; white-space: nowrap; }
 .prop-table td { padding: 9px 12px; border-bottom: 1px solid var(--bg); vertical-align: top; }
 .prop-table tr:last-child td { border-bottom: none; }
 .prop-table tr:hover td { background: var(--bg); }
