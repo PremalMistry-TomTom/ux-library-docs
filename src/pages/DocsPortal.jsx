@@ -603,30 +603,14 @@ function MosaicCard({ card, palette, onNavigate }) {
       </div>
 
       {/* Body */}
-      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
-
-        {/* Category pills */}
-        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-          {cats.map(f => (
-            <span key={f.id} style={{
-              fontSize: '0.5rem', fontWeight: 700, padding: '2px 7px', borderRadius: 100, letterSpacing: '0.04em', textTransform: 'uppercase',
-              background: `${f.color}18`, color: f.color,
-            }}>{f.label}</span>
-          ))}
-        </div>
+      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
 
         {/* Title */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 5 }}>
-          <span style={{ fontSize: '0.875rem', lineHeight: 1.1, flexShrink: 0 }}>{card.emoji}</span>
-          <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.3 }}>{card.title}</span>
-        </div>
-
-        {/* Problem statement */}
-        <p style={{ margin: 0, fontSize: '0.6875rem', color: 'var(--mid)', lineHeight: 1.55, flex: 1 }}>{card.problem}</p>
+        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.3 }}>{card.title}</span>
 
         {/* Product footer */}
         <div style={{
-          marginTop: 4, paddingTop: 8, borderTop: '1px solid var(--border)',
+          paddingTop: 8, borderTop: '1px solid var(--border)',
           fontSize: '0.625rem', fontWeight: 600, color: 'var(--muted)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
