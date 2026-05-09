@@ -5,8 +5,18 @@ import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
   L_MapDisplay, L_SDKSearch, L_RouteOptions, L_NavGuidance, L_VirtualHorizon, L_OfflineMaps, L_CarPlay,
+  L_Route,
 } from '../illustrations/lightVariants';
-import { IlloMapDisplay, IlloNavGuidance } from './IntroIllustrations';
+import {
+  IlloMapDisplay, IlloNavGuidance,
+  IlloNavSDKLocation,
+  IlloNavSDKSearch,
+  IlloNavSDKRouting,
+  IlloNavSDKNavigation,
+  IlloNavSDKOffline,
+  IlloNavSDKVirtualHorizon,
+  IlloNavSDKAdvanced,
+} from './IntroIllustrations';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -240,6 +250,95 @@ function ThumbVirtualHorizon() {
   );
 }
 
+/* ─── Use-case card (key use cases grid) ────────────────────────────────────── */
+function UseCaseCard({ Thumb, group, title, desc, pageId, onNavigate }) {
+  const { theme, palette } = useIlloStyle();
+  const clickable = Boolean(pageId && onNavigate);
+  return (
+    <div
+      style={{ cursor: clickable ? 'pointer' : 'default', borderRadius: 20, border: '1px solid var(--border)', overflow: 'hidden', background: 'var(--white)', transition: 'box-shadow 0.15s, border-color 0.15s', display: 'flex', flexDirection: 'column' }}
+      onClick={clickable ? () => onNavigate(pageId) : undefined}
+      onMouseEnter={clickable ? e => { e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.12)'; e.currentTarget.style.borderColor = 'var(--red)'; } : undefined}
+      onMouseLeave={clickable ? e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; } : undefined}
+    >
+      <div style={{ height: 130, background: theme !== 'dark' ? palette.bg : '#0d1117', overflow: 'hidden', flexShrink: 0 }}>
+        <Thumb />
+      </div>
+      <div style={{ padding: '12px 14px', flex: 1 }}>
+        <div style={{ fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--muted)', marginBottom: 4 }}>{group}</div>
+        <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>{title}</div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+      </div>
+    </div>
+  );
+}
+
+const USE_CASE_CARDS = [
+  {
+    Thumb:  makeThumb(IlloMapDisplay,           L_MapDisplay),
+    group:  'Map Display',
+    title:  'Render a Map',
+    desc:   'Embed a fully interactive TomTom map into a Jetpack Compose or Android Views layout with styles, camera control, and live traffic.',
+    pageId: 'navsdk-map-display',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKNavigation,     L_NavGuidance),
+    group:  'Navigation',
+    title:  'Start Turn-by-Turn Navigation',
+    desc:   'Initiate a guided session with manoeuvre events, progress tracking, continuous replanning, and free-driving support.',
+    pageId: 'navsdk-navigation',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKRouting,        L_Route),
+    group:  'Routing',
+    title:  'Calculate Route with Alternatives',
+    desc:   'Request traffic-aware routes with up to three alternatives, compare section breakdowns, and import or export active routes.',
+    pageId: 'navsdk-routing',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKNavigation,     L_NavGuidance),
+    group:  'Navigation',
+    title:  'Add Voice Instructions',
+    desc:   'Connect a text-to-speech engine to receive NIP events and synthesise turn-by-turn voice prompts during active guidance.',
+    pageId: 'navsdk-navigation',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKOffline,        L_OfflineMaps),
+    group:  'Offline',
+    title:  'Enable Offline Maps',
+    desc:   'Pre-download map regions for fully on-device routing and rendering without any network connectivity.',
+    pageId: 'navsdk-offline',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKLocation,       L_MapDisplay),
+    group:  'Location',
+    title:  'GPS Location Provider',
+    desc:   'Attach the fused GNSS provider or a custom dead-reckoning engine to feed real-time position into the navigation stack.',
+    pageId: 'navsdk-location',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKVirtualHorizon, L_VirtualHorizon),
+    group:  'Virtual Horizon',
+    title:  'Virtual Horizon & ADAS Data',
+    desc:   'Read curvature, gradient, speed limits, and ahead-of-route events from the Horizon Engine for ADAS features.',
+    pageId: 'navsdk-horizon',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKSearch,         L_SDKSearch),
+    group:  'Search',
+    title:  'Fuzzy Search',
+    desc:   'Query the TomTom search API for destinations, POIs, and reverse-geocoded coordinates with autocomplete and along-route variants.',
+    pageId: 'navsdk-search',
+  },
+  {
+    Thumb:  makeThumb(IlloNavSDKAdvanced,       L_NavGuidance),
+    group:  'Advanced',
+    title:  'Simulate Navigation for Testing',
+    desc:   'Drive the navigation engine along a pre-planned route at configurable speed to test guidance logic without a real vehicle.',
+    pageId: 'navsdk-advanced',
+  },
+];
+
 /* ─── Capability card ────────────────────────────────────────────────────────── */
 function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
   const clickable = Boolean(pageId && onNavigate);
@@ -446,6 +545,19 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
               {t('navsdkIntro.whenCards.longerTimeIos.descPart2')}
             </WhenCard>
           )}
+        </div>
+      </div>
+
+      {/* Key use cases */}
+      <div className="zone">
+        <h2 className="sh" id="ns-usecases">Key use cases</h2>
+        <p className="quick-answer" style={{ marginBottom: 20 }}>
+          The most commonly needed NavSDK capabilities — click any card to jump straight to the documentation.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
+          {USE_CASE_CARDS.map(card => (
+            <UseCaseCard key={`${card.pageId}-${card.title}`} {...card} onNavigate={onNavigate} />
+          ))}
         </div>
       </div>
 

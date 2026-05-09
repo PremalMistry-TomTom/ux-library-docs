@@ -1,5 +1,4 @@
 import PageActions from '../components/ui/PageActions';
-import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -9,75 +8,96 @@ import {
   IlloMapRasterTile, IlloMapVectorTile, IlloMapSatelliteTile, IlloMapStaticImage,
 } from './IntroIllustrations';
 
-/* ─── Shared helpers ─────────────────────────────────────────────────────────── */
-function MethodBadge({ method }) {
-  const colors = { GET: '#3fb950', POST: '#58a6ff', DELETE: '#f85149' };
-  return (
-    <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: `${colors[method]}22`, color: colors[method], fontFamily: 'var(--font-mono, monospace)', letterSpacing: '0.04em' }}>
-      {method}
-    </span>
-  );
-}
-
-function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
-  return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ height: 140, flexShrink: 0, overflow: 'hidden' }}>
-        <Illo />
-      </div>
-      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <MethodBadge method={method} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-        </div>
-        {desc && <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</p>}
-      </div>
-    </div>
-  );
-}
-
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
 const HeroIllo = makeThumb(IlloMapVectorTile, L_MapVectorTile);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function MapDisplayAPIIntro({ onNavigate }) {
-  const { palette } = useIlloStyle();
+  const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
 
   const endpoints = [
     {
-      Illo: makeThumb(IlloMapRasterTile, L_MapRasterTile),
-      title: 'Raster Tile',
+      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile),
       method: 'GET',
-      path: '/map/1/tile/basic/main/{zoom}/{x}/{y}.png',
-      desc: 'Serve pre-rendered PNG map tiles for standard slippy-map integrations and web applications.',
+      title: 'Raster Map Tile',
+      desc: 'PNG map tiles at 256 or 512 px across 23 zoom levels — for standard slippy-map integrations.',
+      pageId: 'map-display-api-intro',
+      tag: 'v1',
     },
     {
-      Illo: makeThumb(IlloMapVectorTile, L_MapVectorTile),
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile),
+      method: 'GET',
       title: 'Vector Tile',
-      method: 'GET',
-      path: '/map/1/tile/basic/main/{zoom}/{x}/{y}.pbf',
-      desc: 'Deliver Mapbox Vector Tiles (MVT) for client-side styled, resolution-independent map rendering.',
+      desc: 'Protobuf (MVT) vector tiles at 23 zoom levels for client-side styled, resolution-independent rendering.',
+      pageId: 'map-display-api-intro',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloMapSatelliteTile, L_MapSatelliteTile),
+      Thumb: makeThumb(IlloMapSatelliteTile, L_MapSatelliteTile),
+      method: 'GET',
       title: 'Satellite Tile',
-      method: 'GET',
-      path: '/map/1/tile/sat/main/{zoom}/{x}/{y}.jpg',
-      desc: 'Retrieve satellite or aerial imagery tiles for high-detail visual context overlays.',
+      desc: 'Aerial/satellite imagery tiles in JPG at 256 × 256 px across 20 zoom levels.',
+      pageId: 'map-display-api-intro',
+      tag: 'v1',
     },
     {
-      Illo: makeThumb(null, L_MapAssetsAPI),
-      title: 'Map Assets',
+      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile),
       method: 'GET',
-      path: '/map/1/sprite/{spriteId}.json',
-      desc: 'Download map style sprites, glyphs, and style JSON required to render vector tiles client-side.',
+      title: 'Hillshade Tile',
+      desc: 'Terrain hillshade imagery at 514 × 514 px across 14 zoom levels for topographic context.',
+      pageId: 'map-display-api-intro',
+      tag: 'v1',
     },
     {
-      Illo: makeThumb(IlloMapStaticImage, L_MapStaticImage),
+      Thumb: makeThumb(null, L_MapAssetsAPI),
+      method: 'GET',
+      title: 'Map Styles',
+      desc: 'Fetch style JSON, sprite sheets, and glyph fonts needed to render vector tiles client-side.',
+      pageId: 'map-display-api-intro',
+      tag: 'v2',
+    },
+    {
+      Thumb: makeThumb(IlloMapStaticImage, L_MapStaticImage),
+      method: 'GET',
       title: 'Static Image',
+      desc: 'Generate a single static map image at a defined bounding box, zoom, and pixel dimensions for reports or previews.',
+      pageId: 'map-display-api-intro',
+      tag: 'v1',
+    },
+    {
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile),
       method: 'GET',
-      path: '/map/1/staticimage',
-      desc: 'Generate a single static map image at a defined bounding box, zoom, and size for reports or previews.',
+      title: 'WMS / WMTS',
+      desc: 'OGC-compliant Web Map Service and Web Map Tile Service endpoints for GIS and enterprise integrations.',
+      pageId: 'map-display-api-intro',
+      tag: 'v1',
+    },
+    {
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile),
+      method: 'GET',
+      title: 'Vector Content',
+      desc: 'Map feature collections for advanced client-side processing and custom cartographic workflows.',
+      pageId: 'map-display-api-intro',
+      tag: 'v2',
+    },
+  ];
+
+  const baseUrlRows = [
+    {
+      label: 'Base URL',
+      content: <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--black)' }}>https://api.tomtom.com/map/1/</code>,
+    },
+    {
+      label: 'Auth',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>API key via <code>?key={'{'}<em>your-api-key</em>{'}'}</code> query parameter</span>,
+    },
+    {
+      label: 'Version',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Service version <strong>1</strong> for raster/static; vector tiles also available as <strong>v2</strong></span>,
+    },
+    {
+      label: 'Tile grid',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Spherical Mercator (<strong>EPSG:3857</strong>) · zoom 0–22 · 256 or 512 px tiles</span>,
     },
   ];
 
@@ -95,32 +115,73 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       </p>
 
       {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
         <HeroIllo />
       </div>
 
       {/* Endpoint grid */}
       <div className="zone">
         <h2 className="sh" id="endpoints">Endpoints</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
-          {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} />
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          Raster tiles follow the path <code>/map/1/tile/{'{'}layer{'}'}/{'{'}style{'}'}/{'{'}zoom{'}'}/{'{'}x{'}'}/{'{'}y{'}'}.png</code>; vector tiles use <code>.pbf</code>.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
+          {endpoints.map(({ Thumb, method, title, desc, pageId, tag }) => (
+            <div
+              key={title}
+              className="nav-card"
+              onClick={() => onNavigate?.(pageId)}
+            >
+              <div className="nav-card-thumb" style={illoTheme !== 'dark' ? { background: illoPalette.bg, padding: 0 } : undefined}>
+                <Thumb />
+              </div>
+              <div className="nav-card-body">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(63,185,80,0.12)', color: '#3fb950', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
+                  {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(88,166,255,0.08)', color: '#58a6ff', fontWeight: 600 }}>{tag}</span>}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Base URL */}
+      {/* Base URL table */}
       <div className="zone">
-        <h2 className="sh" id="base-url">Base URL</h2>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--black)' }}>
-          GET https://api.tomtom.com/map/1/tile/basic/main/{'{'}zoom{'}'}/{'{'}x{'}'}/{'{'}y{'}'}.png?key={'{'}your-api-key{'}'}
+        <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
+          {baseUrlRows.map(({ label, content }, i) => (
+            <div key={label} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', borderBottom: i < baseUrlRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRight: '1px solid var(--border)', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center' }}>{label}</div>
+              <div style={{ padding: '10px 14px' }}>{content}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <Callout type="info" title="Authentication">
-        All requests require a valid API key passed as <code>key={'{'}your-api-key{'}'}</code> in the query string.
-        You can obtain a key from the <a href="https://developer.tomtom.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)' }}>TomTom Developer Portal</a>.
-      </Callout>
+      {/* Getting started */}
+      <div className="zone">
+        <h2 className="sh" id="getting-started">Getting started</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
+          Assemble a tile URL and display it in a Leaflet or Mapbox GL map:
+        </p>
+        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`const API_KEY = 'your-api-key';
+
+// Raster tile URL template — plug into Leaflet L.tileLayer()
+const rasterTemplate =
+  \`https://api.tomtom.com/map/1/tile/basic/main/{z}/{x}/{y}.png?key=\${API_KEY}\`;
+
+// Vector tile style URL — plug into maplibre-gl / Mapbox GL JS
+const vectorStyleUrl =
+  \`https://api.tomtom.com/maps-sdk-for-web/6.x/6.25.0/maps/sdk.min.css\`;
+
+// Static image — render a 800×400 px map centred on Amsterdam
+const staticImageUrl =
+  \`https://api.tomtom.com/map/1/staticimage\` +
+  \`?key=\${API_KEY}&zoom=12&center=4.9041,52.3676&format=png&width=800&height=400\`;`}</pre>
+      </div>
     </div>
   );
 }

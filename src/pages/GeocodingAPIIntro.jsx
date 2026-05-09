@@ -1,57 +1,66 @@
 import PageActions from '../components/ui/PageActions';
-import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import { makeThumb, L_Geocode, L_ReverseGeocode } from '../illustrations/lightVariants';
 import { IlloGeocode, IlloReverseGeocode } from './IntroIllustrations';
-
-/* ─── Shared helpers ─────────────────────────────────────────────────────────── */
-function MethodBadge({ method }) {
-  const colors = { GET: '#3fb950', POST: '#58a6ff', DELETE: '#f85149' };
-  return (
-    <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: `${colors[method]}22`, color: colors[method], fontFamily: 'var(--font-mono, monospace)', letterSpacing: '0.04em' }}>
-      {method}
-    </span>
-  );
-}
-
-function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
-  return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ height: 140, flexShrink: 0, overflow: 'hidden' }}>
-        <Illo />
-      </div>
-      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <MethodBadge method={method} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-        </div>
-        {desc && <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</p>}
-      </div>
-    </div>
-  );
-}
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
 const HeroIllo = makeThumb(IlloGeocode, L_Geocode);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function GeocodingAPIIntro({ onNavigate }) {
-  const { palette } = useIlloStyle();
+  const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
 
   const endpoints = [
     {
-      Illo: makeThumb(IlloGeocode, L_Geocode),
-      title: 'Geocode',
+      Thumb: makeThumb(IlloGeocode, L_Geocode),
       method: 'GET',
-      path: '/search/2/geocode/{query}.json',
+      title: 'Geocode',
       desc: 'Convert a human-readable address string into precise geographic coordinates (latitude/longitude).',
+      pageId: 'geocode',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloReverseGeocode, L_ReverseGeocode),
-      title: 'Reverse Geocode',
+      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode),
       method: 'GET',
-      path: '/search/2/reverseGeocode/{position}.json',
+      title: 'Reverse Geocode',
       desc: 'Convert a lat/lon coordinate into a structured address, street name, or place name.',
+      pageId: 'reverse-geocode',
+      tag: 'v2',
+    },
+    {
+      Thumb: makeThumb(IlloGeocode, L_Geocode),
+      method: 'GET',
+      title: 'Structured Geocode',
+      desc: 'Geocode addresses already split into discrete fields — street number, city, postal code — for higher precision.',
+      pageId: 'geocode',
+      tag: 'v2',
+    },
+    {
+      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode),
+      method: 'GET',
+      title: 'Cross Street Lookup',
+      desc: 'Resolve a coordinate to the nearest road intersection or cross-street name for turn-by-turn context.',
+      pageId: 'reverse-geocode',
+      tag: 'v2',
+    },
+  ];
+
+  const baseUrlRows = [
+    {
+      label: 'Base URL',
+      content: <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--black)' }}>https://api.tomtom.com/search/2/</code>,
+    },
+    {
+      label: 'Auth',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>API key via <code>?key={'{'}<em>your-api-key</em>{'}'}</code> query parameter</span>,
+    },
+    {
+      label: 'Version',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Service version <strong>2</strong> — stable, globally available</span>,
+    },
+    {
+      label: 'Formats',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>JSON (default), XML — specified as file extension in the path</span>,
     },
   ];
 
@@ -69,32 +78,77 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       </p>
 
       {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
         <HeroIllo />
       </div>
 
       {/* Endpoint grid */}
       <div className="zone">
         <h2 className="sh" id="endpoints">Endpoints</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
-          {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} />
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          Geocoding endpoints share the Search API base path at <code>/search/2/</code>.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
+          {endpoints.map(({ Thumb, method, title, desc, pageId, tag }) => (
+            <div
+              key={title}
+              className="nav-card"
+              onClick={() => onNavigate?.(pageId)}
+            >
+              <div className="nav-card-thumb" style={illoTheme !== 'dark' ? { background: illoPalette.bg, padding: 0 } : undefined}>
+                <Thumb />
+              </div>
+              <div className="nav-card-body">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(63,185,80,0.12)', color: '#3fb950', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
+                  {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(34,197,94,0.08)', color: '#22c55e', fontWeight: 600 }}>{tag}</span>}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Base URL */}
+      {/* Base URL table */}
       <div className="zone">
-        <h2 className="sh" id="base-url">Base URL</h2>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--black)' }}>
-          GET https://api.tomtom.com/search/2/geocode/{'{'}query{'}'}.json?key={'{'}your-api-key{'}'}
+        <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
+          {baseUrlRows.map(({ label, content }, i) => (
+            <div key={label} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', borderBottom: i < baseUrlRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRight: '1px solid var(--border)', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center' }}>{label}</div>
+              <div style={{ padding: '10px 14px' }}>{content}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <Callout type="info" title="Authentication">
-        All requests require a valid API key passed as <code>key={'{'}your-api-key{'}'}</code> in the query string.
-        You can obtain a key from the <a href="https://developer.tomtom.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)' }}>TomTom Developer Portal</a>.
-      </Callout>
+      {/* Getting started */}
+      <div className="zone">
+        <h2 className="sh" id="getting-started">Getting started</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
+          Convert an address to coordinates with a single request:
+        </p>
+        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`const API_KEY = 'your-api-key';
+
+// Forward geocoding — address → coordinates
+const geocodeRes = await fetch(
+  \`https://api.tomtom.com/search/2/geocode/\${
+    encodeURIComponent('De Ruyterkade 154, Amsterdam')
+  }.json?key=\${API_KEY}\`
+);
+const { results: [first] } = await geocodeRes.json();
+const { lat, lon } = first.position;   // 52.3800, 4.9003
+
+// Reverse geocoding — coordinates → address
+const reverseRes = await fetch(
+  \`https://api.tomtom.com/search/2/reverseGeocode/\${lat},\${lon}.json?key=\${API_KEY}\`
+);
+const { addresses: [addr] } = await reverseRes.json();
+console.log(addr.address.freeformAddress);
+// → "De Ruyterkade 154, 1011 AC Amsterdam, Netherlands"`}</pre>
+      </div>
     </div>
   );
 }

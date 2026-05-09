@@ -118,29 +118,15 @@ function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
 }
 
 const USE_CASE_CARDS = [
-  { id: 'home-screen-layout', key: 'homeScreenLayout',  Thumb: makeThumb(IlloHomeScreen,          L_HomeScreen) },
-  { id: 'eta-panel',          key: 'etaPanel',          Thumb: makeThumb(IlloETAPanel,            L_ETAPanel) },
-  { id: 'search-engine',      key: 'searchEngine',      Thumb: makeThumb(IlloSearchResult,        L_SearchResult) },
-  { id: 'theming',            key: 'theming',           Thumb: makeThumb(IlloThemingTokens,       L_ThemingTokens) },
-  { id: 'instruction-panel',  key: 'instructionPanel',  Thumb: makeThumb(IlloInstructionPanel,    L_NavGuidance) },
-  { id: 'route-bar',          key: 'routeBar',          Thumb: makeThumb(IlloRouteBar,            L_Route) },
-  { id: 'ev-charging-search', key: 'evChargingSearch',  Thumb: makeThumb(IlloChargingSearch,      L_ChargingSearch) },
-  { id: 'ev-routing',         key: 'evRouting',         Thumb: makeThumb(IlloEVRouting,           L_EVRouting) },
-  { id: 'ev-nav-ui',          key: 'evNavUI',           Thumb: makeThumb(IlloEVNavUI,             L_EVRouting) },
-  { id: 'cluster',            key: 'cluster',           Thumb: makeThumb(IlloCluster,             L_Cluster) },
-  { id: 'hud',                key: 'hud',               Thumb: makeThumb(IlloHUD,                 L_ADAS) },
-  { id: 'adas',               key: 'adas',              Thumb: makeThumb(IlloADAS,                L_ADAS) },
+  { id: 'home-screen-layout', key: 'homeScreenLayout',  Thumb: makeThumb(IlloHomeScreen,              L_HomeScreen)           },
+  { id: 'theming',            key: 'theming',           Thumb: makeThumb(IlloThemingTokens,           L_ThemingTokens)        },
+  { id: 'search-engine',      key: 'searchEngine',      Thumb: makeThumb(IlloSearchResult,            L_SearchResult)         },
+  { id: 'eta-panel',          key: 'etaPanel',          Thumb: makeThumb(IlloETAPanel,                L_ETAPanel)             },
+  { id: 'ev-routing',         key: 'evRouting',         Thumb: makeThumb(IlloEVRouting,               L_EVRouting)            },
+  { id: 'cluster',            key: 'cluster',           Thumb: makeThumb(IlloCluster,                 L_Cluster)              },
   { id: 'ai-personality',     key: 'aiPersonality',     Thumb: makeThumb(IlloConversationPersonality, L_ConversationPersonality) },
-  { id: 'intent-routing',     key: 'intentRouting',     Thumb: makeThumb(IlloIntentRouting,       L_AIVoice) },
-  { id: 'voice-engine',       key: 'voiceEngine',       Thumb: makeThumb(IlloVoiceEngine,         L_AIVoice) },
-  { id: 'speech-to-text',     key: 'speechToText',      Thumb: makeThumb(IlloSpeechToText,        L_AIVoice) },
-  // NavSDK use cases
-  { id: 'navsdk-map-display',  key: 'navsdkMapDisplay',  Thumb: makeThumb(IlloMapDisplay,            L_MapDisplay) },
-  { id: 'navsdk-navigation',   key: 'navsdkNavigation',  Thumb: makeThumb(IlloNavSDKNavigation,      L_NavGuidance) },
-  { id: 'navsdk-search',       key: 'navsdkSearch',      Thumb: makeThumb(IlloNavSDKSearch,          L_SearchResult) },
-  { id: 'navsdk-routing',      key: 'navsdkRouting',     Thumb: makeThumb(IlloNavSDKRouting,         L_Route) },
-  { id: 'navsdk-horizon',      key: 'navsdkHorizon',     Thumb: makeThumb(IlloNavSDKVirtualHorizon,  L_HorizonPanel) },
-  { id: 'navsdk-offline',      key: 'navsdkOffline',     Thumb: makeThumb(IlloNavSDKOffline,         L_MapDisplay) },
+  { id: 'instruction-panel',  key: 'instructionPanel',  Thumb: makeThumb(IlloInstructionPanel,        L_NavGuidance)          },
+  { id: 'hud',                key: 'hud',               Thumb: makeThumb(IlloHUD,                     L_ADAS)                 },
 ];
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */

@@ -1,5 +1,4 @@
 import PageActions from '../components/ui/PageActions';
-import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -9,61 +8,80 @@ import {
   IlloEVSearchNearby, IlloEVChargingAvailability,
 } from './IntroIllustrations';
 
-/* ─── Shared helpers ─────────────────────────────────────────────────────────── */
-function MethodBadge({ method }) {
-  const colors = { GET: '#3fb950', POST: '#58a6ff', DELETE: '#f85149' };
-  return (
-    <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: `${colors[method]}22`, color: colors[method], fontFamily: 'var(--font-mono, monospace)', letterSpacing: '0.04em' }}>
-      {method}
-    </span>
-  );
-}
-
-function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
-  return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ height: 140, flexShrink: 0, overflow: 'hidden' }}>
-        <Illo />
-      </div>
-      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <MethodBadge method={method} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-        </div>
-        {desc && <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</p>}
-      </div>
-    </div>
-  );
-}
-
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
 const HeroIllo = makeThumb(IlloEVSearchNearby, L_EVSearchNearby);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function EVChargingAPIIntro({ onNavigate }) {
-  const { palette } = useIlloStyle();
+  const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
 
   const endpoints = [
     {
-      Illo: makeThumb(IlloEVSearchNearby, L_EVSearchNearby),
-      title: 'EV Search Nearby',
+      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby),
       method: 'GET',
-      path: '/search/2/nearbySearch/.json?categorySet=7309',
-      desc: 'Search for EV charging stations near a coordinate, filtered by connector type and operator.',
+      title: 'EV Station Search',
+      desc: 'Search for charging stations near a coordinate using category set 7309, with connector type and operator filters.',
+      pageId: 'ev-charging-api-intro',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability),
+      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability),
+      method: 'GET',
       title: 'Charging Availability',
-      method: 'GET',
-      path: '/search/2/chargingAvailability.json',
-      desc: 'Query real-time connector availability at a specific charging station, including occupied and free slots.',
+      desc: 'Query real-time connector availability at a charging station — number of occupied and free slots per connector type.',
+      pageId: 'ev-charging-api-intro',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(null, L_EVMarketCoverage),
-      title: 'Market Coverage',
+      Thumb: makeThumb(null, L_EVMarketCoverage),
       method: 'GET',
-      path: '/search/2/evSupportedMarkets.json',
-      desc: 'Return the list of countries and regions where TomTom EV charging data is available.',
+      title: 'Supported Markets',
+      desc: 'Return the list of countries and regions where TomTom EV charging availability data is provided.',
+      pageId: 'ev-charging-api-intro',
+      tag: 'v2',
+    },
+    {
+      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability),
+      method: 'GET',
+      title: 'Charging Park Details',
+      desc: 'Retrieve enriched details for a charging park including operator, amenities, opening hours, and pricing information.',
+      pageId: 'ev-charging-api-intro',
+      tag: 'v2',
+    },
+    {
+      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby),
+      method: 'GET',
+      title: 'Along-Route Charging',
+      desc: 'Find charging stations along a route corridor, ranked by deviation from the original path and compatible connectors.',
+      pageId: 'ev-charging-api-intro',
+      tag: 'v2',
+    },
+    {
+      Thumb: makeThumb(null, L_EVMarketCoverage),
+      method: 'GET',
+      title: 'Connector Categories',
+      desc: 'List supported EV connector type categories — CCS, CHAdeMO, Type 2, and more — for filtering search results.',
+      pageId: 'ev-charging-api-intro',
+      tag: 'v2',
+    },
+  ];
+
+  const baseUrlRows = [
+    {
+      label: 'Base URL',
+      content: <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--black)' }}>https://api.tomtom.com/search/2/</code>,
+    },
+    {
+      label: 'Auth',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>API key via <code>?key={'{'}<em>your-api-key</em>{'}'}</code> query parameter</span>,
+    },
+    {
+      label: 'Version',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Built on Search API service version <strong>2</strong></span>,
+    },
+    {
+      label: 'Coverage',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Real-time availability in Europe and North America; static data globally</span>,
     },
   ];
 
@@ -81,32 +99,81 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       </p>
 
       {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
         <HeroIllo />
       </div>
 
       {/* Endpoint grid */}
       <div className="zone">
         <h2 className="sh" id="endpoints">Endpoints</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
-          {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} />
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          EV charging endpoints extend the Search API at <code>/search/2/</code> with EV-specific category and availability parameters.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
+          {endpoints.map(({ Thumb, method, title, desc, pageId, tag }) => (
+            <div
+              key={title}
+              className="nav-card"
+              onClick={() => onNavigate?.(pageId)}
+            >
+              <div className="nav-card-thumb" style={illoTheme !== 'dark' ? { background: illoPalette.bg, padding: 0 } : undefined}>
+                <Thumb />
+              </div>
+              <div className="nav-card-body">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(63,185,80,0.12)', color: '#3fb950', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
+                  {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(34,197,94,0.08)', color: '#22c55e', fontWeight: 600 }}>{tag}</span>}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Base URL */}
+      {/* Base URL table */}
       <div className="zone">
-        <h2 className="sh" id="base-url">Base URL</h2>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--black)' }}>
-          GET https://api.tomtom.com/search/2/chargingAvailability.json?key={'{'}your-api-key{'}'}
+        <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
+          {baseUrlRows.map(({ label, content }, i) => (
+            <div key={label} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', borderBottom: i < baseUrlRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRight: '1px solid var(--border)', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center' }}>{label}</div>
+              <div style={{ padding: '10px 14px' }}>{content}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <Callout type="info" title="Authentication">
-        All requests require a valid API key passed as <code>key={'{'}your-api-key{'}'}</code> in the query string.
-        You can obtain a key from the <a href="https://developer.tomtom.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)' }}>TomTom Developer Portal</a>.
-      </Callout>
+      {/* Getting started */}
+      <div className="zone">
+        <h2 className="sh" id="getting-started">Getting started</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
+          Find nearby CCS-compatible charging stations and check real-time availability:
+        </p>
+        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`const API_KEY = 'your-api-key';
+const lat = 52.3731, lon = 4.8922;
+
+// Step 1 — Find nearby EV stations (category 7309 = EV charging station)
+const searchRes = await fetch(
+  \`https://api.tomtom.com/search/2/nearbySearch/.json\` +
+  \`?key=\${API_KEY}&lat=\${lat}&lon=\${lon}&radius=2000&categorySet=7309&limit=10\`
+);
+const { results } = await searchRes.json();
+
+// Step 2 — Check real-time availability at the first result
+const stationId = results[0]?.dataSources?.chargingAvailability?.id;
+if (stationId) {
+  const availRes = await fetch(
+    \`https://api.tomtom.com/search/2/chargingAvailability.json\` +
+    \`?key=\${API_KEY}&chargingAvailability=\${stationId}\`
+  );
+  const { connectors } = (await availRes.json()).chargingAvailability;
+  connectors.forEach(c => {
+    console.log(c.type.id, '—', c.availability.current.available, 'free');
+  });
+}`}</pre>
+      </div>
     </div>
   );
 }

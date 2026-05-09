@@ -1,5 +1,4 @@
 import PageActions from '../components/ui/PageActions';
-import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -11,103 +10,104 @@ import {
   IlloSearchAlongRoute, IlloSearchAutocomplete, IlloPOIDetails, IlloPOIPhotos,
 } from './IntroIllustrations';
 
-/* ─── Shared helpers ─────────────────────────────────────────────────────────── */
-function MethodBadge({ method }) {
-  const colors = { GET: '#3fb950', POST: '#58a6ff', DELETE: '#f85149' };
-  return (
-    <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: `${colors[method]}22`, color: colors[method], fontFamily: 'var(--font-mono, monospace)', letterSpacing: '0.04em' }}>
-      {method}
-    </span>
-  );
-}
-
-function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
-  return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ height: 140, flexShrink: 0, overflow: 'hidden' }}>
-        <Illo />
-      </div>
-      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <MethodBadge method={method} />
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-        </div>
-        {desc && <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</p>}
-      </div>
-    </div>
-  );
-}
-
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
 const HeroIllo = makeThumb(IlloSearchFuzzy, L_SearchFuzzy);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SearchAPIIntro({ onNavigate }) {
-  const { palette } = useIlloStyle();
+  const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
 
   const endpoints = [
     {
-      Illo: makeThumb(IlloSearchFuzzy, L_SearchFuzzy),
+      Thumb: makeThumb(IlloSearchFuzzy, L_SearchFuzzy),
+      method: 'GET',
       title: 'Fuzzy Search',
-      method: 'GET',
-      path: '/search/2/search/{query}.json',
-      desc: 'Unified search endpoint accepting free-form text — addresses, POIs, and coordinates in a single query.',
+      desc: 'Unified endpoint accepting free-form text — addresses, POIs, and coordinates resolved in a single query.',
+      pageId: 'search-fuzzy',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloSearchPOI, L_SearchPOI),
+      Thumb: makeThumb(IlloSearchPOI, L_SearchPOI),
+      method: 'GET',
       title: 'POI Search',
-      method: 'GET',
-      path: '/search/2/poiSearch/{query}.json',
       desc: 'Search exclusively for Points of Interest by name with optional category and brand filters.',
+      pageId: 'search-poi',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(null, L_SearchCategory),
+      Thumb: makeThumb(null, L_SearchCategory),
+      method: 'GET',
       title: 'Category Search',
-      method: 'GET',
-      path: '/search/2/categorySearch/{query}.json',
       desc: 'Find POIs by category type such as restaurants, hospitals, or petrol stations.',
+      pageId: 'search-category',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloSearchNearby, L_SearchNearby),
+      Thumb: makeThumb(IlloSearchNearby, L_SearchNearby),
+      method: 'GET',
       title: 'Nearby Search',
-      method: 'GET',
-      path: '/search/2/nearbySearch/.json',
       desc: 'Discover POIs within a radius around a given lat/lon coordinate without a text query.',
+      pageId: 'search-nearby',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloSearchAlongRoute, L_SearchAlongRoute),
+      Thumb: makeThumb(IlloSearchAlongRoute, L_SearchAlongRoute),
+      method: 'POST',
       title: 'Along-Route Search',
-      method: 'POST',
-      path: '/search/2/searchAlongRoute/{query}.json',
       desc: 'Find POIs along a route corridor, ranked by deviation from the original path.',
+      pageId: 'search-along-route',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloSearchAutocomplete, L_SearchAutocomplete),
+      Thumb: makeThumb(IlloSearchAutocomplete, L_SearchAutocomplete),
+      method: 'GET',
       title: 'Autocomplete',
-      method: 'GET',
-      path: '/search/2/autocomplete/{query}.json',
-      desc: 'Return type-ahead suggestions for partial search queries to power instant search UIs.',
+      desc: 'Return type-ahead entity suggestions for partial queries to power instant search UIs.',
+      pageId: 'search-autocomplete',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(null, L_BatchSearch),
-      title: 'Batch Search',
+      Thumb: makeThumb(null, L_BatchSearch),
       method: 'POST',
-      path: '/search/2/batch/sync.json',
+      title: 'Batch Search',
       desc: 'Execute multiple search queries in a single HTTP request, synchronously or asynchronously.',
+      pageId: 'search-batch',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloPOIDetails, L_POIDetails),
+      Thumb: makeThumb(IlloPOIDetails, L_POIDetails),
+      method: 'GET',
       title: 'POI Details',
-      method: 'GET',
-      path: '/search/2/poiDetails.json',
-      desc: 'Retrieve enriched POI data including ratings, price range, hours, and contact information.',
+      desc: 'Retrieve enriched POI data including ratings, price range, opening hours, and contact info.',
+      pageId: 'poi-details',
+      tag: 'v2',
     },
     {
-      Illo: makeThumb(IlloPOIPhotos, L_POIPhotos),
-      title: 'POI Photos',
+      Thumb: makeThumb(IlloPOIPhotos, L_POIPhotos),
       method: 'GET',
-      path: '/search/2/poiPhotos.json',
+      title: 'POI Photos',
       desc: 'Fetch photos associated with a POI to display visual content in your app.',
+      pageId: 'poi-photos',
+      tag: 'v2',
+    },
+  ];
+
+  const baseUrlRows = [
+    {
+      label: 'Base URL',
+      content: <code style={{ fontSize: '0.875rem', fontFamily: 'monospace', color: 'var(--black)' }}>https://api.tomtom.com/search/2/</code>,
+    },
+    {
+      label: 'Auth',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>API key via <code>?key={'{'}<em>your-api-key</em>{'}'}</code> query parameter</span>,
+    },
+    {
+      label: 'Version',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>Service version <strong>2</strong> — stable, globally available</span>,
+    },
+    {
+      label: 'Formats',
+      content: <span style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>JSON (default), XML — specified as file extension in the path</span>,
     },
   ];
 
@@ -119,38 +119,79 @@ export default function SearchAPIIntro({ onNavigate }) {
       </div>
 
       <p className="quick-answer">
-        The TomTom Search API provides a comprehensive set of endpoints for finding addresses, Points of Interest,
-        and places by text query, category, or proximity. It powers fuzzy matching, autocomplete, along-route
-        discovery, and batch processing — all backed by TomTom's global map data.
+        The TomTom Search API provides a comprehensive set of endpoints for finding addresses, Points of
+        Interest, and places by text query, category, or proximity. It powers fuzzy matching, autocomplete,
+        along-route discovery, and batch processing — all backed by TomTom's global map data.
       </p>
 
       {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
+      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
         <HeroIllo />
       </div>
 
       {/* Endpoint grid */}
       <div className="zone">
         <h2 className="sh" id="endpoints">Endpoints</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
-          {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} />
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          All endpoints live under <code>/search/2/</code> and accept an API key as a query parameter.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
+          {endpoints.map(({ Thumb, method, title, desc, pageId, tag }) => (
+            <div
+              key={pageId}
+              className="nav-card"
+              onClick={() => onNavigate?.(pageId)}
+            >
+              <div className="nav-card-thumb" style={illoTheme !== 'dark' ? { background: illoPalette.bg, padding: 0 } : undefined}>
+                <Thumb />
+              </div>
+              <div className="nav-card-body">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: method === 'GET' ? 'rgba(63,185,80,0.12)' : 'rgba(88,166,255,0.12)', color: method === 'GET' ? '#3fb950' : '#58a6ff', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
+                  {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(34,197,94,0.08)', color: '#22c55e', fontWeight: 600 }}>{tag}</span>}
+                </div>
+                <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
+                <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+              </div>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* Base URL */}
+      {/* Base URL table */}
       <div className="zone">
-        <h2 className="sh" id="base-url">Base URL</h2>
-        <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', padding: '12px 16px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--black)' }}>
-          GET https://api.tomtom.com/search/2/search/{'{'}query{'}'}.json?key={'{'}your-api-key{'}'}
+        <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden' }}>
+          {baseUrlRows.map(({ label, content }, i) => (
+            <div key={label} style={{ display: 'grid', gridTemplateColumns: '100px 1fr', borderBottom: i < baseUrlRows.length - 1 ? '1px solid var(--border)' : 'none' }}>
+              <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRight: '1px solid var(--border)', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'flex', alignItems: 'center' }}>{label}</div>
+              <div style={{ padding: '10px 14px' }}>{content}</div>
+            </div>
+          ))}
         </div>
       </div>
 
-      <Callout type="info" title="Authentication">
-        All requests require a valid API key passed as <code>key={'{'}your-api-key{'}'}</code> in the query string.
-        You can obtain a key from the <a href="https://developer.tomtom.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)' }}>TomTom Developer Portal</a>.
-      </Callout>
+      {/* Getting started */}
+      <div className="zone">
+        <h2 className="sh" id="getting-started">Getting started</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
+          Make your first fuzzy search request with a single <code>fetch</code> call:
+        </p>
+        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`// Fuzzy Search — find a place by free-form text
+const API_KEY = 'your-api-key';
+const query   = 'Amsterdam';
+
+const res = await fetch(
+  \`https://api.tomtom.com/search/2/search/\${encodeURIComponent(query)}.json\` +
+  \`?key=\${API_KEY}&limit=5&countrySet=NL\`
+);
+const { results } = await res.json();
+
+// Each result contains position, address, and optionally a POI block
+results.forEach(r => {
+  console.log(r.address.freeformAddress, r.position);
+});`}</pre>
+      </div>
     </div>
   );
 }
