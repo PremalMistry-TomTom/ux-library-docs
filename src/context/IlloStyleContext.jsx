@@ -89,9 +89,9 @@ export const THEMES = {
     grid:   '#DCE9F4',
     white:  '#FFFFFF',
     dark:   '#002640',   // /80
-    accent: '#15803D',
-    warn:   '#92400E',
-    danger: '#DC2626',
+    accent: '#00487F',   // /48 — primary accent
+    warn:   '#276692',   // /32 — secondary
+    danger: '#003F6A',   // /64 — deepest emphasis
   },
   indigoDark: {
     bg:     '#001924',   // /96
@@ -104,9 +104,9 @@ export const THEMES = {
     grid:   '#001220',
     white:  '#F5F8FA',   // /0
     dark:   '#002640',
-    accent: '#4ADE80',
-    warn:   '#FBBF24',
-    danger: '#F87171',
+    accent: '#5083A7',   // /24 — bright enough on dark
+    warn:   '#779FBB',   // /16 — lighter
+    danger: '#276692',   // /32 — medium emphasis
   },
 
   // Bolt (/0 → /100 cyan-blue scale)
@@ -121,9 +121,9 @@ export const THEMES = {
     grid:   '#DCF4FF',
     white:  '#FFFFFF',
     dark:   '#005580',   // /80
-    accent: '#15803D',
-    warn:   '#92400E',
-    danger: '#DC2626',
+    accent: '#00AAFF',   // /48 — primary accent
+    warn:   '#50C4FF',   // /32 — secondary
+    danger: '#0086D5',   // /64 — deepest emphasis
   },
   boltDark: {
     bg:     '#001C28',   // /100
@@ -136,9 +136,9 @@ export const THEMES = {
     grid:   '#001422',
     white:  '#F5FBFF',   // /0
     dark:   '#003955',
-    accent: '#4ADE80',
-    warn:   '#FBBF24',
-    danger: '#F87171',
+    accent: '#50C4FF',   // /32 — bright on dark
+    warn:   '#77D1FF',   // /24 — lighter
+    danger: '#00AAFF',   // /48 — most saturated
   },
 
   // Shamrock (/0 → /100 green scale)
@@ -153,9 +153,9 @@ export const THEMES = {
     grid:   '#DCEEE5',
     white:  '#FFFFFF',
     dark:   '#004E2C',   // /80
-    accent: '#0EA5E9',
-    warn:   '#92400E',
-    danger: '#DC2626',
+    accent: '#00A65E',   // /48 — primary accent
+    warn:   '#50C190',   // /32 — secondary
+    danger: '#00874C',   // /64 — deepest emphasis
   },
   shamrockDark: {
     bg:     '#000F09',   // /100
@@ -168,9 +168,9 @@ export const THEMES = {
     grid:   '#000C07',
     white:  '#F5FBF8',   // /0
     dark:   '#004E2C',
-    accent: '#38BDF8',
-    warn:   '#FBBF24',
-    danger: '#F87171',
+    accent: '#50C190',   // /32 — bright on dark
+    warn:   '#77CFA9',   // /24 — lighter
+    danger: '#00A65E',   // /48 — most saturated
   },
 
   // Cadmium (/0 → /100 yellow-amber scale)
@@ -185,9 +185,9 @@ export const THEMES = {
     grid:   '#FFF4C8',
     white:  '#FFFFFF',
     dark:   '#634801',   // /96
-    accent: '#15803D',
-    warn:   '#92400E',
-    danger: '#DC2626',
+    accent: '#C79102',   // /72 — deep enough to read on pale yellow bg
+    warn:   '#FDCF53',   // /32 — mid-yellow
+    danger: '#956D01',   // /80 — darkest emphasis
   },
   cadmiumDark: {
     bg:     '#322400',   // /100
@@ -200,9 +200,9 @@ export const THEMES = {
     grid:   '#261B00',
     white:  '#FFF5DD',   // /0
     dark:   '#3D2C00',
-    accent: '#4ADE80',
-    warn:   '#FDC530',
-    danger: '#F87171',
+    accent: '#FDC530',   // /48 — primary accent on dark
+    warn:   '#FED875',   // /24 — lighter
+    danger: '#C79102',   // /72 — deeper emphasis
   },
 
   // Bright (/0 → /100 orange scale)
@@ -217,9 +217,9 @@ export const THEMES = {
     grid:   '#FFEADC',
     white:  '#FFFFFF',
     dark:   '#802F00',   // /80
-    accent: '#15803D',
-    warn:   '#92400E',
-    danger: '#DC2626',
+    accent: '#FF5D00',   // /48 — primary accent
+    warn:   '#FF9355',   // /24 — secondary
+    danger: '#D54E00',   // /64 — deepest emphasis
   },
   brightDark: {
     bg:     '#321300',   // /100
@@ -232,9 +232,9 @@ export const THEMES = {
     grid:   '#260F00',
     white:  '#FFE7D9',   // /0
     dark:   '#3D1800',
-    accent: '#4ADE80',
-    warn:   '#FBBF24',
-    danger: '#F87171',
+    accent: '#FF9355',   // /24 — bright on dark
+    warn:   '#FFB58B',   // /16 — lighter
+    danger: '#FF5D00',   // /48 — most saturated
   },
 
   // Red (/0 → /100 red scale)
@@ -249,9 +249,9 @@ export const THEMES = {
     grid:   '#FFEAEA',
     white:  '#FFFFFF',
     dark:   '#7A0F0A',   // /80
-    accent: '#15803D',
-    warn:   '#92400E',
-    danger: '#DF1B12',
+    accent: '#DF1B12',   // /48 — primary accent
+    warn:   '#F0514A',   // /32 — secondary
+    danger: '#B6160F',   // /64 — deepest emphasis
   },
   redDark: {
     bg:     '#380300',   // /100
@@ -264,9 +264,9 @@ export const THEMES = {
     grid:   '#2A0200',
     white:  '#FFF0EF',   // /0
     dark:   '#420400',
-    accent: '#4ADE80',
-    warn:   '#FBBF24',
-    danger: '#F87171',
+    accent: '#F0514A',   // /32 — bright on dark
+    warn:   '#F8ABAB',   // /16 — lighter
+    danger: '#DF1B12',   // /48 — most saturated
   },
 
   // 'dark' is the original dark/realistic style — no palette (uses ThumbXxx components)
