@@ -2103,19 +2103,58 @@ html.ai-panel-open .page {
 /* ── Sticky Tab Bar ── */
 .dp2-tabbar-wrap {
   position: sticky;
-  top: var(--global-h, 50px); /* topnav is hidden, only GlobalHeader is above */
+  top: var(--global-h, 50px);
   z-index: 20;
   background: var(--s0);
   display: flex;
   justify-content: center;
-  padding: 16px 0;
+  padding: 12px 24px;
 }
+/* Inner row: view toggle LEFT + filter pill RIGHT */
+.dp2-viewbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+/* View toggle (Catalogue / Discovery) */
+.dp2-view-toggle {
+  display: inline-flex;
+  background: var(--s1);
+  border-radius: var(--r-xl);
+  padding: 4px;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.dp2-view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  border-radius: var(--r-xl);
+  padding: 7px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1.4;
+}
+.dp2-view-btn:hover { background: #e0e0e0; }
+.dp2-view-btn--active {
+  background: #111;
+  color: #fff;
+}
+.dp2-view-btn--active:hover { background: #333; }
 .dp2-tabbar-pill {
   display: inline-flex;
   background: var(--s1);
   border-radius: var(--r-xl);
   padding: 4px;
   gap: 2px;
+  overflow-x: auto;
 }
 .dp2-tab-btn {
   background: transparent;
@@ -2447,9 +2486,14 @@ html.ai-panel-open .page {
 }
 @media (max-width: 640px) {
   .dp2-footer-inner { padding: 0 16px; }
-  .dp2-tabbar-pill { overflow-x: auto; border-radius: var(--r-xl); }
   .dp2-hero { padding: 24px 0; }
   .dp2-block-container { padding: 0 16px; }
+}
+/* Stack view toggle above filter tabs on tablet / mobile */
+@media (max-width: 768px) {
+  .dp2-tabbar-wrap { padding: 10px 16px; justify-content: flex-start; }
+  .dp2-viewbar-inner { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+  .dp2-tabbar-pill { overflow-x: auto; border-radius: var(--r-xl); width: 100%; }
 }
 
 /* ── Dark mode overrides for DocsPortal (dp2-) — uses site CSS variables ── */
@@ -2464,6 +2508,10 @@ html.ai-panel-open .page {
 [data-theme="dark"] .dp2-tabbar-pill         { background: var(--bg); }
 [data-theme="dark"] .dp2-tab-btn             { color: var(--mid); }
 [data-theme="dark"] .dp2-tab-btn:hover       { background: var(--border); }
+[data-theme="dark"] .dp2-view-toggle         { background: var(--bg); }
+[data-theme="dark"] .dp2-view-btn            { color: var(--mid); }
+[data-theme="dark"] .dp2-view-btn:hover      { background: var(--border); }
+[data-theme="dark"] .dp2-view-btn--active    { background: var(--black); color: var(--white); }
 [data-theme="dark"] .dp2-section-heading     { color: var(--black); }
 [data-theme="dark"] .dp2-navsdk-card         { background: var(--bg); border-color: var(--border); }
 [data-theme="dark"] .dp2-navsdk-title        { color: var(--black); }

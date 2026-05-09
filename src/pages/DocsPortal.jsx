@@ -543,7 +543,27 @@ const DISC_TABS = [
   { id: 'fleet-logistics',      label: 'Fleet & Logistics' },
 ];
 
-function MosaicView({ onNavigate }) {
+function ViewToggle({ view, setView }) {
+  return (
+    <div className="dp2-view-toggle">
+      {[
+        { id: 'catalogue', icon: '≡', label: 'Catalogue' },
+        { id: 'mosaic',    icon: '⊞', label: 'Discovery' },
+      ].map(v => (
+        <button
+          key={v.id}
+          onClick={() => setView(v.id)}
+          className={`dp2-view-btn${view === v.id ? ' dp2-view-btn--active' : ''}`}
+        >
+          <span style={{ fontSize: '0.875rem', lineHeight: 1 }}>{v.icon}</span>
+          {v.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function MosaicView({ onNavigate, view, setView }) {
   const { palette } = useIlloStyle();
   const [activeCat, setActiveCat] = useState('all');
 
@@ -553,18 +573,21 @@ function MosaicView({ onNavigate }) {
 
   return (
     <div>
-      {/* Sticky filter tab bar — same style as catalogue */}
+      {/* Sticky bar: view toggle + filter tabs */}
       <div className="dp2-tabbar-wrap">
-        <div className="dp2-tabbar-pill">
-          {DISC_TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`dp2-tab-btn${activeCat === tab.id ? ' dp2-tab-btn--active' : ''}`}
-              onClick={() => setActiveCat(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="dp2-viewbar-inner">
+          <ViewToggle view={view} setView={setView} />
+          <div className="dp2-tabbar-pill">
+            {DISC_TABS.map(tab => (
+              <button
+                key={tab.id}
+                className={`dp2-tab-btn${activeCat === tab.id ? ' dp2-tab-btn--active' : ''}`}
+                onClick={() => setActiveCat(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -682,7 +705,7 @@ export default function DocsPortal({ onNavigate }) {
           style={{ backgroundImage: `url('${BASE}hero_background_globe.svg')` }}
         />
         <div className="dp2-hero-inner">
-          {/* Left: heading + search + view toggle */}
+          {/* Left: heading + search */}
           <div className="dp2-hero-left">
             <h4 className="dp2-hero-heading">
               Start building with TomTom APIs, SDKs, and location technology.
@@ -690,30 +713,6 @@ export default function DocsPortal({ onNavigate }) {
             <div className="dp2-search-bar">
               <span className="dp2-search-icon"><SearchIcon /></span>
               <span className="dp2-search-placeholder">Search Documentation, API and SDKs</span>
-            </div>
-
-            {/* View toggle — sits below search bar inside the left column */}
-            <div style={{ display: 'flex', gap: 6 }}>
-              {[
-                { id: 'catalogue', icon: '☰', label: 'Catalogue' },
-                { id: 'mosaic',    icon: '⊞', label: 'Discovery' },
-              ].map(v => (
-                <button
-                  key={v.id}
-                  onClick={() => setView(v.id)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 6,
-                    padding: '7px 16px', borderRadius: 100, cursor: 'pointer',
-                    fontSize: '0.8125rem', fontWeight: 600,
-                    border: view === v.id ? '2px solid var(--black)' : '1.5px solid var(--border)',
-                    background: view === v.id ? 'var(--black)' : 'var(--surface)',
-                    color: view === v.id ? 'var(--bg)' : 'var(--mid)',
-                    transition: 'all 0.15s',
-                  }}
-                >
-                  <span style={{ fontSize: '0.875rem' }}>{v.icon}</span> {v.label}
-                </button>
-              ))}
             </div>
           </div>
 
@@ -732,23 +731,26 @@ export default function DocsPortal({ onNavigate }) {
       </section>
 
       {/* ── Mosaic view ── */}
-      {view === 'mosaic' && <MosaicView onNavigate={onNavigate} />}
+      {view === 'mosaic' && <MosaicView onNavigate={onNavigate} view={view} setView={setView} />}
 
       {/* ── Catalogue view ── */}
       {view === 'catalogue' && <>
 
       {/* ── Sticky Tab Bar ── */}
       <div className="dp2-tabbar-wrap" ref={tabBarRef}>
-        <div className="dp2-tabbar-pill">
-          {TABS.map(tab => (
-            <button
-              key={tab.id}
-              className={`dp2-tab-btn${activeTab === tab.id ? ' dp2-tab-btn--active' : ''}`}
-              onClick={() => scrollToSection(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="dp2-viewbar-inner">
+          <ViewToggle view={view} setView={setView} />
+          <div className="dp2-tabbar-pill">
+            {TABS.map(tab => (
+              <button
+                key={tab.id}
+                className={`dp2-tab-btn${activeTab === tab.id ? ' dp2-tab-btn--active' : ''}`}
+                onClick={() => scrollToSection(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
