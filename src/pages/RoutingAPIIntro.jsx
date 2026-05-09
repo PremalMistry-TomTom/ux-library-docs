@@ -381,7 +381,6 @@ function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavi
           {available === false && <span style={{ fontSize: '0.625rem', color: '#64748b', marginLeft: 'auto' }}>v1 only</span>}
         </div>
         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
-        <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{path}</code>
         <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
       </div>
     </div>

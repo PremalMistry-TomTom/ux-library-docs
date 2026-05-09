@@ -260,7 +260,6 @@ export default function LDEVRIntro({ onNavigate }) {
                   {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(34,197,94,0.08)', color: '#22c55e', fontWeight: 600 }}>{tag}</span>}
                 </div>
                 <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{t(`ldevrIntro.tableRows.${titleKey}`, { defaultValue: titleKey })}</div>
-                <code style={{ display: 'block', fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{path}</code>
                 <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
               </div>
             </div>

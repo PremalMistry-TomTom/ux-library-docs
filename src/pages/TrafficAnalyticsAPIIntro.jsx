@@ -30,7 +30,6 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
           <MethodBadge method={method} />
           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
         </div>
-        {path && <code style={{ fontSize: '0.5625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)', wordBreak: 'break-all' }}>{path}</code>}
         {desc && <p style={{ margin: '4px 0 0', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>{desc}</p>}
       </div>
     </div>
