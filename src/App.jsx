@@ -77,6 +77,7 @@ import ADASIntegration from './pages/ADASIntegration';
 import ScreenshotAssets from './pages/ScreenshotAssets';
 import Typography from './pages/Typography';
 import IntroIllustrations from './pages/IntroIllustrations';
+import IntroIllustrationsLegacy from './pages/IntroIllustrationsLegacy';
 import StyleSamples from './pages/StyleSamples';
 import DomainLanding from './pages/DomainLanding';
 import NavSDKIntro from './pages/NavSDKIntro';
@@ -165,7 +166,8 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'adas':               return <ADASIntegration />;
     case 'typography':             return <Typography />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
-    case 'intro-illustrations':    return <IntroIllustrations />;
+    case 'intro-illustrations':        return <IntroIllustrations />;
+    case 'intro-illustrations-legacy': return <IntroIllustrationsLegacy />;
     case 'style-samples':          return <StyleSamples />;
     // NavSDK
     case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
@@ -241,6 +243,14 @@ export default function App() {
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  // ux-navigate custom event — emitted by links inside page components
+  useEffect(() => {
+    function handleUxNavigate(e) { navigate(e.detail); }
+    window.addEventListener('ux-navigate', handleUxNavigate);
+    return () => window.removeEventListener('ux-navigate', handleUxNavigate);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 

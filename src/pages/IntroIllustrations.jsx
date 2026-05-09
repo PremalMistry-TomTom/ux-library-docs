@@ -25,7 +25,7 @@ import {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloEV() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const M = useDarkStyle();
   const stations = [['Belib', '22 kW', '4/5'], ['Indigo', '50 kW', '2/2'], ['Saemes', '7 kW', '6/8']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -50,7 +50,7 @@ function IlloEV() {
 }
 
 function IlloSearchResult() {
-  const M = { bg: '#0f1117', card: '#1a1d27', line: '#2a2a3a', text: '#e2e8f0', dim: '#94a3b8', muted: '#64748b', blue: '#93c5fd', green: '#86efac' };
+  const M = useDarkStyle();
   const results = [["Gianni's", '0.3 km'], ['Pizza Napoli', '0.7 km'], ['La Cucina', '1.1 km']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
@@ -78,9 +78,10 @@ function IlloSearchResult() {
 }
 
 function IlloNavControls() {
+  const M = useDarkStyle();
   const buttons = ['🔍', '⚡', '🔇', '⚙️'];
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 140" fill="none">
           <path d="M10 80 Q60 50 100 80 T190 70" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
@@ -99,7 +100,7 @@ function IlloNavControls() {
 }
 
 function IlloAIVoice() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', purple: '#a78bfa', green: '#3fb950', dim: '#8b949e' };
+  const M = useDarkStyle();
   const bars = [3, 5, 8, 10, 7, 9, 6, 8, 5, 3, 7, 4];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
@@ -126,7 +127,7 @@ function IlloAIVoice() {
 }
 
 function IlloRoute() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', red: '#f85149' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Routes</div>
@@ -172,8 +173,9 @@ function IlloColourSystem() {
 }
 
 function IlloHorizonPanel() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 75 Q55 50 100 72 T190 65" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -213,9 +215,10 @@ function IlloHorizonPanel() {
 }
 
 function IlloCluster() {
+  const M = useDarkStyle();
   const LANES = [{ r: false }, { r: false }, { r: false }, { r: false }, { r: true }, { r: true }];
   return (
-    <div style={{ background: '#060608', borderRadius: 20, overflow: 'hidden', height: '100%', display: 'flex', alignItems: 'center', gap: 4, padding: '0 6px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', display: 'flex', alignItems: 'center', gap: 4, padding: '0 6px' }}>
       <svg viewBox="0 0 60 60" style={{ width: 52, height: 52, flexShrink: 0 }}>
         <circle cx="30" cy="34" r="22" fill="none" stroke="#1e1e22" strokeWidth="4" strokeDasharray="115 38" strokeDashoffset="-19" strokeLinecap="round"/>
         <circle cx="30" cy="34" r="22" fill="none" stroke="#e2001a" strokeWidth="4" strokeDasharray="72 81" strokeDashoffset="-19" strokeLinecap="round"/>
@@ -297,8 +300,9 @@ function IlloMapStyle() {
 }
 
 function IlloHomeScreen() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 60 Q55 40 100 62 T190 55" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -327,8 +331,9 @@ function IlloHomeScreen() {
 }
 
 function IlloETAPanel() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg,#0f1a28,#1a2535)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 75 Q60 55 100 72 T190 65" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
@@ -352,7 +357,7 @@ function IlloETAPanel() {
 }
 
 function IlloThemingTokens() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', dim: '#8b949e' };
+  const M = useDarkStyle();
   const tokens = [
     { name: '--brand-primary', from: '#e2001a', to: '#0066cc', color: true },
     { name: '--corner-radius', from: '4 dp', to: '12 dp', color: false },
@@ -387,7 +392,7 @@ function IlloThemingTokens() {
 }
 
 function IlloChargingSearch() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>EV Charging</div>
@@ -412,7 +417,7 @@ function IlloChargingSearch() {
 }
 
 function IlloConversationPersonality() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', purple: '#a78bfa', dim: '#8b949e', text: '#e6edf3' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
@@ -433,9 +438,10 @@ function IlloConversationPersonality() {
 }
 
 function IlloADAS() {
+  const M = useDarkStyle();
   const lanes = [false, false, true, true, false];
   return (
-    <div style={{ background: '#060608', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420 0%,#101820 100%)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M0 130 L55 58 L145 58 L200 130 Z" fill="#151a26" opacity="0.9"/>
@@ -471,8 +477,9 @@ function IlloADAS() {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloMapDisplay() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <rect width="200" height="130" fill="#1a2535"/>
@@ -500,7 +507,7 @@ function IlloMapDisplay() {
 }
 
 function IlloSDKSearch() {
-  const M = { bg: '#0f1117', card: '#1a1d27', line: '#2a2a3a', text: '#e2e8f0', dim: '#94a3b8', muted: '#64748b', blue: '#58a6ff' };
+  const M = useDarkStyle();
   const results = [['Amsterdam Centraal', '0.2 km'], ['Rijksmuseum', '1.4 km'], ['Vondelpark', '2.1 km']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
@@ -524,7 +531,7 @@ function IlloSDKSearch() {
 }
 
 function IlloRouteOptions() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Route Options</div>
@@ -547,8 +554,9 @@ function IlloRouteOptions() {
 }
 
 function IlloNavGuidance() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 100 Q60 70 100 72 T190 50" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
@@ -576,7 +584,7 @@ function IlloNavGuidance() {
 }
 
 function IlloOfflineMaps() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  const M = useDarkStyle();
   const regions = [['Western Europe', '1.2 GB', 100], ['Eastern Europe', '0.8 GB', 65], ['North America', '2.1 GB', 30]];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -601,8 +609,9 @@ function IlloOfflineMaps() {
 }
 
 function IlloCarPlay() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 80 Q55 58 100 72 T190 60" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
@@ -628,8 +637,9 @@ function IlloCarPlay() {
 }
 
 function IlloVirtualHorizon() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#060608', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420,#101820)' }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M0 130 L55 58 L145 58 L200 130 Z" fill="#151a26" opacity="0.9"/>
@@ -658,8 +668,9 @@ function IlloVirtualHorizon() {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloCalculateRoute() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M0 70 Q60 58 100 70 T200 63" stroke="#243040" strokeWidth="6"/>
@@ -685,8 +696,9 @@ function IlloCalculateRoute() {
 }
 
 function IlloReachableRange() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M70 0 L68 130" stroke="#243040" strokeWidth="4" opacity="0.5"/>
@@ -706,8 +718,9 @@ function IlloReachableRange() {
 }
 
 function IlloEVRouting() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.85"/>
@@ -735,6 +748,7 @@ function IlloEVRouting() {
 }
 
 function IlloBatchRouting() {
+  const M = useDarkStyle();
   const routes = [
     { color: '#e2001a', w: 70 },
     { color: '#58a6ff', w: 88 },
@@ -742,7 +756,7 @@ function IlloBatchRouting() {
     { color: '#a78bfa', w: 95 },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch · 4 routes</div>
       {routes.map((r, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
@@ -762,10 +776,11 @@ function IlloBatchRouting() {
 }
 
 function IlloMatrixRouting() {
+  const M = useDarkStyle();
   const SIZE = 4;
   const colors = ['rgba(226,0,26,0.8)', 'rgba(88,166,255,0.8)', 'rgba(63,185,80,0.6)', 'rgba(251,191,36,0.7)'];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>Matrix 4×4 · 16 cells</div>
       {Array.from({ length: SIZE }).map((_, row) => (
         <div key={row} style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
@@ -788,8 +803,9 @@ function IlloMatrixRouting() {
 }
 
 function IlloWaypointOpt() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', gap: 6, height: 'calc(100% - 20px)' }}>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Before</div>
@@ -820,8 +836,9 @@ function IlloWaypointOpt() {
 }
 
 function IlloTurnInstructions() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <svg style={{ width: '100%', height: 70 }} viewBox="0 0 200 70" fill="none">
         <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
         <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="rgba(226,0,26,0.15)" strokeWidth="8" strokeLinecap="round"/>
@@ -844,6 +861,7 @@ function IlloTurnInstructions() {
 }
 
 function IlloRoadShields() {
+  const M = useDarkStyle();
   const shields = [
     { ref: 'A10', color: '#1d4ed8' },
     { ref: 'E35', color: '#22c55e' },
@@ -851,7 +869,7 @@ function IlloRoadShields() {
     { ref: 'B14', color: '#f59e0b' },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields</div>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
         {shields.map(({ ref, color }) => (
@@ -872,6 +890,7 @@ function IlloRoadShields() {
 }
 
 function IlloLaneGuidance() {
+  const M = useDarkStyle();
   const lanes = [
     { dirs: ['←'],     drivable: false },
     { dirs: ['↑'],     drivable: false },
@@ -879,7 +898,7 @@ function IlloLaneGuidance() {
     { dirs: ['→'],     drivable: true, recommended: true },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
       <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
         {lanes.map((lane, i) => (
@@ -915,8 +934,9 @@ function IlloLaneGuidance() {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloRoutingComputeToll() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll Amounts</div>
       <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
         <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
@@ -937,8 +957,9 @@ function IlloRoutingComputeToll() {
 }
 
 function IlloRoutingWeather() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M20 70 Q60 54 90 50" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -960,13 +981,14 @@ function IlloRoutingWeather() {
 }
 
 function IlloRoutingDataFreshness() {
+  const M = useDarkStyle();
   const items = [
     { label: 'Traffic data',  pct: 100, color: '#22c55e' },
     { label: 'Road closures', pct: 75,  color: '#22c55e' },
     { label: 'Speed limits',  pct: 40,  color: '#fbbf24' },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
       {items.map((item) => (
         <div key={item.label} style={{ marginBottom: 8 }}>
@@ -989,8 +1011,9 @@ function IlloRoutingDataFreshness() {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloLDEVRRoute() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.85"/>
@@ -1018,6 +1041,7 @@ function IlloLDEVRRoute() {
 }
 
 function IlloLDEVRBatch() {
+  const M = useDarkStyle();
   const routes = [
     { color: '#22c55e', w: 85 },
     { color: '#3fb950', w: 62 },
@@ -1025,7 +1049,7 @@ function IlloLDEVRBatch() {
     { color: '#a78bfa', w: 74 },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch EV · 4 routes</div>
       {routes.map((r, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
@@ -1049,13 +1073,14 @@ function IlloLDEVRBatch() {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloLDEVRVehicleBrand() {
+  const M = useDarkStyle();
   const brands = [
     { name: 'BMW',   color: '#1c69d4', selected: true  },
     { name: 'Tesla', color: '#cc0000', selected: false },
     { name: 'Audi',  color: '#bb0a14', selected: false },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Vehicle Brand Lookup</div>
       {brands.map((b, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5, padding: '4px 6px', borderRadius: 5, background: b.selected ? 'rgba(88,166,255,0.08)' : 'transparent', border: b.selected ? '1px solid rgba(88,166,255,0.2)' : '1px solid transparent' }}>
@@ -1070,13 +1095,14 @@ function IlloLDEVRVehicleBrand() {
 }
 
 function IlloLDEVROemEmsp() {
+  const M = useDarkStyle();
   const networks = [
     { name: 'Ionity',   compat: true  },
     { name: 'Fastned',  compat: true  },
     { name: 'bp pulse', compat: false },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM EMSP Networks</div>
       {networks.map((n, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
@@ -1092,8 +1118,9 @@ function IlloLDEVROemEmsp() {
 }
 
 function IlloLDEVRComputeToll() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll · EV</div>
       <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
         <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
@@ -1116,9 +1143,10 @@ function IlloLDEVRComputeToll() {
 }
 
 function IlloLDEVRChargingParks() {
+  const M = useDarkStyle();
   const hours = [['Mon–Fri', '06:00–22:00'], ['Sat', '07:00–21:00'], ['Sun', '08:00–20:00']];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 7 }}>
         <span style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Park Hours</span>
         <span style={{ fontSize: '0.5rem', color: '#22c55e', fontWeight: 700 }}>12/16 free</span>
@@ -1134,8 +1162,9 @@ function IlloLDEVRChargingParks() {
 }
 
 function IlloLDEVRWeather() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill="#1a2535"/>
         <path d="M20 68 Q60 52 90 48" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
@@ -1162,6 +1191,7 @@ function IlloLDEVRWeather() {
 }
 
 function IlloLDEVRDataFreshness() {
+  const M = useDarkStyle();
   const items = [
     { label: 'Charger status', pct: 100, color: '#22c55e' },
     { label: 'Park capacity',  pct: 80,  color: '#22c55e' },
@@ -1169,7 +1199,7 @@ function IlloLDEVRDataFreshness() {
     { label: 'Amenities',      pct: 15,  color: '#f85149' },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
       {items.map((item) => (
         <div key={item.label} style={{ marginBottom: 6 }}>
@@ -1188,7 +1218,7 @@ function IlloLDEVRDataFreshness() {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 function IlloVIL() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950' };
+  const M = useDarkStyle();
   const signals = [['Battery SoC', '74%', '#3fb950'], ['Connector type', 'CCS2', '#58a6ff'], ['Speed', '87 km/h', '#fbbf24'], ['GDPR consent', 'Granted', '#3fb950']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -1205,7 +1235,7 @@ function IlloVIL() {
 }
 
 function IlloCIL() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', purple: '#a855f7' };
+  const M = useDarkStyle();
   const cmds = [['navigateTo(destination)', 'Sets active route'], ['cancelNavigation()', 'Ends session'], ['searchNearby(query)', 'Returns POI list']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -1222,14 +1252,15 @@ function IlloCIL() {
 }
 
 function IlloANATheming() {
+  const M = useDarkStyle();
   const tokens = [
     { name: '--brand-primary', from: '#e2001a', to: '#0066ff' },
     { name: '--corner-radius', from: '4dp', to: '12dp', text: true },
     { name: '--font-family',   from: 'Roboto', to: 'Inter', text: true },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
-      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#8b949e', marginBottom: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM Theme tokens</div>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.dim, marginBottom: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM Theme tokens</div>
       {tokens.map(({ name, from, to, text }) => (
         <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
           {!text
@@ -1251,7 +1282,7 @@ function IlloANATheming() {
 }
 
 function IlloANATraffic() {
-  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
@@ -1275,7 +1306,7 @@ function IlloANATraffic() {
 }
 
 function IlloANAMap() {
-  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, height: '100%', position: 'relative', overflow: 'hidden' }}>
       <svg width="100%" height="100%" viewBox="0 0 120 80" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute' }}>
@@ -1298,7 +1329,7 @@ function IlloANAMap() {
 }
 
 function IlloANAEVSearch() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const M = useDarkStyle();
   const stations = [['Ionity','350 kW','3/4'],['Fastned','300 kW','2/4'],['bp pulse','50 kW','5/6']];
   return (
     <div style={{ background: M.bg, height: '100%', padding: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -1329,7 +1360,7 @@ function IlloANAEVSearch() {
 }
 
 function IlloANALDRoute() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
@@ -1356,7 +1387,7 @@ function IlloANALDRoute() {
 }
 
 function IlloANADriverExp() {
-  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  const M = useDarkStyle();
   return (
     <div style={{ background: M.dark, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ padding: '5px 8px', display: 'flex', alignItems: 'center', gap: 5, borderBottom: `1px solid ${M.card}` }}>
@@ -2805,9 +2836,26 @@ function L_ANA_DriverExp() {
    Search & Places — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-const D = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff', red: '#e2001a', amber: '#fbbf24', purple: '#a78bfa' };
+function useDarkStyle() {
+  const { palette: C } = useIlloStyle();
+  return {
+    bg:     C.bg,
+    card:   C.panel,
+    line:   C.border,
+    text:   C.navy,
+    dim:    C.mid,
+    muted:  C.soft,
+    green:  C.accent,
+    blue:   C.soft,
+    red:    C.danger,
+    amber:  C.warn,
+    purple: C.accent,
+    dark:   C.dark,
+  };
+}
 
 function IlloSearchFuzzy() {
+  const D = useDarkStyle();
   const rows = [['📍 Place name', '0.3 km', D.blue], ['🏪 Fuzzy match', '0.7 km', D.dim], ['📍 Street addr.', '1.1 km', D.blue], ['🏥 Category hit', '1.4 km', D.dim]];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -2828,6 +2876,7 @@ function IlloSearchFuzzy() {
 }
 
 function IlloSearchPOI() {
+  const D = useDarkStyle();
   const cats = [['☕ Cafe', D.amber], ['⛽ Fuel', D.blue], ['🍕 Food', D.red], ['🏨 Hotel', D.purple]];
   const pois = [['Café Central', '0.2 km', '★ 4.7'], ['Brasserie Nord', '0.5 km', '★ 4.4'], ['La Terrasse', '0.9 km', '★ 4.2']];
   return (
@@ -2851,6 +2900,7 @@ function IlloSearchPOI() {
 }
 
 function IlloSearchCategory() {
+  const D = useDarkStyle();
   const tree = [['🍽️ Food & Drink', true, 0], ['  ☕ Cafe/Bar', false, 1], ['  🍕 Restaurant', true, 1], ['  🍺 Pub', false, 1], ['🛍️ Shopping', false, 0]];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -2870,6 +2920,7 @@ function IlloSearchCategory() {
 }
 
 function IlloSearchNearby() {
+  const D = useDarkStyle();
   const pins = [['Cafe Nord', '0.2 km'], ['Hotel Arc', '0.5 km'], ['Park Mall', '0.8 km']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -2892,6 +2943,7 @@ function IlloSearchNearby() {
 }
 
 function IlloSearchAlongRoute() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Along Route Search</div>
@@ -2913,6 +2965,7 @@ function IlloSearchAlongRoute() {
 }
 
 function IlloSearchAutocomplete() {
+  const D = useDarkStyle();
   const suggestions = ['Amsterdam Centr…', 'Amsterdam Airport', 'Amsterdam Noord'];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -2936,6 +2989,7 @@ function IlloSearchAutocomplete() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloGeocode() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Geocoding</div>
@@ -2956,6 +3010,7 @@ function IlloGeocode() {
 }
 
 function IlloReverseGeocode() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Reverse Geocode</div>
@@ -2983,6 +3038,7 @@ function IlloReverseGeocode() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloTrafficFlow() {
+  const D = useDarkStyle();
   const speeds = [[D.green,'68','Free flow'],[D.amber,'42','Moderate'],['#f97316','18','Slow'],['#ef4444','5','Queuing']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3000,6 +3056,7 @@ function IlloTrafficFlow() {
 }
 
 function IlloTrafficIncidents() {
+  const D = useDarkStyle();
   const incidents = [['🚧', 'Roadworks', 'A10 · km 14', D.amber], ['🚗', 'Accident', 'Ring East · km 3', '#ef4444'], ['⚠️', 'Road closed', 'N200 · km 7', '#f97316']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3019,6 +3076,7 @@ function IlloTrafficIncidents() {
 }
 
 function IlloTrafficFlowTile() {
+  const D = useDarkStyle();
   const rows = 3, cols = 4;
   const colors = ['#22c55e','#86efac','#fbbf24','#f97316','#ef4444','#22c55e','#fbbf24','#22c55e','#86efac','#f97316','#22c55e','#fbbf24'];
   return (
@@ -3036,6 +3094,7 @@ function IlloTrafficFlowTile() {
 }
 
 function IlloTrafficModelID() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Traffic Model ID</div>
@@ -3060,6 +3119,7 @@ function IlloTrafficModelID() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloEVSearchNearby() {
+  const D = useDarkStyle();
   const stations = [['Belib+', '22 kW', '3/4 avail.', D.green], ['Fastned', '150 kW', '1/2 avail.', D.green], ['Ionity', '350 kW', '0/4 avail.', '#ef4444']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3079,6 +3139,7 @@ function IlloEVSearchNearby() {
 }
 
 function IlloEVChargingAvailability() {
+  const D = useDarkStyle();
   const connectors = [['CCS2', '150kW', D.green, 'Available'], ['Type2', '22kW', D.green, 'Available'], ['CHAdeMO', '50kW', D.amber, 'Charging'], ['CCS2', '150kW', '#ef4444', 'Offline']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3095,6 +3156,7 @@ function IlloEVChargingAvailability() {
 }
 
 function IlloEVMarketCoverage() {
+  const D = useDarkStyle();
   const regions = [['NL', 98, D.green], ['DE', 87, D.blue], ['FR', 74, D.blue], ['UK', 61, D.amber], ['ES', 43, '#f97316']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3119,6 +3181,7 @@ function IlloEVMarketCoverage() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloMapRasterTile() {
+  const D = useDarkStyle();
   const colors = ['#1a2535','#1e2d40','#243347','#1a2535','#1e2d40','#243347','#1a2535','#1e2d40','#243347'];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3139,6 +3202,7 @@ function IlloMapRasterTile() {
 }
 
 function IlloMapVectorTile() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Vector Map Tile</div>
@@ -3163,6 +3227,7 @@ function IlloMapVectorTile() {
 }
 
 function IlloMapSatelliteTile() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Satellite Tile</div>
@@ -3184,6 +3249,7 @@ function IlloMapSatelliteTile() {
 }
 
 function IlloMapAssetsAPI() {
+  const D = useDarkStyle();
   const assets = [['sprite_day.png', '2.4 MB', '🖼️'], ['sprite_night.png', '2.4 MB', '🌙'], ['font_roboto.pbf', '1.1 MB', '🔤'], ['style.json', '48 KB', '{}']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3200,6 +3266,7 @@ function IlloMapAssetsAPI() {
 }
 
 function IlloMapStaticImage() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Static Map Image</div>
@@ -3223,6 +3290,7 @@ function IlloMapStaticImage() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloParkingAvailability() {
+  const D = useDarkStyle();
   const zones = [['Zone A', '12/15', 80, D.green], ['Zone B', '3/10', 30, '#ef4444'], ['Zone C', '8/12', 67, D.amber], ['Zone D', '0/8', 0, '#ef4444']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3243,6 +3311,7 @@ function IlloParkingAvailability() {
 }
 
 function IlloParkingPrices() {
+  const D = useDarkStyle();
   const tiers = [['0–1 hr', '€2.50'], ['1–3 hr', '€4.00'], ['3–8 hr', '€7.50'], ['All day', '€12.00']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3264,6 +3333,7 @@ function IlloParkingPrices() {
 }
 
 function IlloOnStreetParking() {
+  const D = useDarkStyle();
   const zones = [[D.green,'A','Free'],[D.amber,'B','Limited'],['#ef4444','C','No park.'],[ D.green,'D','Free']];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3289,6 +3359,7 @@ function IlloOnStreetParking() {
 }
 
 function IlloFuelPrices() {
+  const D = useDarkStyle();
   const fuels = [['⛽ Unleaded 95', '€1.84', D.blue], ['🟡 Diesel', '€1.72', D.amber], ['🟢 LPG', '€0.96', D.green], ['⚡ Fast DC', '€0.58/kWh', D.purple]];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3309,6 +3380,7 @@ function IlloFuelPrices() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloSnapToRoads() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Snap to Roads</div>
@@ -3330,6 +3402,7 @@ function IlloSnapToRoads() {
 }
 
 function IlloBatchSearch() {
+  const D = useDarkStyle();
   const queries = [['🔍 Hotels near AMS', '42 results', D.green], ['🔍 EV stations · 5km', '18 results', D.green], ['🔍 Restaurants open', '0 results', '#ef4444'], ['🔍 Parking garages', '11 results', D.green]];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3351,6 +3424,7 @@ function IlloBatchSearch() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloPOIDetails() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
@@ -3372,6 +3446,7 @@ function IlloPOIDetails() {
 }
 
 function IlloPOIPhotos() {
+  const D = useDarkStyle();
   const colors = ['#1e3a2a','#1a2535','#2a2020','#1a2535','#1e3a2a','#2a2020'];
   const emojis = ['🏨','🍽️','🛎️','🌳','🏊','🏋️'];
   return (
@@ -3394,6 +3469,7 @@ function IlloPOIPhotos() {
    ───────────────────────────────────────────────────────────────────────────── */
 
 function IlloTrafficStats() {
+  const D = useDarkStyle();
   const bars = [30, 45, 60, 75, 55, 40, 80, 65, 50, 35, 70, 85];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3414,6 +3490,7 @@ function IlloTrafficStats() {
 }
 
 function IlloAreaAnalytics() {
+  const D = useDarkStyle();
   const cells = [0.2,0.6,0.9,0.4,0.7,0.8,0.3,0.5,0.7,0.6,0.4,0.9,0.2,0.5,0.8,0.3];
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3436,6 +3513,7 @@ function IlloAreaAnalytics() {
 }
 
 function IlloODAnalysis() {
+  const D = useDarkStyle();
   const SIZE = 4;
   const labels = ['A','B','C','D'];
   const matrix = [[0,0.3,0.7,0.2],[0.4,0,0.5,0.8],[0.6,0.2,0,0.3],[0.1,0.7,0.4,0]];
@@ -3459,6 +3537,7 @@ function IlloODAnalysis() {
 }
 
 function IlloJunctionAnalytics() {
+  const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Junction Analytics</div>
@@ -3486,8 +3565,9 @@ function IlloJunctionAnalytics() {
    Gallery components
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloCard({ light: Light, label, emoji, source, prompt }) {
+function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, illoStyle = 'lofi' }) {
   const { palette } = useIlloStyle();
+  const Illo = illoStyle === 'detailed' && Dark ? Dark : Light;
   return (
     <div style={{
       border: '1px solid var(--border)',
@@ -3503,7 +3583,7 @@ function IlloCard({ light: Light, label, emoji, source, prompt }) {
         flexShrink: 0,
         overflow: 'hidden',
       }}>
-        <Light />
+        <Illo />
       </div>
       <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 3 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -3582,83 +3662,117 @@ const THEME_OPTIONS = [
   },
 ];
 
-function ThemeBar({ value, onChange, onPluginClick }) {
-  const active = THEME_OPTIONS.find(o => o.id === value) || THEME_OPTIONS[0];
+const STYLE_OPTIONS = [
+  { id: 'lofi',     icon: '◻',  label: 'Lo-Fi Wireframe',     desc: 'Geometric SVG shapes · full palette system' },
+  { id: 'detailed', icon: '▦',  label: 'Detailed Wireframe',  desc: 'Rich HTML mockups · themed UI chrome' },
+];
+
+function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClick }) {
+  const activeTheme = THEME_OPTIONS.find(o => o.id === theme) || THEME_OPTIONS[0];
+  const activeStyle = STYLE_OPTIONS.find(o => o.id === illoStyle) || STYLE_OPTIONS[0];
   return (
     <div style={{
       position: 'sticky',
       top: 0,
       zIndex: 100,
       background: 'var(--bg)',
+      backdropFilter: 'blur(14px)',
+      WebkitBackdropFilter: 'blur(14px)',
       borderBottom: '1px solid var(--border)',
-      backdropFilter: 'blur(12px)',
-      WebkitBackdropFilter: 'blur(12px)',
     }}>
+
+      {/* ── Row 1: Style selector ── */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 12,
-        padding: '10px 24px',
-        flexWrap: 'wrap',
+        gap: 10,
+        padding: '8px 24px',
+        borderBottom: '1px solid var(--border)',
+        background: 'var(--surface)',
       }}>
-
-        {/* Left: identity */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-          <div style={{
-            width: 34, height: 34, borderRadius: 10, flexShrink: 0,
-            background: 'linear-gradient(135deg, #1B3D6E 0%, #2878CC 100%)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '1rem',
-          }}>🎨</div>
-          <div>
-            <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.2 }}>
-              Preview theme
-            </div>
-            <div style={{ fontSize: '0.6875rem', color: 'var(--mid)', lineHeight: 1.3 }}>
-              {active.desc} · all illustrations update live
-            </div>
-          </div>
-        </div>
-
-        {/* Centre: theme pills */}
-        <div style={{
-          display: 'flex',
-          gap: 6,
-          marginLeft: 'auto',
-          flexWrap: 'wrap',
-          alignItems: 'center',
-        }}>
-          {THEME_OPTIONS.map(o => {
-            const isActive = value === o.id;
+        <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--mid)', flexShrink: 0, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Style</span>
+        <div style={{ display: 'flex', gap: 6 }}>
+          {STYLE_OPTIONS.map(o => {
+            const isActive = illoStyle === o.id;
             return (
               <button
                 key={o.id}
-                onClick={() => onChange(o.id)}
+                onClick={() => onStyleChange(o.id)}
                 title={o.desc}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  padding: '7px 14px',
-                  borderRadius: 100,
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '5px 14px', borderRadius: 100,
+                  border: isActive ? '2px solid var(--black)' : '1.5px solid var(--border)',
+                  background: isActive ? 'var(--black)' : 'transparent',
+                  color: isActive ? 'var(--bg)' : 'var(--mid)',
+                  cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
+                  transition: 'all 0.15s', whiteSpace: 'nowrap',
+                }}
+              >
+                <span style={{ fontSize: '0.875rem', lineHeight: 1 }}>{o.icon}</span>
+                {o.label}
+              </button>
+            );
+          })}
+        </div>
+        <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', marginLeft: 4 }}>{activeStyle.desc}</span>
+
+        {/* Figma plugin — right-aligned in this row */}
+        <button
+          onClick={onPluginClick}
+          style={{
+            marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6,
+            padding: '6px 12px', borderRadius: 100,
+            border: '1px solid var(--border)', background: 'transparent',
+            cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
+            color: 'var(--mid)', whiteSpace: 'nowrap', flexShrink: 0,
+            transition: 'border-color 0.15s, color 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#2878CC'; e.currentTarget.style.color = 'var(--black)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--mid)'; }}
+        >
+          <svg width="11" height="11" viewBox="0 0 38 57" fill="none" style={{ flexShrink: 0 }}>
+            <path d="M19 28.5C19 25.98 20 23.56 21.78 21.78C23.56 20 25.98 19 28.5 19C31.02 19 33.44 20 35.22 21.78C37 23.56 38 25.98 38 28.5C38 31.02 37 33.44 35.22 35.22C33.44 37 31.02 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
+            <path d="M0 47.5C0 44.98 1 42.56 2.78 40.78C4.56 39 6.98 38 9.5 38H19V47.5C19 50.02 18 52.44 16.22 54.22C14.44 56 12.02 57 9.5 57C6.98 57 4.56 56 2.78 54.22C1 52.44 0 50.02 0 47.5Z" fill="#0ACF83"/>
+            <path d="M19 0V19H28.5C31.02 19 33.44 18 35.22 16.22C37 14.44 38 12.02 38 9.5C38 6.98 37 4.56 35.22 2.78C33.44 1 31.02 0 28.5 0H19Z" fill="#FF7262"/>
+            <path d="M0 9.5C0 12.02 1 14.44 2.78 16.22C4.56 18 6.98 19 9.5 19H19V0H9.5C6.98 0 4.56 1 2.78 2.78C1 4.56 0 6.98 0 9.5Z" fill="#F24E1E"/>
+            <path d="M0 28.5C0 31.02 1 33.44 2.78 35.22C4.56 37 6.98 38 9.5 38H19V19H9.5C6.98 19 4.56 20 2.78 21.78C1 23.56 0 25.98 0 28.5Z" fill="#A259FF"/>
+          </svg>
+          Figma Plugin
+        </button>
+      </div>
+
+      {/* ── Row 2: Theme picker ── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        padding: '8px 24px',
+        flexWrap: 'wrap',
+      }}>
+        <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--mid)', flexShrink: 0, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Colour</span>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+          {THEME_OPTIONS.map(o => {
+            const isActive = theme === o.id;
+            return (
+              <button
+                key={o.id}
+                onClick={() => onThemeChange(o.id)}
+                title={o.desc}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '5px 12px', borderRadius: 100,
                   border: isActive ? `2px solid ${o.activeBorder}` : '1.5px solid var(--border)',
                   background: isActive ? o.activeBg : 'transparent',
                   color: isActive ? o.activeColor : 'var(--mid)',
-                  cursor: 'pointer',
-                  fontSize: '0.8125rem',
-                  fontWeight: 600,
-                  transition: 'all 0.15s',
-                  whiteSpace: 'nowrap',
+                  cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
+                  transition: 'all 0.15s', whiteSpace: 'nowrap',
                   boxShadow: isActive ? `0 0 0 3px ${o.activeBorder}22` : 'none',
                 }}
               >
-                {/* Three tiny colour dots */}
                 <span style={{ display: 'flex', gap: 3, alignItems: 'center' }}>
                   {o.swatch.map((c, i) => (
-                    <span key={i} style={{
-                      width: 8, height: 8, borderRadius: '50%', background: c,
-                      border: '1px solid rgba(0,0,0,0.12)', flexShrink: 0,
-                    }}/>
+                    <span key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: c, border: '1px solid rgba(0,0,0,0.1)', flexShrink: 0 }}/>
                   ))}
                 </span>
                 {o.icon} {o.label}
@@ -3666,32 +3780,9 @@ function ThemeBar({ value, onChange, onPluginClick }) {
             );
           })}
         </div>
-
-        {/* Right: Figma plugin */}
-        <button
-          onClick={onPluginClick}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 7,
-            padding: '8px 14px', borderRadius: 100,
-            border: '1px solid var(--border)', background: 'var(--surface)',
-            cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
-            color: 'var(--black)', whiteSpace: 'nowrap', flexShrink: 0,
-            transition: 'border-color 0.15s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#2878CC'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; }}
-        >
-          <svg width="13" height="13" viewBox="0 0 38 57" fill="none" style={{ flexShrink: 0 }}>
-            <path d="M19 28.5C19 25.9804 20.0009 23.5641 21.7825 21.7825C23.5641 20.0009 25.9804 19 28.5 19C31.0196 19 33.4359 20.0009 35.2175 21.7825C36.9991 23.5641 38 25.9804 38 28.5C38 31.0196 36.9991 33.4359 35.2175 35.2175C33.4359 36.9991 31.0196 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
-            <path d="M0 47.5C0 44.9804 1.00089 42.5641 2.78249 40.7825C4.56408 39.0009 6.98044 38 9.5 38H19V47.5C19 50.0196 17.9991 52.4359 16.2175 54.2175C14.4359 55.9991 12.0196 57 9.5 57C6.98044 57 4.56408 55.9991 2.78249 54.2175C1.00089 52.4359 0 50.0196 0 47.5Z" fill="#0ACF83"/>
-            <path d="M19 0V19H28.5C31.0196 19 33.4359 17.9991 35.2175 16.2175C36.9991 14.4359 38 12.0196 38 9.5C38 6.98044 36.9991 4.56408 35.2175 2.78249C33.4359 1.00089 31.0196 0 28.5 0H19Z" fill="#FF7262"/>
-            <path d="M0 9.5C0 12.0196 1.00089 14.4359 2.78249 16.2175C4.56408 17.9991 6.98044 19 9.5 19H19V0H9.5C6.98044 0 4.56408 1.00089 2.78249 2.78249C1.00089 4.56408 0 6.98044 0 9.5Z" fill="#F24E1E"/>
-            <path d="M0 28.5C0 31.0196 1.00089 33.4359 2.78249 35.2175C4.56408 36.9991 6.98044 38 9.5 38H19V19H9.5C6.98044 19 4.56408 20.0009 2.78249 21.7825C1.00089 23.5641 0 25.9804 0 28.5Z" fill="#A259FF"/>
-          </svg>
-          Figma Plugin
-        </button>
-
+        <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', marginLeft: 4 }}>{activeTheme.desc}</span>
       </div>
+
     </div>
   );
 }
@@ -3816,16 +3907,18 @@ function FigmaPluginPanel({ onClose }) {
   );
 }
 
-export default function IntroIllustrations() {
-  const { theme: styleMode, setTheme: setStyleMode } = useIlloStyle();
+export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle = null }) {
+  const { theme, setTheme } = useIlloStyle();
+  const [illoStyleState, setIlloStyle] = React.useState('lofi');
+  const illoStyle = forcedIlloStyle ?? illoStyleState;
   const [showPlugin, setShowPlugin] = React.useState(false);
 
   return (
     <div className="page" style={{ paddingTop: 0 }}>
       {showPlugin && <FigmaPluginPanel onClose={() => setShowPlugin(false)} />}
 
-      {/* ── Sticky theme bar ── */}
-      <ThemeBar value={styleMode} onChange={setStyleMode} onPluginClick={() => setShowPlugin(true)} />
+      {/* ── Sticky theme bar — hidden on legacy page ── */}
+      {!noThemeBar && <ThemeBar theme={theme} onThemeChange={setTheme} illoStyle={illoStyle} onStyleChange={setIlloStyle} onPluginClick={() => setShowPlugin(true)} />}
 
       <div style={{ padding: '0 24px' }}>
         <div className="page-header" style={{ marginTop: 24 }}>
@@ -3837,6 +3930,28 @@ export default function IntroIllustrations() {
           All 82+ hero illustrations across every product intro and API reference page, unified under one theme system. Switching a theme recolours every single illustration live — shapes and layout stay identical.
         </p>
 
+        {/* ── Link to legacy reference ── */}
+        {!noThemeBar && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+            <a
+              href="#"
+              onClick={e => { e.preventDefault(); window.dispatchEvent(new CustomEvent('ux-navigate', { detail: 'intro-illustrations-legacy' })); }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '7px 14px', borderRadius: 100,
+                border: '1px solid var(--border)', background: 'var(--surface)',
+                fontSize: '0.75rem', fontWeight: 600, color: 'var(--mid)',
+                textDecoration: 'none', transition: 'border-color 0.15s, color 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--black)'; e.currentTarget.style.color = 'var(--black)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--mid)'; }}
+            >
+              🗂 View original dark reference →
+            </a>
+            <span style={{ fontSize: '0.6875rem', color: 'var(--muted)' }}>All Detailed Wireframe components frozen in the original hardcoded dark palette</span>
+          </div>
+        )}
+
       {/* ── UX Library ── */}
       <div className="zone">
         <SectionHeader
@@ -3845,21 +3960,21 @@ export default function IntroIllustrations() {
           subtitle="Capability and domain thumbnails from the UX Library introduction page."
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloEV}                      light={L_EV}                     label="EV Charging"                emoji="⚡" source="Overview · ThumbEV"                    prompt="Dark list of 3 stations showing provider name, power rating and available slot count with a green indicator. Speed, payment and services filter chips run across the top; the whole card is a compact real-time availability widget." styleMode={styleMode}/>
-          <IlloCard dark={IlloSearchResult}             light={L_SearchResult}            label="Search Results"             emoji="🔍" source="Overview · ThumbSearch"                prompt="Dark search bar above a dropdown of 3 nearby restaurant results, each with a location-pin icon, name and walking distance. A coloured status stripe below the bar reads '3rd-party search · online' to surface the integration layer." styleMode={styleMode}/>
-          <IlloCard dark={IlloNavControls}              light={L_NavControls}             label="Nav Controls"               emoji="🎛️" source="Overview · ThumbNavControls"           prompt="Dark map canvas with a TomTom-red active-route arc and four icon-only control buttons (search, EV, mute, settings) overlaid at the bottom edge. The composition shows in-journey navigation UI sitting on top of a live map." styleMode={styleMode}/>
-          <IlloCard dark={IlloAIVoice}                  light={L_AIVoice}                 label="AI Voice (TAIA)"            emoji="🎙️" source="Overview · ThumbAI"                    prompt="Waveform-style voice assistant panel with animated amplitude bars and a partial response text bubble. The illustration captures the AI in mid-response — audio active, text streaming — communicating real-time interaction." styleMode={styleMode}/>
-          <IlloCard dark={IlloRoute}                    light={L_Route}                   label="EV Route with Stops"        emoji="🔋" source="Overview · ThumbRoute"                 prompt="Route arc on a dark map with two green charging-stop circles between origin and destination pins. A bottom info bar shows battery SOC transitioning 18% → 78% → 22% across the three journey legs." styleMode={styleMode}/>
-          <IlloCard dark={IlloColourSystem}             light={L_ColourSystem}            label="Colour System"              emoji="🎨" source="Overview · ThumbColour"                prompt="Light-background grid of named colour swatches (brand red, navy, greys) with hex labels and a split showing day vs night variants. Intentionally bright to show white surfaces and the full semantic palette together." styleMode={styleMode}/>
-          <IlloCard dark={IlloHorizonPanel}             light={L_HorizonPanel}            label="Horizon Panel"              emoji="🌅" source="Overview · ThumbHorizonPanel"          prompt="Narrow horizontal HUD strip showing a junction manoeuvre arrow, street name and countdown distance — mimicking an ADAS horizon readout in an instrument cluster. The constrained landscape format communicates the strip's physical placement." styleMode={styleMode}/>
-          <IlloCard dark={IlloCluster}                  light={L_Cluster}                 label="Instrument Cluster"         emoji="🚗" source="Overview · ThumbCluster"               prompt="Circular speedometer dial with a TomTom-red active zone, a turn-guidance icon and a small distance readout alongside it. The compact round format reflects real physical cluster dimensions and extreme DPI constraints." styleMode={styleMode}/>
-          <IlloCard dark={IlloMapStyle}                 light={L_MapStyle}                label="Day / Night Map Style"      emoji="🌙" source="Overview · ThumbMapStyle"              prompt="Two map panels side-by-side — warm sand + yellow roads for day, deep navy + teal roads for night — sharing identical geometry. The split layout communicates live theme-switching without any change to underlying map data." styleMode={styleMode}/>
-          <IlloCard dark={IlloHomeScreen}               light={L_HomeScreen}              label="Home Screen Layout"         emoji="📱" source="Overview · ThumbHomeScreen"            prompt="Full-screen in-vehicle home layout: large map canvas, destination search bar at the top, and a row of recent-place chips at the bottom. The composition prioritises map real-estate while keeping all key actions within thumb-reach." styleMode={styleMode}/>
-          <IlloCard dark={IlloETAPanel}                 light={L_ETAPanel}                label="ETA Panel"                  emoji="⏱️" source="Overview · ThumbETAPanel"              prompt="Bottom-sheet panel showing arrival time in large type, distance remaining and a thin route-progress bar — nothing else. Minimal data-ink ratio reflects glanceable driving UI where a single glance must communicate journey state." styleMode={styleMode}/>
-          <IlloCard dark={IlloThemingTokens}            light={L_ThemingTokens}           label="Design Token Override"      emoji="🎨" source="Overview · ThumbTheming"               prompt="Rows of named design tokens (primary, surface, accent, border) each with a colour swatch and an override arrow pointing to the OEM brand value. The illustration communicates how one JSON file rewires the entire visual theme." styleMode={styleMode}/>
-          <IlloCard dark={IlloChargingSearch}           light={L_ChargingSearch}          label="Charging Station Search"    emoji="🔌" source="Overview · ThumbChargingSearch"        prompt="Map view with a user-location pin at centre surrounded by EV station pins at varying distances, some green (available), one red (full). A side strip shows the active filter state and total station count for the visible radius." styleMode={styleMode}/>
-          <IlloCard dark={IlloConversationPersonality}  light={L_ConversationPersonality} label="Conversation Personality"   emoji="💬" source="Overview · ThumbConversationPersonality" prompt="Two speech-bubble exchanges showing the same driver query answered in distinct tones — formal vs casual — with different bubble border styles. The visual contrast communicates that personality is an OEM-configurable overlay, not a logic change." styleMode={styleMode}/>
-          <IlloCard dark={IlloADAS}                     light={L_ADAS}                    label="ADAS — Lane Guidance"       emoji="🛣️" source="Overview · ThumbADAS"                  prompt="Top-down road cross-section with three lane marks, the ego lane highlighted in TomTom red and a dashed arrow showing a recommended lane change. The bird's-eye perspective communicates sub-lane navigation precision." styleMode={styleMode}/>
+          <IlloCard dark={IlloEV}                      light={L_EV}                     label="EV Charging"                emoji="⚡" source="Overview · ThumbEV"                    prompt="Dark list of 3 stations showing provider name, power rating and available slot count with a green indicator. Speed, payment and services filter chips run across the top; the whole card is a compact real-time availability widget." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchResult}             light={L_SearchResult}            label="Search Results"             emoji="🔍" source="Overview · ThumbSearch"                prompt="Dark search bar above a dropdown of 3 nearby restaurant results, each with a location-pin icon, name and walking distance. A coloured status stripe below the bar reads '3rd-party search · online' to surface the integration layer." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavControls}              light={L_NavControls}             label="Nav Controls"               emoji="🎛️" source="Overview · ThumbNavControls"           prompt="Dark map canvas with a TomTom-red active-route arc and four icon-only control buttons (search, EV, mute, settings) overlaid at the bottom edge. The composition shows in-journey navigation UI sitting on top of a live map." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloAIVoice}                  light={L_AIVoice}                 label="AI Voice (TAIA)"            emoji="🎙️" source="Overview · ThumbAI"                    prompt="Waveform-style voice assistant panel with animated amplitude bars and a partial response text bubble. The illustration captures the AI in mid-response — audio active, text streaming — communicating real-time interaction." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoute}                    light={L_Route}                   label="EV Route with Stops"        emoji="🔋" source="Overview · ThumbRoute"                 prompt="Route arc on a dark map with two green charging-stop circles between origin and destination pins. A bottom info bar shows battery SOC transitioning 18% → 78% → 22% across the three journey legs." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloColourSystem}             light={L_ColourSystem}            label="Colour System"              emoji="🎨" source="Overview · ThumbColour"                prompt="Light-background grid of named colour swatches (brand red, navy, greys) with hex labels and a split showing day vs night variants. Intentionally bright to show white surfaces and the full semantic palette together." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloHorizonPanel}             light={L_HorizonPanel}            label="Horizon Panel"              emoji="🌅" source="Overview · ThumbHorizonPanel"          prompt="Narrow horizontal HUD strip showing a junction manoeuvre arrow, street name and countdown distance — mimicking an ADAS horizon readout in an instrument cluster. The constrained landscape format communicates the strip's physical placement." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCluster}                  light={L_Cluster}                 label="Instrument Cluster"         emoji="🚗" source="Overview · ThumbCluster"               prompt="Circular speedometer dial with a TomTom-red active zone, a turn-guidance icon and a small distance readout alongside it. The compact round format reflects real physical cluster dimensions and extreme DPI constraints." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapStyle}                 light={L_MapStyle}                label="Day / Night Map Style"      emoji="🌙" source="Overview · ThumbMapStyle"              prompt="Two map panels side-by-side — warm sand + yellow roads for day, deep navy + teal roads for night — sharing identical geometry. The split layout communicates live theme-switching without any change to underlying map data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloHomeScreen}               light={L_HomeScreen}              label="Home Screen Layout"         emoji="📱" source="Overview · ThumbHomeScreen"            prompt="Full-screen in-vehicle home layout: large map canvas, destination search bar at the top, and a row of recent-place chips at the bottom. The composition prioritises map real-estate while keeping all key actions within thumb-reach." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloETAPanel}                 light={L_ETAPanel}                label="ETA Panel"                  emoji="⏱️" source="Overview · ThumbETAPanel"              prompt="Bottom-sheet panel showing arrival time in large type, distance remaining and a thin route-progress bar — nothing else. Minimal data-ink ratio reflects glanceable driving UI where a single glance must communicate journey state." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloThemingTokens}            light={L_ThemingTokens}           label="Design Token Override"      emoji="🎨" source="Overview · ThumbTheming"               prompt="Rows of named design tokens (primary, surface, accent, border) each with a colour swatch and an override arrow pointing to the OEM brand value. The illustration communicates how one JSON file rewires the entire visual theme." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloChargingSearch}           light={L_ChargingSearch}          label="Charging Station Search"    emoji="🔌" source="Overview · ThumbChargingSearch"        prompt="Map view with a user-location pin at centre surrounded by EV station pins at varying distances, some green (available), one red (full). A side strip shows the active filter state and total station count for the visible radius." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloConversationPersonality}  light={L_ConversationPersonality} label="Conversation Personality"   emoji="💬" source="Overview · ThumbConversationPersonality" prompt="Two speech-bubble exchanges showing the same driver query answered in distinct tones — formal vs casual — with different bubble border styles. The visual contrast communicates that personality is an OEM-configurable overlay, not a logic change." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloADAS}                     light={L_ADAS}                    label="ADAS — Lane Guidance"       emoji="🛣️" source="Overview · ThumbADAS"                  prompt="Top-down road cross-section with three lane marks, the ego lane highlighted in TomTom red and a dashed arrow showing a recommended lane change. The bird's-eye perspective communicates sub-lane navigation precision." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3872,13 +3987,13 @@ export default function IntroIllustrations() {
           color="#0066cc"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloMapDisplay}     light={L_MapDisplay}     label="Map Display"       emoji="🗺️" source="NavSDKIntro · ThumbMapDisplay"     prompt="Rendered map tile showing roads, a GPS accuracy halo and a pulsing TomTom-red route overlay at zoom 14. The illustration shows the SDK's core tile rendering with real-time data layers composited as one view." styleMode={styleMode}/>
-          <IlloCard dark={IlloSDKSearch}      light={L_SDKSearch}      label="Search"            emoji="🔍" source="NavSDKIntro · ThumbSearch"          prompt="Search input with three autocomplete suggestions in a dark dropdown, each prefixed with a type icon (place, address, POI). The card shows the SDK's built-in search widget with suggestion debouncing and type classification." styleMode={styleMode}/>
-          <IlloCard dark={IlloRouteOptions}   light={L_RouteOptions}   label="Route Options"     emoji="🚦" source="NavSDKIntro · ThumbRouting"         prompt="Three overlapping route lines in different colours (fast, eco, scenic) over the same map area with time and distance labels beside each. The side-by-side alternatives communicate the SDK's multi-route preference API." styleMode={styleMode}/>
-          <IlloCard dark={IlloNavGuidance}    light={L_NavGuidance}    label="Navigation (NIP)"  emoji="↖️" source="NavSDKIntro · ThumbNavigation"      prompt="Large directional manoeuvre arrow (turn left), street name in bold below it, and a distance countdown in the corner — the complete NIP layout. High contrast and minimal chrome reflect in-car legibility requirements at speed." styleMode={styleMode}/>
-          <IlloCard dark={IlloOfflineMaps}    light={L_OfflineMaps}    label="Offline Maps"      emoji="📴" source="NavSDKIntro · ThumbOffline"          prompt="Download progress UI showing a country region being cached with a file-size figure and a percentage bar. Cloud-to-device arrow communicates the offline-first tile delivery model." styleMode={styleMode}/>
-          <IlloCard dark={IlloCarPlay}        light={L_CarPlay}        label="CarPlay"           emoji="🍎" source="NavSDKIntro · ThumbCarPlay"          prompt="Apple CarPlay-styled screen template with TomTom navigation constrained to the safe-zone and two large dashboard buttons. Rounded iOS chrome and simplified layout reflect strict CarPlay template guidelines." styleMode={styleMode}/>
-          <IlloCard dark={IlloVirtualHorizon} light={L_VirtualHorizon} label="Virtual Horizon"   emoji="🛤️" source="NavSDKIntro · ThumbVirtualHorizon"  prompt="3D perspective road wireframe showing upcoming curves and gradient changes with data-annotation overlays. The forward-looking view illustrates ADAS horizon data feeding predictive cruise-control algorithms." styleMode={styleMode}/>
+          <IlloCard dark={IlloMapDisplay}     light={L_MapDisplay}     label="Map Display"       emoji="🗺️" source="NavSDKIntro · ThumbMapDisplay"     prompt="Rendered map tile showing roads, a GPS accuracy halo and a pulsing TomTom-red route overlay at zoom 14. The illustration shows the SDK's core tile rendering with real-time data layers composited as one view." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSDKSearch}      light={L_SDKSearch}      label="Search"            emoji="🔍" source="NavSDKIntro · ThumbSearch"          prompt="Search input with three autocomplete suggestions in a dark dropdown, each prefixed with a type icon (place, address, POI). The card shows the SDK's built-in search widget with suggestion debouncing and type classification." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRouteOptions}   light={L_RouteOptions}   label="Route Options"     emoji="🚦" source="NavSDKIntro · ThumbRouting"         prompt="Three overlapping route lines in different colours (fast, eco, scenic) over the same map area with time and distance labels beside each. The side-by-side alternatives communicate the SDK's multi-route preference API." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavGuidance}    light={L_NavGuidance}    label="Navigation (NIP)"  emoji="↖️" source="NavSDKIntro · ThumbNavigation"      prompt="Large directional manoeuvre arrow (turn left), street name in bold below it, and a distance countdown in the corner — the complete NIP layout. High contrast and minimal chrome reflect in-car legibility requirements at speed." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloOfflineMaps}    light={L_OfflineMaps}    label="Offline Maps"      emoji="📴" source="NavSDKIntro · ThumbOffline"          prompt="Download progress UI showing a country region being cached with a file-size figure and a percentage bar. Cloud-to-device arrow communicates the offline-first tile delivery model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCarPlay}        light={L_CarPlay}        label="CarPlay"           emoji="🍎" source="NavSDKIntro · ThumbCarPlay"          prompt="Apple CarPlay-styled screen template with TomTom navigation constrained to the safe-zone and two large dashboard buttons. Rounded iOS chrome and simplified layout reflect strict CarPlay template guidelines." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVirtualHorizon} light={L_VirtualHorizon} label="Virtual Horizon"   emoji="🛤️" source="NavSDKIntro · ThumbVirtualHorizon"  prompt="3D perspective road wireframe showing upcoming curves and gradient changes with data-annotation overlays. The forward-looking view illustrates ADAS horizon data feeding predictive cruise-control algorithms." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3891,18 +4006,18 @@ export default function IntroIllustrations() {
           color="#3fb950"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloCalculateRoute}        light={L_CalculateRoute}        label="Calculate Route"       emoji="📍" source="RoutingAPIIntro · ThumbCalculateRoute"    prompt="Point-to-point route on a dark map with a green origin pin and red destination pin joined by a TomTom-red arc. ETA and distance labels are overlaid directly on the route line, not in a separate panel." styleMode={styleMode}/>
-          <IlloCard dark={IlloReachableRange}        light={L_ReachableRange}        label="Reachable Range"       emoji="⭕" source="RoutingAPIIntro · ThumbReachableRange"    prompt="Filled isochrone polygon radiating from a centre pin, shading from solid at the core to near-transparent at the outer edge. The fade communicates decreasing reach confidence within a fixed time or fuel budget." styleMode={styleMode}/>
-          <IlloCard dark={IlloEVRouting}             light={L_EVRouting}             label="EV Route"              emoji="⚡" source="RoutingAPIIntro · ThumbEVRoute"           prompt="Route arc connecting two city markers with two intermediate charging stops as green circles. A battery SOC bar below shows the charge level dropping and recovering across each leg of the journey." styleMode={styleMode}/>
-          <IlloCard dark={IlloBatchRouting}          light={L_BatchRouting}          label="Batch Routing"         emoji="📦" source="RoutingAPIIntro · ThumbBatchRouting"      prompt="Four horizontal progress bars in brand colours representing concurrent route calculations with km values beside each. A green status line confirms all four resolved in parallel within 400ms." styleMode={styleMode}/>
-          <IlloCard dark={IlloMatrixRouting}         light={L_MatrixRouting}         label="Matrix Routing"        emoji="⚡" source="RoutingAPIIntro · ThumbMatrix"            prompt="4×4 heat-matrix grid where each cell shows an origin-to-destination travel time, encoded by red intensity. The diagonal cells (same point) are the darkest reference anchors, establishing the visual key." styleMode={styleMode}/>
-          <IlloCard dark={IlloWaypointOpt}           light={L_WaypointOpt}           label="Waypoint Optimization" emoji="📍" source="RoutingAPIIntro · ThumbWaypointOpt"       prompt="Before/after split: left shows a zigzag unordered stop sequence; right shows a smooth efficient path with numbered circles. The contrast communicates TSP-style waypoint reordering in a single API call." styleMode={styleMode}/>
-          <IlloCard dark={IlloTurnInstructions}      light={L_TurnInstructions}      label="Turn Instructions"     emoji="↗️" source="RoutingAPIIntro · ThumbInstructions"      prompt="Vertical list of four manoeuvre steps (straight, left turn, right turn, roundabout) with monochrome icons and distance labels. The list format directly mirrors the structured guidance array returned in the JSON response." styleMode={styleMode}/>
-          <IlloCard dark={IlloRoadShields}           light={L_RoadShields}           label="Road Shields"          emoji="🛡️" source="RoutingAPIIntro · ThumbRoadShields"       prompt="A row of motorway, national and regional road shield shapes in country-specific colours and typefaces. The shields show how route summaries embed official signage references inside instruction text." styleMode={styleMode}/>
-          <IlloCard dark={IlloLaneGuidance}          light={L_LaneGuidance}          label="Lane Guidance"         emoji="🛣️" source="RoutingAPIIntro · ThumbLaneGuidance"      prompt="Five lane arrows in a row with the recommended lane in TomTom red and the others in muted grey. The per-lane state communicates high-resolution junction data available beyond standard turn-by-turn guidance." styleMode={styleMode}/>
-          <IlloCard dark={IlloRoutingComputeToll}    light={L_RoutingComputeToll}    label="Compute Toll Amounts"  emoji="💳" source="RoutingAPIIntro · ThumbComputeToll"       prompt="Route summary with itemised toll costs broken down by road segment and a total cost badge. The itemised layout communicates financial transparency for pre-trip planning and fleet cost estimation." styleMode={styleMode}/>
-          <IlloCard dark={IlloRoutingWeather}        light={L_RoutingWeather}        label="Weather Consideration" emoji="🌧️" source="RoutingAPIIntro · ThumbWeather"           prompt="Route arc with weather-condition icons pinned at waypoints (sun, cloud, rain) and adjusted travel-time labels beside each. The visual shows how real-time weather degrades speed estimates and influences route selection." styleMode={styleMode}/>
-          <IlloCard dark={IlloRoutingDataFreshness}  light={L_RoutingDataFreshness}  label="Dynamic Data Freshness" emoji="🔄" source="RoutingAPIIntro · ThumbDataFreshness"  prompt="Panel showing a traffic data model version number, last-updated timestamp and a coloured freshness indicator dot. The visual communicates that route quality is tied directly to the recency of the underlying traffic model." styleMode={styleMode}/>
+          <IlloCard dark={IlloCalculateRoute}        light={L_CalculateRoute}        label="Calculate Route"       emoji="📍" source="RoutingAPIIntro · ThumbCalculateRoute"    prompt="Point-to-point route on a dark map with a green origin pin and red destination pin joined by a TomTom-red arc. ETA and distance labels are overlaid directly on the route line, not in a separate panel." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloReachableRange}        light={L_ReachableRange}        label="Reachable Range"       emoji="⭕" source="RoutingAPIIntro · ThumbReachableRange"    prompt="Filled isochrone polygon radiating from a centre pin, shading from solid at the core to near-transparent at the outer edge. The fade communicates decreasing reach confidence within a fixed time or fuel budget." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVRouting}             light={L_EVRouting}             label="EV Route"              emoji="⚡" source="RoutingAPIIntro · ThumbEVRoute"           prompt="Route arc connecting two city markers with two intermediate charging stops as green circles. A battery SOC bar below shows the charge level dropping and recovering across each leg of the journey." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloBatchRouting}          light={L_BatchRouting}          label="Batch Routing"         emoji="📦" source="RoutingAPIIntro · ThumbBatchRouting"      prompt="Four horizontal progress bars in brand colours representing concurrent route calculations with km values beside each. A green status line confirms all four resolved in parallel within 400ms." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMatrixRouting}         light={L_MatrixRouting}         label="Matrix Routing"        emoji="⚡" source="RoutingAPIIntro · ThumbMatrix"            prompt="4×4 heat-matrix grid where each cell shows an origin-to-destination travel time, encoded by red intensity. The diagonal cells (same point) are the darkest reference anchors, establishing the visual key." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloWaypointOpt}           light={L_WaypointOpt}           label="Waypoint Optimization" emoji="📍" source="RoutingAPIIntro · ThumbWaypointOpt"       prompt="Before/after split: left shows a zigzag unordered stop sequence; right shows a smooth efficient path with numbered circles. The contrast communicates TSP-style waypoint reordering in a single API call." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTurnInstructions}      light={L_TurnInstructions}      label="Turn Instructions"     emoji="↗️" source="RoutingAPIIntro · ThumbInstructions"      prompt="Vertical list of four manoeuvre steps (straight, left turn, right turn, roundabout) with monochrome icons and distance labels. The list format directly mirrors the structured guidance array returned in the JSON response." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoadShields}           light={L_RoadShields}           label="Road Shields"          emoji="🛡️" source="RoutingAPIIntro · ThumbRoadShields"       prompt="A row of motorway, national and regional road shield shapes in country-specific colours and typefaces. The shields show how route summaries embed official signage references inside instruction text." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLaneGuidance}          light={L_LaneGuidance}          label="Lane Guidance"         emoji="🛣️" source="RoutingAPIIntro · ThumbLaneGuidance"      prompt="Five lane arrows in a row with the recommended lane in TomTom red and the others in muted grey. The per-lane state communicates high-resolution junction data available beyond standard turn-by-turn guidance." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoutingComputeToll}    light={L_RoutingComputeToll}    label="Compute Toll Amounts"  emoji="💳" source="RoutingAPIIntro · ThumbComputeToll"       prompt="Route summary with itemised toll costs broken down by road segment and a total cost badge. The itemised layout communicates financial transparency for pre-trip planning and fleet cost estimation." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoutingWeather}        light={L_RoutingWeather}        label="Weather Consideration" emoji="🌧️" source="RoutingAPIIntro · ThumbWeather"           prompt="Route arc with weather-condition icons pinned at waypoints (sun, cloud, rain) and adjusted travel-time labels beside each. The visual shows how real-time weather degrades speed estimates and influences route selection." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoutingDataFreshness}  light={L_RoutingDataFreshness}  label="Dynamic Data Freshness" emoji="🔄" source="RoutingAPIIntro · ThumbDataFreshness"  prompt="Panel showing a traffic data model version number, last-updated timestamp and a coloured freshness indicator dot. The visual communicates that route quality is tied directly to the recency of the underlying traffic model." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3915,14 +4030,14 @@ export default function IntroIllustrations() {
           color="#22c55e"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloLDEVRRoute}            light={L_LDEVRRoute}            label="Calculate EV Route"    emoji="⚡" source="LDEVRIntro · ThumbEVRoute"              prompt="Long-distance route arc spanning two charging stops, with SOC arcs dropping then recovering between each segment. The battery trajectory illustrates how the API selects stops to keep SOC above a safe minimum threshold." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVRBatch}            light={L_LDEVRBatch}            label="Batch EV Route"        emoji="📦" source="LDEVRIntro · ThumbBatchEV"             prompt="Side-by-side columns showing two EV route strategies — fewer stops vs faster charging — each with total trip duration. The comparison layout communicates the batch endpoint surfacing driver trade-offs in a single response." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVRVehicleBrand}     light={L_LDEVRVehicleBrand}     label="Vehicle Brand Lookup"  emoji="🚗" source="LDEVRIntro · ThumbVehicleBrand"        prompt="Vehicle selector card with make/model dropdown, battery capacity figure and a simplified charging-curve graph. The spec panel reflects the API's certified range and consumption data returned by vehicle brand ID." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVROemEmsp}          light={L_LDEVROemEmsp}          label="OEM EMSP Support"      emoji="🔌" source="LDEVRIntro · ThumbOemEmsp"             prompt="Connector-type grid overlaid with OEM card brand logos showing which EMSP credentials authenticate at which network. The matrix communicates multi-network authentication routing across roaming agreements." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVRComputeToll}      light={L_LDEVRComputeToll}      label="Compute Toll · EV"     emoji="💳" source="LDEVRIntro · ThumbComputeTollLDEVR"   prompt="Itemised toll-cost table with an EV-exemption badge applied to certain road segments and a total cost summary. The layout shows the EV-specific toll logic that waives or reduces fees for zero-emission vehicles." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVRChargingParks}    light={L_LDEVRChargingParks}    label="Charging Parks Hours"  emoji="🅿️" source="LDEVRIntro · ThumbChargingParks"       prompt="Station detail card with a weekly opening-hours grid and a peak-availability heatmap row below it. The illustration communicates the structured operating-hours data the API exposes per charging park location." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVRWeather}          light={L_LDEVRWeather}          label="Weather Consideration" emoji="🌧️" source="LDEVRIntro · ThumbWeatherLDEVR"         prompt="EV route with temperature and precipitation icons at each leg segment showing cold-weather range penalty as a percentage delta. The delta labels communicate the consumption model's per-condition range reduction." styleMode={styleMode}/>
-          <IlloCard dark={IlloLDEVRDataFreshness}    light={L_LDEVRDataFreshness}    label="Data Freshness"        emoji="🔄" source="LDEVRIntro · ThumbDataFreshnessLDEVR" prompt="EV charging data model version badge with a last-updated timestamp and a coloured staleness indicator dot. The visual reinforces that charging-availability accuracy degrades as data ages." styleMode={styleMode}/>
+          <IlloCard dark={IlloLDEVRRoute}            light={L_LDEVRRoute}            label="Calculate EV Route"    emoji="⚡" source="LDEVRIntro · ThumbEVRoute"              prompt="Long-distance route arc spanning two charging stops, with SOC arcs dropping then recovering between each segment. The battery trajectory illustrates how the API selects stops to keep SOC above a safe minimum threshold." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRBatch}            light={L_LDEVRBatch}            label="Batch EV Route"        emoji="📦" source="LDEVRIntro · ThumbBatchEV"             prompt="Side-by-side columns showing two EV route strategies — fewer stops vs faster charging — each with total trip duration. The comparison layout communicates the batch endpoint surfacing driver trade-offs in a single response." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRVehicleBrand}     light={L_LDEVRVehicleBrand}     label="Vehicle Brand Lookup"  emoji="🚗" source="LDEVRIntro · ThumbVehicleBrand"        prompt="Vehicle selector card with make/model dropdown, battery capacity figure and a simplified charging-curve graph. The spec panel reflects the API's certified range and consumption data returned by vehicle brand ID." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVROemEmsp}          light={L_LDEVROemEmsp}          label="OEM EMSP Support"      emoji="🔌" source="LDEVRIntro · ThumbOemEmsp"             prompt="Connector-type grid overlaid with OEM card brand logos showing which EMSP credentials authenticate at which network. The matrix communicates multi-network authentication routing across roaming agreements." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRComputeToll}      light={L_LDEVRComputeToll}      label="Compute Toll · EV"     emoji="💳" source="LDEVRIntro · ThumbComputeTollLDEVR"   prompt="Itemised toll-cost table with an EV-exemption badge applied to certain road segments and a total cost summary. The layout shows the EV-specific toll logic that waives or reduces fees for zero-emission vehicles." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRChargingParks}    light={L_LDEVRChargingParks}    label="Charging Parks Hours"  emoji="🅿️" source="LDEVRIntro · ThumbChargingParks"       prompt="Station detail card with a weekly opening-hours grid and a peak-availability heatmap row below it. The illustration communicates the structured operating-hours data the API exposes per charging park location." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRWeather}          light={L_LDEVRWeather}          label="Weather Consideration" emoji="🌧️" source="LDEVRIntro · ThumbWeatherLDEVR"         prompt="EV route with temperature and precipitation icons at each leg segment showing cold-weather range penalty as a percentage delta. The delta labels communicate the consumption model's per-condition range reduction." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRDataFreshness}    light={L_LDEVRDataFreshness}    label="Data Freshness"        emoji="🔄" source="LDEVRIntro · ThumbDataFreshnessLDEVR" prompt="EV charging data model version badge with a last-updated timestamp and a coloured staleness indicator dot. The visual reinforces that charging-availability accuracy degrades as data ages." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3935,14 +4050,14 @@ export default function IntroIllustrations() {
           color="#a855f7"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloANADriverExp} light={L_ANA_DriverExp} label="Driver Experience"         emoji="🧭" source="ANAIntro · ThumbANADriverExp"  prompt="Full HMI home screen with a large map region occupying two-thirds of the area, an ETA/destination bar at the bottom and media/call shortcuts in a corner. The balanced hierarchy shows navigation, infotainment and communication coexisting." styleMode={styleMode}/>
-          <IlloCard dark={IlloANATraffic}   light={L_ANA_Traffic}   label="Live Traffic & Rerouting"  emoji="🚦" source="ANAIntro · ThumbANATraffic"    prompt="Map showing a congested segment crossed out in red and a highlighted green alternative route. A rerouting toast at the top communicates automatic traffic-avoidance firing without driver input." styleMode={styleMode}/>
-          <IlloCard dark={IlloANAMap}       light={L_ANA_Map}       label="Premium Map Display"        emoji="🗺️" source="ANAIntro · ThumbANAMap"        prompt="Richly styled TomTom day-theme map tile with sharp road labels, coloured category POI icons and smooth building footprints. The visual quality signals premium map differentiation versus generic basemaps." styleMode={styleMode}/>
-          <IlloCard dark={IlloANAEVSearch}  light={L_ANA_EVSearch}  label="EV Charging Search"         emoji="⚡" source="ANAIntro · ThumbANAEVSearch"   prompt="Side panel sliding over the map listing three nearby EV stations with connector type, power and availability status. The overlay approach shows integrated charging search without leaving the navigation context." styleMode={styleMode}/>
-          <IlloCard dark={IlloANALDRoute}   light={L_ANA_LDRoute}   label="Long-Distance EV Route"     emoji="🔋" source="ANAIntro · ThumbANALDRoute"    prompt="City-to-city route arc with two charging waypoints and a SOC trajectory bar spanning the full journey below it. The illustration previews how LDEVR results surface inside the ANA in-car navigation UI." styleMode={styleMode}/>
-          <IlloCard dark={IlloVIL}          light={L_VIL}           label="Vehicle Integration Layer"  emoji="🔧" source="ANAIntro · ThumbVIL"           prompt="Layered stack diagram — ANA app → VIL middleware → vehicle hardware APIs — with connector arrows between each layer. The VIL box abstracts OEM-specific vehicle signals into a uniform SDK interface." styleMode={styleMode}/>
-          <IlloCard dark={IlloCIL}          light={L_CIL}           label="Control Integration Layer"  emoji="🕹️" source="ANAIntro · ThumbCIL"           prompt="Layered stack with OS UI framework → CIL → app components and bidirectional gesture/event arrows between layers. The CIL acts as the translation layer between platform input events and ANA's internal navigation controls." styleMode={styleMode}/>
-          <IlloCard dark={IlloANATheming}   light={L_ANATheming}    label="OEM Theme Tokens"           emoji="🎨" source="ANAIntro · ThumbTheming"       prompt="Token swatch grid with TomTom defaults in one column and OEM brand override values in an adjacent column, row by row. The side-by-side format communicates that brand customisation is additive — one file, no code changes." styleMode={styleMode}/>
+          <IlloCard dark={IlloANADriverExp} light={L_ANA_DriverExp} label="Driver Experience"         emoji="🧭" source="ANAIntro · ThumbANADriverExp"  prompt="Full HMI home screen with a large map region occupying two-thirds of the area, an ETA/destination bar at the bottom and media/call shortcuts in a corner. The balanced hierarchy shows navigation, infotainment and communication coexisting." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANATraffic}   light={L_ANA_Traffic}   label="Live Traffic & Rerouting"  emoji="🚦" source="ANAIntro · ThumbANATraffic"    prompt="Map showing a congested segment crossed out in red and a highlighted green alternative route. A rerouting toast at the top communicates automatic traffic-avoidance firing without driver input." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANAMap}       light={L_ANA_Map}       label="Premium Map Display"        emoji="🗺️" source="ANAIntro · ThumbANAMap"        prompt="Richly styled TomTom day-theme map tile with sharp road labels, coloured category POI icons and smooth building footprints. The visual quality signals premium map differentiation versus generic basemaps." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANAEVSearch}  light={L_ANA_EVSearch}  label="EV Charging Search"         emoji="⚡" source="ANAIntro · ThumbANAEVSearch"   prompt="Side panel sliding over the map listing three nearby EV stations with connector type, power and availability status. The overlay approach shows integrated charging search without leaving the navigation context." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANALDRoute}   light={L_ANA_LDRoute}   label="Long-Distance EV Route"     emoji="🔋" source="ANAIntro · ThumbANALDRoute"    prompt="City-to-city route arc with two charging waypoints and a SOC trajectory bar spanning the full journey below it. The illustration previews how LDEVR results surface inside the ANA in-car navigation UI." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVIL}          light={L_VIL}           label="Vehicle Integration Layer"  emoji="🔧" source="ANAIntro · ThumbVIL"           prompt="Layered stack diagram — ANA app → VIL middleware → vehicle hardware APIs — with connector arrows between each layer. The VIL box abstracts OEM-specific vehicle signals into a uniform SDK interface." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCIL}          light={L_CIL}           label="Control Integration Layer"  emoji="🕹️" source="ANAIntro · ThumbCIL"           prompt="Layered stack with OS UI framework → CIL → app components and bidirectional gesture/event arrows between layers. The CIL acts as the translation layer between platform input events and ANA's internal navigation controls." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANATheming}   light={L_ANATheming}    label="OEM Theme Tokens"           emoji="🎨" source="ANAIntro · ThumbTheming"       prompt="Token swatch grid with TomTom defaults in one column and OEM brand override values in an adjacent column, row by row. The side-by-side format communicates that brand customisation is additive — one file, no code changes." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3955,12 +4070,12 @@ export default function IntroIllustrations() {
           color="#58a6ff"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloSearchFuzzy}       light={L_SearchFuzzy}       label="Fuzzy Search"           emoji="🔍" source="Search API · fuzzy"          prompt="Dark search bar above a scrollable result list mixing address pins and POI icons, with a 'Fuzzy' badge in the input. Results show emoji type markers, name and distance; the top-ranked row carries a subtle highlight." styleMode={styleMode}/>
-          <IlloCard dark={IlloSearchPOI}         light={L_SearchPOI}         label="POI Search"             emoji="📍" source="Search API · poi"            prompt="Category filter chips (Cafe, Fuel, Food, Hotel) at the top, the active chip highlighted, with three POI result rows below each showing icon, name, distance and star rating. The chip row communicates single-category filtering." styleMode={styleMode}/>
-          <IlloCard dark={IlloSearchCategory}    light={L_SearchCategory}    label="Category Search"        emoji="🗂️" source="Search API · category"       prompt="Tree-style taxonomy list with indented children, active node highlighted in blue and a result-count badge at the bottom. The tree communicates drilling into a POI hierarchy (Food & Drink → Restaurant) before triggering a search." styleMode={styleMode}/>
-          <IlloCard dark={IlloSearchNearby}      light={L_SearchNearby}      label="Nearby Search"          emoji="📡" source="Search API · nearby"         prompt="Radar-style map circle with a red user-location dot at centre, three blue POI pins within the ring and a named result list below with distances. The concentric ring visualises the search radius parameter." styleMode={styleMode}/>
-          <IlloCard dark={IlloSearchAlongRoute}  light={L_SearchAlongRoute}  label="Along Route Search"     emoji="🛣️" source="Search API · along-route"    prompt="TomTom-red route arc on a dark map with three fuel-station icons sitting inside the corridor, each shown as a blue circle. A caption reads '3 fuel stations · within 2 km deviation' to communicate the detour tolerance." styleMode={styleMode}/>
-          <IlloCard dark={IlloSearchAutocomplete} light={L_SearchAutocomplete} label="Autocomplete"         emoji="⌨️" source="Search API · autocomplete"   prompt="Search input showing partial text 'Amster|' with a cursor and three ranked dropdown suggestions (airport, centre, Noord). A 'Debounce 300ms' footer communicates the real-time typeahead request cadence." styleMode={styleMode}/>
+          <IlloCard dark={IlloSearchFuzzy}       light={L_SearchFuzzy}       label="Fuzzy Search"           emoji="🔍" source="Search API · fuzzy"          prompt="Dark search bar above a scrollable result list mixing address pins and POI icons, with a 'Fuzzy' badge in the input. Results show emoji type markers, name and distance; the top-ranked row carries a subtle highlight." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchPOI}         light={L_SearchPOI}         label="POI Search"             emoji="📍" source="Search API · poi"            prompt="Category filter chips (Cafe, Fuel, Food, Hotel) at the top, the active chip highlighted, with three POI result rows below each showing icon, name, distance and star rating. The chip row communicates single-category filtering." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchCategory}    light={L_SearchCategory}    label="Category Search"        emoji="🗂️" source="Search API · category"       prompt="Tree-style taxonomy list with indented children, active node highlighted in blue and a result-count badge at the bottom. The tree communicates drilling into a POI hierarchy (Food & Drink → Restaurant) before triggering a search." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchNearby}      light={L_SearchNearby}      label="Nearby Search"          emoji="📡" source="Search API · nearby"         prompt="Radar-style map circle with a red user-location dot at centre, three blue POI pins within the ring and a named result list below with distances. The concentric ring visualises the search radius parameter." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchAlongRoute}  light={L_SearchAlongRoute}  label="Along Route Search"     emoji="🛣️" source="Search API · along-route"    prompt="TomTom-red route arc on a dark map with three fuel-station icons sitting inside the corridor, each shown as a blue circle. A caption reads '3 fuel stations · within 2 km deviation' to communicate the detour tolerance." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchAutocomplete} light={L_SearchAutocomplete} label="Autocomplete"         emoji="⌨️" source="Search API · autocomplete"   prompt="Search input showing partial text 'Amster|' with a cursor and three ranked dropdown suggestions (airport, centre, Noord). A 'Debounce 300ms' footer communicates the real-time typeahead request cadence." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3973,8 +4088,8 @@ export default function IntroIllustrations() {
           color="#a78bfa"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloGeocode}        light={L_Geocode}        label="Geocode"         emoji="📌" source="Geocoding API · geocode"         prompt="Two stacked cards connected by a downward arrow: address text on top ('Hullenbergweg 11, Amsterdam'), coordinate output below ('52.2977°N 4.9418°E') with a confidence score. The card-to-card layout visualises the one-way text-to-coordinates transformation." styleMode={styleMode}/>
-          <IlloCard dark={IlloReverseGeocode} light={L_ReverseGeocode} label="Reverse Geocode" emoji="🔄" source="Geocoding API · reverse-geocode" prompt="Miniature map with a red pin at a lat/lon crosshair intersection, with coordinate labels on the axes and an output address card below. The map-to-text layout communicates the inverse geocoding direction clearly." styleMode={styleMode}/>
+          <IlloCard dark={IlloGeocode}        light={L_Geocode}        label="Geocode"         emoji="📌" source="Geocoding API · geocode"         prompt="Two stacked cards connected by a downward arrow: address text on top ('Hullenbergweg 11, Amsterdam'), coordinate output below ('52.2977°N 4.9418°E') with a confidence score. The card-to-card layout visualises the one-way text-to-coordinates transformation." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloReverseGeocode} light={L_ReverseGeocode} label="Reverse Geocode" emoji="🔄" source="Geocoding API · reverse-geocode" prompt="Miniature map with a red pin at a lat/lon crosshair intersection, with coordinate labels on the axes and an output address card below. The map-to-text layout communicates the inverse geocoding direction clearly." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -3987,10 +4102,10 @@ export default function IntroIllustrations() {
           color="#ef4444"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloTrafficFlow}      light={L_TrafficFlow}      label="Traffic Flow"      emoji="🟢" source="Traffic API · flow"       prompt="Four equal-length horizontal bars colour-coded green → amber → orange → red, each labelled with a km/h speed and a congestion description. Bar length is constant; only colour encodes severity to maximise legibility at small size." styleMode={styleMode}/>
-          <IlloCard dark={IlloTrafficIncidents} light={L_TrafficIncidents} label="Traffic Incidents" emoji="⚠️" source="Traffic API · incidents"  prompt="Three incident rows — roadworks, accident, road closure — each with an emoji icon, type name in a severity colour and a road/km reference. The list directly mirrors the structured incident feed the API returns for a bounding box." styleMode={styleMode}/>
-          <IlloCard dark={IlloTrafficFlowTile}  light={L_TrafficFlowTile}  label="Flow Tile"         emoji="🗺️" source="Traffic API · flow-tile"  prompt="4×3 mosaic of colour blocks ranging green to red representing flow-speed intensity across adjacent 256×256 map tiles. A z/x/y coordinate header and 'PNG · traffic overlay' footer identify this as the raster tile endpoint." styleMode={styleMode}/>
-          <IlloCard dark={IlloTrafficModelID}   light={L_TrafficModelID}   label="Traffic Model ID"  emoji="🔢" source="Traffic API · model-id"   prompt="A large model ID (#1680) in a highlighted card with an update timestamp, flanked by two older version badges in muted style. The visual communicates the polling pattern: check for a new model ID, then fetch fresh flow data only if it changed." styleMode={styleMode}/>
+          <IlloCard dark={IlloTrafficFlow}      light={L_TrafficFlow}      label="Traffic Flow"      emoji="🟢" source="Traffic API · flow"       prompt="Four equal-length horizontal bars colour-coded green → amber → orange → red, each labelled with a km/h speed and a congestion description. Bar length is constant; only colour encodes severity to maximise legibility at small size." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficIncidents} light={L_TrafficIncidents} label="Traffic Incidents" emoji="⚠️" source="Traffic API · incidents"  prompt="Three incident rows — roadworks, accident, road closure — each with an emoji icon, type name in a severity colour and a road/km reference. The list directly mirrors the structured incident feed the API returns for a bounding box." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficFlowTile}  light={L_TrafficFlowTile}  label="Flow Tile"         emoji="🗺️" source="Traffic API · flow-tile"  prompt="4×3 mosaic of colour blocks ranging green to red representing flow-speed intensity across adjacent 256×256 map tiles. A z/x/y coordinate header and 'PNG · traffic overlay' footer identify this as the raster tile endpoint." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficModelID}   light={L_TrafficModelID}   label="Traffic Model ID"  emoji="🔢" source="Traffic API · model-id"   prompt="A large model ID (#1680) in a highlighted card with an update timestamp, flanked by two older version badges in muted style. The visual communicates the polling pattern: check for a new model ID, then fetch fresh flow data only if it changed." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4003,9 +4118,9 @@ export default function IntroIllustrations() {
           color="#22c55e"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloEVSearchNearby}          light={L_EVSearchNearby}          label="EV Stations Nearby"      emoji="⚡" source="EV API · nearby"          prompt="Compact list of three charging operators with power rating and coloured availability text (green = available, red = full). The ⚡ dot icons adopt the availability colour as status signal, matching EV app conventions." styleMode={styleMode}/>
-          <IlloCard dark={IlloEVChargingAvailability}  light={L_EVChargingAvailability}  label="Charging Availability"   emoji="🔌" source="EV API · availability"    prompt="Four connector-type rows (CCS2, Type2, CHAdeMO, CCS2) each with a coloured status dot and a label (Available, Charging, Offline). The table communicates per-connector granularity, not just per-station availability." styleMode={styleMode}/>
-          <IlloCard dark={IlloEVMarketCoverage}        light={L_EVMarketCoverage}        label="EV Market Coverage"      emoji="🗺️" source="EV API · market-coverage" prompt="Vertical list of five countries with percentage coverage bars graduating from green (high density) to orange (low density). The bars communicate relative EV charging network completeness across the TomTom data footprint." styleMode={styleMode}/>
+          <IlloCard dark={IlloEVSearchNearby}          light={L_EVSearchNearby}          label="EV Stations Nearby"      emoji="⚡" source="EV API · nearby"          prompt="Compact list of three charging operators with power rating and coloured availability text (green = available, red = full). The ⚡ dot icons adopt the availability colour as status signal, matching EV app conventions." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVChargingAvailability}  light={L_EVChargingAvailability}  label="Charging Availability"   emoji="🔌" source="EV API · availability"    prompt="Four connector-type rows (CCS2, Type2, CHAdeMO, CCS2) each with a coloured status dot and a label (Available, Charging, Offline). The table communicates per-connector granularity, not just per-station availability." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVMarketCoverage}        light={L_EVMarketCoverage}        label="EV Market Coverage"      emoji="🗺️" source="EV API · market-coverage" prompt="Vertical list of five countries with percentage coverage bars graduating from green (high density) to orange (low density). The bars communicate relative EV charging network completeness across the TomTom data footprint." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4018,11 +4133,11 @@ export default function IntroIllustrations() {
           color="#0066cc"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloMapRasterTile}   light={L_MapRasterTile}   label="Raster Map Tile"   emoji="🟦" source="Map Display API · raster"  prompt="3×3 mosaic of dark map tile blocks, the centre cell featuring a red location pin and a glow. A z/x/y coordinate header and 'PNG · 256×256' footer frame this as a standard slippy-map tile request." styleMode={styleMode}/>
-          <IlloCard dark={IlloMapVectorTile}   light={L_MapVectorTile}   label="Vector Map Tile"   emoji="📐" source="Map Display API · vector"  prompt="Stylised vector map showing road lines, building footprint rectangles and a red POI circle on a dark canvas. Layer badges at the bottom (roads, labels, pois) communicate that vector tiles are multi-layer and styleable on the client." styleMode={styleMode}/>
-          <IlloCard dark={IlloMapSatelliteTile} light={L_MapSatelliteTile} label="Satellite Tile"  emoji="🛰️" source="Map Display API · satellite" prompt="Simulated aerial photograph tile with irregular building footprints in muted earthy tones and a road corridor crossing the frame. The organic, non-geometric shapes contrast with vector tiles and communicate real-world imagery data." styleMode={styleMode}/>
-          <IlloCard dark={IlloMapAssetsAPI}    light={L_MapAssetsAPI}    label="Map Assets API"    emoji="📦" source="Map Display API · assets"  prompt="File-list card showing four named map asset files — day/night sprite sheets, font PBF and style JSON — with file sizes. The file-explorer layout communicates that the endpoint delivers discrete assets consumed by a map renderer." styleMode={styleMode}/>
-          <IlloCard dark={IlloMapStaticImage}  light={L_MapStaticImage}  label="Static Map Image"  emoji="🖼️" source="Map Display API · static"  prompt="Dark map thumbnail with a red pin at centre, a glow halo and a dashed bounding-box border. The '600×400 · zoom=14' caption communicates the parameterised static-image request format." styleMode={styleMode}/>
+          <IlloCard dark={IlloMapRasterTile}   light={L_MapRasterTile}   label="Raster Map Tile"   emoji="🟦" source="Map Display API · raster"  prompt="3×3 mosaic of dark map tile blocks, the centre cell featuring a red location pin and a glow. A z/x/y coordinate header and 'PNG · 256×256' footer frame this as a standard slippy-map tile request." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapVectorTile}   light={L_MapVectorTile}   label="Vector Map Tile"   emoji="📐" source="Map Display API · vector"  prompt="Stylised vector map showing road lines, building footprint rectangles and a red POI circle on a dark canvas. Layer badges at the bottom (roads, labels, pois) communicate that vector tiles are multi-layer and styleable on the client." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapSatelliteTile} light={L_MapSatelliteTile} label="Satellite Tile"  emoji="🛰️" source="Map Display API · satellite" prompt="Simulated aerial photograph tile with irregular building footprints in muted earthy tones and a road corridor crossing the frame. The organic, non-geometric shapes contrast with vector tiles and communicate real-world imagery data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapAssetsAPI}    light={L_MapAssetsAPI}    label="Map Assets API"    emoji="📦" source="Map Display API · assets"  prompt="File-list card showing four named map asset files — day/night sprite sheets, font PBF and style JSON — with file sizes. The file-explorer layout communicates that the endpoint delivers discrete assets consumed by a map renderer." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapStaticImage}  light={L_MapStaticImage}  label="Static Map Image"  emoji="🖼️" source="Map Display API · static"  prompt="Dark map thumbnail with a red pin at centre, a glow halo and a dashed bounding-box border. The '600×400 · zoom=14' caption communicates the parameterised static-image request format." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4035,10 +4150,10 @@ export default function IntroIllustrations() {
           color="#fbbf24"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloParkingAvailability} light={L_ParkingAvailability} label="Parking Availability" emoji="🅿️" source="Parking API · availability" prompt="Four parking zones each with a name, a used/capacity fraction and a colour-coded percentage bar (green = space, red = full). Bar colour is the primary signal; the fraction provides the precise data." styleMode={styleMode}/>
-          <IlloCard dark={IlloParkingPrices}       light={L_ParkingPrices}       label="Parking Prices"       emoji="💶" source="Parking API · prices"       prompt="Duration-tiered price table (0–1 hr, 1–3 hr, 3–8 hr, all day) with the lowest tier highlighted and prices right-aligned. Payment method badges at the bottom (card, contactless, cash) show accepted payment types." styleMode={styleMode}/>
-          <IlloCard dark={IlloOnStreetParking}     light={L_OnStreetParking}     label="On-Street Parking"    emoji="🚗" source="Parking API · on-street"    prompt="Bird's-eye road cross-section with kerbside segments coloured green, amber and red for predicted availability probability on both sides of the road. A legend strip maps the three states: Available, Limited, Restricted." styleMode={styleMode}/>
-          <IlloCard dark={IlloFuelPrices}          light={L_FuelPrices}          label="Fuel Prices"          emoji="⛽" source="Fuel Prices API · prices"  prompt="Fuel-type list (Unleaded, Diesel, LPG, Fast DC) with each price right-aligned in a distinct accent colour. Station name and distance above the list frame this as a single-station detail card, not a comparison view." styleMode={styleMode}/>
+          <IlloCard dark={IlloParkingAvailability} light={L_ParkingAvailability} label="Parking Availability" emoji="🅿️" source="Parking API · availability" prompt="Four parking zones each with a name, a used/capacity fraction and a colour-coded percentage bar (green = space, red = full). Bar colour is the primary signal; the fraction provides the precise data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloParkingPrices}       light={L_ParkingPrices}       label="Parking Prices"       emoji="💶" source="Parking API · prices"       prompt="Duration-tiered price table (0–1 hr, 1–3 hr, 3–8 hr, all day) with the lowest tier highlighted and prices right-aligned. Payment method badges at the bottom (card, contactless, cash) show accepted payment types." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloOnStreetParking}     light={L_OnStreetParking}     label="On-Street Parking"    emoji="🚗" source="Parking API · on-street"    prompt="Bird's-eye road cross-section with kerbside segments coloured green, amber and red for predicted availability probability on both sides of the road. A legend strip maps the three states: Available, Limited, Restricted." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloFuelPrices}          light={L_FuelPrices}          label="Fuel Prices"          emoji="⛽" source="Fuel Prices API · prices"  prompt="Fuel-type list (Unleaded, Diesel, LPG, Fast DC) with each price right-aligned in a distinct accent colour. Station name and distance above the list frame this as a single-station detail card, not a comparison view." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4051,7 +4166,7 @@ export default function IntroIllustrations() {
           color="#3fb950"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloSnapToRoads} light={L_SnapToRoads} label="Snap to Roads" emoji="📍" source="Snap-to-Roads API · snap" prompt="Road path with blue snapped points sitting on the line and faint grey raw-GPS points offset beside them, connected by short correction lines. The before/after proximity shows the sub-metre correction the API applies to noisy trace data." styleMode={styleMode}/>
+          <IlloCard dark={IlloSnapToRoads} light={L_SnapToRoads} label="Snap to Roads" emoji="📍" source="Snap-to-Roads API · snap" prompt="Road path with blue snapped points sitting on the line and faint grey raw-GPS points offset beside them, connected by short correction lines. The before/after proximity shows the sub-metre correction the API applies to noisy trace data." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4064,7 +4179,7 @@ export default function IntroIllustrations() {
           color="#58a6ff"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloBatchSearch} light={L_BatchSearch} label="Batch Search" emoji="📦" source="Batch Search API · batch" prompt="Four query rows each showing a search description, result count and a status dot (green = hit, red = zero results). A footer shows total elapsed time — all four queries resolving in a single round-trip under 250ms." styleMode={styleMode}/>
+          <IlloCard dark={IlloBatchSearch} light={L_BatchSearch} label="Batch Search" emoji="📦" source="Batch Search API · batch" prompt="Four query rows each showing a search description, result count and a status dot (green = hit, red = zero results). A footer shows total elapsed time — all four queries resolving in a single round-trip under 250ms." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4077,8 +4192,8 @@ export default function IntroIllustrations() {
           color="#a78bfa"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloPOIDetails} light={L_POIDetails} label="POI Details" emoji="🏢" source="POI API · details" prompt="Hotel POI card with brand icon, star rating and four structured data rows — phone, website, opening hours, accessibility. The row layout reflects the rich JSON fields the Details endpoint returns beyond basic name and coordinates." styleMode={styleMode}/>
-          <IlloCard dark={IlloPOIPhotos}  light={L_POIPhotos}  label="POI Photos"  emoji="📷" source="POI API · photos"  prompt="3×2 photo-grid mosaic with each cell showing an emoji representing a scene category (exterior, dining, lobby, garden, pool, gym). The grid communicates that photos are categorised and available at defined sizes via the API." styleMode={styleMode}/>
+          <IlloCard dark={IlloPOIDetails} light={L_POIDetails} label="POI Details" emoji="🏢" source="POI API · details" prompt="Hotel POI card with brand icon, star rating and four structured data rows — phone, website, opening hours, accessibility. The row layout reflects the rich JSON fields the Details endpoint returns beyond basic name and coordinates." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloPOIPhotos}  light={L_POIPhotos}  label="POI Photos"  emoji="📷" source="POI API · photos"  prompt="3×2 photo-grid mosaic with each cell showing an emoji representing a scene category (exterior, dining, lobby, garden, pool, gym). The grid communicates that photos are categorised and available at defined sizes via the API." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4091,10 +4206,10 @@ export default function IntroIllustrations() {
           color="#e2001a"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloTrafficStats}      light={L_TrafficStats}      label="Traffic Statistics"  emoji="📊" source="Traffic Analytics · stats"    prompt="Bar chart of 12 bars spanning a week, coloured blue/amber/red by speed bucket to show the typical daily congestion pattern. Day-of-week labels and a muted title communicate this is historical (not live) analytics data." styleMode={styleMode}/>
-          <IlloCard dark={IlloAreaAnalytics}     light={L_AreaAnalytics}     label="Area Analytics"      emoji="🔥" source="Traffic Analytics · area"     prompt="4×4 heatmap grid with red-intensity cells representing aggregated traffic density per micro-zone, plus a Low→High gradient legend strip. The grid is the simplest encoding of spatial density without any geographic basemap." styleMode={styleMode}/>
-          <IlloCard dark={IlloODAnalysis}        light={L_ODAnalysis}        label="O/D Analysis"        emoji="🔄" source="Traffic Analytics · od"       prompt="4×4 origin/destination matrix with blue-intensity cells showing flow volume between zone pairs and grey diagonal cells for same-zone trips. Row and column headers A–D communicate the zone-pair addressing model." styleMode={styleMode}/>
-          <IlloCard dark={IlloJunctionAnalytics} light={L_JunctionAnalytics} label="Junction Analytics"  emoji="🔀" source="Traffic Analytics · junction" prompt="Crossroads diagram with four directional arrows and vehicle-per-hour counts (340, 280, 190, 420) annotated at each arm, plus a blue junction circle. The per-approach flow counts communicate single-junction monitoring granularity." styleMode={styleMode}/>
+          <IlloCard dark={IlloTrafficStats}      light={L_TrafficStats}      label="Traffic Statistics"  emoji="📊" source="Traffic Analytics · stats"    prompt="Bar chart of 12 bars spanning a week, coloured blue/amber/red by speed bucket to show the typical daily congestion pattern. Day-of-week labels and a muted title communicate this is historical (not live) analytics data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloAreaAnalytics}     light={L_AreaAnalytics}     label="Area Analytics"      emoji="🔥" source="Traffic Analytics · area"     prompt="4×4 heatmap grid with red-intensity cells representing aggregated traffic density per micro-zone, plus a Low→High gradient legend strip. The grid is the simplest encoding of spatial density without any geographic basemap." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloODAnalysis}        light={L_ODAnalysis}        label="O/D Analysis"        emoji="🔄" source="Traffic Analytics · od"       prompt="4×4 origin/destination matrix with blue-intensity cells showing flow volume between zone pairs and grey diagonal cells for same-zone trips. Row and column headers A–D communicate the zone-pair addressing model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloJunctionAnalytics} light={L_JunctionAnalytics} label="Junction Analytics"  emoji="🔀" source="Traffic Analytics · junction" prompt="Crossroads diagram with four directional arrows and vehicle-per-hour counts (340, 280, 190, 420) annotated at each arm, plus a blue junction circle. The per-approach flow counts communicate single-junction monitoring granularity." illoStyle={illoStyle}/>
         </div>
       </div>
 

@@ -77,7 +77,7 @@ function blueprintForSite() {
     : 'blueprintLight';
 }
 
-const IlloStyleContext = createContext({
+export const IlloStyleContext = createContext({
   theme:    DEFAULT_THEME,
   setTheme: () => {},
   palette:  THEMES[DEFAULT_THEME],
