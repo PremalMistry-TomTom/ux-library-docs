@@ -252,6 +252,17 @@ export default function App() {
     return () => window.removeEventListener('ux-navigate', handleUxNavigate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Keep isDark in sync if a child component (e.g. illustration style toggle)
+  // writes data-theme directly — so the Topnav toggle icon stays accurate.
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setIsDark(prev => prev === dark ? prev : dark);
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
   const { isVisible: isGlobalVisible, reveal, cancelReveal, onMouseEnterGlobal, onMouseLeaveGlobal } = useGlobalHeader();
 
   useEffect(() => {

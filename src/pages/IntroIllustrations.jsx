@@ -3909,8 +3909,31 @@ function FigmaPluginPanel({ onClose }) {
 
 export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle = null }) {
   const { theme, setTheme } = useIlloStyle();
-  const [illoStyleState, setIlloStyle] = React.useState('lofi');
+
+  // Default to 'detailed'; initialise from the site's current day/night mode.
+  const [illoStyleState, setIlloStyleState] = React.useState(() =>
+    document.documentElement.getAttribute('data-theme') === 'dark' ? 'detailed' : 'detailed'
+  );
   const illoStyle = forcedIlloStyle ?? illoStyleState;
+
+  // Sync style when the site-level night/day toggle changes.
+  React.useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const siteDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setIlloStyleState(siteDark ? 'detailed' : 'lofi');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+
+  // When the style pill is clicked manually, also flip the site night/day mode.
+  function handleStyleChange(val) {
+    setIlloStyleState(val);
+    const wantDark = val === 'detailed';
+    document.documentElement.setAttribute('data-theme', wantDark ? 'dark' : 'light');
+    try { localStorage.setItem('ux-theme', wantDark ? 'dark' : 'light'); } catch {}
+  }
+
   const [showPlugin, setShowPlugin] = React.useState(false);
 
   return (
@@ -3918,7 +3941,7 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
       {showPlugin && <FigmaPluginPanel onClose={() => setShowPlugin(false)} />}
 
       {/* ── Sticky theme bar — hidden on legacy page ── */}
-      {!noThemeBar && <ThemeBar theme={theme} onThemeChange={setTheme} illoStyle={illoStyle} onStyleChange={setIlloStyle} onPluginClick={() => setShowPlugin(true)} />}
+      {!noThemeBar && <ThemeBar theme={theme} onThemeChange={setTheme} illoStyle={illoStyle} onStyleChange={handleStyleChange} onPluginClick={() => setShowPlugin(true)} />}
 
       <div style={{ padding: '0 24px' }}>
         <div className="page-header" style={{ marginTop: 24 }}>
