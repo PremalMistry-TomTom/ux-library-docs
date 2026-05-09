@@ -5,6 +5,9 @@ import {
   makeThumb,
   L_TrafficFlow, L_TrafficIncidents, L_TrafficFlowTile, L_TrafficModelID,
 } from '../illustrations/lightVariants';
+import {
+  IlloTrafficFlow, IlloTrafficIncidents, IlloTrafficFlowTile, IlloTrafficModelID,
+} from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -34,11 +37,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbFlow() { return <L_TrafficFlow />; }
-function ThumbIncidents() { return <L_TrafficIncidents />; }
-function ThumbFlowTile() { return <L_TrafficFlowTile />; }
-function ThumbModelID() { return <L_TrafficModelID />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloTrafficFlow, L_TrafficFlow);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function TrafficAPIIntro({ onNavigate }) {
@@ -46,28 +46,28 @@ export default function TrafficAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbFlow, L_TrafficFlow),
+      Illo: makeThumb(IlloTrafficFlow, L_TrafficFlow),
       title: 'Traffic Flow',
       method: 'GET',
       path: '/traffic/services/4/flowSegmentData/{style}/{zoom}/json',
       desc: 'Retrieve real-time traffic flow data for a road segment, including current and free-flow speeds.',
     },
     {
-      Illo: makeThumb(ThumbIncidents, L_TrafficIncidents),
+      Illo: makeThumb(IlloTrafficIncidents, L_TrafficIncidents),
       title: 'Traffic Incidents',
       method: 'GET',
       path: '/traffic/services/5/incidentDetails',
       desc: 'Get detailed traffic incidents — accidents, road works, closures — within a bounding box.',
     },
     {
-      Illo: makeThumb(ThumbFlowTile, L_TrafficFlowTile),
+      Illo: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile),
       title: 'Flow Tiles',
       method: 'GET',
       path: '/traffic/map/4/tile/flow/{style}/{zoom}/{x}/{y}.png',
       desc: 'Raster or vector map tiles colour-coded by current traffic flow speed for overlay on maps.',
     },
     {
-      Illo: makeThumb(ThumbModelID, L_TrafficModelID),
+      Illo: makeThumb(IlloTrafficModelID, L_TrafficModelID),
       title: 'Traffic Model ID',
       method: 'GET',
       path: '/traffic/services/4/trafficModelID.json',
@@ -90,7 +90,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_TrafficFlow />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

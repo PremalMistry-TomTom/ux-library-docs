@@ -6,6 +6,10 @@ import {
   L_SearchFuzzy, L_SearchPOI, L_SearchCategory, L_SearchNearby,
   L_SearchAlongRoute, L_SearchAutocomplete, L_BatchSearch, L_POIDetails, L_POIPhotos,
 } from '../illustrations/lightVariants';
+import {
+  IlloSearchFuzzy, IlloSearchPOI, IlloSearchNearby,
+  IlloSearchAlongRoute, IlloSearchAutocomplete, IlloPOIDetails, IlloPOIPhotos,
+} from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -35,16 +39,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbFuzzy() { return <L_SearchFuzzy />; }
-function ThumbPOI() { return <L_SearchPOI />; }
-function ThumbCategory() { return <L_SearchCategory />; }
-function ThumbNearby() { return <L_SearchNearby />; }
-function ThumbAlongRoute() { return <L_SearchAlongRoute />; }
-function ThumbAutocomplete() { return <L_SearchAutocomplete />; }
-function ThumbBatch() { return <L_BatchSearch />; }
-function ThumbPOIDetails() { return <L_POIDetails />; }
-function ThumbPOIPhotos() { return <L_POIPhotos />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloSearchFuzzy, L_SearchFuzzy);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SearchAPIIntro({ onNavigate }) {
@@ -52,63 +48,63 @@ export default function SearchAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbFuzzy, L_SearchFuzzy),
+      Illo: makeThumb(IlloSearchFuzzy, L_SearchFuzzy),
       title: 'Fuzzy Search',
       method: 'GET',
       path: '/search/2/search/{query}.json',
       desc: 'Unified search endpoint accepting free-form text — addresses, POIs, and coordinates in a single query.',
     },
     {
-      Illo: makeThumb(ThumbPOI, L_SearchPOI),
+      Illo: makeThumb(IlloSearchPOI, L_SearchPOI),
       title: 'POI Search',
       method: 'GET',
       path: '/search/2/poiSearch/{query}.json',
       desc: 'Search exclusively for Points of Interest by name with optional category and brand filters.',
     },
     {
-      Illo: makeThumb(ThumbCategory, L_SearchCategory),
+      Illo: makeThumb(null, L_SearchCategory),
       title: 'Category Search',
       method: 'GET',
       path: '/search/2/categorySearch/{query}.json',
       desc: 'Find POIs by category type such as restaurants, hospitals, or petrol stations.',
     },
     {
-      Illo: makeThumb(ThumbNearby, L_SearchNearby),
+      Illo: makeThumb(IlloSearchNearby, L_SearchNearby),
       title: 'Nearby Search',
       method: 'GET',
       path: '/search/2/nearbySearch/.json',
       desc: 'Discover POIs within a radius around a given lat/lon coordinate without a text query.',
     },
     {
-      Illo: makeThumb(ThumbAlongRoute, L_SearchAlongRoute),
+      Illo: makeThumb(IlloSearchAlongRoute, L_SearchAlongRoute),
       title: 'Along-Route Search',
       method: 'POST',
       path: '/search/2/searchAlongRoute/{query}.json',
       desc: 'Find POIs along a route corridor, ranked by deviation from the original path.',
     },
     {
-      Illo: makeThumb(ThumbAutocomplete, L_SearchAutocomplete),
+      Illo: makeThumb(IlloSearchAutocomplete, L_SearchAutocomplete),
       title: 'Autocomplete',
       method: 'GET',
       path: '/search/2/autocomplete/{query}.json',
       desc: 'Return type-ahead suggestions for partial search queries to power instant search UIs.',
     },
     {
-      Illo: makeThumb(ThumbBatch, L_BatchSearch),
+      Illo: makeThumb(null, L_BatchSearch),
       title: 'Batch Search',
       method: 'POST',
       path: '/search/2/batch/sync.json',
       desc: 'Execute multiple search queries in a single HTTP request, synchronously or asynchronously.',
     },
     {
-      Illo: makeThumb(ThumbPOIDetails, L_POIDetails),
+      Illo: makeThumb(IlloPOIDetails, L_POIDetails),
       title: 'POI Details',
       method: 'GET',
       path: '/search/2/poiDetails.json',
       desc: 'Retrieve enriched POI data including ratings, price range, hours, and contact information.',
     },
     {
-      Illo: makeThumb(ThumbPOIPhotos, L_POIPhotos),
+      Illo: makeThumb(IlloPOIPhotos, L_POIPhotos),
       title: 'POI Photos',
       method: 'GET',
       path: '/search/2/poiPhotos.json',
@@ -131,7 +127,7 @@ export default function SearchAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_SearchFuzzy />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

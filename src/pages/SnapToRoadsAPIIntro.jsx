@@ -2,6 +2,7 @@ import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import { makeThumb, L_SnapToRoads } from '../illustrations/lightVariants';
+import { IlloSnapToRoads } from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -31,8 +32,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbSnap() { return <L_SnapToRoads />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloSnapToRoads, L_SnapToRoads);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SnapToRoadsAPIIntro({ onNavigate }) {
@@ -40,7 +41,7 @@ export default function SnapToRoadsAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbSnap, L_SnapToRoads),
+      Illo: makeThumb(IlloSnapToRoads, L_SnapToRoads),
       title: 'Snap GPS Trace',
       method: 'POST',
       path: '/maps/orbis/roads/snap-to-roads/v1',
@@ -63,7 +64,7 @@ export default function SnapToRoadsAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_SnapToRoads />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

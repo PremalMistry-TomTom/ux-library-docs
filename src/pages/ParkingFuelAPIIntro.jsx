@@ -5,6 +5,9 @@ import {
   makeThumb,
   L_ParkingAvailability, L_ParkingPrices, L_OnStreetParking, L_FuelPrices,
 } from '../illustrations/lightVariants';
+import {
+  IlloParkingAvailability, IlloParkingPrices, IlloOnStreetParking, IlloFuelPrices,
+} from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -34,11 +37,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbParkingAvail() { return <L_ParkingAvailability />; }
-function ThumbParkingPrices() { return <L_ParkingPrices />; }
-function ThumbOnStreet() { return <L_OnStreetParking />; }
-function ThumbFuelPrices() { return <L_FuelPrices />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloParkingAvailability, L_ParkingAvailability);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function ParkingFuelAPIIntro({ onNavigate }) {
@@ -46,28 +46,28 @@ export default function ParkingFuelAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbParkingAvail, L_ParkingAvailability),
+      Illo: makeThumb(IlloParkingAvailability, L_ParkingAvailability),
       title: 'Parking Availability',
       method: 'GET',
       path: '/parking/2/parkingAvailability/{id}.json',
       desc: 'Retrieve real-time available spot counts, capacity, and trend data for off-street car parks.',
     },
     {
-      Illo: makeThumb(ThumbParkingPrices, L_ParkingPrices),
+      Illo: makeThumb(IlloParkingPrices, L_ParkingPrices),
       title: 'Parking Prices',
       method: 'GET',
       path: '/parking/2/parkingDetails/{id}.json',
       desc: 'Get estimated parking costs, hourly rate breakdowns, and accepted payment methods for a facility.',
     },
     {
-      Illo: makeThumb(ThumbOnStreet, L_OnStreetParking),
+      Illo: makeThumb(IlloOnStreetParking, L_OnStreetParking),
       title: 'On-Street Parking',
       method: 'GET',
       path: '/parking/2/onStreetParking.json',
       desc: 'Query real-time on-street parking availability near a location, including restrictions and time limits.',
     },
     {
-      Illo: makeThumb(ThumbFuelPrices, L_FuelPrices),
+      Illo: makeThumb(IlloFuelPrices, L_FuelPrices),
       title: 'Fuel Prices',
       method: 'GET',
       path: '/search/2/poiSearch/fuel.json',
@@ -90,7 +90,7 @@ export default function ParkingFuelAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_ParkingAvailability />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

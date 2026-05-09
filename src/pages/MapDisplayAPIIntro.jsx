@@ -5,6 +5,9 @@ import {
   makeThumb,
   L_MapRasterTile, L_MapVectorTile, L_MapSatelliteTile, L_MapAssetsAPI, L_MapStaticImage,
 } from '../illustrations/lightVariants';
+import {
+  IlloMapRasterTile, IlloMapVectorTile, IlloMapSatelliteTile, IlloMapStaticImage,
+} from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -34,12 +37,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbRasterTile() { return <L_MapRasterTile />; }
-function ThumbVectorTile() { return <L_MapVectorTile />; }
-function ThumbSatelliteTile() { return <L_MapSatelliteTile />; }
-function ThumbMapAssets() { return <L_MapAssetsAPI />; }
-function ThumbStaticImage() { return <L_MapStaticImage />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloMapVectorTile, L_MapVectorTile);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function MapDisplayAPIIntro({ onNavigate }) {
@@ -47,35 +46,35 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbRasterTile, L_MapRasterTile),
+      Illo: makeThumb(IlloMapRasterTile, L_MapRasterTile),
       title: 'Raster Tile',
       method: 'GET',
       path: '/map/1/tile/basic/main/{zoom}/{x}/{y}.png',
       desc: 'Serve pre-rendered PNG map tiles for standard slippy-map integrations and web applications.',
     },
     {
-      Illo: makeThumb(ThumbVectorTile, L_MapVectorTile),
+      Illo: makeThumb(IlloMapVectorTile, L_MapVectorTile),
       title: 'Vector Tile',
       method: 'GET',
       path: '/map/1/tile/basic/main/{zoom}/{x}/{y}.pbf',
       desc: 'Deliver Mapbox Vector Tiles (MVT) for client-side styled, resolution-independent map rendering.',
     },
     {
-      Illo: makeThumb(ThumbSatelliteTile, L_MapSatelliteTile),
+      Illo: makeThumb(IlloMapSatelliteTile, L_MapSatelliteTile),
       title: 'Satellite Tile',
       method: 'GET',
       path: '/map/1/tile/sat/main/{zoom}/{x}/{y}.jpg',
       desc: 'Retrieve satellite or aerial imagery tiles for high-detail visual context overlays.',
     },
     {
-      Illo: makeThumb(ThumbMapAssets, L_MapAssetsAPI),
+      Illo: makeThumb(null, L_MapAssetsAPI),
       title: 'Map Assets',
       method: 'GET',
       path: '/map/1/sprite/{spriteId}.json',
       desc: 'Download map style sprites, glyphs, and style JSON required to render vector tiles client-side.',
     },
     {
-      Illo: makeThumb(ThumbStaticImage, L_MapStaticImage),
+      Illo: makeThumb(IlloMapStaticImage, L_MapStaticImage),
       title: 'Static Image',
       method: 'GET',
       path: '/map/1/staticimage',
@@ -98,7 +97,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_MapVectorTile />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

@@ -2,6 +2,7 @@ import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import { makeThumb, L_Geocode, L_ReverseGeocode } from '../illustrations/lightVariants';
+import { IlloGeocode, IlloReverseGeocode } from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -31,9 +32,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbGeocode() { return <L_Geocode />; }
-function ThumbReverseGeocode() { return <L_ReverseGeocode />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloGeocode, L_Geocode);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function GeocodingAPIIntro({ onNavigate }) {
@@ -41,14 +41,14 @@ export default function GeocodingAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbGeocode, L_Geocode),
+      Illo: makeThumb(IlloGeocode, L_Geocode),
       title: 'Geocode',
       method: 'GET',
       path: '/search/2/geocode/{query}.json',
       desc: 'Convert a human-readable address string into precise geographic coordinates (latitude/longitude).',
     },
     {
-      Illo: makeThumb(ThumbReverseGeocode, L_ReverseGeocode),
+      Illo: makeThumb(IlloReverseGeocode, L_ReverseGeocode),
       title: 'Reverse Geocode',
       method: 'GET',
       path: '/search/2/reverseGeocode/{position}.json',
@@ -71,7 +71,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_Geocode />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

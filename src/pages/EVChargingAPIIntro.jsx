@@ -5,6 +5,9 @@ import {
   makeThumb,
   L_EVSearchNearby, L_EVChargingAvailability, L_EVMarketCoverage,
 } from '../illustrations/lightVariants';
+import {
+  IlloEVSearchNearby, IlloEVChargingAvailability,
+} from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -34,10 +37,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbEVSearch() { return <L_EVSearchNearby />; }
-function ThumbAvailability() { return <L_EVChargingAvailability />; }
-function ThumbMarketCoverage() { return <L_EVMarketCoverage />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloEVSearchNearby, L_EVSearchNearby);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function EVChargingAPIIntro({ onNavigate }) {
@@ -45,21 +46,21 @@ export default function EVChargingAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbEVSearch, L_EVSearchNearby),
+      Illo: makeThumb(IlloEVSearchNearby, L_EVSearchNearby),
       title: 'EV Search Nearby',
       method: 'GET',
       path: '/search/2/nearbySearch/.json?categorySet=7309',
       desc: 'Search for EV charging stations near a coordinate, filtered by connector type and operator.',
     },
     {
-      Illo: makeThumb(ThumbAvailability, L_EVChargingAvailability),
+      Illo: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability),
       title: 'Charging Availability',
       method: 'GET',
       path: '/search/2/chargingAvailability.json',
       desc: 'Query real-time connector availability at a specific charging station, including occupied and free slots.',
     },
     {
-      Illo: makeThumb(ThumbMarketCoverage, L_EVMarketCoverage),
+      Illo: makeThumb(null, L_EVMarketCoverage),
       title: 'Market Coverage',
       method: 'GET',
       path: '/search/2/evSupportedMarkets.json',
@@ -82,7 +83,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_EVSearchNearby />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}

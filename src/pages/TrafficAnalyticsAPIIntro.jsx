@@ -5,6 +5,9 @@ import {
   makeThumb,
   L_TrafficStats, L_AreaAnalytics, L_ODAnalysis, L_JunctionAnalytics,
 } from '../illustrations/lightVariants';
+import {
+  IlloTrafficStats, IlloAreaAnalytics, IlloODAnalysis, IlloJunctionAnalytics,
+} from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -34,11 +37,8 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
   );
 }
 
-/* ─── Thumbs ─────────────────────────────────────────────────────────────────── */
-function ThumbStats() { return <L_TrafficStats />; }
-function ThumbArea() { return <L_AreaAnalytics />; }
-function ThumbOD() { return <L_ODAnalysis />; }
-function ThumbJunction() { return <L_JunctionAnalytics />; }
+/* ─── Hero ───────────────────────────────────────────────────────────────────── */
+const HeroIllo = makeThumb(IlloAreaAnalytics, L_AreaAnalytics);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
@@ -46,28 +46,28 @@ export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(ThumbStats, L_TrafficStats),
+      Illo: makeThumb(IlloTrafficStats, L_TrafficStats),
       title: 'Traffic Stats',
       method: 'POST',
       path: '/trafficstats/1/routeStatistics',
       desc: 'Compute historical travel time, speed, and delay statistics along a defined route or corridor.',
     },
     {
-      Illo: makeThumb(ThumbArea, L_AreaAnalytics),
+      Illo: makeThumb(IlloAreaAnalytics, L_AreaAnalytics),
       title: 'Area Analytics',
       method: 'POST',
       path: '/trafficstats/1/areaStatistics',
       desc: 'Analyse historical congestion metrics — density, speed index, and travel time — within a custom geographic area.',
     },
     {
-      Illo: makeThumb(ThumbOD, L_ODAnalysis),
+      Illo: makeThumb(IlloODAnalysis, L_ODAnalysis),
       title: 'O/D Analysis',
       method: 'POST',
       path: '/trafficstats/1/odAnalysis',
       desc: 'Measure historical traffic flows and travel times between origin-destination pairs to understand mobility patterns.',
     },
     {
-      Illo: makeThumb(ThumbJunction, L_JunctionAnalytics),
+      Illo: makeThumb(IlloJunctionAnalytics, L_JunctionAnalytics),
       title: 'Junction Analytics',
       method: 'POST',
       path: '/trafficstats/1/junctionStatistics',
@@ -91,7 +91,7 @@ export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
 
       {/* Hero illustration */}
       <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-        <L_AreaAnalytics />
+        <HeroIllo />
       </div>
 
       {/* Endpoint grid */}
