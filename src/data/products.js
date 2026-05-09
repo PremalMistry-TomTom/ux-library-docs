@@ -5,6 +5,14 @@ import { ROUTING_API_NAV, ROUTING_API_PAGE_TITLES } from './nav-routing-api';
 import { LDEVR_NAV, LDEVR_PAGE_TITLES } from './nav-ldevr';
 import { MATRIX_NAV, MATRIX_PAGE_TITLES } from './nav-matrix';
 import { WAYPOINT_NAV, WAYPOINT_PAGE_TITLES } from './nav-waypoint';
+import { SEARCH_API_NAV, SEARCH_API_PAGE_TITLES } from './nav-search-api';
+import { GEOCODING_API_NAV, GEOCODING_API_PAGE_TITLES } from './nav-geocoding-api';
+import { TRAFFIC_API_NAV, TRAFFIC_API_PAGE_TITLES } from './nav-traffic-api';
+import { EV_CHARGING_API_NAV, EV_CHARGING_API_PAGE_TITLES } from './nav-ev-charging-api';
+import { MAP_DISPLAY_API_NAV, MAP_DISPLAY_API_PAGE_TITLES } from './nav-map-display-api';
+import { PARKING_FUEL_API_NAV, PARKING_FUEL_API_PAGE_TITLES } from './nav-parking-fuel-api';
+import { TRAFFIC_ANALYTICS_API_NAV, TRAFFIC_ANALYTICS_API_PAGE_TITLES } from './nav-traffic-analytics-api';
+import { SNAP_TO_ROADS_API_NAV, SNAP_TO_ROADS_API_PAGE_TITLES } from './nav-snap-to-roads-api';
 
 export const PRODUCTS = {
   'ux-library': {
@@ -60,6 +68,62 @@ export const PRODUCTS = {
     defaultPage: 'waypoint-intro',
     nav: WAYPOINT_NAV,
     pageTitles: WAYPOINT_PAGE_TITLES,
+  },
+  'search-api': {
+    id: 'search-api',
+    name: 'Search API',
+    defaultPage: 'search-api-intro',
+    nav: SEARCH_API_NAV,
+    pageTitles: SEARCH_API_PAGE_TITLES,
+  },
+  'geocoding-api': {
+    id: 'geocoding-api',
+    name: 'Geocoding API',
+    defaultPage: 'geocoding-api-intro',
+    nav: GEOCODING_API_NAV,
+    pageTitles: GEOCODING_API_PAGE_TITLES,
+  },
+  'traffic-api': {
+    id: 'traffic-api',
+    name: 'Traffic API',
+    defaultPage: 'traffic-api-intro',
+    nav: TRAFFIC_API_NAV,
+    pageTitles: TRAFFIC_API_PAGE_TITLES,
+  },
+  'ev-charging-api': {
+    id: 'ev-charging-api',
+    name: 'EV & Charging API',
+    defaultPage: 'ev-charging-api-intro',
+    nav: EV_CHARGING_API_NAV,
+    pageTitles: EV_CHARGING_API_PAGE_TITLES,
+  },
+  'map-display-api': {
+    id: 'map-display-api',
+    name: 'Map Display API',
+    defaultPage: 'map-display-api-intro',
+    nav: MAP_DISPLAY_API_NAV,
+    pageTitles: MAP_DISPLAY_API_PAGE_TITLES,
+  },
+  'parking-fuel-api': {
+    id: 'parking-fuel-api',
+    name: 'Parking & Fuel API',
+    defaultPage: 'parking-fuel-api-intro',
+    nav: PARKING_FUEL_API_NAV,
+    pageTitles: PARKING_FUEL_API_PAGE_TITLES,
+  },
+  'traffic-analytics-api': {
+    id: 'traffic-analytics-api',
+    name: 'Traffic Analytics API',
+    defaultPage: 'traffic-analytics-api-intro',
+    nav: TRAFFIC_ANALYTICS_API_NAV,
+    pageTitles: TRAFFIC_ANALYTICS_API_PAGE_TITLES,
+  },
+  'snap-to-roads-api': {
+    id: 'snap-to-roads-api',
+    name: 'Snap to Roads API',
+    defaultPage: 'snap-to-roads-api-intro',
+    nav: SNAP_TO_ROADS_API_NAV,
+    pageTitles: SNAP_TO_ROADS_API_PAGE_TITLES,
   },
 };
 

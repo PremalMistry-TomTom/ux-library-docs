@@ -118,6 +118,14 @@ import RoutingV3ComputeToll from './pages/RoutingV3ComputeToll';
 import RoutingV3Weather from './pages/RoutingV3Weather';
 import MatrixRoutingIntro from './pages/MatrixRoutingIntro';
 import WaypointOptIntro from './pages/WaypointOptIntro';
+import SearchAPIIntro from './pages/SearchAPIIntro';
+import GeocodingAPIIntro from './pages/GeocodingAPIIntro';
+import TrafficAPIIntro from './pages/TrafficAPIIntro';
+import EVChargingAPIIntro from './pages/EVChargingAPIIntro';
+import MapDisplayAPIIntro from './pages/MapDisplayAPIIntro';
+import ParkingFuelAPIIntro from './pages/ParkingFuelAPIIntro';
+import TrafficAnalyticsAPIIntro from './pages/TrafficAnalyticsAPIIntro';
+import SnapToRoadsAPIIntro from './pages/SnapToRoadsAPIIntro';
 import Placeholder from './pages/Placeholder';
 
 const FULL_PAGES = new Set([
@@ -213,6 +221,22 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'matrix-intro':           return <MatrixRoutingIntro onNavigate={onNavigate} />;
     // Waypoint Optimization
     case 'waypoint-intro':         return <WaypointOptIntro onNavigate={onNavigate} />;
+    // Search API
+    case 'search-api-intro':       return <SearchAPIIntro onNavigate={onNavigate} />;
+    // Geocoding API
+    case 'geocoding-api-intro':    return <GeocodingAPIIntro onNavigate={onNavigate} />;
+    // Traffic API
+    case 'traffic-api-intro':      return <TrafficAPIIntro onNavigate={onNavigate} />;
+    // EV & Charging API
+    case 'ev-charging-api-intro':  return <EVChargingAPIIntro onNavigate={onNavigate} />;
+    // Map Display API
+    case 'map-display-api-intro':  return <MapDisplayAPIIntro onNavigate={onNavigate} />;
+    // Parking & Fuel API
+    case 'parking-fuel-api-intro': return <ParkingFuelAPIIntro onNavigate={onNavigate} />;
+    // Traffic Analytics API
+    case 'traffic-analytics-api-intro': return <TrafficAnalyticsAPIIntro onNavigate={onNavigate} />;
+    // Snap to Roads API
+    case 'snap-to-roads-api-intro': return <SnapToRoadsAPIIntro onNavigate={onNavigate} />;
     // Domain landing pages
     case 'assets':                 return <DomainLanding groupKey="assets"             onNavigate={onNavigate} />;
     case 'map-customisation':      return <DomainLanding groupKey="mapCustomisation"   onNavigate={onNavigate} />;
