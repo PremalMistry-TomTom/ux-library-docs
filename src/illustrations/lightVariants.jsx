@@ -2592,9 +2592,9 @@ export function L_JunctionAnalytics() {
 
 export function makeThumb(Dark, Light) {
   function IlloSwitch() {
-    const { theme } = useIlloStyle();
-    return theme === 'dark' ? <Dark /> : <Light />;
+    const { illoStyle } = useIlloStyle();
+    return (illoStyle === 'detailed' && Dark) ? <Dark /> : <Light />;
   }
-  IlloSwitch.displayName = `IlloSwitch(${Dark.name || 'Dark'}/${Light.name || 'Light'})`;
+  IlloSwitch.displayName = `IlloSwitch(${Dark?.name || 'Dark'}/${Light?.name || 'Light'})`;
   return IlloSwitch;
 }
