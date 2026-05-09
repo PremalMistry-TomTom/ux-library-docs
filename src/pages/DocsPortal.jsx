@@ -622,7 +622,7 @@ export default function DocsPortal({ onNavigate }) {
           style={{ backgroundImage: `url('${BASE}hero_background_globe.svg')` }}
         />
         <div className="dp2-hero-inner">
-          {/* Left: heading + search */}
+          {/* Left: heading + search + view toggle */}
           <div className="dp2-hero-left">
             <h4 className="dp2-hero-heading">
               Start building with TomTom APIs, SDKs, and location technology.
@@ -631,31 +631,30 @@ export default function DocsPortal({ onNavigate }) {
               <span className="dp2-search-icon"><SearchIcon /></span>
               <span className="dp2-search-placeholder">Search Documentation, API and SDKs</span>
             </div>
-          </div>
 
-          {/* View toggle */}
-          <div style={{ marginTop: 16, display: 'flex', gap: 6 }}>
-            {[
-              { id: 'catalogue', icon: '☰', label: 'Catalogue' },
-              { id: 'mosaic',    icon: '⊞', label: 'Discovery' },
-            ].map(v => (
-              <button
-                key={v.id}
-                onClick={() => setView(v.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  padding: '7px 16px', borderRadius: 100, cursor: 'pointer',
-                  fontSize: '0.8125rem', fontWeight: 600,
-                  border: view === v.id ? '2px solid #fff' : '1.5px solid rgba(255,255,255,0.3)',
-                  background: view === v.id ? 'rgba(255,255,255,0.15)' : 'transparent',
-                  color: view === v.id ? '#fff' : 'rgba(255,255,255,0.6)',
-                  backdropFilter: 'blur(8px)',
-                  transition: 'all 0.15s',
-                }}
-              >
-                <span style={{ fontSize: '0.875rem' }}>{v.icon}</span> {v.label}
-              </button>
-            ))}
+            {/* View toggle — sits below search bar inside the left column */}
+            <div style={{ display: 'flex', gap: 6 }}>
+              {[
+                { id: 'catalogue', icon: '☰', label: 'Catalogue' },
+                { id: 'mosaic',    icon: '⊞', label: 'Discovery' },
+              ].map(v => (
+                <button
+                  key={v.id}
+                  onClick={() => setView(v.id)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                    padding: '7px 16px', borderRadius: 100, cursor: 'pointer',
+                    fontSize: '0.8125rem', fontWeight: 600,
+                    border: view === v.id ? '2px solid var(--black)' : '1.5px solid var(--border)',
+                    background: view === v.id ? 'var(--black)' : 'var(--surface)',
+                    color: view === v.id ? 'var(--bg)' : 'var(--mid)',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  <span style={{ fontSize: '0.875rem' }}>{v.icon}</span> {v.label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Right: NavSDK banner */}
