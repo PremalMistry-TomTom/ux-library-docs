@@ -271,7 +271,10 @@ export default function App() {
 
   // ux-navigate custom event — emitted by links inside page components
   useEffect(() => {
-    function handleUxNavigate(e) { navigate(e.detail); }
+    function handleUxNavigate(e) {
+      navigate(e.detail);
+      setDocsPortalOpen(false);   // always close portal so the target page is visible
+    }
     window.addEventListener('ux-navigate', handleUxNavigate);
     return () => window.removeEventListener('ux-navigate', handleUxNavigate);
   // eslint-disable-next-line react-hooks/exhaustive-deps
