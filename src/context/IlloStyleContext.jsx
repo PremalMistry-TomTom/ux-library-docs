@@ -81,9 +81,11 @@ function themeForSite() {
 }
 
 export const IlloStyleContext = createContext({
-  theme:    DEFAULT_THEME,
-  setTheme: () => {},
-  palette:  THEMES[DEFAULT_THEME],
+  theme:      DEFAULT_THEME,
+  setTheme:   () => {},
+  palette:    THEMES[DEFAULT_THEME],
+  illoStyle:  'detailed',
+  setIlloStyle: () => {},
 });
 
 export function IlloStyleProvider({ children }) {
@@ -98,6 +100,14 @@ export function IlloStyleProvider({ children }) {
       // No stored preference — auto-pick from site day/night mode
       return themeForSite();
     } catch { return DEFAULT_THEME; }
+  });
+
+  const [illoStyle, setIlloStyleState] = useState(() => {
+    try {
+      const stored = localStorage.getItem('illoStylePref');
+      if (stored === 'lofi' || stored === 'detailed') return stored;
+    } catch {}
+    return 'detailed'; // default: always show detailed wireframes
   });
 
   // Follow site day↔dark toggles when the current theme is part of the coupled pair
@@ -122,8 +132,13 @@ export function IlloStyleProvider({ children }) {
     try { localStorage.setItem('illoStyle', v); } catch {}
   };
 
+  const setIlloStyle = (v) => {
+    setIlloStyleState(v);
+    try { localStorage.setItem('illoStylePref', v); } catch {}
+  };
+
   return (
-    <IlloStyleContext.Provider value={{ theme, setTheme: set, palette: THEMES[theme] ?? THEMES.day }}>
+    <IlloStyleContext.Provider value={{ theme, setTheme: set, palette: THEMES[theme] ?? THEMES.day, illoStyle, setIlloStyle }}>
       {children}
     </IlloStyleContext.Provider>
   );

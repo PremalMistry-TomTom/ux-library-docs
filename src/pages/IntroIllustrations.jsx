@@ -3908,15 +3908,14 @@ function FigmaPluginPanel({ onClose }) {
 }
 
 export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle = null }) {
-  const { theme, setTheme } = useIlloStyle();
+  const { theme, setTheme, illoStyle: ctxIlloStyle, setIlloStyle: ctxSetIlloStyle } = useIlloStyle();
 
-  // Always start in Detailed Wireframe — the richer style is the primary view.
-  const [illoStyleState, setIlloStyleState] = React.useState('detailed');
-  const illoStyle = forcedIlloStyle ?? illoStyleState;
+  // Use global context for style pref so it persists across navigation.
+  // forcedIlloStyle overrides everything (used by IntroIllustrationsLegacy).
+  const illoStyle = forcedIlloStyle ?? ctxIlloStyle;
 
-  // Manual style-pill click — independent of site theme.
   function handleStyleChange(val) {
-    setIlloStyleState(val);
+    ctxSetIlloStyle(val);
   }
 
   const [showPlugin, setShowPlugin] = React.useState(false);
