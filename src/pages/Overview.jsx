@@ -7,6 +7,7 @@ import {
   L_ColourSystem, L_MapStyle, L_HomeScreen, L_EV, L_Cluster, L_AIVoice,
   L_ETAPanel, L_SearchResult, L_ThemingTokens, L_ChargingSearch, L_ConversationPersonality, L_ADAS,
 } from '../illustrations/lightVariants';
+import { IlloCluster, IlloADAS } from './IntroIllustrations';
 
 /* ─── Cross-link helpers ─────────────────────────────────────────────────────── */
 function DocLink({ pageId, productId, onNavigate, children }) {
@@ -557,7 +558,7 @@ const DOMAIN_CARDS = [
     pages: ['Home Screen Layout', 'Search Engine', 'Nav Controls', 'Horizon Panel'] },
   { id: 'ev-charging',         key: 'evCharging',         Thumb: makeThumb(ThumbEV,        L_EV),
     pages: ['Vehicle & Battery', 'Charging Search', 'Long-Distance Routing', 'In-Navigation UI'] },
-  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: makeThumb(ThumbCluster,   L_Cluster),
+  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: makeThumb(IlloCluster,    L_Cluster),
     pages: ['Basics', 'Cluster', 'Head-Up Display', 'ADAS Integration', 'Truck Support'] },
   { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: makeThumb(ThumbAI,        L_AIVoice),
     pages: ['Overview', 'Voice Engine', 'Speech to Text', 'Configuration'] },
@@ -586,9 +587,9 @@ const USE_CASE_CARDS = [
   { id: 'search-engine',      key: 'searchEngine',     Thumb: makeThumb(ThumbSearch,                 L_SearchResult) },
   { id: 'theming',            key: 'theming',          Thumb: makeThumb(ThumbTheming,                L_ThemingTokens) },
   { id: 'ev-charging-search', key: 'evChargingSearch', Thumb: makeThumb(ThumbChargingSearch,         L_ChargingSearch) },
-  { id: 'cluster',            key: 'cluster',          Thumb: makeThumb(ThumbCluster,                L_Cluster) },
+  { id: 'cluster',            key: 'cluster',          Thumb: makeThumb(IlloCluster,                 L_Cluster) },
   { id: 'ai-personality',     key: 'aiPersonality',    Thumb: makeThumb(ThumbConversationPersonality,L_ConversationPersonality) },
-  { id: 'adas',               key: 'adas',             Thumb: makeThumb(ThumbADAS,                   L_ADAS) },
+  { id: 'adas',               key: 'adas',             Thumb: makeThumb(IlloADAS,                    L_ADAS) },
 ];
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */

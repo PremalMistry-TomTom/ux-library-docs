@@ -219,14 +219,16 @@ export function IlloCluster() {
   const LANES = [{ r: false }, { r: false }, { r: false }, { r: false }, { r: true }, { r: true }];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', display: 'flex', alignItems: 'center', gap: 4, padding: '0 6px' }}>
+      {/* Speedometer gauge */}
       <svg viewBox="0 0 60 60" style={{ width: 52, height: 52, flexShrink: 0 }}>
-        <circle cx="30" cy="34" r="22" fill="none" stroke="#1e1e22" strokeWidth="4" strokeDasharray="115 38" strokeDashoffset="-19" strokeLinecap="round"/>
+        <circle cx="30" cy="30" r="28" fill={M.dark}/>
+        <circle cx="30" cy="34" r="22" fill="none" stroke={M.line} strokeWidth="4" strokeDasharray="115 38" strokeDashoffset="-19" strokeLinecap="round" opacity="0.35"/>
         <circle cx="30" cy="34" r="22" fill="none" stroke="#e2001a" strokeWidth="4" strokeDasharray="72 81" strokeDashoffset="-19" strokeLinecap="round"/>
-        <text x="30" y="38" textAnchor="middle" fill="white" style={{ fontSize: 11, fontWeight: 700, fontFamily: 'system-ui' }}>72</text>
-        <text x="30" y="46" textAnchor="middle" fill="#555" style={{ fontSize: 5, fontFamily: 'system-ui' }}>km/h</text>
+        <text x="30" y="38" textAnchor="middle" fill={M.white} style={{ fontSize: 11, fontWeight: 700, fontFamily: 'system-ui' }}>72</text>
+        <text x="30" y="46" textAnchor="middle" fill={M.dim} style={{ fontSize: 5, fontFamily: 'system-ui' }}>km/h</text>
       </svg>
-      <div style={{ flex: 1, height: 80, display: 'flex', flexDirection: 'column', borderRadius: 5, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <div style={{ flex: 1, background: '#0c1520', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ flex: 1, height: 80, display: 'flex', flexDirection: 'column', borderRadius: 5, overflow: 'hidden', border: `1px solid ${M.line}22` }}>
+        <div style={{ flex: 1, background: M.dark, position: 'relative', overflow: 'hidden' }}>
           <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 80 40" fill="none">
             <path d="M0 22 Q20 16 40 22 T80 18" stroke="rgba(255,255,255,0.08)" strokeWidth="1.5"/>
             <path d="M0 22 Q20 16 40 22 T80 18" stroke="#e2001a" strokeWidth="2" opacity="0.7"/>
@@ -252,11 +254,13 @@ export function IlloCluster() {
           <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.3)', marginLeft: 3 }}>· 26.5 km</span>
         </div>
       </div>
+      {/* Battery gauge */}
       <svg viewBox="0 0 60 60" style={{ width: 52, height: 52, flexShrink: 0 }}>
-        <circle cx="30" cy="34" r="22" fill="none" stroke="#1e1e22" strokeWidth="4" strokeDasharray="115 38" strokeDashoffset="-19" strokeLinecap="round"/>
+        <circle cx="30" cy="30" r="28" fill={M.dark}/>
+        <circle cx="30" cy="34" r="22" fill="none" stroke={M.line} strokeWidth="4" strokeDasharray="115 38" strokeDashoffset="-19" strokeLinecap="round" opacity="0.35"/>
         <circle cx="30" cy="34" r="22" fill="none" stroke={M.green} strokeWidth="4" strokeDasharray="85 68" strokeDashoffset="-19" strokeLinecap="round"/>
         <text x="30" y="37" textAnchor="middle" fill={M.green} style={{ fontSize: 9, fontWeight: 700, fontFamily: 'system-ui' }}>74%</text>
-        <text x="30" y="46" textAnchor="middle" fill="#555" style={{ fontSize: 4.5, fontFamily: 'system-ui' }}>BATT</text>
+        <text x="30" y="46" textAnchor="middle" fill={M.dim} style={{ fontSize: 4.5, fontFamily: 'system-ui' }}>BATT</text>
       </svg>
     </div>
   );
@@ -2851,6 +2855,7 @@ function useDarkStyle() {
     amber:  C.warn,
     purple: C.accent,  // day: forest green, night: bright green, blueprint: theme accent
     dark:   C.dark,
+    white:  C.white,
   };
 }
 
