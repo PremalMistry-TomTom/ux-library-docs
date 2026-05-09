@@ -35,7 +35,8 @@ function WhenCard({ icon, title, children }) {
 /* ─── Mini mock thumbnails ──────────────────────────────────────────────────── */
 
 function ThumbEV() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, green: '#22c55e', blue: '#58a6ff' };
   const stations = [['Belib', '22 kW', '4/5'], ['Indigo', '50 kW', '2/2'], ['Saemes', '7 kW', '6/8']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -60,7 +61,8 @@ function ThumbEV() {
 }
 
 function ThumbSearch() {
-  const M = { bg: '#0f1117', card: '#1a1d27', line: '#2a2a3a', text: '#e2e8f0', dim: '#94a3b8', muted: '#64748b', blue: '#93c5fd', green: '#86efac', orange: '#fdba74' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, muted: C.soft, blue: '#58a6ff', green: '#22c55e', orange: '#fdba74' };
   const results = [["Gianni's", '0.3 km'], ['Pizza Napoli', '0.7 km'], ['La Cucina', '1.1 km']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
@@ -68,13 +70,13 @@ function ThumbSearch() {
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <span style={{ fontSize: '0.875rem', color: M.muted }}>Search destination…</span>
       </div>
-      <div style={{ padding: '3px 10px', background: '#0f2a1a', display: 'flex', alignItems: 'center', gap: 4 }}>
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} />
-        <span style={{ fontSize: '0.5rem', color: M.green }}>3rd-party search · online</span>
+      <div style={{ padding: '3px 10px', background: C.grid, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: M.green }} />
+        <span style={{ fontSize: '0.5rem', color: M.dim }}>3rd-party search · online</span>
       </div>
       {results.map(([name, dist], i) => (
         <div key={name} style={{ padding: '5px 10px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 7 }}>
-          <div style={{ width: 18, height: 18, background: '#1e293b', borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 18, height: 18, background: C.panel, borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div>
@@ -109,14 +111,15 @@ function ThumbNavControls() {
 }
 
 function ThumbAI() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', purple: '#a78bfa', green: '#3fb950', dim: '#8b949e' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, purple: '#a78bfa', green: '#22c55e', dim: C.mid };
   const bars = [3, 5, 8, 10, 7, 9, 6, 8, 5, 3, 7, 4];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>TAIA — in-vehicle voice</div>
       {/* Listening indicator */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-        <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#2d1f4a', border: `1px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <div style={{ width: 20, height: 20, borderRadius: '50%', background: M.card, border: `1px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <svg width="9" height="9" viewBox="0 0 24 24" fill={M.purple}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke={M.purple} strokeWidth="2.5" fill="none"/></svg>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -126,8 +129,8 @@ function ThumbAI() {
         </div>
       </div>
       {/* User utterance */}
-      <div style={{ background: '#2d1f4a', borderRadius: '6px 6px 6px 2px', padding: '4px 8px', marginBottom: 6, maxWidth: '88%' }}>
-        <div style={{ fontSize: '0.5rem', color: '#d4bbff', lineHeight: 1.4 }}>"Take me to the nearest fast charger"</div>
+      <div style={{ background: M.card, border: `1px solid ${M.purple}44`, borderRadius: '6px 6px 6px 2px', padding: '4px 8px', marginBottom: 6, maxWidth: '88%' }}>
+        <div style={{ fontSize: '0.5rem', color: M.purple, lineHeight: 1.4 }}>"Take me to the nearest fast charger"</div>
       </div>
       {/* AI response */}
       <div style={{ background: M.card, borderRadius: '6px 6px 2px 6px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '88%', border: `1px solid ${M.line}` }}>
@@ -165,18 +168,19 @@ function ThumbRoute() {
 }
 
 function ThumbColour() {
+  const { palette: C } = useIlloStyle();
   const swatches = ['#e2001a', '#ff6b6b', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#1a1a2e', '#f0f0f0'];
   return (
-    <div style={{ background: '#f8f8f8', borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
       <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-        {swatches.map(c => <div key={c} style={{ width: 22, height: 22, borderRadius: 5, background: c, border: '1px solid rgba(0,0,0,0.06)' }} />)}
+        {swatches.map(c => <div key={c} style={{ width: 22, height: 22, borderRadius: 5, background: c, border: `1px solid ${C.border}44` }} />)}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {[['Brand', '#e2001a'], ['Surface', '#1a1a2e'], ['Action', '#60a5fa']].map(([label, color]) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <div style={{ width: 12, height: 12, borderRadius: 3, background: color, flexShrink: 0 }} />
-            <span style={{ fontSize: '0.5rem', color: '#444', fontWeight: 600 }}>{label}</span>
-            <span style={{ fontSize: '0.5rem', color: '#999', fontFamily: 'monospace' }}>{color}</span>
+            <span style={{ fontSize: '0.5rem', color: C.navy, fontWeight: 600 }}>{label}</span>
+            <span style={{ fontSize: '0.5rem', color: C.mid, fontFamily: 'monospace' }}>{color}</span>
           </div>
         ))}
       </div>
@@ -341,10 +345,11 @@ function ThumbMapStyle() {
 }
 
 function ThumbHomeScreen() {
+  const { palette: C } = useIlloStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       {/* Map background */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: C.dark }}>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 60 Q55 40 100 62 T190 55" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
           <path d="M0 80 Q50 55 100 80 T200 72" stroke="rgba(255,255,255,0.06)" strokeWidth="1.5"/>
@@ -378,22 +383,23 @@ function ThumbHomeScreen() {
 /* ─── Use-case Thumb components ─────────────────────────────────────────────── */
 
 function ThumbETAPanel() {
+  const { palette: C } = useIlloStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg,#0f1a28,#1a2535)' }}>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: C.dark }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 75 Q60 55 100 72 T190 65" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
           <circle cx="102" cy="70" r="4" fill="#e2001a" opacity="0.8"/>
           <circle cx="102" cy="70" r="8" fill="rgba(226,0,26,0.18)"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.96)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '9px 14px' }}>
-        <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: C.dark, borderTop: `1px solid ${C.border}55`, padding: '9px 14px' }}>
+        <div style={{ fontSize: '0.5rem', color: C.soft, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           {[['14:32', 'ETA'], ['18 min', 'Remaining'], ['6.4 km', 'Distance']].map(([val, label]) => (
             <div key={label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{val}</div>
-              <div style={{ fontSize: '0.5rem', color: '#475569', marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: C.white, lineHeight: 1 }}>{val}</div>
+              <div style={{ fontSize: '0.5rem', color: C.soft, marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
             </div>
           ))}
         </div>
@@ -403,7 +409,8 @@ function ThumbETAPanel() {
 }
 
 function ThumbTheming() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', dim: '#8b949e' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, dim: C.mid };
   const tokens = [
     { name: '--brand-primary',  from: '#e2001a', to: '#0066cc', color: true },
     { name: '--corner-radius',  from: '4 dp',    to: '12 dp',   color: false },
@@ -420,7 +427,7 @@ function ThumbTheming() {
                 <span style={{ fontSize: '0.5rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
               </div>}
           <span style={{ fontSize: '0.5rem', color: M.dim, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
-          <span style={{ fontSize: '0.875rem', color: '#374151' }}>→</span>
+          <span style={{ fontSize: '0.875rem', color: C.navy }}>→</span>
           {color
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: to, flexShrink: 0 }} />
             : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -430,7 +437,7 @@ function ThumbTheming() {
       ))}
       <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginTop: 4 }}>
         <div style={{ padding: '4px 10px', borderRadius: 4, background: '#e2001a', fontSize: '0.5rem', color: '#fff', fontWeight: 700 }}>Default</div>
-        <span style={{ fontSize: '0.875rem', color: '#374151' }}>→</span>
+        <span style={{ fontSize: '0.875rem', color: C.navy }}>→</span>
         <div style={{ padding: '4px 10px', borderRadius: 20, background: '#0066cc', fontSize: '0.5rem', color: '#fff', fontWeight: 700 }}>OEM Brand</div>
       </div>
     </div>
@@ -438,7 +445,8 @@ function ThumbTheming() {
 }
 
 function ThumbChargingSearch() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, blue: '#58a6ff', green: '#22c55e' };
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>EV Charging</div>
@@ -463,21 +471,22 @@ function ThumbChargingSearch() {
 }
 
 function ThumbConversationPersonality() {
-  const M = { bg: '#0d1117', card: '#1c2333', line: '#21262d', purple: '#a78bfa', dim: '#8b949e', text: '#e6edf3' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, purple: '#a78bfa', dim: C.mid, text: C.navy };
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-        <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#1a1a4a', border: `1.5px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', flexShrink: 0 }}>✦</div>
+        <div style={{ width: 18, height: 18, borderRadius: '50%', background: M.card, border: `1.5px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', flexShrink: 0 }}>✦</div>
         <span style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text }}>BMW Assistant</span>
         <span style={{ fontSize: '0.5rem', color: M.purple, marginLeft: 'auto' }}>Custom name ✓</span>
       </div>
       <div style={{ background: M.card, borderRadius: '4px 10px 10px 4px', padding: '4px 8px', marginBottom: 6, maxWidth: '92%' }}>
         <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 1 }}>Default TomTom tone</div>
-        <div style={{ fontSize: '0.5rem', color: '#94a3b8', lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
+        <div style={{ fontSize: '0.5rem', color: M.dim, lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
       </div>
-      <div style={{ background: '#1a1a4a', borderRadius: '10px 4px 10px 10px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '92%', border: `1px solid ${M.purple}44` }}>
+      <div style={{ background: M.card, borderRadius: '10px 4px 10px 10px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '92%', border: `1px solid ${M.purple}44` }}>
         <div style={{ fontSize: '0.5rem', color: M.purple, marginBottom: 1 }}>OEM branded tone</div>
-        <div style={{ fontSize: '0.5rem', color: '#d4bbff', lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
+        <div style={{ fontSize: '0.5rem', color: M.purple, lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
       </div>
     </div>
   );
