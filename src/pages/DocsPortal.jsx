@@ -16,7 +16,7 @@ import {
   L_HomeScreen, L_ETAPanel, L_ADAS, L_Cluster, L_AIVoice, L_NavGuidance,
   L_MapDisplay, L_Route,
   L_ThemingTokens, L_ChargingSearch, L_ConversationPersonality,
-  L_NavControls, L_HorizonPanel, L_EV,
+  L_NavControls, L_HorizonPanel, L_EV, L_VIL,
 } from '../illustrations/lightVariants';
 import {
   IlloHomeScreen, IlloETAPanel, IlloCluster, IlloADAS, IlloAIVoice, IlloNavGuidance,
@@ -32,7 +32,9 @@ import {
   IlloSnapToRoads, IlloPOIDetails, IlloPOIPhotos,
   IlloNavControls, IlloHorizonPanel, IlloRouteBar, IlloInstructionPanel,
   IlloIntentRouting, IlloVoiceEngine,
-  IlloEVBattery, IlloEVNavUI,
+  IlloEVBattery, IlloEVNavUI, IlloEV,
+  IlloEVRequirements, IlloHUD, IlloTruck, IlloVIBasics,
+  IlloSpeechToText, IlloAIConfig,
   IlloVIL, IlloCIL,
 } from './IntroIllustrations';
 
@@ -436,6 +438,17 @@ const MOSAIC_CARDS = [
   { id: 'm-ux-voice',       Illo: makeThumb(IlloAIVoice,         L_AIVoice),             cats: ['automotive'],              solutions: ['nav-automotive'],                        emoji: '🎙️', title: 'Add AI voice assistant to a car app',    problem: 'Stream conversational responses with animated waveforms and integrate configurable OEM personality tones.',           product: 'UX Library / TAIA',             docsId: 'ai-overview',         productId: 'ux-library'  },
   { id: 'm-taia-intent',    Illo: makeThumb(IlloIntentRouting,     L_AIVoice),         cats: ['automotive'],              solutions: ['nav-automotive'],                        title: 'Route TAIA intents to domain handlers',  product: 'UX Library / TAIA',  docsId: 'intent-routing',  productId: 'ux-library'  },
   { id: 'm-taia-voice',     Illo: makeThumb(IlloVoiceEngine,       L_AIVoice),         cats: ['automotive'],              solutions: ['nav-automotive'],                        title: 'Connect an OEM TTS voice engine',        product: 'UX Library / TAIA',  docsId: 'voice-engine',    productId: 'ux-library'  },
+  // ── EV & Charging domain pages ──────────────────────────────────────────────
+  { id: 'm-evd-overview',   Illo: makeThumb(IlloEV,             L_EV),          cats: ['automotive','mobility'], solutions: ['electrification','nav-automotive'], title: 'EV integration overview',                product: 'UX Library · EV & Charging', docsId: 'ev-overview',      productId: 'ux-library' },
+  { id: 'm-evd-routing',    Illo: makeThumb(IlloEVRouting,      L_EVRouting),   cats: ['automotive','mobility'], solutions: ['electrification','nav-automotive'], title: 'Long-distance EV routing UI',             product: 'UX Library · EV & Charging', docsId: 'ev-routing',       productId: 'ux-library' },
+  { id: 'm-evd-reqs',       Illo: makeThumb(IlloEVRequirements, L_EV),          cats: ['automotive','mobility'], solutions: ['electrification'],                  title: 'EV integration requirements',             product: 'UX Library · EV & Charging', docsId: 'ev-requirements',  productId: 'ux-library' },
+  // ── Vehicle Integration domain pages ────────────────────────────────────────
+  { id: 'm-vid-basics',     Illo: makeThumb(IlloVIBasics,       L_VIL),         cats: ['automotive'],            solutions: ['nav-automotive'],                   title: 'Vehicle integration basics',              product: 'UX Library · Vehicle Integration', docsId: 'vi-basics',   productId: 'ux-library' },
+  { id: 'm-vid-hud',        Illo: makeThumb(IlloHUD,            L_ADAS),        cats: ['automotive'],            solutions: ['nav-automotive'],                   title: 'Display guidance on a HUD',               product: 'UX Library · Vehicle Integration', docsId: 'hud',         productId: 'ux-library' },
+  { id: 'm-vid-truck',      Illo: makeThumb(IlloTruck,          L_Cluster),     cats: ['automotive'],            solutions: ['nav-automotive'],                   title: 'Truck & commercial vehicle support',      product: 'UX Library · Vehicle Integration', docsId: 'truck',       productId: 'ux-library' },
+  // ── TomTom AI Assistant domain pages ────────────────────────────────────────
+  { id: 'm-taia-stt',       Illo: makeThumb(IlloSpeechToText,   L_AIVoice),     cats: ['automotive'],            solutions: ['nav-automotive'],                   title: 'Connect a speech-to-text engine',         product: 'UX Library · TAIA',          docsId: 'speech-to-text',   productId: 'ux-library' },
+  { id: 'm-taia-config',    Illo: makeThumb(IlloAIConfig,       L_AIVoice),     cats: ['automotive'],            solutions: ['nav-automotive'],                   title: 'Configure TAIA client & MQTT',            product: 'UX Library · TAIA',          docsId: 'ai-config',        productId: 'ux-library' },
   { id: 'm-ana',            Illo: makeThumb(IlloNavGuidance,     L_NavGuidance),         cats: ['automotive','navigation'], solutions: ['nav-automotive'],                        emoji: '🧭', title: 'Integrate a pre-built navigation APK',   problem: 'Drop TomTom navigation into Android Automotive OS via VIL/CIL without building a nav UI from scratch.',              product: 'Automotive Navigation App',     docsId: 'ana-intro',           productId: 'ana'         },
   { id: 'm-ana-vil',        Illo: makeThumb(IlloCluster,         L_Cluster),             cats: ['automotive'],              solutions: ['nav-automotive','electrification'],      emoji: '🔌', title: 'Feed vehicle signals into ANA via VIL',  problem: 'Pipe EV battery state, connector type, speed, GDPR consent, and cluster output into the navigation app through a single data interface.', product: 'ANA — Vehicle Integration Layer', docsId: 'ana-intro',        productId: 'ana'         },
   { id: 'm-ana-cil',        Illo: makeThumb(IlloNavGuidance,     L_NavGuidance),         cats: ['automotive'],              solutions: ['nav-automotive'],                        emoji: '🎛️', title: 'Command ANA from your app via CIL',      problem: 'Trigger navigation to a destination, cancel routes, search nearby POIs, and query live navigation state from a companion app or HMI.', product: 'ANA — Control API',            docsId: 'ana-intro',           productId: 'ana'         },
@@ -521,19 +534,50 @@ function FilterRow({ label, filters, active, onToggle, onClear }) {
   );
 }
 
+const DISC_TABS = [
+  { id: 'all',        label: 'All' },
+  { id: 'automotive', label: 'Automotive' },
+  { id: 'navigation', label: 'Navigation' },
+  { id: 'maps',       label: 'Maps' },
+  { id: 'traffic',    label: 'Traffic' },
+  { id: 'mobility',   label: 'Mobility' },
+];
+
 function MosaicView({ onNavigate }) {
   const { palette } = useIlloStyle();
+  const [activeCat, setActiveCat] = useState('all');
+
+  const cards = activeCat === 'all'
+    ? MOSAIC_CARDS
+    : MOSAIC_CARDS.filter(c => c.cats.includes(activeCat));
 
   return (
-    <div style={{ padding: '32px 32px 64px', maxWidth: 1400, margin: '0 auto' }}>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
-        gap: 14,
-      }}>
-        {MOSAIC_CARDS.map(card => (
-          <MosaicCard key={card.id} card={card} palette={palette} onNavigate={onNavigate} />
-        ))}
+    <div>
+      {/* Sticky filter tab bar — same style as catalogue */}
+      <div className="dp2-tabbar-wrap">
+        <div className="dp2-tabbar-pill">
+          {DISC_TABS.map(tab => (
+            <button
+              key={tab.id}
+              className={`dp2-tab-btn${activeCat === tab.id ? ' dp2-tab-btn--active' : ''}`}
+              onClick={() => setActiveCat(tab.id)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '32px 32px 64px', maxWidth: 1400, margin: '0 auto' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+          gap: 14,
+        }}>
+          {cards.map(card => (
+            <MosaicCard key={card.id} card={card} palette={palette} onNavigate={onNavigate} />
+          ))}
+        </div>
       </div>
     </div>
   );

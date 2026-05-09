@@ -1,7 +1,7 @@
 /**
  * UX Library — Illustration Scaffold Plugin
  *
- * Creates all 50 illustration placeholder components with:
+ * Creates all 62 illustration placeholder components with:
  *  • Named semantic layers (every fill bound to a theme token variable)
  *  • "Theme Tokens" variable collection with 4 modes:
  *      Blueprint Light · Blueprint Dark · Day · Night
@@ -110,7 +110,7 @@ const vars = {};
 for (const key of tokenKeys) {
   const v = figma.variables.createVariable(key, col, 'COLOR');
   for (const mk of modeKeys) {
-    v.setValueForMode(modeIds[mk], hex(PALETTE[mk][key] ?? PALETTE.blueprintLight[key]));
+    v.setValueForMode(modeIds[mk], hex(PALETTE[mk][key] != null ? PALETTE[mk][key] : PALETTE.blueprintLight[key]));
   }
   vars[key] = v;
 }
@@ -237,7 +237,7 @@ function buildBars(c, count = 3) {
     const y = 28 + i * 21;
     TB(panel, `/bar-${i + 1}-label`, 10, y + 4, 60, 5, 'soft');
     R(panel, `/bar-${i + 1}-track`, 74, y + 2,  86, 8, 'grid', 4);
-    R(panel, `/bar-${i + 1}-fill`,  74, y + 2, fillWidths[i] ?? 50, 8, fillTokens[i] ?? 'mid', 4);
+    R(panel, `/bar-${i + 1}-fill`,  74, y + 2, fillWidths[i] != null ? fillWidths[i] : 50, 8, fillTokens[i] != null ? fillTokens[i] : 'mid', 4);
     TB(panel, `/bar-${i + 1}-pct`, 164, y + 4, 18, 5, 'navy');
   }
 }
@@ -506,6 +506,190 @@ function mkADASLayers(c) {
 function mkADAS() {
   const c = C('Overview/ADAS Lane Guidance');
   mkADASLayers(c);
+  return c;
+}
+
+
+/* ── UX Library Domain Pages — App Customisation (2) ──────────────── */
+
+function mkInstructionPanel() {
+  const c = C('AppCustom/Instruction Panel');
+  R(c, '/bg',           0,  0, 200, 130, 'bg',    12);
+  R(c, '/map-surface',  0, 44, 200,  86, 'grid',   0);
+  R(c, '/route-line',  10, 86, 120,   3, 'mid',    2);
+  R(c, '/nip-bg',       0,  0, 200,  42, 'dark',   0);
+  R(c, '/turn-icon',   10,  8,  26,  26, 'danger', 6);
+  TB(c, '/street-name', 44, 13, 96,   8, 'white');
+  TB(c, '/distance',    44, 27, 60,   6, 'soft');
+  TB(c, '/eta-time',   152, 14, 36,   6, 'white');
+  return c;
+}
+
+function mkRouteBar() {
+  const c = C('AppCustom/Route Bar');
+  R(c, '/bg',             0,  0, 200, 130, 'bg',    12);
+  R(c, '/map-surface',    0,  0, 200,  88, 'grid',   0);
+  R(c, '/route-line',    20, 54, 120,   3, 'mid',    2);
+  R(c, '/bar-panel',      0, 88, 200,  42, 'dark',   0);
+  R(c, '/progress-track',14, 96, 172,   6, 'panel',  3);
+  R(c, '/progress-fill', 14, 96,  65,   6, 'danger', 3);
+  E(c, '/progress-dot',  75, 91,  14, 'white');
+  TB(c, '/origin-label', 14, 108,  30, 5, 'soft');
+  TB(c, '/center-label', 76, 108,  46, 5, 'navy');
+  TB(c, '/dest-label',  160, 108,  26, 5, 'soft');
+  return c;
+}
+
+/* ── UX Library Domain Pages — EV & Charging (3) ──────────────────── */
+
+function mkEVBattery() {
+  const c = C('EV/Battery Model');
+  R(c, '/bg',           0,  0, 200, 130, 'bg',   12);
+  // Battery graphic
+  R(c, '/batt-terminal',14, 12,  18,   7, 'soft',  3);
+  R(c, '/batt-body',    10, 18,  26,  50, 'panel', 4);
+  ['accent','accent','accent','warn','grid'].forEach((tok, i) =>
+    R(c, `/batt-cell-${i+1}`, 14, 20 + i * 9, 18, 7, tok, 2, i === 4 ? 0.35 : 1));
+  TB(c, '/soc-pct',    12, 74,  22,   6, 'accent');
+  // Parameter rows
+  [['navy','mid'],['mid','soft'],['navy','mid'],['warn','soft']].forEach(([lTok, vTok], i) => {
+    const y = 14 + i * 26;
+    TB(c, `/param-key-${i+1}`,  48, y,      60, 5, lTok);
+    TB(c, `/param-val-${i+1}`, 134, y,      50, 5, vTok);
+    if (i < 3) R(c, `/divider-${i+1}`, 48, y + 11, 140, 1, 'border', 0);
+  });
+  return c;
+}
+
+function mkEVNavUI() {
+  const c = C('EV/In-Navigation UI');
+  R(c, '/bg',            0,  0, 200, 130, 'bg',   12);
+  R(c, '/map-surface',   0,  0, 200,  88, 'grid',  0);
+  R(c, '/route-line',   10, 60, 120,   3, 'danger',2);
+  E(c, '/charging-stop',138, 52,  14, 'accent');
+  R(c, '/soc-panel',     0, 88, 200,  42, 'dark',  0);
+  R(c, '/soc-track',    14, 97, 172,   6, 'panel', 3);
+  R(c, '/soc-fill',     14, 97, 108,   6, 'accent',3);
+  TB(c, '/soc-pct',     14, 108, 40,   5, 'accent');
+  TB(c, '/soc-dest',   138, 108, 48,   5, 'soft');
+  return c;
+}
+
+function mkEVRequirements() {
+  const c = C('EV/Requirements');
+  R(c, '/bg', 0, 0, 200, 130, 'bg', 12);
+  [['accent',1],['accent',1],['accent',1],['soft',0.4]].forEach(([tok, op], i) => {
+    const y = 12 + i * 28;
+    R(c, `/item-bg-${i+1}`,    8, y, 184, 22, 'panel', 6);
+    E(c, `/check-${i+1}`,     20, y + 5,  14, tok, op);
+    TB(c, `/item-label-${i+1}`,42, y + 7, 100,  5, i < 3 ? 'navy' : 'soft');
+  });
+  return c;
+}
+
+/* ── UX Library Domain Pages — Vehicle Integration (3) ────────────── */
+
+function mkVIBasics() {
+  const c = C('VehicleInt/VI Basics');
+  R(c, '/bg',         0,  0, 200, 130, 'bg',    12);
+  R(c, '/sdk-box',    8, 42,  58,  44, 'panel',  8);
+  TB(c, '/sdk-label', 16, 54,  42,   6, 'mid');
+  TB(c, '/sdk-sub',   16, 66,  38,   5, 'soft');
+  R(c, '/arrow-1',    66, 61,  22,   3, 'border', 2);
+  R(c, '/vil-box',    88, 42,  58,  44, 'panel',  8);
+  TB(c, '/vil-label', 96, 54,  42,   6, 'accent');
+  TB(c, '/vil-sub',   96, 66,  40,   5, 'soft');
+  R(c, '/arrow-2',   146, 61,  22,   3, 'border', 2);
+  R(c, '/app-box',   168, 42,  24,  44, 'panel',  8);
+  TB(c, '/app-label',170, 58,  20,   5, 'soft');
+  TB(c, '/section-title', 8, 14, 80, 6, 'navy');
+  return c;
+}
+
+function mkHUD() {
+  const c = C('VehicleInt/Head-Up Display');
+  R(c, '/bg',            0,  0, 200, 130, 'bg',   12);
+  R(c, '/windshield',   20, 10, 160, 110, 'dark', 16, 0.65);
+  R(c, '/hud-border',   52, 40,  96,  52, 'mid',   8, 0.35);
+  R(c, '/hud-inner',    54, 42,  92,  48, 'bg',    7, 0.08);
+  TB(c, '/speed-value', 78, 52,  44,  12, 'white');
+  TB(c, '/speed-unit',  86, 68,  28,   5, 'soft');
+  TB(c, '/manoeuvre',   60, 80,  80,   5, 'mid');
+  return c;
+}
+
+function mkTruck() {
+  const c = C('VehicleInt/Truck');
+  R(c, '/bg',           0,  0, 200, 130, 'bg',    12);
+  R(c, '/trailer',     10, 42, 110,  56, 'panel',  4);
+  R(c, '/cab',        120, 42,  68,  56, 'panel',  4);
+  R(c, '/cab-window', 126, 44,  56,  28, 'dark',   4, 0.6);
+  E(c, '/wheel-1',     28, 95,  20, 'border');
+  E(c, '/wheel-2',     86, 95,  20, 'border');
+  E(c, '/wheel-3',    150, 95,  20, 'border');
+  R(c, '/dash-screen',136, 54,  32,  20, 'dark',   4);
+  R(c, '/dash-line-1',139, 57,  12,   4, 'mid',    2, 0.8);
+  R(c, '/dash-line-2',139, 64,   8,   3, 'soft',   2, 0.5);
+  return c;
+}
+
+/* ── UX Library Domain Pages — TomTom AI (4) ──────────────────────── */
+
+function mkIntentRouting() {
+  const c = C('TAIA/Intent Routing');
+  R(c, '/bg',              0,  0, 200, 130, 'bg',    12);
+  R(c, '/utterance-bg',   10,  8, 180,  22, 'panel',  6);
+  TB(c, '/utterance-text',18, 14, 120,   6, 'navy');
+  R(c, '/arr-down',        97, 30,   6,  10, 'border', 3);
+  R(c, '/router-box',      58, 40,  84,  20, 'panel',  8);
+  TB(c, '/router-label',   70, 46,  60,   6, 'soft');
+  ['danger','mid','warn','accent'].forEach((tok, i) => {
+    const x = 10 + i * 48;
+    R(c, `/branch-arr-${i+1}`, x + 20, 60,  3, 10, 'border', 2);
+    R(c, `/intent-${i+1}`,     x +  4, 70, 40, 16, tok, 4, 0.7);
+    TB(c, `/intent-lbl-${i+1}`,x +  8, 76, 32,  4, 'white');
+  });
+  return c;
+}
+
+function mkVoiceEngine() {
+  const c = C('TAIA/Voice Engine');
+  R(c, '/bg',          0,  0, 200, 130, 'bg',   12);
+  R(c, '/text-card',  10, 10, 180,  28, 'panel', 8);
+  TB(c, '/text-line', 18, 18, 120,   7, 'navy');
+  R(c, '/arr-down',   97, 38,   6,  10, 'border',3);
+  R(c, '/tts-block',  34, 48, 132,  20, 'panel', 8);
+  TB(c, '/tts-label', 50, 54,  80,   7, 'mid');
+  [6,10,16,22,18,14,22,16,10,18,12,8,16,12,6].forEach((h, i) =>
+    R(c, `/wave-${i+1}`, 16 + i * 12, 84 - Math.floor(h/2), 8, h, 'mid', 3, 0.55));
+  return c;
+}
+
+function mkSpeechToText() {
+  const c = C('TAIA/Speech to Text');
+  R(c, '/bg',              0,  0, 200, 130, 'bg',   12);
+  R(c, '/mic-body',       86, 14,  28,  44, 'mid',  14);
+  R(c, '/mic-stand',      96, 57,   8,  22, 'mid',   0);
+  R(c, '/mic-base',       82, 77,  36,   5, 'mid',   3);
+  [8,14,20,16,24,18,12,20].forEach((h, i) =>
+    R(c, `/wave-${i+1}`, 130 + i * 8, 44 - Math.floor(h/2), 5, h, 'accent', 2, 0.75));
+  R(c, '/transcription-1',14, 96, 100, 6, 'soft', 3, 0.45);
+  R(c, '/transcription-2',14, 108, 74, 6, 'soft', 3, 0.3);
+  return c;
+}
+
+function mkAIConfig() {
+  const c = C('TAIA/Configuration');
+  R(c, '/bg',          0,  0, 200, 130, 'bg',    12);
+  R(c, '/editor',     16, 10, 168, 110, 'panel', 10);
+  R(c, '/title-bar',  16, 10, 168,  24, 'dark',   0);
+  E(c, '/dot-r',      28, 16,  10, 'danger');
+  E(c, '/dot-y',      42, 16,  10, 'warn');
+  E(c, '/dot-g',      56, 16,  10, 'accent');
+  [['mid',50],['soft',72],['accent',86],['soft',60],['warn',56],['mid',64]].forEach(([tok, w], i) => {
+    const indent = i % 2 === 0 ? 0 : 8;
+    TB(c, `/code-line-${i+1}`, 26 + indent, 42 + i * 13, w, 5, tok);
+  });
   return c;
 }
 
@@ -976,6 +1160,16 @@ const SECTIONS = [
     ],
   },
   {
+    title: 'UX Library — Domain Pages (12)',
+    color: '#FEF9C3',
+    items: [
+      mkInstructionPanel, mkRouteBar,
+      mkEVBattery, mkEVNavUI, mkEVRequirements,
+      mkVIBasics, mkHUD, mkTruck,
+      mkIntentRouting, mkVoiceEngine, mkSpeechToText, mkAIConfig,
+    ],
+  },
+  {
     title: 'Maps & Navigation SDK (7)',
     color: '#BAE6FD',
     items: [mkMapDisplay, mkSDKSearch, mkRouteOptions, mkNavGuidance, mkOfflineMaps, mkCarPlay, mkVirtualHorizon],
@@ -1087,7 +1281,7 @@ async function txt(parent, str, x, y, size, style, fillHex) {
 }
 
 await txt(rm, 'UX Library — Illustration Assets', 40, 40, 28, 'Bold', '#C2DFFF');
-await txt(rm, 'Figma component scaffold · 50 illustrations · 5 product sections · 4 theme modes', 40, 80, 14, 'Regular', '#4B9EE8');
+await txt(rm, 'Figma component scaffold · 62 illustrations · 6 product sections · 4 theme modes', 40, 80, 14, 'Regular', '#4B9EE8');
 
 // ── Component size ──
 await txt(rm, '📐  Component Size', 40, 130, 18, 'Bold', '#C2DFFF');
@@ -1195,6 +1389,7 @@ const SS_Y = HN_Y + 34 + NOTES.length * 28 + 40;
 await txt(rm, '📦  Sections', 40, SS_Y, 18, 'Bold', '#C2DFFF');
 const SUMMARY = [
   ['Overview',                            '15',  'UX Library capability cards (EV, Search, NavControls, ADAS …)'],
+  ['UX Library — Domain Pages',           '12',  'New domain pages: InstructionPanel, RouteBar, EVBattery, EVNavUI, EVRequirements, VIBasics, HUD, Truck, IntentRouting, VoiceEngine, SpeechToText, AIConfig'],
   ['Maps & Navigation SDK',               ' 7',  'NavSDK endpoint thumbnails (MapDisplay, Search, Routing, CarPlay …)'],
   ['Routing API',                         '12',  'Routing endpoint thumbs (CalculateRoute → DataFreshness)'],
   ['Long-Distance EV Routing (LDEVR)',    ' 8',  'LDEVR endpoint thumbs (EVRoute, VehicleBrand, ChargingParks …)'],
@@ -1207,7 +1402,7 @@ for (let i = 0; i < SUMMARY.length; i++) {
   await txt(rm, SUMMARY[i][2], 320, y, 13, 'Regular', '#6B9FD8');
 }
 
-await txt(rm, `Total: 50 components  ·  Variable collection: "Theme Tokens"  ·  4 modes  ·  ${tokenKeys.length} tokens each`,
+await txt(rm, `Total: 62 components  ·  Variable collection: "Theme Tokens"  ·  4 modes  ·  ${tokenKeys.length} tokens each`,
   40, SS_Y + 34 + SUMMARY.length * 26 + 24, 13, 'Regular', '#4B9EE8');
 
 await txt(rm, `Generated by: UX Library Illustration Scaffold Plugin\nSource: ux-library/src/illustrations/lightVariants.jsx + IlloStyleContext.jsx`,
@@ -1218,7 +1413,7 @@ await txt(rm, `Generated by: UX Library Illustration Scaffold Plugin\nSource: ux
    DONE — scroll canvas to fit all components
    ═══════════════════════════════════════════════════════════════════════════ */
 
-figma.currentPage = figma.root.children.find(p => p.name === '📐 Components') ?? figma.currentPage;
+figma.currentPage = figma.root.children.find(p => p.name === '📐 Components') || figma.currentPage;
 figma.viewport.scrollAndZoomIntoView(figma.currentPage.children);
 
 const total = SECTIONS.reduce((s, sec) => s + sec.items.length, 0);

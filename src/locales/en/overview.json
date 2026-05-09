@@ -19,9 +19,17 @@
     "etaPanel":         { "label": "ETA Panel",                "desc": "Configure position, content fields, and theming for the arrival estimate panel.",                                   "group": "App Customisation"    },
     "searchEngine":     { "label": "Search Engine",            "desc": "Replace the search provider, configure connectivity transitions, and enrich the search UI.",                        "group": "App Customisation"    },
     "theming":          { "label": "Theming",                  "desc": "Apply OEM brand tokens — colour, typography, corner radius — across all navigation UI components.",                 "group": "Design System"        },
+    "instructionPanel": { "label": "Instruction Panel",         "desc": "Style the next-turn banner during active navigation — position, colour, icon size, and street-name truncation.",   "group": "App Customisation"    },
+    "routeBar":         { "label": "Route Bar",                "desc": "Customise the route progress bar, waypoint chips, and traffic severity summary shown during guidance.",              "group": "App Customisation"    },
     "evChargingSearch": { "label": "Charging Search",          "desc": "Discover compatible EV stations filtered by connector type, power level, and preferred charging networks.",         "group": "EV & Charging"        },
+    "evRouting":        { "label": "Long-Distance EV Routing", "desc": "Plan multi-stop journeys with automatic charging breaks and interactive SoC threshold tuning.",                    "group": "EV & Charging"        },
+    "evNavUI":          { "label": "EV In-Navigation UI",      "desc": "SoC strip, reachable range ring, horizon stop countdown, and low-battery re-routing overlay during guidance.",      "group": "EV & Charging"        },
     "cluster":          { "label": "Displaying on Cluster",    "desc": "Render NIP, lane guidance, CMP, and ETA on the vehicle instrument cluster via intent.",                             "group": "Vehicle Integration"  },
+    "hud":              { "label": "Head-Up Display",          "desc": "Project speed, manoeuvre arrows, and street names onto an automotive HUD from the navigation stack.",               "group": "Vehicle Integration"  },
     "aiPersonality":    { "label": "Conversation Personality", "desc": "Customise the AI assistant's name, tone, and branded phrases for a distinct OEM voice identity.",                   "group": "TomTom AI"            },
+    "intentRouting":    { "label": "Intent Routing",           "desc": "Route navigation intents through TAIA and forward media, climate, and phone intents to OEM domain handlers.",       "group": "TomTom AI"            },
+    "voiceEngine":      { "label": "Voice Engine",             "desc": "Connect your OEM text-to-speech provider to drive all voice output from the AI assistant.",                         "group": "TomTom AI"            },
+    "speechToText":     { "label": "Speech to Text",           "desc": "Integrate a speech-to-text provider and configure wake word handling for hands-free voice input.",                  "group": "TomTom AI"            },
     "adas":             { "label": "ADAS Integration",         "desc": "Connect advanced driver assistance systems — lane guidance, speed alerts, and junction view.",                       "group": "Vehicle Integration"  }
   },
   "explore": {

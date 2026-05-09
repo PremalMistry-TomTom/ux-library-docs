@@ -5,9 +5,17 @@ import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
   L_HomeScreen, L_AIVoice, L_Cluster, L_EVRouting,
+  L_NavControls, L_HorizonPanel, L_ETAPanel, L_Route, L_NavGuidance,
+  L_SearchResult, L_ChargingSearch, L_EV, L_ADAS, L_VIL,
+  L_ConversationPersonality,
 } from '../illustrations/lightVariants';
 import {
   IlloHomeScreen, IlloAIVoice, IlloCluster, IlloEVNavUI,
+  IlloNavControls, IlloHorizonPanel, IlloETAPanel, IlloRouteBar, IlloInstructionPanel,
+  IlloSearchFuzzy, IlloEVSearchNearby, IlloEVBattery, IlloEVRouting, IlloEV,
+  IlloEVRequirements, IlloADAS, IlloVIL, IlloHUD, IlloTruck, IlloVIBasics,
+  IlloConversationPersonality, IlloIntentRouting, IlloVoiceEngine,
+  IlloSpeechToText, IlloAIConfig,
 } from './IntroIllustrations';
 
 /* Pages that have real content — everything else shows "Coming soon" */
@@ -95,11 +103,35 @@ const DOMAIN_INTROS = {
   evCharging:         'Full EV integration journey — from BMS wiring and battery modelling through charging search, long-distance routing, and the in-navigation driver UI.',
 };
 
-const DOMAIN_HEROES = {
-  appCustomisation:   makeThumb(IlloHomeScreen, L_HomeScreen),
-  taia:               makeThumb(IlloAIVoice,    L_AIVoice),
-  vehicleIntegration: makeThumb(IlloCluster,    L_Cluster),
-  evCharging:         makeThumb(IlloEVNavUI,    L_EVRouting),
+const CARD_ILLOS = {
+  // App Customisation
+  'search-engine':      makeThumb(IlloSearchFuzzy,            L_SearchResult),
+  'home-screen-layout': makeThumb(IlloHomeScreen,             L_HomeScreen),
+  'nav-controls':       makeThumb(IlloNavControls,            L_NavControls),
+  'horizon-panel':      makeThumb(IlloHorizonPanel,           L_HorizonPanel),
+  'instruction-panel':  makeThumb(IlloInstructionPanel,       L_NavGuidance),
+  'eta-panel':          makeThumb(IlloETAPanel,               L_ETAPanel),
+  'route-bar':          makeThumb(IlloRouteBar,               L_Route),
+  // EV & Charging
+  'ev-overview':        makeThumb(IlloEV,                     L_EV),
+  'ev-battery':         makeThumb(IlloEVBattery,              L_EV),
+  'ev-charging-search': makeThumb(IlloEVSearchNearby,         L_ChargingSearch),
+  'ev-routing':         makeThumb(IlloEVRouting,              L_EVRouting),
+  'ev-nav-ui':          makeThumb(IlloEVNavUI,                L_EVRouting),
+  'ev-requirements':    makeThumb(IlloEVRequirements,         L_EV),
+  // Vehicle Integration
+  'vi-basics':          makeThumb(IlloVIBasics,               L_VIL),
+  'cluster':            makeThumb(IlloCluster,                L_Cluster),
+  'hud':                makeThumb(IlloHUD,                    L_ADAS),
+  'adas':               makeThumb(IlloADAS,                   L_ADAS),
+  'truck':              makeThumb(IlloTruck,                  L_Cluster),
+  // TomTom AI Assistant
+  'ai-overview':        makeThumb(IlloAIVoice,                L_AIVoice),
+  'ai-personality':     makeThumb(IlloConversationPersonality,L_ConversationPersonality),
+  'intent-routing':     makeThumb(IlloIntentRouting,          L_AIVoice),
+  'voice-engine':       makeThumb(IlloVoiceEngine,            L_AIVoice),
+  'speech-to-text':     makeThumb(IlloSpeechToText,           L_AIVoice),
+  'ai-config':          makeThumb(IlloAIConfig,               L_AIVoice),
 };
 
 function ArrowIcon() {
@@ -128,18 +160,12 @@ export default function DomainLanding({ groupKey, onNavigate }) {
       </div>
       {intro && <div className="quick-answer">{intro}</div>}
 
-      {/* Hero illustration */}
-      {DOMAIN_HEROES[groupKey] && (() => { const Hero = DOMAIN_HEROES[groupKey]; return (
-        <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
-          <Hero />
-        </div>
-      ); })()}
-
       <div className="domain-grid">
         {group.items.map(item => {
           const label       = t(`nav.items.${item.id}`, { defaultValue: item.label });
           const desc        = PAGE_DESCS[item.id];
           const implemented = IMPLEMENTED.has(item.id);
+          const CardIllo    = CARD_ILLOS[item.id];
 
           return (
             <button
@@ -147,16 +173,23 @@ export default function DomainLanding({ groupKey, onNavigate }) {
               className={`domain-card${!implemented ? ' domain-card--soon' : ''}`}
               onClick={() => onNavigate(item.id)}
             >
-              <div className="domain-card-body">
-                <span className="domain-card-title">{label}</span>
-                {implemented && desc && (
-                  <p className="domain-card-desc">{desc}</p>
-                )}
-                {!implemented && (
-                  <span className="domain-card-soon-badge">Coming soon</span>
-                )}
+              {CardIllo && implemented && (
+                <div className="domain-card-illo" style={{ background: palette.bg }}>
+                  <CardIllo />
+                </div>
+              )}
+              <div className="domain-card-bottom">
+                <div className="domain-card-body">
+                  <span className="domain-card-title">{label}</span>
+                  {implemented && desc && (
+                    <p className="domain-card-desc">{desc}</p>
+                  )}
+                  {!implemented && (
+                    <span className="domain-card-soon-badge">Coming soon</span>
+                  )}
+                </div>
+                <span className="domain-card-arrow"><ArrowIcon /></span>
               </div>
-              <span className="domain-card-arrow"><ArrowIcon /></span>
             </button>
           );
         })}

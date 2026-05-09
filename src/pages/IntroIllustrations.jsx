@@ -49,7 +49,7 @@ export function IlloEV() {
   );
 }
 
-function IlloSearchResult() {
+export function IlloSearchResult() {
   const M = useDarkStyle();
   const results = [["Gianni's", '0.3 km'], ['Pizza Napoli', '0.7 km'], ['La Cucina', '1.1 km']];
   return (
@@ -152,19 +152,20 @@ export function IlloRoute() {
   );
 }
 
-function IlloColourSystem() {
+export function IlloColourSystem() {
+  const M = useDarkStyle();
   const swatches = ['#e2001a', '#ff6b6b', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#1a1a2e', '#f0f0f0'];
   return (
-    <div style={{ background: '#f8f8f8', borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10, display: 'flex', flexDirection: 'column', gap: 8 }}>
       <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
-        {swatches.map(c => <div key={c} style={{ width: 22, height: 22, borderRadius: 5, background: c, border: '1px solid rgba(0,0,0,0.06)' }} />)}
+        {swatches.map(c => <div key={c} style={{ width: 22, height: 22, borderRadius: 5, background: c, border: `1px solid ${M.line}` }} />)}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {[['Brand', '#e2001a'], ['Surface', '#1a1a2e'], ['Action', '#60a5fa']].map(([label, color]) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
             <div style={{ width: 12, height: 12, borderRadius: 3, background: color, flexShrink: 0 }} />
-            <span style={{ fontSize: '0.5rem', color: '#444', fontWeight: 600 }}>{label}</span>
-            <span style={{ fontSize: '0.5rem', color: '#999', fontFamily: 'monospace' }}>{color}</span>
+            <span style={{ fontSize: '0.5rem', color: M.text, fontWeight: 600 }}>{label}</span>
+            <span style={{ fontSize: '0.5rem', color: M.dim, fontFamily: 'monospace' }}>{color}</span>
           </div>
         ))}
       </div>
@@ -266,9 +267,10 @@ export function IlloCluster() {
   );
 }
 
-function IlloMapStyle() {
+export function IlloMapStyle() {
+  const M = useDarkStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: '50%', overflow: 'hidden' }}>
         <svg style={{ width: '200%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <rect width="200" height="130" fill="#e8e0d5"/>
@@ -294,10 +296,10 @@ function IlloMapStyle() {
       </div>
       <div style={{ position: 'absolute', top: 0, bottom: 0, left: '50%', width: 1.5, background: 'rgba(255,255,255,0.25)', zIndex: 1 }}/>
       <div style={{ position: 'absolute', bottom: 7, left: 8, fontSize: '0.5rem', fontWeight: 700, color: 'rgba(0,0,0,0.45)', letterSpacing: '0.06em' }}>DAY</div>
-      <div style={{ position: 'absolute', bottom: 7, right: 8, fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.06em' }}>NIGHT</div>
+      <div style={{ position: 'absolute', bottom: 7, right: 8, fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.06em' }}>NIGHT</div>
       <div style={{ position: 'absolute', top: 7, left: 8, display: 'flex', alignItems: 'center', gap: 3 }}>
         <div style={{ width: 12, height: 3, borderRadius: 2, background: '#22c55e' }}/>
-        <span style={{ fontSize: '0.5rem', color: 'rgba(0,0,0,0.4)', fontWeight: 600 }}>Free flow</span>
+        <span style={{ fontSize: '0.5rem', color: 'rgba(0,0,0,0.5)', fontWeight: 600 }}>Free flow</span>
       </div>
     </div>
   );
@@ -360,7 +362,7 @@ export function IlloETAPanel() {
   );
 }
 
-function IlloThemingTokens() {
+export function IlloThemingTokens() {
   const M = useDarkStyle();
   const tokens = [
     { name: '--brand-primary', from: '#e2001a', to: '#0066cc', color: true },
@@ -395,7 +397,7 @@ function IlloThemingTokens() {
   );
 }
 
-function IlloChargingSearch() {
+export function IlloChargingSearch() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
@@ -420,7 +422,7 @@ function IlloChargingSearch() {
   );
 }
 
-function IlloConversationPersonality() {
+export function IlloConversationPersonality() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
@@ -3027,6 +3029,145 @@ export function IlloInstructionPanel() {
   );
 }
 
+export function IlloSpeechToText() {
+  const M = useDarkStyle();
+  const bars = [4, 7, 12, 9, 14, 10, 7, 13, 8, 5, 11, 9, 6, 10];
+  return (
+    <svg viewBox="0 0 280 175" fill="none" style={{ width: '100%', height: '100%' }}>
+      <rect width="280" height="175" fill={M.bg}/>
+      {/* Mic */}
+      <rect x="127" y="28" width="26" height="44" rx="13" fill={M.blue} opacity="0.9"/>
+      <path d="M108 65 Q108 94 140 94 Q172 94 172 65" stroke={M.blue} strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <line x1="140" y1="94" x2="140" y2="112" stroke={M.blue} strokeWidth="2.5" strokeLinecap="round"/>
+      <line x1="123" y1="112" x2="157" y2="112" stroke={M.blue} strokeWidth="2.5" strokeLinecap="round"/>
+      {/* Waveform */}
+      {bars.map((h, i) => (
+        <rect key={i} x={188 + i * 7} y={87 - h} width="4" height={h * 2} rx="2" fill={M.green} opacity="0.75"/>
+      ))}
+      {/* Transcription lines */}
+      <rect x="30" y="130" width="115" height="6" rx="3" fill={M.muted} opacity="0.45"/>
+      <rect x="30" y="144" width="85" height="6" rx="3" fill={M.muted} opacity="0.3"/>
+    </svg>
+  );
+}
+
+export function IlloAIConfig() {
+  const M = useDarkStyle();
+  const lines = [
+    { x: 48, w: 55, col: M.blue },
+    { x: 56, w: 80, col: M.muted },
+    { x: 56, w: 95, col: M.green },
+    { x: 56, w: 65, col: M.muted },
+    { x: 48, w: 55, col: M.amber },
+    { x: 56, w: 72, col: M.blue },
+  ];
+  return (
+    <svg viewBox="0 0 280 175" fill="none" style={{ width: '100%', height: '100%' }}>
+      <rect width="280" height="175" fill={M.bg}/>
+      <rect x="28" y="28" width="224" height="119" rx="12" fill={M.card} stroke={M.line}/>
+      {/* Traffic lights */}
+      <circle cx="47" cy="46" r="5" fill={M.red} opacity="0.8"/>
+      <circle cx="61" cy="46" r="5" fill={M.amber} opacity="0.8"/>
+      <circle cx="75" cy="46" r="5" fill={M.green} opacity="0.8"/>
+      {/* Code lines */}
+      {lines.map((l, i) => (
+        <rect key={i} x={l.x} y={62 + i * 13} width={l.w} height="5" rx="2" fill={l.col} opacity="0.65"/>
+      ))}
+    </svg>
+  );
+}
+
+export function IlloVIBasics() {
+  const M = useDarkStyle();
+  return (
+    <svg viewBox="0 0 280 175" fill="none" style={{ width: '100%', height: '100%' }}>
+      <rect width="280" height="175" fill={M.bg}/>
+      {/* NavSDK box */}
+      <rect x="16" y="62" width="78" height="48" rx="8" fill={M.card} stroke={M.blue} strokeWidth="1.5"/>
+      <text x="55" y="84" textAnchor="middle" fill={M.blue} fontSize="8" fontFamily="monospace" fontWeight="bold">NavSDK</text>
+      <text x="55" y="97" textAnchor="middle" fill={M.dim} fontSize="7">engine</text>
+      {/* Arrow */}
+      <path d="M94 86 L126 86" stroke={M.line} strokeWidth="1.5" markerEnd="none"/>
+      <path d="M122 82 L126 86 L122 90" stroke={M.line} strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* VIL box */}
+      <rect x="126" y="62" width="78" height="48" rx="8" fill={M.card} stroke={M.green} strokeWidth="1.5"/>
+      <text x="165" y="84" textAnchor="middle" fill={M.green} fontSize="8" fontFamily="monospace" fontWeight="bold">VIL</text>
+      <text x="165" y="97" textAnchor="middle" fill={M.dim} fontSize="7">integration</text>
+      {/* Arrow */}
+      <path d="M204 86 L236 86" stroke={M.line} strokeWidth="1.5"/>
+      <path d="M232 82 L236 86 L232 90" stroke={M.line} strokeWidth="1.5" fill="none" strokeLinecap="round"/>
+      {/* App box */}
+      <rect x="236" y="62" width="28" height="48" rx="6" fill={M.card} stroke={M.line}/>
+      <text x="250" y="82" textAnchor="middle" fill={M.dim} fontSize="6" fontFamily="monospace">OEM</text>
+      <text x="250" y="94" textAnchor="middle" fill={M.dim} fontSize="6" fontFamily="monospace">App</text>
+    </svg>
+  );
+}
+
+export function IlloHUD() {
+  const M = useDarkStyle();
+  return (
+    <svg viewBox="0 0 280 175" fill="none" style={{ width: '100%', height: '100%' }}>
+      <rect width="280" height="175" fill={M.bg}/>
+      {/* Windshield */}
+      <path d="M38 148 Q35 60 78 36 L202 36 Q245 60 242 148 Z" fill={M.dark} stroke={M.line} strokeWidth="1.5" opacity="0.65"/>
+      {/* HUD projection box */}
+      <rect x="82" y="72" width="116" height="55" rx="7" fill="none" stroke={M.blue} strokeWidth="1.2" strokeDasharray="5,3" opacity="0.75"/>
+      {/* Speed */}
+      <text x="140" y="97" textAnchor="middle" fill={M.white} fontSize="18" fontWeight="bold" fontFamily="monospace">72</text>
+      <text x="140" y="110" textAnchor="middle" fill={M.dim} fontSize="8">km/h</text>
+      {/* Manoeuvre text */}
+      <text x="140" y="122" textAnchor="middle" fill={M.blue} fontSize="7">600 m · ↱  High Street</text>
+    </svg>
+  );
+}
+
+export function IlloTruck() {
+  const M = useDarkStyle();
+  return (
+    <svg viewBox="0 0 280 175" fill="none" style={{ width: '100%', height: '100%' }}>
+      <rect width="280" height="175" fill={M.bg}/>
+      {/* Trailer body */}
+      <rect x="12" y="75" width="182" height="64" rx="4" fill={M.card} stroke={M.line}/>
+      {/* Cab */}
+      <path d="M194 75 L194 139 L268 139 L268 100 L236 75 Z" fill={M.card} stroke={M.line}/>
+      {/* Cab window */}
+      <path d="M200 77 L200 98 L262 98 L262 77 Z" fill={M.dark} opacity="0.55" rx="2"/>
+      {/* Wheels */}
+      <circle cx="55" cy="145" r="12" fill={M.line}/><circle cx="55" cy="145" r="6" fill={M.card}/>
+      <circle cx="143" cy="145" r="12" fill={M.line}/><circle cx="143" cy="145" r="6" fill={M.card}/>
+      <circle cx="232" cy="145" r="12" fill={M.line}/><circle cx="232" cy="145" r="6" fill={M.card}/>
+      {/* Dashboard screen */}
+      <rect x="212" y="80" width="40" height="22" rx="3" fill={M.dark} stroke={M.blue} strokeWidth="1"/>
+      <rect x="216" y="84" width="14" height="4" rx="1" fill={M.blue} opacity="0.8"/>
+      <rect x="216" y="92" width="10" height="4" rx="1" fill={M.muted} opacity="0.5"/>
+    </svg>
+  );
+}
+
+export function IlloEVRequirements() {
+  const M = useDarkStyle();
+  const items = [
+    { label: 'NavSDK ≥ 1.4.0', done: true },
+    { label: 'EV Extension SDK', done: true },
+    { label: 'INTERNET permission', done: true },
+    { label: 'BMS data binding', done: false },
+  ];
+  return (
+    <svg viewBox="0 0 280 175" fill="none" style={{ width: '100%', height: '100%' }}>
+      <rect width="280" height="175" fill={M.bg}/>
+      {items.map((item, i) => (
+        <g key={i} transform={`translate(30, ${28 + i * 34})`}>
+          <rect width="220" height="24" rx="6" fill={M.card} stroke={M.line}/>
+          <circle cx="16" cy="12" r="7" fill={item.done ? M.green : M.muted} opacity={item.done ? 0.9 : 0.4}/>
+          {item.done && <path d="M13 12 L15 14 L19 9" stroke={M.bg} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>}
+          <rect x="30" y="9" width={item.done ? 120 : 80} height="6" rx="3" fill={M.text} opacity="0.28"/>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 export function IlloSearchFuzzy() {
   const D = useDarkStyle();
   const rows = [['📍 Place name', '0.3 km', D.blue], ['🏪 Fuzzy match', '0.7 km', D.dim], ['📍 Street addr.', '1.1 km', D.blue], ['🏥 Category hit', '1.4 km', D.dim]];
@@ -4155,6 +4296,23 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           <IlloCard dark={IlloChargingSearch}           light={L_ChargingSearch}          label="Charging Station Search"    emoji="🔌" source="Overview · ThumbChargingSearch"        prompt="Map view with a user-location pin at centre surrounded by EV station pins at varying distances, some green (available), one red (full). A side strip shows the active filter state and total station count for the visible radius." illoStyle={illoStyle}/>
           <IlloCard dark={IlloConversationPersonality}  light={L_ConversationPersonality} label="Conversation Personality"   emoji="💬" source="Overview · ThumbConversationPersonality" prompt="Two speech-bubble exchanges showing the same driver query answered in distinct tones — formal vs casual — with different bubble border styles. The visual contrast communicates that personality is an OEM-configurable overlay, not a logic change." illoStyle={illoStyle}/>
           <IlloCard dark={IlloADAS}                     light={L_ADAS}                    label="ADAS — Lane Guidance"       emoji="🛣️" source="Overview · ThumbADAS"                  prompt="Top-down road cross-section with three lane marks, the ego lane highlighted in TomTom red and a dashed arrow showing a recommended lane change. The bird's-eye perspective communicates sub-lane navigation precision." illoStyle={illoStyle}/>
+          {/* App Customisation — new panels */}
+          <IlloCard dark={IlloInstructionPanel}         light={L_NavGuidance}             label="Instruction Panel"          emoji="↖️" source="DomainLanding · InstructionPanel"      prompt="Full-width next-turn banner showing a large directional arrow, bold street name, and countdown distance — the complete NIP layout used during active guidance." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRouteBar}                 light={L_Route}                   label="Route Bar"                  emoji="📍" source="DomainLanding · RouteBar"               prompt="Horizontal route progress bar with waypoint chips and a traffic summary strip below — showing time and distance remaining across the active journey." illoStyle={illoStyle}/>
+          {/* EV & Charging — new pages */}
+          <IlloCard dark={IlloEVBattery}                light={L_EV}                      label="EV Battery Model"           emoji="🔋" source="DomainLanding · EVBattery"              prompt="BMS integration panel with battery capacity figure, consumption curve graph, and a vehicle class preset selector — the foundation for range-accurate routing." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVRouting}                light={L_EVRouting}               label="Long-Distance EV Routing"   emoji="⚡" source="DomainLanding · EVRouting"              prompt="City-to-city route arc with two charging stop circles and a SOC trajectory bar spanning the full journey below — showing how automatic stop planning works." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVNavUI}                  light={L_EVRouting}               label="EV In-Navigation UI"        emoji="🔌" source="DomainLanding · EVNavUI"                prompt="In-guidance SoC strip at the bottom, reachable range ring on the map, and horizon charging stop countdown — all composited over the active navigation view." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVRequirements}           light={L_EV}                      label="EV Requirements"            emoji="📋" source="DomainLanding · EVRequirements"          prompt="Four-item integration checklist with green ticks for completed steps — SDK dependencies, Android permissions, BMS connection, and charging-park API key." illoStyle={illoStyle}/>
+          {/* Vehicle Integration — new pages */}
+          <IlloCard dark={IlloVIBasics}                 light={L_VIL}                     label="Vehicle Integration Basics" emoji="🔧" source="DomainLanding · VIBasics"               prompt="Three-layer stack: NavSDK app at top, VIL middleware in the centre, and vehicle hardware APIs at the bottom — with bidirectional arrows showing the integration flow." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloHUD}                      light={L_ADAS}                    label="Head-Up Display"            emoji="🪟" source="DomainLanding · HUD"                     prompt="Windshield outline with a projected speed figure and a manoeuvre arrow rendered as a semi-transparent HUD overlay — communicating the combiner display format." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTruck}                    light={L_Cluster}                 label="Truck & Commercial"         emoji="🚛" source="DomainLanding · Truck"                    prompt="Truck cab silhouette with a dashboard-mounted navigation screen showing a route summary with height and weight restriction icons along the corridor." illoStyle={illoStyle}/>
+          {/* TomTom AI — new pages */}
+          <IlloCard dark={IlloIntentRouting}            light={L_AIVoice}                 label="Intent Routing"             emoji="🔀" source="DomainLanding · IntentRouting"           prompt="Speech bubble with a navigation command splitting into two outbound arrows — one to TAIA navigation handler, one forwarded to an OEM domain handler — showing intent classification." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVoiceEngine}              light={L_AIVoice}                 label="Voice Engine"               emoji="🔊" source="DomainLanding · VoiceEngine"             prompt="TTS provider wiring diagram: TAIA text response feeds into an OEM voice engine block, with audio output waveform and a latency badge — communicating the TTS integration boundary." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSpeechToText}             light={L_AIVoice}                 label="Speech to Text"             emoji="🎤" source="DomainLanding · SpeechToText"            prompt="Microphone icon above an amplitude waveform that resolves into a transcribed text line — capturing the wake-word detection and STT pipeline in one compact visual." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloAIConfig}                 light={L_AIVoice}                 label="TAIA Configuration"         emoji="⚙️" source="DomainLanding · AIConfig"               prompt="Code-editor window with traffic-light dots showing TAIA SDK initialisation, navigation context binding, and an MQTT event handler wired up — the complete client setup." illoStyle={illoStyle}/>
         </div>
       </div>
 
