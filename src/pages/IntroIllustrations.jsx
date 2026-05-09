@@ -24,7 +24,7 @@ import {
    UX LIBRARY — Overview illustrations
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-function IlloEV() {
+export function IlloEV() {
   const M = useDarkStyle();
   const stations = [['Belib', '22 kW', '4/5'], ['Indigo', '50 kW', '2/2'], ['Saemes', '7 kW', '6/8']];
   return (
@@ -77,7 +77,7 @@ function IlloSearchResult() {
   );
 }
 
-function IlloNavControls() {
+export function IlloNavControls() {
   const M = useDarkStyle();
   const buttons = ['🔍', '⚡', '🔇', '⚙️'];
   return (
@@ -126,7 +126,7 @@ export function IlloAIVoice() {
   );
 }
 
-function IlloRoute() {
+export function IlloRoute() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -172,7 +172,7 @@ function IlloColourSystem() {
   );
 }
 
-function IlloHorizonPanel() {
+export function IlloHorizonPanel() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -1221,7 +1221,7 @@ function IlloLDEVRDataFreshness() {
    ANA (Autonomous Navigation App) — ANAIntro illustrations
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-function IlloVIL() {
+export function IlloVIL() {
   const M = useDarkStyle();
   const signals = [['Battery SoC', '74%', M.green], ['Connector type', 'CCS2', M.blue], ['Speed', '87 km/h', M.amber], ['GDPR consent', 'Granted', M.green]];
   return (
@@ -1238,7 +1238,7 @@ function IlloVIL() {
   );
 }
 
-function IlloCIL() {
+export function IlloCIL() {
   const M = useDarkStyle();
   const cmds = [['navigateTo(destination)', 'Sets active route'], ['cancelNavigation()', 'Ends session'], ['searchNearby(query)', 'Returns POI list']];
   return (
@@ -2857,6 +2857,174 @@ function useDarkStyle() {
     dark:   C.dark,
     white:  C.white,
   };
+}
+
+export function IlloIntentRouting() {
+  const M = useDarkStyle();
+  const routes = [
+    { label: 'NAVIGATE_TO', color: '#e2001a' },
+    { label: 'PLAY_MEDIA',  color: M.blue },
+    { label: 'SET_CLIMATE', color: M.amber },
+    { label: 'CALL_CONTACT',color: M.green },
+  ];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div style={{ background: M.card, border: `1px solid ${M.line}`, borderRadius: 6, padding: '5px 8px' }}>
+        <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 2 }}>User utterance</div>
+        <div style={{ fontSize: '0.5rem', color: M.text }}>"Navigate home, then play my playlist"</div>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+        <div style={{ width: 1, height: 6, background: M.line }} />
+        <div style={{ background: M.card, border: `1.5px solid ${M.purple}`, borderRadius: 4, padding: '3px 14px' }}>
+          <span style={{ fontSize: '0.5rem', color: M.purple, fontWeight: 700 }}>TAIA Intent Router</span>
+        </div>
+        <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+          {routes.map(({ label, color }) => (
+            <div key={label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+              <div style={{ width: 1, height: 6, background: M.line }} />
+              <div style={{ fontSize: '0.4rem', color, fontFamily: 'monospace', fontWeight: 700, background: `${color}18`, border: `1px solid ${color}55`, borderRadius: 3, padding: '2px 5px', textAlign: 'center', whiteSpace: 'nowrap' }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IlloVoiceEngine() {
+  const M = useDarkStyle();
+  const waveH = [4, 8, 13, 18, 13, 9, 16, 11, 7, 14, 10, 6, 15, 9, 5];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>Voice Engine — TTS output</div>
+      <div style={{ background: M.card, border: `1px solid ${M.line}`, borderRadius: 6, padding: '5px 8px', marginBottom: 10 }}>
+        <div style={{ fontSize: '0.5rem', color: M.text, lineHeight: 1.4 }}>"Turn left onto High Street in 200 metres"</div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <div style={{ flex: 1, height: 1, background: M.line }} />
+        <span style={{ fontSize: '0.5rem', color: M.blue, fontWeight: 700 }}>OEM TTS Engine</span>
+        <div style={{ flex: 1, height: 1, background: M.line }} />
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.5, height: 24 }}>
+        {waveH.map((h, i) => (
+          <div key={i} style={{ width: 3, height: h, borderRadius: 2, background: M.blue, opacity: 0.45 + (i % 3) * 0.18 }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function IlloEVBattery() {
+  const M = useDarkStyle();
+  const params = [
+    ['Capacity',   '77 kWh',   M.text],
+    ['Connector',  'CCS2',     M.blue],
+    ['Consumption','18 Wh/km', M.text],
+    ['Max charge', '150 kW',   M.amber],
+  ];
+  const cells = [M.green, M.green, M.green, M.amber, M.line];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10, display: 'flex', gap: 8 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2, flexShrink: 0 }}>
+        <div style={{ width: 10, height: 4, borderRadius: '2px 2px 0 0', background: M.line, margin: '0 auto' }} />
+        <div style={{ width: 26, border: `1.5px solid ${M.line}`, borderRadius: 3, padding: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {cells.map((c, i) => (
+            <div key={i} style={{ height: 5, borderRadius: 1, background: c, opacity: i === 4 ? 0.35 : 1 }} />
+          ))}
+        </div>
+        <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.green, marginTop: 2 }}>74%</div>
+      </div>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 5, paddingTop: 4 }}>
+        <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Vehicle &amp; Battery</div>
+        {params.map(([k, v, c]) => (
+          <div key={k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${M.line}`, paddingBottom: 3 }}>
+            <span style={{ fontSize: '0.5rem', color: M.dim }}>{k}</span>
+            <span style={{ fontSize: '0.5rem', fontWeight: 600, color: c }}>{v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function IlloEVNavUI() {
+  const M = useDarkStyle();
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, bottom: 52 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 80" fill="none">
+          <path d="M10 65 Q55 38 100 58 L165 28" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
+          <circle cx="100" cy="57" r="4" fill="#e2001a" opacity="0.8"/>
+          <circle cx="165" cy="28" r="6" fill={M.green} opacity="0.9"/>
+          <text x="165" y="31" textAnchor="middle" fill="white" style={{ fontSize: 6, fontFamily: 'system-ui', fontWeight: 700 }}>⚡</text>
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}55`, padding: '7px 12px' }}>
+        <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 5 }}>Ionity · 48 km · <span style={{ color: M.green }}>3/4 avail.</span></div>
+        <div style={{ height: 4, background: M.line, borderRadius: 3, overflow: 'hidden', marginBottom: 4 }}>
+          <div style={{ height: '100%', width: '63%', background: M.green, borderRadius: 3 }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span style={{ fontSize: '0.5rem', color: M.green, fontWeight: 700 }}>63% SoC</span>
+          <span style={{ fontSize: '0.5rem', color: M.dim }}>→ 25% at stop</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IlloRouteBar() {
+  const M = useDarkStyle();
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, bottom: 52 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 80" fill="none">
+          <path d="M10 55 Q60 32 100 52 T190 45" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
+          <circle cx="100" cy="51" r="4" fill="#e2001a" opacity="0.8"/>
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}55`, padding: '8px 12px' }}>
+        <div style={{ height: 4, background: M.line, borderRadius: 3, overflow: 'hidden', marginBottom: 6, position: 'relative' }}>
+          <div style={{ height: '100%', width: '38%', background: '#e2001a', borderRadius: 3 }} />
+          <div style={{ position: 'absolute', left: '38%', top: '50%', transform: 'translate(-50%,-50%)', width: 8, height: 8, borderRadius: '50%', background: M.white, border: '2px solid #e2001a' }} />
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: '0.5rem', color: M.dim }}>Home</span>
+          <span style={{ fontSize: '0.5rem', color: M.white, fontWeight: 600 }}>18 min · 6.4 km</span>
+          <span style={{ fontSize: '0.5rem', color: M.dim }}>Office</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IlloInstructionPanel() {
+  const M = useDarkStyle();
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 46, bottom: 0, left: 0, right: 0 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 90" fill="none">
+          <path d="M10 60 Q60 38 100 58 T190 50" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
+          <circle cx="100" cy="57" r="4" fill="#e2001a" opacity="0.8"/>
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, background: M.dark, padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ width: 28, height: 28, borderRadius: 6, background: '#e2001a', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+            <path d="M3 20 L3 10 Q3 3 10 3 L15 3 L11.5 0 L20 0 L20 8 L16.5 5 Q13 5 13 10 L13 20 Z"/>
+          </svg>
+        </div>
+        <div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: M.white }}>200 m</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim }}>High Street</div>
+        </div>
+        <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+          <div style={{ fontSize: '0.5rem', fontWeight: 600, color: M.white }}>14:32</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim }}>ETA</div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function IlloSearchFuzzy() {

@@ -1,6 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { NAV } from '../data/navigation';
 import PageActions from '../components/ui/PageActions';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import {
+  makeThumb,
+  L_HomeScreen, L_AIVoice, L_Cluster, L_EVRouting,
+} from '../illustrations/lightVariants';
+import {
+  IlloHomeScreen, IlloAIVoice, IlloCluster, IlloEVNavUI,
+} from './IntroIllustrations';
 
 /* Pages that have real content — everything else shows "Coming soon" */
 const IMPLEMENTED = new Set([
@@ -87,6 +95,13 @@ const DOMAIN_INTROS = {
   evCharging:         'Full EV integration journey — from BMS wiring and battery modelling through charging search, long-distance routing, and the in-navigation driver UI.',
 };
 
+const DOMAIN_HEROES = {
+  appCustomisation:   makeThumb(IlloHomeScreen, L_HomeScreen),
+  taia:               makeThumb(IlloAIVoice,    L_AIVoice),
+  vehicleIntegration: makeThumb(IlloCluster,    L_Cluster),
+  evCharging:         makeThumb(IlloEVNavUI,    L_EVRouting),
+};
+
 function ArrowIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -103,6 +118,7 @@ export default function DomainLanding({ groupKey, onNavigate }) {
   const groupLabel = t(`nav.groups.${groupKey}`, { defaultValue: group.label });
   const intro      = DOMAIN_INTROS[groupKey];
   const related    = RELATED_DOMAINS[groupKey];
+  const { palette } = useIlloStyle();
 
   return (
     <div className="page">
@@ -111,6 +127,13 @@ export default function DomainLanding({ groupKey, onNavigate }) {
         <PageActions />
       </div>
       {intro && <div className="quick-answer">{intro}</div>}
+
+      {/* Hero illustration */}
+      {DOMAIN_HEROES[groupKey] && (() => { const Hero = DOMAIN_HEROES[groupKey]; return (
+        <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: palette.bg, marginBottom: 32 }}>
+          <Hero />
+        </div>
+      ); })()}
 
       <div className="domain-grid">
         {group.items.map(item => {
