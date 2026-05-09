@@ -1,4 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import {
+  L_SearchFuzzy, L_SearchPOI, L_SearchCategory, L_SearchNearby, L_SearchAlongRoute, L_SearchAutocomplete,
+  L_BatchSearch, L_POIDetails, L_POIPhotos,
+  L_Geocode, L_ReverseGeocode,
+  L_TrafficFlow, L_TrafficIncidents, L_TrafficFlowTile, L_TrafficModelID,
+  L_EVSearchNearby, L_EVChargingAvailability, L_EVMarketCoverage,
+  L_MapRasterTile, L_MapVectorTile, L_MapSatelliteTile, L_MapAssetsAPI, L_MapStaticImage,
+  L_ParkingAvailability, L_ParkingPrices, L_OnStreetParking, L_FuelPrices,
+  L_SnapToRoads,
+  L_TrafficStats, L_AreaAnalytics, L_ODAnalysis, L_JunctionAnalytics,
+  L_CalculateRoute, L_ReachableRange, L_EVRouting, L_BatchRouting, L_MatrixRouting,
+  L_WaypointOpt, L_TurnInstructions, L_RoutingWeather,
+  L_HomeScreen, L_ETAPanel, L_ADAS, L_Cluster, L_AIVoice, L_NavGuidance,
+  L_MapDisplay, L_Route,
+} from '../illustrations/lightVariants';
 
 const BASE = import.meta.env.BASE_URL; // e.g. '/ux-library-docs/'
 
@@ -363,8 +379,200 @@ function TechSupportCard() {
   );
 }
 
+/* ─── Mosaic data ────────────────────────────────────────────────────────────── */
+const MOSAIC_FILTERS = [
+  { id: 'automotive', label: 'Automotive', color: '#e2001a' },
+  { id: 'navigation', label: 'Navigation', color: '#58a6ff' },
+  { id: 'maps',       label: 'Maps',       color: '#3fb950' },
+  { id: 'traffic',    label: 'Traffic',    color: '#f97316' },
+  { id: 'mobility',   label: 'Mobility',   color: '#a78bfa' },
+];
+
+const MOSAIC_CARDS = [
+  // ── Automotive ──────────────────────────────────────────────────────────────
+  { id: 'm-ux-home',    Illo: L_HomeScreen,   cats: ['automotive'],            emoji: '📱', title: 'Build in-car home screens',           problem: 'Lay out map, search and media controls inside a vehicle touchscreen with safe-zone–compliant components.', product: 'UX Library',                    docsId: 'overview',       productId: 'ux-library'     },
+  { id: 'm-ux-eta',     Illo: L_ETAPanel,     cats: ['automotive','navigation'],emoji: '⏱️', title: 'Show live ETA & route progress',       problem: 'Surface arrival time, distance remaining and a progress bar in a glanceable driving-safe panel.',         product: 'UX Library',                    docsId: 'eta-panel',      productId: 'ux-library'     },
+  { id: 'm-ux-cluster', Illo: L_Cluster,      cats: ['automotive'],            emoji: '🚗', title: 'Drive instrument cluster displays',    problem: 'Render speed, guidance and turn icons inside a circular cluster at extreme DPI and tiny screen sizes.',    product: 'UX Library',                    docsId: 'cluster',        productId: 'ux-library'     },
+  { id: 'm-ux-adas',    Illo: L_ADAS,         cats: ['automotive','navigation'],emoji: '🛣️', title: 'Guide lane changes with ADAS data',   problem: 'Highlight the recommended lane on a multi-lane road and show curve, gradient and sign warnings ahead.',    product: 'UX Library',                    docsId: 'adas',           productId: 'ux-library'     },
+  { id: 'm-ux-voice',   Illo: L_AIVoice,      cats: ['automotive'],            emoji: '🎙️', title: 'Add AI voice assistant to a car app', problem: 'Stream conversational responses with animated waveforms and integrate configurable OEM personality tones.',  product: 'UX Library / TAIA',             docsId: 'ai-overview',    productId: 'ux-library'     },
+  { id: 'm-ana',        Illo: L_NavGuidance,  cats: ['automotive','navigation'],emoji: '🧭', title: 'Integrate a pre-built navigation APK', problem: 'Drop TomTom navigation into Android Automotive OS via VIL/CIL without building a nav UI from scratch.',    product: 'Automotive Navigation App',     docsId: 'ana-intro',      productId: 'ana'            },
+  // ── Navigation ──────────────────────────────────────────────────────────────
+  { id: 'm-route',      Illo: L_CalculateRoute,cats: ['navigation'],           emoji: '📍', title: 'Calculate a traffic-aware route',     problem: 'Get turn-by-turn routes with real-time traffic, vehicle profiles, toll avoidance and ETA in one request.',  product: 'Routing API',                   docsId: 'routing-api-intro', productId: 'routing-api'  },
+  { id: 'm-range',      Illo: L_ReachableRange,cats: ['navigation','mobility'],emoji: '⭕', title: 'Show reachable range from a point',   problem: 'Generate an isochrone polygon showing how far a vehicle can travel within a time or fuel/charge budget.',    product: 'Routing API',                   docsId: 'routing-api-intro', productId: 'routing-api'  },
+  { id: 'm-ev-route',   Illo: L_EVRouting,    cats: ['navigation','mobility'],  emoji: '⚡', title: 'Plan long-distance EV trips',         problem: 'Route an EV across hundreds of kilometres with optimised charging stops based on battery SOC and speed.',    product: 'Long Distance EV Routing API',  docsId: 'ldevr-intro',    productId: 'ldevr'          },
+  { id: 'm-batch-rt',   Illo: L_BatchRouting, cats: ['navigation'],            emoji: '📦', title: 'Batch-calculate routes for a fleet',  problem: 'Submit dozens of origin-destination pairs in a single request and get all routes back in parallel.',         product: 'Routing API',                   docsId: 'routing-api-intro', productId: 'routing-api'  },
+  { id: 'm-matrix',     Illo: L_MatrixRouting,cats: ['navigation'],            emoji: '⚡', title: 'Build an origin-destination matrix',  problem: 'Get travel times and distances for every combination of a set of origins and destinations in one call.',      product: 'Matrix Routing API',            docsId: 'matrix-intro',   productId: 'matrix-routing' },
+  { id: 'm-waypoint',   Illo: L_WaypointOpt,  cats: ['navigation','mobility'], emoji: '📍', title: 'Optimise multi-stop delivery order',  problem: 'Reorder a list of stops into the fastest possible visiting sequence using TSP-style waypoint optimisation.',  product: 'Waypoint Optimization API',     docsId: 'waypoint-intro', productId: 'waypoint-opt'   },
+  { id: 'm-instruct',   Illo: L_TurnInstructions,cats: ['navigation'],         emoji: '↗️', title: 'Parse structured turn instructions',  problem: 'Extract a machine-readable list of manoeuvre steps with icons, road names and distances for custom guidance.', product: 'Routing API',                   docsId: 'routing-api-intro', productId: 'routing-api'  },
+  { id: 'm-weather-rt', Illo: L_RoutingWeather,cats: ['navigation','traffic'], emoji: '🌧️', title: 'Adjust routes for weather',           problem: 'Incorporate real-time weather conditions into route time estimates and select alternatives when rain slows traffic.',product:'Routing API',                  docsId: 'routing-api-intro', productId: 'routing-api'  },
+  // ── Maps ─────────────────────────────────────────────────────────────────────
+  { id: 'm-raster',     Illo: L_MapRasterTile,  cats: ['maps'],               emoji: '🟦', title: 'Render raster map tiles',             problem: 'Fetch 256×256 PNG tiles at any zoom and stitch them into a slippy-map with a single z/x/y URL template.',    product: 'Map Display API',               docsId: 'map-display-api-intro', productId: 'map-display-api' },
+  { id: 'm-vector',     Illo: L_MapVectorTile,  cats: ['maps'],               emoji: '📐', title: 'Style vector maps on the client',     problem: 'Download multi-layer vector tiles and apply custom styles at render time — roads, labels and POIs as layers.',  product: 'Map Display API',               docsId: 'map-display-api-intro', productId: 'map-display-api' },
+  { id: 'm-satellite',  Illo: L_MapSatelliteTile,cats: ['maps'],              emoji: '🛰️', title: 'Display satellite imagery',           problem: 'Show real-world aerial photos alongside vector overlays for hybrid map views or site-survey contexts.',       product: 'Map Display API',               docsId: 'map-display-api-intro', productId: 'map-display-api' },
+  { id: 'm-static',     Illo: L_MapStaticImage, cats: ['maps'],               emoji: '🖼️', title: 'Generate static map thumbnails',      problem: 'Produce a server-rendered PNG of any location at a fixed size — perfect for notifications, emails and previews.',product: 'Map Display API',               docsId: 'map-display-api-intro', productId: 'map-display-api' },
+  { id: 'm-mapdisplay', Illo: L_MapDisplay,     cats: ['maps','automotive'],  emoji: '🗺️', title: 'Embed a live map in an app',          problem: 'Composite raster tiles, traffic overlays and route arcs into a single map view inside any SDK or web app.',    product: 'Map Display API / NavSDK',      docsId: 'navsdk-intro',   productId: 'navsdk'         },
+  // ── Traffic ───────────────────────────────────────────────────────────────────
+  { id: 'm-tf-flow',    Illo: L_TrafficFlow,    cats: ['traffic'],            emoji: '🟢', title: 'Stream live traffic flow data',       problem: 'Get current free-flow speed vs actual speed for any road segment to colour-code congestion in real time.',     product: 'Traffic API',                   docsId: 'traffic-api-intro', productId: 'traffic-api'  },
+  { id: 'm-tf-inc',     Illo: L_TrafficIncidents,cats: ['traffic'],           emoji: '⚠️', title: 'Overlay live traffic incidents',      problem: 'Fetch accidents, road works and closures with severity, road name and coordinates to alert drivers proactively.', product: 'Traffic API',                  docsId: 'traffic-api-intro', productId: 'traffic-api'  },
+  { id: 'm-tf-tile',    Illo: L_TrafficFlowTile,cats: ['traffic','maps'],     emoji: '🗺️', title: 'Add traffic overlay tiles to a map',  problem: 'Request flow-speed raster tiles that snap directly onto a slippy map as a transparent congestion heatmap.',    product: 'Traffic API',                   docsId: 'traffic-api-intro', productId: 'traffic-api'  },
+  { id: 'm-tf-model',   Illo: L_TrafficModelID, cats: ['traffic'],            emoji: '🔢', title: 'Version traffic data freshness',      problem: 'Poll a model ID before downloading flow data so you only fetch when the underlying traffic model has updated.',  product: 'Traffic API',                   docsId: 'traffic-api-intro', productId: 'traffic-api'  },
+  { id: 'm-ta-stats',   Illo: L_TrafficStats,   cats: ['traffic'],            emoji: '📊', title: 'Analyse historical congestion trends',problem: 'Query week-by-week traffic speed distributions on any road segment to find peak hours and seasonal patterns.',  product: 'Traffic Analytics API',         docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
+  { id: 'm-ta-area',    Illo: L_AreaAnalytics,  cats: ['traffic'],            emoji: '🔥', title: 'Heatmap traffic density by zone',     problem: 'Aggregate flow data across custom area polygons into intensity grids for urban planning and congestion studies.', product: 'Traffic Analytics API',        docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
+  { id: 'm-ta-od',      Illo: L_ODAnalysis,     cats: ['traffic'],            emoji: '🔄', title: 'Measure origin-destination flows',    problem: 'Build an OD matrix showing how many trips move between each pair of zones — essential for transport modelling.', product: 'Traffic Analytics API',        docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
+  { id: 'm-ta-junct',   Illo: L_JunctionAnalytics,cats: ['traffic'],          emoji: '🔀', title: 'Count vehicles at an intersection',   problem: 'Retrieve per-approach vehicle counts at any junction to optimise signal timing and model turning movements.',    product: 'Traffic Analytics API',         docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
+  // ── Mobility ─────────────────────────────────────────────────────────────────
+  { id: 'm-fuzzy',      Illo: L_SearchFuzzy,    cats: ['mobility'],           emoji: '🔍', title: 'Search addresses and places by text', problem: 'Run typo-tolerant fuzzy queries across addresses, POIs and structured places — one endpoint for all search types.', product: 'Search API',                  docsId: 'search-api-intro', productId: 'search-api'   },
+  { id: 'm-poi',        Illo: L_SearchPOI,      cats: ['mobility'],           emoji: '📍', title: 'Find POIs by category or brand',      problem: 'Filter millions of points of interest by category hierarchy, brand name, opening hours or accessibility features.', product: 'Search API',                 docsId: 'search-api-intro', productId: 'search-api'   },
+  { id: 'm-nearby',     Illo: L_SearchNearby,   cats: ['mobility'],           emoji: '📡', title: 'Discover nearby places by radius',   problem: 'Search within a radius or bounding box from a GPS coordinate to surface contextually relevant places.',          product: 'Search API',                  docsId: 'search-api-intro', productId: 'search-api'   },
+  { id: 'm-along',      Illo: L_SearchAlongRoute,cats: ['mobility','navigation'],emoji:'🛣️', title: 'Search for stops along a route',   problem: 'Find fuel stations, restaurants and charging points within a configurable detour corridor from any route.',       product: 'Search API',                  docsId: 'search-api-intro', productId: 'search-api'   },
+  { id: 'm-autocmp',    Illo: L_SearchAutocomplete,cats: ['mobility'],        emoji: '⌨️', title: 'Autocomplete a search input',         problem: 'Return ranked suggestions on every keystroke with debounce support — reduces API calls and speeds up users.',    product: 'Search API',                  docsId: 'search-api-intro', productId: 'search-api'   },
+  { id: 'm-geocode',    Illo: L_Geocode,        cats: ['mobility'],           emoji: '📌', title: 'Geocode an address to coordinates',   problem: 'Turn a free-text address string into a precise latitude/longitude pair with confidence score and matched components.', product: 'Geocoding API',             docsId: 'geocoding-api-intro', productId: 'geocoding-api' },
+  { id: 'm-revgeo',     Illo: L_ReverseGeocode, cats: ['mobility'],           emoji: '🔄', title: 'Reverse geocode a map tap',           problem: 'Resolve any latitude/longitude into a human-readable address — essential for showing where a user tapped on a map.', product: 'Geocoding API',            docsId: 'geocoding-api-intro', productId: 'geocoding-api' },
+  { id: 'm-ev-near',    Illo: L_EVSearchNearby, cats: ['mobility','navigation'],emoji:'⚡', title: 'Find nearby EV charging stations',   problem: 'Search EV stations by location, connector type and power level with live availability status per connector.',    product: 'EV & Charging API',           docsId: 'ev-charging-api-intro', productId: 'ev-charging-api' },
+  { id: 'm-ev-avail',   Illo: L_EVChargingAvailability,cats: ['mobility'],   emoji: '🔌', title: 'Check real-time connector availability',problem: 'Query per-connector status (available/charging/offline) at a specific station before routing a driver there.', product: 'EV & Charging API',          docsId: 'ev-charging-api-intro', productId: 'ev-charging-api' },
+  { id: 'm-parking',    Illo: L_ParkingAvailability,cats: ['mobility'],      emoji: '🅿️', title: 'Show real-time parking availability', problem: 'Get live used/capacity fractions for off-street car parks so drivers can see spaces before they arrive.',        product: 'Parking & Fuel API',          docsId: 'parking-fuel-api-intro', productId: 'parking-fuel-api' },
+  { id: 'm-park-price', Illo: L_ParkingPrices,  cats: ['mobility'],          emoji: '💶', title: 'Display parking prices by duration',  problem: 'Return tiered pricing tables for off-street car parks so drivers can compare costs before choosing a location.',   product: 'Parking & Fuel API',          docsId: 'parking-fuel-api-intro', productId: 'parking-fuel-api' },
+  { id: 'm-onstreet',   Illo: L_OnStreetParking,cats: ['mobility'],          emoji: '🚗', title: 'Predict on-street parking probability',problem: 'Get kerbside availability predictions per road segment — colour-coded green/amber/red — before the last mile.',   product: 'Parking & Fuel API',          docsId: 'parking-fuel-api-intro', productId: 'parking-fuel-api' },
+  { id: 'm-fuel',       Illo: L_FuelPrices,     cats: ['mobility'],          emoji: '⛽', title: 'Show live fuel prices at stations',   problem: 'Retrieve current prices per fuel type at nearby stations so drivers can compare costs on the route.',             product: 'Parking & Fuel API',          docsId: 'parking-fuel-api-intro', productId: 'parking-fuel-api' },
+  { id: 'm-snap',       Illo: L_SnapToRoads,    cats: ['mobility','navigation'],emoji:'📍', title: 'Snap a GPS trace to road geometry',  problem: 'Correct noisy raw GPS points to the nearest road centreline — essential for trip reconstruction and analytics.',  product: 'Snap to Roads API',           docsId: 'snap-to-roads-api-intro', productId: 'snap-to-roads-api' },
+  { id: 'm-poi-det',    Illo: L_POIDetails,     cats: ['mobility'],          emoji: '🏢', title: 'Enrich POIs with contact & hours',    problem: 'Fetch phone, website, opening hours, star rating and accessibility info for any POI beyond its basic name/pin.',  product: 'Search API (POI Details)',    docsId: 'search-api-intro', productId: 'search-api'   },
+  { id: 'm-poi-photos', Illo: L_POIPhotos,      cats: ['mobility'],          emoji: '📷', title: 'Display crowd-sourced POI photos',    problem: 'Load categorised photos (exterior, interior, menu) for any point of interest to show rich preview content.',      product: 'Search API (POI Photos)',     docsId: 'search-api-intro', productId: 'search-api'   },
+];
+
+/* ─── Mosaic view ─────────────────────────────────────────────────────────────── */
+function MosaicView({ onNavigate }) {
+  const { palette } = useIlloStyle();
+  const [active, setActive] = useState([]); // empty = show all
+
+  function toggleFilter(id) {
+    setActive(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  }
+
+  const visible = active.length === 0
+    ? MOSAIC_CARDS
+    : MOSAIC_CARDS.filter(c => c.cats.some(cat => active.includes(cat)));
+
+  return (
+    <div style={{ padding: '32px 32px 64px', maxWidth: 1400, margin: '0 auto' }}>
+
+      {/* ── Filter bar ── */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 28 }}>
+        <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', flexShrink: 0, marginRight: 4 }}>Filter</span>
+
+        {/* "All" pill */}
+        <button
+          onClick={() => setActive([])}
+          style={{
+            padding: '6px 16px', borderRadius: 100, cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
+            border: active.length === 0 ? '2px solid var(--black)' : '1.5px solid var(--border)',
+            background: active.length === 0 ? 'var(--black)' : 'transparent',
+            color: active.length === 0 ? 'var(--bg)' : 'var(--mid)',
+            transition: 'all 0.12s',
+          }}
+        >All</button>
+
+        {MOSAIC_FILTERS.map(f => {
+          const on = active.includes(f.id);
+          return (
+            <button
+              key={f.id}
+              onClick={() => toggleFilter(f.id)}
+              style={{
+                padding: '6px 16px', borderRadius: 100, cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
+                border: on ? `2px solid ${f.color}` : '1.5px solid var(--border)',
+                background: on ? `${f.color}18` : 'transparent',
+                color: on ? f.color : 'var(--mid)',
+                transition: 'all 0.12s',
+              }}
+            >{f.label}</button>
+          );
+        })}
+
+        <span style={{ marginLeft: 'auto', fontSize: '0.6875rem', color: 'var(--muted)' }}>
+          {visible.length} of {MOSAIC_CARDS.length} capabilities
+        </span>
+      </div>
+
+      {/* ── Card grid ── */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+        gap: 14,
+      }}>
+        {visible.map(card => (
+          <MosaicCard key={card.id} card={card} palette={palette} onNavigate={onNavigate} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MosaicCard({ card, palette, onNavigate }) {
+  const [hovered, setHovered] = useState(false);
+  const cats = card.cats.map(id => MOSAIC_FILTERS.find(f => f.id === id)).filter(Boolean);
+  const hasLink = Boolean(card.docsId && onNavigate);
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={hasLink ? () => onNavigate(card.docsId, card.productId) : undefined}
+      style={{
+        borderRadius: 20,
+        border: `1px solid ${hovered && hasLink ? 'var(--black)' : 'var(--border)'}`,
+        background: 'var(--surface)',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: hasLink ? 'pointer' : 'default',
+        transition: 'border-color 0.15s, box-shadow 0.15s',
+        boxShadow: hovered && hasLink ? '0 4px 16px rgba(0,0,0,0.1)' : 'none',
+      }}
+    >
+      {/* Illustration */}
+      <div style={{ height: 130, background: palette.bg, flexShrink: 0, overflow: 'hidden' }}>
+        <card.Illo />
+      </div>
+
+      {/* Body */}
+      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+
+        {/* Category pills */}
+        <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+          {cats.map(f => (
+            <span key={f.id} style={{
+              fontSize: '0.5rem', fontWeight: 700, padding: '2px 7px', borderRadius: 100, letterSpacing: '0.04em', textTransform: 'uppercase',
+              background: `${f.color}18`, color: f.color,
+            }}>{f.label}</span>
+          ))}
+        </div>
+
+        {/* Title */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 5 }}>
+          <span style={{ fontSize: '0.875rem', lineHeight: 1.1, flexShrink: 0 }}>{card.emoji}</span>
+          <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.3 }}>{card.title}</span>
+        </div>
+
+        {/* Problem statement */}
+        <p style={{ margin: 0, fontSize: '0.6875rem', color: 'var(--mid)', lineHeight: 1.55, flex: 1 }}>{card.problem}</p>
+
+        {/* Product footer */}
+        <div style={{
+          marginTop: 4, paddingTop: 8, borderTop: '1px solid var(--border)',
+          fontSize: '0.625rem', fontWeight: 600, color: 'var(--muted)',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        }}>
+          <span style={{ fontFamily: 'var(--font-mono, monospace)' }}>{card.product}</span>
+          {hasLink && <span style={{ color: 'var(--mid)', fontSize: '0.75rem' }}>→</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── Main ───────────────────────────────────────────────────────────────────── */
 export default function DocsPortal({ onNavigate }) {
+  const [view, setView] = useState('catalogue'); // 'catalogue' | 'mosaic'
   const [activeTab, setActiveTab] = useState('Automotive');
   const sectionRefs = useRef({});
   const tabBarRef = useRef(null);
@@ -425,6 +633,31 @@ export default function DocsPortal({ onNavigate }) {
             </div>
           </div>
 
+          {/* View toggle */}
+          <div style={{ marginTop: 16, display: 'flex', gap: 6 }}>
+            {[
+              { id: 'catalogue', icon: '☰', label: 'Catalogue' },
+              { id: 'mosaic',    icon: '⊞', label: 'Discovery' },
+            ].map(v => (
+              <button
+                key={v.id}
+                onClick={() => setView(v.id)}
+                style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '7px 16px', borderRadius: 100, cursor: 'pointer',
+                  fontSize: '0.8125rem', fontWeight: 600,
+                  border: view === v.id ? '2px solid #fff' : '1.5px solid rgba(255,255,255,0.3)',
+                  background: view === v.id ? 'rgba(255,255,255,0.15)' : 'transparent',
+                  color: view === v.id ? '#fff' : 'rgba(255,255,255,0.6)',
+                  backdropFilter: 'blur(8px)',
+                  transition: 'all 0.15s',
+                }}
+              >
+                <span style={{ fontSize: '0.875rem' }}>{v.icon}</span> {v.label}
+              </button>
+            ))}
+          </div>
+
           {/* Right: NavSDK banner */}
           <div className="dp2-hero-right">
             <div className="dp2-navsdk-wrap">
@@ -438,6 +671,12 @@ export default function DocsPortal({ onNavigate }) {
           </div>
         </div>
       </section>
+
+      {/* ── Mosaic view ── */}
+      {view === 'mosaic' && <MosaicView onNavigate={onNavigate} />}
+
+      {/* ── Catalogue view ── */}
+      {view === 'catalogue' && <>
 
       {/* ── Sticky Tab Bar ── */}
       <div className="dp2-tabbar-wrap" ref={tabBarRef}>
@@ -509,6 +748,9 @@ export default function DocsPortal({ onNavigate }) {
           <div className="dp2-footer-copy">Copyright © 2026 TomTom International BV. All rights reserved.</div>
         </div>
       </footer>
+
+      </> /* end catalogue view */}
+
     </div>
   );
 }
