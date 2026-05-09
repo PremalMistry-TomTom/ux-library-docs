@@ -3976,6 +3976,50 @@ const THEME_OPTIONS = [
   },
 ];
 
+/* ─── Functional colour-scale families (light + dark per family) ─────────────
+   Derived from the Functional colour chart: indigo / bolt / shamrock /
+   cadmium / bright / red. Each entry supplies both variant IDs so the
+   ThemeBar can render a paired L·D toggle per family.
+   ─────────────────────────────────────────────────────────────────────────── */
+const COLOUR_FAMILIES = [
+  {
+    id: 'indigo',   label: 'Indigo',
+    accent: '#00487F',   textOnAccent: '#fff',
+    lightId: 'indigoLight',   darkId: 'indigoDark',
+    lightBg: '#F5F8FA',       darkBg: '#001924',
+  },
+  {
+    id: 'bolt',     label: 'Bolt',
+    accent: '#00AAFF',   textOnAccent: '#fff',
+    lightId: 'boltLight',     darkId: 'boltDark',
+    lightBg: '#F5FBFF',       darkBg: '#001C28',
+  },
+  {
+    id: 'shamrock', label: 'Shamrock',
+    accent: '#00A65E',   textOnAccent: '#fff',
+    lightId: 'shamrockLight', darkId: 'shamrockDark',
+    lightBg: '#F5FBF8',       darkBg: '#000F09',
+  },
+  {
+    id: 'cadmium',  label: 'Cadmium',
+    accent: '#C79102',   textOnAccent: '#fff',
+    lightId: 'cadmiumLight',  darkId: 'cadmiumDark',
+    lightBg: '#FFF5DD',       darkBg: '#322400',
+  },
+  {
+    id: 'bright',   label: 'Bright',
+    accent: '#FF5D00',   textOnAccent: '#fff',
+    lightId: 'brightLight',   darkId: 'brightDark',
+    lightBg: '#FFE7D9',       darkBg: '#321300',
+  },
+  {
+    id: 'red',      label: 'Red',
+    accent: '#DF1B12',   textOnAccent: '#fff',
+    lightId: 'redLight',      darkId: 'redDark',
+    lightBg: '#FFF0EF',       darkBg: '#380300',
+  },
+];
+
 const STYLE_OPTIONS = [
   { id: 'lofi',     icon: '◻',  label: 'Lo-Fi Wireframe',     desc: 'Geometric SVG shapes · full palette system' },
   { id: 'detailed', icon: '▦',  label: 'Detailed Wireframe',  desc: 'Rich HTML mockups · themed UI chrome' },
@@ -4056,15 +4100,16 @@ function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClic
         </button>
       </div>
 
-      {/* ── Row 2: Theme picker ── */}
+      {/* ── Row 2: Palette picker — system themes ── */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: 10,
         padding: '8px 24px',
+        borderBottom: '1px solid var(--border)',
         flexWrap: 'wrap',
       }}>
-        <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--mid)', flexShrink: 0, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Colour</span>
+        <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--mid)', flexShrink: 0, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Palette</span>
         <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
           {THEME_OPTIONS.map(o => {
             const isActive = theme === o.id;
@@ -4095,6 +4140,93 @@ function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClic
           })}
         </div>
         <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', marginLeft: 4 }}>{activeTheme.desc}</span>
+      </div>
+
+      {/* ── Row 3: Functional colour-family L·D toggles ── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10,
+        padding: '8px 24px',
+        flexWrap: 'wrap',
+      }}>
+        <span style={{ fontSize: '0.6875rem', fontWeight: 600, color: 'var(--mid)', flexShrink: 0, letterSpacing: '0.04em', textTransform: 'uppercase' }}>Colour</span>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+          {COLOUR_FAMILIES.map(fam => {
+            const lightActive = theme === fam.lightId;
+            const darkActive  = theme === fam.darkId;
+            const anyActive   = lightActive || darkActive;
+            const borderCol   = anyActive ? `${fam.accent}88` : 'var(--border)';
+            return (
+              <div
+                key={fam.id}
+                style={{
+                  display: 'flex', alignItems: 'center',
+                  border: `${anyActive ? 2 : 1.5}px solid ${borderCol}`,
+                  borderRadius: 100, overflow: 'hidden',
+                  background: anyActive ? `${fam.accent}15` : 'transparent',
+                  transition: 'border-color 0.15s, background 0.15s',
+                }}
+              >
+                {/* dot + label — non-interactive, just visual */}
+                <span style={{
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  padding: '4px 7px 4px 10px', userSelect: 'none', pointerEvents: 'none',
+                }}>
+                  <span style={{
+                    width: 8, height: 8, borderRadius: '50%',
+                    background: fam.accent, flexShrink: 0,
+                    boxShadow: '0 0 0 1.5px rgba(0,0,0,0.12)',
+                  }}/>
+                  <span style={{
+                    fontSize: '0.75rem', fontWeight: 600,
+                    color: anyActive ? fam.accent : 'var(--mid)',
+                    transition: 'color 0.15s',
+                  }}>{fam.label}</span>
+                </span>
+                {/* Light variant */}
+                <button
+                  onClick={() => onThemeChange(lightActive ? 'day' : fam.lightId)}
+                  title={lightActive ? 'Reset to Day' : `${fam.label} · Light`}
+                  style={{
+                    padding: '5px 9px',
+                    borderLeft: `1px solid ${borderCol}`,
+                    background: lightActive ? fam.accent : 'transparent',
+                    color: lightActive ? fam.textOnAccent : 'var(--mid)',
+                    cursor: 'pointer', fontSize: '0.75rem', fontWeight: 700,
+                    transition: 'background 0.15s, color 0.15s',
+                    lineHeight: 1, border: 'none',
+                    borderLeft: `1px solid ${borderCol}`,
+                  }}
+                >☀</button>
+                {/* Dark variant */}
+                <button
+                  onClick={() => onThemeChange(darkActive ? 'day' : fam.darkId)}
+                  title={darkActive ? 'Reset to Day' : `${fam.label} · Dark`}
+                  style={{
+                    padding: '5px 9px',
+                    borderLeft: `1px solid ${borderCol}`,
+                    background: darkActive ? fam.accent : 'transparent',
+                    color: darkActive ? fam.textOnAccent : 'var(--mid)',
+                    cursor: 'pointer', fontSize: '0.75rem', fontWeight: 700,
+                    transition: 'background 0.15s, color 0.15s',
+                    lineHeight: 1, border: 'none',
+                    borderLeft: `1px solid ${borderCol}`,
+                  }}
+                >🌙</button>
+              </div>
+            );
+          })}
+        </div>
+        {/* Active colour family description */}
+        {COLOUR_FAMILIES.some(f => theme === f.lightId || theme === f.darkId) && (
+          <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', marginLeft: 4 }}>
+            {(() => {
+              const fam = COLOUR_FAMILIES.find(f => theme === f.lightId || theme === f.darkId);
+              return `${fam.label} · ${theme === fam.lightId ? 'Light' : 'Dark'}`;
+            })()}
+          </span>
+        )}
       </div>
 
     </div>
