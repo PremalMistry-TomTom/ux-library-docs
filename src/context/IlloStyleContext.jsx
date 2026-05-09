@@ -87,9 +87,9 @@ export function IlloStyleProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
       const stored = localStorage.getItem('illoStyle');
-      // migrate old values: 'light' → 'day', 'blueprint' → 'blueprintDark', keep 'dark'
+      // migrate old values: 'light' → 'day', 'blueprint' → 'blueprintDark', 'dark' → 'night'
       if (stored === 'light')     return 'day';
-      if (stored === 'dark')      return 'dark';
+      if (stored === 'dark')      return 'night';
       if (stored === 'blueprint') return 'blueprintDark';
       if (THEMES[stored])         return stored;
       // No stored preference — auto-pick blueprint variant to match site day/dark mode

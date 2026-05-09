@@ -3486,10 +3486,8 @@ function IlloJunctionAnalytics() {
    Gallery components
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, styleMode }) {
+function IlloCard({ light: Light, label, emoji, source, prompt }) {
   const { palette } = useIlloStyle();
-  const Illo = styleMode !== 'dark' ? Light : Dark;
-  const isDark = styleMode === 'dark';
   return (
     <div style={{
       border: '1px solid var(--border)',
@@ -3501,12 +3499,11 @@ function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, styl
     }}>
       <div style={{
         height: 160,
-        background: isDark ? '#0b0f14' : palette.bg,
-        padding: isDark ? 10 : 0,
+        background: palette.bg,
         flexShrink: 0,
         overflow: 'hidden',
       }}>
-        <Illo />
+        <Light />
       </div>
       <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 3 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -3542,43 +3539,159 @@ function SectionHeader({ emoji, title, subtitle, color = '#e2001a' }) {
    Page
    ───────────────────────────────────────────────────────────────────────────── */
 
-/* Style toggle pill */
-const TOGGLE_OPTIONS = [
-  { id: 'dark',           label: '🌑 Dark',             activeBg: '#1a2535' },
-  { id: 'day',            label: '☀️ Day',               activeBg: '#1B3D6E' },
-  { id: 'night',          label: '🌙 Night',             activeBg: '#0D1B35' },
-  { id: 'blueprintLight', label: '📐 Blueprint Light',   activeBg: '#0B2D5C' },
-  { id: 'blueprintDark',  label: '🔵 Blueprint Dark',    activeBg: '#071420' },
+const THEME_OPTIONS = [
+  {
+    id: 'day',
+    icon: '☀️',
+    label: 'Day',
+    desc: 'Light sky · deep navy · TomTom red',
+    activeBg: '#EAF4FF',
+    activeColor: '#1B3D6E',
+    activeBorder: '#5B8AC5',
+    swatch: ['#EAF4FF','#1B3D6E','#e2001a'],
+  },
+  {
+    id: 'night',
+    icon: '🌙',
+    label: 'Night',
+    desc: 'Deep navy · pale blue · TomTom red',
+    activeBg: '#0D1B35',
+    activeColor: '#C8DEFF',
+    activeBorder: '#7BA8D4',
+    swatch: ['#0D1B35','#C8DEFF','#e2001a'],
+  },
+  {
+    id: 'blueprintLight',
+    icon: '📋',
+    label: 'Blueprint',
+    desc: 'Drafting paper · deep navy · blue',
+    activeBg: '#F0F7FF',
+    activeColor: '#0B2D5C',
+    activeBorder: '#2878CC',
+    swatch: ['#F0F7FF','#0B2D5C','#2878CC'],
+  },
+  {
+    id: 'blueprintDark',
+    icon: '🔵',
+    label: 'Blueprint Dark',
+    desc: 'Deepest navy · pale blue · bright blue',
+    activeBg: '#071420',
+    activeColor: '#C2DFFF',
+    activeBorder: '#4B9EE8',
+    swatch: ['#071420','#C2DFFF','#4B9EE8'],
+  },
 ];
-function StyleToggle({ value, onChange }) {
+
+function ThemeBar({ value, onChange, onPluginClick }) {
+  const active = THEME_OPTIONS.find(o => o.id === value) || THEME_OPTIONS[0];
   return (
     <div style={{
-      display: 'inline-flex',
-      background: 'var(--surface)',
-      border: '1px solid var(--border)',
-      borderRadius: 100,
-      padding: 4,
-      gap: 4,
+      position: 'sticky',
+      top: 0,
+      zIndex: 100,
+      background: 'var(--bg)',
+      borderBottom: '1px solid var(--border)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
     }}>
-      {TOGGLE_OPTIONS.map(o => (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '10px 24px',
+        flexWrap: 'wrap',
+      }}>
+
+        {/* Left: identity */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+          <div style={{
+            width: 34, height: 34, borderRadius: 10, flexShrink: 0,
+            background: 'linear-gradient(135deg, #1B3D6E 0%, #2878CC 100%)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1rem',
+          }}>🎨</div>
+          <div>
+            <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.2 }}>
+              Preview theme
+            </div>
+            <div style={{ fontSize: '0.6875rem', color: 'var(--mid)', lineHeight: 1.3 }}>
+              {active.desc} · all illustrations update live
+            </div>
+          </div>
+        </div>
+
+        {/* Centre: theme pills */}
+        <div style={{
+          display: 'flex',
+          gap: 6,
+          marginLeft: 'auto',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+        }}>
+          {THEME_OPTIONS.map(o => {
+            const isActive = value === o.id;
+            return (
+              <button
+                key={o.id}
+                onClick={() => onChange(o.id)}
+                title={o.desc}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
+                  padding: '7px 14px',
+                  borderRadius: 100,
+                  border: isActive ? `2px solid ${o.activeBorder}` : '1.5px solid var(--border)',
+                  background: isActive ? o.activeBg : 'transparent',
+                  color: isActive ? o.activeColor : 'var(--mid)',
+                  cursor: 'pointer',
+                  fontSize: '0.8125rem',
+                  fontWeight: 600,
+                  transition: 'all 0.15s',
+                  whiteSpace: 'nowrap',
+                  boxShadow: isActive ? `0 0 0 3px ${o.activeBorder}22` : 'none',
+                }}
+              >
+                {/* Three tiny colour dots */}
+                <span style={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+                  {o.swatch.map((c, i) => (
+                    <span key={i} style={{
+                      width: 8, height: 8, borderRadius: '50%', background: c,
+                      border: '1px solid rgba(0,0,0,0.12)', flexShrink: 0,
+                    }}/>
+                  ))}
+                </span>
+                {o.icon} {o.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Right: Figma plugin */}
         <button
-          key={o.id}
-          onClick={() => onChange(o.id)}
+          onClick={onPluginClick}
           style={{
-            padding: '6px 18px',
-            borderRadius: 100,
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '0.8125rem',
-            fontWeight: 600,
-            transition: 'all 0.18s',
-            background: value === o.id ? o.activeBg : 'transparent',
-            color: value === o.id ? '#fff' : 'var(--mid)',
+            display: 'flex', alignItems: 'center', gap: 7,
+            padding: '8px 14px', borderRadius: 100,
+            border: '1px solid var(--border)', background: 'var(--surface)',
+            cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
+            color: 'var(--black)', whiteSpace: 'nowrap', flexShrink: 0,
+            transition: 'border-color 0.15s',
           }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = '#2878CC'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; }}
         >
-          {o.label}
+          <svg width="13" height="13" viewBox="0 0 38 57" fill="none" style={{ flexShrink: 0 }}>
+            <path d="M19 28.5C19 25.9804 20.0009 23.5641 21.7825 21.7825C23.5641 20.0009 25.9804 19 28.5 19C31.0196 19 33.4359 20.0009 35.2175 21.7825C36.9991 23.5641 38 25.9804 38 28.5C38 31.0196 36.9991 33.4359 35.2175 35.2175C33.4359 36.9991 31.0196 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
+            <path d="M0 47.5C0 44.9804 1.00089 42.5641 2.78249 40.7825C4.56408 39.0009 6.98044 38 9.5 38H19V47.5C19 50.0196 17.9991 52.4359 16.2175 54.2175C14.4359 55.9991 12.0196 57 9.5 57C6.98044 57 4.56408 55.9991 2.78249 54.2175C1.00089 52.4359 0 50.0196 0 47.5Z" fill="#0ACF83"/>
+            <path d="M19 0V19H28.5C31.0196 19 33.4359 17.9991 35.2175 16.2175C36.9991 14.4359 38 12.0196 38 9.5C38 6.98044 36.9991 4.56408 35.2175 2.78249C33.4359 1.00089 31.0196 0 28.5 0H19Z" fill="#FF7262"/>
+            <path d="M0 9.5C0 12.0196 1.00089 14.4359 2.78249 16.2175C4.56408 17.9991 6.98044 19 9.5 19H19V0H9.5C6.98044 0 4.56408 1.00089 2.78249 2.78249C1.00089 4.56408 0 6.98044 0 9.5Z" fill="#F24E1E"/>
+            <path d="M0 28.5C0 31.0196 1.00089 33.4359 2.78249 35.2175C4.56408 36.9991 6.98044 38 9.5 38H19V19H9.5C6.98044 19 4.56408 20.0009 2.78249 21.7825C1.00089 23.5641 0 25.9804 0 28.5Z" fill="#A259FF"/>
+          </svg>
+          Figma Plugin
         </button>
-      ))}
+
+      </div>
     </div>
   );
 }
@@ -3708,76 +3821,21 @@ export default function IntroIllustrations() {
   const [showPlugin, setShowPlugin] = React.useState(false);
 
   return (
-    <div className="page">
+    <div className="page" style={{ paddingTop: 0 }}>
       {showPlugin && <FigmaPluginPanel onClose={() => setShowPlugin(false)} />}
 
-      <div className="page-header">
-        <h1>Intro Hero Illustrations</h1>
-        <PageActions />
-      </div>
+      {/* ── Sticky theme bar ── */}
+      <ThemeBar value={styleMode} onChange={setStyleMode} onPluginClick={() => setShowPlugin(true)} />
 
-      <p className="quick-answer">
-        All 50 hero illustrations across every product intro page. Toggle between the classic dark style and the themed flat illustration system. Adding a new theme is one palette object — every illustration updates automatically.
-      </p>
-
-      {/* ── Style toggle + Figma plugin button ── */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 32, padding: '16px 20px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16 }}>
-        <div>
-          <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 2 }}>Illustration theme</div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>Switches all 50 heroes simultaneously — add new themes in <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>IlloStyleContext.jsx → THEMES</code></div>
+      <div style={{ padding: '0 24px' }}>
+        <div className="page-header" style={{ marginTop: 24 }}>
+          <h1>Intro Hero Illustrations</h1>
+          <PageActions />
         </div>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 12 }}>
-          <button
-            onClick={() => setShowPlugin(true)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 7,
-              padding: '8px 16px', borderRadius: 100,
-              border: '1px solid var(--border)', background: 'var(--bg)',
-              cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600,
-              color: 'var(--black)', transition: 'all 0.15s',
-              whiteSpace: 'nowrap',
-            }}
-            onMouseEnter={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.borderColor = '#2878CC'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
-          >
-            <svg width="14" height="14" viewBox="0 0 38 57" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
-              <path d="M19 28.5C19 25.9804 20.0009 23.5641 21.7825 21.7825C23.5641 20.0009 25.9804 19 28.5 19C31.0196 19 33.4359 20.0009 35.2175 21.7825C36.9991 23.5641 38 25.9804 38 28.5C38 31.0196 36.9991 33.4359 35.2175 35.2175C33.4359 36.9991 31.0196 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
-              <path d="M0 47.5C0 44.9804 1.00089 42.5641 2.78249 40.7825C4.56408 39.0009 6.98044 38 9.5 38H19V47.5C19 50.0196 17.9991 52.4359 16.2175 54.2175C14.4359 55.9991 12.0196 57 9.5 57C6.98044 57 4.56408 55.9991 2.78249 54.2175C1.00089 52.4359 0 50.0196 0 47.5Z" fill="#0ACF83"/>
-              <path d="M19 0V19H28.5C31.0196 19 33.4359 17.9991 35.2175 16.2175C36.9991 14.4359 38 12.0196 38 9.5C38 6.98044 36.9991 4.56408 35.2175 2.78249C33.4359 1.00089 31.0196 0 28.5 0H19Z" fill="#FF7262"/>
-              <path d="M0 9.5C0 12.0196 1.00089 14.4359 2.78249 16.2175C4.56408 17.9991 6.98044 19 9.5 19H19V0H9.5C6.98044 0 4.56408 1.00089 2.78249 2.78249C1.00089 4.56408 0 6.98044 0 9.5Z" fill="#F24E1E"/>
-              <path d="M0 28.5C0 31.0196 1.00089 33.4359 2.78249 35.2175C4.56408 36.9991 6.98044 38 9.5 38H19V19H9.5C6.98044 19 4.56408 20.0009 2.78249 21.7825C1.00089 23.5641 0 25.9804 0 28.5Z" fill="#A259FF"/>
-            </svg>
-            Get Figma Plugin
-          </button>
-          <StyleToggle value={styleMode} onChange={setStyleMode} />
-        </div>
-      </div>
 
-      {styleMode === 'dark' && (
-        <Callout type="info" title="Dark style">
-          Original dark map canvases (#0d1117 / #1a2535), TomTom red routes (#e2001a), status greens. Uses the original ThumbXxx components.
-        </Callout>
-      )}
-      {styleMode === 'day' && (
-        <Callout type="info" title="Day theme">
-          Light sky bg (#EAF4FF), deep navy (#1B3D6E), mid blue (#5B8AC5). Pill placeholders + TomTom diamond watermark texture.
-        </Callout>
-      )}
-      {styleMode === 'night' && (
-        <Callout type="info" title="Night theme">
-          Deep navy bg (#0D1B35), light navy text (#C8DEFF), mid blue (#7BA8D4). Same illustration shapes — inverted for dark canvases.
-        </Callout>
-      )}
-      {styleMode === 'blueprintLight' && (
-        <Callout type="info" title="Blueprint Light theme">
-          Crisp drafting-paper bg (#F0F7FF), deep navy (#0B2D5C), strong blue (#2878CC). All semantic colours replaced with blues — no green or amber.
-        </Callout>
-      )}
-      {styleMode === 'blueprintDark' && (
-        <Callout type="info" title="Blueprint Dark theme">
-          Deepest navy bg (#071420), pale blue text (#C2DFFF), bright blue (#4B9EE8). Full all-blue palette — accent, warn and danger all map to blue variants.
-        </Callout>
-      )}
+        <p className="quick-answer">
+          All 82+ hero illustrations across every product intro and API reference page, unified under one theme system. Switching a theme recolours every single illustration live — shapes and layout stay identical.
+        </p>
 
       {/* ── UX Library ── */}
       <div className="zone">
@@ -4064,6 +4122,7 @@ export default function IntroIllustrations() {
           ))}
         </div>
       </div>
+      </div>{/* /padding wrapper */}
     </div>
   );
 }
