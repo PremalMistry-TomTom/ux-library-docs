@@ -510,64 +510,15 @@ function FilterRow({ label, filters, active, onToggle, onClear }) {
 
 function MosaicView({ onNavigate }) {
   const { palette } = useIlloStyle();
-  const [activeCats, setActiveCats]   = useState([]); // product filter
-  const [activeSols, setActiveSols]   = useState([]); // solution filter
-
-  function toggleCat(id)  { setActiveCats(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]); }
-  function toggleSol(id)  { setActiveSols(p => p.includes(id) ? p.filter(x => x !== id) : [...p, id]); }
-
-  const visible = MOSAIC_CARDS.filter(c => {
-    const catOk = activeCats.length === 0 || c.cats.some(cat => activeCats.includes(cat));
-    const solOk = activeSols.length === 0 || (c.solutions ?? []).some(s => activeSols.includes(s));
-    return catOk && solOk;
-  });
 
   return (
     <div style={{ padding: '32px 32px 64px', maxWidth: 1400, margin: '0 auto' }}>
-
-      {/* ── Filter panel ── */}
-      <div style={{
-        background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16,
-        padding: '14px 18px', marginBottom: 28, display: 'flex', flexDirection: 'column', gap: 10,
-      }}>
-        <FilterRow
-          label="Product"
-          filters={MOSAIC_FILTERS}
-          active={activeCats}
-          onToggle={toggleCat}
-          onClear={() => setActiveCats([])}
-        />
-        <div style={{ height: 1, background: 'var(--border)', margin: '2px 0' }} />
-        <FilterRow
-          label="Use case"
-          filters={SOLUTION_FILTERS}
-          active={activeSols}
-          onToggle={toggleSol}
-          onClear={() => setActiveSols([])}
-        />
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10, marginTop: 2 }}>
-          {(activeCats.length > 0 || activeSols.length > 0) && (
-            <button
-              onClick={() => { setActiveCats([]); setActiveSols([]); }}
-              style={{
-                padding: '3px 10px', borderRadius: 6, cursor: 'pointer', fontSize: '0.6875rem', fontWeight: 600,
-                border: '1px solid var(--border)', background: 'transparent', color: 'var(--muted)',
-              }}
-            >Clear all</button>
-          )}
-          <span style={{ fontSize: '0.6875rem', color: 'var(--muted)' }}>
-            {visible.length} of {MOSAIC_CARDS.length} capabilities
-          </span>
-        </div>
-      </div>
-
-      {/* ── Card grid ── */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
         gap: 14,
       }}>
-        {visible.map(card => (
+        {MOSAIC_CARDS.map(card => (
           <MosaicCard key={card.id} card={card} palette={palette} onNavigate={onNavigate} />
         ))}
       </div>
