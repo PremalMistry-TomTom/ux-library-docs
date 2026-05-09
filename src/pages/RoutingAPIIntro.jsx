@@ -8,6 +8,7 @@ import {
   L_CalculateRoute, L_ReachableRange, L_BatchRouting, L_TurnInstructions, L_LaneGuidance, L_RoadShields,
   L_RoutingComputeToll, L_RoutingWeather, L_RoutingDataFreshness,
 } from '../illustrations/lightVariants';
+import { IlloCalculateRoute, IlloReachableRange, IlloBatchRouting, IlloTurnInstructions, IlloRoutingWeather } from './IntroIllustrations';
 
 /* ─── Shared helpers ────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -220,35 +221,37 @@ function ThumbInstructions() {
 }
 
 function ThumbRoadShields() {
+  const { palette: C } = useIlloStyle();
   const shields = [
-    { cat: 2, ref: 'A10',  color: '#1d4ed8', x: 30  },
-    { cat: 1, ref: 'E35',  color: '#22c55e', x: 82  },
-    { cat: 3, ref: 'N7',   color: '#e2001a', x: 134 },
-    { cat: 4, ref: 'B14',  color: '#f59e0b', x: 30  },
+    { cat: 2, ref: 'A10',  color: '#1d4ed8' },
+    { cat: 1, ref: 'E35',  color: '#22c55e' },
+    { cat: 3, ref: 'N7',   color: '#e2001a' },
+    { cat: 4, ref: 'B14',  color: '#f59e0b' },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields · iconCategory</div>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div style={{ fontSize: '0.5rem', color: C.mid, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields · iconCategory</div>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
         {shields.map(({ cat, ref, color }) => (
           <div key={ref} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-            <div style={{ width: 34, height: 22, borderRadius: 4, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.15)' }}>
+            <div style={{ width: 34, height: 22, borderRadius: 4, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.2)' }}>
               <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#fff', fontFamily: 'monospace' }}>{ref}</span>
             </div>
-            <span style={{ fontSize: '0.4375rem', color: '#475569', fontFamily: 'monospace' }}>cat {cat}</span>
+            <span style={{ fontSize: '0.4375rem', color: C.mid, fontFamily: 'monospace' }}>cat {cat}</span>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 8, padding: '4px 7px', background: 'rgba(255,255,255,0.04)', borderRadius: 4, border: '1px solid rgba(255,255,255,0.07)' }}>
-        <span style={{ fontSize: '0.4375rem', color: '#64748b', fontFamily: 'monospace' }}>Take the </span>
-        <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: '#60a5fa', fontFamily: 'monospace', background: 'rgba(29,78,216,0.3)', padding: '1px 4px', borderRadius: 2 }}>A10</span>
-        <span style={{ fontSize: '0.4375rem', color: '#64748b', fontFamily: 'monospace' }}> towards Charlottenburg</span>
+      <div style={{ marginTop: 8, padding: '4px 7px', background: `${C.border}20`, borderRadius: 4, border: `1px solid ${C.border}40` }}>
+        <span style={{ fontSize: '0.4375rem', color: C.mid, fontFamily: 'monospace' }}>Take the </span>
+        <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: C.mid, fontFamily: 'monospace', background: `${C.mid}25`, padding: '1px 4px', borderRadius: 2 }}>A10</span>
+        <span style={{ fontSize: '0.4375rem', color: C.mid, fontFamily: 'monospace' }}> towards Charlottenburg</span>
       </div>
     </div>
   );
 }
 
 function ThumbLaneGuidance() {
+  const { palette: C } = useIlloStyle();
   const lanes = [
     { dirs: ['←'],    drivable: false },
     { dirs: ['↑'],    drivable: false },
@@ -256,31 +259,31 @@ function ThumbLaneGuidance() {
     { dirs: ['→'],    drivable: true, recommended: true },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
+      <div style={{ fontSize: '0.5rem', color: C.mid, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
       <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
         {lanes.map((lane, i) => (
           <div key={i} style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
             padding: '6px 10px', borderRadius: 6, minWidth: 36,
-            background: lane.recommended ? 'rgba(234,179,8,0.15)' : lane.drivable ? 'rgba(255,255,255,0.05)' : 'transparent',
-            border: lane.recommended ? '1px solid rgba(234,179,8,0.35)' : '1px solid rgba(255,255,255,0.07)',
+            background: lane.recommended ? `${C.warn}25` : lane.drivable ? `${C.border}15` : 'transparent',
+            border: lane.recommended ? `1px solid ${C.warn}55` : `1px solid ${C.border}30`,
             opacity: lane.drivable || lane.recommended ? 1 : 0.28,
           }}>
             {lane.dirs.map(d => (
-              <span key={d} style={{ fontSize: '0.8125rem', lineHeight: 1, color: lane.recommended ? '#eab308' : lane.drivable ? '#e2e8f0' : '#475569' }}>{d}</span>
+              <span key={d} style={{ fontSize: '0.8125rem', lineHeight: 1, color: lane.recommended ? C.warn : lane.drivable ? C.navy : C.soft }}>{d}</span>
             ))}
           </div>
         ))}
       </div>
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-          <div style={{ width: 6, height: 6, borderRadius: 2, background: 'rgba(234,179,8,0.15)', border: '1px solid rgba(234,179,8,0.35)' }}/>
-          <span style={{ fontSize: '0.4375rem', color: '#64748b' }}>recommended</span>
+          <div style={{ width: 6, height: 6, borderRadius: 2, background: `${C.warn}25`, border: `1px solid ${C.warn}55` }}/>
+          <span style={{ fontSize: '0.4375rem', color: C.mid }}>recommended</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-          <div style={{ width: 6, height: 6, borderRadius: 2, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}/>
-          <span style={{ fontSize: '0.4375rem', color: '#64748b' }}>drivable</span>
+          <div style={{ width: 6, height: 6, borderRadius: 2, background: `${C.border}15`, border: `1px solid ${C.border}30` }}/>
+          <span style={{ fontSize: '0.4375rem', color: C.mid }}>drivable</span>
         </div>
       </div>
     </div>
@@ -288,19 +291,20 @@ function ThumbLaneGuidance() {
 }
 
 function ThumbComputeToll() {
+  const { palette: C } = useIlloStyle();
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll Amounts</div>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ fontSize: '0.5rem', color: C.mid, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll Amounts</div>
       <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
-        <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
-        <rect x="98" y="16" width="4" height="28" rx="2" fill="#475569"/>
+        <path d="M0 38 Q100 34 200 38" stroke={C.border} strokeWidth="8" strokeLinecap="round"/>
+        <rect x="98" y="16" width="4" height="28" rx="2" fill={C.mid}/>
         <rect x="100" y="16" width="48" height="5" rx="2" fill="#e2001a" opacity="0.85"/>
-        <rect x="82" y="10" width="18" height="30" rx="3" fill="#1e293b"/>
+        <rect x="82" y="10" width="18" height="30" rx="3" fill={C.panel}/>
       </svg>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3 }}>
-        {[['Base toll', '€2.40', '#e2e8f0'], ['EV discount', '–€0.60', '#22c55e'], ['Total', '€1.80', '#58a6ff']].map(([label, val, col]) => (
+        {[['Base toll', '€2.40', C.navy], ['EV discount', '–€0.60', C.accent], ['Total', '€1.80', C.mid]].map(([label, val, col]) => (
           <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.4375rem', color: '#475569' }}>{label}</span>
+            <span style={{ fontSize: '0.4375rem', color: C.soft }}>{label}</span>
             <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: col, fontFamily: 'monospace' }}>{val}</span>
           </div>
         ))}
@@ -333,25 +337,26 @@ function ThumbWeather() {
 }
 
 function ThumbDataFreshness() {
+  const { palette: C } = useIlloStyle();
   const items = [
-    { label: 'Traffic data',  pct: 100, color: '#22c55e' },
-    { label: 'Road closures', pct: 75,  color: '#22c55e' },
-    { label: 'Speed limits',  pct: 40,  color: '#fbbf24' },
+    { label: 'Traffic data',  pct: 100, color: C.accent },
+    { label: 'Road closures', pct: 75,  color: C.accent },
+    { label: 'Speed limits',  pct: 40,  color: C.warn },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
+      <div style={{ fontSize: '0.5rem', color: C.mid, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
       {items.map((item) => (
         <div key={item.label} style={{ marginBottom: 8 }}>
-          <span style={{ fontSize: '0.4375rem', color: '#94a3b8', display: 'block', marginBottom: 2 }}>{item.label}</span>
-          <div style={{ height: 5, background: '#1e293b', borderRadius: 2 }}>
+          <span style={{ fontSize: '0.4375rem', color: C.soft, display: 'block', marginBottom: 2 }}>{item.label}</span>
+          <div style={{ height: 5, background: C.panel, borderRadius: 2 }}>
             <div style={{ height: '100%', width: `${item.pct}%`, background: item.color, borderRadius: 2, opacity: 0.85 }}/>
           </div>
         </div>
       ))}
       <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 4 }}>
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }}/>
-        <span style={{ fontSize: '0.4375rem', color: '#22c55e' }}>Live feed · auto-refresh</span>
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: C.accent }}/>
+        <span style={{ fontSize: '0.4375rem', color: C.accent }}>Live feed · auto-refresh</span>
       </div>
     </div>
   );
@@ -389,14 +394,14 @@ export default function RoutingAPIIntro({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const ENDPOINTS_V1 = [
-    { Thumb: makeThumb(ThumbCalculateRoute, L_CalculateRoute), title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
-    { Thumb: makeThumb(ThumbReachableRange, L_ReachableRange), title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
-    { Thumb: makeThumb(ThumbBatchRouting,   L_BatchRouting),   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
-    { Thumb: makeThumb(ThumbInstructions,   L_TurnInstructions),title: 'Turn-by-Turn Instructions',method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
+    { Thumb: makeThumb(IlloCalculateRoute, L_CalculateRoute), title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
+    { Thumb: makeThumb(IlloReachableRange, L_ReachableRange), title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
+    { Thumb: makeThumb(IlloBatchRouting,   L_BatchRouting),   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
+    { Thumb: makeThumb(IlloTurnInstructions, L_TurnInstructions),title: 'Turn-by-Turn Instructions',method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
     { Thumb: makeThumb(ThumbLaneGuidance,   L_LaneGuidance),   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
     { Thumb: makeThumb(ThumbRoadShields,    L_RoadShields),    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
     { Thumb: makeThumb(ThumbComputeToll,    L_RoutingComputeToll), title: 'Compute Toll Amounts',  method: 'GET',  path: '/routing/2/calculateRoute/…?computeTravelTimeFor=all', desc: t('routingIntro.endpointDescs.computeTollAmounts', { defaultValue: 'Calculate per-road-class toll costs along the route, with EV discount and currency breakdown.' }), pageId: 'routing-v2-compute-toll',    available: true, tag: 'v2+' },
-    { Thumb: makeThumb(ThumbWeather,        L_RoutingWeather), title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',   desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-v3-weather',         available: true, tag: 'v3' },
+    { Thumb: makeThumb(IlloRoutingWeather,  L_RoutingWeather), title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',   desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-v3-weather',         available: true, tag: 'v3' },
     { Thumb: makeThumb(ThumbDataFreshness,  L_RoutingDataFreshness), title: 'Dynamic Data Freshness', method: 'GET', path: '/routing/2/calculateRoute/…?dateFreshness=true',     desc: t('routingIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control how fresh traffic, closure, and speed-limit data must be before the route is recalculated.' }), pageId: 'routing-v2-data-freshness', available: true, tag: 'v2+' },
   ];
 

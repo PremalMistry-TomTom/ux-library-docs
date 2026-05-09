@@ -6,6 +6,7 @@ import {
   makeThumb,
   L_MapDisplay, L_SDKSearch, L_RouteOptions, L_NavGuidance, L_VirtualHorizon, L_OfflineMaps, L_CarPlay,
 } from '../illustrations/lightVariants';
+import { IlloMapDisplay, IlloNavGuidance } from './IntroIllustrations';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -70,7 +71,8 @@ function ThumbMapDisplay() {
 }
 
 function ThumbSearch() {
-  const M = { bg: '#0f1117', card: '#1a1d27', line: '#2a2a3a', text: '#e2e8f0', dim: '#94a3b8', muted: '#64748b', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, muted: C.soft, blue: C.mid };
   const results = [['Amsterdam Centraal', '0.2 km'], ['Rijksmuseum', '1.4 km'], ['Vondelpark', '2.1 km']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
@@ -80,7 +82,7 @@ function ThumbSearch() {
       </div>
       {results.map(([name, dist], i) => (
         <div key={name} style={{ padding: '6px 10px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 8, alignItems: 'center' }}>
-          <div style={{ width: 18, height: 18, background: '#1e293b', borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 18, height: 18, background: M.card, borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div style={{ flex: 1 }}>
@@ -94,7 +96,8 @@ function ThumbSearch() {
 }
 
 function ThumbRouting() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950', red: '#e2001a' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, blue: C.mid, green: C.accent, red: '#e2001a' };
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Route Options</div>
@@ -104,12 +107,12 @@ function ThumbRouting() {
         { label: 'Eco', time: '6h 10m', dist: '558 km', tag: '–12% fuel', color: M.blue },
         { label: 'Avoid tolls', time: '6h 38m', dist: '601 km', tag: 'No tolls', color: M.dim },
       ].map((r, i) => (
-        <div key={r.label} style={{ background: i === 0 ? 'rgba(63,185,80,0.08)' : M.card, border: `1px solid ${i === 0 ? 'rgba(63,185,80,0.25)' : M.line}`, borderRadius: 5, padding: '5px 7px', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 7 }}>
+        <div key={r.label} style={{ background: i === 0 ? `${C.accent}12` : M.card, border: `1px solid ${i === 0 ? `${C.accent}40` : M.line}`, borderRadius: 5, padding: '5px 7px', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 7 }}>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{r.time}</div>
             <div style={{ fontSize: '0.5rem', color: M.dim }}>{r.dist}</div>
           </div>
-          <span style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 3, background: 'rgba(255,255,255,0.06)', color: r.color, fontWeight: 600 }}>{r.tag}</span>
+          <span style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 3, background: `${C.border}20`, color: r.color, fontWeight: 600 }}>{r.tag}</span>
         </div>
       ))}
     </div>
@@ -148,14 +151,15 @@ function ThumbNavigation() {
 }
 
 function ThumbOffline() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, blue: C.mid };
   const regions = [['Western Europe', '1.2 GB', 100], ['Eastern Europe', '0.8 GB', 65], ['North America', '2.1 GB', 30]];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 8 }}>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#3fb950" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 2.09 4.18a2 2 0 0 1 2-2.18h3"/><path d="M16 2a4 4 0 0 1 4 4v1M16 7h6"/><line x1="23" y1="1" x2="1" y2="23" stroke="#ef4444" strokeWidth="1.5"/></svg>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 2.09 4.18a2 2 0 0 1 2-2.18h3"/><path d="M16 2a4 4 0 0 1 4 4v1M16 7h6"/><line x1="23" y1="1" x2="1" y2="23" stroke={C.danger} strokeWidth="1.5"/></svg>
         <span style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>Offline Maps</span>
-        <span style={{ fontSize: '0.5rem', color: '#3fb950', marginLeft: 'auto' }}>Active</span>
+        <span style={{ fontSize: '0.5rem', color: C.accent, marginLeft: 'auto' }}>Active</span>
       </div>
       {regions.map(([name, size, pct]) => (
         <div key={name} style={{ marginBottom: 7 }}>
@@ -164,7 +168,7 @@ function ThumbOffline() {
             <span style={{ fontSize: '0.5rem', color: M.dim }}>{size}</span>
           </div>
           <div style={{ height: 4, background: M.card, borderRadius: 2 }}>
-            <div style={{ height: '100%', width: `${pct}%`, background: pct === 100 ? '#3fb950' : M.blue, borderRadius: 2 }}/>
+            <div style={{ height: '100%', width: `${pct}%`, background: pct === 100 ? C.accent : M.blue, borderRadius: 2 }}/>
           </div>
         </div>
       ))}
@@ -173,27 +177,30 @@ function ThumbOffline() {
 }
 
 function ThumbCarPlay() {
+  const { palette: C } = useIlloStyle();
   return (
-    <div style={{ background: '#0c1318', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: C.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill={C.bg}/>
+          <path d="M10 80 Q55 58 100 72 T190 60" stroke={C.grid} strokeWidth="8" strokeLinecap="round"/>
           <path d="M10 80 Q55 58 100 72 T190 60" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
           <path d="M10 80 Q55 58 100 72 T190 60" stroke="rgba(226,0,26,0.2)" strokeWidth="9" strokeLinecap="round"/>
           <circle cx="100" cy="71" r="4" fill="#e2001a" opacity="0.9"/>
         </svg>
       </div>
       {/* CarPlay chrome */}
-      <div style={{ position: 'absolute', top: 8, left: 8, right: 8, background: 'rgba(0,0,0,0.7)', borderRadius: 5, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,0.1)' }}>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600, letterSpacing: '0.04em' }}>CarPlay</span>
-        <div style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}/>
+      <div style={{ position: 'absolute', top: 8, left: 8, right: 8, background: C.dark, borderRadius: 5, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${C.border}` }}>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={C.white} strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span style={{ fontSize: '0.5rem', color: C.white, fontWeight: 600, letterSpacing: '0.04em' }}>CarPlay</span>
+        <div style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: C.accent }}/>
       </div>
       {/* ETA bar */}
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: C.dark, borderTop: `1px solid ${C.border}`, padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['18 min', 'Time'], ['6.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: C.white }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: C.mid }}>{l}</div>
           </div>
         ))}
       </div>
@@ -202,26 +209,28 @@ function ThumbCarPlay() {
 }
 
 function ThumbVirtualHorizon() {
+  const { palette: C } = useIlloStyle();
   return (
-    <div style={{ background: '#060608', borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420,#101820)' }}>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: C.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill={C.bg}/>
           {/* Road perspective */}
-          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill="#151a26" opacity="0.9"/>
+          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill={C.panel} opacity="0.9"/>
           {[65, 80, 100, 120, 135].map((x, i) => (
             <line key={i} x1={x} y1={58} x2={i < 2 ? x - 45 : i > 2 ? x + 45 : x} y2={130}
-              stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="5 5"/>
+              stroke={C.border} strokeWidth="1" strokeDasharray="5 5"/>
           ))}
           {/* Horizon markers */}
-          <circle cx="80" cy="72" r="3" fill="#fbbf24" opacity="0.9"/>
-          <circle cx="115" cy="68" r="3" fill="#ef4444" opacity="0.9"/>
-          <circle cx="100" cy="63" r="2.5" fill="#60a5fa" opacity="0.9"/>
+          <circle cx="80" cy="72" r="3" fill={C.warn} opacity="0.9"/>
+          <circle cx="115" cy="68" r="3" fill={C.danger} opacity="0.9"/>
+          <circle cx="100" cy="63" r="2.5" fill={C.mid} opacity="0.9"/>
         </svg>
       </div>
       {/* Data overlay */}
       <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {[['🚧','Roadwork', '#fbbf24'], ['⚠️','Sharp curve', '#ef4444'], ['⛽','Station 800m', '#60a5fa']].map(([icon, label, color]) => (
-          <div key={label} style={{ background: 'rgba(0,0,0,0.65)', borderRadius: 4, padding: '2px 6px', display: 'flex', gap: 4, alignItems: 'center', border: `1px solid ${color}33` }}>
+        {[['🚧','Roadwork', C.warn], ['⚠️','Sharp curve', C.danger], ['⛽','Station 800m', C.mid]].map(([icon, label, color]) => (
+          <div key={label} style={{ background: C.dark, borderRadius: 4, padding: '2px 6px', display: 'flex', gap: 4, alignItems: 'center', border: `1px solid ${color}44` }}>
             <span style={{ fontSize: '0.5rem' }}>{icon}</span>
             <span style={{ fontSize: '0.5rem', color }}>{label}</span>
           </div>
@@ -312,7 +321,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
 
   const CAPABILITIES_SHARED = [
     {
-      Thumb: makeThumb(ThumbMapDisplay,   L_MapDisplay),
+      Thumb: makeThumb(IlloMapDisplay,     L_MapDisplay),
       title: t('navsdkIntro.capabilities.mapDisplay.title'),
       desc: t('navsdkIntro.capabilities.mapDisplay.desc'),
       pageId: 'navsdk-map-display',
@@ -330,7 +339,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       pageId: 'navsdk-routing',
     },
     {
-      Thumb: makeThumb(ThumbNavigation,   L_NavGuidance),
+      Thumb: makeThumb(IlloNavGuidance,   L_NavGuidance),
       title: t('navsdkIntro.capabilities.navigation.title'),
       desc: t('navsdkIntro.capabilities.navigation.desc'),
       pageId: 'navsdk-nav-guidance',

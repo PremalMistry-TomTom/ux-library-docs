@@ -104,7 +104,8 @@ function IntegrationDiagram({ t }) {
 
 /* ─── New dark Thumb components for hero illustrations ───────────────────────── */
 function ThumbANATraffic() {
-  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, dark: C.dark, card: C.panel, line: C.border, text: C.navy, dim: C.mid, green: C.accent, blue: C.mid };
   return (
     <div style={{ background: M.bg, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
@@ -128,7 +129,8 @@ function ThumbANATraffic() {
 }
 
 function ThumbANAMap() {
-  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, dark: C.dark, card: C.panel, line: C.border, text: C.navy, dim: C.mid, blue: C.mid };
   return (
     <div style={{ background: M.bg, height: '100%', position: 'relative', overflow: 'hidden' }}>
       <svg width="100%" height="100%" viewBox="0 0 120 80" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute' }}>
@@ -155,7 +157,8 @@ function ThumbANAMap() {
 }
 
 function ThumbANAEVSearch() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, green: C.accent, blue: C.mid };
   const stations = [['Ionity','350 kW','3/4'], ['Fastned','300 kW','2/4'], ['bp pulse','50 kW','5/6']];
   return (
     <div style={{ background: M.bg, height: '100%', padding: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -186,7 +189,8 @@ function ThumbANAEVSearch() {
 }
 
 function ThumbANALDRoute() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, green: C.accent, blue: C.mid };
   return (
     <div style={{ background: M.bg, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
@@ -214,7 +218,8 @@ function ThumbANALDRoute() {
 }
 
 function ThumbANADriverExp() {
-  const M = { bg: '#0c1318', dark: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, dark: C.dark, card: C.panel, line: C.border, text: C.navy, dim: C.mid, blue: C.mid };
   return (
     <div style={{ background: M.dark, height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* NIP */}
@@ -258,8 +263,9 @@ function ThumbPhoto({ src, objectPosition = 'center top' }) {
 }
 
 function ThumbVIL() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950' };
-  const signals = [['Battery SoC', '74%', '#3fb950'], ['Connector type', 'CCS2', '#58a6ff'], ['Speed', '87 km/h', '#fbbf24'], ['GDPR consent', 'Granted', '#3fb950']];
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, green: C.accent };
+  const signals = [['Battery SoC', '74%', C.accent], ['Connector type', 'CCS2', C.mid], ['Speed', '87 km/h', C.warn], ['GDPR consent', 'Granted', C.accent]];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>VIL — Vehicle signals</div>
@@ -275,7 +281,8 @@ function ThumbVIL() {
 }
 
 function ThumbCIL() {
-  const M = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', purple: '#a855f7' };
+  const { palette: C } = useIlloStyle();
+  const M = { bg: C.bg, card: C.panel, line: C.border, text: C.navy, dim: C.mid, purple: C.accent };
   const cmds = [['navigateTo(destination)', 'Sets active route'], ['cancelNavigation()', 'Ends session'], ['searchNearby(query)', 'Returns POI list']];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -292,26 +299,27 @@ function ThumbCIL() {
 }
 
 function ThumbTheming() {
+  const { palette: C } = useIlloStyle();
   const tokens = [
     { name: '--brand-primary', from: '#e2001a', to: '#0066ff' },
     { name: '--corner-radius', from: '4dp', to: '12dp', text: true },
     { name: '--font-family', from: 'Roboto', to: 'Inter', text: true },
   ];
   return (
-    <div style={{ background: '#0d1117', borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
-      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#8b949e', marginBottom: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM Theme tokens</div>
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '10px 12px' }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: C.mid, marginBottom: 9, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM Theme tokens</div>
       {tokens.map(({ name, from, to, text }) => (
         <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
           {!text
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: from, flexShrink: 0 }} />
-            : <div style={{ width: 26, height: 14, borderRadius: 3, background: '#161b22', border: '1px solid #21262d', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            : <div style={{ width: 26, height: 14, borderRadius: 3, background: C.panel, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <span style={{ fontSize: '0.5rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
               </div>}
-          <span style={{ fontSize: '0.5rem', color: '#8b949e', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
-          <span style={{ fontSize: '0.875rem', color: '#374151' }}>→</span>
+          <span style={{ fontSize: '0.5rem', color: C.mid, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
+          <span style={{ fontSize: '0.875rem', color: C.navy }}>→</span>
           {!text
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: to, flexShrink: 0 }} />
-            : <div style={{ width: 26, height: 14, borderRadius: 3, background: '#161b22', border: '1px solid #21262d', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            : <div style={{ width: 26, height: 14, borderRadius: 3, background: C.panel, border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <span style={{ fontSize: '0.5rem', color: '#0066ff', fontFamily: 'monospace' }}>{to}</span>
               </div>}
         </div>
