@@ -535,12 +535,12 @@ function FilterRow({ label, filters, active, onToggle, onClear }) {
 }
 
 const DISC_TABS = [
-  { id: 'all',        label: 'All' },
-  { id: 'automotive', label: 'Automotive' },
-  { id: 'navigation', label: 'Navigation' },
-  { id: 'maps',       label: 'Maps' },
-  { id: 'traffic',    label: 'Traffic' },
-  { id: 'mobility',   label: 'Mobility' },
+  { id: 'all',                  label: 'All' },
+  { id: 'nav-automotive',       label: 'Navigation for Automotive' },
+  { id: 'electrification',      label: 'Electrification' },
+  { id: 'traffic-intelligence', label: 'Traffic & Mobility' },
+  { id: 'location-intel',       label: 'Location Intelligence' },
+  { id: 'fleet-logistics',      label: 'Fleet & Logistics' },
 ];
 
 function MosaicView({ onNavigate }) {
@@ -549,7 +549,7 @@ function MosaicView({ onNavigate }) {
 
   const cards = activeCat === 'all'
     ? MOSAIC_CARDS
-    : MOSAIC_CARDS.filter(c => c.cats.includes(activeCat));
+    : MOSAIC_CARDS.filter(c => c.solutions?.includes(activeCat));
 
   return (
     <div>
