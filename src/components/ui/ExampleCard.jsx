@@ -1,10 +1,10 @@
-/* ── Tag pill ──────────────────────────────────────────────────────────────── */
+/* ── Tag pill — Playbook semantic tokens ─────────────────────────────────── */
 const TAG_STYLES = {
-  start:       { bg: 'rgba(34,197,94,0.1)',   color: '#16a34a' },
-  custom:      { bg: 'rgba(59,130,246,0.1)',  color: '#2563eb' },
-  playground:  { bg: 'rgba(139,92,246,0.1)',  color: '#7c3aed' },
-  feature:     { bg: 'rgba(100,116,139,0.1)', color: '#475569' },
-  platform:    { bg: 'rgba(100,116,139,0.1)', color: '#475569' },
+  start:       { bg: 'var(--success-bg)', color: 'var(--success-text)' },
+  custom:      { bg: 'var(--info-bg)',    color: 'var(--info-text)'    },
+  playground:  { bg: 'var(--warn-bg)',    color: 'var(--warn-text)'    },
+  feature:     { bg: 'var(--bg)',         color: 'var(--muted)'        },
+  platform:    { bg: 'var(--bg)',         color: 'var(--muted)'        },
 };
 
 function Tag({ label, variant = 'feature' }) {

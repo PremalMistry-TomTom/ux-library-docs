@@ -1,6 +1,6 @@
 /* ─── Private Preview banner ─────────────────────────────────────────────────
    Shown at the top of any page that covers a Private Preview API version.
-   Mirrors the style used in TomTom external docs (EV Charge Finder pattern).
+   Uses Playbook-aligned info semantic tokens — no hardcoded colours.
 ──────────────────────────────────────────────────────────────────────────── */
 
 function LightningIcon() {
@@ -13,50 +13,23 @@ function LightningIcon() {
 
 export default function PrivatePreviewBanner({ api = 'this API' }) {
   return (
-    <div style={{
-      display: 'flex', gap: 14,
-      padding: '16px 20px',
-      marginBottom: 28,
-      background: 'rgba(0,112,205,0.06)',
-      border: '1px solid rgba(0,112,205,0.18)',
-      borderLeft: '4px solid #0070cd',
-      borderRadius: 8,
-    }}>
+    <div className="ppb-root">
       {/* Icon */}
-      <div style={{
-        flexShrink: 0,
-        width: 32, height: 32,
-        borderRadius: 8,
-        background: '#0070cd',
-        color: '#fff',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginTop: 1,
-      }}>
+      <div className="ppb-icon">
         <LightningIcon />
       </div>
 
       {/* Text */}
-      <div>
-        <p style={{
-          margin: '0 0 6px',
-          fontSize: '0.9375rem', fontWeight: 700,
-          color: 'var(--black)',
-          lineHeight: 1.3,
-        }}>
-          Private Preview — {api}
-        </p>
-        <p style={{
-          margin: 0,
-          fontSize: '0.875rem', lineHeight: 1.65,
-          color: 'var(--mid)',
-        }}>
+      <div className="ppb-body">
+        <p className="ppb-title">Private Preview — {api}</p>
+        <p className="ppb-desc">
           This version is currently available to selected partners only. Features, request
           formats, and response schemas are subject to change before general availability.
           Do not use in production. To request access,{' '}
           <a
             href="#"
             onClick={e => e.preventDefault()}
-            style={{ color: '#0070cd', textDecoration: 'underline' }}
+            className="ppb-link"
           >
             contact TomTom developer support
           </a>

@@ -17,6 +17,7 @@ import {
   L_MapDisplay, L_Route,
   L_ThemingTokens, L_ChargingSearch, L_ConversationPersonality,
   L_NavControls, L_HorizonPanel, L_EV, L_VIL,
+  L_SearchResult,
 } from '../illustrations/lightVariants';
 import {
   IlloHomeScreen, IlloETAPanel, IlloCluster, IlloADAS, IlloAIVoice, IlloNavGuidance,

@@ -2,13 +2,13 @@ import { useState, useEffect, useCallback, useMemo, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n';
 
-/* ─── Nav section version badge ─────────────────────────────────────────────── */
+/* ─── Nav section version badge — uses Playbook semantic tokens ──────────────── */
 const NAV_VERSION_BADGES = {
-  'v1':         { label: 'Production',      color: '#15803d', bg: 'rgba(34,197,94,0.12)'  },
-  'v2-public':  { label: 'Public Preview',  color: '#7c3aed', bg: 'rgba(168,85,247,0.1)'  },
-  'v3-public':  { label: 'Public Preview',  color: '#1d4ed8', bg: 'rgba(0,112,205,0.1)'   },
-  'v2-private': { label: 'Private Preview', color: '#92400e', bg: 'rgba(234,179,8,0.12)'  },
-  'v3-private': { label: 'Private Preview', color: '#92400e', bg: 'rgba(234,179,8,0.12)'  },
+  'v1':         { label: 'Production',      color: 'var(--success-text)', bg: 'var(--success-bg)' },
+  'v2-public':  { label: 'Public Preview',  color: 'var(--info-text)',    bg: 'var(--info-bg)'    },
+  'v3-public':  { label: 'Public Preview',  color: 'var(--info-text)',    bg: 'var(--info-bg)'    },
+  'v2-private': { label: 'Private Preview', color: 'var(--warn-text)',    bg: 'var(--warn-bg)'    },
+  'v3-private': { label: 'Private Preview', color: 'var(--warn-text)',    bg: 'var(--warn-bg)'    },
 };
 
 /* ─── Tree connector icons ───────────────────────────────────────────────────── */
@@ -49,7 +49,13 @@ function ChevronIcon({ open }) {
 }
 
 /* ─── Anchor sub-item list — reuses sidenav-item styles ─────────────────────── */
-const METHOD_PILL_COLORS = { GET: '#3fb950', POST: '#58a6ff', DELETE: '#f85149', PUT: '#f59e0b' };
+/* bg/color as CSS-var strings so they respond to dark-mode token overrides */
+const METHOD_PILL_COLORS = {
+  GET:    { bg: 'var(--info-bg)',    color: 'var(--info-text)'    },
+  POST:   { bg: 'var(--success-bg)', color: 'var(--success-text)' },
+  DELETE: { bg: 'var(--danger-bg)',  color: 'var(--danger-text)'  },
+  PUT:    { bg: 'var(--warn-bg)',    color: 'var(--warn-text)'    },
+};
 
 function AnchorItems({ anchors, activeAnchor, onAnchorClick, open, extraIndent = false }) {
   return (
@@ -70,7 +76,7 @@ function AnchorItems({ anchors, activeAnchor, onAnchorClick, open, extraIndent =
               {mc && (
                 <span style={{
                   fontSize: '0.5rem', fontWeight: 700, padding: '2px 5px', borderRadius: 3,
-                  background: `${mc}22`, color: mc,
+                  background: mc.bg, color: mc.color,
                   fontFamily: 'monospace', letterSpacing: '0.05em', flexShrink: 0,
                 }}>
                   {anchor.method}
@@ -356,8 +362,8 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                 {entry.ref && (
                   <span style={{
                     fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px',
-                    borderRadius: 3, background: 'rgba(88,166,255,0.12)',
-                    color: '#58a6ff', fontFamily: 'monospace',
+                    borderRadius: 3, background: 'var(--info-bg)',
+                    color: 'var(--info-text)', fontFamily: 'monospace',
                     letterSpacing: '0.04em', flexShrink: 0, marginRight: 4,
                   }}>REF</span>
                 )}

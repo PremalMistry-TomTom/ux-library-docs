@@ -189,7 +189,13 @@ export function ParamRow({
 }
 
 /* ─── Section header — full-width sticky title row ───────────────────────────── */
-const METHOD_COLORS = { GET: '#3fb950', POST: '#58a6ff', DELETE: '#f85149', PUT: '#f59e0b' };
+/* bg/color as CSS-var strings — aligned to Playbook semantic tokens */
+const METHOD_COLORS = {
+  GET:    { bg: 'var(--info-bg)',    color: 'var(--info-text)'    },
+  POST:   { bg: 'var(--success-bg)', color: 'var(--success-text)' },
+  DELETE: { bg: 'var(--danger-bg)',  color: 'var(--danger-text)'  },
+  PUT:    { bg: 'var(--warn-bg)',    color: 'var(--warn-text)'    },
+};
 
 function SectionHeader({ title, count, method }) {
   return (
@@ -199,8 +205,8 @@ function SectionHeader({ title, count, method }) {
         {method && (
           <span style={{
             fontSize: '0.625rem', fontWeight: 700, padding: '3px 8px', borderRadius: 4,
-            background: `${METHOD_COLORS[method] ?? '#888'}22`,
-            color: METHOD_COLORS[method] ?? '#888',
+            background: METHOD_COLORS[method]?.bg ?? 'var(--bg)',
+            color: METHOD_COLORS[method]?.color ?? 'var(--muted)',
             fontFamily: 'var(--font-mono)', letterSpacing: '0.06em',
           }}>
             {method}
@@ -368,42 +374,42 @@ function SectionPanel({ section, sectionSelected, panelLabel }) {
   );
 }
 
-/* ─── Version badge config ───────────────────────────────────────────────────── */
+/* ─── Version badge config — uses Playbook semantic tokens ───────────────────── */
 const VERSION_BADGES = {
-  'v2-private': {
-    label: 'v2 · Private Preview',
-    bg: 'rgba(234,179,8,0.1)',
-    border: 'rgba(234,179,8,0.35)',
-    color: '#92400e',
-    dot: '#d97706',
-  },
-  'v3-public': {
-    label: 'v3 · Public Preview',
-    bg: 'rgba(0,112,205,0.07)',
-    border: 'rgba(0,112,205,0.25)',
-    color: '#1d4ed8',
-    dot: '#0070cd',
+  'v1': {
+    label: 'v1 · Production',
+    bg:     'var(--success-bg)',
+    border: 'var(--success-border)',
+    color:  'var(--success-text)',
+    dot:    'var(--success-text)',
   },
   'v2-public': {
     label: 'v2 · Public Preview',
-    bg: 'rgba(168,85,247,0.07)',
-    border: 'rgba(168,85,247,0.25)',
-    color: '#7c3aed',
-    dot: '#a855f7',
+    bg:     'var(--info-bg)',
+    border: 'var(--info-border)',
+    color:  'var(--info-text)',
+    dot:    'var(--info-text)',
   },
-  'v1': {
-    label: 'v1 · Production',
-    bg: 'rgba(34,197,94,0.07)',
-    border: 'rgba(34,197,94,0.25)',
-    color: '#15803d',
-    dot: '#22c55e',
+  'v3-public': {
+    label: 'v3 · Public Preview',
+    bg:     'var(--info-bg)',
+    border: 'var(--info-border)',
+    color:  'var(--info-text)',
+    dot:    'var(--info-text)',
+  },
+  'v2-private': {
+    label: 'v2 · Private Preview',
+    bg:     'var(--warn-bg)',
+    border: 'var(--warn-border)',
+    color:  'var(--warn-text)',
+    dot:    'var(--warn-text)',
   },
   'v3-private': {
     label: 'v3 · Private Preview',
-    bg: 'rgba(234,179,8,0.07)',
-    border: 'rgba(234,179,8,0.35)',
-    color: '#92400e',
-    dot: '#d97706',
+    bg:     'var(--warn-bg)',
+    border: 'var(--warn-border)',
+    color:  'var(--warn-text)',
+    dot:    'var(--warn-text)',
   },
 };
 

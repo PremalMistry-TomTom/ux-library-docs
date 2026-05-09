@@ -129,8 +129,8 @@ export default function TrafficAPIIntro({ onNavigate }) {
               </div>
               <div className="nav-card-body">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 3, background: 'rgba(63,185,80,0.12)', color: '#3fb950', fontFamily: 'monospace', letterSpacing: '0.04em' }}>{method}</span>
-                  {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(88,166,255,0.08)', color: '#58a6ff', fontWeight: 600 }}>{tag}</span>}
+                  <span className={`http-tag http-tag-${method.toLowerCase()}`}>{method}</span>
+                  {tag && <span className="meta-tag">{tag}</span>}
                 </div>
                 <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
                 <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
