@@ -82,7 +82,7 @@ function IlloNavControls() {
   const buttons = ['🔍', '⚡', '🔇', '⚙️'];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 140" fill="none">
           <path d="M10 80 Q60 50 100 80 T190 70" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
           <path d="M10 80 Q60 50 100 80 T190 70" stroke="rgba(226,0,26,0.15)" strokeWidth="8" strokeLinecap="round"/>
@@ -90,9 +90,9 @@ function IlloNavControls() {
           <circle cx="100" cy="78" r="8" fill="rgba(226,0,26,0.2)"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 28, background: 'rgba(0,0,0,0.55)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 28, background: M.dark, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 4, borderRight: `1px solid ${M.line}` }}>
         {buttons.map(b => (
-          <div key={b} style={{ width: 20, height: 20, borderRadius: 4, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{b}</div>
+          <div key={b} style={{ width: 20, height: 20, borderRadius: 4, background: M.card, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{b}</div>
         ))}
       </div>
     </div>
@@ -176,10 +176,10 @@ function IlloHorizonPanel() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 75 Q55 50 100 72 T190 65" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
-          <path d="M50 0 L52 130" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+          <path d="M50 0 L52 130" stroke={M.line} strokeWidth="1" opacity="0.3"/>
           <circle cx="102" cy="70" r="4" fill="#e2001a" opacity="0.8"/>
         </svg>
       </div>
@@ -199,14 +199,14 @@ function IlloHorizonPanel() {
             </div>
           ))}
         </div>
-        <div style={{ padding: '6px 8px', borderTop: `1px solid rgba(255,255,255,0.1)`, display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ padding: '6px 8px', borderTop: `1px solid ${M.line}`, display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#e2e8f0' }}>14:32</div>
-            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.4)' }}>ETA</div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#fff' }}>14:32</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>ETA</div>
           </div>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#e2e8f0' }}>18 min</div>
-            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.4)' }}>Time</div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#fff' }}>18 min</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>Time</div>
           </div>
         </div>
       </div>
@@ -303,26 +303,26 @@ export function IlloHomeScreen() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 60 Q55 40 100 62 T190 55" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
-          <path d="M0 80 Q50 55 100 80 T200 72" stroke="rgba(255,255,255,0.06)" strokeWidth="1.5"/>
-          <path d="M50 0 L52 130" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-          <path d="M140 0 L135 130" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
+          <path d="M0 80 Q50 55 100 80 T200 72" stroke={M.line} strokeWidth="1.5" opacity="0.6"/>
+          <path d="M50 0 L52 130" stroke={M.line} strokeWidth="1" opacity="0.4"/>
+          <path d="M140 0 L135 130" stroke={M.line} strokeWidth="1" opacity="0.4"/>
         </svg>
       </div>
       <div style={{ position: 'absolute', inset: 8, border: '1.5px dashed rgba(245,158,11,0.55)', borderRadius: 4 }} />
       <div style={{ position: 'absolute', top: 16, left: 16, right: 40, bottom: 30, border: '1.5px dashed rgba(59,130,246,0.5)', borderRadius: 3 }} />
       <div style={{ position: 'absolute', bottom: 14, left: 16, right: 16, height: 22, border: '1.5px dashed rgba(226,0,26,0.6)', borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
         {['🔍','⚡','🔇','⚙️'].map(b => (
-          <div key={b} style={{ width: 14, height: 14, borderRadius: 3, background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{b}</div>
+          <div key={b} style={{ width: 14, height: 14, borderRadius: 3, background: M.card, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem' }}>{b}</div>
         ))}
       </div>
       <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', flexDirection: 'column', gap: 3 }}>
         {[['#f59e0b','Nav area'],['#3b82f6','Safe area'],['#e2001a','Controls']].map(([c,l]) => (
           <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
             <div style={{ width: 6, height: 6, borderRadius: 1, background: c, opacity: 0.85 }} />
-            <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.5)' }}>{l}</span>
+            <span style={{ fontSize: '0.5rem', color: M.dim }}>{l}</span>
           </div>
         ))}
       </div>
@@ -334,20 +334,20 @@ export function IlloETAPanel() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(160deg,#0f1a28,#1a2535)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 75 Q60 55 100 72 T190 65" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.7"/>
           <circle cx="102" cy="70" r="4" fill="#e2001a" opacity="0.8"/>
           <circle cx="102" cy="70" r="8" fill="rgba(226,0,26,0.18)"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.96)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '9px 14px' }}>
-        <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}`, padding: '9px 14px' }}>
+        <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>ETA PANEL</div>
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           {[['14:32', 'ETA'], ['18 min', 'Remaining'], ['6.4 km', 'Distance']].map(([val, label]) => (
             <div key={label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{val}</div>
-              <div style={{ fontSize: '0.5rem', color: '#475569', marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff', lineHeight: 1 }}>{val}</div>
+              <div style={{ fontSize: '0.5rem', color: M.dim, marginTop: 3, letterSpacing: '0.04em' }}>{label}</div>
             </div>
           ))}
         </div>
@@ -442,20 +442,20 @@ export function IlloADAS() {
   const lanes = [false, false, true, true, false];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420 0%,#101820 100%)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill="#151a26" opacity="0.9"/>
+          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill={M.card} opacity="0.9"/>
           {[65, 85, 100, 115, 135].map((x, i) => (
-            <line key={i} x1={x} y1={58} x2={i === 0 ? 0 : i === 4 ? 200 : x + (i - 2) * 12} y2={130} stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="5 5"/>
+            <line key={i} x1={x} y1={58} x2={i === 0 ? 0 : i === 4 ? 200 : x + (i - 2) * 12} y2={130} stroke={M.line} strokeWidth="1" strokeDasharray="5 5"/>
           ))}
-          <path d="M100 75 L100 120" stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="3 5"/>
+          <path d="M100 75 L100 120" stroke={M.line} strokeWidth="1" strokeDasharray="3 5"/>
         </svg>
       </div>
       <div style={{ position: 'absolute', bottom: 10, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 6 }}>
         {lanes.map((active, i) => (
           <svg key={i} width="13" height="20" viewBox="0 0 13 20">
-            <rect x="4.5" y="7" width="4" height="11" rx="1" fill={active ? '#e2001a' : 'rgba(255,255,255,0.15)'}/>
-            <polygon points="6.5,0 13,8 9.5,8 9.5,7 3.5,7 3.5,8 0,8" fill={active ? '#e2001a' : 'rgba(255,255,255,0.15)'}/>
+            <rect x="4.5" y="7" width="4" height="11" rx="1" fill={active ? '#e2001a' : M.line}/>
+            <polygon points="6.5,0 13,8 9.5,8 9.5,7 3.5,7 3.5,8 0,8" fill={active ? '#e2001a' : M.line}/>
           </svg>
         ))}
       </div>
@@ -464,8 +464,8 @@ export function IlloADAS() {
           <span style={{ fontSize: '0.5rem', fontWeight: 800, color: '#111' }}>100</span>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'white' }}>600 m</div>
-          <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Lane change</div>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text }}>600 m</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Lane change</div>
         </div>
       </div>
     </div>
@@ -482,13 +482,13 @@ export function IlloMapDisplay() {
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <div style={{ position: 'absolute', inset: 0 }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-          <rect width="200" height="130" fill="#1a2535"/>
-          <path d="M0 65 Q60 55 100 65 T200 60" stroke="#243040" strokeWidth="6" strokeLinecap="round"/>
-          <path d="M0 65 Q60 55 100 65 T200 60" stroke="#2a3a50" strokeWidth="2" strokeLinecap="round"/>
-          <path d="M70 0 L68 130" stroke="#243040" strokeWidth="5"/>
-          <path d="M70 0 L68 130" stroke="#2a3a50" strokeWidth="1.5"/>
-          <path d="M140 0 L135 130" stroke="#243040" strokeWidth="5"/>
-          <path d="M140 0 L135 130" stroke="#2a3a50" strokeWidth="1.5"/>
+          <rect width="200" height="130" fill={M.bg}/>
+          <path d="M0 65 Q60 55 100 65 T200 60" stroke={M.card} strokeWidth="6" strokeLinecap="round"/>
+          <path d="M0 65 Q60 55 100 65 T200 60" stroke={M.line} strokeWidth="2" strokeLinecap="round"/>
+          <path d="M70 0 L68 130" stroke={M.card} strokeWidth="5"/>
+          <path d="M70 0 L68 130" stroke={M.line} strokeWidth="1.5"/>
+          <path d="M140 0 L135 130" stroke={M.card} strokeWidth="5"/>
+          <path d="M140 0 L135 130" stroke={M.line} strokeWidth="1.5"/>
           <path d="M10 100 Q50 70 100 65 T180 50" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
           <path d="M10 100 Q50 70 100 65 T180 50" stroke="rgba(226,0,26,0.2)" strokeWidth="9" strokeLinecap="round"/>
           <circle cx="100" cy="65" r="5" fill="#e2001a"/>
@@ -498,9 +498,9 @@ export function IlloMapDisplay() {
           <circle cx="155" cy="40" r="3" fill={'#fbbf24'} opacity="0.8"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.6)', borderRadius: 4, padding: '3px 7px', display: 'flex', gap: 4, alignItems: 'center' }}>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#3fb950' }}/>
-        <span style={{ fontSize: '0.5rem', color: '#e2e8f0', fontWeight: 600 }}>Map Display</span>
+      <div style={{ position: 'absolute', top: 8, right: 8, background: M.dark, borderRadius: 4, padding: '3px 7px', display: 'flex', gap: 4, alignItems: 'center', border: `1px solid ${M.line}` }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: M.green }}/>
+        <span style={{ fontSize: '0.5rem', color: '#fff', fontWeight: 600 }}>Map Display</span>
       </div>
     </div>
   );
@@ -557,7 +557,7 @@ export function IlloNavGuidance() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 100 Q60 70 100 72 T190 50" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
           <path d="M10 100 Q60 70 100 72 T190 50" stroke="rgba(226,0,26,0.2)" strokeWidth="9" strokeLinecap="round"/>
@@ -568,14 +568,14 @@ export function IlloNavGuidance() {
         <span style={{ fontSize: '1rem', lineHeight: 1 }}>↖</span>
         <div>
           <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#fff' }}>800 m</div>
-          <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>Turn left · Keizersgracht</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim }}>Turn left · Keizersgracht</div>
         </div>
       </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}`, padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['22 min', 'Time'], ['8.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff' }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>{l}</div>
           </div>
         ))}
       </div>
@@ -612,23 +612,23 @@ function IlloCarPlay() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
           <path d="M10 80 Q55 58 100 72 T190 60" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
           <path d="M10 80 Q55 58 100 72 T190 60" stroke="rgba(226,0,26,0.2)" strokeWidth="9" strokeLinecap="round"/>
           <circle cx="100" cy="71" r="4" fill="#e2001a" opacity="0.9"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', top: 8, left: 8, right: 8, background: 'rgba(0,0,0,0.7)', borderRadius: 5, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid rgba(255,255,255,0.1)' }}>
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        <span style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.7)', fontWeight: 600, letterSpacing: '0.04em' }}>CarPlay</span>
-        <div style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}/>
+      <div style={{ position: 'absolute', top: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${M.line}` }}>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span style={{ fontSize: '0.5rem', color: M.dim, fontWeight: 600, letterSpacing: '0.04em' }}>CarPlay</span>
+        <div style={{ marginLeft: 'auto', width: 6, height: 6, borderRadius: '50%', background: M.green }}/>
       </div>
-      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}`, padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
         {[['14:32', 'ETA'], ['18 min', 'Time'], ['6.4 km', 'Dist']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#fff' }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>{l}</div>
           </div>
         ))}
       </div>
@@ -640,11 +640,11 @@ function IlloVirtualHorizon() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg,#0a1420,#101820)' }}>
+      <div style={{ position: 'absolute', inset: 0, background: M.bg }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill="#151a26" opacity="0.9"/>
+          <path d="M0 130 L55 58 L145 58 L200 130 Z" fill={M.card} opacity="0.9"/>
           {[65, 80, 100, 120, 135].map((x, i) => (
-            <line key={i} x1={x} y1={58} x2={i < 2 ? x - 45 : i > 2 ? x + 45 : x} y2={130} stroke="rgba(255,255,255,0.08)" strokeWidth="1" strokeDasharray="5 5"/>
+            <line key={i} x1={x} y1={58} x2={i < 2 ? x - 45 : i > 2 ? x + 45 : x} y2={130} stroke={M.line} strokeWidth="1" strokeDasharray="5 5"/>
           ))}
           <circle cx="80" cy="72" r="3" fill={'#fbbf24'} opacity="0.9"/>
           <circle cx="115" cy="68" r="3" fill={'#ef4444'} opacity="0.9"/>
@@ -653,7 +653,7 @@ function IlloVirtualHorizon() {
       </div>
       <div style={{ position: 'absolute', top: 8, right: 8, display: 'flex', flexDirection: 'column', gap: 3 }}>
         {[['🚧','Roadwork', '#fbbf24'], ['⚠️','Sharp curve', '#ef4444'], ['⛽','Station 800m', '#60a5fa']].map(([icon, label, color]) => (
-          <div key={label} style={{ background: 'rgba(0,0,0,0.65)', borderRadius: 4, padding: '2px 6px', display: 'flex', gap: 4, alignItems: 'center', border: `1px solid ${color}33` }}>
+          <div key={label} style={{ background: M.dark, borderRadius: 4, padding: '2px 6px', display: 'flex', gap: 4, alignItems: 'center', border: `1px solid ${color}33` }}>
             <span style={{ fontSize: '0.5rem' }}>{icon}</span>
             <span style={{ fontSize: '0.5rem', color }}>{label}</span>
           </div>
@@ -672,22 +672,22 @@ export function IlloCalculateRoute() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-        <rect width="200" height="130" fill="#1a2535"/>
-        <path d="M0 70 Q60 58 100 70 T200 63" stroke="#243040" strokeWidth="6"/>
-        <path d="M70 0 L68 130" stroke="#243040" strokeWidth="5"/>
-        <path d="M140 0 L136 130" stroke="#243040" strokeWidth="5"/>
+        <rect width="200" height="130" fill={M.bg}/>
+        <path d="M0 70 Q60 58 100 70 T200 63" stroke={M.card} strokeWidth="6"/>
+        <path d="M70 0 L68 130" stroke={M.card} strokeWidth="5"/>
+        <path d="M140 0 L136 130" stroke={M.card} strokeWidth="5"/>
         <path d="M30 100 Q65 72 100 68 T175 42" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
         <path d="M30 100 Q65 72 100 68 T175 42" stroke="rgba(226,0,26,0.18)" strokeWidth="9" strokeLinecap="round"/>
-        <circle cx="30" cy="100" r="5" fill="#3fb950"/>
+        <circle cx="30" cy="100" r="5" fill={M.green}/>
         <circle cx="30" cy="100" r="9" fill="rgba(63,185,80,0.2)"/>
         <circle cx="175" cy="42" r="5" fill="#e2001a"/>
         <circle cx="175" cy="42" r="9" fill="rgba(226,0,26,0.2)"/>
       </svg>
-      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '6px 10px', display: 'flex', justifyContent: 'space-around', border: '1px solid rgba(255,255,255,0.07)' }}>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '6px 10px', display: 'flex', justifyContent: 'space-around', border: `1px solid ${M.line}` }}>
         {[['2h 14m', 'Time'], ['189 km', 'Distance'], ['14:32', 'ETA']].map(([v, l]) => (
           <div key={l} style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#e2e8f0' }}>{v}</div>
-            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>{l}</div>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: '#fff' }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>{l}</div>
           </div>
         ))}
       </div>
@@ -700,18 +700,18 @@ export function IlloReachableRange() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-        <rect width="200" height="130" fill="#1a2535"/>
-        <path d="M70 0 L68 130" stroke="#243040" strokeWidth="4" opacity="0.5"/>
-        <path d="M130 0 L128 130" stroke="#243040" strokeWidth="4" opacity="0.5"/>
-        <path d="M0 65 Q100 60 200 65" stroke="#243040" strokeWidth="4" opacity="0.5"/>
-        <path d="M100 30 Q138 28 155 50 Q168 72 155 95 Q138 112 100 115 Q62 112 45 95 Q32 72 45 50 Q62 28 100 30 Z" fill="rgba(88,166,255,0.12)" stroke="#58a6ff" strokeWidth="1.5" opacity="0.85"/>
-        <path d="M100 48 Q122 46 133 62 Q142 78 133 94 Q122 106 100 108 Q78 106 67 94 Q58 78 67 62 Q78 46 100 48 Z" fill="rgba(88,166,255,0.08)" stroke="#58a6ff" strokeWidth="1" opacity="0.6"/>
+        <rect width="200" height="130" fill={M.bg}/>
+        <path d="M70 0 L68 130" stroke={M.card} strokeWidth="4" opacity="0.5"/>
+        <path d="M130 0 L128 130" stroke={M.card} strokeWidth="4" opacity="0.5"/>
+        <path d="M0 65 Q100 60 200 65" stroke={M.card} strokeWidth="4" opacity="0.5"/>
+        <path d="M100 30 Q138 28 155 50 Q168 72 155 95 Q138 112 100 115 Q62 112 45 95 Q32 72 45 50 Q62 28 100 30 Z" fill="rgba(88,166,255,0.12)" stroke={M.mid} strokeWidth="1.5" opacity="0.85"/>
+        <path d="M100 48 Q122 46 133 62 Q142 78 133 94 Q122 106 100 108 Q78 106 67 94 Q58 78 67 62 Q78 46 100 48 Z" fill="rgba(88,166,255,0.08)" stroke={M.mid} strokeWidth="1" opacity="0.6"/>
         <circle cx="100" cy="65" r="5" fill="#e2001a"/>
         <circle cx="100" cy="65" r="10" fill="rgba(226,0,26,0.2)"/>
       </svg>
-      <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(8,14,26,0.85)', borderRadius: 4, padding: '4px 8px', border: '1px solid rgba(88,166,255,0.3)' }}>
-        <div style={{ fontSize: '0.5rem', color: '#58a6ff', fontWeight: 700 }}>30 min range</div>
-        <div style={{ fontSize: '0.5rem', color: '#64748b' }}>~27 km radius</div>
+      <div style={{ position: 'absolute', top: 8, right: 8, background: M.dark, borderRadius: 4, padding: '4px 8px', border: `1px solid ${M.mid}44` }}>
+        <div style={{ fontSize: '0.5rem', color: M.mid, fontWeight: 700 }}>30 min range</div>
+        <div style={{ fontSize: '0.5rem', color: M.dim }}>~27 km radius</div>
       </div>
     </div>
   );
@@ -722,25 +722,25 @@ export function IlloEVRouting() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-        <rect width="200" height="130" fill="#1a2535"/>
+        <rect width="200" height="130" fill={M.bg}/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.85"/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38" stroke="rgba(226,0,26,0.15)" strokeWidth="8" strokeLinecap="round"/>
         {[[90, 72], [140, 58]].map(([cx, cy], i) => (
           <g key={i}>
-            <circle cx={cx} cy={cy} r="8" fill="#0d1117" stroke={'#22c55e'} strokeWidth="1.5"/>
-            <text x={cx} y={cy + 3.5} textAnchor="middle" fill={'#22c55e'} style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
+            <circle cx={cx} cy={cy} r="8" fill={M.card} stroke={M.green} strokeWidth="1.5"/>
+            <text x={cx} y={cy + 3.5} textAnchor="middle" fill={M.green} style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
           </g>
         ))}
-        <circle cx="20" cy="105" r="4" fill="#3fb950"/>
+        <circle cx="20" cy="105" r="4" fill={M.green}/>
         <circle cx="185" cy="38" r="4" fill="#e2001a"/>
       </svg>
-      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '5px 10px', border: '1px solid rgba(255,255,255,0.07)' }}>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '5px 10px', border: `1px solid ${M.line}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-          <span style={{ fontSize: '0.5rem', color: '#64748b' }}>Battery</span>
-          <span style={{ fontSize: '0.5rem', color: '#22c55e', fontWeight: 700 }}>18% → 78% → 22%</span>
+          <span style={{ fontSize: '0.5rem', color: M.dim }}>Battery</span>
+          <span style={{ fontSize: '0.5rem', color: M.green, fontWeight: 700 }}>18% → 78% → 22%</span>
         </div>
-        <div style={{ height: 3, background: '#1e293b', borderRadius: 2 }}>
-          <div style={{ height: '100%', width: '78%', background: 'linear-gradient(90deg, #22c55e, #3fb950)', borderRadius: 2 }}/>
+        <div style={{ height: 3, background: M.card, borderRadius: 2 }}>
+          <div style={{ height: '100%', width: '78%', background: `linear-gradient(90deg, ${M.green}, ${M.green})`, borderRadius: 2 }}/>
         </div>
       </div>
     </div>
@@ -842,7 +842,7 @@ export function IlloTurnInstructions() {
       <svg style={{ width: '100%', height: 70 }} viewBox="0 0 200 70" fill="none">
         <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
         <path d="M20 55 Q70 50 100 35 Q130 20 180 18" stroke="rgba(226,0,26,0.15)" strokeWidth="8" strokeLinecap="round"/>
-        <circle cx="100" cy="35" r="6" fill="#0d1117" stroke="#58a6ff" strokeWidth="1.5"/>
+        <circle cx="100" cy="35" r="6" fill={M.card} stroke={M.blue} strokeWidth="1.5"/>
         <path d="M100 35 L100 22 M96 26 L100 22 L104 26" stroke="#58a6ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         <circle cx="20" cy="55" r="4" fill="#3fb950"/>
         <circle cx="180" cy="18" r="4" fill="#e2001a"/>
@@ -961,7 +961,7 @@ export function IlloRoutingWeather() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-        <rect width="200" height="130" fill="#1a2535"/>
+        <rect width="200" height="130" fill={M.bg}/>
         <path d="M20 70 Q60 54 90 50" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
         <path d="M90 50 Q130 44 165 38" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" opacity="0.8" strokeDasharray="5 3"/>
         <ellipse cx="130" cy="32" rx="22" ry="11" fill="#475569" opacity="0.5"/>
@@ -969,12 +969,12 @@ export function IlloRoutingWeather() {
         {[108, 118, 128, 138, 148].map((x, i) => (
           <line key={i} x1={x} y1={43} x2={x - 3} y2={53} stroke="#58a6ff" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
         ))}
-        <circle cx="20" cy="70" r="5" fill="#3fb950"/>
+        <circle cx="20" cy="70" r="5" fill={M.green}/>
         <circle cx="165" cy="38" r="5" fill="#e2001a"/>
       </svg>
-      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '5px 10px', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: '0.5rem', color: '#e2e8f0' }}>Rain · Route adjusted</span>
-        <span style={{ fontSize: '0.5rem', color: '#fbbf24', fontWeight: 700 }}>7°C</span>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '5px 10px', border: `1px solid ${M.line}`, display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: '0.5rem', color: '#fff' }}>Rain · Route adjusted</span>
+        <span style={{ fontSize: '0.5rem', color: M.amber, fontWeight: 700 }}>7°C</span>
       </div>
     </div>
   );
@@ -1015,25 +1015,25 @@ function IlloLDEVRRoute() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-        <rect width="200" height="130" fill="#1a2535"/>
+        <rect width="200" height="130" fill={M.bg}/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.85"/>
         <path d="M20 105 Q60 80 90 72 Q110 66 140 58 Q165 50 185 38" stroke="rgba(226,0,26,0.15)" strokeWidth="8" strokeLinecap="round"/>
         {[[90, 72], [140, 58]].map(([cx, cy], i) => (
           <g key={i}>
-            <circle cx={cx} cy={cy} r="8" fill="#0d1117" stroke={'#22c55e'} strokeWidth="1.5"/>
-            <text x={cx} y={cy + 3.5} textAnchor="middle" fill={'#22c55e'} style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
+            <circle cx={cx} cy={cy} r="8" fill={M.card} stroke={M.green} strokeWidth="1.5"/>
+            <text x={cx} y={cy + 3.5} textAnchor="middle" fill={M.green} style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
           </g>
         ))}
-        <circle cx="20" cy="105" r="4" fill="#3fb950"/>
+        <circle cx="20" cy="105" r="4" fill={M.green}/>
         <circle cx="185" cy="38" r="4" fill="#e2001a"/>
       </svg>
-      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '5px 10px', border: '1px solid rgba(255,255,255,0.07)' }}>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '5px 10px', border: `1px solid ${M.line}` }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-          <span style={{ fontSize: '0.5rem', color: '#64748b' }}>Battery</span>
-          <span style={{ fontSize: '0.5rem', color: '#22c55e', fontWeight: 700 }}>18% → 78% → 22%</span>
+          <span style={{ fontSize: '0.5rem', color: M.dim }}>Battery</span>
+          <span style={{ fontSize: '0.5rem', color: M.green, fontWeight: 700 }}>18% → 78% → 22%</span>
         </div>
-        <div style={{ height: 3, background: '#1e293b', borderRadius: 2 }}>
-          <div style={{ height: '100%', width: '78%', background: 'linear-gradient(90deg, #22c55e, #3fb950)', borderRadius: 2 }}/>
+        <div style={{ height: 3, background: M.card, borderRadius: 2 }}>
+          <div style={{ height: '100%', width: '78%', background: `linear-gradient(90deg, ${M.green}, ${M.green})`, borderRadius: 2 }}/>
         </div>
       </div>
     </div>
@@ -1166,25 +1166,25 @@ function IlloLDEVRWeather() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
-        <rect width="200" height="130" fill="#1a2535"/>
+        <rect width="200" height="130" fill={M.bg}/>
         <path d="M20 68 Q60 52 90 48" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
         <path d="M90 48 Q130 42 165 36" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" opacity="0.8" strokeDasharray="5 3"/>
         {[[90, 48], [140, 42]].map(([cx, cy], i) => (
           <g key={i}>
-            <circle cx={cx} cy={cy} r="8" fill="#0d1117" stroke="#22c55e" strokeWidth="1.5"/>
-            <text x={cx} y={cy + 3.5} textAnchor="middle" fill="#22c55e" style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
+            <circle cx={cx} cy={cy} r="8" fill={M.card} stroke={M.green} strokeWidth="1.5"/>
+            <text x={cx} y={cy + 3.5} textAnchor="middle" fill={M.green} style={{ fontSize: 7, fontWeight: 700 }}>⚡</text>
           </g>
         ))}
         <ellipse cx="128" cy="30" rx="20" ry="10" fill="#475569" opacity="0.4"/>
         {[112, 122, 132, 142].map((x, i) => (
           <line key={i} x1={x} y1={40} x2={x - 3} y2={50} stroke="#58a6ff" strokeWidth="1.2" opacity="0.45" strokeLinecap="round"/>
         ))}
-        <circle cx="20" cy="68" r="4" fill="#3fb950"/>
+        <circle cx="20" cy="68" r="4" fill={M.green}/>
         <circle cx="165" cy="36" r="4" fill="#e2001a"/>
       </svg>
-      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: 'rgba(8,14,26,0.9)', borderRadius: 5, padding: '5px 10px', border: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: '0.5rem', color: '#e2e8f0' }}>Cold weather · EV</span>
-        <span style={{ fontSize: '0.5rem', color: '#fbbf24', fontWeight: 700 }}>–12% range</span>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '5px 10px', border: `1px solid ${M.line}`, display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ fontSize: '0.5rem', color: '#fff' }}>Cold weather · EV</span>
+        <span style={{ fontSize: '0.5rem', color: M.amber, fontWeight: 700 }}>–12% range</span>
       </div>
     </div>
   );
