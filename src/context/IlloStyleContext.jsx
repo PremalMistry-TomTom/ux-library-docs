@@ -68,13 +68,16 @@ export const THEMES = {
   // 'dark' is the original dark/realistic style — no palette (uses ThumbXxx components)
 };
 
-const DEFAULT_THEME = 'blueprintLight';
+/* Coupled pair: day mode ↔ 'day' palette, night mode ↔ 'blueprintDark' palette.
+   Any theme outside this pair is treated as a manual override and left alone. */
+const SITE_COUPLED = { day: 'light', blueprintDark: 'dark' };
+const DEFAULT_THEME = 'day';
 
-/** Returns the correct blueprint variant for the current site day/dark mode. */
-function blueprintForSite() {
+/** Maps the current site dark/light mode to its default illustration palette. */
+function themeForSite() {
   return document.documentElement.getAttribute('data-theme') === 'dark'
     ? 'blueprintDark'
-    : 'blueprintLight';
+    : 'day';
 }
 
 export const IlloStyleContext = createContext({
@@ -87,22 +90,22 @@ export function IlloStyleProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
       const stored = localStorage.getItem('illoStyle');
-      // migrate old values: 'light' → 'day', 'blueprint' → 'blueprintDark', 'dark' → 'night'
-      if (stored === 'light')     return 'day';
+      // migrate old values: 'light' → 'day', 'blueprint'|'blueprintLight' → 'blueprintDark', 'dark' → 'night'
+      if (stored === 'light' || stored === 'blueprintLight') return 'day';
       if (stored === 'dark')      return 'night';
       if (stored === 'blueprint') return 'blueprintDark';
       if (THEMES[stored])         return stored;
-      // No stored preference — auto-pick blueprint variant to match site day/dark mode
-      return localStorage.getItem('ux-theme') === 'dark' ? 'blueprintDark' : 'blueprintLight';
+      // No stored preference — auto-pick from site day/night mode
+      return themeForSite();
     } catch { return DEFAULT_THEME; }
   });
 
-  // Follow site day↔dark toggles automatically when on a blueprint variant
+  // Follow site day↔dark toggles when the current theme is part of the coupled pair
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setTheme(prev => {
-        if (prev !== 'blueprintLight' && prev !== 'blueprintDark') return prev;
-        const next = blueprintForSite();
+        if (!(prev in SITE_COUPLED)) return prev;   // manual override — leave it alone
+        const next = themeForSite();
         try { localStorage.setItem('illoStyle', next); } catch {}
         return next;
       });

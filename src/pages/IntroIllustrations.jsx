@@ -3910,28 +3910,13 @@ function FigmaPluginPanel({ onClose }) {
 export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle = null }) {
   const { theme, setTheme } = useIlloStyle();
 
-  // Default to 'detailed'; initialise from the site's current day/night mode.
-  const [illoStyleState, setIlloStyleState] = React.useState(() =>
-    document.documentElement.getAttribute('data-theme') === 'dark' ? 'detailed' : 'detailed'
-  );
+  // Always start in Detailed Wireframe — the richer style is the primary view.
+  const [illoStyleState, setIlloStyleState] = React.useState('detailed');
   const illoStyle = forcedIlloStyle ?? illoStyleState;
 
-  // Sync style when the site-level night/day toggle changes.
-  React.useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const siteDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      setIlloStyleState(siteDark ? 'detailed' : 'lofi');
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => observer.disconnect();
-  }, []);
-
-  // When the style pill is clicked manually, also flip the site night/day mode.
+  // Manual style-pill click — independent of site theme.
   function handleStyleChange(val) {
     setIlloStyleState(val);
-    const wantDark = val === 'detailed';
-    document.documentElement.setAttribute('data-theme', wantDark ? 'dark' : 'light');
-    try { localStorage.setItem('ux-theme', wantDark ? 'dark' : 'light'); } catch {}
   }
 
   const [showPlugin, setShowPlugin] = React.useState(false);
