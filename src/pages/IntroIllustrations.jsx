@@ -99,7 +99,7 @@ function IlloNavControls() {
   );
 }
 
-function IlloAIVoice() {
+export function IlloAIVoice() {
   const M = useDarkStyle();
   const bars = [3, 5, 8, 10, 7, 9, 6, 8, 5, 3, 7, 4];
   return (
@@ -214,7 +214,7 @@ function IlloHorizonPanel() {
   );
 }
 
-function IlloCluster() {
+export function IlloCluster() {
   const M = useDarkStyle();
   const LANES = [{ r: false }, { r: false }, { r: false }, { r: false }, { r: true }, { r: true }];
   return (
@@ -299,7 +299,7 @@ function IlloMapStyle() {
   );
 }
 
-function IlloHomeScreen() {
+export function IlloHomeScreen() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -330,7 +330,7 @@ function IlloHomeScreen() {
   );
 }
 
-function IlloETAPanel() {
+export function IlloETAPanel() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -437,7 +437,7 @@ function IlloConversationPersonality() {
   );
 }
 
-function IlloADAS() {
+export function IlloADAS() {
   const M = useDarkStyle();
   const lanes = [false, false, true, true, false];
   return (
@@ -476,7 +476,7 @@ function IlloADAS() {
    MAPS & NAVIGATION SDK — NavSDKIntro illustrations
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-function IlloMapDisplay() {
+export function IlloMapDisplay() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -553,7 +553,7 @@ function IlloRouteOptions() {
   );
 }
 
-function IlloNavGuidance() {
+export function IlloNavGuidance() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -667,7 +667,7 @@ function IlloVirtualHorizon() {
    ROUTING API — RoutingAPIIntro illustrations
    ═══════════════════════════════════════════════════════════════════════════════ */
 
-function IlloCalculateRoute() {
+export function IlloCalculateRoute() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -695,7 +695,7 @@ function IlloCalculateRoute() {
   );
 }
 
-function IlloReachableRange() {
+export function IlloReachableRange() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -717,7 +717,7 @@ function IlloReachableRange() {
   );
 }
 
-function IlloEVRouting() {
+export function IlloEVRouting() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -747,7 +747,7 @@ function IlloEVRouting() {
   );
 }
 
-function IlloBatchRouting() {
+export function IlloBatchRouting() {
   const M = useDarkStyle();
   const routes = [
     { color: '#e2001a', w: 70 },
@@ -775,7 +775,7 @@ function IlloBatchRouting() {
   );
 }
 
-function IlloMatrixRouting() {
+export function IlloMatrixRouting() {
   const M = useDarkStyle();
   const SIZE = 4;
   const colors = ['rgba(226,0,26,0.8)', 'rgba(88,166,255,0.8)', 'rgba(63,185,80,0.6)', 'rgba(251,191,36,0.7)'];
@@ -802,7 +802,7 @@ function IlloMatrixRouting() {
   );
 }
 
-function IlloWaypointOpt() {
+export function IlloWaypointOpt() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
@@ -835,7 +835,7 @@ function IlloWaypointOpt() {
   );
 }
 
-function IlloTurnInstructions() {
+export function IlloTurnInstructions() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
@@ -956,7 +956,7 @@ function IlloRoutingComputeToll() {
   );
 }
 
-function IlloRoutingWeather() {
+export function IlloRoutingWeather() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
@@ -2854,7 +2854,7 @@ function useDarkStyle() {
   };
 }
 
-function IlloSearchFuzzy() {
+export function IlloSearchFuzzy() {
   const D = useDarkStyle();
   const rows = [['📍 Place name', '0.3 km', D.blue], ['🏪 Fuzzy match', '0.7 km', D.dim], ['📍 Street addr.', '1.1 km', D.blue], ['🏥 Category hit', '1.4 km', D.dim]];
   return (
@@ -2875,7 +2875,7 @@ function IlloSearchFuzzy() {
   );
 }
 
-function IlloSearchPOI() {
+export function IlloSearchPOI() {
   const D = useDarkStyle();
   const cats = [['☕ Cafe', D.amber], ['⛽ Fuel', D.blue], ['🍕 Food', D.red], ['🏨 Hotel', D.purple]];
   const pois = [['Café Central', '0.2 km', '★ 4.7'], ['Brasserie Nord', '0.5 km', '★ 4.4'], ['La Terrasse', '0.9 km', '★ 4.2']];
@@ -2919,7 +2919,7 @@ function IlloSearchCategory() {
   );
 }
 
-function IlloSearchNearby() {
+export function IlloSearchNearby() {
   const D = useDarkStyle();
   const pins = [['Cafe Nord', '0.2 km'], ['Hotel Arc', '0.5 km'], ['Park Mall', '0.8 km']];
   return (
@@ -2942,7 +2942,7 @@ function IlloSearchNearby() {
   );
 }
 
-function IlloSearchAlongRoute() {
+export function IlloSearchAlongRoute() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -2964,7 +2964,7 @@ function IlloSearchAlongRoute() {
   );
 }
 
-function IlloSearchAutocomplete() {
+export function IlloSearchAutocomplete() {
   const D = useDarkStyle();
   const suggestions = ['Amsterdam Centr…', 'Amsterdam Airport', 'Amsterdam Noord'];
   return (
@@ -2988,7 +2988,7 @@ function IlloSearchAutocomplete() {
    Geocoding — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloGeocode() {
+export function IlloGeocode() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3009,7 +3009,7 @@ function IlloGeocode() {
   );
 }
 
-function IlloReverseGeocode() {
+export function IlloReverseGeocode() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3037,7 +3037,7 @@ function IlloReverseGeocode() {
    Traffic — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloTrafficFlow() {
+export function IlloTrafficFlow() {
   const D = useDarkStyle();
   const speeds = [[D.green,'68','Free flow'],[D.amber,'42','Moderate'],['#f97316','18','Slow'],['#ef4444','5','Queuing']];
   return (
@@ -3055,7 +3055,7 @@ function IlloTrafficFlow() {
   );
 }
 
-function IlloTrafficIncidents() {
+export function IlloTrafficIncidents() {
   const D = useDarkStyle();
   const incidents = [['🚧', 'Roadworks', 'A10 · km 14', D.amber], ['🚗', 'Accident', 'Ring East · km 3', '#ef4444'], ['⚠️', 'Road closed', 'N200 · km 7', '#f97316']];
   return (
@@ -3075,7 +3075,7 @@ function IlloTrafficIncidents() {
   );
 }
 
-function IlloTrafficFlowTile() {
+export function IlloTrafficFlowTile() {
   const D = useDarkStyle();
   const rows = 3, cols = 4;
   const colors = ['#22c55e','#86efac','#fbbf24','#f97316','#ef4444','#22c55e','#fbbf24','#22c55e','#86efac','#f97316','#22c55e','#fbbf24'];
@@ -3093,7 +3093,7 @@ function IlloTrafficFlowTile() {
   );
 }
 
-function IlloTrafficModelID() {
+export function IlloTrafficModelID() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3118,7 +3118,7 @@ function IlloTrafficModelID() {
    EV & Charging — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloEVSearchNearby() {
+export function IlloEVSearchNearby() {
   const D = useDarkStyle();
   const stations = [['Belib+', '22 kW', '3/4 avail.', D.green], ['Fastned', '150 kW', '1/2 avail.', D.green], ['Ionity', '350 kW', '0/4 avail.', '#ef4444']];
   return (
@@ -3138,7 +3138,7 @@ function IlloEVSearchNearby() {
   );
 }
 
-function IlloEVChargingAvailability() {
+export function IlloEVChargingAvailability() {
   const D = useDarkStyle();
   const connectors = [['CCS2', '150kW', D.green, 'Available'], ['Type2', '22kW', D.green, 'Available'], ['CHAdeMO', '50kW', D.amber, 'Charging'], ['CCS2', '150kW', '#ef4444', 'Offline']];
   return (
@@ -3180,7 +3180,7 @@ function IlloEVMarketCoverage() {
    Map Display — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloMapRasterTile() {
+export function IlloMapRasterTile() {
   const D = useDarkStyle();
   const colors = ['#1a2535','#1e2d40','#243347','#1a2535','#1e2d40','#243347','#1a2535','#1e2d40','#243347'];
   return (
@@ -3201,7 +3201,7 @@ function IlloMapRasterTile() {
   );
 }
 
-function IlloMapVectorTile() {
+export function IlloMapVectorTile() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3226,7 +3226,7 @@ function IlloMapVectorTile() {
   );
 }
 
-function IlloMapSatelliteTile() {
+export function IlloMapSatelliteTile() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3265,7 +3265,7 @@ function IlloMapAssetsAPI() {
   );
 }
 
-function IlloMapStaticImage() {
+export function IlloMapStaticImage() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3289,7 +3289,7 @@ function IlloMapStaticImage() {
    Parking & Fuel — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloParkingAvailability() {
+export function IlloParkingAvailability() {
   const D = useDarkStyle();
   const zones = [['Zone A', '12/15', 80, D.green], ['Zone B', '3/10', 30, '#ef4444'], ['Zone C', '8/12', 67, D.amber], ['Zone D', '0/8', 0, '#ef4444']];
   return (
@@ -3310,7 +3310,7 @@ function IlloParkingAvailability() {
   );
 }
 
-function IlloParkingPrices() {
+export function IlloParkingPrices() {
   const D = useDarkStyle();
   const tiers = [['0–1 hr', '€2.50'], ['1–3 hr', '€4.00'], ['3–8 hr', '€7.50'], ['All day', '€12.00']];
   return (
@@ -3332,7 +3332,7 @@ function IlloParkingPrices() {
   );
 }
 
-function IlloOnStreetParking() {
+export function IlloOnStreetParking() {
   const D = useDarkStyle();
   const zones = [[D.green,'A','Free'],[D.amber,'B','Limited'],['#ef4444','C','No park.'],[ D.green,'D','Free']];
   return (
@@ -3358,7 +3358,7 @@ function IlloOnStreetParking() {
   );
 }
 
-function IlloFuelPrices() {
+export function IlloFuelPrices() {
   const D = useDarkStyle();
   const fuels = [['⛽ Unleaded 95', '€1.84', D.blue], ['🟡 Diesel', '€1.72', D.amber], ['🟢 LPG', '€0.96', D.green], ['⚡ Fast DC', '€0.58/kWh', D.purple]];
   return (
@@ -3379,7 +3379,7 @@ function IlloFuelPrices() {
    Snap to Roads / Batch Search — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloSnapToRoads() {
+export function IlloSnapToRoads() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3423,7 +3423,7 @@ function IlloBatchSearch() {
    POI Details / Photos — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloPOIDetails() {
+export function IlloPOIDetails() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
@@ -3445,7 +3445,7 @@ function IlloPOIDetails() {
   );
 }
 
-function IlloPOIPhotos() {
+export function IlloPOIPhotos() {
   const D = useDarkStyle();
   const colors = ['#1e3a2a','#1a2535','#2a2020','#1a2535','#1e3a2a','#2a2020'];
   const emojis = ['🏨','🍽️','🛎️','🌳','🏊','🏋️'];
@@ -3468,7 +3468,7 @@ function IlloPOIPhotos() {
    Traffic Analytics — dark variants
    ───────────────────────────────────────────────────────────────────────────── */
 
-function IlloTrafficStats() {
+export function IlloTrafficStats() {
   const D = useDarkStyle();
   const bars = [30, 45, 60, 75, 55, 40, 80, 65, 50, 35, 70, 85];
   return (
@@ -3489,7 +3489,7 @@ function IlloTrafficStats() {
   );
 }
 
-function IlloAreaAnalytics() {
+export function IlloAreaAnalytics() {
   const D = useDarkStyle();
   const cells = [0.2,0.6,0.9,0.4,0.7,0.8,0.3,0.5,0.7,0.6,0.4,0.9,0.2,0.5,0.8,0.3];
   return (
@@ -3512,7 +3512,7 @@ function IlloAreaAnalytics() {
   );
 }
 
-function IlloODAnalysis() {
+export function IlloODAnalysis() {
   const D = useDarkStyle();
   const SIZE = 4;
   const labels = ['A','B','C','D'];
@@ -3536,7 +3536,7 @@ function IlloODAnalysis() {
   );
 }
 
-function IlloJunctionAnalytics() {
+export function IlloJunctionAnalytics() {
   const D = useDarkStyle();
   return (
     <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
