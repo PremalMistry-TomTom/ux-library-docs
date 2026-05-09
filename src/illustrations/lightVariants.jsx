@@ -1538,6 +1538,1053 @@ export function L_LDEVRDataFreshness() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
+   SEARCH & PLACES API
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_SearchFuzzy() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Search bar */}
+      <rect x="8" y="8" width="184" height="20" rx="10" fill={C.panel}/>
+      <circle cx="22" cy="18" r="5" stroke={C.mid} strokeWidth="1.5" fill="none"/>
+      <line x1="26" y1="22" x2="29" y2="25" stroke={C.mid} strokeWidth="1.5" strokeLinecap="round"/>
+      <LP x="34" y="13" w="80" h="10" color={C.soft}/>
+      <LP x="168" y="13" w="16" h="10" color={C.mid}/>
+      {/* Results — mixed addresses + POIs */}
+      {[
+        [C.accent,  '📍', C.navy, C.soft],
+        [C.mid,     '🏪', C.navy, C.soft],
+        [C.soft,    '📍', C.navy, C.soft],
+        [C.accent,  '🏥', C.navy, C.soft],
+      ].map(([dot, , title, sub], i) => (
+        <g key={i}>
+          <rect x="8" y={36 + i * 23} width="184" height="21" rx="4" fill={i === 0 ? C.panel : 'none'} opacity={i===0?1:0.5}/>
+          <circle cx="19" cy={36 + i * 23 + 10} r="5" fill={dot} opacity="0.8"/>
+          <LP x="30" y={36 + i * 23 + 5} w={60 + (i%3)*20} h="6" color={title}/>
+          <LP x="30" y={36 + i * 23 + 14} w={40 + (i%2)*15} h="5" color={sub}/>
+          {i < 3 && <line x1="8" y1={57 + i*23} x2="192" y2={57 + i*23} stroke={C.border} strokeWidth="0.5" opacity="0.4"/>}
+        </g>
+      ))}
+      {/* "Fuzzy" badge */}
+      <rect x="140" y="9" width="52" height="12" rx="6" fill={C.mid}/>
+      <LP x="146" y="12" w="40" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_SearchPOI() {
+  const { palette: C } = useIlloStyle();
+  const categories = [C.accent, C.mid, C.warn, C.danger, C.soft];
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Category chips */}
+      <LP x="8" y="8" w="30" h="14" color={C.mid} rx="7"/>
+      <LP x="42" y="8" w="36" h="14" color={C.panel} rx="7"/>
+      <LP x="82" y="8" w="28" h="14" color={C.panel} rx="7"/>
+      <LP x="114" y="8" w="34" h="14" color={C.panel} rx="7"/>
+      {/* POI result cards 2×2 */}
+      {[0,1,2,3].map(i => {
+        const col = i % 2, row = Math.floor(i / 2);
+        const x = 8 + col * 97, y = 30 + row * 48;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width="89" height="42" rx="8" fill={C.panel}/>
+            <circle cx={x+14} cy={y+13} r="8" fill={categories[i]} opacity="0.8"/>
+            <LP x={x+26} y={y+8} w={50} h="7" color={C.navy}/>
+            <LP x={x+26} y={y+19} w={38} h="5" color={C.soft}/>
+            <LP x={x+8} y={y+30} w={72} h="5" color={C.soft}/>
+          </g>
+        );
+      })}
+      {/* Count badge */}
+      <rect x="152" y="9" width="40" height="12" rx="6" fill={C.navy}/>
+      <LP x="158" y="12" w="28" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_SearchCategory() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Header */}
+      <LP x="8" y="8" w="90" h="9" color={C.navy}/>
+      <LP x="8" y="22" w="60" h="7" color={C.soft}/>
+      {/* Category tree */}
+      {[
+        { x:8,  y:38, w:80, active:true,  children:true  },
+        { x:20, y:54, w:68, active:false, children:false },
+        { x:20, y:68, w:72, active:true,  children:false },
+        { x:20, y:82, w:60, active:false, children:false },
+        { x:8,  y:96, w:76, active:false, children:true  },
+      ].map((r, i) => (
+        <g key={i}>
+          {r.active && <rect x={r.x} y={r.y-2} width={r.w+4} height="13" rx="4" fill={C.mid} opacity="0.18"/>}
+          <LP x={r.x+2} y={r.y} w={r.w} h="9" color={r.active ? C.mid : C.navy}/>
+          {r.children && <LP x={r.x+r.w+6} y={r.y+1} w="12" h="7" color={C.soft}/>}
+        </g>
+      ))}
+      {/* Result count pill */}
+      <rect x="130" y="38" width="62" height="80" rx="8" fill={C.panel}/>
+      <LP x="138" y="48" w="46" h="7" color={C.navy}/>
+      <LP x="138" y="60" w="36" h="6" color={C.soft}/>
+      <LP x="138" y="72" w="40" h="6" color={C.soft}/>
+      <LP x="138" y="84" w="28" h="6" color={C.soft}/>
+      <rect x="138" y="96" width="46" height="12" rx="6" fill={C.accent} opacity="0.9"/>
+      <LP x="144" y="99" w="34" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_SearchNearby() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Map roads */}
+      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="8" opacity="0.6"/>
+      <path d="M100 0 L100 130" stroke={C.bg} strokeWidth="6" opacity="0.5"/>
+      <path d="M40 0 L60 130" stroke={C.bg} strokeWidth="4" opacity="0.3"/>
+      {/* Radius circle */}
+      <circle cx="100" cy="65" r="45" stroke={C.mid} strokeWidth="1.5" strokeDasharray="4 3" fill={C.mid} fillOpacity="0.08"/>
+      {/* POI pins */}
+      {[[75,42],[128,50],[115,82],[70,88],[95,55]].map(([px,py],i) => (
+        <g key={i}>
+          <circle cx={px} cy={py} r="6" fill={i===4 ? C.navy : C.accent} opacity={i===4?1:0.85}/>
+          {i===4 && <circle cx={px} cy={py} r="10" stroke={C.navy} strokeWidth="1.5" fill="none"/>}
+        </g>
+      ))}
+      {/* Radius label */}
+      <rect x="118" y="16" width="74" height="22" rx="6" fill={C.panel}/>
+      <LP x="124" y="20" w="62" h="7" color={C.navy}/>
+      <LP x="124" y="30" w="44" h="5" color={C.soft}/>
+    </svg>
+  );
+}
+
+export function L_SearchAlongRoute() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Route */}
+      <path d="M20 108 Q60 80 100 65 T180 22" stroke={C.mid} strokeWidth="3" strokeLinecap="round" opacity="0.9"/>
+      <path d="M20 108 Q60 80 100 65 T180 22" stroke={C.mid} strokeWidth="10" strokeLinecap="round" opacity="0.12"/>
+      <circle cx="20" cy="108" r="5" fill={C.accent}/>
+      <circle cx="180" cy="22" r="5" fill={C.navy}/>
+      {/* POIs along route */}
+      {[[60,84,'🏪'],[100,65,'⛽'],[140,43,'🏨']].map(([px,py,],i) => (
+        <g key={i}>
+          <line x1={px} y1={py} x2={px+(i===1?0:i===0?-8:8)} y2={py-18} stroke={C.soft} strokeWidth="1" strokeDasharray="2 2"/>
+          <rect x={px-16+(i===1?0:i===0?-8:8)} y={py-32+(i===1?0:0)} width="32" height="14" rx="4" fill={C.panel}/>
+          <LP x={px-10+(i===1?0:i===0?-8:8)} y={py-29+(i===1?0:0)} w="20" h="6" color={C.navy}/>
+        </g>
+      ))}
+      {/* Panel */}
+      <rect x="8" y="8" width="80" height="28" rx="6" fill={C.panel}/>
+      <LP x="14" y="13" w="60" h="6" color={C.navy}/>
+      <LP x="14" y="23" w="44" h="5" color={C.soft}/>
+    </svg>
+  );
+}
+
+export function L_SearchAutocomplete() {
+  const { palette: C } = useIlloStyle();
+  const suggestions = [true, false, false, false];
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Search input */}
+      <rect x="8" y="8" width="184" height="22" rx="11" fill={C.panel} stroke={C.mid} strokeWidth="1.5"/>
+      <circle cx="22" cy="19" r="5" stroke={C.mid} strokeWidth="1.5" fill="none"/>
+      <line x1="26" y1="23" x2="29" y2="26" stroke={C.mid} strokeWidth="1.5" strokeLinecap="round"/>
+      <LP x="34" y="14" w="60" h="10" color={C.navy}/>
+      {/* Cursor blink */}
+      <rect x="96" y="14" width="1.5" height="10" rx="1" fill={C.mid}/>
+      {/* Dropdown shadow */}
+      <rect x="8" y="36" width="184" height="90" rx="8" fill={C.panel} opacity="0.95"/>
+      {/* Suggestions */}
+      {suggestions.map((active, i) => (
+        <g key={i}>
+          {active && <rect x="8" y={36+i*22} width="184" height="22" rx={i===0?'8 8 0 0':'0'} fill={C.mid} opacity="0.18"/>}
+          <circle cx="22" cy={36+i*22+11} r="5" fill={active ? C.accent : C.soft} opacity={active?1:0.5}/>
+          <LP x="32" y={36+i*22+6} w={80+(i%3)*15} h="7" color={active ? C.navy : C.soft}/>
+          {i < 3 && <line x1="16" y1={58+i*22} x2="192" y2={58+i*22} stroke={C.border} strokeWidth="0.5" opacity="0.3"/>}
+        </g>
+      ))}
+      {/* Entity tag */}
+      <rect x="148" y="44" width="36" height="12" rx="6" fill={C.accent} opacity="0.85"/>
+      <LP x="153" y="47" w="26" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   GEOCODING API
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_Geocode() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Address input */}
+      <rect x="8" y="8" width="92" height="36" rx="8" fill={C.panel}/>
+      <LP x="14" y="13" w="80" h="7" color={C.navy}/>
+      <LP x="14" y="24" w="64" h="6" color={C.soft}/>
+      <LP x="14" y="34" w="50" h="5" color={C.soft} rx="3"/>
+      {/* Arrow */}
+      <path d="M104 26 L118 26 M114 22 L118 26 L114 30" stroke={C.mid} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Map output */}
+      <rect x="122" y="8" width="70" height="80" rx="8" fill={C.grid}/>
+      {/* Map roads */}
+      <line x1="122" y1="48" x2="192" y2="48" stroke={C.bg} strokeWidth="3" opacity="0.6"/>
+      <line x1="157" y1="8" x2="157" y2="88" stroke={C.bg} strokeWidth="3" opacity="0.5"/>
+      {/* Pin */}
+      <circle cx="157" cy="44" r="8" fill={C.accent}/>
+      <circle cx="157" cy="44" r="14" stroke={C.accent} strokeWidth="1.5" fill="none" opacity="0.4"/>
+      <line x1="157" y1="52" x2="157" y2="58" stroke={C.accent} strokeWidth="2"/>
+      {/* Coordinate card */}
+      <rect x="8" y="54" width="110" height="38" rx="8" fill={C.panel}/>
+      <LP x="14" y="60" w="50" h="6" color={C.soft}/>
+      <LP x="14" y="70" w="90" h="7" color={C.navy}/>
+      <LP x="14" y="81" w="70" h="5" color={C.mid}/>
+      {/* Confidence badge */}
+      <rect x="8" y="98" width="60" height="14" rx="7" fill={C.accent} opacity="0.9"/>
+      <LP x="14" y="102" w="48" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_ReverseGeocode() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Map */}
+      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="8" opacity="0.5"/>
+      <path d="M80 0 L75 130" stroke={C.bg} strokeWidth="5" opacity="0.4"/>
+      <path d="M140 0 L145 130" stroke={C.bg} strokeWidth="4" opacity="0.3"/>
+      {/* Click point */}
+      <circle cx="110" cy="58" r="6" fill={C.navy}/>
+      <circle cx="110" cy="58" r="12" stroke={C.navy} strokeWidth="1.5" fill="none" strokeDasharray="3 2"/>
+      {/* Arrow */}
+      <path d="M118 58 L130 58 M126 54 L130 58 L126 62" stroke={C.mid} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Address result card */}
+      <rect x="8" y="80" width="184" height="44" rx="8" fill={C.panel}/>
+      <LP x="16" y="87" w="60" h="6" color={C.soft}/>
+      <LP x="16" y="97" w="140" h="8" color={C.navy}/>
+      <LP x="16" y="109" w="90" h="6" color={C.soft}/>
+      {/* Coordinate input chip */}
+      <rect x="8" y="8" width="120" height="18" rx="9" fill={C.panel}/>
+      <LP x="14" y="12" w="108" h="8" color={C.mid}/>
+      {/* Speed limit bonus */}
+      <rect x="150" y="8" width="42" height="18" rx="9" fill={C.dark} opacity="0.85"/>
+      <LP x="156" y="12" w="30" h="8" color={C.white}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TRAFFIC API
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_TrafficFlow() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Road grid */}
+      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="10" opacity="0.5"/>
+      <path d="M0 40 Q80 36 200 40" stroke={C.bg} strokeWidth="6" opacity="0.35"/>
+      <path d="M70 0 L68 130" stroke={C.bg} strokeWidth="6" opacity="0.4"/>
+      <path d="M135 0 L138 130" stroke={C.bg} strokeWidth="5" opacity="0.35"/>
+      {/* Flow colouring — green/amber/red segments */}
+      <path d="M0 65 Q30 62 50 63" stroke={C.accent} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
+      <path d="M50 63 Q80 61 100 63" stroke={C.warn} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
+      <path d="M100 63 Q130 62 155 64" stroke={C.danger} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
+      <path d="M155 64 Q175 63 200 65" stroke={C.accent} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
+      {/* Legend */}
+      <rect x="8" y="88" width="184" height="34" rx="6" fill={C.panel}/>
+      {[[C.accent,'Free flow'],[C.warn,'Slow'],[C.danger,'Congested']].map(([col,],i) => (
+        <g key={i}>
+          <rect x={14+i*62} y="96" width="12" height="6" rx="3" fill={col}/>
+          <LP x={29+i*62} y="96" w="38" h="6" color={C.navy}/>
+        </g>
+      ))}
+      {/* Speed badge */}
+      <rect x="8" y="8" width="60" height="20" rx="6" fill={C.panel}/>
+      <LP x="14" y="12" w="48" h="7" color={C.navy}/>
+      <LP x="14" y="22" w="32" h="5" color={C.soft}/>
+    </svg>
+  );
+}
+
+export function L_TrafficIncidents() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Roads */}
+      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="9" opacity="0.5"/>
+      <path d="M95 0 L95 130" stroke={C.bg} strokeWidth="6" opacity="0.4"/>
+      {/* Incident markers */}
+      {[[55,63,'⚠️'],[95,40,'🚧'],[148,64,'⛔']].map(([px,py,],i) => (
+        <g key={i}>
+          <circle cx={px} cy={py} r="10" fill={i===2?C.danger:C.warn} opacity="0.9"/>
+          <circle cx={px} cy={py} r="15" stroke={i===2?C.danger:C.warn} strokeWidth="1" fill="none" opacity="0.4"/>
+        </g>
+      ))}
+      {/* Detail card */}
+      <rect x="8" y="8" width="118" height="46" rx="8" fill={C.panel}/>
+      <rect x="8" y="8" width="118" height="12" rx="8" fill={C.danger} opacity="0.85"/>
+      <LP x="14" y="11" w="80" h="6" color={C.white}/>
+      <LP x="14" y="26" w="100" h="7" color={C.navy}/>
+      <LP x="14" y="37" w="80" h="6" color={C.soft}/>
+      <LP x="14" y="46" w="60" h="5" color={C.soft}/>
+      {/* Delay badge */}
+      <rect x="140" y="8" width="52" height="20" rx="6" fill={C.warn} opacity="0.9"/>
+      <LP x="146" y="12" w="40" h="7" color={C.dark}/>
+      <LP x="146" y="22" w="30" h="5" color={C.dark}/>
+      {/* Tile grid lines */}
+      {[0,1].map(col => [0,1].map(row => (
+        <rect key={`${col}${row}`} x={130+col*35} y={44+row*35} width="33" height="33" rx="2"
+          fill="none" stroke={C.border} strokeWidth="0.5" opacity="0.5"/>
+      )))}
+    </svg>
+  );
+}
+
+export function L_TrafficFlowTile() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.dark} rx="12"/>
+      {/* 3×2 tile grid */}
+      {[0,1,2].map(col => [0,1].map(row => {
+        const x = 10 + col * 62, y = 10 + row * 58;
+        const flowColors = [[C.accent,C.warn],[C.danger,C.accent],[C.warn,C.danger]];
+        const [c1,c2] = flowColors[col];
+        return (
+          <g key={`${col}${row}`}>
+            <rect x={x} y={y} width="58" height="54" rx="4" fill={C.panel} stroke={C.border} strokeWidth="0.5"/>
+            {/* mini flow roads */}
+            <line x1={x} y1={y+27} x2={x+58} y2={y+27} stroke={C.bg} strokeWidth="4" opacity="0.4"/>
+            <line x1={x+29} y1={y} x2={x+29} y2={y+54} stroke={C.bg} strokeWidth="3" opacity="0.3"/>
+            <line x1={x} y1={y+27} x2={x+29} y2={y+27} stroke={c1} strokeWidth="4" strokeLinecap="round" opacity="0.9"/>
+            <line x1={x+29} y1={y+27} x2={x+58} y2={y+27} stroke={c2} strokeWidth="4" strokeLinecap="round" opacity="0.9"/>
+          </g>
+        );
+      }))}
+      {/* Zoom badge */}
+      <rect x="8" y="122" width="184" height="1" fill={C.border} opacity="0.3"/>
+      <rect x="10" y="10" width="180" height="110" rx="6" fill="none" stroke={C.border} strokeWidth="0.5" strokeDasharray="4 3" opacity="0.5"/>
+      <rect x="72" y="4" width="56" height="14" rx="7" fill={C.mid}/>
+      <LP x="78" y="7" w="44" h="8" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_TrafficModelID() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Header */}
+      <LP x="8" y="8" w="100" h="9" color={C.navy}/>
+      <LP x="8" y="22" w="70" h="7" color={C.soft}/>
+      {/* Model ID card */}
+      <rect x="8" y="36" width="184" height="32" rx="8" fill={C.panel}/>
+      <LP x="16" y="42" w="50" h="6" color={C.soft}/>
+      <LP x="16" y="53" w="120" h="9" color={C.mid}/>
+      {/* Timestamp */}
+      <rect x="8" y="76" width="184" height="22" rx="6" fill={C.panel}/>
+      <LP x="16" y="81" w="44" h="5" color={C.soft}/>
+      <LP x="16" y="89" w="80" h="7" color={C.navy}/>
+      {/* Usage pill */}
+      <rect x="8" y="106" width="100" height="16" rx="8" fill={C.mid} opacity="0.8"/>
+      <LP x="14" y="110" w="88" h="8" color={C.white}/>
+      <rect x="116" y="106" width="76" height="16" rx="8" fill={C.panel}/>
+      <LP x="122" y="110" w="64" h="8" color={C.navy}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   EV & CHARGING APIS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_EVSearchNearby() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Roads */}
+      <path d="M0 65 Q100 62 200 65" stroke={C.bg} strokeWidth="7" opacity="0.5"/>
+      <path d="M100 0 L100 130" stroke={C.bg} strokeWidth="5" opacity="0.4"/>
+      {/* Search radius */}
+      <circle cx="100" cy="65" r="44" stroke={C.accent} strokeWidth="1.5" strokeDasharray="4 3" fill={C.accent} fillOpacity="0.07"/>
+      {/* EV station pins */}
+      {[[72,48],[118,52],[88,82],[115,78],[100,55]].map(([px,py],i) => (
+        <g key={i}>
+          <rect x={px-8} y={py-9} width="16" height="18" rx="4" fill={i===4?C.navy:C.accent} opacity={i===4?1:0.85}/>
+          <text x={px} y={py+3} textAnchor="middle" fill={C.white} fontSize="8" fontWeight="700">⚡</text>
+        </g>
+      ))}
+      {/* Result panel */}
+      <rect x="8" y="8" width="72" height="36" rx="6" fill={C.panel}/>
+      <LP x="14" y="13" w="60" h="6" color={C.navy}/>
+      <LP x="14" y="23" w="44" h="6" color={C.accent}/>
+      <LP x="14" y="33" w="52" h="5" color={C.soft}/>
+      {/* Filter chips */}
+      <rect x="144" y="8" width="48" height="14" rx="7" fill={C.mid} opacity="0.9"/>
+      <LP x="150" y="11" w="36" h="8" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_EVChargingAvailability() {
+  const { palette: C } = useIlloStyle();
+  const statuses = [C.accent, C.accent, C.warn, C.accent, C.danger, C.soft];
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Station header */}
+      <rect x="8" y="8" width="184" height="28" rx="8" fill={C.panel}/>
+      <LP x="16" y="13" w="90" h="7" color={C.navy}/>
+      <LP x="16" y="24" w="60" h="5" color={C.soft}/>
+      <rect x="148" y="13" width="36" height="14" rx="7" fill={C.accent} opacity="0.9"/>
+      <LP x="154" y="17" w="24" h="6" color={C.white}/>
+      {/* Connector grid */}
+      {statuses.map((col, i) => {
+        const col2 = i % 3, row = Math.floor(i / 3);
+        const x = 8 + col2 * 62, y = 44 + row * 42;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width="58" height="36" rx="6" fill={C.panel}/>
+            <circle cx={x+29} cy={y+13} r="8" fill={col} opacity="0.85"/>
+            <LP x={x+8} y={y+26} w="42" h="5" color={C.soft}/>
+          </g>
+        );
+      })}
+      {/* Refresh badge */}
+      <rect x="8" y="122" width="184" height="1" fill={C.border} opacity="0.3"/>
+      <rect x="66" y="4" width="68" height="1" fill="none"/>
+    </svg>
+  );
+}
+
+export function L_EVMarketCoverage() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* World map rough outline */}
+      <ellipse cx="100" cy="65" rx="88" ry="52" stroke={C.border} strokeWidth="1" fill={C.grid} opacity="0.5"/>
+      {/* Coverage dots by region */}
+      {[[45,40,'EU'],[100,42,'UK'],[60,70,'AF'],[140,45,'AS'],[160,60,'JP'],[30,58,'NA'],[75,88,'LA']].map(([px,py,],i) => (
+        <g key={i}>
+          <circle cx={px} cy={py} r={i<3?8:6} fill={i<5?C.accent:C.soft} opacity={i<5?0.85:0.5}/>
+        </g>
+      ))}
+      {/* Legend */}
+      <rect x="8" y="90" width="184" height="32" rx="6" fill={C.panel}/>
+      <circle cx="18" cy="106" r="5" fill={C.accent}/>
+      <LP x="26" y="102" w="50" h="6" color={C.navy}/>
+      <LP x="26" y="111" w="36" h="5" color={C.soft}/>
+      <circle cx="108" cy="106" r="5" fill={C.soft}/>
+      <LP x="116" y="102" w="50" h="6" color={C.navy}/>
+      <LP x="116" y="111" w="36" h="5" color={C.soft}/>
+      {/* Count badge */}
+      <rect x="68" y="8" width="64" height="18" rx="9" fill={C.navy}/>
+      <LP x="74" y="12" w="52" h="10" color={C.white}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MAP DISPLAY API
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_MapRasterTile() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      {/* Tile grid 3×2 */}
+      {[0,1,2].map(col => [0,1].map(row => {
+        const x = 8+col*62, y=8+row*58;
+        return (
+          <g key={`${col}${row}`}>
+            <rect x={x} y={y} width="58" height="54" rx="3" fill={C.grid}/>
+            {/* Mini map content */}
+            <path d={`M${x} ${y+27} Q${x+20} ${y+24} ${x+58} ${y+27}`} stroke={C.bg} strokeWidth="4" opacity="0.7"/>
+            <path d={`M${x+18} ${y} L${x+18} ${y+54}`} stroke={C.bg} strokeWidth="3" opacity="0.5"/>
+            {col===1 && row===0 && <circle cx={x+29} cy={y+27} r="6" fill={C.accent} opacity="0.9"/>}
+          </g>
+        );
+      }))}
+      {/* Tile notation */}
+      <rect x="70" y="4" width="60" height="14" rx="7" fill={C.mid}/>
+      <LP x="76" y="7" w="48" h="8" color={C.white}/>
+      {/* Format badge */}
+      <rect x="8" y="120" width="50" height="6" rx="3" fill={C.panel}/>
+      <rect x="62" y="120" width="50" height="6" rx="3" fill={C.panel}/>
+      <rect x="116" y="120" width="50" height="6" rx="3" fill={C.panel}/>
+    </svg>
+  );
+}
+
+export function L_MapVectorTile() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.dark} rx="12"/>
+      {/* Vector layer stack — roads */}
+      <rect x="10" y="10" width="180" height="110" rx="6" fill={C.panel} opacity="0.15"/>
+      {/* Layer 1: land */}
+      <rect x="20" y="20" width="160" height="90" rx="4" fill={C.grid} opacity="0.6"/>
+      {/* Layer 2: water */}
+      <ellipse cx="80" cy="75" rx="28" ry="18" fill={C.mid} opacity="0.4"/>
+      {/* Layer 3: roads */}
+      <path d="M20 65 Q100 60 180 65" stroke={C.bg} strokeWidth="4" opacity="0.7"/>
+      <path d="M100 20 L100 110" stroke={C.bg} strokeWidth="3" opacity="0.6"/>
+      {/* Layer 4: buildings */}
+      {[[55,38],[68,36],[115,38],[128,40],[115,52],[55,52]].map(([bx,by],i) => (
+        <rect key={i} x={bx} y={by} width="10" height="10" rx="1" fill={C.soft} opacity="0.7"/>
+      ))}
+      {/* Layer labels */}
+      {['Roads','Water','Buildings','Labels'].map((lbl,i) => (
+        <g key={lbl}>
+          <rect x="136" y={20+i*24} width="54" height="16" rx="4" fill={C.panel} opacity="0.8"/>
+          <LP x="142" y={24+i*24} w="42" h="8" color={C.navy}/>
+        </g>
+      ))}
+      {/* Vector badge */}
+      <rect x="20" y="6" width="50" height="12" rx="6" fill={C.accent} opacity="0.9"/>
+      <LP x="26" y="9" w="38" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_MapSatelliteTile() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.dark} rx="12"/>
+      {/* Satellite imagery simulation */}
+      <rect x="8" y="8" width="184" height="114" rx="8" fill={C.grid} opacity="0.4"/>
+      {/* Terrain patches */}
+      <rect x="8"  y="8"  width="60" height="50" rx="2" fill={C.soft} opacity="0.3"/>
+      <rect x="70" y="8"  width="80" height="35" rx="2" fill={C.mid}  opacity="0.25"/>
+      <rect x="152" y="8" width="40" height="60" rx="2" fill={C.soft} opacity="0.2"/>
+      <rect x="8"  y="60" width="90" height="62" rx="2" fill={C.panel} opacity="0.3"/>
+      {/* Water body */}
+      <ellipse cx="145" cy="90" rx="40" ry="28" fill={C.mid} opacity="0.35"/>
+      {/* Road overlay */}
+      <path d="M8 75 Q100 70 192 75" stroke={C.bg} strokeWidth="2" opacity="0.5"/>
+      <path d="M100 8 L100 122" stroke={C.bg} strokeWidth="1.5" opacity="0.4"/>
+      {/* Resolution badge */}
+      <rect x="8" y="8" width="68" height="20" rx="6" fill={C.dark} opacity="0.8"/>
+      <LP x="14" y="12" w="56" h="6" color={C.navy}/>
+      <LP x="14" y="21" w="40" h="5" color={C.soft}/>
+      {/* Zoom indicator */}
+      <rect x="148" y="110" width="44" height="12" rx="6" fill={C.mid} opacity="0.9"/>
+      <LP x="154" y="113" w="32" h="6" color={C.white}/>
+    </svg>
+  );
+}
+
+export function L_MapAssetsAPI() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Three asset type cards */}
+      {[
+        { label:'Styles', sub:'MapLibre JSON', icon:'🎨', col: C.mid },
+        { label:'Sprites', sub:'PNG + JSON', icon:'🖼️', col: C.accent },
+        { label:'Fonts', sub:'PBF glyphs', icon:'✏️', col: C.soft },
+      ].map((a, i) => (
+        <g key={a.label}>
+          <rect x={8+i*64} y="8" width="58" height="54" rx="8" fill={C.panel}/>
+          <circle cx={8+i*64+29} cy="30" r="12" fill={a.col} opacity="0.25"/>
+          <text x={8+i*64+29} y="34" textAnchor="middle" fontSize="12">{a.icon}</text>
+          <LP x={8+i*64+6} y="46" w="46" h="6" color={C.navy}/>
+          <LP x={8+i*64+6} y="55" w="38" h="5" color={C.soft}/>
+        </g>
+      ))}
+      {/* Orbis-only badge */}
+      <rect x="8" y="70" width="90" height="14" rx="7" fill={C.accent} opacity="0.9"/>
+      <LP x="14" y="74" w="78" h="6" color={C.white}/>
+      {/* Style preview */}
+      <rect x="8" y="92" width="184" height="30" rx="6" fill={C.panel}/>
+      <LP x="14" y="98" w="60" h="6" color={C.soft}/>
+      <LP x="14" y="108" w="160" h="8" color={C.navy}/>
+    </svg>
+  );
+}
+
+export function L_MapStaticImage() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Static map frame */}
+      <rect x="8" y="8" width="120" height="90" rx="8" fill={C.grid}/>
+      <path d="M8 53 Q68 48 128 53" stroke={C.bg} strokeWidth="6" opacity="0.5"/>
+      <path d="M68 8 L68 98" stroke={C.bg} strokeWidth="4" opacity="0.4"/>
+      {/* Center pin */}
+      <circle cx="68" cy="53" r="8" fill={C.accent} opacity="0.9"/>
+      <line x1="68" y1="61" x2="68" y2="68" stroke={C.accent} strokeWidth="2"/>
+      {/* Watermark */}
+      <LP x="14" y="90" w="60" h="5" color={C.soft} rx="3"/>
+      {/* Size params panel */}
+      <rect x="136" y="8" width="56" height="90" rx="8" fill={C.panel}/>
+      <LP x="142" y="15" w="44" h="6" color={C.soft}/>
+      <LP x="142" y="26" w="34" h="8" color={C.navy}/>
+      <LP x="142" y="40" w="44" h="6" color={C.soft}/>
+      <LP x="142" y="51" w="28" h="8" color={C.navy}/>
+      <LP x="142" y="65" w="44" h="6" color={C.soft}/>
+      <LP x="142" y="76" w="38" h="8" color={C.mid}/>
+      {/* Output badge */}
+      <rect x="8" y="106" width="50" height="16" rx="8" fill={C.mid} opacity="0.9"/>
+      <LP x="14" y="110" w="38" h="8" color={C.white}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PARKING & FUEL APIS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_ParkingAvailability() {
+  const { palette: C } = useIlloStyle();
+  const spots = [C.accent,C.accent,C.soft,C.accent,C.danger,C.accent,C.soft,C.accent,C.accent,C.danger,C.accent,C.soft];
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Car park header */}
+      <rect x="8" y="8" width="184" height="26" rx="8" fill={C.panel}/>
+      <LP x="16" y="13" w="80" h="7" color={C.navy}/>
+      <LP x="16" y="24" w="50" h="5" color={C.soft}/>
+      <rect x="148" y="13" width="36" height="14" rx="7" fill={C.accent} opacity="0.9"/>
+      <LP x="154" y="17" w="24" h="6" color={C.white}/>
+      {/* Parking space grid */}
+      {spots.map((col, i) => {
+        const col2 = i % 6, row = Math.floor(i / 6);
+        return (
+          <g key={i}>
+            <rect x={8+col2*29} y={42+row*30} width="25" height="26" rx="3"
+              fill={col} opacity={col===C.soft?0.35:0.8}/>
+            {col === C.danger && (
+              <text x={8+col2*29+12} y={42+row*30+16} textAnchor="middle" fontSize="9" fill={C.white}>P</text>
+            )}
+          </g>
+        );
+      })}
+      {/* Levels */}
+      <rect x="182" y="42" width="10" height="52" rx="3" fill={C.panel}/>
+      {[0,1,2].map(i => <LP key={i} x="184" y={44+i*16} w="6" h="10" color={i===0?C.mid:C.soft}/>)}
+    </svg>
+  );
+}
+
+export function L_ParkingPrices() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Price header */}
+      <rect x="8" y="8" width="184" height="24" rx="8" fill={C.panel}/>
+      <LP x="16" y="13" w="90" h="7" color={C.navy}/>
+      <LP x="16" y="23" w="60" h="5" color={C.soft}/>
+      {/* Duration tiers */}
+      {[['0–1 hr', '€2.50'], ['1–3 hr', '€4.00'], ['3–8 hr', '€7.50'], ['All day', '€12.00']].map(([dur, price], i) => (
+        <g key={i}>
+          <rect x="8" y={40+i*20} width="184" height="18" rx="4"
+            fill={i===0?C.mid:C.panel} opacity={i===0?0.18:0.7}/>
+          <LP x="16" y={45+i*20} w="60" h="7" color={C.navy}/>
+          <LP x="136" y={44+i*20} w="48" h="9" color={i===0?C.mid:C.navy}/>
+        </g>
+      ))}
+      {/* Payment methods */}
+      <rect x="8" y="124" width="1" height="1" fill="none"/>
+      <LP x="8" y="124" w="44" h="1" color={C.border}/>
+      {['💳','📱','💶'].map((_, i) => (
+        <rect key={i} x={8+i*44} y="106" width="38" height="16" rx="6" fill={C.panel}/>
+      ))}
+      <LP x="14" y="110" w="26" h="8" color={C.soft}/>
+      <LP x="58" y="110" w="26" h="8" color={C.soft}/>
+      <LP x="102" y="110" w="26" h="8" color={C.soft}/>
+    </svg>
+  );
+}
+
+export function L_OnStreetParking() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Street */}
+      <path d="M0 65 Q100 62 200 65" stroke={C.bg} strokeWidth="22" opacity="0.55"/>
+      {/* Kerbside zones — probability colour */}
+      <rect x="10" y="54" width="28" height="10" rx="2" fill={C.accent} opacity="0.85"/>
+      <rect x="42" y="54" width="28" height="10" rx="2" fill={C.accent} opacity="0.7"/>
+      <rect x="74" y="54" width="28" height="10" rx="2" fill={C.warn} opacity="0.75"/>
+      <rect x="106" y="54" width="28" height="10" rx="2" fill={C.danger} opacity="0.7"/>
+      <rect x="138" y="54" width="28" height="10" rx="2" fill={C.warn} opacity="0.6"/>
+      <rect x="168" y="54" width="24" height="10" rx="2" fill={C.accent} opacity="0.75"/>
+      {/* Same on other side */}
+      <rect x="10"  y="66" width="28" height="10" rx="2" fill={C.soft} opacity="0.5"/>
+      <rect x="42"  y="66" width="28" height="10" rx="2" fill={C.accent} opacity="0.6"/>
+      <rect x="74"  y="66" width="28" height="10" rx="2" fill={C.accent} opacity="0.75"/>
+      <rect x="106" y="66" width="28" height="10" rx="2" fill={C.danger} opacity="0.55"/>
+      <rect x="138" y="66" width="28" height="10" rx="2" fill={C.soft} opacity="0.45"/>
+      {/* Legend */}
+      <rect x="8" y="90" width="184" height="32" rx="6" fill={C.panel}/>
+      {[[C.accent,'Available'],[C.warn,'Limited'],[C.danger,'Restricted']].map(([col,],i) => (
+        <g key={i}>
+          <rect x={14+i*62} y="100" width="12" height="6" rx="3" fill={col}/>
+          <LP x={29+i*62} y="100" w="40" h="6" color={C.navy}/>
+        </g>
+      ))}
+      {/* Probability badge */}
+      <rect x="8" y="8" width="90" height="18" rx="9" fill={C.panel}/>
+      <LP x="14" y="12" w="78" h="10" color={C.navy}/>
+    </svg>
+  );
+}
+
+export function L_FuelPrices() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Station card */}
+      <rect x="8" y="8" width="184" height="30" rx="8" fill={C.panel}/>
+      <rect x="8" y="8" width="40" height="30" rx="8" fill={C.mid} opacity="0.6"/>
+      <text x="28" y="27" textAnchor="middle" fontSize="16">⛽</text>
+      <LP x="54" y="13" w="90" h="7" color={C.navy}/>
+      <LP x="54" y="24" w="60" h="5" color={C.soft}/>
+      {/* Fuel type rows */}
+      {[['Unleaded 95','green'],['Diesel','mid'],['Premium 98','warn'],['LPG','soft']].map(([name,tok],i) => (
+        <g key={i}>
+          <rect x="8" y={46+i*18} width="184" height="16" rx="4"
+            fill={i===0?C.panel:C.panel} opacity={i%2===0?0.7:0.5}/>
+          <rect x="8" y={46+i*18} width="6" height="16" rx="2" fill={C[tok]||C.mid} opacity="0.9"/>
+          <LP x="20" y={50+i*18} w="80" h="7" color={C.navy}/>
+          <LP x="148" y={49+i*18} w="36" h="9" color={C.mid}/>
+        </g>
+      ))}
+      {/* Refresh badge */}
+      <rect x="8" y="120" width="184" height="1" fill={C.border} opacity="0.3"/>
+      <rect x="8" y="118" width="90" height="8" rx="4" fill={C.panel}/>
+      <LP x="14" y="121" w="78" h="4" color={C.soft}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SNAP TO ROADS API
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_SnapToRoads() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Road */}
+      <path d="M15 100 Q60 72 100 65 T185 35" stroke={C.bg} strokeWidth="10" opacity="0.5"/>
+      {/* Raw GPS trace — jittery */}
+      <path d="M15 105 Q35 85 58 80 Q72 77 88 72 Q105 68 118 62 Q138 55 152 47 Q168 40 185 38"
+        stroke={C.warn} strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 2" opacity="0.8"/>
+      {/* Snapped trace — clean on road */}
+      <path d="M15 100 Q60 72 100 65 T185 35"
+        stroke={C.accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
+      {/* Snap arrows */}
+      {[[58,78,58,73],[100,68,100,65],[148,50,148,46]].map(([x1,y1,x2,y2],i) => (
+        <g key={i}>
+          <circle cx={x1} cy={y1} r="3" fill={C.warn} opacity="0.8"/>
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={C.soft} strokeWidth="1" strokeDasharray="1.5 1.5"/>
+          <circle cx={x2} cy={y2} r="3" fill={C.accent} opacity="0.9"/>
+        </g>
+      ))}
+      {/* Legend */}
+      <rect x="8" y="8" width="140" height="28" rx="6" fill={C.panel}/>
+      <LP x="14" y="13" w="6" h="6" color={C.warn}/>
+      <LP x="24" y="13" w="50" h="6" color={C.navy}/>
+      <LP x="14" y="23" w="6" h="6" color={C.accent}/>
+      <LP x="24" y="23" w="50" h="6" color={C.navy}/>
+      {/* Speed limit badge */}
+      <rect x="158" y="8" width="34" height="28" rx="6" fill={C.panel}/>
+      <LP x="164" y="13" w="22" h="6" color={C.soft}/>
+      <LP x="164" y="23" w="22" h="8" color={C.navy}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   BATCH SEARCH API
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_BatchSearch() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Input batch */}
+      <rect x="8" y="8" width="80" height="110" rx="8" fill={C.panel}/>
+      <LP x="14" y="14" w="60" h="7" color={C.navy}/>
+      {[0,1,2,3,4].map(i => (
+        <g key={i}>
+          <rect x="14" y={28+i*17} width="68" height="13" rx="4"
+            fill={i===0?C.mid:C.grid} opacity={i===0?0.2:0.5}/>
+          <circle cx="20" cy={28+i*17+6} r="4" fill={i===0?C.mid:C.soft} opacity="0.8"/>
+          <LP x="28" y={30+i*17} w={32+(i%3)*8} h="5" color={i===0?C.mid:C.navy}/>
+        </g>
+      ))}
+      <LP x="14" y="102" w="44" h="6" color={C.soft}/>
+      {/* Arrow */}
+      <path d="M92 65 L106 65 M102 61 L106 65 L102 69" stroke={C.mid} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Results batch */}
+      <rect x="110" y="8" width="82" height="110" rx="8" fill={C.panel}/>
+      <LP x="116" y="14" w="60" h="7" color={C.navy}/>
+      {[0,1,2,3,4].map(i => (
+        <g key={i}>
+          <rect x="116" y={28+i*17} width="70" height="13" rx="4" fill={C.panel} opacity="0.7"/>
+          <circle cx="122" cy={28+i*17+6} r="4" fill={C.accent} opacity={0.9-i*0.12}/>
+          <LP x="130" y={30+i*17} w={28+(i%3)*10} h="5" color={C.navy}/>
+          <LP x="130" y={30+i*17+8} w={22+(i%2)*8} h="4" color={C.soft}/>
+        </g>
+      ))}
+      {/* Async badge */}
+      <rect x="116" y="102" width="54" height="10" rx="5" fill={C.accent} opacity="0.85"/>
+      <LP x="122" y="105" w="42" h="5" color={C.white}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   POI DETAILS & PHOTOS APIS
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_POIDetails() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* POI header */}
+      <rect x="8" y="8" width="184" height="28" rx="8" fill={C.panel}/>
+      <circle cx="22" cy="22" r="8" fill={C.mid} opacity="0.7"/>
+      <LP x="36" y="12" w="90" h="8" color={C.navy}/>
+      <LP x="36" y="24" w="60" h="6" color={C.soft}/>
+      {/* Star rating */}
+      {[0,1,2,3,4].map(i => (
+        <text key={i} x={140+i*10} y="25" fontSize="9" fill={i<4?C.warn:C.soft} opacity={i<4?1:0.4}>★</text>
+      ))}
+      {/* Info rows */}
+      <rect x="8" y="44" width="184" height="12" rx="4" fill={C.panel} opacity="0.7"/>
+      <LP x="14" y="47" w="28" h="6" color={C.soft}/>
+      <LP x="60" y="47" w="100" h="6" color={C.navy}/>
+      <rect x="8" y="60" width="184" height="12" rx="4" fill={C.panel} opacity="0.7"/>
+      <LP x="14" y="63" w="28" h="6" color={C.soft}/>
+      <LP x="60" y="63" w="80" h="6" color={C.navy}/>
+      <rect x="8" y="76" width="184" height="12" rx="4" fill={C.panel} opacity="0.7"/>
+      <LP x="14" y="79" w="28" h="6" color={C.soft}/>
+      <LP x="60" y="79" w="110" h="6" color={C.mid}/>
+      {/* Popular hours mini-chart */}
+      <rect x="8" y="96" width="184" height="26" rx="6" fill={C.panel}/>
+      <LP x="14" y="101" w="50" h="6" color={C.soft}/>
+      {[14,22,28,18,30,28,20,10,8].map((h,i) => (
+        <rect key={i} x={80+i*10} y={115-h/2} width="7" height={h/2} rx="1" fill={C.mid} opacity="0.7"/>
+      ))}
+    </svg>
+  );
+}
+
+export function L_POIPhotos() {
+  const { palette: C } = useIlloStyle();
+  const photoColors = [C.mid, C.soft, C.accent, C.panel, C.grid, C.soft];
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Large featured photo */}
+      <rect x="8" y="8" width="120" height="80" rx="8" fill={photoColors[0]} opacity="0.7"/>
+      {/* Landscape lines in photo */}
+      <rect x="8" y="56" width="120" height="32" rx="0 0 8 8" fill={C.dark} opacity="0.3"/>
+      <LP x="14" y="62" w="80" h="7" color={C.white}/>
+      <LP x="14" y="73" w="50" h="5" color={C.white}/>
+      {/* Small photo grid */}
+      {[0,1,2].map(i => (
+        <rect key={i} x={132} y={8+i*28} width="60" height="24" rx="4"
+          fill={photoColors[i+2]} opacity="0.65"/>
+      ))}
+      {/* Orbis-only badge */}
+      <rect x="8" y="96" width="76" height="16" rx="8" fill={C.accent} opacity="0.9"/>
+      <LP x="14" y="100" w="64" h="8" color={C.white}/>
+      {/* Resolution chip */}
+      <rect x="90" y="96" width="80" height="16" rx="8" fill={C.panel}/>
+      <LP x="96" y="100" w="68" h="8" color={C.navy}/>
+      {/* Count */}
+      <rect x="8" y="118" width="50" height="8" rx="4" fill={C.panel}/>
+      <LP x="14" y="121" w="38" h="4" color={C.soft}/>
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TRAFFIC ANALYTICS (standalone)
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+export function L_TrafficStats() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      <LP x="8" y="8" w="110" h="9" color={C.navy}/>
+      <LP x="8" y="22" w="70" h="6" color={C.soft}/>
+      {/* Speed trend chart */}
+      <rect x="8" y="34" width="184" height="60" rx="6" fill={C.panel}/>
+      {/* Y axis labels */}
+      <LP x="12" y="38" w="14" h="5" color={C.soft}/>
+      <LP x="12" y="54" w="14" h="5" color={C.soft}/>
+      <LP x="12" y="70" w="14" h="5" color={C.soft}/>
+      {/* Speed lines */}
+      <path d="M30 82 L50 70 L70 65 L90 58 L110 62 L130 55 L150 60 L170 52 L188 48"
+        stroke={C.mid} strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M30 88 L50 82 L70 76 L90 72 L110 78 L130 72 L150 75 L170 68 L188 65"
+        stroke={C.soft} strokeWidth="1.5" strokeLinecap="round" fill="none" strokeDasharray="3 2"/>
+      {/* Percentile bands */}
+      <path d="M30 82 L50 70 L70 65 L90 58 L110 62 L130 55 L150 60 L170 52 L188 48 L188 65 L170 68 L150 75 L130 72 L110 78 L90 72 L70 76 L50 82 L30 88 Z"
+        fill={C.mid} opacity="0.1"/>
+      {/* Legend */}
+      <rect x="8" y="100" width="184" height="22" rx="6" fill={C.panel}/>
+      <LP x="14" y="105" w="6" h="6" color={C.mid}/>
+      <LP x="24" y="105" w="50" h="6" color={C.navy}/>
+      <LP x="80" y="105" w="6" h="6" color={C.soft}/>
+      <LP x="90" y="105" w="50" h="6" color={C.navy}/>
+      <LP x="14" y="114" w="80" h="5" color={C.soft}/>
+    </svg>
+  );
+}
+
+export function L_AreaAnalytics() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Map base */}
+      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="7" opacity="0.4"/>
+      <path d="M100 0 L100 130" stroke={C.bg} strokeWidth="5" opacity="0.35"/>
+      {/* Analysis zone polygon */}
+      <path d="M50 30 L130 25 L155 75 L120 105 L45 100 L25 60 Z"
+        fill={C.mid} fillOpacity="0.18" stroke={C.mid} strokeWidth="1.5" strokeDasharray="4 3"/>
+      {/* Congestion heatmap cells inside zone */}
+      {[[65,45],[90,42],[110,50],[80,68],[105,70],[130,60],[70,85],[100,85]].map(([px,py],i) => (
+        <circle key={i} cx={px} cy={py} r={8-i%3} fill={[C.accent,C.warn,C.danger,C.accent,C.mid][i%5]} opacity={0.5+i%3*0.1}/>
+      ))}
+      {/* Stats card */}
+      <rect x="8" y="8" width="80" height="46" rx="6" fill={C.panel}/>
+      <LP x="14" y="13" w="60" h="6" color={C.navy}/>
+      <LP x="14" y="23" w="44" h="8" color={C.mid}/>
+      <LP x="14" y="36" w="60" h="5" color={C.soft}/>
+      <LP x="14" y="45" w="44" h="5" color={C.soft}/>
+    </svg>
+  );
+}
+
+export function L_ODAnalysis() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.bg} rx="12"/>
+      <DW/>
+      {/* Origin zones */}
+      {[[15,20],[15,65],[15,105]].map(([x,y],i) => (
+        <g key={i}>
+          <rect x={x} y={y-12} width="30" height="24" rx="6" fill={C.mid} opacity={0.8-i*0.15}/>
+          <LP x={x+4} y={y-5} w="22" h="8" color={C.white}/>
+        </g>
+      ))}
+      {/* Flow lines (OD pairs) */}
+      {[[30,20,160,28],[30,65,160,65],[30,105,160,98],[30,20,160,98],[30,65,160,28]].map(([x1,y1,x2,y2],i) => (
+        <path key={i} d={`M${x1} ${y1} C80 ${y1} 120 ${y2} ${x2} ${y2}`}
+          stroke={C.soft} strokeWidth={3-i*0.4} opacity={0.6-i*0.08} fill="none"/>
+      ))}
+      {/* Destination zones */}
+      {[[160,28],[160,65],[160,98]].map(([x,y],i) => (
+        <g key={i}>
+          <rect x={x} y={y-12} width="30" height="24" rx="6" fill={C.accent} opacity={0.85-i*0.12}/>
+          <LP x={x+4} y={y-5} w="22" h="8" color={C.white}/>
+        </g>
+      ))}
+      {/* Matrix result */}
+      <rect x="60" y="6" width="80" height="14" rx="7" fill={C.panel}/>
+      <LP x="66" y="9" w="68" h="8" color={C.navy}/>
+    </svg>
+  );
+}
+
+export function L_JunctionAnalytics() {
+  const { palette: C } = useIlloStyle();
+  return (
+    <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* Roads meeting at junction */}
+      <path d="M0 65 L200 65" stroke={C.bg} strokeWidth="12" opacity="0.5"/>
+      <path d="M100 0 L100 130" stroke={C.bg} strokeWidth="10" opacity="0.5"/>
+      {/* Junction box */}
+      <rect x="80" y="45" width="40" height="40" rx="4" fill={C.bg} opacity="0.7"/>
+      {/* Turn movement arrows */}
+      {[[88,55,88,70,'↓'],[100,73,115,73,'→'],[112,55,112,55,'↑'],[88,65,100,65,'⬐']].map(([,,,,txt],i) => (
+        <text key={i} x={[88,108,112,94][i]} y={[75,68,60,68][i]} fontSize="8" fill={C.mid} textAnchor="middle">{['↓','→','↑','↳'][i]}</text>
+      ))}
+      {/* Flow indicator bars */}
+      {[[8,8,70,'N approach'],[8,28,50,'S approach'],[8,48,85,'E approach'],[8,68,40,'W approach']].map(([x,y,w,],i) => (
+        <g key={i}>
+          <rect x={130} y={8+i*24} width="62" height="18" rx="4" fill={C.panel}/>
+          <LP x={136} y={12+i*24} w="50" h="5" color={C.soft}/>
+          <rect x={136} y={20+i*24} width={50} height="4" rx="2" fill={C.grid}/>
+          <rect x={136} y={20+i*24} width={[38,26,44,20][i]} height="4" rx="2" fill={[C.accent,C.mid,C.warn,C.soft][i]}/>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
    makeThumb factory
    Returns a React component that reads IlloStyleContext and renders Dark or Light.
    Safe to call at module level (hook is only invoked at render time).

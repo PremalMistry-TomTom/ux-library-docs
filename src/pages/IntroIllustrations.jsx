@@ -2,6 +2,17 @@ import React from 'react';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
+import {
+  L_SearchFuzzy, L_SearchPOI, L_SearchCategory, L_SearchNearby, L_SearchAlongRoute, L_SearchAutocomplete,
+  L_Geocode, L_ReverseGeocode,
+  L_TrafficFlow, L_TrafficIncidents, L_TrafficFlowTile, L_TrafficModelID,
+  L_EVSearchNearby, L_EVChargingAvailability, L_EVMarketCoverage,
+  L_MapRasterTile, L_MapVectorTile, L_MapSatelliteTile, L_MapAssetsAPI, L_MapStaticImage,
+  L_ParkingAvailability, L_ParkingPrices, L_OnStreetParking, L_FuelPrices,
+  L_SnapToRoads, L_BatchSearch,
+  L_POIDetails, L_POIPhotos,
+  L_TrafficStats, L_AreaAnalytics, L_ODAnalysis, L_JunctionAnalytics,
+} from '../illustrations/lightVariants';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    INTRO HERO ILLUSTRATIONS
@@ -2791,6 +2802,687 @@ function L_ANA_DriverExp() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Search & Places — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+const D = { bg: '#0d1117', card: '#161b22', line: '#21262d', text: '#e6edf3', dim: '#8b949e', green: '#3fb950', blue: '#58a6ff', red: '#e2001a', amber: '#fbbf24', purple: '#a78bfa' };
+
+function IlloSearchFuzzy() {
+  const rows = [['📍 Place name', '0.3 km', D.blue], ['🏪 Fuzzy match', '0.7 km', D.dim], ['📍 Street addr.', '1.1 km', D.blue], ['🏥 Category hit', '1.4 km', D.dim]];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: D.card, borderRadius: 8, padding: '5px 8px', marginBottom: 8, border: `1px solid ${D.line}` }}>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={D.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span style={{ fontSize: '0.5rem', color: D.dim, flex: 1 }}>Search anywhere…</span>
+        <span style={{ fontSize: '0.45rem', padding: '1px 5px', borderRadius: 4, background: D.blue, color: '#fff' }}>Fuzzy</span>
+      </div>
+      {rows.map(([name, dist, col], i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 2px', borderBottom: i < 3 ? `1px solid ${D.line}` : 'none' }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: i === 0 ? D.red : D.card, border: `1.5px solid ${col}`, flexShrink: 0 }}/>
+          <span style={{ fontSize: '0.5rem', color: D.text, flex: 1 }}>{name}</span>
+          <span style={{ fontSize: '0.5rem', color: D.dim }}>{dist}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloSearchPOI() {
+  const cats = [['☕ Cafe', D.amber], ['⛽ Fuel', D.blue], ['🍕 Food', D.red], ['🏨 Hotel', D.purple]];
+  const pois = [['Café Central', '0.2 km', '★ 4.7'], ['Brasserie Nord', '0.5 km', '★ 4.4'], ['La Terrasse', '0.9 km', '★ 4.2']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ display: 'flex', gap: 5, marginBottom: 8, flexWrap: 'wrap' }}>
+        {cats.map(([l, c], i) => (
+          <span key={i} style={{ fontSize: '0.45rem', padding: '2px 6px', borderRadius: 10, background: i === 0 ? c : D.card, color: i === 0 ? '#000' : D.dim, border: `1px solid ${i === 0 ? c : D.line}` }}>{l}</span>
+        ))}
+      </div>
+      {pois.map(([name, dist, rating], i) => (
+        <div key={i} style={{ display: 'flex', gap: 6, padding: '5px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <div style={{ width: 22, height: 22, borderRadius: 6, background: D.card, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.6rem', flexShrink: 0 }}>☕</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text }}>{name}</div>
+            <div style={{ fontSize: '0.45rem', color: D.dim }}>{dist} · <span style={{ color: D.amber }}>{rating}</span></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloSearchCategory() {
+  const tree = [['🍽️ Food & Drink', true, 0], ['  ☕ Cafe/Bar', false, 1], ['  🍕 Restaurant', true, 1], ['  🍺 Pub', false, 1], ['🛍️ Shopping', false, 0]];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Category Search</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 8 }}>Browse POI taxonomy</div>
+      {tree.map(([label, active, indent], i) => (
+        <div key={i} style={{ padding: `3px ${4 + indent * 10}px`, background: active ? 'rgba(88,166,255,0.12)' : 'none', borderRadius: 4, marginBottom: 1 }}>
+          <span style={{ fontSize: '0.5rem', color: active ? D.blue : D.dim, fontWeight: active ? 700 : 400 }}>{label}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: D.green }}/>
+        <span style={{ fontSize: '0.45rem', color: D.green }}>243 results found</span>
+      </div>
+    </div>
+  );
+}
+
+function IlloSearchNearby() {
+  const pins = [['Cafe Nord', '0.2 km'], ['Hotel Arc', '0.5 km'], ['Park Mall', '0.8 km']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ position: 'relative', height: 70, background: '#0f1a28', borderRadius: 8, marginBottom: 8, overflow: 'hidden' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 160 70" fill="none">
+          <circle cx="80" cy="35" r="25" stroke={D.blue} strokeWidth="1" strokeDasharray="3 3" opacity="0.4"/>
+          <circle cx="80" cy="35" r="15" stroke={D.blue} strokeWidth="0.5" opacity="0.25"/>
+          <circle cx="80" cy="35" r="5" fill={D.red}/>
+          {[[58,20],[100,28],[65,52]].map(([x,y],i) => <circle key={i} cx={x} cy={y} r="4" fill={D.blue} opacity="0.8"/>)}
+        </svg>
+      </div>
+      {pins.map(([name, dist], i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <span style={{ fontSize: '0.5rem', color: D.text }}>{name}</span>
+          <span style={{ fontSize: '0.5rem', color: D.dim }}>{dist}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloSearchAlongRoute() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Along Route Search</div>
+      <div style={{ position: 'relative', height: 80, background: '#0f1a28', borderRadius: 8, marginBottom: 8, overflow: 'hidden' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 160 80" fill="none">
+          <path d="M15 65 Q50 50 80 40 Q110 30 145 15" stroke={D.red} strokeWidth="2.5" strokeLinecap="round"/>
+          <path d="M15 65 Q50 50 80 40 Q110 30 145 15" stroke="rgba(226,0,26,0.15)" strokeWidth="10" strokeLinecap="round"/>
+          {[[55,48],[85,38],[115,27]].map(([x,y],i) => (
+            <g key={i}>
+              <circle cx={x} cy={y} r="7" fill={D.card} stroke={D.blue} strokeWidth="1.5"/>
+              <text x={x} y={y+3} textAnchor="middle" fill={D.blue} style={{fontSize:7}}>⛽</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+      <div style={{ fontSize: '0.45rem', color: D.green }}>⚡ 3 fuel stations · within 2 km deviation</div>
+    </div>
+  );
+}
+
+function IlloSearchAutocomplete() {
+  const suggestions = ['Amsterdam Centr…', 'Amsterdam Airport', 'Amsterdam Noord'];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: D.card, borderRadius: 8, padding: '5px 8px', marginBottom: 6, border: `1px solid ${D.blue}` }}>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke={D.blue} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span style={{ fontSize: '0.5rem', color: D.text }}>Amster<span style={{ color: D.blue }}>|</span></span>
+      </div>
+      {suggestions.map((s, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 6px', background: i === 0 ? 'rgba(88,166,255,0.1)' : 'none', borderRadius: 4, marginBottom: 2 }}>
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={D.dim} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span style={{ fontSize: '0.5rem', color: i === 0 ? D.text : D.dim }}>{s}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 4, fontSize: '0.45rem', color: D.dim }}>⌛ Debounce 300ms · typeahead</div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Geocoding — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloGeocode() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Geocoding</div>
+      <div style={{ background: D.card, borderRadius: 6, padding: '6px 8px', marginBottom: 6, border: `1px solid ${D.line}` }}>
+        <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 2 }}>ADDRESS INPUT</div>
+        <div style={{ fontSize: '0.5rem', color: D.text }}>Hullenbergweg 11, Amsterdam</div>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 6 }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={D.blue} strokeWidth="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+      <div style={{ background: 'rgba(88,166,255,0.08)', borderRadius: 6, padding: '6px 8px', border: `1px solid rgba(88,166,255,0.2)` }}>
+        <div style={{ fontSize: '0.45rem', color: D.blue, marginBottom: 2 }}>COORDINATES</div>
+        <div style={{ fontSize: '0.5rem', color: D.text, fontFamily: 'monospace' }}>52.2977°N 4.9418°E</div>
+        <div style={{ fontSize: '0.45rem', color: D.dim, marginTop: 2 }}>Confidence: 0.97 · match: street</div>
+      </div>
+    </div>
+  );
+}
+
+function IlloReverseGeocode() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Reverse Geocode</div>
+      <div style={{ position: 'relative', height: 64, background: '#0f1a28', borderRadius: 8, marginBottom: 6, overflow: 'hidden' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 160 64" fill="none">
+          <circle cx="80" cy="32" r="5" fill={D.red}/>
+          <line x1="80" y1="0" x2="80" y2="27" stroke={D.dim} strokeWidth="0.5" strokeDasharray="3 2"/>
+          <line x1="80" y1="37" x2="80" y2="64" stroke={D.dim} strokeWidth="0.5" strokeDasharray="3 2"/>
+          <line x1="0" y1="32" x2="75" y2="32" stroke={D.dim} strokeWidth="0.5" strokeDasharray="3 2"/>
+          <line x1="85" y1="32" x2="160" y2="32" stroke={D.dim} strokeWidth="0.5" strokeDasharray="3 2"/>
+          <text x="85" y="16" fill={D.blue} style={{fontSize:8}}>52.29°N</text>
+          <text x="85" y="50" fill={D.blue} style={{fontSize:8}}>4.94°E</text>
+        </svg>
+      </div>
+      <div style={{ background: D.card, borderRadius: 6, padding: '5px 8px', border: `1px solid ${D.line}` }}>
+        <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 1 }}>RESOLVED ADDRESS</div>
+        <div style={{ fontSize: '0.5rem', color: D.text }}>Hullenbergweg 11, Amsterdam</div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Traffic — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloTrafficFlow() {
+  const speeds = [[D.green,'68','Free flow'],[D.amber,'42','Moderate'],['#f97316','18','Slow'],['#ef4444','5','Queuing']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 8 }}>Traffic Flow</div>
+      {speeds.map(([col, spd, label], i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
+          <div style={{ width: 40, height: 5, borderRadius: 3, background: col, flexShrink: 0 }}/>
+          <span style={{ fontSize: '0.5rem', color: D.text, fontFamily: 'monospace', width: 22 }}>{spd} km/h</span>
+          <span style={{ fontSize: '0.45rem', color: D.dim }}>{label}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 4, fontSize: '0.45rem', color: D.green }}>⚡ Live · updated 90s</div>
+    </div>
+  );
+}
+
+function IlloTrafficIncidents() {
+  const incidents = [['🚧', 'Roadworks', 'A10 · km 14', D.amber], ['🚗', 'Accident', 'Ring East · km 3', '#ef4444'], ['⚠️', 'Road closed', 'N200 · km 7', '#f97316']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Traffic Incidents</div>
+      {incidents.map(([icon, type, loc, col], i) => (
+        <div key={i} style={{ display: 'flex', gap: 6, padding: '4px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <span style={{ fontSize: '0.75rem', lineHeight: 1.2 }}>{icon}</span>
+          <div>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: col }}>{type}</div>
+            <div style={{ fontSize: '0.45rem', color: D.dim }}>{loc}</div>
+          </div>
+        </div>
+      ))}
+      <div style={{ marginTop: 4, fontSize: '0.45rem', color: D.dim }}>3 active · 12 km radius</div>
+    </div>
+  );
+}
+
+function IlloTrafficFlowTile() {
+  const rows = 3, cols = 4;
+  const colors = ['#22c55e','#86efac','#fbbf24','#f97316','#ef4444','#22c55e','#fbbf24','#22c55e','#86efac','#f97316','#22c55e','#fbbf24'];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Flow Tile</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 8 }}>z=12 / x=2095 / y=1359</div>
+      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: 3 }}>
+        {colors.map((c, i) => (
+          <div key={i} style={{ height: 22, borderRadius: 3, background: c, opacity: 0.75 }}/>
+        ))}
+      </div>
+      <div style={{ marginTop: 6, fontSize: '0.45rem', color: D.dim }}>PNG · 256×256 · traffic overlay</div>
+    </div>
+  );
+}
+
+function IlloTrafficModelID() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Traffic Model ID</div>
+      <div style={{ background: D.card, borderRadius: 8, padding: '8px 10px', border: `1px solid ${D.line}`, marginBottom: 8 }}>
+        <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 3 }}>CURRENT MODEL</div>
+        <div style={{ fontSize: '0.625rem', fontWeight: 700, color: D.blue, fontFamily: 'monospace' }}>#1680</div>
+        <div style={{ fontSize: '0.45rem', color: D.dim, marginTop: 2 }}>Updated: 2024-01-15 09:42 UTC</div>
+      </div>
+      <div style={{ display: 'flex', gap: 6 }}>
+        {[['#1678', D.dim], ['#1679', D.dim], ['#1680', D.blue]].map(([id, col], i) => (
+          <div key={i} style={{ flex: 1, background: D.card, borderRadius: 4, padding: '3px 4px', textAlign: 'center', border: `1px solid ${col}` }}>
+            <div style={{ fontSize: '0.45rem', color: col, fontFamily: 'monospace' }}>{id}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   EV & Charging — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloEVSearchNearby() {
+  const stations = [['Belib+', '22 kW', '3/4 avail.', D.green], ['Fastned', '150 kW', '1/2 avail.', D.green], ['Ionity', '350 kW', '0/4 avail.', '#ef4444']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>EV Stations Nearby</div>
+      <div style={{ fontSize: '0.45rem', color: D.green, marginBottom: 7 }}>⚡ Radius: 5 km · 3 found</div>
+      {stations.map(([name, kw, avail, col], i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <div style={{ width: 12, height: 12, borderRadius: '50%', background: col, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.4rem', flexShrink: 0 }}>⚡</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text }}>{name}</div>
+            <div style={{ fontSize: '0.45rem', color: D.dim }}>{kw} · <span style={{ color: col }}>{avail}</span></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloEVChargingAvailability() {
+  const connectors = [['CCS2', '150kW', D.green, 'Available'], ['Type2', '22kW', D.green, 'Available'], ['CHAdeMO', '50kW', D.amber, 'Charging'], ['CCS2', '150kW', '#ef4444', 'Offline']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Connector Status</div>
+      {connectors.map(([type, kw, col, status], i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: col, flexShrink: 0 }}/>
+          <span style={{ fontSize: '0.5rem', color: D.text, flex: 1 }}>{type} · {kw}</span>
+          <span style={{ fontSize: '0.45rem', color: col }}>{status}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloEVMarketCoverage() {
+  const regions = [['NL', 98, D.green], ['DE', 87, D.blue], ['FR', 74, D.blue], ['UK', 61, D.amber], ['ES', 43, '#f97316']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>EV Market Coverage</div>
+      {regions.map(([country, pct, col], i) => (
+        <div key={i} style={{ marginBottom: 5 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+            <span style={{ fontSize: '0.45rem', color: D.text }}>{country}</span>
+            <span style={{ fontSize: '0.45rem', color: col, fontFamily: 'monospace' }}>{pct}%</span>
+          </div>
+          <div style={{ height: 4, background: D.card, borderRadius: 2 }}>
+            <div style={{ height: '100%', width: `${pct}%`, background: col, borderRadius: 2 }}/>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Map Display — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloMapRasterTile() {
+  const colors = ['#1a2535','#1e2d40','#243347','#1a2535','#1e2d40','#243347','#1a2535','#1e2d40','#243347'];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Raster Map Tile</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6, fontFamily: 'monospace' }}>z=14 / x=8390 / y=5441</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 2, marginBottom: 6 }}>
+        {colors.map((c, i) => (
+          <div key={i} style={{ height: 28, borderRadius: 2, background: c, position: 'relative', overflow: 'hidden' }}>
+            {i === 4 && <div style={{ position: 'absolute', inset: 0, background: 'rgba(226,0,26,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '0.6rem' }}>📍</span>
+            </div>}
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: '0.45rem', color: D.dim }}>PNG · 256×256 · TomTom raster</div>
+    </div>
+  );
+}
+
+function IlloMapVectorTile() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Vector Map Tile</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6, fontFamily: 'monospace' }}>.pbf · styleable</div>
+      <div style={{ height: 74, background: '#0f1a28', borderRadius: 6, overflow: 'hidden' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 140 74" fill="none">
+          <rect width="140" height="74" fill="#0f1a28"/>
+          <path d="M10 37 L50 20 L90 37 L130 20" stroke={D.blue} strokeWidth="1.5" opacity="0.6"/>
+          <path d="M0 55 L40 45 L80 55 L140 42" stroke={D.dim} strokeWidth="0.8" opacity="0.4"/>
+          <rect x="40" y="25" width="20" height="14" fill="rgba(88,166,255,0.15)" stroke={D.blue} strokeWidth="0.5"/>
+          <rect x="75" y="15" width="16" height="12" fill="rgba(88,166,255,0.1)" stroke={D.dim} strokeWidth="0.5"/>
+          <circle cx="65" cy="50" r="4" fill={D.red} opacity="0.8"/>
+        </svg>
+      </div>
+      <div style={{ marginTop: 6, display: 'flex', gap: 6 }}>
+        {['roads','labels','pois'].map((l, i) => (
+          <span key={i} style={{ fontSize: '0.4rem', padding: '1px 5px', borderRadius: 4, background: D.card, color: D.blue, border: `1px solid ${D.line}` }}>{l}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function IlloMapSatelliteTile() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Satellite Tile</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6, fontFamily: 'monospace' }}>Aerial · 256×256</div>
+      <div style={{ height: 74, borderRadius: 6, overflow: 'hidden', position: 'relative', background: '#1a2a1a' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 140 74" fill="none">
+          <rect width="140" height="74" fill="#1a2a1a"/>
+          <rect x="0" y="0" width="140" height="74" fill="url(#sat-grad)"/>
+          <defs><radialGradient id="sat-grad" cx="50%" cy="50%" r="60%"><stop offset="0%" stopColor="#2a3a2a"/><stop offset="100%" stopColor="#1a2a1a"/></radialGradient></defs>
+          {[[20,15,40,20],[70,10,25,15],[10,40,30,25],[80,35,40,30],[50,55,35,15]].map(([x,y,w,h],i) => (
+            <rect key={i} x={x} y={y} width={w} height={h} fill={`rgba(${[80,100,70,90,60][i]},${[100,80,110,90,80][i]},${[60,70,50,60,55][i]},0.4)`} rx="1"/>
+          ))}
+          <rect x="20" y="30" width="8" height="30" fill="rgba(200,200,200,0.3)" rx="1"/>
+          <rect x="60" y="20" width="60" height="4" fill="rgba(200,200,200,0.2)" rx="1"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function IlloMapAssetsAPI() {
+  const assets = [['sprite_day.png', '2.4 MB', '🖼️'], ['sprite_night.png', '2.4 MB', '🌙'], ['font_roboto.pbf', '1.1 MB', '🔤'], ['style.json', '48 KB', '{}']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Map Assets API</div>
+      {assets.map(([name, size, icon], i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <span style={{ fontSize: '0.65rem' }}>{icon}</span>
+          <span style={{ fontSize: '0.45rem', color: D.text, flex: 1 }}>{name}</span>
+          <span style={{ fontSize: '0.4rem', color: D.dim, fontFamily: 'monospace' }}>{size}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloMapStaticImage() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Static Map Image</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6, fontFamily: 'monospace' }}>600×400 · zoom=14</div>
+      <div style={{ height: 74, background: '#0f1a28', borderRadius: 6, overflow: 'hidden', position: 'relative' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 140 74" fill="none">
+          <rect width="140" height="74" fill="#0f1a28"/>
+          <path d="M10 37 Q40 25 70 37 Q100 49 130 37" stroke={D.dim} strokeWidth="8" opacity="0.3"/>
+          <path d="M0 50 Q35 38 70 50 Q105 62 140 50" stroke={D.dim} strokeWidth="5" opacity="0.2"/>
+          <circle cx="70" cy="37" r="7" fill={D.red}/>
+          <circle cx="70" cy="37" r="14" fill="rgba(226,0,26,0.15)"/>
+          <rect x="4" y="4" width="132" height="66" rx="3" stroke={D.dim} strokeWidth="0.5" strokeDasharray="3 2"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Parking & Fuel — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloParkingAvailability() {
+  const zones = [['Zone A', '12/15', 80, D.green], ['Zone B', '3/10', 30, '#ef4444'], ['Zone C', '8/12', 67, D.amber], ['Zone D', '0/8', 0, '#ef4444']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Parking Availability</div>
+      {zones.map(([zone, spaces, pct, col], i) => (
+        <div key={i} style={{ marginBottom: 5 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+            <span style={{ fontSize: '0.45rem', color: D.text }}>{zone}</span>
+            <span style={{ fontSize: '0.45rem', color: col, fontFamily: 'monospace' }}>{spaces}</span>
+          </div>
+          <div style={{ height: 4, background: D.card, borderRadius: 2 }}>
+            <div style={{ height: '100%', width: `${pct}%`, background: col, borderRadius: 2 }}/>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloParkingPrices() {
+  const tiers = [['0–1 hr', '€2.50'], ['1–3 hr', '€4.00'], ['3–8 hr', '€7.50'], ['All day', '€12.00']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Parking Prices</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 7 }}>Hullenbergweg Garage</div>
+      {tiers.map(([dur, price], i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '4px 6px', background: i === 0 ? 'rgba(88,166,255,0.1)' : 'none', borderRadius: 4, marginBottom: 2 }}>
+          <span style={{ fontSize: '0.5rem', color: D.text }}>{dur}</span>
+          <span style={{ fontSize: '0.5rem', fontWeight: 700, color: i === 0 ? D.blue : D.dim }}>{price}</span>
+        </div>
+      ))}
+      <div style={{ display: 'flex', gap: 5, marginTop: 5 }}>
+        {['💳','📱','💶'].map((m, i) => (
+          <span key={i} style={{ fontSize: '0.6rem', padding: '2px 6px', borderRadius: 4, background: D.card, border: `1px solid ${D.line}` }}>{m}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function IlloOnStreetParking() {
+  const zones = [[D.green,'A','Free'],[D.amber,'B','Limited'],['#ef4444','C','No park.'],[ D.green,'D','Free']];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>On-Street Parking</div>
+      <div style={{ height: 50, background: '#0f1a28', borderRadius: 6, marginBottom: 6, overflow: 'hidden' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 140 50" fill="none">
+          <rect width="140" height="50" fill="#0f1a28"/>
+          <rect x="0" y="20" width="140" height="10" fill="#1e2d40"/>
+          {zones.map(([col,,], i) => <rect key={i} x={8+i*34} y="15" width="26" height="8" rx="2" fill={col} opacity="0.75"/>)}
+          {zones.map(([col,,], i) => <rect key={i} x={8+i*34} y="27" width="26" height="8" rx="2" fill={col} opacity="0.45"/>)}
+        </svg>
+      </div>
+      <div style={{ display: 'flex', gap: 6 }}>
+        {zones.map(([col, zone, label], i) => (
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <div style={{ width: 6, height: 6, borderRadius: 1, background: col }}/>
+            <span style={{ fontSize: '0.4rem', color: D.dim }}>{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function IlloFuelPrices() {
+  const fuels = [['⛽ Unleaded 95', '€1.84', D.blue], ['🟡 Diesel', '€1.72', D.amber], ['🟢 LPG', '€0.96', D.green], ['⚡ Fast DC', '€0.58/kWh', D.purple]];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Fuel Prices</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 7 }}>TotalEnergies · 0.4 km</div>
+      {fuels.map(([label, price, col], i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <span style={{ fontSize: '0.5rem', color: D.dim }}>{label}</span>
+          <span style={{ fontSize: '0.5rem', fontWeight: 700, color: col }}>{price}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Snap to Roads / Batch Search — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloSnapToRoads() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Snap to Roads</div>
+      <div style={{ height: 80, background: '#0f1a28', borderRadius: 8, overflow: 'hidden', marginBottom: 6 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 160 80" fill="none">
+          <path d="M20 60 Q60 55 100 45 Q130 38 145 25" stroke={D.dim} strokeWidth="4" strokeLinecap="round" opacity="0.4"/>
+          {[[28,62],[55,55],[85,48],[110,42],[138,28]].map(([x,y],i) => <circle key={i} cx={x} cy={y} r="3.5" fill={D.blue} opacity="0.9"/>)}
+          {[[25,65],[58,52],[82,50],[112,40],[141,26]].map(([x,y],i) => <circle key={i} cx={x} cy={y} r="3" fill={D.dim} strokeDasharray="1 1" opacity="0.5"/>)}
+          {[[28,62],[25,65],[55,55],[58,52],[85,48],[82,50],[110,42],[112,40],[138,28],[141,26]].map(([x1,y1,x2,y2],i) => i%2===1 && null)}
+          <path d="M25 65 L28 62 M58 52 L55 55 M82 50 L85 48 M112 40 L110 42 M141 26 L138 28" stroke={D.green} strokeWidth="1" strokeDasharray="2 1" opacity="0.7"/>
+        </svg>
+      </div>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}><div style={{ width: 8, height: 3, background: D.blue, borderRadius: 1 }}/><span style={{ fontSize: '0.4rem', color: D.dim }}>Snapped</span></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}><div style={{ width: 8, height: 3, background: D.dim, borderRadius: 1, opacity: 0.5 }}/><span style={{ fontSize: '0.4rem', color: D.dim }}>Raw GPS</span></div>
+      </div>
+    </div>
+  );
+}
+
+function IlloBatchSearch() {
+  const queries = [['🔍 Hotels near AMS', '42 results', D.green], ['🔍 EV stations · 5km', '18 results', D.green], ['🔍 Restaurants open', '0 results', '#ef4444'], ['🔍 Parking garages', '11 results', D.green]];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Batch Search</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6 }}>4 queries · single request</div>
+      {queries.map(([q, r, col], i) => (
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '3px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <span style={{ fontSize: '0.45rem', color: D.dim }}>{q}</span>
+          <span style={{ fontSize: '0.45rem', color: col, fontFamily: 'monospace' }}>{r}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 4, fontSize: '0.45rem', color: D.green }}>⚡ 240ms total · parallel</div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   POI Details / Photos — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloPOIDetails() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
+        <div style={{ width: 30, height: 30, borderRadius: 6, background: D.card, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0 }}>🏨</div>
+        <div>
+          <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text }}>Hotel Amsterdam</div>
+          <div style={{ fontSize: '0.45rem', color: D.amber }}>★★★★ · 4.6 (892 reviews)</div>
+          <div style={{ fontSize: '0.45rem', color: D.dim }}>Damrak 1, Amsterdam</div>
+        </div>
+      </div>
+      {[['📞 Phone', '+31 20 555 0100'], ['🌐 Website', 'hotel-amsterdam.nl'], ['🕐 Hours', 'Open 24/7'], ['♿ Access', 'Wheelchair OK']].map(([icon, val], i) => (
+        <div key={i} style={{ display: 'flex', gap: 6, padding: '2px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
+          <span style={{ fontSize: '0.5rem', width: 60, color: D.dim }}>{icon}</span>
+          <span style={{ fontSize: '0.45rem', color: D.text }}>{val}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloPOIPhotos() {
+  const colors = ['#1e3a2a','#1a2535','#2a2020','#1a2535','#1e3a2a','#2a2020'];
+  const emojis = ['🏨','🍽️','🛎️','🌳','🏊','🏋️'];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>POI Photos</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6 }}>6 images · Hotel Amsterdam</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 3 }}>
+        {colors.map((c, i) => (
+          <div key={i} style={{ height: 34, borderRadius: 4, background: c, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem' }}>
+            {emojis[i]}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Traffic Analytics — dark variants
+   ───────────────────────────────────────────────────────────────────────────── */
+
+function IlloTrafficStats() {
+  const bars = [30, 45, 60, 75, 55, 40, 80, 65, 50, 35, 70, 85];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Traffic Statistics</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 8 }}>Avg speed · Mon–Sun · 07:00–20:00</div>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 50 }}>
+        {bars.map((h, i) => (
+          <div key={i} style={{ flex: 1, height: `${h}%`, borderRadius: '2px 2px 0 0', background: h > 60 ? D.blue : h > 40 ? D.amber : '#ef4444', opacity: 0.8 }}/>
+        ))}
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
+        {['M','T','W','T','F','S','S'].map((d, i) => (
+          <span key={i} style={{ fontSize: '0.4rem', color: D.dim, flex: 1, textAlign: 'center' }}>{d}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function IlloAreaAnalytics() {
+  const cells = [0.2,0.6,0.9,0.4,0.7,0.8,0.3,0.5,0.7,0.6,0.4,0.9,0.2,0.5,0.8,0.3];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Area Analytics</div>
+      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 6 }}>Traffic density heatmap</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2 }}>
+        {cells.map((v, i) => (
+          <div key={i} style={{ height: 20, borderRadius: 2, background: `rgba(226,0,26,${v * 0.8 + 0.1})` }}/>
+        ))}
+      </div>
+      <div style={{ marginTop: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ flex: 1, height: 4, background: 'linear-gradient(90deg,rgba(226,0,26,0.1),rgba(226,0,26,0.9))', borderRadius: 2 }}/>
+        <div style={{ display: 'flex', justifyContent: 'space-between', width: 50 }}>
+          <span style={{ fontSize: '0.4rem', color: D.dim }}>Low</span>
+          <span style={{ fontSize: '0.4rem', color: D.dim }}>High</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IlloODAnalysis() {
+  const SIZE = 4;
+  const labels = ['A','B','C','D'];
+  const matrix = [[0,0.3,0.7,0.2],[0.4,0,0.5,0.8],[0.6,0.2,0,0.3],[0.1,0.7,0.4,0]];
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>O/D Analysis</div>
+      <div style={{ display: 'flex', gap: 2, alignItems: 'flex-end', marginBottom: 2 }}>
+        <div style={{ width: 12 }}/>
+        {labels.map((l, i) => <div key={i} style={{ flex: 1, fontSize: '0.4rem', color: D.dim, textAlign: 'center' }}>{l}</div>)}
+      </div>
+      {matrix.map((row, ri) => (
+        <div key={ri} style={{ display: 'flex', gap: 2, alignItems: 'center', marginBottom: 2 }}>
+          <div style={{ width: 12, fontSize: '0.4rem', color: D.dim }}>{labels[ri]}</div>
+          {row.map((v, ci) => (
+            <div key={ci} style={{ flex: 1, height: 16, borderRadius: 2, background: ri === ci ? D.card : `rgba(88,166,255,${v * 0.8 + 0.1})` }}/>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function IlloJunctionAnalytics() {
+  return (
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Junction Analytics</div>
+      <div style={{ height: 70, background: '#0f1a28', borderRadius: 6, overflow: 'hidden' }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 140 70" fill="none">
+          <line x1="70" y1="0" x2="70" y2="70" stroke={D.dim} strokeWidth="8" opacity="0.3"/>
+          <line x1="0" y1="35" x2="140" y2="35" stroke={D.dim} strokeWidth="8" opacity="0.3"/>
+          <circle cx="70" cy="35" r="10" fill="rgba(88,166,255,0.15)" stroke={D.blue} strokeWidth="1"/>
+          {[  [70,5,70,25],[70,45,70,65],[5,35,50,35],[90,35,135,35]  ].map(([x1,y1,x2,y2],i) => (
+            <path key={i} d={`M${x1} ${y1} L${x2} ${y2}`} stroke={D.blue} strokeWidth="1.5" strokeLinecap="round"
+              markerEnd="url(#arr)" opacity="0.75"/>
+          ))}
+          <defs><marker id="arr" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto"><polygon points="0 0,4 2,0 4" fill={D.blue}/></marker></defs>
+          {[[70,5,'↑ 340'],[70,65,'↓ 280'],[5,28,'← 190'],[95,28,'→ 420']].map(([x,y,label],i) => (
+            <text key={i} x={x} y={y} textAnchor="middle" fill={D.blue} style={{fontSize:7}}>{label}</text>
+          ))}
+        </svg>
+      </div>
+      <div style={{ marginTop: 5, fontSize: '0.45rem', color: D.dim }}>vehicles/hr · 15-min intervals</div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Gallery components
    ───────────────────────────────────────────────────────────────────────────── */
 
@@ -3188,6 +3880,158 @@ export default function IntroIllustrations() {
           <IlloCard dark={IlloVIL}          light={L_VIL}           label="Vehicle Integration Layer"  emoji="🔧" source="ANAIntro · ThumbVIL"           styleMode={styleMode}/>
           <IlloCard dark={IlloCIL}          light={L_CIL}           label="Control Integration Layer"  emoji="🕹️" source="ANAIntro · ThumbCIL"           styleMode={styleMode}/>
           <IlloCard dark={IlloANATheming}   light={L_ANATheming}    label="OEM Theme Tokens"           emoji="🎨" source="ANAIntro · ThumbTheming"       styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Search & Places API ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="🔍"
+          title="Search & Places API"
+          subtitle="Endpoint illustrations for TomTom's search surface: fuzzy, POI, category, nearby, along-route and autocomplete."
+          color="#58a6ff"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloSearchFuzzy}       light={L_SearchFuzzy}       label="Fuzzy Search"           emoji="🔍" source="Search API · fuzzy"          styleMode={styleMode}/>
+          <IlloCard dark={IlloSearchPOI}         light={L_SearchPOI}         label="POI Search"             emoji="📍" source="Search API · poi"            styleMode={styleMode}/>
+          <IlloCard dark={IlloSearchCategory}    light={L_SearchCategory}    label="Category Search"        emoji="🗂️" source="Search API · category"       styleMode={styleMode}/>
+          <IlloCard dark={IlloSearchNearby}      light={L_SearchNearby}      label="Nearby Search"          emoji="📡" source="Search API · nearby"         styleMode={styleMode}/>
+          <IlloCard dark={IlloSearchAlongRoute}  light={L_SearchAlongRoute}  label="Along Route Search"     emoji="🛣️" source="Search API · along-route"    styleMode={styleMode}/>
+          <IlloCard dark={IlloSearchAutocomplete} light={L_SearchAutocomplete} label="Autocomplete"         emoji="⌨️" source="Search API · autocomplete"   styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Geocoding API ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="📌"
+          title="Geocoding API"
+          subtitle="Convert addresses to coordinates and coordinates back to human-readable addresses."
+          color="#a78bfa"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloGeocode}        light={L_Geocode}        label="Geocode"         emoji="📌" source="Geocoding API · geocode"         styleMode={styleMode}/>
+          <IlloCard dark={IlloReverseGeocode} light={L_ReverseGeocode} label="Reverse Geocode" emoji="🔄" source="Geocoding API · reverse-geocode" styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Traffic API ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="🚦"
+          title="Traffic API"
+          subtitle="Live and historical traffic flow, incidents, tiles and model versioning."
+          color="#ef4444"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloTrafficFlow}      light={L_TrafficFlow}      label="Traffic Flow"      emoji="🟢" source="Traffic API · flow"       styleMode={styleMode}/>
+          <IlloCard dark={IlloTrafficIncidents} light={L_TrafficIncidents} label="Traffic Incidents" emoji="⚠️" source="Traffic API · incidents"  styleMode={styleMode}/>
+          <IlloCard dark={IlloTrafficFlowTile}  light={L_TrafficFlowTile}  label="Flow Tile"         emoji="🗺️" source="Traffic API · flow-tile"  styleMode={styleMode}/>
+          <IlloCard dark={IlloTrafficModelID}   light={L_TrafficModelID}   label="Traffic Model ID"  emoji="🔢" source="Traffic API · model-id"   styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── EV & Charging API ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="⚡"
+          title="EV & Charging API"
+          subtitle="EV-specific search endpoints: nearby stations, connector availability and market coverage."
+          color="#22c55e"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloEVSearchNearby}          light={L_EVSearchNearby}          label="EV Stations Nearby"      emoji="⚡" source="EV API · nearby"          styleMode={styleMode}/>
+          <IlloCard dark={IlloEVChargingAvailability}  light={L_EVChargingAvailability}  label="Charging Availability"   emoji="🔌" source="EV API · availability"    styleMode={styleMode}/>
+          <IlloCard dark={IlloEVMarketCoverage}        light={L_EVMarketCoverage}        label="EV Market Coverage"      emoji="🗺️" source="EV API · market-coverage" styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Map Display API ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="🗺️"
+          title="Map Display API"
+          subtitle="Raster tiles, vector tiles, satellite imagery, map assets and static image generation."
+          color="#0066cc"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloMapRasterTile}   light={L_MapRasterTile}   label="Raster Map Tile"   emoji="🟦" source="Map Display API · raster"  styleMode={styleMode}/>
+          <IlloCard dark={IlloMapVectorTile}   light={L_MapVectorTile}   label="Vector Map Tile"   emoji="📐" source="Map Display API · vector"  styleMode={styleMode}/>
+          <IlloCard dark={IlloMapSatelliteTile} light={L_MapSatelliteTile} label="Satellite Tile"  emoji="🛰️" source="Map Display API · satellite" styleMode={styleMode}/>
+          <IlloCard dark={IlloMapAssetsAPI}    light={L_MapAssetsAPI}    label="Map Assets API"    emoji="📦" source="Map Display API · assets"  styleMode={styleMode}/>
+          <IlloCard dark={IlloMapStaticImage}  light={L_MapStaticImage}  label="Static Map Image"  emoji="🖼️" source="Map Display API · static"  styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Parking & Fuel API ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="🅿️"
+          title="Parking & Fuel API"
+          subtitle="Real-time parking availability and prices, on-street kerbside predictions, and fuel station pricing."
+          color="#fbbf24"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloParkingAvailability} light={L_ParkingAvailability} label="Parking Availability" emoji="🅿️" source="Parking API · availability" styleMode={styleMode}/>
+          <IlloCard dark={IlloParkingPrices}       light={L_ParkingPrices}       label="Parking Prices"       emoji="💶" source="Parking API · prices"       styleMode={styleMode}/>
+          <IlloCard dark={IlloOnStreetParking}     light={L_OnStreetParking}     label="On-Street Parking"    emoji="🚗" source="Parking API · on-street"    styleMode={styleMode}/>
+          <IlloCard dark={IlloFuelPrices}          light={L_FuelPrices}          label="Fuel Prices"          emoji="⛽" source="Fuel Prices API · prices"  styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Snap to Roads ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="📍"
+          title="Snap to Roads API"
+          subtitle="Correct noisy GPS traces by snapping points to the nearest road geometry."
+          color="#3fb950"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloSnapToRoads} light={L_SnapToRoads} label="Snap to Roads" emoji="📍" source="Snap-to-Roads API · snap" styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Batch Search ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="📦"
+          title="Batch Search API"
+          subtitle="Send multiple search queries in a single HTTP request and receive all results in one response."
+          color="#58a6ff"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloBatchSearch} light={L_BatchSearch} label="Batch Search" emoji="📦" source="Batch Search API · batch" styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── POI Details & Photos ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="🏢"
+          title="POI Details & Photos"
+          subtitle="Rich point-of-interest metadata including contact details, opening hours, and crowd-sourced photos."
+          color="#a78bfa"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloPOIDetails} light={L_POIDetails} label="POI Details" emoji="🏢" source="POI API · details" styleMode={styleMode}/>
+          <IlloCard dark={IlloPOIPhotos}  light={L_POIPhotos}  label="POI Photos"  emoji="📷" source="POI API · photos"  styleMode={styleMode}/>
+        </div>
+      </div>
+
+      {/* ── Traffic Analytics ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="📊"
+          title="Traffic Analytics"
+          subtitle="Historical traffic statistics, area analytics heatmaps, origin/destination flow matrices and junction counts."
+          color="#e2001a"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloTrafficStats}      light={L_TrafficStats}      label="Traffic Statistics"  emoji="📊" source="Traffic Analytics · stats"    styleMode={styleMode}/>
+          <IlloCard dark={IlloAreaAnalytics}     light={L_AreaAnalytics}     label="Area Analytics"      emoji="🔥" source="Traffic Analytics · area"     styleMode={styleMode}/>
+          <IlloCard dark={IlloODAnalysis}        light={L_ODAnalysis}        label="O/D Analysis"        emoji="🔄" source="Traffic Analytics · od"       styleMode={styleMode}/>
+          <IlloCard dark={IlloJunctionAnalytics} light={L_JunctionAnalytics} label="Junction Analytics"  emoji="🔀" source="Traffic Analytics · junction" styleMode={styleMode}/>
         </div>
       </div>
 
