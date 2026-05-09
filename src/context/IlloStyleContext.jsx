@@ -19,6 +19,10 @@ export const THEMES = {
     white:  '#FFFFFF',
     // dark: a panel that stays dark against the light bg (same as navy in day)
     dark:   '#1B3D6E',
+    // Semantic accent tokens — readable on #EAF4FF light background
+    accent: '#15803D',   // forest green (replaces #22c55e)
+    warn:   '#92400E',   // amber-brown (replaces #fbbf24)
+    danger: '#DC2626',   // red (replaces red tones)
   },
   night: {
     bg:     '#0D1B35',
@@ -32,6 +36,10 @@ export const THEMES = {
     white:  '#E8F0FF',
     // dark: a panel that stays dark against the dark bg
     dark:   '#1A2D55',
+    // Semantic accent tokens — readable on #0D1B35 dark background
+    accent: '#4ADE80',   // bright green (replaces #22c55e)
+    warn:   '#FBBF24',   // amber (replaces #fbbf24)
+    danger: '#F87171',   // soft red (replaces red tones)
   },
   blueprintLight: {
     bg:     '#F0F7FF',   // crisp drafting-paper white with a hint of blue

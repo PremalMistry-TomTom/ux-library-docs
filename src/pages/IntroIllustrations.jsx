@@ -58,13 +58,13 @@ function IlloSearchResult() {
         <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
         <span style={{ fontSize: '0.5rem', color: M.muted }}>Search destination…</span>
       </div>
-      <div style={{ padding: '3px 10px', background: '#0f2a1a', display: 'flex', alignItems: 'center', gap: 4 }}>
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} />
+      <div style={{ padding: '3px 10px', background: M.dark, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: M.green }} />
         <span style={{ fontSize: '0.5rem', color: M.green }}>3rd-party search · online</span>
       </div>
       {results.map(([name, dist], i) => (
         <div key={name} style={{ padding: '5px 10px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 7 }}>
-          <div style={{ width: 18, height: 18, background: '#1e293b', borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 18, height: 18, background: M.card, borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${M.line}` }}>
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div>
@@ -106,7 +106,7 @@ export function IlloAIVoice() {
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>TAIA — in-vehicle voice</div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-        <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#2d1f4a', border: `1px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+        <div style={{ width: 20, height: 20, borderRadius: '50%', background: M.card, border: `1px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
           <svg width="9" height="9" viewBox="0 0 24 24" fill={M.purple}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke={M.purple} strokeWidth="2.5" fill="none"/></svg>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -115,8 +115,8 @@ export function IlloAIVoice() {
           ))}
         </div>
       </div>
-      <div style={{ background: '#2d1f4a', borderRadius: '6px 6px 6px 2px', padding: '4px 8px', marginBottom: 6, maxWidth: '88%' }}>
-        <div style={{ fontSize: '0.5rem', color: '#d4bbff', lineHeight: 1.4 }}>"Take me to the nearest fast charger"</div>
+      <div style={{ background: M.card, borderRadius: '6px 6px 6px 2px', padding: '4px 8px', marginBottom: 6, maxWidth: '88%', border: `1px solid ${M.line}` }}>
+        <div style={{ fontSize: '0.5rem', color: M.text, lineHeight: 1.4 }}>"Take me to the nearest fast charger"</div>
       </div>
       <div style={{ background: M.card, borderRadius: '6px 6px 2px 6px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '88%', border: `1px solid ${M.line}` }}>
         <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>NAVIGATE_TO_EV_CHARGING</div>
@@ -183,30 +183,30 @@ function IlloHorizonPanel() {
           <circle cx="102" cy="70" r="4" fill="#e2001a" opacity="0.8"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 72, background: 'rgba(15,26,40,0.92)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ background: '#1a3d2b', padding: '7px 8px', display: 'flex', alignItems: 'center', gap: 5, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+      <div style={{ position: 'absolute', top: 0, bottom: 0, right: 0, width: 72, background: M.dark, border: `1px solid ${M.line}`, display: 'flex', flexDirection: 'column', opacity: 0.96 }}>
+        <div style={{ background: M.green, padding: '7px 8px', display: 'flex', alignItems: 'center', gap: 5, borderBottom: `1px solid rgba(0,0,0,0.15)` }}>
           <span style={{ fontSize: '0.875rem', color: 'white' }}>↖</span>
           <div>
             <div style={{ fontSize: '0.5rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.55)' }}>Oak St N</div>
+            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.7)' }}>Oak St N</div>
           </div>
         </div>
         <div style={{ flex: 1, padding: '6px 8px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {[['🚧', 'Roadwork', '#fbbf24'], ['⛽', 'Station', '#60a5fa']].map(([icon, label, color]) => (
+          {[['🚧', 'Roadwork', M.amber], ['⛽', 'Station', M.blue]].map(([icon, label, color]) => (
             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
               <span style={{ fontSize: '0.5rem' }}>{icon}</span>
               <span style={{ fontSize: '0.5rem', color }}>{label}</span>
             </div>
           ))}
         </div>
-        <div style={{ padding: '6px 8px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', justifyContent: 'space-between' }}>
+        <div style={{ padding: '6px 8px', borderTop: `1px solid rgba(255,255,255,0.1)`, display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#e2e8f0' }}>14:32</div>
-            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>ETA</div>
+            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.4)' }}>ETA</div>
           </div>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#e2e8f0' }}>18 min</div>
-            <div style={{ fontSize: '0.5rem', color: '#64748b' }}>Time</div>
+            <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.4)' }}>Time</div>
           </div>
         </div>
       </div>
@@ -254,8 +254,8 @@ export function IlloCluster() {
       </div>
       <svg viewBox="0 0 60 60" style={{ width: 52, height: 52, flexShrink: 0 }}>
         <circle cx="30" cy="34" r="22" fill="none" stroke="#1e1e22" strokeWidth="4" strokeDasharray="115 38" strokeDashoffset="-19" strokeLinecap="round"/>
-        <circle cx="30" cy="34" r="22" fill="none" stroke={'#22c55e'} strokeWidth="4" strokeDasharray="85 68" strokeDashoffset="-19" strokeLinecap="round"/>
-        <text x="30" y="37" textAnchor="middle" fill={'#22c55e'} style={{ fontSize: 9, fontWeight: 700, fontFamily: 'system-ui' }}>74%</text>
+        <circle cx="30" cy="34" r="22" fill="none" stroke={M.green} strokeWidth="4" strokeDasharray="85 68" strokeDashoffset="-19" strokeLinecap="round"/>
+        <text x="30" y="37" textAnchor="middle" fill={M.green} style={{ fontSize: 9, fontWeight: 700, fontFamily: 'system-ui' }}>74%</text>
         <text x="30" y="46" textAnchor="middle" fill="#555" style={{ fontSize: 4.5, fontFamily: 'system-ui' }}>BATT</text>
       </svg>
     </div>
@@ -421,17 +421,17 @@ function IlloConversationPersonality() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
-        <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#1a1a4a', border: `1.5px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', flexShrink: 0 }}>✦</div>
+        <div style={{ width: 18, height: 18, borderRadius: '50%', background: M.card, border: `1.5px solid ${M.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.5rem', flexShrink: 0 }}>✦</div>
         <span style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>BMW Assistant</span>
         <span style={{ fontSize: '0.5rem', color: M.purple, marginLeft: 'auto' }}>Custom name ✓</span>
       </div>
       <div style={{ background: M.card, borderRadius: '4px 10px 10px 4px', padding: '4px 8px', marginBottom: 6, maxWidth: '92%' }}>
         <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 1 }}>Default TomTom tone</div>
-        <div style={{ fontSize: '0.5rem', color: '#94a3b8', lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
+        <div style={{ fontSize: '0.5rem', color: M.dim, lineHeight: 1.35 }}>"Route updated. New ETA in 18 minutes."</div>
       </div>
-      <div style={{ background: '#1a1a4a', borderRadius: '10px 4px 10px 10px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '92%', border: `1px solid ${M.purple}44` }}>
+      <div style={{ background: M.card, borderRadius: '10px 4px 10px 10px', padding: '4px 8px', marginLeft: 'auto', maxWidth: '92%', border: `1px solid ${M.purple}` }}>
         <div style={{ fontSize: '0.5rem', color: M.purple, marginBottom: 1 }}>OEM branded tone</div>
-        <div style={{ fontSize: '0.5rem', color: '#d4bbff', lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
+        <div style={{ fontSize: '0.5rem', color: M.text, lineHeight: 1.35 }}>"Recalculating — you'll still arrive on time, Chris."</div>
       </div>
     </div>
   );
@@ -517,7 +517,7 @@ function IlloSDKSearch() {
       </div>
       {results.map(([name, dist], i) => (
         <div key={name} style={{ padding: '6px 10px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 8, alignItems: 'center' }}>
-          <div style={{ width: 18, height: 18, background: '#1e293b', borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 18, height: 18, background: M.card, borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${M.line}` }}>
             <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </div>
           <div style={{ flex: 1 }}>
@@ -541,12 +541,12 @@ function IlloRouteOptions() {
         { label: 'Eco', time: '6h 10m', dist: '558 km', tag: '–12% fuel', color: M.blue },
         { label: 'Avoid tolls', time: '6h 38m', dist: '601 km', tag: 'No tolls', color: M.dim },
       ].map((r, i) => (
-        <div key={r.label} style={{ background: i === 0 ? 'rgba(63,185,80,0.08)' : M.card, border: `1px solid ${i === 0 ? 'rgba(63,185,80,0.25)' : M.line}`, borderRadius: 5, padding: '5px 7px', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 7 }}>
+        <div key={r.label} style={{ background: i === 0 ? M.card : M.bg, border: `1px solid ${i === 0 ? M.green : M.line}`, borderRadius: 5, padding: '5px 7px', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 7 }}>
           <div style={{ flex: 1 }}>
             <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{r.time}</div>
             <div style={{ fontSize: '0.5rem', color: M.dim }}>{r.dist}</div>
           </div>
-          <span style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 3, background: 'rgba(255,255,255,0.06)', color: r.color, fontWeight: 600 }}>{r.tag}</span>
+          <span style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 3, background: M.card, color: r.color, fontWeight: 600, border: `1px solid ${M.line}` }}>{r.tag}</span>
         </div>
       ))}
     </div>
@@ -564,11 +564,11 @@ export function IlloNavGuidance() {
           <circle cx="100" cy="71" r="4" fill="#e2001a" opacity="0.9"/>
         </svg>
       </div>
-      <div style={{ position: 'absolute', top: 8, left: 8, background: '#1a3d2b', borderRadius: 6, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6, border: '1px solid rgba(63,185,80,0.3)' }}>
+      <div style={{ position: 'absolute', top: 8, left: 8, background: M.dark, borderRadius: 6, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${M.green}` }}>
         <span style={{ fontSize: '1rem', lineHeight: 1 }}>↖</span>
         <div>
           <div style={{ fontSize: '0.5rem', fontWeight: 700, color: '#fff' }}>800 m</div>
-          <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.55)' }}>Turn left · Keizersgracht</div>
+          <div style={{ fontSize: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>Turn left · Keizersgracht</div>
         </div>
       </div>
       <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(8,14,26,0.94)', borderTop: '1px solid rgba(255,255,255,0.08)', padding: '7px 12px', display: 'flex', justifyContent: 'space-around' }}>
@@ -757,19 +757,19 @@ export function IlloBatchRouting() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch · 4 routes</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch · 4 routes</div>
       {routes.map((r, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <div style={{ width: 5, height: 5, borderRadius: '50%', background: r.color, flexShrink: 0 }}/>
-          <div style={{ flex: 1, height: 3, background: '#1e293b', borderRadius: 2 }}>
+          <div style={{ flex: 1, height: 3, background: M.card, borderRadius: 2, border: `1px solid ${M.line}` }}>
             <div style={{ height: '100%', width: `${r.w}%`, background: r.color, borderRadius: 2, opacity: 0.8 }}/>
           </div>
-          <span style={{ fontSize: '0.5rem', color: '#475569', fontFamily: 'monospace', width: 28 }}>{r.w} km</span>
+          <span style={{ fontSize: '0.5rem', color: M.muted, fontFamily: 'monospace', width: 28 }}>{r.w} km</span>
         </div>
       ))}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}/>
-        <span style={{ fontSize: '0.5rem', color: '#22c55e' }}>4/4 completed · 340ms</span>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: M.green }}/>
+        <span style={{ fontSize: '0.5rem', color: M.green }}>4/4 completed · 340ms</span>
       </div>
     </div>
   );
@@ -781,7 +781,7 @@ export function IlloMatrixRouting() {
   const colors = ['rgba(226,0,26,0.8)', 'rgba(88,166,255,0.8)', 'rgba(63,185,80,0.6)', 'rgba(251,191,36,0.7)'];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 6 }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>Matrix 4×4 · 16 cells</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>Matrix 4×4 · 16 cells</div>
       {Array.from({ length: SIZE }).map((_, row) => (
         <div key={row} style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
           <div style={{ width: 4, height: 4, borderRadius: '50%', background: colors[row], flexShrink: 0 }}/>
@@ -808,29 +808,29 @@ export function IlloWaypointOpt() {
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', gap: 6, height: 'calc(100% - 20px)' }}>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 4, textTransform: 'uppercase' }}>Before</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 4, textTransform: 'uppercase' }}>Before</div>
           <svg viewBox="0 0 80 90" style={{ width: '100%', height: 'calc(100% - 14px)' }}>
             {[[10,10],[60,30],[15,60],[55,80],[30,45]].map(([x, y], i) => (
-              <circle key={i} cx={x} cy={y} r="5" fill="#475569"/>
+              <circle key={i} cx={x} cy={y} r="5" fill={M.muted}/>
             ))}
-            <polyline points="10,10 60,30 15,60 55,80 30,45" fill="none" stroke="#475569" strokeWidth="1.5" strokeDasharray="4 3"/>
+            <polyline points="10,10 60,30 15,60 55,80 30,45" fill="none" stroke={M.muted} strokeWidth="1.5" strokeDasharray="4 3"/>
           </svg>
         </div>
-        <div style={{ width: 1, background: 'rgba(255,255,255,0.06)', alignSelf: 'stretch' }}/>
+        <div style={{ width: 1, background: M.line, alignSelf: 'stretch' }}/>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.5rem', color: '#22c55e', marginBottom: 4, textTransform: 'uppercase' }}>Optimized</div>
+          <div style={{ fontSize: '0.5rem', color: M.green, marginBottom: 4, textTransform: 'uppercase' }}>Optimized</div>
           <svg viewBox="0 0 80 90" style={{ width: '100%', height: 'calc(100% - 14px)' }}>
             {[[10,10],[30,45],[15,60],[55,80],[60,30]].map(([x, y], i) => (
               <g key={i}>
-                <circle cx={x} cy={y} r="5" fill={'#22c55e'} opacity="0.9"/>
+                <circle cx={x} cy={y} r="5" fill={M.green} opacity="0.9"/>
                 <text x={x} y={y + 3} textAnchor="middle" fill="#000" style={{ fontSize: 5, fontWeight: 700 }}>{i + 1}</text>
               </g>
             ))}
-            <polyline points="10,10 30,45 15,60 55,80 60,30" fill="none" stroke={'#22c55e'} strokeWidth="1.5" opacity="0.8"/>
+            <polyline points="10,10 30,45 15,60 55,80 60,30" fill="none" stroke={M.green} strokeWidth="1.5" opacity="0.8"/>
           </svg>
         </div>
       </div>
-      <div style={{ fontSize: '0.5rem', color: '#22c55e', textAlign: 'center', marginTop: 3 }}>↓ 34% shorter</div>
+      <div style={{ fontSize: '0.5rem', color: M.green, textAlign: 'center', marginTop: 3 }}>↓ 34% shorter</div>
     </div>
   );
 }
@@ -847,13 +847,13 @@ export function IlloTurnInstructions() {
         <circle cx="20" cy="55" r="4" fill="#3fb950"/>
         <circle cx="180" cy="18" r="4" fill="#e2001a"/>
       </svg>
-      <div style={{ background: 'rgba(88,166,255,0.08)', border: '1px solid rgba(88,166,255,0.2)', borderRadius: 5, padding: '5px 8px' }}>
-        <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 2 }}>TURN_RIGHT · 340 m</div>
-        <div style={{ fontSize: '0.5rem', color: '#e2e8f0', lineHeight: 1.3 }}>Turn right onto <span style={{ color: '#58a6ff' }}>Spreeufer</span></div>
+      <div style={{ background: M.card, border: `1px solid ${M.line}`, borderRadius: 5, padding: '5px 8px' }}>
+        <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 2 }}>TURN_RIGHT · 340 m</div>
+        <div style={{ fontSize: '0.5rem', color: M.text, lineHeight: 1.3 }}>Turn right onto <span style={{ color: M.blue }}>Spreeufer</span></div>
       </div>
       <div style={{ display: 'flex', gap: 4, marginTop: 4 }}>
         {['coded', 'text', 'tagged'].map(t => (
-          <span key={t} style={{ fontSize: '0.4375rem', padding: '1px 5px', borderRadius: 3, background: 'rgba(255,255,255,0.06)', color: '#475569', fontFamily: 'monospace' }}>{t}</span>
+          <span key={t} style={{ fontSize: '0.4375rem', padding: '1px 5px', borderRadius: 3, background: M.card, color: M.dim, border: `1px solid ${M.line}`, fontFamily: 'monospace' }}>{t}</span>
         ))}
       </div>
     </div>
@@ -870,20 +870,20 @@ function IlloRoadShields() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Road shields</div>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 8 }}>
         {shields.map(({ ref, color }) => (
           <div key={ref} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
-            <div style={{ width: 34, height: 22, borderRadius: 4, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.15)' }}>
+            <div style={{ width: 34, height: 22, borderRadius: 4, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid rgba(255,255,255,0.2)' }}>
               <span style={{ fontSize: '0.5rem', fontWeight: 700, color: '#fff', fontFamily: 'monospace' }}>{ref}</span>
             </div>
           </div>
         ))}
       </div>
-      <div style={{ marginTop: 8, padding: '4px 7px', background: 'rgba(255,255,255,0.04)', borderRadius: 4, border: '1px solid rgba(255,255,255,0.07)' }}>
-        <span style={{ fontSize: '0.4375rem', color: '#64748b', fontFamily: 'monospace' }}>Take the </span>
-        <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: '#60a5fa', fontFamily: 'monospace', background: 'rgba(29,78,216,0.3)', padding: '1px 4px', borderRadius: 2 }}>A10</span>
-        <span style={{ fontSize: '0.4375rem', color: '#64748b', fontFamily: 'monospace' }}> towards Charlottenburg</span>
+      <div style={{ marginTop: 8, padding: '4px 7px', background: M.card, borderRadius: 4, border: `1px solid ${M.line}` }}>
+        <span style={{ fontSize: '0.4375rem', color: M.dim, fontFamily: 'monospace' }}>Take the </span>
+        <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: M.blue, fontFamily: 'monospace', background: M.card, padding: '1px 4px', borderRadius: 2, border: `1px solid ${M.line}` }}>A10</span>
+        <span style={{ fontSize: '0.4375rem', color: M.dim, fontFamily: 'monospace' }}> towards Charlottenburg</span>
       </div>
     </div>
   );
@@ -899,30 +899,30 @@ function IlloLaneGuidance() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Lane bar · junction ahead</div>
       <div style={{ display: 'flex', gap: 3, justifyContent: 'center' }}>
         {lanes.map((lane, i) => (
           <div key={i} style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
             padding: '6px 10px', borderRadius: 6, minWidth: 36,
-            background: lane.recommended ? 'rgba(234,179,8,0.15)' : lane.drivable ? 'rgba(255,255,255,0.05)' : 'transparent',
-            border: lane.recommended ? '1px solid rgba(234,179,8,0.35)' : '1px solid rgba(255,255,255,0.07)',
-            opacity: lane.drivable || lane.recommended ? 1 : 0.28,
+            background: lane.recommended ? `${M.amber}22` : lane.drivable ? M.card : 'transparent',
+            border: lane.recommended ? `1px solid ${M.amber}` : `1px solid ${M.line}`,
+            opacity: lane.drivable || lane.recommended ? 1 : 0.35,
           }}>
             {lane.dirs.map(d => (
-              <span key={d} style={{ fontSize: '0.8125rem', lineHeight: 1, color: lane.recommended ? '#eab308' : lane.drivable ? '#e2e8f0' : '#475569' }}>{d}</span>
+              <span key={d} style={{ fontSize: '0.8125rem', lineHeight: 1, color: lane.recommended ? M.amber : lane.drivable ? M.text : M.muted }}>{d}</span>
             ))}
           </div>
         ))}
       </div>
       <div style={{ display: 'flex', gap: 8, justifyContent: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-          <div style={{ width: 6, height: 6, borderRadius: 2, background: 'rgba(234,179,8,0.15)', border: '1px solid rgba(234,179,8,0.35)' }}/>
-          <span style={{ fontSize: '0.4375rem', color: '#64748b' }}>recommended</span>
+          <div style={{ width: 6, height: 6, borderRadius: 2, background: `${M.amber}22`, border: `1px solid ${M.amber}` }}/>
+          <span style={{ fontSize: '0.4375rem', color: M.dim }}>recommended</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-          <div style={{ width: 6, height: 6, borderRadius: 2, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}/>
-          <span style={{ fontSize: '0.4375rem', color: '#64748b' }}>drivable</span>
+          <div style={{ width: 6, height: 6, borderRadius: 2, background: M.card, border: `1px solid ${M.line}` }}/>
+          <span style={{ fontSize: '0.4375rem', color: M.dim }}>drivable</span>
         </div>
       </div>
     </div>
@@ -937,18 +937,18 @@ function IlloRoutingComputeToll() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll Amounts</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll Amounts</div>
       <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
-        <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
-        <rect x="98" y="16" width="4" height="28" rx="2" fill="#475569"/>
+        <path d="M0 38 Q100 34 200 38" stroke={M.line} strokeWidth="8" strokeLinecap="round"/>
+        <rect x="98" y="16" width="4" height="28" rx="2" fill={M.muted}/>
         <rect x="100" y="16" width="48" height="5" rx="2" fill="#e2001a" opacity="0.85"/>
-        <rect x="82" y="10" width="18" height="30" rx="3" fill="#1e293b"/>
+        <rect x="82" y="10" width="18" height="30" rx="3" fill={M.card}/>
       </svg>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3 }}>
-        {[['Base toll', '€2.40', '#e2e8f0'], ['EV discount', '–€0.60', '#22c55e'], ['Total', '€1.80', '#58a6ff']].map(([label, val, col]) => (
+        {[['Base toll', '€2.40', null], ['EV discount', '–€0.60', 'green'], ['Total', '€1.80', 'blue']].map(([label, val, acc]) => (
           <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.4375rem', color: '#475569' }}>{label}</span>
-            <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: col, fontFamily: 'monospace' }}>{val}</span>
+            <span style={{ fontSize: '0.4375rem', color: M.dim }}>{label}</span>
+            <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: acc === 'green' ? M.green : acc === 'blue' ? M.blue : M.text, fontFamily: 'monospace' }}>{val}</span>
           </div>
         ))}
       </div>
@@ -989,18 +989,18 @@ function IlloRoutingDataFreshness() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
       {items.map((item) => (
         <div key={item.label} style={{ marginBottom: 8 }}>
-          <span style={{ fontSize: '0.4375rem', color: '#94a3b8', display: 'block', marginBottom: 2 }}>{item.label}</span>
-          <div style={{ height: 5, background: '#1e293b', borderRadius: 2 }}>
-            <div style={{ height: '100%', width: `${item.pct}%`, background: item.color, borderRadius: 2, opacity: 0.85 }}/>
+          <span style={{ fontSize: '0.4375rem', color: M.dim, display: 'block', marginBottom: 2 }}>{item.label}</span>
+          <div style={{ height: 5, background: M.card, borderRadius: 2, border: `1px solid ${M.line}` }}>
+            <div style={{ height: '100%', width: `${item.pct}%`, background: item.color === '#22c55e' ? M.green : item.color === '#fbbf24' ? M.amber : item.color, borderRadius: 2, opacity: 0.85 }}/>
           </div>
         </div>
       ))}
       <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginTop: 4 }}>
-        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }}/>
-        <span style={{ fontSize: '0.4375rem', color: '#22c55e' }}>Live feed · auto-refresh</span>
+        <div style={{ width: 5, height: 5, borderRadius: '50%', background: M.green }}/>
+        <span style={{ fontSize: '0.4375rem', color: M.green }}>Live feed · auto-refresh</span>
       </div>
     </div>
   );
@@ -1050,19 +1050,19 @@ function IlloLDEVRBatch() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch EV · 4 routes</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Batch EV · 4 routes</div>
       {routes.map((r, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <div style={{ width: 5, height: 5, borderRadius: '50%', background: r.color, flexShrink: 0 }}/>
-          <div style={{ flex: 1, height: 3, background: '#1e293b', borderRadius: 2 }}>
+          <div style={{ flex: 1, height: 3, background: M.card, borderRadius: 2, border: `1px solid ${M.line}` }}>
             <div style={{ height: '100%', width: `${r.w}%`, background: r.color, borderRadius: 2, opacity: 0.8 }}/>
           </div>
-          <span style={{ fontSize: '0.4375rem', color: '#475569', fontFamily: 'monospace', flexShrink: 0 }}>⚡ {i + 1}</span>
+          <span style={{ fontSize: '0.4375rem', color: M.muted, fontFamily: 'monospace', flexShrink: 0 }}>⚡ {i + 1}</span>
         </div>
       ))}
       <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e' }}/>
-        <span style={{ fontSize: '0.5rem', color: '#22c55e' }}>4/4 completed · async</span>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: M.green }}/>
+        <span style={{ fontSize: '0.5rem', color: M.green }}>4/4 completed · async</span>
       </div>
     </div>
   );
@@ -1081,15 +1081,15 @@ function IlloLDEVRVehicleBrand() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Vehicle Brand Lookup</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Vehicle Brand Lookup</div>
       {brands.map((b, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5, padding: '4px 6px', borderRadius: 5, background: b.selected ? 'rgba(88,166,255,0.08)' : 'transparent', border: b.selected ? '1px solid rgba(88,166,255,0.2)' : '1px solid transparent' }}>
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 5, padding: '4px 6px', borderRadius: 5, background: b.selected ? M.card : 'transparent', border: b.selected ? `1px solid ${M.blue}` : `1px solid transparent` }}>
           <div style={{ width: 14, height: 14, borderRadius: '50%', background: b.color, flexShrink: 0 }}/>
-          <span style={{ fontSize: '0.5rem', color: b.selected ? '#e2e8f0' : '#64748b', fontWeight: b.selected ? 700 : 400, flex: 1 }}>{b.name}</span>
-          {b.selected && <span style={{ fontSize: '0.4375rem', color: '#22c55e' }}>✓</span>}
+          <span style={{ fontSize: '0.5rem', color: b.selected ? M.text : M.dim, fontWeight: b.selected ? 700 : 400, flex: 1 }}>{b.name}</span>
+          {b.selected && <span style={{ fontSize: '0.4375rem', color: M.green }}>✓</span>}
         </div>
       ))}
-      <div style={{ marginTop: 4, padding: '3px 6px', background: 'rgba(255,255,255,0.04)', borderRadius: 3, fontFamily: 'monospace', fontSize: '0.4375rem', color: '#475569' }}>variantId: 54B9…</div>
+      <div style={{ marginTop: 4, padding: '3px 6px', background: M.card, borderRadius: 3, border: `1px solid ${M.line}`, fontFamily: 'monospace', fontSize: '0.4375rem', color: M.muted }}>variantId: 54B9…</div>
     </div>
   );
 }
@@ -1103,14 +1103,14 @@ function IlloLDEVROemEmsp() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM EMSP Networks</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>OEM EMSP Networks</div>
       {networks.map((n, i) => (
         <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 6 }}>
-          <div style={{ width: 14, height: 14, borderRadius: '50%', background: n.compat ? '#22c55e' : '#475569', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 14, height: 14, borderRadius: '50%', background: n.compat ? M.green : M.muted, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ fontSize: '0.5rem', color: '#fff' }}>{n.compat ? '⚡' : '—'}</span>
           </div>
-          <span style={{ fontSize: '0.4375rem', color: n.compat ? '#94a3b8' : '#475569', flex: 1 }}>{n.name}</span>
-          <span style={{ fontSize: '0.4375rem', color: n.compat ? '#22c55e' : '#475569', fontFamily: 'monospace' }}>{n.compat ? 'OEM' : '—'}</span>
+          <span style={{ fontSize: '0.4375rem', color: n.compat ? M.dim : M.muted, flex: 1 }}>{n.name}</span>
+          <span style={{ fontSize: '0.4375rem', color: n.compat ? M.green : M.muted, fontFamily: 'monospace' }}>{n.compat ? 'OEM' : '—'}</span>
         </div>
       ))}
     </div>
@@ -1121,20 +1121,20 @@ function IlloLDEVRComputeToll() {
   const M = useDarkStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll · EV</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Compute Toll · EV</div>
       <svg viewBox="0 0 200 55" style={{ width: '100%', height: 55, flexShrink: 0 }} fill="none">
-        <path d="M0 38 Q100 34 200 38" stroke="#243040" strokeWidth="8" strokeLinecap="round"/>
-        <rect x="98" y="16" width="4" height="28" rx="2" fill="#475569"/>
+        <path d="M0 38 Q100 34 200 38" stroke={M.line} strokeWidth="8" strokeLinecap="round"/>
+        <rect x="98" y="16" width="4" height="28" rx="2" fill={M.muted}/>
         <rect x="100" y="16" width="48" height="5" rx="2" fill="#e2001a" opacity="0.85"/>
-        <rect x="82" y="10" width="18" height="30" rx="3" fill="#1e293b"/>
-        <circle cx="172" cy="22" r="10" fill="rgba(34,197,94,0.1)" stroke="#22c55e" strokeWidth="1.5"/>
-        <text x="172" y="26" textAnchor="middle" fill="#22c55e" style={{ fontSize: 8, fontWeight: 700 }}>EV</text>
+        <rect x="82" y="10" width="18" height="30" rx="3" fill={M.card}/>
+        <circle cx="172" cy="22" r="10" fill={`${M.green}18`} stroke={M.green} strokeWidth="1.5"/>
+        <text x="172" y="26" textAnchor="middle" fill={M.green} style={{ fontSize: 8, fontWeight: 700 }}>EV</text>
       </svg>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 3 }}>
-        {[['Base toll', '€2.40', '#e2e8f0'], ['EV exemption', '–€1.20', '#22c55e'], ['Total', '€1.20', '#58a6ff']].map(([label, val, col]) => (
+        {[['Base toll', '€2.40', null], ['EV exemption', '–€1.20', 'green'], ['Total', '€1.20', 'blue']].map(([label, val, acc]) => (
           <div key={label} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: '0.4375rem', color: '#475569' }}>{label}</span>
-            <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: col, fontFamily: 'monospace' }}>{val}</span>
+            <span style={{ fontSize: '0.4375rem', color: M.dim }}>{label}</span>
+            <span style={{ fontSize: '0.4375rem', fontWeight: 700, color: acc === 'green' ? M.green : acc === 'blue' ? M.blue : M.text, fontFamily: 'monospace' }}>{val}</span>
           </div>
         ))}
       </div>
@@ -1148,13 +1148,13 @@ function IlloLDEVRChargingParks() {
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 7 }}>
-        <span style={{ fontSize: '0.5rem', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Park Hours</span>
-        <span style={{ fontSize: '0.5rem', color: '#22c55e', fontWeight: 700 }}>12/16 free</span>
+        <span style={{ fontSize: '0.5rem', color: M.dim, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Park Hours</span>
+        <span style={{ fontSize: '0.5rem', color: M.green, fontWeight: 700 }}>12/16 free</span>
       </div>
       {hours.map(([day, hrs], i) => (
-        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, padding: '3px 6px', background: 'rgba(255,255,255,0.04)', borderRadius: 4 }}>
-          <span style={{ fontSize: '0.4375rem', color: '#94a3b8' }}>{day}</span>
-          <span style={{ fontSize: '0.4375rem', color: '#475569', fontFamily: 'monospace' }}>{hrs}</span>
+        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4, padding: '3px 6px', background: M.card, borderRadius: 4, border: `1px solid ${M.line}` }}>
+          <span style={{ fontSize: '0.4375rem', color: M.dim }}>{day}</span>
+          <span style={{ fontSize: '0.4375rem', color: M.muted, fontFamily: 'monospace' }}>{hrs}</span>
         </div>
       ))}
     </div>
@@ -1200,12 +1200,12 @@ function IlloLDEVRDataFreshness() {
   ];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px' }}>
-      <div style={{ fontSize: '0.5rem', color: '#64748b', marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 7, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Data Freshness</div>
       {items.map((item) => (
         <div key={item.label} style={{ marginBottom: 6 }}>
-          <span style={{ fontSize: '0.4375rem', color: '#64748b', display: 'block', marginBottom: 1 }}>{item.label}</span>
-          <div style={{ height: 4, background: '#1e293b', borderRadius: 2 }}>
-            <div style={{ height: '100%', width: `${item.pct}%`, background: item.color, borderRadius: 2, opacity: 0.85 }}/>
+          <span style={{ fontSize: '0.4375rem', color: M.dim, display: 'block', marginBottom: 1 }}>{item.label}</span>
+          <div style={{ height: 4, background: M.card, borderRadius: 2, border: `1px solid ${M.line}` }}>
+            <div style={{ height: '100%', width: `${item.pct}%`, background: item.color === '#22c55e' ? M.green : item.color === '#fbbf24' ? M.amber : item.color === '#f85149' ? M.red : item.color, borderRadius: 2, opacity: 0.85 }}/>
           </div>
         </div>
       ))}
@@ -1219,7 +1219,7 @@ function IlloLDEVRDataFreshness() {
 
 function IlloVIL() {
   const M = useDarkStyle();
-  const signals = [['Battery SoC', '74%', '#3fb950'], ['Connector type', 'CCS2', '#58a6ff'], ['Speed', '87 km/h', '#fbbf24'], ['GDPR consent', 'Granted', '#3fb950']];
+  const signals = [['Battery SoC', '74%', M.green], ['Connector type', 'CCS2', M.blue], ['Speed', '87 km/h', M.amber], ['GDPR consent', 'Granted', M.green]];
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
       <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>VIL — Vehicle signals</div>
@@ -1265,14 +1265,14 @@ function IlloANATheming() {
         <div key={name} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8 }}>
           {!text
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: from, flexShrink: 0 }} />
-            : <div style={{ width: 26, height: 14, borderRadius: 3, background: '#161b22', border: '1px solid #21262d', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <span style={{ fontSize: '0.5rem', color: '#e2001a', fontFamily: 'monospace' }}>{from}</span>
               </div>}
-          <span style={{ fontSize: '0.5rem', color: '#8b949e', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
-          <span style={{ fontSize: '0.875rem', color: '#374151' }}>→</span>
+          <span style={{ fontSize: '0.5rem', color: M.dim, flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{name}</span>
+          <span style={{ fontSize: '0.875rem', color: M.dim }}>→</span>
           {!text
             ? <div style={{ width: 26, height: 14, borderRadius: 3, background: to, flexShrink: 0 }} />
-            : <div style={{ width: 26, height: 14, borderRadius: 3, background: '#161b22', border: '1px solid #21262d', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            : <div style={{ width: 26, height: 14, borderRadius: 3, background: M.card, border: `1px solid ${M.line}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <span style={{ fontSize: '0.5rem', color: '#0066ff', fontFamily: 'monospace' }}>{to}</span>
               </div>}
         </div>
@@ -2846,10 +2846,10 @@ function useDarkStyle() {
     dim:    C.mid,
     muted:  C.soft,
     green:  C.accent,
-    blue:   C.soft,
+    blue:   C.mid,     // C.soft was too light (#A8C8E8) in day; C.mid (#5B8AC5) has better contrast
     red:    C.danger,
     amber:  C.warn,
-    purple: C.accent,
+    purple: C.accent,  // day: forest green, night: bright green, blueprint: theme accent
     dark:   C.dark,
   };
 }
