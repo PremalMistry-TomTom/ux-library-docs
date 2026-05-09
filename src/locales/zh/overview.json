@@ -22,7 +22,13 @@
     "evChargingSearch": { "label": "充电站搜索",         "desc": "按连接器类型、功率等级及首选充电网络筛选兼容的电动车充电站。",        "group": "电动车与充电"  },
     "cluster":          { "label": "仪表盘显示",         "desc": "通过 Intent 在车辆仪表盘上渲染 NIP、车道引导、CMP 和 ETA。",        "group": "车辆集成"       },
     "aiPersonality":    { "label": "对话个性",           "desc": "为 OEM 语音身份定制 AI 助手的名称、语气和品牌专属用语。",            "group": "TomTom AI"      },
-    "adas":             { "label": "ADAS 集成",          "desc": "连接高级驾驶辅助系统——车道引导、速度提醒及交叉路口视图。",           "group": "车辆集成"       }
+    "adas":             { "label": "ADAS 集成",          "desc": "连接高级驾驶辅助系统——车道引导、速度提醒及交叉路口视图。",           "group": "车辆集成"       },
+    "navsdkMapDisplay": { "label": "NavSDK 地图显示",   "desc": "在 Compose 或 Views 中嵌入地图，支持样式、相机动画、标记及交通覆盖层。", "group": "地图与导航 SDK" },
+    "navsdkNavigation": { "label": "NavSDK 导航",       "desc": "逐步导航、语音指引、安全提醒及 NavSDK 引擎的持续重新规划功能。",        "group": "地图与导航 SDK" },
+    "navsdkSearch":     { "label": "NavSDK 搜索",       "desc": "模糊搜索、自动完成、沿途 POI 发现及反向地理编码，一站式 SDK 接口。",    "group": "地图与导航 SDK" },
+    "navsdkRouting":    { "label": "NavSDK 路线规划",   "desc": "计算考虑交通的路线、备选路线、路段分析及行程中的路线导入/导出。",       "group": "地图与导航 SDK" },
+    "navsdkHorizon":    { "label": "虚拟地平线",        "desc": "获取前方路线的曲率、坡度、限速及交通数据——ADAS 功能的数据基础。",      "group": "地图与导航 SDK" },
+    "navsdkOffline":    { "label": "离线地图与路线",    "desc": "预下载区域、无网络连接时在设备上规划路线，并通过增量更新保持地图最新。","group": "地图与导航 SDK" }
   },
   "explore": {
     "heading": "按领域探索",
@@ -35,7 +41,15 @@
     "appCustomisation":   { "label": "应用定制",          "desc": "首页布局、搜索引擎集成、导航面板定位及导航 UI 面板。" },
     "evCharging":         { "label": "电动车与充电",      "desc": "电池模型配置、充电站搜索、长途路线规划及导航中电量 UI。" },
     "vehicleIntegration": { "label": "车辆集成",          "desc": "仪表盘显示、抬头显示器、ADAS 车道引导集成及货车路线限制。" },
-    "aiAssistant":        { "label": "TomTom AI 助手",    "desc": "车载语音云端 AI 智能体——语音识别、意图路由、TTS 及多轮对话。" }
+    "aiAssistant":        { "label": "TomTom AI 助手",    "desc": "车载语音云端 AI 智能体——语音识别、意图路由、TTS 及多轮对话。" },
+    "navsdkMapDisplay":   { "label": "地图显示",          "desc": "Compose 和 View 集成、地图样式、相机控制、标记及实时交通覆盖层。" },
+    "navsdkLocation":     { "label": "定位",              "desc": "融合 GNSS 提供商、后台更新及适用于 DR 硬件的自定义定位引擎接口。" },
+    "navsdkSearch":       { "label": "搜索",              "desc": "模糊搜索、自动完成建议、反向地理编码、沿途 POI 发现及自定义数据接入。" },
+    "navsdkRouting":      { "label": "路线规划",          "desc": "路线计算、备选路线、路段明细及支持行程编辑的路线导入/导出功能。" },
+    "navsdkNavigation":   { "label": "导航",              "desc": "带有 NIP 事件、语音指引、安全提醒、重新规划及会话恢复的导航会话。" },
+    "navsdkOffline":      { "label": "离线",              "desc": "区域下载、设备端路线规划、增量差量更新及手动地图管理功能。" },
+    "navsdkHorizon":      { "label": "虚拟地平线",        "desc": "地平线引擎、ADAS 路况属性、ISA 速度提醒及前方路线危险事件。" },
+    "navsdkAdvanced":     { "label": "高级",              "desc": "仿真模式、地图匹配定位、遥测配置及车辆元数据设置。" }
   },
   "featured": {
     "ev": { "label": "电动车支持", "desc": "续航感知路线规划、充电站搜索及自动停靠点规划。", "group": "车辆集成" },

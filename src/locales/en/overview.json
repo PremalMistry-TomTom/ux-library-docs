@@ -30,7 +30,13 @@
     "intentRouting":    { "label": "Intent Routing",           "desc": "Route navigation intents through TAIA and forward media, climate, and phone intents to OEM domain handlers.",       "group": "TomTom AI"            },
     "voiceEngine":      { "label": "Voice Engine",             "desc": "Connect your OEM text-to-speech provider to drive all voice output from the AI assistant.",                         "group": "TomTom AI"            },
     "speechToText":     { "label": "Speech to Text",           "desc": "Integrate a speech-to-text provider and configure wake word handling for hands-free voice input.",                  "group": "TomTom AI"            },
-    "adas":             { "label": "ADAS Integration",         "desc": "Connect advanced driver assistance systems — lane guidance, speed alerts, and junction view.",                       "group": "Vehicle Integration"  }
+    "adas":             { "label": "ADAS Integration",         "desc": "Connect advanced driver assistance systems — lane guidance, speed alerts, and junction view.",                       "group": "Vehicle Integration"  },
+    "navsdkMapDisplay": { "label": "NavSDK Map Display",        "desc": "Embed a TomTom map in Compose or Views with styles, camera animations, markers, and traffic overlays.",              "group": "Maps & Navigation SDK" },
+    "navsdkNavigation": { "label": "NavSDK Navigation",         "desc": "Turn-by-turn guidance, voice instructions, safety alerts, and continuous replanning from the NavSDK engine.",         "group": "Maps & Navigation SDK" },
+    "navsdkSearch":     { "label": "NavSDK Search",             "desc": "Fuzzy search, autocomplete, along-route POI discovery, and reverse geocoding in one SDK surface.",                    "group": "Maps & Navigation SDK" },
+    "navsdkRouting":    { "label": "NavSDK Routing",            "desc": "Calculate traffic-aware routes with alternatives, inspect sections, and import or export route data on the fly.",     "group": "Maps & Navigation SDK" },
+    "navsdkHorizon":    { "label": "Virtual Horizon",           "desc": "Access curvature, gradient, speed limits, and traffic ahead on route — the data foundation for ADAS features.",       "group": "Maps & Navigation SDK" },
+    "navsdkOffline":    { "label": "Offline Maps & Routing",    "desc": "Pre-download regions, route on-device without connectivity, and keep maps current with incremental delta updates.",   "group": "Maps & Navigation SDK" }
   },
   "explore": {
     "heading": "Explore by domain",
@@ -43,7 +49,15 @@
     "appCustomisation":   { "label": "App Customisation",      "desc": "Home screen layout, search engine integration, navigation panel positioning, and guidance UI panels." },
     "evCharging":         { "label": "EV & Charging",          "desc": "Battery model configuration, charging station search, long-distance route planning, and in-navigation SoC UI." },
     "vehicleIntegration": { "label": "Vehicle Integration",    "desc": "Instrument cluster, head-up display, ADAS lane guidance integration, and truck routing constraints." },
-    "aiAssistant":        { "label": "TomTom AI Assistant",    "desc": "Cloud AI agent for in-vehicle voice — speech recognition, intent routing, TTS, and multi-turn dialogue." }
+    "aiAssistant":        { "label": "TomTom AI Assistant",    "desc": "Cloud AI agent for in-vehicle voice — speech recognition, intent routing, TTS, and multi-turn dialogue." },
+    "navsdkMapDisplay":   { "label": "Map Display",            "desc": "Compose and View integration, map styles, camera control, markers, and real-time traffic overlays." },
+    "navsdkLocation":     { "label": "Location",               "desc": "Fused GNSS provider, background updates, and custom location engine interface for DR hardware." },
+    "navsdkSearch":       { "label": "Search",                 "desc": "Fuzzy search, autocomplete suggestions, reverse geocoding, along-route POI discovery, and BYOD." },
+    "navsdkRouting":      { "label": "Routing",                "desc": "Route calculation, alternatives, section breakdown, and import/export for active journey editing." },
+    "navsdkNavigation":   { "label": "Navigation",             "desc": "Guided sessions with NIP events, voice instructions, safety alerts, replanning, and session persistence." },
+    "navsdkOffline":      { "label": "Offline",                "desc": "Region downloads, on-device routing, incremental delta updates, and manual map management." },
+    "navsdkHorizon":      { "label": "Virtual Horizon",        "desc": "Horizon Engine, ADAS road attributes, ISA speed alerts, and ahead-of-route hazard events." },
+    "navsdkAdvanced":     { "label": "Advanced",               "desc": "Simulation mode, map-matched location, telemetry configuration, and vehicle metadata." }
   },
   "featured": {
     "ev": { "label": "EV Support", "desc": "Range-aware routing, charging station search, and automatic stop planning.", "group": "Vehicle Integration" },

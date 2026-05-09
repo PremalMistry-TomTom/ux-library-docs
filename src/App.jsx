@@ -81,6 +81,10 @@ import IntroIllustrationsLegacy from './pages/IntroIllustrationsLegacy';
 import StyleSamples from './pages/StyleSamples';
 import DomainLanding from './pages/DomainLanding';
 import NavSDKIntro from './pages/NavSDKIntro';
+import {
+  NavSDKMapDisplay, NavSDKLocation, NavSDKSearch, NavSDKRouting,
+  NavSDKNavigation, NavSDKOffline, NavSDKVirtualHorizon, NavSDKAdvanced,
+} from './pages/NavSDKDomains';
 import ANAIntro from './pages/ANAIntro';
 import RoutingAPIIntro from './pages/RoutingAPIIntro';
 import RoutingCalculateRoute from './pages/RoutingCalculateRoute';
@@ -179,6 +183,14 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'style-samples':          return <StyleSamples />;
     // NavSDK
     case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
+    case 'navsdk-map-display':     return <NavSDKMapDisplay onNavigate={onNavigate} />;
+    case 'navsdk-location':        return <NavSDKLocation onNavigate={onNavigate} />;
+    case 'navsdk-search':          return <NavSDKSearch onNavigate={onNavigate} />;
+    case 'navsdk-routing':         return <NavSDKRouting onNavigate={onNavigate} />;
+    case 'navsdk-navigation':      return <NavSDKNavigation onNavigate={onNavigate} />;
+    case 'navsdk-offline':         return <NavSDKOffline onNavigate={onNavigate} />;
+    case 'navsdk-horizon':         return <NavSDKVirtualHorizon onNavigate={onNavigate} />;
+    case 'navsdk-advanced':        return <NavSDKAdvanced onNavigate={onNavigate} />;
     // ANA
     case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
     // Routing API

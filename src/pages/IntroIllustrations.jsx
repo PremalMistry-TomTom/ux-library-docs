@@ -512,6 +512,221 @@ export function IlloMapDisplay() {
   );
 }
 
+/* ── NavSDK Domain illustrations ─────────────────────────────────────────── */
+
+export function IlloNavSDKLocation() {
+  const M = useDarkStyle();
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill={M.bg}/>
+          {/* Map grid lines */}
+          <line x1="0" y1="43" x2="200" y2="43" stroke={M.card} strokeWidth="1"/>
+          <line x1="0" y1="87" x2="200" y2="87" stroke={M.card} strokeWidth="1"/>
+          <line x1="67" y1="0" x2="67" y2="130" stroke={M.card} strokeWidth="1"/>
+          <line x1="133" y1="0" x2="133" y2="130" stroke={M.card} strokeWidth="1"/>
+          {/* GPS accuracy halo */}
+          <circle cx="100" cy="65" r="30" fill="rgba(88,166,255,0.08)" stroke="#58a6ff" strokeWidth="1" strokeDasharray="4 3"/>
+          <circle cx="100" cy="65" r="18" fill="rgba(88,166,255,0.12)" stroke="#58a6ff" strokeWidth="0.5"/>
+          {/* Location pin */}
+          <circle cx="100" cy="65" r="6" fill="#e2001a"/>
+          <circle cx="100" cy="65" r="10" fill="rgba(226,0,26,0.22)"/>
+          {/* Heading arrow */}
+          <path d="M100 65 L108 48" stroke="#58a6ff" strokeWidth="2" strokeLinecap="round"/>
+          <polygon points="108,43 104,52 112,52" fill="#58a6ff"/>
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '5px 8px', border: `1px solid ${M.line}`, display: 'flex', gap: 8, alignItems: 'center' }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: M.green, flexShrink: 0 }}/>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.5rem', color: M.text, fontWeight: 700 }}>GPS · 3D Fix</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim }}>Accuracy: ±4 m · 9 satellites</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IlloNavSDKSearch() {
+  const M = useDarkStyle();
+  const results = [['Vondelpark', 'Park · 0.8 km'], ['Dam Square', 'Square · 1.2 km'], ['Leidseplein', 'Square · 1.6 km']];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
+      <div style={{ padding: '7px 10px', background: M.card, display: 'flex', alignItems: 'center', gap: 6, borderBottom: `1px solid ${M.line}` }}>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span style={{ fontSize: '0.5rem', color: M.text, fontWeight: 600 }}>Vond</span>
+        <span style={{ fontSize: '0.5rem', color: M.muted }}>elpark</span>
+      </div>
+      {results.map(([name, meta], i) => (
+        <div key={name} style={{ padding: '5px 10px', borderBottom: i < 2 ? `1px solid ${M.line}` : 'none', display: 'flex', gap: 7, alignItems: 'center' }}>
+          <div style={{ width: 18, height: 18, background: M.card, borderRadius: 4, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${M.line}` }}>
+            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{name}</div>
+            <div style={{ fontSize: '0.5rem', color: M.muted }}>{meta}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function IlloNavSDKRouting() {
+  const M = useDarkStyle();
+  const routes = [
+    { label: 'Fastest', time: '22 min', dist: '14.2 km', tag: 'Recommended', highlight: true },
+    { label: 'Eco', time: '26 min', dist: '13.5 km', tag: '–8% fuel', highlight: false },
+    { label: 'Avoid tolls', time: '31 min', dist: '17.1 km', tag: 'No tolls', highlight: false },
+  ];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text, marginBottom: 2 }}>Route Options</div>
+      <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 8 }}>Amsterdam → Schiphol</div>
+      {routes.map((r, i) => (
+        <div key={r.label} style={{ background: r.highlight ? M.card : 'transparent', border: `1px solid ${r.highlight ? M.green : M.line}`, borderRadius: 5, padding: '5px 7px', marginBottom: 4, display: 'flex', alignItems: 'center', gap: 7 }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>{r.time}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>{r.dist}</div>
+          </div>
+          <span style={{ fontSize: '0.5rem', padding: '2px 5px', borderRadius: 3, background: M.bg, color: r.highlight ? M.green : M.dim, fontWeight: 600, border: `1px solid ${M.line}` }}>{r.tag}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function IlloNavSDKNavigation() {
+  const M = useDarkStyle();
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill={M.bg}/>
+          <path d="M20 110 Q70 70 100 72 T180 50" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.85"/>
+          <path d="M20 110 Q70 70 100 72 T180 50" stroke="rgba(226,0,26,0.18)" strokeWidth="9" strokeLinecap="round"/>
+          <circle cx="100" cy="71" r="4" fill="#e2001a"/>
+          <circle cx="100" cy="71" r="8" fill="rgba(226,0,26,0.2)"/>
+        </svg>
+      </div>
+      {/* NIP banner */}
+      <div style={{ position: 'absolute', top: 8, left: 8, right: 8, background: M.dark, borderRadius: 6, padding: '6px 10px', display: 'flex', alignItems: 'center', gap: 8, border: `1px solid ${M.green}` }}>
+        <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>↖</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.5rem', fontWeight: 700, color: M.white }}>In 400 m turn left</div>
+          <div style={{ fontSize: '0.5rem', color: M.dim }}>Keizersgracht</div>
+        </div>
+        <div style={{ fontSize: '0.625rem', fontWeight: 700, color: M.green }}>400m</div>
+      </div>
+      {/* Bottom bar */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}`, padding: '6px 12px', display: 'flex', justifyContent: 'space-around' }}>
+        {[['14:38', 'ETA'], ['18 min', 'Time'], ['6.4 km', 'Dist']].map(([v, l]) => (
+          <div key={l} style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, color: M.white }}>{v}</div>
+            <div style={{ fontSize: '0.5rem', color: M.dim }}>{l}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function IlloNavSDKOffline() {
+  const M = useDarkStyle();
+  const regions = [['Western Europe', '1.4 GB', 100], ['Benelux', '0.3 GB', 72], ['Germany', '0.9 GB', 28]];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={M.green} strokeWidth="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span style={{ fontSize: '0.5rem', fontWeight: 700, color: M.text }}>Offline Maps</span>
+        <span style={{ fontSize: '0.5rem', color: M.green, marginLeft: 'auto' }}>3 regions</span>
+      </div>
+      {regions.map(([name, size, pct]) => (
+        <div key={name} style={{ marginBottom: 8 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
+            <span style={{ fontSize: '0.5rem', color: M.text }}>{name}</span>
+            <span style={{ fontSize: '0.5rem', color: M.dim }}>{size}</span>
+          </div>
+          <div style={{ height: 4, background: M.card, borderRadius: 2 }}>
+            <div style={{ height: '100%', width: `${pct}%`, background: pct === 100 ? M.green : M.blue, borderRadius: 2 }}/>
+          </div>
+          {pct < 100 && <div style={{ fontSize: '0.5rem', color: M.dim, marginTop: 2 }}>{pct}% downloaded</div>}
+          {pct === 100 && <div style={{ fontSize: '0.5rem', color: M.green, marginTop: 2 }}>Ready · offline</div>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export function IlloNavSDKVirtualHorizon() {
+  const M = useDarkStyle();
+  const events = [
+    { dist: '200 m', label: 'Speed limit 80', color: '#fbbf24', icon: '⚠️' },
+    { dist: '450 m', label: 'Sharp curve right', color: M.blue, icon: '↪' },
+    { dist: '900 m', label: 'Traffic incident', color: '#ef4444', icon: '⛔' },
+  ];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
+      {/* 3D road perspective */}
+      <div style={{ position: 'absolute', inset: 0 }}>
+        <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
+          <rect width="200" height="130" fill={M.bg}/>
+          <path d="M0 130 L60 58 L140 58 L200 130 Z" fill={M.card} opacity="0.7"/>
+          {[70,90,100,110,130].map((x, i) => (
+            <line key={i} x1={x} y1={58} x2={i < 2 ? x-50 : i > 2 ? x+50 : x} y2={130} stroke={M.line} strokeWidth="0.8" strokeDasharray="5 4"/>
+          ))}
+          <circle cx="75" cy="72" r="3.5" fill="#fbbf24" opacity="0.9"/>
+          <circle cx="100" cy="64" r="3" fill="#ef4444" opacity="0.9"/>
+          <circle cx="118" cy="69" r="2.5" fill="#58a6ff" opacity="0.9"/>
+        </svg>
+      </div>
+      {/* Horizon data strip */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: M.dark, borderTop: `1px solid ${M.line}`, padding: '5px 8px' }}>
+        <div style={{ fontSize: '0.5rem', color: M.dim, marginBottom: 3 }}>Ahead on route</div>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {events.map(ev => (
+            <div key={ev.label} style={{ flex: 1, background: M.card, borderRadius: 4, padding: '3px 5px', border: `1px solid ${ev.color}33` }}>
+              <div style={{ fontSize: '0.5rem', color: ev.color, fontWeight: 700 }}>{ev.dist}</div>
+              <div style={{ fontSize: '0.5rem', color: M.dim, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ev.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function IlloNavSDKAdvanced() {
+  const M = useDarkStyle();
+  const config = [
+    { key: 'apiKey', val: '"tt_••••••"', color: M.green },
+    { key: 'logLevel', val: '"DEBUG"', color: '#fbbf24' },
+    { key: 'telemetry', val: 'enabled', color: M.blue },
+    { key: 'vehicle', val: '{ type: CAR }', color: M.dim },
+  ];
+  return (
+    <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
+      {/* Window chrome */}
+      <div style={{ display: 'flex', gap: 4, marginBottom: 8, alignItems: 'center' }}>
+        {['#ef4444','#fbbf24','#22c55e'].map(c => (
+          <div key={c} style={{ width: 7, height: 7, borderRadius: '50%', background: c }}/>
+        ))}
+        <span style={{ fontSize: '0.5rem', color: M.dim, marginLeft: 4, fontFamily: 'monospace' }}>NavSDK.init()</span>
+      </div>
+      {config.map(({ key, val, color }) => (
+        <div key={key} style={{ display: 'flex', gap: 6, alignItems: 'baseline', marginBottom: 5 }}>
+          <span style={{ fontSize: '0.5rem', color: M.dim, fontFamily: 'monospace', flexShrink: 0 }}>{key}:</span>
+          <span style={{ fontSize: '0.5rem', color, fontFamily: 'monospace', fontWeight: 700 }}>{val}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: 8, padding: '5px 7px', background: M.card, borderRadius: 4, border: `1px solid ${M.line}` }}>
+        <div style={{ fontSize: '0.5rem', color: M.green }}>✓ SDK initialised · v2.x</div>
+      </div>
+    </div>
+  );
+}
+
 function IlloSDKSearch() {
   const M = useDarkStyle();
   const results = [['Amsterdam Centraal', '0.2 km'], ['Rijksmuseum', '1.4 km'], ['Vondelpark', '2.1 km']];
@@ -4464,6 +4679,26 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           <IlloCard dark={IlloOfflineMaps}    light={L_OfflineMaps}    label="Offline Maps"      emoji="📴" source="NavSDKIntro · ThumbOffline"          prompt="Download progress UI showing a country region being cached with a file-size figure and a percentage bar. Cloud-to-device arrow communicates the offline-first tile delivery model." illoStyle={illoStyle}/>
           <IlloCard dark={IlloCarPlay}        light={L_CarPlay}        label="CarPlay"           emoji="🍎" source="NavSDKIntro · ThumbCarPlay"          prompt="Apple CarPlay-styled screen template with TomTom navigation constrained to the safe-zone and two large dashboard buttons. Rounded iOS chrome and simplified layout reflect strict CarPlay template guidelines." illoStyle={illoStyle}/>
           <IlloCard dark={IlloVirtualHorizon} light={L_VirtualHorizon} label="Virtual Horizon"   emoji="🛤️" source="NavSDKIntro · ThumbVirtualHorizon"  prompt="3D perspective road wireframe showing upcoming curves and gradient changes with data-annotation overlays. The forward-looking view illustrates ADAS horizon data feeding predictive cruise-control algorithms." illoStyle={illoStyle}/>
+        </div>
+      </div>
+
+      {/* ── NavSDK Domain pages ── */}
+      <div className="zone">
+        <SectionHeader
+          emoji="🗂️"
+          title="NavSDK — Domain Pages"
+          subtitle="Domain landing card thumbnails for the 8 NavSDK capability domains."
+          color="#0066cc"
+        />
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
+          <IlloCard dark={IlloMapDisplay}           light={L_MapDisplay}     label="Map Display"          emoji="🗺️" source="NavSDKDomains · MapDisplay"       prompt="Dark map canvas with a TomTom-red route arc, a vehicle dot, and coloured POI pins — the NavSDK core map rendering view with real-time data layers composited." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKLocation}       light={L_MapDisplay}     label="Location"             emoji="📍" source="NavSDKDomains · Location"         prompt="Bird's-eye map grid with a GPS accuracy halo ring radiating from a red location dot and a blue heading arrow — communicating real-time GNSS positioning with satellite count and fix quality." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKSearch}         light={L_SearchResult}   label="SDK Search"           emoji="🔍" source="NavSDKDomains · Search"           prompt="Autocomplete search bar with the user's partial query and three location results below — each showing a place category and walking distance — mirroring the SDK's fuzzy search suggestion flow." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKRouting}        light={L_Route}          label="SDK Routing"          emoji="🚦" source="NavSDKDomains · Routing"         prompt="Three alternative route options listed with time and distance, the fastest highlighted in green — showing the SDK's multi-route planning API with preference-based selection." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKNavigation}     light={L_NavGuidance}    label="Navigation"           emoji="↖️" source="NavSDKDomains · Navigation"      prompt="Active navigation view with a NIP turn-instruction banner at the top and a three-field ETA/time/distance bar at the bottom, composited over a live route map." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKOffline}        light={L_MapDisplay}     label="Offline"              emoji="📴" source="NavSDKDomains · Offline"         prompt="Offline map download manager showing three regions with progress bars — one complete in green, two in progress — communicating the SDK's tile pre-caching and incremental update model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKVirtualHorizon} light={L_HorizonPanel}   label="Virtual Horizon"      emoji="🛤️" source="NavSDKDomains · VirtualHorizon"  prompt="3D road perspective with coloured ADAS event pins ahead (speed limit, curve, incident) and a horizon data strip at the bottom showing distance-keyed events on the upcoming route." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKAdvanced}       light={L_NavGuidance}    label="Advanced"             emoji="⚙️" source="NavSDKDomains · Advanced"        prompt="Code editor window showing SDK initialisation config keys (apiKey, logLevel, telemetry, vehicle) with syntax-highlighted values and a green success confirmation badge." illoStyle={illoStyle}/>
         </div>
       </div>
 
