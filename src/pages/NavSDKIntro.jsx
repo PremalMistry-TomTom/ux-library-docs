@@ -279,63 +279,63 @@ const USE_CASE_CARDS = [
     group:  'Map Display',
     title:  'Render a Map',
     desc:   'Embed a fully interactive TomTom map into a Jetpack Compose or Android Views layout with styles, camera control, and live traffic.',
-    pageId: 'navsdk-map-display',
+    pageId: 'navsdk-map-compose',
   },
   {
     Thumb:  makeThumb(IlloNavSDKNavigation,     L_NavGuidance),
     group:  'Navigation',
     title:  'Start Turn-by-Turn Navigation',
     desc:   'Initiate a guided session with manoeuvre events, progress tracking, continuous replanning, and free-driving support.',
-    pageId: 'navsdk-navigation',
+    pageId: 'navsdk-nav-quickstart',
   },
   {
     Thumb:  makeThumb(IlloNavSDKRouting,        L_Route),
     group:  'Routing',
     title:  'Calculate Route with Alternatives',
     desc:   'Request traffic-aware routes with up to three alternatives, compare section breakdowns, and import or export active routes.',
-    pageId: 'navsdk-routing',
+    pageId: 'navsdk-route-alternatives',
   },
   {
     Thumb:  makeThumb(IlloNavSDKNavigation,     L_NavGuidance),
     group:  'Navigation',
     title:  'Add Voice Instructions',
     desc:   'Connect a text-to-speech engine to receive NIP events and synthesise turn-by-turn voice prompts during active guidance.',
-    pageId: 'navsdk-navigation',
+    pageId: 'navsdk-nav-voice',
   },
   {
     Thumb:  makeThumb(IlloNavSDKOffline,        L_OfflineMaps),
     group:  'Offline',
     title:  'Enable Offline Maps',
     desc:   'Pre-download map regions for fully on-device routing and rendering without any network connectivity.',
-    pageId: 'navsdk-offline',
+    pageId: 'navsdk-offline-setup',
   },
   {
     Thumb:  makeThumb(IlloNavSDKLocation,       L_MapDisplay),
     group:  'Location',
     title:  'GPS Location Provider',
     desc:   'Attach the fused GNSS provider or a custom dead-reckoning engine to feed real-time position into the navigation stack.',
-    pageId: 'navsdk-location',
+    pageId: 'navsdk-location-quickstart',
   },
   {
     Thumb:  makeThumb(IlloNavSDKVirtualHorizon, L_VirtualHorizon),
     group:  'Virtual Horizon',
     title:  'Virtual Horizon & ADAS Data',
     desc:   'Read curvature, gradient, speed limits, and ahead-of-route events from the Horizon Engine for ADAS features.',
-    pageId: 'navsdk-horizon',
+    pageId: 'navsdk-horizon-data',
   },
   {
     Thumb:  makeThumb(IlloNavSDKSearch,         L_SDKSearch),
     group:  'Search',
     title:  'Fuzzy Search',
     desc:   'Query the TomTom search API for destinations, POIs, and reverse-geocoded coordinates with autocomplete and along-route variants.',
-    pageId: 'navsdk-search',
+    pageId: 'navsdk-search-find',
   },
   {
     Thumb:  makeThumb(IlloNavSDKAdvanced,       L_NavGuidance),
     group:  'Advanced',
     title:  'Simulate Navigation for Testing',
     desc:   'Drive the navigation engine along a pre-planned route at configurable speed to test guidance logic without a real vehicle.',
-    pageId: 'navsdk-advanced',
+    pageId: 'navsdk-adv-simulation',
   },
 ];
 
@@ -423,31 +423,31 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       Thumb: makeThumb(IlloMapDisplay,     L_MapDisplay),
       title: t('navsdkIntro.capabilities.mapDisplay.title'),
       desc: t('navsdkIntro.capabilities.mapDisplay.desc'),
-      pageId: 'navsdk-map-display',
+      pageId: 'navsdk-map-compose',
     },
     {
       Thumb: makeThumb(ThumbSearch,       L_SDKSearch),
       title: t('navsdkIntro.capabilities.search.title'),
       desc: t('navsdkIntro.capabilities.search.desc'),
-      pageId: 'navsdk-search',
+      pageId: 'navsdk-search-quickstart',
     },
     {
       Thumb: makeThumb(ThumbRouting,      L_RouteOptions),
       title: t('navsdkIntro.capabilities.routing.title'),
       desc: t('navsdkIntro.capabilities.routing.desc'),
-      pageId: 'navsdk-routing',
+      pageId: 'navsdk-routing-quickstart',
     },
     {
       Thumb: makeThumb(IlloNavGuidance,   L_NavGuidance),
       title: t('navsdkIntro.capabilities.navigation.title'),
       desc: t('navsdkIntro.capabilities.navigation.desc'),
-      pageId: 'navsdk-nav-guidance',
+      pageId: 'navsdk-nav-quickstart',
     },
     {
       Thumb: makeThumb(ThumbVirtualHorizon, L_VirtualHorizon),
       title: t('navsdkIntro.capabilities.virtualHorizon.title'),
       desc: t('navsdkIntro.capabilities.virtualHorizon.desc'),
-      pageId: 'navsdk-vh-overview',
+      pageId: 'navsdk-horizon-data',
     },
   ];
 
@@ -457,7 +457,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       Thumb: makeThumb(ThumbOffline,      L_OfflineMaps),
       title: t('navsdkIntro.capabilities.offlineMaps.title'),
       desc: t('navsdkIntro.capabilities.offlineMaps.desc'),
-      pageId: 'navsdk-offline-overview',
+      pageId: 'navsdk-offline-quickstart',
       tag: t('navsdkIntro.capabilities.offlineMaps.tag'),
     },
   ];
@@ -468,7 +468,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       Thumb: makeThumb(ThumbCarPlay,      L_CarPlay),
       title: t('navsdkIntro.capabilities.carPlay.title'),
       desc: t('navsdkIntro.capabilities.carPlay.desc'),
-      pageId: 'navsdk-carplay',
+      pageId: 'navsdk-nav-quickstart',
       tag: t('navsdkIntro.capabilities.carPlay.tag'),
     },
   ];
@@ -635,7 +635,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
           </button>
           <button
             className="page-action-btn"
-            onClick={() => onNavigate?.('navsdk-example-quickstart')}
+            onClick={() => onNavigate?.('navsdk-first-map')}
           >
             {isAndroid ? t('navsdkIntro.ctaRunExampleAndroid') : t('navsdkIntro.ctaRunExampleIos')}
           </button>
