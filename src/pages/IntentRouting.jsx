@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const INTENT_ROUTING_APIS = [
   { name: 'Speech to Text Engine',    type: 'Android SDK', description: 'Converts spoken user input to text — the upstream producer of intent strings consumed by the routing layer.',     pageId: 'speech-to-text',         productId: 'ux-library' },
@@ -100,29 +101,30 @@ const INTENTS = [
 
 /* ─── Routing flow diagram ───────────────────────────────────────────────────── */
 function RoutingDiagram({ selected }) {
+  const M = useDemoStyle();
   const intent = INTENTS.find(i => i.id === selected);
   const isOEM  = intent?.owner === 'oem';
   const oemColor  = intent?.color || '#7c3aed';
-  const taiaColor = '#1E8AD4';
+  const taiaColor = M.blue;
 
-  const node = (active, color, children) => ({
+  const node = (active, color) => ({
     padding: '8px 16px', borderRadius: 7, textAlign: 'center',
     fontSize: '0.75rem', fontWeight: active ? 700 : 400,
-    border: `1.5px solid ${active ? color : 'var(--border)'}`,
-    background: active ? `${color}18` : 'var(--bg)',
-    color: active ? color : 'var(--muted)',
+    border: `1.5px solid ${active ? color : M.line}`,
+    background: active ? `${color}18` : M.bg,
+    color: active ? color : M.muted,
     transition: 'all 0.25s ease', minWidth: 110,
   });
 
   const arrow = (active, color) => ({
     fontSize: '1rem', transition: 'color 0.25s ease',
-    color: active ? color : 'var(--border)',
+    color: active ? color : M.line,
   });
 
   const top = !!intent;
 
   return (
-    <div style={{ padding: '20px 16px', background: 'var(--bg)', borderRadius: 20, border: '1px solid var(--border)', marginTop: 16 }}>
+    <div style={{ padding: '20px 16px', background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, marginTop: 16 }}>
 
       {/* Row 1: Driver → STT → TAIA SDK → Classifier */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
@@ -144,7 +146,7 @@ function RoutingDiagram({ selected }) {
           <div style={node(!isOEM && top, taiaColor)}>TAIA Cloud</div>
           <span style={arrow(!isOEM && top, taiaColor)}>↓</span>
           <div style={node(!isOEM && top, taiaColor)}>Navigation App</div>
-          <div style={{ marginTop: 4, fontSize: '0.875rem', fontWeight: 600, color: !isOEM && top ? taiaColor : 'var(--border)', transition: 'color 0.25s' }}>
+          <div style={{ marginTop: 4, fontSize: '0.875rem', fontWeight: 600, color: !isOEM && top ? taiaColor : M.line, transition: 'color 0.25s' }}>
             TomTom owned
           </div>
         </div>
@@ -155,7 +157,7 @@ function RoutingDiagram({ selected }) {
           <div style={node(isOEM && top, oemColor)}>OEM Handler</div>
           <span style={arrow(isOEM && top, oemColor)}>↓</span>
           <div style={node(isOEM && top, oemColor)}>Vehicle Domain</div>
-          <div style={{ marginTop: 4, fontSize: '0.875rem', fontWeight: 600, color: isOEM && top ? oemColor : 'var(--border)', transition: 'color 0.25s' }}>
+          <div style={{ marginTop: 4, fontSize: '0.875rem', fontWeight: 600, color: isOEM && top ? oemColor : M.line, transition: 'color 0.25s' }}>
             OEM owned
           </div>
         </div>

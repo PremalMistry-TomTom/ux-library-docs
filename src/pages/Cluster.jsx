@@ -37,13 +37,14 @@ function LaneArrow({ type = 'straight', recommended = false }) {
 
 /* 1. NIP — next instruction panel */
 function ClusterNIP({ layout }) {
+  const M = useDemoStyle();
   const isMinimal  = layout === 'LANDSCAPE_MINIMAL';
   const isMaximal  = layout === 'LANDSCAPE_MAXIMAL' || layout === 'NORMAL_LAYOUT';
 
   return (
     <div style={{
       padding: isMinimal ? '10px 20px' : '14px 20px',
-      background: 'rgba(22, 50, 80, 0.97)',
+      background: `${M.card}f8`,
       display: 'flex', alignItems: 'center', gap: 14,
       borderBottom: '1px solid rgba(255,255,255,0.08)',
       flexShrink: 0,
@@ -78,6 +79,7 @@ function ClusterNIP({ layout }) {
 
 /* 2. SLG — simple lane guidance: row of arrows beneath the instruction */
 function ClusterSLG() {
+  const M = useDemoStyle();
   // 4 straight (non-recommended) + 2 right (recommended, matching the right-turn NIP)
   const LANES = [
     { type: 'straight', recommended: false },
@@ -90,7 +92,7 @@ function ClusterSLG() {
   return (
     <div style={{
       padding: '10px 20px',
-      background: 'rgba(14, 32, 54, 0.97)',
+      background: `${M.dark}f8`,
       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
       borderBottom: '1px solid rgba(255,255,255,0.06)',
       flexShrink: 0,
@@ -104,10 +106,11 @@ function ClusterSLG() {
 
 /* 3. CMP — consecutive maneuver: "Then →" */
 function ClusterCMP() {
+  const M = useDemoStyle();
   return (
     <div style={{
       padding: '10px 20px',
-      background: 'rgba(10, 24, 44, 0.97)',
+      background: `${M.dark}f8`,
       display: 'flex', alignItems: 'center', gap: 14,
       borderBottom: '1px solid rgba(255,255,255,0.05)',
       flexShrink: 0,
@@ -122,10 +125,11 @@ function ClusterCMP() {
 
 /* 4. JV — junction view schematic */
 function ClusterJV() {
+  const M = useDemoStyle();
   return (
     <div style={{
       padding: '8px 20px',
-      background: 'rgba(10, 24, 44, 0.97)',
+      background: `${M.dark}f8`,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       borderBottom: '1px solid rgba(255,255,255,0.05)',
       flexShrink: 0,
@@ -134,7 +138,7 @@ function ClusterJV() {
         <line x1="25" y1="30" x2="25" y2="14" stroke="rgba(255,255,255,0.3)" strokeWidth="4"/>
         <line x1="25" y1="14" x2="10" y2="0"  stroke="rgba(255,255,255,0.2)" strokeWidth="3"/>
         <line x1="25" y1="14" x2="40" y2="0"  stroke="#e2001a" strokeWidth="3"/>
-        <circle cx="25" cy="14" r="2.5" fill="#333"/>
+        <circle cx="25" cy="14" r="2.5" fill={M.line}/>
         <polygon points="38,1 43,7 36,7" fill="#e2001a"/>
       </svg>
     </div>
@@ -143,10 +147,11 @@ function ClusterJV() {
 
 /* UEP — upcoming events */
 function ClusterUEP() {
+  const M = useDemoStyle();
   return (
     <div style={{
       padding: '8px 20px',
-      background: 'rgba(10, 24, 44, 0.97)',
+      background: `${M.dark}f8`,
       display: 'flex', alignItems: 'center', gap: 10,
       borderBottom: '1px solid rgba(255,255,255,0.05)',
       flexShrink: 0,
@@ -160,10 +165,11 @@ function ClusterUEP() {
 
 /* 5. ETA — arrival time strip */
 function ClusterETA({ layout }) {
+  const M = useDemoStyle();
   return (
     <div style={{
       padding: '8px 20px',
-      background: 'rgba(6, 14, 28, 0.98)',
+      background: `${M.dark}fa`,
       display: 'flex', alignItems: 'center', gap: 10,
       marginTop: 'auto',
       flexShrink: 0,
@@ -178,7 +184,7 @@ function ClusterETA({ layout }) {
       {(layout === 'MAXIMAL' || layout === 'NORMAL_LAYOUT_WIDE') && (
         <>
           <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.25)' }}>·</span>
-          <span style={{ fontSize: '0.875rem', color: '#f59e0b' }}>🔋 25%</span>
+          <span style={{ fontSize: '0.875rem', color: M.amber }}>🔋 25%</span>
         </>
       )}
     </div>
@@ -187,6 +193,7 @@ function ClusterETA({ layout }) {
 
 /* ─── Speedometer gauge ───────────────────────────────────────────────────── */
 function SpeedGauge({ speed = 72 }) {
+  const M = useDemoStyle();
   const r = 38;
   const cx = 52, cy = 56;
   const C = 2 * Math.PI * r;
@@ -201,21 +208,21 @@ function SpeedGauge({ speed = 72 }) {
 
   return (
     <svg viewBox="0 0 104 104" style={{ width: 208, height: 208, flexShrink: 0 }}>
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1e1e22" strokeWidth="5"
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={M.line} strokeWidth="5"
         strokeDasharray={`${arcLen} ${C - arcLen}`} strokeDashoffset={-offset} strokeLinecap="round" />
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="#e2001a" strokeWidth="5"
         strokeDasharray={`${fillLen} ${C - fillLen}`} strokeDashoffset={-offset}
         strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.3s' }} />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-      <circle cx={cx} cy={cy} r="3" fill="#444" />
-      <text x={cx} y={cy + 6} textAnchor="middle" fill="white"
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={M.white} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+      <circle cx={cx} cy={cy} r="3" fill={M.line} />
+      <text x={cx} y={cy + 6} textAnchor="middle" fill={M.white}
         style={{ fontSize: 15, fontWeight: 700, fontFamily: 'system-ui' }}>{speed}</text>
-      <text x={cx} y={cy + 15} textAnchor="middle" fill="#555"
+      <text x={cx} y={cy + 15} textAnchor="middle" fill={M.muted}
         style={{ fontSize: 6, fontFamily: 'system-ui' }}>km/h</text>
       {[0, 40, 80, 120, 160].map(v => {
         const a = (-120 + (v / 160) * 240 - 90) * Math.PI / 180;
         return <text key={v} x={cx + 46 * Math.cos(a)} y={cy + 46 * Math.sin(a) + 2}
-          textAnchor="middle" fill="#3a3a3a" style={{ fontSize: 5, fontFamily: 'system-ui' }}>{v}</text>;
+          textAnchor="middle" fill={M.muted} style={{ fontSize: 5, fontFamily: 'system-ui' }}>{v}</text>;
       })}
     </svg>
   );
@@ -223,6 +230,7 @@ function SpeedGauge({ speed = 72 }) {
 
 /* ─── Battery gauge ───────────────────────────────────────────────────────── */
 function BatteryGauge({ soc = 74 }) {
+  const M = useDemoStyle();
   const r = 38;
   const cx = 52, cy = 56;
   const C = 2 * Math.PI * r;
@@ -230,7 +238,7 @@ function BatteryGauge({ soc = 74 }) {
   const offset = C * (150 / 360);
   const pct    = soc / 100;
   const fillLen = arcLen * pct;
-  const color  = soc > 40 ? '#22c55e' : soc > 20 ? '#f59e0b' : '#ef4444';
+  const color  = soc > 40 ? M.green : soc > 20 ? M.amber : M.red;
   const needleAngle = -120 + pct * 240;
   const rad = (needleAngle - 90) * Math.PI / 180;
   const nx = cx + 28 * Math.cos(rad);
@@ -238,16 +246,16 @@ function BatteryGauge({ soc = 74 }) {
 
   return (
     <svg viewBox="0 0 104 104" style={{ width: 208, height: 208, flexShrink: 0 }}>
-      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1e1e22" strokeWidth="5"
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke={M.line} strokeWidth="5"
         strokeDasharray={`${arcLen} ${C - arcLen}`} strokeDashoffset={-offset} strokeLinecap="round" />
       <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="5"
         strokeDasharray={`${fillLen} ${C - fillLen}`} strokeDashoffset={-offset}
         strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.3s' }} />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-      <circle cx={cx} cy={cy} r="3" fill="#444" />
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={M.white} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+      <circle cx={cx} cy={cy} r="3" fill={M.line} />
       <text x={cx} y={cy + 5} textAnchor="middle" fill={color}
         style={{ fontSize: 13, fontWeight: 700, fontFamily: 'system-ui' }}>{soc}%</text>
-      <text x={cx} y={cy + 15} textAnchor="middle" fill="#555"
+      <text x={cx} y={cy + 15} textAnchor="middle" fill={M.muted}
         style={{ fontSize: 5.5, fontFamily: 'system-ui' }}>BATTERY</text>
     </svg>
   );
@@ -278,6 +286,7 @@ function ClusterMapBg() {
 
 /* ─── Full cluster display ────────────────────────────────────────────────── */
 export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hpElements, showHp }) {
+  const M = useDemoStyle();
   const hasSLG = hpElements.includes('SLG');
   const hasCMP = hpElements.includes('CMP');
   const hasJV  = hpElements.includes('JV');
@@ -290,9 +299,9 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
   return (
     <div style={{
       width: '100%',
-      background: '#060608',
+      background: M.dark,
       borderRadius: 20,
-      border: '2px solid #1c1c20',
+      border: `2px solid ${M.line}`,
       boxShadow: 'inset 0 0 30px rgba(0,0,0,0.6), 0 4px 20px rgba(0,0,0,0.4)',
       display: 'flex',
       alignItems: 'center',
@@ -313,7 +322,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
       }}>
         {/* Map area */}
         {showMap && (
-          <div style={{ flex: 1, position: 'relative', background: '#0c1520', minWidth: 0 }}>
+          <div style={{ flex: 1, position: 'relative', background: M.dark, minWidth: 0 }}>
             <ClusterMapBg />
             {showVignette && (
               <div style={{
@@ -331,7 +340,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
             flexShrink: 0,
             display: 'flex',
             flexDirection: 'column',
-            background: 'rgba(8, 18, 34, 0.98)',
+            background: `${M.dark}fa`,
             borderLeft: showMap ? '1px solid rgba(255,255,255,0.06)' : 'none',
             overflow: 'hidden',
           }}>
@@ -351,7 +360,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
 
         {/* Empty state */}
         {!showMap && !showNavCol && (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0c' }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', background: M.dark }}>
             <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.12)', fontFamily: 'var(--font-mono)' }}>
               display off
             </span>
