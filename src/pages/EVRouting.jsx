@@ -64,7 +64,7 @@ export function TripTimeline() {
           <div key={label} style={{ background: Mc.card, border: `1px solid ${Mc.line}`, borderRadius: 20, padding: '10px 12px' }}>
             <div style={{ fontSize: '1rem', marginBottom: 3 }}>{icon}</div>
             <div style={{ fontSize: '1rem', fontWeight: 700, color: Mc.text, lineHeight: 1 }}>{val}</div>
-            <div style={{ fontSize: '0.875rem', color: Mc.dim, marginTop: 2 }}>{label}</div>
+            <div style={{ fontSize: '0.875rem', color: Mc.text, marginTop: 2 }}>{label}</div>
           </div>
         ))}
       </div>
@@ -77,7 +77,7 @@ export function TripTimeline() {
               <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#1a3d2b', border: `2px solid ${Mc.green}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>📍</div>
               <div style={{ flex: 1 }}>
                 <span style={{ fontWeight: 700, fontSize: '0.875rem', color: Mc.text }}>{item.from}</span>
-                <span style={{ fontSize: '0.875rem', color: Mc.dim, marginLeft: 8 }}>Start</span>
+                <span style={{ fontSize: '0.875rem', color: Mc.text, marginLeft: 8 }}>Start</span>
               </div>
               <SoCBadge pct={item.fromSoc} />
             </div>
@@ -87,7 +87,7 @@ export function TripTimeline() {
               <div style={{ width: 28, display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
                 <div style={{ width: 2, background: Mc.line, borderRadius: 1 }}/>
               </div>
-              <div style={{ padding: '6px 0', fontSize: '0.875rem', color: Mc.dim }}>
+              <div style={{ padding: '6px 0', fontSize: '0.875rem', color: Mc.text }}>
                 {item.km} km &nbsp;·&nbsp; {Math.floor(item.mins / 60)}h {item.mins % 60}min driving
               </div>
             </div>
@@ -104,10 +104,10 @@ export function TripTimeline() {
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <SoCBadge pct={item.socIn} />
-                      <span style={{ fontSize: '0.875rem', color: Mc.dim }}>→</span>
+                      <span style={{ fontSize: '0.875rem', color: Mc.text }}>→</span>
                       <SoCBadge pct={item.socOut} />
                     </div>
-                    <span style={{ fontSize: '0.875rem', color: Mc.dim }}>+{item.kWh} kWh &nbsp;·&nbsp; {item.kW} kW peak &nbsp;·&nbsp; {item.mins} min</span>
+                    <span style={{ fontSize: '0.875rem', color: Mc.text }}>+{item.kWh} kWh &nbsp;·&nbsp; {item.kW} kW peak &nbsp;·&nbsp; {item.mins} min</span>
                   </div>
                 </div>
               </div>
@@ -118,7 +118,7 @@ export function TripTimeline() {
               <div style={{ width: 28, height: 28, borderRadius: '50%', background: `${Mc.purple}33`, border: `2px solid ${Mc.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>🏁</div>
               <div style={{ flex: 1 }}>
                 <span style={{ fontWeight: 700, fontSize: '0.875rem', color: Mc.text }}>{item.to}</span>
-                <span style={{ fontSize: '0.875rem', color: Mc.dim, marginLeft: 8 }}>Destination</span>
+                <span style={{ fontSize: '0.875rem', color: Mc.text, marginLeft: 8 }}>Destination</span>
               </div>
               <SoCBadge pct={item.toSoc} />
             </div>
@@ -254,12 +254,12 @@ export function StopStrategyCalculator({ t }) {
       <div style={{ background: M.card, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden' }}>
         <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text }}>Paris → Marseille · 679 km</span>
-          <span style={{ fontSize: '0.875rem', color: M.dim }}>🔋 {stops.length} {t('routing.strategy.chargeStopsLabel')}</span>
+          <span style={{ fontSize: '0.875rem', color: M.text }}>🔋 {stops.length} {t('routing.strategy.chargeStopsLabel')}</span>
         </div>
 
         <div style={{ padding: '10px 14px' }}>
           {/* Origin */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, fontSize: '0.75rem', color: M.dim }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, fontSize: '0.75rem', color: M.text }}>
             <span style={{ fontSize: '0.875rem' }}>📍</span>
             <span>Paris · 🔋 60%</span>
           </div>
@@ -269,15 +269,15 @@ export function StopStrategyCalculator({ t }) {
               {/* Leg connector */}
               <div style={{ display: 'flex', gap: 10, alignItems: 'center', paddingLeft: 14, marginBottom: 4 }}>
                 <div style={{ width: 1, height: 20, background: M.line }} />
-                <span style={{ fontSize: '0.875rem', color: M.dim }}>{i === 0 ? s.distCovered : s.distCovered - stops[i-1].distCovered} km</span>
+                <span style={{ fontSize: '0.875rem', color: M.text }}>{i === 0 ? s.distCovered : s.distCovered - stops[i-1].distCovered} km</span>
               </div>
               {/* Stop card */}
               <div style={{ background: M.card2, borderRadius: 20, padding: '9px 12px', marginBottom: 6, border: `1px solid ${M.line}` }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                   <span style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text }}>🔌 {STATION_NAMES[i] || `Stop ${i+1}`}</span>
-                  <span style={{ fontSize: '0.875rem', color: M.muted }}>{s.mins} min</span>
+                  <span style={{ fontSize: '0.875rem', color: M.text }}>{s.mins} min</span>
                 </div>
-                <div style={{ fontSize: '0.875rem', color: M.dim }}>
+                <div style={{ fontSize: '0.875rem', color: M.text }}>
                   🔋 <span style={{ color: socColor(s.arrivalPct) }}>{s.arrivalPct}%</span>
                   {' → '}
                   <span style={{ color: M.blue }}>{s.departurePct}%</span>
@@ -291,12 +291,12 @@ export function StopStrategyCalculator({ t }) {
           {stops.length > 0 && (
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', paddingLeft: 14, marginBottom: 4 }}>
               <div style={{ width: 1, height: 20, background: M.line }} />
-              <span style={{ fontSize: '0.875rem', color: M.dim }}>{679 - (stops[stops.length-1]?.distCovered || 0)} km</span>
+              <span style={{ fontSize: '0.875rem', color: M.text }}>{679 - (stops[stops.length-1]?.distCovered || 0)} km</span>
             </div>
           )}
 
           {/* Destination */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '0.75rem', color: M.dim }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: '0.75rem', color: M.text }}>
             <span style={{ fontSize: '0.875rem' }}>🏁</span>
             <span>Marseille · 🔋 <span style={{ color: socColor(arrivalAtDestPct) }}>{arrivalAtDestPct}%</span></span>
           </div>
@@ -313,7 +313,7 @@ function PreferencesMock() {
     <div style={{ background: M.card, borderRadius: 20, overflow: 'hidden', width: 260, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}`, fontSize: '0.75rem', fontWeight: 700, color: M.text }}>Route preferences</div>
       <div style={{ padding: '12px 14px', borderBottom: `1px solid ${M.line}` }}>
-        <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 10 }}>Minimum battery on arrival</div>
+        <div style={{ fontSize: '0.875rem', color: M.text, marginBottom: 10 }}>Minimum battery on arrival</div>
         {[{ label: 'At charging stop', val: '15%', pct: 15 }, { label: 'At destination', val: '15%', pct: 15 }].map(p => (
           <div key={p.label} style={{ marginBottom: 12 }}>
             <div style={{ fontSize: '0.875rem', color: M.text, marginBottom: 5 }}>{p.label}</div>
@@ -328,14 +328,14 @@ function PreferencesMock() {
         ))}
       </div>
       <div style={{ padding: '10px 14px' }}>
-        <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 8 }}>Avoid on this route</div>
+        <div style={{ fontSize: '0.875rem', color: M.text, marginBottom: 8 }}>Avoid on this route</div>
         {[{ icon: '🛣', label: 'Tolls' }, { icon: '🛤', label: 'Unpaved Roads' }].map(r => (
           <div key={r.label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: '0.875rem', color: M.text }}>
               <span>{r.icon}</span>{r.label}
             </div>
-            <div style={{ width: 34, height: 18, borderRadius: 9, background: M.line, position: 'relative', border: `1px solid ${M.muted}` }}>
-              <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.muted, position: 'absolute', top: 1, left: 2 }} />
+            <div style={{ width: 34, height: 18, borderRadius: 9, background: M.line, position: 'relative' }}>
+              <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.white, position: 'absolute', top: 2, left: 2 }} />
             </div>
           </div>
         ))}

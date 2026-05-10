@@ -298,8 +298,8 @@ navigationVisualization.updateStyle(styleConfig)`,
         {tabs.map((t, i) => (
           <button key={i} onClick={() => setTab(i)} style={{
             padding: '6px 14px', borderRadius: 20, fontSize: 13, cursor: 'pointer', border: 'none',
-            background: tab === i ? 'var(--accent)' : 'var(--bg)',
-            color: tab === i ? '#fff' : 'var(--mid)',
+            background: tab === i ? 'var(--red)' : 'var(--bg)',
+            color: tab === i ? '#fff' : 'var(--text)',
             fontWeight: tab === i ? 600 : 400,
           }}>
             {t.label}
