@@ -552,11 +552,11 @@ function FilterRow({ label, filters, active, onToggle, onClear }) {
 
 const DISC_TABS = [
   { id: 'all',                  label: 'All' },
-  { id: 'nav-automotive',       label: 'Navigation for Automotive' },
+  { id: 'nav-automotive',       label: 'Automotive' },
   { id: 'electrification',      label: 'Electrification' },
-  { id: 'traffic-intelligence', label: 'Traffic & Mobility' },
-  { id: 'location-intel',       label: 'Location Intelligence' },
-  { id: 'fleet-logistics',      label: 'Fleet & Logistics' },
+  { id: 'traffic-intelligence', label: 'Traffic' },
+  { id: 'location-intel',       label: 'Location' },
+  { id: 'fleet-logistics',      label: 'Fleet' },
 ];
 
 function ViewToggle({ view, setView }) {
@@ -589,10 +589,9 @@ function MosaicView({ onNavigate, view, setView }) {
 
   return (
     <div>
-      {/* Sticky bar: view toggle + filter tabs */}
+      {/* Sticky bar: filter tabs LEFT + view toggle RIGHT */}
       <div className="dp2-tabbar-wrap">
         <div className="dp2-viewbar-inner">
-          <ViewToggle view={view} setView={setView} />
           <div className="dp2-tabbar-pill">
             {DISC_TABS.map(tab => (
               <button
@@ -604,6 +603,7 @@ function MosaicView({ onNavigate, view, setView }) {
               </button>
             ))}
           </div>
+          <ViewToggle view={view} setView={setView} />
         </div>
       </div>
 
@@ -756,7 +756,6 @@ export default function DocsPortal({ onNavigate }) {
       {/* ── Sticky Tab Bar ── */}
       <div className="dp2-tabbar-wrap" ref={tabBarRef}>
         <div className="dp2-viewbar-inner">
-          <ViewToggle view={view} setView={setView} />
           <div className="dp2-tabbar-pill">
             {TABS.map(tab => (
               <button
@@ -768,6 +767,7 @@ export default function DocsPortal({ onNavigate }) {
               </button>
             ))}
           </div>
+          <ViewToggle view={view} setView={setView} />
         </div>
       </div>
 

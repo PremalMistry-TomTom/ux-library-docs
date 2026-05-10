@@ -2201,12 +2201,14 @@ html.ai-panel-open .page {
   justify-content: center;
   padding: 12px 24px;
 }
-/* Inner row: view toggle LEFT + filter pill RIGHT */
+/* Inner row: filter pill LEFT + view toggle RIGHT */
 .dp2-viewbar-inner {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: nowrap;
+  width: 100%;
+  max-width: 1200px;
 }
 /* View toggle (Catalogue / Discovery) */
 .dp2-view-toggle {
