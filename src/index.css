@@ -2182,6 +2182,14 @@ html.ai-panel-open .page {
   color: #555;
   line-height: 1.5;
 }
+.dp2-navsdk-cta {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brand);
+  letter-spacing: 0.01em;
+}
 
 /* ── Sticky Tab Bar ── */
 .dp2-tabbar-wrap {
@@ -2599,6 +2607,7 @@ html.ai-panel-open .page {
 [data-theme="dark"] .dp2-navsdk-card         { background: var(--bg); border-color: var(--border); }
 [data-theme="dark"] .dp2-navsdk-title        { color: var(--black); }
 [data-theme="dark"] .dp2-navsdk-sub          { color: var(--mid); }
+[data-theme="dark"] .dp2-navsdk-cta          { color: var(--brand); }
 [data-theme="dark"] .dp2-product-card        { background: var(--bg); border-color: var(--border); }
 [data-theme="dark"] .dp2-product-card:hover  { border-color: var(--muted); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
 [data-theme="dark"] .dp2-product-card--linked:hover { border-color: #DF1B12; }

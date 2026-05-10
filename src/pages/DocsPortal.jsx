@@ -732,14 +732,15 @@ export default function DocsPortal({ onNavigate }) {
             </div>
           </div>
 
-          {/* Right: NavSDK banner */}
+          {/* Right: UX Library hero */}
           <div className="dp2-hero-right">
-            <div className="dp2-navsdk-wrap">
-              <img src={`${BASE}navsdk_banner.png`} alt="NavSDK Banner" className="dp2-navsdk-img" />
+            <div className="dp2-navsdk-wrap" onClick={() => onNavigate('overview', 'ux-library')}>
+              <img src={`${BASE}hero.png`} alt="Android UX Library" className="dp2-navsdk-img" />
               <div className="dp2-navsdk-card">
-                <span className="dp2-navsdk-badge">NEW</span>
-                <h2 className="dp2-navsdk-title">Try our latest Maps and Navigation SDK</h2>
-                <div className="dp2-navsdk-sub">Get instant access to test our automotive-grade Maps and Navigation SDK</div>
+                <span className="dp2-navsdk-badge">ANDROID</span>
+                <h2 className="dp2-navsdk-title">Android UX Library</h2>
+                <div className="dp2-navsdk-sub">Production-ready navigation UI components — fully themeable and OEM-customisable, built on NavSDK.</div>
+                <div className="dp2-navsdk-cta">Documentation →</div>
               </div>
             </div>
           </div>
