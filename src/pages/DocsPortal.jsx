@@ -622,10 +622,16 @@ function MosaicView({ onNavigate, view, setView }) {
   );
 }
 
+/* Split "UX Library / TAIA" into ["UX Library","TAIA"], keep "UX Library · EV & Charging" whole */
+function parseProductTags(productStr) {
+  if (!productStr) return [];
+  return productStr.split(' / ').map(s => s.trim());
+}
+
 function MosaicCard({ card, palette, onNavigate }) {
   const [hovered, setHovered] = useState(false);
-  const cats = card.cats.map(id => MOSAIC_FILTERS.find(f => f.id === id)).filter(Boolean);
   const hasLink = Boolean(card.docsId && onNavigate);
+  const productTags = parseProductTags(card.product);
 
   return (
     <div
@@ -634,14 +640,14 @@ function MosaicCard({ card, palette, onNavigate }) {
       onClick={hasLink ? () => onNavigate(card.docsId, card.productId) : undefined}
       style={{
         borderRadius: 20,
-        border: `1px solid ${hovered && hasLink ? 'var(--black)' : 'var(--border)'}`,
+        border: `1px solid ${hovered && hasLink ? 'var(--brand)' : 'var(--border)'}`,
         background: 'var(--surface)',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
         cursor: hasLink ? 'pointer' : 'default',
         transition: 'border-color 0.15s, box-shadow 0.15s',
-        boxShadow: hovered && hasLink ? '0 4px 16px rgba(0,0,0,0.1)' : 'none',
+        boxShadow: hovered && hasLink ? '0 4px 20px rgba(223,27,18,0.10)' : 'none',
       }}
     >
       {/* Illustration */}
@@ -649,20 +655,49 @@ function MosaicCard({ card, palette, onNavigate }) {
         <card.Illo />
       </div>
 
-      {/* Body */}
-      <div style={{ padding: '10px 14px 14px', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {/* Body — matches product card spacing */}
+      <div style={{ padding: '14px 16px 16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
 
         {/* Title */}
-        <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.3 }}>{card.title}</span>
-
-        {/* Product footer */}
-        <div style={{
-          paddingTop: 8, borderTop: '1px solid var(--border)',
-          fontSize: '0.625rem', fontWeight: 600, color: 'var(--muted)',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        <span style={{
+          fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)',
+          lineHeight: 1.35, flex: 1, marginBottom: 12,
         }}>
-          <span style={{ fontFamily: 'var(--font-mono, monospace)' }}>{card.product}</span>
-          {hasLink && <span style={{ color: 'var(--mid)', fontSize: '0.75rem' }}>→</span>}
+          {card.title}
+        </span>
+
+        {/* Product tag pills — same style as Documentation button */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {productTags.map((tag, i) => (
+            <span
+              key={i}
+              onClick={e => {
+                if (!hasLink) return;
+                e.stopPropagation();
+                onNavigate(card.docsId, card.productId);
+              }}
+              style={{
+                display: 'inline-flex', alignItems: 'center',
+                height: 26, padding: '0 10px',
+                border: '1px solid var(--border)',
+                borderRadius: 999,
+                background: 'var(--bg)',
+                fontSize: '0.6875rem', fontWeight: 600,
+                color: 'var(--mid)',
+                cursor: hasLink ? 'pointer' : 'default',
+                transition: 'border-color 0.12s, color 0.12s',
+                whiteSpace: 'nowrap',
+              }}
+              onMouseEnter={e => {
+                if (hasLink) { e.currentTarget.style.borderColor = 'var(--brand)'; e.currentTarget.style.color = 'var(--brand)'; }
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--mid)';
+              }}
+            >
+              {tag}
+            </span>
+          ))}
         </div>
       </div>
     </div>

@@ -2317,7 +2317,7 @@ html.ai-panel-open .page {
 .dp2-product-card {
   background: var(--s0);
   border: 1px solid #e5e5e5;
-  border-radius: var(--r-md);
+  border-radius: var(--r-lg);
   padding: 24px;
   display: flex;
   flex-direction: column;
