@@ -260,9 +260,9 @@ function buildSections(t) {
       id: 'ev-nav-ui', group: 'EV In-Navigation UI', navGroup: 'EV & Charging',
       desc: 'State-of-charge strip, range ring, and horizon panel during active EV navigation.',
       screens: [
-        { name: 'SoC strip',     component: 'SoCStrip',   desc: 'Compact battery state-of-charge bar shown at the bottom of the navigation view.', states: ['High SoC (>60%)', 'Low SoC (<20%)', 'Charging'], status: 'live', preview: { node: <SoCStrip state="driving" /> } },
-        { name: 'Range ring',    component: 'RangeRingMock', desc: 'Circular range overlay on the map showing reachable distance on current charge.', states: ['Normal range', 'Low range warning', 'After charging'], status: 'live', preview: { node: <RangeRingMock state="driving" /> } },
-        { name: 'EV horizon panel', component: 'HorizonMock', desc: 'Horizon panel variant showing upcoming charging stops and SoC forecast along the route.', states: ['Upcoming stop 12 km', 'At charging stop', 'Final destination'], status: 'live', preview: { node: <HorizonMock state="driving" /> } },
+        { name: 'SoC strip',     component: 'SoCStrip',   desc: 'Compact battery state-of-charge bar shown at the bottom of the navigation view.', states: ['Healthy (>60%)', 'Low (<25%)', 'Critical (<10%)'], status: 'live', preview: { node: <SoCStrip state="healthy" /> } },
+        { name: 'Range ring',    component: 'RangeRingMock', desc: 'Circular range overlay on the map showing reachable distance on current charge.', states: ['Healthy range', 'Low range warning', 'Critical range'], status: 'live', preview: { node: <RangeRingMock state="healthy" /> } },
+        { name: 'EV horizon panel', component: 'HorizonMock', desc: 'Horizon panel variant showing upcoming charging stops and SoC forecast along the route.', states: ['Healthy', 'Low — next stop shown', 'Critical warning'], status: 'live', preview: { node: <HorizonMock state="healthy" /> } },
       ],
     },
     {
