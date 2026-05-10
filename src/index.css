@@ -2308,6 +2308,15 @@ html.ai-panel-open .page {
   gap: 16px;
   margin-bottom: 0;
 }
+
+/* Illustration bleed — breaks out of the card's 24px padding to fill top edge */
+.dp2-product-illo {
+  margin: -24px -24px 16px;
+  height: 130px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+}
 @media (max-width: 1024px) {
   .dp2-product-grid { grid-template-columns: repeat(2, 1fr); }
 }
