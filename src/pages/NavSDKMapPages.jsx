@@ -6,10 +6,10 @@ import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared map mock background ─────────────────────────────────────────── */
 export function MapBg({ style = 'day', showTrafficFlow = false, showTrafficIncidents = false }) {
-  const bgColor = style === 'night' ? '#0d1117' : style === 'satellite' ? '#1a2f1a' : '#1e2d40';
-  const roadColor = style === 'night' ? 'rgba(255,255,255,0.15)' : style === 'satellite' ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.2)';
-  const mainRoadColor = style === 'night' ? 'rgba(255,255,255,0.25)' : style === 'satellite' ? 'rgba(255,220,100,0.5)' : '#c8a96e';
-  const labelColor = style === 'night' ? 'rgba(255,255,255,0.4)' : style === 'satellite' ? 'rgba(255,255,255,0.6)' : 'rgba(50,70,90,0.7)';
+  const bgColor       = style === 'night' ? '#0d1117'                    : style === 'satellite' ? '#1a2f1a'                    : '#D4E8F8';
+  const roadColor     = style === 'night' ? 'rgba(255,255,255,0.15)'     : style === 'satellite' ? 'rgba(255,255,255,0.3)'      : 'rgba(120,155,200,0.55)';
+  const mainRoadColor = style === 'night' ? 'rgba(255,255,255,0.25)'     : style === 'satellite' ? 'rgba(255,220,100,0.5)'      : 'rgba(70,110,170,0.85)';
+  const labelColor    = style === 'night' ? 'rgba(255,255,255,0.4)'      : style === 'satellite' ? 'rgba(255,255,255,0.6)'      : 'rgba(27,61,110,0.9)';
 
   return (
     <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}

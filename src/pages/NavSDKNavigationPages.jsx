@@ -3,22 +3,24 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
-/* ─── Shared dark map shell ──────────────────────────────────────────────── */
+/* ─── Shared map shell ───────────────────────────────────────────────────── */
 function MapShell({ height = 280, children }) {
+  const M = useDemoStyle();
   return (
     <div style={{
-      width: '100%', height, background: '#0d1117', borderRadius: 16,
-      border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', position: 'relative',
+      width: '100%', height, background: M.dark, borderRadius: 16,
+      border: `1px solid ${M.line}40`, overflow: 'hidden', position: 'relative',
     }}>
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice" fill="none">
-        <rect width="400" height="280" fill="#0d1117"/>
-        <path d="M0 160 Q100 130 200 145 T400 130" stroke="#1a2535" strokeWidth="10"/>
-        <path d="M0 160 Q100 130 200 145 T400 130" stroke="#243040" strokeWidth="2"/>
-        <path d="M155 0 L150 280" stroke="#1a2535" strokeWidth="8"/>
-        <path d="M155 0 L150 280" stroke="#243040" strokeWidth="1.5"/>
-        <path d="M270 0 L265 280" stroke="#1a2535" strokeWidth="8"/>
-        <path d="M270 0 L265 280" stroke="#243040" strokeWidth="1.5"/>
+        <rect width="400" height="280" fill={M.dark}/>
+        <path d="M0 160 Q100 130 200 145 T400 130" stroke={`${M.line}30`} strokeWidth="10"/>
+        <path d="M0 160 Q100 130 200 145 T400 130" stroke={`${M.line}50`} strokeWidth="2"/>
+        <path d="M155 0 L150 280" stroke={`${M.line}30`} strokeWidth="8"/>
+        <path d="M155 0 L150 280" stroke={`${M.line}50`} strokeWidth="1.5"/>
+        <path d="M270 0 L265 280" stroke={`${M.line}30`} strokeWidth="8"/>
+        <path d="M270 0 L265 280" stroke={`${M.line}50`} strokeWidth="1.5"/>
       </svg>
       {children}
     </div>
