@@ -1,5 +1,13 @@
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const ROUTE_BAR_APIS = [
+  { name: 'Turn-by-Turn Navigation',   type: 'Android SDK', description: 'Provides real-time route progress data — incidents, cameras, and remaining distance — that populates the route bar.',   pageId: 'navsdk-nav-turn-by-turn',  productId: 'navsdk' },
+  { name: 'Continuous Replanning',     type: 'Android SDK', description: 'Route bar content updates automatically when the route is recalculated due to traffic or diversions.',                   pageId: 'navsdk-nav-replanning',    productId: 'navsdk' },
+  { name: 'Horizon — Traffic',         type: 'Android SDK', description: 'Virtual horizon traffic events shown as ahead-of-time markers in the route bar before the vehicle reaches them.',         pageId: 'navsdk-horizon-traffic',   productId: 'navsdk' },
+  { name: 'ETA Panel',                 type: 'Android SDK', description: 'ETA Panel is the companion component that shows remaining time and distance in sync with the route bar.',                 pageId: 'eta-panel',                productId: 'ux-library' },
+];
 
 /* ─── Positioning diagram ───────────────────────────────────── */
 const LAYOUT_MODES = [
@@ -108,7 +116,7 @@ export function PositioningDiagram() {
 }
 
 /* ─── Page ──────────────────────────────────────────────────── */
-export default function RouteBar() {
+export default function RouteBar({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -119,6 +127,8 @@ export default function RouteBar() {
       <div className="quick-answer">
         A vertical progress bar showing upcoming traffic, cameras, and hazards at their proportional positions along the active route. Planned — not yet available.
       </div>
+
+      <ApiLinks items={ROUTE_BAR_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="rb-overview">Overview</h2>

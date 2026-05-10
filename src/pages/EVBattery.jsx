@@ -6,9 +6,10 @@ import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
 
 const BATTERY_APIS = [
-  { name: 'Vehicle Integration API',        type: 'Android SDK', description: 'Send battery capacity, charge curve, consumption, connectors, and auxiliary load to the SDK via VehicleInfoManager.', url: 'https://docs.tomtom.com/automotive-solutions/en/guides/ev-integration' },
-  { name: 'Navigation SDK — VehicleProvider', type: 'Android SDK', description: 'Set the initial vehicle type and charge level, then push live SoC updates from your BMS at runtime.', url: 'https://docs.tomtom.com/navigation/android/guides/navigation/vehicle' },
-  { name: 'EV Routing — Consumption Model', type: 'REST API',    description: 'Reference for battery curve, consumption curve, and efficiency parameter constraints used by the routing engine.', url: 'https://docs.tomtom.com/electric-vehicle/ev-routing/consumption-model-integration' },
+  { name: 'Vehicle Metadata',             type: 'Android SDK', description: 'Build EV vehicle selection UIs and retrieve a configured EV object — battery, connectors, consumption — for route planning.', pageId: 'navsdk-adv-vehicle',    productId: 'navsdk' },
+  { name: 'EV Routing Consumption Model', type: 'REST API',    description: 'Reference for battery curve, consumption curve, and efficiency parameter constraints used by the routing engine.',              pageId: 'ldevr-battery-model',   productId: 'ldevr' },
+  { name: 'Long-Distance EV Routing',     type: 'REST API',    description: 'Calculate multi-stop routes with automatic charging stop insertion — battery model defined here drives stop placement.',          pageId: 'ev-routing',            productId: 'ux-library' },
+  { name: 'EV Charging Search',           type: 'Android SDK', description: 'Discover compatible charging stations — connector type matching is driven by the vehicle profile configured here.',                pageId: 'ev-charging-search',    productId: 'ux-library' },
 ];
 
 /* ─── Vehicle class preset data ─────────────────────────────────────────────── */
@@ -339,7 +340,7 @@ class EVVehicleViewModel(
     }
 }`;
 
-export default function EVBattery() {
+export default function EVBattery({ onNavigate }) {
   const { t } = useTranslation('ev');
   const [cls, setCls] = useState('family');
   const p = PRESETS[cls];
@@ -368,7 +369,7 @@ export default function EVBattery() {
       </div>
       <div className="quick-answer">{t('battery.intro')}</div>
 
-      <ApiLinks items={BATTERY_APIS} />
+      <ApiLinks items={BATTERY_APIS} onNavigate={onNavigate} />
 
       {/* ── 1. Vehicle class preset builder ─────────────────────────────────── */}
       <div className="zone">

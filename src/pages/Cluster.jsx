@@ -364,7 +364,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
 }
 
 /* ─── Main page ───────────────────────────────────────────────────────────── */
-export default function Cluster() {
+export default function Cluster({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const [showMap,      setShowMap]      = useState(true);
@@ -394,12 +394,12 @@ export default function Cluster() {
     desc:  t(`cluster.etaLayouts.${id}.desc`),
   }));
 
-  const clusterApis = [{
-    name: 'Cluster Activity',
-    type: 'Android SDK',
-    description: t('cluster.apiDesc'),
-    url: CLUSTER_API_URL,
-  }];
+  const clusterApis = [
+    { name: 'Cluster Activity',              type: 'Android SDK', description: t('cluster.apiDesc'), url: CLUSTER_API_URL },
+    { name: 'Turn-by-Turn Navigation',       type: 'Android SDK', description: 'Active navigation session that feeds the manoeuvre data, remaining distance, and ETA shown in the cluster NIP and ETA panel.', pageId: 'navsdk-nav-turn-by-turn', productId: 'navsdk' },
+    { name: 'Horizon Panel',                 type: 'Android SDK', description: 'Horizon Panel composable that displays safety cameras, hazards, and traffic events in the cluster Horizon Panel (HP) area.',    pageId: 'horizon-panel',           productId: 'ux-library' },
+    { name: 'ADAS Integration',              type: 'Android SDK', description: 'ADAS lane guidance and speed limit overlays that extend the cluster display with driver assistance information.',                 pageId: 'adas',                    productId: 'ux-library' },
+  ];
 
   const toggleItems = [
     { key: 'map',          label: t('cluster.toggles.map'),          value: showMap,      set: setShowMap },
@@ -427,7 +427,7 @@ export default function Cluster() {
         {t('cluster.intro')}
       </div>
 
-      <ApiLinks items={clusterApis} />
+      <ApiLinks items={clusterApis} onNavigate={onNavigate} />
 
       {/* ── Overview ───────────────────────────────────────────── */}
       <div className="zone">

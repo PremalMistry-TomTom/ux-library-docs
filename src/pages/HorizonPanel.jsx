@@ -11,25 +11,31 @@ const HORIZON_APIS = [
     name: 'Horizon — Safety Locations',
     type: 'Android SDK',
     description: 'Stream safety cameras and speed zone data ahead of the vehicle along the active route.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/virtual-horizon/horizon-safety-locations',
+    pageId: 'navsdk-horizon-safety', productId: 'navsdk',
   },
   {
     name: 'Horizon — Hazards',
     type: 'Android SDK',
     description: 'Receive ahead-of-time alerts for road hazards approaching along the planned route.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/virtual-horizon/horizon-hazards',
+    pageId: 'navsdk-horizon-hazards', productId: 'navsdk',
   },
   {
     name: 'Horizon — Traffic',
     type: 'Android SDK',
     description: 'Access predictive traffic events and flow data from the virtual horizon engine.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/virtual-horizon/horizon-traffic',
+    pageId: 'navsdk-horizon-traffic', productId: 'navsdk',
   },
   {
     name: 'Horizon — POIs',
     type: 'Android SDK',
     description: 'Query points of interest along the upcoming route horizon for ahead-of-time notifications.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/virtual-horizon/horizon-points-of-interest-(pois)',
+    pageId: 'navsdk-horizon-data', productId: 'navsdk',
+  },
+  {
+    name: 'Retrieving Horizon Data',
+    type: 'Android SDK',
+    description: 'Access the full Virtual Horizon engine to read road attributes, curvature, and elevation ahead of the vehicle.',
+    pageId: 'navsdk-horizon-data', productId: 'navsdk',
   },
 ];
 
@@ -114,7 +120,7 @@ export function GuidanceMock({ position, decomposed }) {
   );
 }
 
-export default function HorizonPanel() {
+export default function HorizonPanel({ onNavigate }) {
   const { t } = useTranslation('pages');
   const [decomposed, setDecomposed] = useState(false);
   const [position, setPosition] = useState('LEFT');
@@ -143,7 +149,7 @@ export default function HorizonPanel() {
         {t('horizonPanel.intro')}
       </div>
 
-      <ApiLinks items={HORIZON_APIS} />
+      <ApiLinks items={HORIZON_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="hp-overview">{t('horizonPanel.sections.overview')}</h2>

@@ -7,12 +7,11 @@ import PageActions from '../components/ui/PageActions';
 
 /* ─── API references ─────────────────────────────────────────────────────────── */
 const SEARCH_APIS = [
-  {
-    name: 'Search API',
-    type: 'REST API',
-    description: 'Full-text and POI search REST endpoint. Supports fuzzy matching, category filtering, and structured address lookup.',
-    url: 'https://developer.tomtom.com/search-api/documentation/product-information/introduction',
-  },
+  { name: 'Search — Find a Location',    type: 'Android SDK', description: 'Fuzzy search, POI categories, brand search, and autocomplete to resolve user-entered locations.',                      pageId: 'navsdk-search-find',       productId: 'navsdk' },
+  { name: 'Search — Quickstart',         type: 'Android SDK', description: 'Integrate the TomTom Search module and execute a first location search request in an Android app.',                     pageId: 'navsdk-search-quickstart',  productId: 'navsdk' },
+  { name: 'EV Search',                   type: 'Android SDK', description: 'Search for EV charging stations by location, power output, connector type, and real-time availability.',                pageId: 'navsdk-search-ev',         productId: 'navsdk' },
+  { name: 'Reverse Geocoding',           type: 'Android SDK', description: 'Convert GPS coordinates into human-readable street addresses using the TomTom Search API.',                              pageId: 'navsdk-search-reverse',    productId: 'navsdk' },
+  { name: 'Bring Your Own Data',         type: 'Android SDK', description: 'Surface custom application-specific POIs — like internal locations or partner data — alongside TomTom results.',        pageId: 'navsdk-search-byod',       productId: 'navsdk' },
 ];
 
 /* ─── Mock palette ──────────────────────────────────────────────────────────── */
@@ -428,7 +427,7 @@ function Pri({ children }) {
 }
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
-export default function SearchEngine() {
+export default function SearchEngine({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   return (
@@ -442,7 +441,7 @@ export default function SearchEngine() {
         {t('searchEngine.intro')}
       </div>
 
-      <ApiLinks items={SEARCH_APIS} />
+      <ApiLinks items={SEARCH_APIS} onNavigate={onNavigate} />
 
       {/* Overview */}
       <div className="zone">

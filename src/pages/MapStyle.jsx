@@ -8,28 +8,28 @@ import PageActions from '../components/ui/PageActions';
 
 const MAP_DISPLAY_APIS = [
   {
-    name: 'Map Display API',
-    type: 'REST API',
-    description: 'Tile-based mapping service powering the map view with vector tiles, raster imagery, and style bundles.',
-    url: 'https://docs.tomtom.com/map-display-api/documentation/tomtom-maps/product-information/introduction',
-  },
-  {
     name: 'Map Display for Compose',
     type: 'Android SDK',
-    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
-    url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
+    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout — map style is applied via MapStyleConfig.',
+    pageId: 'navsdk-map-compose', productId: 'navsdk',
+  },
+  {
+    name: 'Map Styles',
+    type: 'Android SDK',
+    description: 'Apply built-in or custom MapStyleConfig objects to switch between light, dark, driving, and mono map styles.',
+    pageId: 'navsdk-map-styles', productId: 'navsdk',
+  },
+  {
+    name: 'Design Tokens',
+    type: 'Android SDK',
+    description: 'Override colours, typography, and corner radius via UX Library design tokens to match your OEM brand.',
+    pageId: 'design-tokens', productId: 'ux-library',
   },
   {
     name: 'TomTom Map Maker',
     type: 'Tool',
     description: 'Design and publish custom map styles — colours, typography, layer visibility — then load them directly into UX Library.',
     url: 'https://mapmaker.tomtom.com',
-  },
-  {
-    name: 'Map Maker — Docs',
-    type: 'Tool',
-    description: 'Get started with Map Maker: style editor guide, layer reference, and publishing workflow.',
-    url: 'https://docs.tomtom.com/map-maker/documentation/overview/introduction',
   },
 ];
 
@@ -383,7 +383,7 @@ function StyleURIDemo() {
 }
 
 /* ─── Main page ─────────────────────────────────────────────── */
-export default function MapStyle() {
+export default function MapStyle({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -395,7 +395,7 @@ export default function MapStyle() {
         Apply a custom visual style to the navigation map — define road colours, labels, icons, and layer order using MapLibre-compatible JSON.
       </div>
 
-      <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />
+      <ApiLinks items={MAP_DISPLAY_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="ms-overview">Overview</h2>

@@ -3,6 +3,14 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const NAV_CONTROLS_APIS = [
+  { name: 'Turn-by-Turn Navigation',  type: 'Android SDK', description: 'Active navigation session that controls which buttons are context-driven — routing, mute, and settings.',          pageId: 'navsdk-nav-turn-by-turn', productId: 'navsdk' },
+  { name: 'Navigation — Quickstart',  type: 'Android SDK', description: 'Minimal setup to display the navigation composable with the default control bar and map.',                          pageId: 'navsdk-nav-quickstart',   productId: 'navsdk' },
+  { name: 'Search Engine',            type: 'Android SDK', description: 'Search engine behind the search button in the control bar — destination input and POI discovery.',                  pageId: 'search-engine',           productId: 'ux-library' },
+  { name: 'EV Charging Search',       type: 'Android SDK', description: 'Charging button in the control bar opens the EV Search interface to find compatible stations en-route.',             pageId: 'ev-charging-search',      productId: 'ux-library' },
+];
 
 const BTN_ORDER = ['🔍', '⚡', '🔇', '⚙️'];
 const BTN_ENUM  = { '🔍': 'SEARCH', '⚡': 'CHARGING', '🔇': 'MUTE', '⚙️': 'QUICK_SETTINGS' };
@@ -158,7 +166,7 @@ export function SearchEntryConfig({ t }) {
   );
 }
 
-export default function NavigationControls() {
+export default function NavigationControls({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const reqRows = [
@@ -181,6 +189,8 @@ export default function NavigationControls() {
       <div className="quick-answer">
         {t('navControls.intro')}
       </div>
+
+      <ApiLinks items={NAV_CONTROLS_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="nc-overview">{t('navControls.sections.overview')}</h2>

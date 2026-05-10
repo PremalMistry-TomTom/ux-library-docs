@@ -10,7 +10,19 @@ const ETA_APIS = [
     name: 'Continuous Replanning',
     type: 'Android SDK',
     description: 'Listen for automatic route updates triggered by traffic, diversions, or off-route events — and receive updated ETA data in real time.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/navigation/continuous-replanning',
+    pageId: 'navsdk-nav-replanning', productId: 'navsdk',
+  },
+  {
+    name: 'Turn-by-Turn Navigation',
+    type: 'Android SDK',
+    description: 'Active navigation session API that provides route progress, remaining distance, and ETA calculations.',
+    pageId: 'navsdk-nav-turn-by-turn', productId: 'navsdk',
+  },
+  {
+    name: 'Route Bar',
+    type: 'Android SDK',
+    description: 'Companion panel showing traffic incidents and progress along the active route — updates in sync with ETA.',
+    pageId: 'route-bar', productId: 'ux-library',
   },
 ];
 
@@ -63,7 +75,7 @@ export function ETAMock({ position, visibleFields }) {
   );
 }
 
-export default function ETAPanel() {
+export default function ETAPanel({ onNavigate }) {
   const [position, setPosition] = useState('BOTTOM_LEFT');
   const [hiddenFields, setHiddenFields] = useState(['soc']);
 
@@ -81,7 +93,7 @@ export default function ETAPanel() {
         Show arrival time, travel time, distance, and battery SoC during guidance — fully positionable with individually toggleable fields.
       </div>
 
-      <ApiLinks items={ETA_APIS} />
+      <ApiLinks items={ETA_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="eta-overview">Overview</h2>

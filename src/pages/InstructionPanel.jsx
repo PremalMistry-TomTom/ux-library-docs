@@ -10,13 +10,19 @@ const NIP_APIS = [
     name: 'Turn-by-Turn Navigation',
     type: 'Android SDK',
     description: 'Start and observe an active navigation session, including route progress, upcoming manoeuvres, and arrival events.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/navigation/turn-by-turn-navigation',
+    pageId: 'navsdk-nav-turn-by-turn', productId: 'navsdk',
   },
   {
-    name: 'Visual Instructions',
+    name: 'Voice Instructions',
     type: 'Android SDK',
-    description: 'Retrieve structured manoeuvre data, lane guidance, and signpost information for custom NIP rendering.',
-    url: 'https://developer.tomtom.com/navigation/android/guides/navigation/visual-instructions',
+    description: 'Retrieve structured manoeuvre data and voice instruction strings for custom NIP and audio guidance rendering.',
+    pageId: 'navsdk-nav-voice', productId: 'navsdk',
+  },
+  {
+    name: 'Navigation Quickstart',
+    type: 'Android SDK',
+    description: 'Minimal setup to start an active navigation session and observe progress events.',
+    pageId: 'navsdk-nav-quickstart', productId: 'navsdk',
   },
 ];
 
@@ -65,7 +71,7 @@ export function NIPMock({ position }) {
   );
 }
 
-export default function InstructionPanel() {
+export default function InstructionPanel({ onNavigate }) {
   const [position, setPosition] = useState('TOP_LEFT');
 
   return (
@@ -79,7 +85,7 @@ export default function InstructionPanel() {
         Set where the upcoming-manoeuvre panel appears on screen — five anchor positions, expanding toward available space.
       </div>
 
-      <ApiLinks items={NIP_APIS} />
+      <ApiLinks items={NIP_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="nip-overview">Overview</h2>

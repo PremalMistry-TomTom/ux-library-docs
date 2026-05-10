@@ -2,6 +2,14 @@ import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const PERSONALITY_APIS = [
+  { name: 'Voice Engine',          type: 'Android SDK', description: 'The TTS and voice synthesis layer that renders the personality tone and phrasing as spoken prompts.',    pageId: 'voice-engine',    productId: 'ux-library' },
+  { name: 'Voice Instructions',    type: 'Android SDK', description: 'NavSDK voice instruction prompts that carry the personality style during active navigation guidance.',      pageId: 'navsdk-nav-voice', productId: 'navsdk' },
+  { name: 'Intent Routing',        type: 'Android SDK', description: 'Intent routing determines response style — personality settings influence how each intent class is phrased.', pageId: 'intent-routing',  productId: 'ux-library' },
+  { name: 'AI Configuration',      type: 'Android SDK', description: 'Global AI Assistant configuration — register personality preset and set language/locale settings.',          pageId: 'ai-config',       productId: 'ux-library' },
+];
 
 /* ─── Data ───────────────────────────────────────────────────────────────────── */
 const TONES = [
@@ -79,7 +87,7 @@ function ChatPreview({ name, tone }) {
 }
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function ConversationPersonality() {
+export default function ConversationPersonality({ onNavigate }) {
   const [name, setName] = useState('TAIA');
   const [tone, setTone] = useState('friendly');
 
@@ -102,6 +110,8 @@ export default function ConversationPersonality() {
       <div className="quick-answer">
         Give TAIA your brand voice — set the assistant name, response tone, and silence threshold to match your product identity without changing the underlying AI model.
       </div>
+
+      <ApiLinks items={PERSONALITY_APIS} onNavigate={onNavigate} />
 
       {/* Scope */}
       <div className="zone">

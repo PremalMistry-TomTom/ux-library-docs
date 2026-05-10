@@ -7,8 +7,10 @@ import { ApiLinks } from '../components/ui/ApiLinks';
 import { EVSearchMock, StationDetailMock } from './EVSupport';
 
 const CHARGING_SEARCH_APIS = [
-  { name: 'EV Search',      type: 'Android SDK', description: 'Find compatible charging stations with connector type, power level, availability, and preferred network filters.', url: 'https://docs.tomtom.com/navigation/android/guides/search/ev-search' },
-  { name: 'EV POI Details', type: 'Android SDK', description: 'Retrieve real-time connector availability, pricing, and payment options for a specific station by Place ID.', url: 'https://docs.tomtom.com/navigation/android/guides/search/ev-poi-details' },
+  { name: 'EV Search',                type: 'Android SDK', description: 'Find compatible charging stations with connector type, power level, availability, and preferred network filters.',  pageId: 'navsdk-search-ev',    productId: 'navsdk' },
+  { name: 'EV POI Details',           type: 'Android SDK', description: 'Retrieve real-time connector availability, pricing, and payment options for a specific station by Place ID.',         pageId: 'navsdk-search-find',  productId: 'navsdk' },
+  { name: 'Long-Distance EV Routing', type: 'Android SDK', description: 'Route planning with automatic charging stop insertion — depends on EV Search to populate stop candidates.',           pageId: 'ev-routing',          productId: 'ux-library' },
+  { name: 'Vehicle & Battery',        type: 'Android SDK', description: 'Battery model and connector profile that filters which stations appear as compatible in EV Search results.',           pageId: 'ev-battery',          productId: 'ux-library' },
 ];
 
 /* ─── Mock palette ──────────────────────────────────────────────────────────── */
@@ -208,7 +210,7 @@ const SEARCH_FILTERS = [
   ['nearbyPoiCategories', 'Set<StandardCategoryId>','Restaurant, HotelMotel, CafePub, PublicAmenity, Shop, ParkRecreationArea.'],
 ];
 
-export default function EVChargingSearch() {
+export default function EVChargingSearch({ onNavigate }) {
   const { t } = useTranslation('ev');
   const [activeFilter, setActiveFilter] = useState('speed');
 
@@ -220,7 +222,7 @@ export default function EVChargingSearch() {
       </div>
       <div className="quick-answer">{t('chargingSearch.intro')}</div>
 
-      <ApiLinks items={CHARGING_SEARCH_APIS} />
+      <ApiLinks items={CHARGING_SEARCH_APIS} onNavigate={onNavigate} />
 
       {/* Search & station detail mocks */}
       <div className="zone">

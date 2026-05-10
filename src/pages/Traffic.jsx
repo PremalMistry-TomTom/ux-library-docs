@@ -8,28 +8,28 @@ import PageActions from '../components/ui/PageActions';
 
 const MAP_DISPLAY_APIS = [
   {
-    name: 'Map Display API',
-    type: 'REST API',
-    description: 'Tile-based mapping service powering the map view with vector tiles, raster imagery, and style bundles.',
-    url: 'https://docs.tomtom.com/map-display-api/documentation/tomtom-maps/product-information/introduction',
-  },
-  {
     name: 'Map Display for Compose',
     type: 'Android SDK',
-    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
-    url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
+    description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout — traffic layers are enabled on this map composable.',
+    pageId: 'navsdk-map-compose', productId: 'navsdk',
+  },
+  {
+    name: 'Map Traffic Layers',
+    type: 'Android SDK',
+    description: 'Enable and configure traffic flow and incident overlays on the NavSDK map view.',
+    pageId: 'navsdk-map-traffic', productId: 'navsdk',
+  },
+  {
+    name: 'Map Style',
+    type: 'Android SDK',
+    description: 'Apply custom map styles — including traffic flow colours and incident icon appearances — via design tokens.',
+    pageId: 'map-style', productId: 'ux-library',
   },
   {
     name: 'TomTom Map Maker',
     type: 'Tool',
     description: 'Customise traffic flow colours and incident icon styles in your map style, then publish and load directly into UX Library.',
     url: 'https://mapmaker.tomtom.com',
-  },
-  {
-    name: 'Map Maker — Docs',
-    type: 'Tool',
-    description: 'Get started with Map Maker: style editor guide, layer reference, and publishing workflow.',
-    url: 'https://docs.tomtom.com/map-maker/documentation/overview/introduction',
   },
 ];
 
@@ -324,7 +324,7 @@ function RefreshDemo() {
 }
 
 /* ─── Main page ──────────────────────────────────────────────── */
-export default function TrafficPage() {
+export default function TrafficPage({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -336,7 +336,7 @@ export default function TrafficPage() {
         Toggle and configure live traffic flow tiles and incident icons on the navigation map — each layer is independently controlled.
       </div>
 
-      <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />
+      <ApiLinks items={MAP_DISPLAY_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="tr-overview">Overview</h2>

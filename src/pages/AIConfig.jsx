@@ -2,6 +2,14 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const AI_CONFIG_APIS = [
+  { name: 'Speech to Text Engine',    type: 'Android SDK', description: 'Configure the STT engine — language, wake word, and noise suppression — referenced in the global AI config.',             pageId: 'speech-to-text',   productId: 'ux-library' },
+  { name: 'Voice Engine',             type: 'Android SDK', description: 'TTS engine configuration — voice locale and output channel — set as part of the AI Assistant initialisation.',               pageId: 'voice-engine',     productId: 'ux-library' },
+  { name: 'Intent Routing',           type: 'Android SDK', description: 'Register domain intent handlers in the AI Config — maps custom OEM intents to your application callbacks.',                  pageId: 'intent-routing',   productId: 'ux-library' },
+  { name: 'Conversation Personality', type: 'Android SDK', description: 'Personality preset applied globally — set assistant name, tone, and silence threshold in the config object.',                pageId: 'ai-personality',   productId: 'ux-library' },
+];
 
 /* ─── Navigation context fields ─────────────────────────────────────────────── */
 const CONTEXT_FIELDS = [
@@ -18,7 +26,7 @@ const CONTEXT_FIELDS = [
 ];
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function AIConfig() {
+export default function AIConfig({ onNavigate }) {
   const { t } = useTranslation('ai');
 
   return (
@@ -31,6 +39,8 @@ export default function AIConfig() {
       <div className="quick-answer">
         {t('config.intro')}
       </div>
+
+      <ApiLinks items={AI_CONFIG_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="ac-overview">{t('config.sections.overview')}</h2>

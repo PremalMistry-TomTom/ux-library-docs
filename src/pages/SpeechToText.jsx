@@ -2,6 +2,14 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const STT_APIS = [
+  { name: 'Voice Engine',             type: 'Android SDK', description: 'TTS counterpart to Speech-to-Text — handles the response audio output after STT delivers the recognised intent.',           pageId: 'voice-engine',     productId: 'ux-library' },
+  { name: 'Intent Routing',           type: 'Android SDK', description: 'Receives the text output from this STT engine and routes it to the appropriate navigation or OEM handler.',                 pageId: 'intent-routing',   productId: 'ux-library' },
+  { name: 'Navigation — Quickstart',  type: 'Android SDK', description: 'NavSDK navigation session invoked when the STT + intent pipeline resolves a destination or navigation command.',            pageId: 'navsdk-nav-quickstart', productId: 'navsdk' },
+  { name: 'AI Configuration',         type: 'Android SDK', description: 'Global AI config where the STT engine class, language, and noise suppression settings are registered.',                     pageId: 'ai-config',        productId: 'ux-library' },
+];
 
 /* ─── Boundary diagram ───────────────────────────────────────────────────────── */
 const M = {
@@ -90,7 +98,7 @@ export function BoundaryDiagram() {
 }
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function SpeechToText() {
+export default function SpeechToText({ onNavigate }) {
   const { t } = useTranslation('ai');
   const reqRowKeys = ['stt', 'wake', 'final', 'lang', 'rephrased', 'conv'];
   const reqPri = { stt: 'P1', wake: 'P1', final: 'P1', lang: 'P1', rephrased: 'P2', conv: 'P2' };
@@ -106,6 +114,8 @@ export default function SpeechToText() {
       <div className="quick-answer">
         {t('speechToText.intro')}
       </div>
+
+      <ApiLinks items={STT_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="stt-overview">{t('speechToText.sections.overview')}</h2>

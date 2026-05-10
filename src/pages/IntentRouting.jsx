@@ -2,6 +2,14 @@ import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const INTENT_ROUTING_APIS = [
+  { name: 'Speech to Text Engine',    type: 'Android SDK', description: 'Converts spoken user input to text — the upstream producer of intent strings consumed by the routing layer.',     pageId: 'speech-to-text',         productId: 'ux-library' },
+  { name: 'Navigation — Quickstart',  type: 'Android SDK', description: 'Navigation session that receives "start navigation" intents routed from the AI Assistant.',                         pageId: 'navsdk-nav-quickstart',  productId: 'navsdk' },
+  { name: 'Search — Find a Location', type: 'Android SDK', description: 'Location search that fulfills destination intents — "Navigate to the nearest coffee shop."',                        pageId: 'navsdk-search-find',     productId: 'navsdk' },
+  { name: 'Conversation Personality', type: 'Android SDK', description: 'Controls how fulfilled intents are confirmed back to the user — tone, phrasing, and response verbosity.',           pageId: 'ai-personality',         productId: 'ux-library' },
+];
 
 /* ─── Intent category data ───────────────────────────────────────────────────── */
 const INTENTS = [
@@ -157,7 +165,7 @@ function RoutingDiagram({ selected }) {
 }
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function IntentRouting() {
+export default function IntentRouting({ onNavigate }) {
   const [selected, setSelected] = useState('navigation');
   const intent = INTENTS.find(i => i.id === selected);
 
@@ -171,6 +179,8 @@ export default function IntentRouting() {
       <div className="quick-answer">
         TAIA classifies every utterance and routes it to the right handler — navigation stays within TAIA, everything else is forwarded to your registered OEM domain handlers via a clean callback API.
       </div>
+
+      <ApiLinks items={INTENT_ROUTING_APIS} onNavigate={onNavigate} />
 
       {/* How it works */}
       <div className="zone">

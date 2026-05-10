@@ -3,6 +3,14 @@ import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const HOME_SCREEN_APIS = [
+  { name: 'Map Display for Compose',    type: 'Android SDK', description: 'The composable map view that fills the main content zone of the home screen — configure insets to avoid content overlap.', pageId: 'navsdk-map-compose',      productId: 'navsdk' },
+  { name: 'Navigation — Quickstart',    type: 'Android SDK', description: 'Start a navigation session from the home screen — composable wiring that drives the transition from browse to guide mode.', pageId: 'navsdk-nav-quickstart',   productId: 'navsdk' },
+  { name: 'Search Engine',              type: 'Android SDK', description: 'The search panel surfaced from the home screen lets users set a destination and launch routing.',                             pageId: 'search-engine',           productId: 'ux-library' },
+  { name: 'Design Tokens',              type: 'Android SDK', description: 'Override colours, typography, and corner radius via UX Library design tokens to match your OEM brand.',                      pageId: 'design-tokens',           productId: 'ux-library' },
+];
 
 const ZONE_COLORS = {
   nav:      { color: '#f59e0b', bg: 'rgba(245,158,11,0.15)', border: '#f59e0b' },
@@ -390,7 +398,7 @@ navApp.uiState
 }
 
 /* ─── Main page ─────────────────────────────────────────────── */
-export default function HomeScreenLayout() {
+export default function HomeScreenLayout({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const reqRows = [
@@ -412,6 +420,8 @@ export default function HomeScreenLayout() {
       <div className="quick-answer">
         {t('homeScreen.intro')}
       </div>
+
+      <ApiLinks items={HOME_SCREEN_APIS} onNavigate={onNavigate} />
 
       {/* Overview */}
       <div className="zone">

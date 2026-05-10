@@ -179,36 +179,36 @@ function PageContent({ pageId, onNavigate, product, platform }) {
   switch (pageId) {
     case 'overview':           return <Overview onNavigate={onNavigate} />;
     case 'colour':             return <Colour />;
-    case 'home-screen-layout': return <HomeScreenLayout />;
-    case 'search-engine':      return <SearchEngine />;
+    case 'home-screen-layout': return <HomeScreenLayout onNavigate={onNavigate} />;
+    case 'search-engine':      return <SearchEngine onNavigate={onNavigate} />;
     case 'font':               return <Font />;
-    case 'design-tokens':      return <DesignTokens />;
-    case 'theming':            return <Theming />;
+    case 'design-tokens':      return <DesignTokens onNavigate={onNavigate} />;
+    case 'theming':            return <Theming onNavigate={onNavigate} />;
     case 'corner-radius':      return <CornerRadius />;
-    case 'map-style':          return <MapStyle />;
-    case 'traffic':            return <TrafficPage />;
-    case 'safety-locations':   return <SafetyLocations />;
-    case 'nav-controls':       return <NavigationControls />;
-    case 'horizon-panel':      return <HorizonPanel />;
-    case 'instruction-panel':  return <InstructionPanel />;
-    case 'eta-panel':          return <ETAPanel />;
-    case 'route-bar':          return <RouteBar />;
-    case 'ai-overview':        return <TAIAOverview />;
-    case 'ai-personality':     return <ConversationPersonality />;
-    case 'intent-routing':     return <IntentRouting />;
-    case 'voice-engine':       return <VoiceEngine />;
-    case 'speech-to-text':     return <SpeechToText />;
-    case 'ai-config':          return <AIConfig />;
+    case 'map-style':          return <MapStyle onNavigate={onNavigate} />;
+    case 'traffic':            return <TrafficPage onNavigate={onNavigate} />;
+    case 'safety-locations':   return <SafetyLocations onNavigate={onNavigate} />;
+    case 'nav-controls':       return <NavigationControls onNavigate={onNavigate} />;
+    case 'horizon-panel':      return <HorizonPanel onNavigate={onNavigate} />;
+    case 'instruction-panel':  return <InstructionPanel onNavigate={onNavigate} />;
+    case 'eta-panel':          return <ETAPanel onNavigate={onNavigate} />;
+    case 'route-bar':          return <RouteBar onNavigate={onNavigate} />;
+    case 'ai-overview':        return <TAIAOverview onNavigate={onNavigate} />;
+    case 'ai-personality':     return <ConversationPersonality onNavigate={onNavigate} />;
+    case 'intent-routing':     return <IntentRouting onNavigate={onNavigate} />;
+    case 'voice-engine':       return <VoiceEngine onNavigate={onNavigate} />;
+    case 'speech-to-text':     return <SpeechToText onNavigate={onNavigate} />;
+    case 'ai-config':          return <AIConfig onNavigate={onNavigate} />;
     case 'ev':                 return <EVOverview onNavigate={onNavigate} />;
     case 'ev-overview':        return <EVOverview onNavigate={onNavigate} />;
-    case 'ev-battery':         return <EVBattery />;
-    case 'ev-charging-search': return <EVChargingSearch />;
-    case 'ev-routing':         return <EVRouting />;
+    case 'ev-battery':         return <EVBattery onNavigate={onNavigate} />;
+    case 'ev-charging-search': return <EVChargingSearch onNavigate={onNavigate} />;
+    case 'ev-routing':         return <EVRouting onNavigate={onNavigate} />;
     case 'ev-nav-ui':          return <EVNavUI onNavigate={onNavigate} />;
     case 'ev-requirements':    return <EVRequirements onNavigate={onNavigate} />;
     case 'ev-charging':        return <DomainLanding groupKey="evCharging" onNavigate={onNavigate} />;
-    case 'cluster':            return <Cluster />;
-    case 'adas':               return <ADASIntegration />;
+    case 'cluster':            return <Cluster onNavigate={onNavigate} />;
+    case 'adas':               return <ADASIntegration onNavigate={onNavigate} />;
     case 'typography':             return <Typography />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
     case 'intro-illustrations':        return <IntroIllustrations />;
@@ -225,26 +225,26 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'navsdk-horizon':         return <NavSDKVirtualHorizon onNavigate={onNavigate} />;
     case 'navsdk-advanced':        return <NavSDKAdvanced onNavigate={onNavigate} />;
     // NavSDK Map sub-pages
-    case 'navsdk-map-compose':     return <NavSDKMapCompose />;
-    case 'navsdk-map-views':       return <NavSDKMapViews />;
-    case 'navsdk-map-styles':      return <NavSDKMapStyles />;
-    case 'navsdk-map-camera':      return <NavSDKMapCamera />;
-    case 'navsdk-map-markers':     return <NavSDKMapMarkers />;
-    case 'navsdk-map-traffic':     return <NavSDKMapTraffic />;
+    case 'navsdk-map-compose':     return <NavSDKMapCompose onNavigate={onNavigate} />;
+    case 'navsdk-map-views':       return <NavSDKMapViews onNavigate={onNavigate} />;
+    case 'navsdk-map-styles':      return <NavSDKMapStyles onNavigate={onNavigate} />;
+    case 'navsdk-map-camera':      return <NavSDKMapCamera onNavigate={onNavigate} />;
+    case 'navsdk-map-markers':     return <NavSDKMapMarkers onNavigate={onNavigate} />;
+    case 'navsdk-map-traffic':     return <NavSDKMapTraffic onNavigate={onNavigate} />;
     // NavSDK Getting Started
-    case 'navsdk-project-setup':   return <NavSDKProjectSetup />;
-    case 'navsdk-sdk-init':        return <NavSDKSdkInit />;
-    case 'navsdk-first-map':       return <NavSDKFirstMap />;
-    case 'navsdk-localization':    return <NavSDKLocalization />;
-    case 'navsdk-migration':       return <NavSDKMigration />;
+    case 'navsdk-project-setup':   return <NavSDKProjectSetup onNavigate={onNavigate} />;
+    case 'navsdk-sdk-init':        return <NavSDKSdkInit onNavigate={onNavigate} />;
+    case 'navsdk-first-map':       return <NavSDKFirstMap onNavigate={onNavigate} />;
+    case 'navsdk-localization':    return <NavSDKLocalization onNavigate={onNavigate} />;
+    case 'navsdk-migration':       return <NavSDKMigration onNavigate={onNavigate} />;
     // NavSDK Location
-    case 'navsdk-location-quickstart': return <NavSDKLocationQuickstart />;
+    case 'navsdk-location-quickstart': return <NavSDKLocationQuickstart onNavigate={onNavigate} />;
     // NavSDK Search
-    case 'navsdk-search-quickstart': return <NavSDKSearchQuickstart />;
-    case 'navsdk-search-find':       return <NavSDKSearchFind />;
-    case 'navsdk-search-ev':         return <NavSDKSearchEv />;
-    case 'navsdk-search-reverse':    return <NavSDKSearchReverse />;
-    case 'navsdk-search-byod':       return <NavSDKSearchByod />;
+    case 'navsdk-search-quickstart': return <NavSDKSearchQuickstart onNavigate={onNavigate} />;
+    case 'navsdk-search-find':       return <NavSDKSearchFind onNavigate={onNavigate} />;
+    case 'navsdk-search-ev':         return <NavSDKSearchEv onNavigate={onNavigate} />;
+    case 'navsdk-search-reverse':    return <NavSDKSearchReverse onNavigate={onNavigate} />;
+    case 'navsdk-search-byod':       return <NavSDKSearchByod onNavigate={onNavigate} />;
     // NavSDK Routing sub-pages
     case 'navsdk-routing-quickstart': return <NavSDKRoutingQuickstart onNavigate={onNavigate} />;
     case 'navsdk-route-planning':     return <NavSDKRoutePlanning onNavigate={onNavigate} />;
@@ -261,19 +261,19 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'navsdk-nav-saving':        return <NavSDKNavSaving onNavigate={onNavigate} />;
     case 'navsdk-nav-traffic':       return <NavSDKNavTraffic onNavigate={onNavigate} />;
     // NavSDK Offline sub-pages
-    case 'navsdk-offline-quickstart': return <NavSDKOfflineQuickstart />;
-    case 'navsdk-offline-setup':      return <NavSDKOfflineSetup />;
-    case 'navsdk-offline-mgmt':       return <NavSDKOfflineMgmt />;
+    case 'navsdk-offline-quickstart': return <NavSDKOfflineQuickstart onNavigate={onNavigate} />;
+    case 'navsdk-offline-setup':      return <NavSDKOfflineSetup onNavigate={onNavigate} />;
+    case 'navsdk-offline-mgmt':       return <NavSDKOfflineMgmt onNavigate={onNavigate} />;
     // NavSDK Horizon sub-pages
-    case 'navsdk-horizon-data':       return <NavSDKHorizonData />;
-    case 'navsdk-horizon-safety':     return <NavSDKHorizonSafety />;
-    case 'navsdk-horizon-hazards':    return <NavSDKHorizonHazards />;
-    case 'navsdk-horizon-traffic':    return <NavSDKHorizonTraffic />;
+    case 'navsdk-horizon-data':       return <NavSDKHorizonData onNavigate={onNavigate} />;
+    case 'navsdk-horizon-safety':     return <NavSDKHorizonSafety onNavigate={onNavigate} />;
+    case 'navsdk-horizon-hazards':    return <NavSDKHorizonHazards onNavigate={onNavigate} />;
+    case 'navsdk-horizon-traffic':    return <NavSDKHorizonTraffic onNavigate={onNavigate} />;
     // NavSDK Advanced sub-pages
-    case 'navsdk-adv-simulation':     return <NavSDKAdvSimulation />;
-    case 'navsdk-adv-map-matched':    return <NavSDKAdvMapMatched />;
-    case 'navsdk-adv-telemetry':      return <NavSDKAdvTelemetry />;
-    case 'navsdk-adv-vehicle':        return <NavSDKAdvVehicle />;
+    case 'navsdk-adv-simulation':     return <NavSDKAdvSimulation onNavigate={onNavigate} />;
+    case 'navsdk-adv-map-matched':    return <NavSDKAdvMapMatched onNavigate={onNavigate} />;
+    case 'navsdk-adv-telemetry':      return <NavSDKAdvTelemetry onNavigate={onNavigate} />;
+    case 'navsdk-adv-vehicle':        return <NavSDKAdvVehicle onNavigate={onNavigate} />;
     // ANA
     case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
     // Routing API

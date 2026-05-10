@@ -1,5 +1,14 @@
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const ADAS_APIS = [
+  { name: 'Horizon — Safety Locations', type: 'Android SDK', description: 'Speed camera and speed zone data streamed ahead of the vehicle — the primary data source for ISA and speed limit ADAS features.', pageId: 'navsdk-horizon-safety',   productId: 'navsdk' },
+  { name: 'Horizon — Hazards',          type: 'Android SDK', description: 'Road hazard events from the virtual horizon — feeds predictive energy, curve warnings, and gradient anticipation.',               pageId: 'navsdk-horizon-hazards',  productId: 'navsdk' },
+  { name: 'Retrieving Horizon Data',    type: 'Android SDK', description: 'Access road attributes (curvature, slope, speed limits) from the horizon engine for ADAS pre-processing.',                        pageId: 'navsdk-horizon-data',     productId: 'navsdk' },
+  { name: 'Vehicle Metadata',           type: 'Android SDK', description: 'Vehicle dimensions and powertrain profile used by predictive energy management and adaptive cruise ADAS functions.',               pageId: 'navsdk-adv-vehicle',      productId: 'navsdk' },
+  { name: 'Cluster',                    type: 'Android SDK', description: 'Cluster display where ADAS lane guidance and speed limit overlays are rendered alongside navigation UI.',                           pageId: 'cluster',                 productId: 'ux-library' },
+];
 
 /* ─── Capability icons ───────────────────────────────────────────────────── */
 function IconISA() {
@@ -100,7 +109,7 @@ const CAPABILITIES = [
 ];
 
 /* ─── Page ───────────────────────────────────────────────────────────────── */
-export default function ADASIntegration() {
+export default function ADASIntegration({ onNavigate }) {
   return (
     <div className="page">
 
@@ -112,6 +121,8 @@ export default function ADASIntegration() {
       <div className="quick-answer">
         A modular safety layer that adds horizon-aware ADAS features — speed alerts, ISA, predictive hazards — to any navigation stack.
       </div>
+
+      <ApiLinks items={ADAS_APIS} onNavigate={onNavigate} />
 
       {/* Access notice */}
       <Callout type="warn">

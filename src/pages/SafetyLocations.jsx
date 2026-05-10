@@ -4,30 +4,30 @@ import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
 
-const MAP_DISPLAY_APIS = [
-  {
-    name: 'Map Display API',
-    type: 'REST API',
-    description: 'Tile-based mapping service powering the map view with vector tiles, raster imagery, and style bundles.',
-    url: 'https://docs.tomtom.com/map-display-api/documentation/tomtom-maps/product-information/introduction',
-  },
+const SAFETY_APIS = [
   {
     name: 'Map Display for Compose',
     type: 'Android SDK',
     description: 'Integrate a fully interactive TomTom map into a Jetpack Compose layout with a single composable.',
-    url: 'https://docs.tomtom.com/navigation/android/guides/map-display/map-display-for-compose/quickstart',
+    pageId: 'navsdk-map-compose', productId: 'navsdk',
+  },
+  {
+    name: 'Navigation — Safety Locations',
+    type: 'Android SDK',
+    description: 'Register speed camera and hazard alerts triggered as the vehicle approaches safety locations along the route.',
+    pageId: 'navsdk-nav-safety', productId: 'navsdk',
+  },
+  {
+    name: 'Horizon — Safety Locations',
+    type: 'Android SDK',
+    description: 'Stream safety cameras and speed zone data ahead of the vehicle using the Virtual Horizon engine.',
+    pageId: 'navsdk-horizon-safety', productId: 'navsdk',
   },
   {
     name: 'TomTom Map Maker',
     type: 'Tool',
     description: 'Customise safety location icon styles — size, colour, and appearance — in your map style and publish directly to UX Library.',
     url: 'https://mapmaker.tomtom.com',
-  },
-  {
-    name: 'Map Maker — Docs',
-    type: 'Tool',
-    description: 'Get started with Map Maker: style editor guide, layer reference, and publishing workflow.',
-    url: 'https://docs.tomtom.com/map-maker/documentation/overview/introduction',
   },
 ];
 
@@ -310,7 +310,7 @@ navigationVisualization.updateStyle(styleConfig)`,
 }
 
 /* ─── Page ──────────────────────────────────────────────────── */
-export default function SafetyLocations() {
+export default function SafetyLocations({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -322,7 +322,7 @@ export default function SafetyLocations() {
         Speed cameras, enforcement zones, and danger areas — rendered automatically once Navigation Visualisation is initialised.
       </div>
 
-      <ApiLinks items={MAP_DISPLAY_APIS} title="APIs & Resources" />
+      <ApiLinks items={SAFETY_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="sl-overview">Overview</h2>
