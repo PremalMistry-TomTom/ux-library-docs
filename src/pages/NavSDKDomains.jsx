@@ -54,7 +54,19 @@ function UseCaseCard({ title, desc, Thumb, onClick }) {
       <div className="nav-card-body">
         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 4 }}>{title}</div>
         <div style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.5, marginBottom: 10, flex: 1 }}>{desc}</div>
-        <ComingSoonBadge />
+        {onClick ? (
+          <span style={{
+            display: 'inline-block',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            color: 'var(--accent)',
+            letterSpacing: '0.01em',
+          }}>
+            Explore →
+          </span>
+        ) : (
+          <ComingSoonBadge />
+        )}
       </div>
     </div>
   );
@@ -399,6 +411,12 @@ export function NavSDKNavigation({ onNavigate }) {
       id: 'navsdk-nav-saving',
       title: 'Saving & Resuming',
       desc: 'Persist navigation state across app restarts or process death. Resume a previously active session without requiring the driver to re-enter their destination.',
+      Thumb: makeThumb(IlloNavSDKNavigation, L_NavGuidance),
+    },
+    {
+      id: 'navsdk-nav-traffic',
+      title: 'Traffic-Aware Navigation',
+      desc: 'Real-time traffic monitoring integrated into the guidance loop — automatically detects delays ahead and recalculates the fastest route without user intervention.',
       Thumb: makeThumb(IlloNavSDKNavigation, L_NavGuidance),
     },
   ];
