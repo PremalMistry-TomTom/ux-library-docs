@@ -1,8 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
-export default function DesignTokens() {
+const DESIGN_TOKENS_APIS = [
+  { name: 'Theming',                type: 'Android SDK', description: 'Apply OEM brand colours, typography, and radius using the token system defined here.',                          pageId: 'theming',                  productId: 'ux-library' },
+  { name: 'Map Style (UX)',         type: 'Android SDK', description: 'Map visual tokens — background, road colours — derived from the same token hierarchy.',                         pageId: 'map-style',                productId: 'ux-library' },
+  { name: 'Map Styles',             type: 'Android SDK', description: 'NavSDK map style API that consumes custom style JSON generated from token overrides.',                          pageId: 'navsdk-map-styles',        productId: 'navsdk' },
+];
+
+export default function DesignTokens({ onNavigate }) {
   const { t } = useTranslation('pages');
   const dt = key => t(`designTokens.${key}`);
 
@@ -15,6 +22,7 @@ export default function DesignTokens() {
       <div className="quick-answer">
         {dt('quickAnswer')}
       </div>
+      <ApiLinks items={DESIGN_TOKENS_APIS} onNavigate={onNavigate} />
 
       {/* Introduction */}
       <div className="zone">

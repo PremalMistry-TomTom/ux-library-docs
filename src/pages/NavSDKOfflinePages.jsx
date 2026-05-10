@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared dark map canvas ─────────────────────────────────────────────── */
 function MapCanvas({ children, height = 260 }) {
@@ -33,7 +34,14 @@ function MapCanvas({ children, height = 260 }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    1. OFFLINE QUICKSTART
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKOfflineQuickstart() {
+const OFFLINE_QUICKSTART_APIS = [
+  { name: 'Offline Map Setup',      type: 'Android SDK', description: 'OfflineMapRegionManager configuration that follows on from this NativeMapStore initialisation.',               pageId: 'navsdk-offline-setup',     productId: 'navsdk' },
+  { name: 'Offline Map Management', type: 'Android SDK', description: 'Listing, updating, and deleting downloaded regions after the initial offline setup.',                          pageId: 'navsdk-offline-mgmt',      productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Composable map that renders offline tiles from the downloaded NativeMapStore.',                                pageId: 'navsdk-map-compose',       productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that uses the offline map and routing data downloaded here.',                               pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+];
+
+export function NavSDKOfflineQuickstart({ onNavigate }) {
   const [phase, setPhase] = useState('idle'); // idle | downloading | complete
   const [progress, setProgress] = useState(0);
   const intervalRef = useRef(null);
@@ -71,7 +79,7 @@ export function NavSDKOfflineQuickstart() {
         Set up <code>NativeMapStore</code> and <code>OfflineManager</code>, download a region package,
         and verify that navigation works without network connectivity.
       </p>
-
+      <ApiLinks items={OFFLINE_QUICKSTART_APIS} onNavigate={onNavigate} />
       <Callout type="warn">
         Full offline map packages (country/region downloads) are available on <strong>Android only</strong>.
         iOS uses automatic tile caching — you cannot pre-download a full region on iOS.
@@ -243,7 +251,13 @@ const DOWNLOAD_STATE_LABELS = {
   outdated: { label: 'Update available', color: '#f97316', bg: 'rgba(249,115,22,0.12)' },
 };
 
-export function NavSDKOfflineSetup() {
+const OFFLINE_SETUP_APIS = [
+  { name: 'Offline Quickstart',     type: 'Android SDK', description: 'NativeMapStore setup that must be completed before region manager policies take effect.',                      pageId: 'navsdk-offline-quickstart', productId: 'navsdk' },
+  { name: 'Offline Map Management', type: 'Android SDK', description: 'Post-setup operations — list, update, and delete packages configured with this region manager.',               pageId: 'navsdk-offline-mgmt',       productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Map composable that switches to offline tile rendering when the download region is active.',                   pageId: 'navsdk-map-compose',        productId: 'navsdk' },
+];
+
+export function NavSDKOfflineSetup({ onNavigate }) {
   const [downloadState, setDownloadState] = useState('idle');
   const [progressPct, setProgressPct] = useState(0);
   const timerRef = useRef(null);
@@ -276,7 +290,7 @@ export function NavSDKOfflineSetup() {
         Configure <code>OfflineMapRegionManager</code>, define regions by bounding box or region code,
         monitor download progress, and set storage quota policies.
       </p>
-
+      <ApiLinks items={OFFLINE_SETUP_APIS} onNavigate={onNavigate} />
       <Callout type="warn">
         Full offline map packages are available on <strong>Android only</strong>. iOS uses automatic
         tile caching managed by <code>TileStore</code> — manual region pre-download is not supported.
@@ -430,7 +444,13 @@ const MOCK_REGIONS = [
   { id: 'DEU', name: 'Germany',     size: '2.4 GB', status: 'up-to-date', date: '2026-04-12' },
 ];
 
-export function NavSDKOfflineMgmt() {
+const OFFLINE_MGMT_APIS = [
+  { name: 'Offline Quickstart',     type: 'Android SDK', description: 'Initial NativeMapStore and OfflineManager setup — required before regions are available to manage.',          pageId: 'navsdk-offline-quickstart', productId: 'navsdk' },
+  { name: 'Offline Map Setup',      type: 'Android SDK', description: 'Region download configuration including bounding box, quota policy, and progress listeners.',                 pageId: 'navsdk-offline-setup',      productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Map composable that uses managed offline packages for tile rendering.',                                        pageId: 'navsdk-map-compose',        productId: 'navsdk' },
+];
+
+export function NavSDKOfflineMgmt({ onNavigate }) {
   const [regions, setRegions] = useState(MOCK_REGIONS);
   const [updating, setUpdating] = useState(null);
 
@@ -458,7 +478,7 @@ export function NavSDKOfflineMgmt() {
         List downloaded regions, delete individual packages, check for map updates, and apply
         incremental delta updates to keep offline data current with minimal bandwidth.
       </p>
-
+      <ApiLinks items={OFFLINE_MGMT_APIS} onNavigate={onNavigate} />
       <Callout type="info">
         Delta (incremental) updates are available on <strong>Android</strong>. On iOS, the tile
         cache is managed automatically by <code>TileStore</code> without manual update control.

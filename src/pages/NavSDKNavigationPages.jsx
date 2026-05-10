@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared dark map shell ──────────────────────────────────────────────── */
 function MapShell({ height = 280, children }) {
@@ -209,6 +210,13 @@ func navigation(_ navigation: TomTomNavigation, didUpdateRouteProgress progress:
     let distanceRemaining = progress.distanceAlongRoute
 }`;
 
+const NAV_QUICKSTART_APIS = [
+  { name: 'Turn-by-Turn Guidance',  type: 'Android SDK', description: 'GuidanceStateObserver events that follow on from this navigation engine setup.',                               pageId: 'navsdk-nav-turn-by-turn',   productId: 'navsdk' },
+  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi and the Route object passed to TomTomNavigation.start().',                                          pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that feeds real-time position into the navigation engine.',                                    pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Composable map that renders the active route and vehicle position during navigation.',                          pageId: 'navsdk-map-compose',        productId: 'navsdk' },
+];
+
 export function NavSDKNavQuickstart({ onNavigate }) {
   return (
     <div className="page">
@@ -220,6 +228,7 @@ export function NavSDKNavQuickstart({ onNavigate }) {
         Create the <code>TomTomNavigation</code> engine, attach it to a planned route,
         and observe real-time progress in four steps.
       </p>
+      <ApiLinks items={NAV_QUICKSTART_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="nqs-demo">Interactive demo</h2>
@@ -382,6 +391,13 @@ extension ViewController: NavigationObserver {
     }
 }`;
 
+const NAV_TURN_BY_TURN_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine setup that feeds guidance events to GuidanceStateObserver.',                           pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+  { name: 'Voice Instructions',     type: 'Android SDK', description: 'TTS prompts generated from the same GuidanceInstruction events received by this observer.',                    pageId: 'navsdk-nav-voice',          productId: 'navsdk' },
+  { name: 'Instruction Panel (UX)', type: 'Android SDK', description: 'UX Library panel that renders the next-manoeuvre card from GuidanceInstruction data.',                         pageId: 'instruction-panel',         productId: 'ux-library' },
+  { name: 'Navigation Controls (UX)',type: 'Android SDK', description: 'UX Library controls overlay that sits above the map during turn-by-turn guidance.',                           pageId: 'nav-controls',              productId: 'ux-library' },
+];
+
 export function NavSDKNavTurnByTurn({ onNavigate }) {
   return (
     <div className="page">
@@ -393,6 +409,7 @@ export function NavSDKNavTurnByTurn({ onNavigate }) {
         Subscribe to <code>GuidanceStateObserver</code> to receive structured manoeuvre events —
         turn type, street name, distance, and exit number — at every decision point.
       </p>
+      <ApiLinks items={NAV_TURN_BY_TURN_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="tbt-demo">Interactive demo</h2>
@@ -531,6 +548,13 @@ class MyTtsProvider: TTSProvider {
 
 tomTomNavigation.setTtsProvider(MyTtsProvider())`;
 
+const NAV_VOICE_APIS = [
+  { name: 'Turn-by-Turn Guidance',  type: 'Android SDK', description: 'GuidanceInstruction stream that triggers voice prompts at pre-calculated distances.',                          pageId: 'navsdk-nav-turn-by-turn',  productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine setup required before VoiceInstruction events are delivered.',                         pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+  { name: 'Voice Engine (UX)',      type: 'Android SDK', description: 'UX Library TTS component that consumes VoiceInstruction events from this SDK API.',                            pageId: 'voice-engine',             productId: 'ux-library' },
+  { name: 'Speech to Text (UX)',    type: 'Android SDK', description: 'Counterpart to voice output — STT pipeline that feeds driver commands back into TAIA.',                        pageId: 'speech-to-text',           productId: 'ux-library' },
+];
+
 export function NavSDKNavVoice({ onNavigate }) {
   return (
     <div className="page">
@@ -542,6 +566,7 @@ export function NavSDKNavVoice({ onNavigate }) {
         Receive TTS-ready voice prompts at the correct distance before each manoeuvre.
         Plug in Android TTS, <code>AVSpeechSynthesizer</code>, or a fully custom engine.
       </p>
+      <ApiLinks items={NAV_VOICE_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="vi-demo">Interactive demo</h2>
@@ -716,6 +741,13 @@ let replanningOptions = ReplanningOptions(
 )
 tomTomNavigation.replanningOptions = replanningOptions`;
 
+const NAV_REPLANNING_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine that raises off-route events triggering automatic replanning.',                        pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+  { name: 'Alternative Routes',     type: 'Android SDK', description: 'Replanning can offer route alternatives — same maxAlternatives parameter applies during rerouting.',           pageId: 'navsdk-route-alternatives', productId: 'navsdk' },
+  { name: 'Traffic-Aware Navigation',type:'Android SDK', description: 'Traffic-triggered rerouting that shares the same replanning infrastructure.',                                  pageId: 'navsdk-nav-traffic',        productId: 'navsdk' },
+  { name: 'Route Bar (UX)',         type: 'Android SDK', description: 'UX Library route bar that updates its ETA and distance when a replanned route arrives.',                       pageId: 'route-bar',                 productId: 'ux-library' },
+];
+
 export function NavSDKNavReplanning({ onNavigate }) {
   return (
     <div className="page">
@@ -727,6 +759,7 @@ export function NavSDKNavReplanning({ onNavigate }) {
         The navigation engine detects off-route events and automatically recalculates a new
         route. Configure the deviation threshold and listen for the new route via observers.
       </p>
+      <ApiLinks items={NAV_REPLANNING_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="rp-demo">Interactive demo</h2>
@@ -886,6 +919,13 @@ let config = SafetyLocationConfiguration(
 )
 tomTomNavigation.safetyLocationConfiguration = config`;
 
+const NAV_SAFETY_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine setup required before SafetyLocationWarningObserver receives events.',                 pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+  { name: 'Horizon — Safety',       type: 'Android SDK', description: 'Horizon-based safety location data that complements in-navigation speed camera warnings.',                    pageId: 'navsdk-horizon-safety',    productId: 'navsdk' },
+  { name: 'Safety Locations (UX)',  type: 'Android SDK', description: 'UX Library safety display component that renders warning cards from this SDK observer.',                      pageId: 'safety-locations',         productId: 'ux-library' },
+  { name: 'ADAS Integration (UX)', type: 'Android SDK',  description: 'ADAS panel that uses Horizon safety data for forward-looking driver alerts.',                                  pageId: 'adas',                     productId: 'ux-library' },
+];
+
 export function NavSDKNavSafety({ onNavigate }) {
   return (
     <div className="page">
@@ -897,6 +937,7 @@ export function NavSDKNavSafety({ onNavigate }) {
         Subscribe to <code>SafetyLocationWarningObserver</code> to receive advance alerts for
         speed cameras, danger zones, and school zones along the active route.
       </p>
+      <ApiLinks items={NAV_SAFETY_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="sl-demo">Interactive demo</h2>
@@ -1072,6 +1113,12 @@ extension ViewController: FreeDrivingObserver {
 
 tomTomNavigation.stopFreeDriving()`;
 
+const NAV_FREE_DRIVING_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine whose free-driving mode is activated when no route is set.',                           pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+  { name: 'Map-Matched Location',   type: 'Android SDK', description: 'MapMatchedLocationProvider that snaps the vehicle position to the road network in free-driving mode.',         pageId: 'navsdk-adv-map-matched',   productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider configuration needed before map-matching and free-driving can start.',                         pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+];
+
 export function NavSDKNavFreeDriving({ onNavigate }) {
   return (
     <div className="page">
@@ -1083,6 +1130,7 @@ export function NavSDKNavFreeDriving({ onNavigate }) {
         Activate map-matched positioning without an active route. Speed limits, road names, and
         position snap remain live — ideal for tracking, exploration, and no-destination display.
       </p>
+      <ApiLinks items={NAV_FREE_DRIVING_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="fd-demo">Interactive demo</h2>
@@ -1203,6 +1251,12 @@ function SavingDemo() {
   );
 }
 
+const NAV_SAVING_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation session that is serialised and restored across app lifecycle transitions.',                    pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+  { name: 'Route Import/Export',    type: 'Android SDK', description: 'Route JSON/GeoJSON serialisation used for the iOS manual save approach.',                                       pageId: 'navsdk-route-import-export', productId: 'navsdk' },
+  { name: 'Turn-by-Turn Guidance',  type: 'Android SDK', description: 'Guidance session that resumes from the saved NavigationState without restarting.',                              pageId: 'navsdk-nav-turn-by-turn',   productId: 'navsdk' },
+];
+
 export function NavSDKNavSaving({ onNavigate }) {
   return (
     <div className="page">
@@ -1214,6 +1268,7 @@ export function NavSDKNavSaving({ onNavigate }) {
         Persist navigation state across app restarts. Android provides <code>NavigationStateSerializer</code>
         for full session round-trips; iOS requires a manual route-JSON save approach.
       </p>
+      <ApiLinks items={NAV_SAVING_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="sv-demo">Interactive demo</h2>
@@ -1259,7 +1314,14 @@ export function NavSDKNavSaving({ onNavigate }) {
 }
 
 /* ── NavSDKNavTraffic ───────────────────────────────────────────────────────── */
-export function NavSDKNavTraffic() {
+const NAV_TRAFFIC_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine setup that enables traffic-aware routing and TrafficObserver callbacks.',              pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+  { name: 'Continuous Replanning',  type: 'Android SDK', description: 'Off-route detection that shares the same replanning infrastructure triggered by traffic delays.',              pageId: 'navsdk-nav-replanning',     productId: 'navsdk' },
+  { name: 'Map Traffic Layer',      type: 'Android SDK', description: 'Visual traffic overlay on the map that reflects the same real-time flow data used for rerouting.',            pageId: 'navsdk-map-traffic',        productId: 'navsdk' },
+  { name: 'Traffic (UX)',           type: 'Android SDK', description: 'UX Library traffic page showing how in-navigation traffic display integrates with the map and guidance.',     pageId: 'traffic',                   productId: 'ux-library' },
+];
+
+export function NavSDKNavTraffic({ onNavigate }) {
   const [trafficEnabled, setTrafficEnabled] = React.useState(true);
   const [avoidTolls, setAvoidTolls]         = React.useState(false);
   const [avoidHighways, setAvoidHighways]   = React.useState(false);
@@ -1358,6 +1420,7 @@ extension MyViewController: NavigationDelegate {
         <p className="lead">
           TomTom NavSDK integrates real-time traffic data directly into the guidance loop — automatically detecting delays ahead and recalculating the fastest route without any user intervention.
         </p>
+        <ApiLinks items={NAV_TRAFFIC_APIS} onNavigate={onNavigate} />
       </div>
 
       {/* Live simulation */}

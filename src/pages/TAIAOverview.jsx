@@ -1,6 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const TAIA_OVERVIEW_APIS = [
+  { name: 'Speech to Text',         type: 'Android SDK', description: 'STT engine that feeds driver utterances into the TAIA pipeline described in this overview.',                   pageId: 'speech-to-text',           productId: 'ux-library' },
+  { name: 'Voice Engine',           type: 'Android SDK', description: 'TTS component that speaks TAIA\'s voiceText responses back to the driver.',                                    pageId: 'voice-engine',             productId: 'ux-library' },
+  { name: 'Intent Routing',         type: 'Android SDK', description: 'Domain routing layer that dispatches TAIA UI commands to navigation or OEM handlers.',                         pageId: 'intent-routing',           productId: 'ux-library' },
+  { name: 'AI Configuration',       type: 'Android SDK', description: 'TaiaClient setup, NavigationContext, and streaming listener — the SDK integration layer for this overview.',   pageId: 'ai-config',                productId: 'ux-library' },
+];
 
 /* ─── Architecture diagram — CSS stack (same pattern as ADAS) ────────────── */
 export function ArchDiagram() {
@@ -92,7 +100,7 @@ function CapabilityGrid({ capabilities }) {
 }
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function TAIAOverview() {
+export default function TAIAOverview({ onNavigate }) {
   const { t } = useTranslation('ai');
 
   const scopeRowKeys = ['wakeWord', 'stt', 'tts', 'intent', 'voiceResp', 'uiCmd', 'brand', 'nonNav', 'domain'];
@@ -113,7 +121,7 @@ export default function TAIAOverview() {
       <div className="quick-answer">
         {t('overview.intro')}
       </div>
-
+      <ApiLinks items={TAIA_OVERVIEW_APIS} onNavigate={onNavigate} />
       <div className="zone">
         <h2 className="sh" id="ai-overview">{t('overview.sections.overview')}</h2>
         <p className="body">{t('overview.overviewBody')}</p>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────── */
 function StepCard({ number, title, children }) {
@@ -52,7 +53,13 @@ function RequirementRow({ req, value }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    7. PROJECT SETUP
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKProjectSetup() {
+const PROJECT_SETUP_APIS = [
+  { name: 'Initializing the SDK',   type: 'Android SDK', description: 'SDK initialisation with API key and core services — the step that follows project dependency setup.',         pageId: 'navsdk-sdk-init',          productId: 'navsdk' },
+  { name: 'Your First Map',         type: 'Android SDK', description: 'Minimal map display example to validate that dependencies are correctly configured.',                          pageId: 'navsdk-first-map',         productId: 'navsdk' },
+  { name: 'Migrate to SDK v2',      type: 'Android SDK', description: 'Migration guide for projects upgrading from NavSDK v1 — dependency and API changes.',                          pageId: 'navsdk-migration',         productId: 'navsdk' },
+];
+
+export function NavSDKProjectSetup({ onNavigate }) {
   const [platform, setPlatform] = useState('android');
 
   return (
@@ -65,6 +72,7 @@ export function NavSDKProjectSetup() {
       <div className="quick-answer">
         Add the TomTom NavSDK to your Android or iOS project in a few steps. Configure your Gradle or SPM dependencies, set the API key, and meet the minimum platform requirements.
       </div>
+      <ApiLinks items={PROJECT_SETUP_APIS} onNavigate={onNavigate} />
 
       {/* Minimum requirements */}
       <div className="zone">
@@ -252,7 +260,13 @@ export function NavSDKProjectSetup() {
 /* ═══════════════════════════════════════════════════════════════════════════
    8. SDK INITIALISATION
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKSdkInit() {
+const SDK_INIT_APIS = [
+  { name: 'Project Setup',          type: 'Android SDK', description: 'Gradle/SPM dependency configuration that makes the SDK available for initialisation.',                         pageId: 'navsdk-project-setup',      productId: 'navsdk' },
+  { name: 'Your First Map',         type: 'Android SDK', description: 'First map display that uses the TomTomServicesFactory created during initialisation.',                         pageId: 'navsdk-first-map',          productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider setup that follows SDK initialisation and permissions grant.',                                pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+];
+
+export function NavSDKSdkInit({ onNavigate }) {
   const [tab, setTab] = useState('android');
 
   return (
@@ -265,6 +279,7 @@ export function NavSDKSdkInit() {
       <div className="quick-answer">
         Initialise the TomTom NavSDK with your API key at app startup, request location permissions, and prepare the core SDK services before displaying a map.
       </div>
+      <ApiLinks items={SDK_INIT_APIS} onNavigate={onNavigate} />
 
       {/* Android init */}
       <div className="zone">
@@ -465,7 +480,14 @@ function FirstMapPreview() {
   );
 }
 
-export function NavSDKFirstMap() {
+const FIRST_MAP_APIS = [
+  { name: 'Initializing the SDK',   type: 'Android SDK', description: 'SDK initialisation that creates the TomTomServicesFactory instance used here.',                               pageId: 'navsdk-sdk-init',          productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Composable map component — the full Compose API following this minimal quickstart.',                           pageId: 'navsdk-map-compose',       productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'Location puck and position provider configured after the first map is displayed.',                             pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Map Styles',             type: 'Android SDK', description: 'Customise the map style, layer visibility, and colour scheme beyond the default appearance.',                  pageId: 'navsdk-map-styles',        productId: 'navsdk' },
+];
+
+export function NavSDKFirstMap({ onNavigate }) {
   const [platform, setPlatform] = useState('android');
   const [composeOrViews, setComposeOrViews] = useState('compose');
 
@@ -479,6 +501,7 @@ export function NavSDKFirstMap() {
       <div className="quick-answer">
         A complete minimal example to display a TomTom map in your app. After project setup and SDK initialisation, showing a map takes fewer than 20 lines of code.
       </div>
+      <ApiLinks items={FIRST_MAP_APIS} onNavigate={onNavigate} />
 
       {/* Preview */}
       <div className="zone">
@@ -673,7 +696,13 @@ export function NavSDKFirstMap() {
 /* ═══════════════════════════════════════════════════════════════════════════
    LOCALIZATION
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKLocalization() {
+const LOCALIZATION_APIS = [
+  { name: 'Your First Map',         type: 'Android SDK', description: 'Map display where locale is applied — language affects map labels and address formatting.',                    pageId: 'navsdk-first-map',         productId: 'navsdk' },
+  { name: 'Voice Instructions',     type: 'Android SDK', description: 'Voice instruction locale that must match the language configured in the SDK localisation settings.',           pageId: 'navsdk-nav-voice',         productId: 'navsdk' },
+  { name: 'Initializing the SDK',   type: 'Android SDK', description: 'SDK initialisation where the locale is set on TomTomServicesFactory.',                                        pageId: 'navsdk-sdk-init',          productId: 'navsdk' },
+];
+
+export function NavSDKLocalization({ onNavigate }) {
   const [selectedLang, setSelectedLang] = useState('en');
   const LANGS = [
     { code: 'en', label: 'English', bcp47: 'en-US' },
@@ -706,6 +735,7 @@ export function NavSDKLocalization() {
         Configure map labels, guidance instructions, and address formatting to match the user's locale.
         The SDK supports 40+ languages for voice instructions and map display.
       </p>
+      <ApiLinks items={LOCALIZATION_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="loc-demo">Language preview</h2>
@@ -795,7 +825,14 @@ tomTomNavigation.start(
 /* ═══════════════════════════════════════════════════════════════════════════
    MIGRATION (SDK v1 → v2)
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKMigration() {
+const MIGRATION_APIS = [
+  { name: 'Project Setup',          type: 'Android SDK', description: 'Dependency configuration updated to v2 BOM — the first step in the migration process.',                        pageId: 'navsdk-project-setup',     productId: 'navsdk' },
+  { name: 'Initializing the SDK',   type: 'Android SDK', description: 'v2 initialisation using OnlineTomTomServicesFactory — replaces the v1 separate factory pattern.',              pageId: 'navsdk-sdk-init',          productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Compose-first map API introduced in v2 that replaces the XML-based MapView.',                                  pageId: 'navsdk-map-compose',       productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'v2 TomTomNavigation API that replaces the v1 NavigationFragment approach.',                                    pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+];
+
+export function NavSDKMigration({ onNavigate }) {
   const [activeTab, setActiveTab] = useState('deps');
   const TABS = [
     { id: 'deps', label: 'Dependencies' },
@@ -877,7 +914,7 @@ navigation.start(StartNavigationOptions(route = route))`,
         SDK v2 introduces a unified BOM, a single <code>OnlineTomTomServicesFactory</code>, and a
         cleaner Compose-first map API. Most migration changes are mechanical find-and-replace operations.
       </p>
-
+      <ApiLinks items={MIGRATION_APIS} onNavigate={onNavigate} />
       <Callout type="warn">
         SDK v1 reaches end-of-life support in Q4 2025. New projects should start with v2. Existing v1 integrations should migrate before this date to continue receiving security and map updates.
       </Callout>

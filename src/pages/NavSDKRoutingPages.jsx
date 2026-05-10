@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared map mock shell ──────────────────────────────────────────────── */
 function MapShell({ height = 280, children }) {
@@ -155,6 +156,13 @@ function RoutingQuickstartDemo() {
   );
 }
 
+const ROUTING_QUICKSTART_APIS = [
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Travel modes, avoidances, and timing options built on top of this RoutingApi initialisation.',                 pageId: 'navsdk-route-planning',      productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that supplies the origin GeoCoordinate for route requests.',                                  pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Turn-by-turn navigation that consumes the Route object returned by RoutingApi.',                               pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
+  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Composable map that renders the calculated route polyline.',                                                    pageId: 'navsdk-map-compose',         productId: 'navsdk' },
+];
+
 export function NavSDKRoutingQuickstart({ onNavigate }) {
   return (
     <div className="page">
@@ -166,6 +174,7 @@ export function NavSDKRoutingQuickstart({ onNavigate }) {
         Set up <code>RoutingApi</code>, build an <code>ItineraryPlanningOptions</code> object with origin and
         destination, and request your first route in a few lines of code.
       </p>
+      <ApiLinks items={ROUTING_QUICKSTART_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="rqs-overview">Overview</h2>
@@ -342,6 +351,14 @@ function RoutePlanningDemo() {
   );
 }
 
+const ROUTE_PLANNING_APIS = [
+  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi setup required before planning options take effect.',                                               pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Alternative Routes',     type: 'Android SDK', description: 'Request multiple scored alternatives alongside the primary planned route.',                                     pageId: 'navsdk-route-alternatives', productId: 'navsdk' },
+  { name: 'Route Sections',         type: 'Android SDK', description: 'Break the planned route into typed segments — traffic, tolls, ferries — for detailed cost display.',           pageId: 'navsdk-route-sections',     productId: 'navsdk' },
+  { name: 'Vehicle Profile',        type: 'Android SDK', description: 'Set truck dimensions, weight, and EV parameters used in route planning calculations.',                         pageId: 'navsdk-adv-vehicle',        productId: 'navsdk' },
+  { name: 'EV Routing (UX)',        type: 'Android SDK', description: 'UX Library EV routing page showing how battery range and charging stops are integrated with route planning.',  pageId: 'ev-routing',                productId: 'ux-library' },
+];
+
 export function NavSDKRoutePlanning({ onNavigate }) {
   return (
     <div className="page">
@@ -353,6 +370,7 @@ export function NavSDKRoutePlanning({ onNavigate }) {
         Configure travel mode, avoidance options, traffic consideration, and departure or
         arrival time to plan routes tailored to any vehicle type or journey constraint.
       </p>
+      <ApiLinks items={ROUTE_PLANNING_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="rp-demo">Interactive demo</h2>
@@ -534,6 +552,13 @@ routingApi.planRoute(options) { result in
     }
 }`;
 
+const ROUTE_ALTERNATIVES_APIS = [
+  { name: 'Route Planning',         type: 'Android SDK', description: 'RoutePlanningOptions where maxAlternatives is configured alongside travel mode and avoidances.',               pageId: 'navsdk-route-planning',     productId: 'navsdk' },
+  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi initialisation required before requesting alternatives.',                                            pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Navigation Replanning',  type: 'Android SDK', description: 'Automatic rerouting that selects among alternatives when the driver deviates from the planned route.',         pageId: 'navsdk-nav-replanning',     productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Start guidance on the selected alternative route.',                                                             pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+];
+
 export function NavSDKRouteAlternatives({ onNavigate }) {
   return (
     <div className="page">
@@ -545,6 +570,7 @@ export function NavSDKRouteAlternatives({ onNavigate }) {
         Request up to three route alternatives in a single API call. Each alternative is
         independently scored by travel time, distance, and eco-efficiency.
       </p>
+      <ApiLinks items={ROUTE_ALTERNATIVES_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="ra-demo">Interactive demo</h2>
@@ -709,6 +735,12 @@ const SW_SECTIONS = `routingApi.planRoute(options) { result in
     }
 }`;
 
+const ROUTE_SECTIONS_APIS = [
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object whose sections array is iterated — planning options determine which section types are included.',  pageId: 'navsdk-route-planning',     productId: 'navsdk' },
+  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi setup needed to request a route and access its sections.',                                           pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Turn-by-Turn Navigation',type: 'Android SDK', description: 'Navigation engine that uses section data for restriction warnings and toll notifications during guidance.',    pageId: 'navsdk-nav-turn-by-turn',   productId: 'navsdk' },
+];
+
 export function NavSDKRouteSections({ onNavigate }) {
   return (
     <div className="page">
@@ -720,6 +752,7 @@ export function NavSDKRouteSections({ onNavigate }) {
         Break a route into typed segments — traffic delays, toll roads, motorways, tunnels, ferries,
         and border crossings — for detailed cost breakdowns and restriction warnings.
       </p>
+      <ApiLinks items={ROUTE_SECTIONS_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="rs-demo">Interactive demo</h2>
@@ -892,6 +925,12 @@ function ImportExportDemo() {
   );
 }
 
+const ROUTE_IMPORT_EXPORT_APIS = [
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object that is serialised/deserialised — waypoints and options are preserved in the exported format.',   pageId: 'navsdk-route-planning',     productId: 'navsdk' },
+  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi initialisation needed for re-planning after waypoint modification.',                                 pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Alternative Routes',     type: 'Android SDK', description: 'Alternatives are also serialisable — useful for persisting route comparison sessions.',                         pageId: 'navsdk-route-alternatives', productId: 'navsdk' },
+];
+
 export function NavSDKRouteImportExport({ onNavigate }) {
   return (
     <div className="page">
@@ -903,6 +942,7 @@ export function NavSDKRouteImportExport({ onNavigate }) {
         Serialise routes to JSON or GeoJSON for persistence and sharing, import GPX tracks, and
         modify active routes by inserting or removing waypoints on the fly.
       </p>
+      <ApiLinks items={ROUTE_IMPORT_EXPORT_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="ie-demo">Interactive demo</h2>

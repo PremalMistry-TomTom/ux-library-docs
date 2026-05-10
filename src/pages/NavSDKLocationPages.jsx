@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared map background ─────────────────────────────────────────────────── */
 function MapBg({ children, height = 280 }) {
@@ -149,7 +150,13 @@ func locationProvider(_ provider: TomTomLocationProvider,
     mapView.center(on: location.coordinate)
 }`;
 
-export function NavSDKLocationQuickstart() {
+const LOCATION_APIS = [
+  { name: 'Displaying Your First Map',  type: 'Android SDK', description: 'Show the user location dot on the map — requires LocationProvider configured here.',                   pageId: 'navsdk-first-map',       productId: 'navsdk' },
+  { name: 'Map Display for Compose',    type: 'Android SDK', description: 'Composable map that renders the location indicator using the configured LocationProvider.',              pageId: 'navsdk-map-compose',     productId: 'navsdk' },
+  { name: 'Map-Matched Location',       type: 'Android SDK', description: 'MapMatchedLocationProvider snaps position to the road network for improved navigation accuracy.',        pageId: 'navsdk-adv-map-matched', productId: 'navsdk' },
+  { name: 'Simulation Location',        type: 'Android SDK', description: 'Simulate GPS movement along a route to test navigation without physical travel.',                         pageId: 'navsdk-adv-simulation',  productId: 'navsdk' },
+];
+export function NavSDKLocationQuickstart({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -160,6 +167,8 @@ export function NavSDKLocationQuickstart() {
         Set up the LocationEngine (Android) or TomTomLocationProvider (iOS) to stream real-time
         device position into your navigation application.
       </p>
+
+      <ApiLinks items={LOCATION_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="location-overview">Overview</h2>
@@ -341,7 +350,13 @@ searchAPI.search(query: query) { result in
     }
 }`;
 
-export function NavSDKSearchQuickstart() {
+const SEARCH_QUICKSTART_APIS = [
+  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search for POIs, addresses, and geography — the primary search operation built on this quickstart.',   pageId: 'navsdk-search-find',        productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'Configure the LocationProvider that powers position-biased search results.',                                   pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Search Engine (UX)',     type: 'Android SDK', description: 'UX Library search engine component that consumes results from this SDK initialisation.',                        pageId: 'search-engine',              productId: 'ux-library' },
+];
+
+export function NavSDKSearchQuickstart({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -352,6 +367,7 @@ export function NavSDKSearchQuickstart() {
         Initialize the TomTom Search API on Android or iOS and run your first fuzzy search
         query in minutes — both platforms use the same underlying REST endpoint.
       </p>
+      <ApiLinks items={SEARCH_QUICKSTART_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="search-overview">Overview</h2>
@@ -547,7 +563,15 @@ searchAPI.search(query: query) { result in
     // top.id, top.type, top.position, top.address, top.poi, top.score
 }`;
 
-export function NavSDKSearchFind() {
+const SEARCH_FIND_APIS = [
+  { name: 'Search Quickstart',      type: 'Android SDK', description: 'SDK initialisation and OnlineSearch.create() needed before fuzzy search is available.',                        pageId: 'navsdk-search-quickstart', productId: 'navsdk' },
+  { name: 'Reverse Geocoding',      type: 'Android SDK', description: 'Convert a tapped coordinate back into a structured address using the same SearchApi instance.',                pageId: 'navsdk-search-reverse',    productId: 'navsdk' },
+  { name: 'Bring Your Own Data',    type: 'Android SDK', description: 'Blend custom POI records into fuzzy search results via SearchIndexDataProvider.',                               pageId: 'navsdk-search-byod',       productId: 'navsdk' },
+  { name: 'Search Engine (UX)',     type: 'Android SDK', description: 'UX Library component that wraps fuzzy search results in an interactive list UI.',                               pageId: 'search-engine',            productId: 'ux-library' },
+  { name: 'Map Markers',            type: 'Android SDK', description: 'Pin fuzzy search results on the map using ImageMarker or ClusterLayer.',                                        pageId: 'navsdk-map-markers',       productId: 'navsdk' },
+];
+
+export function NavSDKSearchFind({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -558,6 +582,7 @@ export function NavSDKSearchFind() {
         Fuzzy search matches free-text queries against POIs, addresses, and geography —
         returning ranked results with coordinates, structured address, and place metadata.
       </p>
+      <ApiLinks items={SEARCH_FIND_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="fuzzy-options">FuzzySearchOptions</h2>
@@ -765,7 +790,14 @@ searchAPI.searchEVChargingStations(options: options) { result in
     }
 }`;
 
-export function NavSDKSearchEv() {
+const SEARCH_EV_APIS = [
+  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search fundmentals — the same SearchApi instance powers EV station search.',                             pageId: 'navsdk-search-find',        productId: 'navsdk' },
+  { name: 'EV Charging Search (UX)',type: 'Android SDK', description: 'UX Library charging search page that renders station cards from this SDK call.',                               pageId: 'ev-charging-search',        productId: 'ux-library' },
+  { name: 'EV Battery & Range (UX)',type: 'Android SDK', description: 'Battery state and range estimate that determines which stations are reachable.',                               pageId: 'ev-battery',                productId: 'ux-library' },
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Plan a route with an EV charging stop inserted at the station found by this search.',                          pageId: 'navsdk-route-planning',     productId: 'navsdk' },
+];
+
+export function NavSDKSearchEv({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -776,6 +808,7 @@ export function NavSDKSearchEv() {
         Find nearby EV charging stations with real-time availability, filtered by connector
         type and minimum charge power.
       </p>
+      <ApiLinks items={SEARCH_EV_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="ev-options">EVChargingStationsSearchOptions</h2>
@@ -959,7 +992,13 @@ searchAPI.reverseGeocode(query: query) { result in
     }
 }`;
 
-export function NavSDKSearchReverse() {
+const SEARCH_REVERSE_APIS = [
+  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search using the same SearchApi instance — reverse geocoding and text search share one initialisation.',  pageId: 'navsdk-search-find',         productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that supplies the vehicle\'s GeoCoordinate for reverse geocoding pin positions.',              pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Search Quickstart',      type: 'Android SDK', description: 'SDK initialisation with OnlineSearch.create() — required before reverse geocoding is available.',              pageId: 'navsdk-search-quickstart',   productId: 'navsdk' },
+];
+
+export function NavSDKSearchReverse({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -970,6 +1009,7 @@ export function NavSDKSearchReverse() {
         Convert a latitude/longitude coordinate into a structured address — useful for
         "drop a pin" workflows, logging trip waypoints, or labeling a user's saved location.
       </p>
+      <ApiLinks items={SEARCH_REVERSE_APIS} onNavigate={onNavigate} />
 
       <div className="zone">
         <h2 className="sh" id="reverse-options">ReverseGeocoderOptions</h2>
@@ -1090,7 +1130,13 @@ searchAPI.search(query: query) { result in
     updateUI(with: merged)
 }`;
 
-export function NavSDKSearchByod() {
+const SEARCH_BYOD_APIS = [
+  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search that blends BYOD records — the same FuzzySearchOptions call surfaces both cloud and custom results.',pageId: 'navsdk-search-find',       productId: 'navsdk' },
+  { name: 'Search Quickstart',      type: 'Android SDK', description: 'OnlineSearch.create() must be called with the SearchIndexDataProvider before BYOD records are available.',        pageId: 'navsdk-search-quickstart', productId: 'navsdk' },
+  { name: 'Search Engine (UX)',     type: 'Android SDK', description: 'UX Library search component that renders blended BYOD results alongside TomTom cloud results.',                   pageId: 'search-engine',            productId: 'ux-library' },
+];
+
+export function NavSDKSearchByod({ onNavigate }) {
   const [tab, setTab] = useState('architecture');
 
   return (
@@ -1103,6 +1149,7 @@ export function NavSDKSearchByod() {
         Blend custom POI data — dealer locations, venue directories, internal points of
         interest — directly into TomTom fuzzy search results on Android.
       </p>
+      <ApiLinks items={SEARCH_BYOD_APIS} onNavigate={onNavigate} />
 
       <Callout type="warn">
         Full BYOD support via <strong>SearchIndexDataProvider</strong> is Android-only. iOS does

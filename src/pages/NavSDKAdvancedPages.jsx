@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared dark map canvas ─────────────────────────────────────────────── */
 function MapCanvas({ height = 260, children }) {
@@ -28,7 +29,14 @@ function MapCanvas({ height = 260, children }) {
 /* ═══════════════════════════════════════════════════════════════════════════
    8. SIMULATION
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKAdvSimulation() {
+const ADV_SIMULATION_APIS = [
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that SimulatedLocationEngine replaces for test-drive and QA workflows.',                      pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that receives position updates from the simulated engine.',                                 pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
+  { name: 'Map Camera',             type: 'Android SDK', description: 'Camera that follows the simulated vehicle position during playback.',                                           pageId: 'navsdk-map-camera',          productId: 'navsdk' },
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object consumed by SimulatedLocationEngine to generate GPS positions along the path.',                   pageId: 'navsdk-route-planning',      productId: 'navsdk' },
+];
+
+export function NavSDKAdvSimulation({ onNavigate }) {
   const [playing, setPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [progress, setProgress] = useState(0); // 0–1 along route
@@ -72,6 +80,7 @@ export function NavSDKAdvSimulation() {
         Drive a simulated GPS feed along a planned route using <code>SimulatedLocationEngine</code>.
         Configure speed multiplier and update interval for demo, testing, and QA workflows.
       </p>
+      <ApiLinks items={ADV_SIMULATION_APIS} onNavigate={onNavigate} />
 
       {/* ── Demo ── */}
       <div className="zone">
@@ -194,7 +203,13 @@ engine.stop()`}</pre>
 /* ═══════════════════════════════════════════════════════════════════════════
    9. MAP-MATCHED LOCATION
    ═══════════════════════════════════════════════════════════════════════════ */
-export function NavSDKAdvMapMatched() {
+const ADV_MAP_MATCHED_APIS = [
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'Raw LocationProvider that MapMatchedLocationProvider wraps and enhances with road-snapping.',                  pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that benefits from map-matched position for more accurate guidance.',                        pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
+  { name: 'Free Driving Mode',      type: 'Android SDK', description: 'Free-driving that relies on map-matched position for accurate road-snapped display without a route.',          pageId: 'navsdk-nav-free-driving',    productId: 'navsdk' },
+];
+
+export function NavSDKAdvMapMatched({ onNavigate }) {
   const [showRaw, setShowRaw] = useState(true);
   const [showMatched, setShowMatched] = useState(true);
   const frameRef = useRef(0);
@@ -233,6 +248,7 @@ export function NavSDKAdvMapMatched() {
         eliminates GPS drift. The SDK applies a Kalman filter and snaps coordinates to the road graph
         in real time.
       </p>
+      <ApiLinks items={ADV_MAP_MATCHED_APIS} onNavigate={onNavigate} />
 
       {/* ── Demo ── */}
       <div className="zone">
@@ -353,7 +369,13 @@ const LEVEL_COLORS = {
   ERROR:   '#ef4444',
 };
 
-export function NavSDKAdvTelemetry() {
+const ADV_TELEMETRY_APIS = [
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'TomTomNavigation engine whose events are streamed and logged via TelemetryOptions.',                           pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
+  { name: 'AI Configuration (UX)',  type: 'Android SDK', description: 'TAIA SDK configuration whose request/response events can be routed to the telemetry stream.',                 pageId: 'ai-config',                  productId: 'ux-library' },
+  { name: 'Vehicle Metadata',       type: 'Android SDK', description: 'Vehicle profile data that is included in telemetry event payloads for fleet analytics.',                       pageId: 'navsdk-adv-vehicle',         productId: 'navsdk' },
+];
+
+export function NavSDKAdvTelemetry({ onNavigate }) {
   const [logLevel, setLogLevel] = useState('DEBUG');
   const [scrolling, setScrolling] = useState(false);
   const [visibleCount, setVisibleCount] = useState(4);
@@ -389,7 +411,7 @@ export function NavSDKAdvTelemetry() {
         Configure <code>TelemetryOptions</code> to control event streaming, log levels, and custom
         analytics callbacks. Android supports full telemetry; iOS provides basic diagnostic logging.
       </p>
-
+      <ApiLinks items={ADV_TELEMETRY_APIS} onNavigate={onNavigate} />
       <Callout type="info">
         Full telemetry event streaming is available on <strong>Android</strong>. On iOS, only
         basic diagnostic logging (<code>LogLevel</code>) is supported — custom analytics event
@@ -512,7 +534,14 @@ telemetryOptions.addEventListener(analyticsReporter)`}</pre>
 const VEHICLE_TYPES = ['CAR', 'TRUCK', 'BUS'];
 const FUEL_TYPES = ['COMBUSTION', 'ELECTRIC', 'HYBRID'];
 
-export function NavSDKAdvVehicle() {
+const ADV_VEHICLE_APIS = [
+  { name: 'Route Planning',         type: 'Android SDK', description: 'RoutePlanningOptions that consumes VehicleProviderOptions — truck dimensions, EV parameters applied here.',   pageId: 'navsdk-route-planning',     productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that uses vehicle metadata for speed profiles and restriction warnings.',                    pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+  { name: 'EV Routing (UX)',        type: 'Android SDK', description: 'UX Library EV routing page that relies on batteryCapacityKwh and consumptionModel from this vehicle profile.',pageId: 'ev-routing',                productId: 'ux-library' },
+  { name: 'EV Battery & Range (UX)',type: 'Android SDK', description: 'Battery state display that uses vehicleType EV and batteryCapacityKwh configured here.',                       pageId: 'ev-battery',                productId: 'ux-library' },
+];
+
+export function NavSDKAdvVehicle({ onNavigate }) {
   const [vehicleType, setVehicleType] = useState('CAR');
   const [fuelType, setFuelType] = useState('COMBUSTION');
   const [width, setWidth] = useState(2.1);
@@ -537,6 +566,7 @@ export function NavSDKAdvVehicle() {
         and fuel type to enable vehicle-specific routing — truck restrictions, bridge limits, height
         clearances, and EV consumption modelling.
       </p>
+      <ApiLinks items={ADV_VEHICLE_APIS} onNavigate={onNavigate} />
 
       {/* ── Interactive configurator ── */}
       <div className="zone">

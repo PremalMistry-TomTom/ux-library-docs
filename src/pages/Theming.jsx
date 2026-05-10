@@ -1,5 +1,12 @@
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
+
+const THEMING_APIS = [
+  { name: 'Design Tokens',          type: 'Android SDK', description: 'Token hierarchy that provides all colour, typography, and radius values overridden by theming.',                pageId: 'design-tokens',            productId: 'ux-library' },
+  { name: 'Map Style (UX)',         type: 'Android SDK', description: 'Map tile style customisation that extends OEM brand theming to the map layer.',                                  pageId: 'map-style',                productId: 'ux-library' },
+  { name: 'Map Styles',             type: 'Android SDK', description: 'NavSDK map style JSON API that applies the branded palette to map tiles.',                                       pageId: 'navsdk-map-styles',        productId: 'navsdk' },
+];
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -68,7 +75,7 @@ const SCOPE = [
 ];
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function Theming() {
+export default function Theming({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
@@ -79,6 +86,7 @@ export default function Theming() {
       <div className="quick-answer">
         Apply your OEM brand to UX Library — colours, typography, radius, assets, and fonts — using Tokens Studio in Figma and the Android RRO mechanism.
       </div>
+      <ApiLinks items={THEMING_APIS} onNavigate={onNavigate} />
 
       {/* What you can theme */}
       <div className="zone">

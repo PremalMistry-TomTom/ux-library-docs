@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
+import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared Android-only banner ─────────────────────────────────────────── */
 function AndroidOnlyBanner() {
@@ -44,7 +45,15 @@ const HORIZON_ATTRS = [
   { id: 'roadClass', label: 'Road class', unit: '',     value: 'MOTORWAY', desc: 'FRC road functional class' },
 ];
 
-export function NavSDKHorizonData() {
+const HORIZON_DATA_APIS = [
+  { name: 'Horizon — Safety',       type: 'Android SDK', description: 'Speed limit change events delivered by the same HorizonEngine instance configured here.',                     pageId: 'navsdk-horizon-safety',    productId: 'navsdk' },
+  { name: 'Horizon — Hazards',      type: 'Android SDK', description: 'Accident and road-works notifications from HorizonHazardObserver — same engine, different observer.',         pageId: 'navsdk-horizon-hazards',   productId: 'navsdk' },
+  { name: 'Horizon — Traffic',      type: 'Android SDK', description: 'FlowObstacle data for traffic density ahead, also delivered via HorizonEngine.',                              pageId: 'navsdk-horizon-traffic',   productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Active navigation session required — HorizonEngine only operates when a route is set.',                       pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+  { name: 'Horizon Panel (UX)',     type: 'Android SDK', description: 'UX Library horizon panel that visualises road properties from HorizonElementProperties.',                     pageId: 'horizon-panel',            productId: 'ux-library' },
+];
+
+export function NavSDKHorizonData({ onNavigate }) {
   const [activeAttr, setActiveAttr] = useState('curvature');
   const [distance, setDistance] = useState(500);
 
@@ -61,7 +70,7 @@ export function NavSDKHorizonData() {
         <code> HorizonObserver</code> to receive <code>HorizonElementProperties</code> including
         curvature, slope, speed limits, lane count, and road class for the path ahead.
       </p>
-
+      <ApiLinks items={HORIZON_DATA_APIS} onNavigate={onNavigate} />
       <AndroidOnlyBanner />
 
       {/* ── Demo ── */}
@@ -211,7 +220,14 @@ const SIGN_TYPES = [
   { id: 'SCHOOL_ZONE', label: 'School zone', color: '#f97316', desc: 'Active school-zone reduced limit' },
 ];
 
-export function NavSDKHorizonSafety() {
+const HORIZON_SAFETY_APIS = [
+  { name: 'Retrieving Horizon Data',type: 'Android SDK', description: 'HorizonEngine configuration where the speed limit observer is registered.',                                    pageId: 'navsdk-horizon-data',      productId: 'navsdk' },
+  { name: 'Horizon — Hazards',      type: 'Android SDK', description: 'Hazard observer on the same engine — pairs with safety locations for a complete driver-alert system.',        pageId: 'navsdk-horizon-hazards',   productId: 'navsdk' },
+  { name: 'Safety Locations (UX)',  type: 'Android SDK', description: 'UX Library safety display that renders speed camera and danger zone warnings from this observer.',             pageId: 'safety-locations',         productId: 'ux-library' },
+  { name: 'ADAS Integration (UX)',  type: 'Android SDK', description: 'ADAS panel that uses speed limit change events for Intelligent Speed Assistance.',                             pageId: 'adas',                     productId: 'ux-library' },
+];
+
+export function NavSDKHorizonSafety({ onNavigate }) {
   const [speedLimit, setSpeedLimit] = useState(90);
   const [signType, setSignType] = useState('SIGN');
   const [countdown, setCountdown] = useState(null);
@@ -244,7 +260,7 @@ export function NavSDKHorizonSafety() {
         Subscribe to horizon-based speed limit change events for Intelligent Speed Assistance (ISA).
         Receive warnings <em>before</em> the speed limit changes — not at the sign.
       </p>
-
+      <ApiLinks items={HORIZON_SAFETY_APIS} onNavigate={onNavigate} />
       <AndroidOnlyBanner />
 
       {/* ── Demo ── */}
@@ -371,7 +387,14 @@ const HAZARD_TYPES = [
   { id: 'TRAFFIC_JAM',  label: 'Traffic jam', icon: '🚗', color: '#a78bfa' },
 ];
 
-export function NavSDKHorizonHazards() {
+const HORIZON_HAZARDS_APIS = [
+  { name: 'Retrieving Horizon Data',type: 'Android SDK', description: 'HorizonEngine setup where HorizonHazardObserver is registered alongside other horizon observers.',             pageId: 'navsdk-horizon-data',      productId: 'navsdk' },
+  { name: 'Horizon — Safety',       type: 'Android SDK', description: 'Speed limit observer that complements hazard alerts for a full ahead-of-road awareness system.',              pageId: 'navsdk-horizon-safety',    productId: 'navsdk' },
+  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Active navigation session required — hazard observer only fires when guidance is active.',                     pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
+  { name: 'ADAS Integration (UX)',  type: 'Android SDK', description: 'UX Library ADAS panel that visualises hazard alerts from this HorizonHazardObserver.',                        pageId: 'adas',                     productId: 'ux-library' },
+];
+
+export function NavSDKHorizonHazards({ onNavigate }) {
   const [hazardType, setHazardType] = useState('ACCIDENT');
   const [threshold, setThreshold] = useState(1000);
   const [hazardDist, setHazardDist] = useState(1200);
@@ -404,7 +427,7 @@ export function NavSDKHorizonHazards() {
         Use <code>HorizonHazardObserver</code> to receive distance-ahead notifications for accidents,
         road works, obstacles, and traffic jams — configurable threshold per hazard type.
       </p>
-
+      <ApiLinks items={HORIZON_HAZARDS_APIS} onNavigate={onNavigate} />
       <AndroidOnlyBanner />
 
       {/* ── Demo ── */}
@@ -526,7 +549,14 @@ const DELAY_LEVELS = [
   { level: 4, label: 'Standstill',  color: '#7f1d1d', delayS: 600 },
 ];
 
-export function NavSDKHorizonTraffic() {
+const HORIZON_TRAFFIC_APIS = [
+  { name: 'Retrieving Horizon Data',type: 'Android SDK', description: 'HorizonEngine setup where FlowObstacle observer is registered alongside road attribute observers.',            pageId: 'navsdk-horizon-data',      productId: 'navsdk' },
+  { name: 'Horizon — Hazards',      type: 'Android SDK', description: 'Hazard observer that pairs with traffic flow data for a complete ahead-of-road awareness feed.',              pageId: 'navsdk-horizon-hazards',   productId: 'navsdk' },
+  { name: 'Traffic-Aware Navigation',type:'Android SDK', description: 'Navigation-layer traffic rerouting that complements horizon traffic preview.',                                 pageId: 'navsdk-nav-traffic',       productId: 'navsdk' },
+  { name: 'Traffic (UX)',           type: 'Android SDK', description: 'UX Library traffic page showing how horizon traffic data feeds into the map and navigation overlay.',         pageId: 'traffic',                  productId: 'ux-library' },
+];
+
+export function NavSDKHorizonTraffic({ onNavigate }) {
   const [selectedLevel, setSelectedLevel] = useState(2);
 
   const segment = DELAY_LEVELS.find(d => d.level === selectedLevel);
@@ -542,7 +572,7 @@ export function NavSDKHorizonTraffic() {
         <code> FlowObstacle</code> data with delay seconds and magnitude to anticipate slowdowns
         before entering congestion.
       </p>
-
+      <ApiLinks items={HORIZON_TRAFFIC_APIS} onNavigate={onNavigate} />
       <AndroidOnlyBanner />
 
       {/* ── Demo ── */}
