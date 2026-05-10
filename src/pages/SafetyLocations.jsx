@@ -144,7 +144,7 @@ function IconOverlay({ type, visible }) {
 }
 
 /* ─── Visibility configurator ───────────────────────────────── */
-function VisibilityConfigurator() {
+export function VisibilityConfigurator() {
   const [hidden, setHidden] = useState(new Set());
 
   function toggle(id) {
@@ -216,7 +216,7 @@ function VisibilityConfigurator() {
 }
 
 /* ─── Zone diagram ──────────────────────────────────────────── */
-function ZoneDiagram() {
+export function ZoneDiagram() {
   return (
     <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', margin: '24px 0' }}>
       <MapBase>
@@ -262,7 +262,7 @@ function ZoneDiagram() {
 }
 
 /* ─── Style customisation ───────────────────────────────────── */
-function StyleTabs() {
+export function StyleTabs() {
   const [tab, setTab] = useState(0);
   const tabs = [
     {

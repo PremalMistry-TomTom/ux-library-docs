@@ -640,3 +640,37 @@ export default function EVBattery({ onNavigate }) {
     </div>
   );
 }
+
+export function EVBatteryDemo() {
+  const [cls, setCls] = useState('family');
+  return (
+    <div style={{ padding: 20, background: 'var(--surface)', borderRadius: 14, border: '1px solid var(--border)' }}>
+      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text)', marginBottom: 16 }}>Vehicle Class Preset</div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
+        {[
+          { id: 'compact', label: 'Compact EV', range: '38 kWh · 250 km' },
+          { id: 'family',  label: 'Family EV',  range: '77 kWh · 500 km' },
+          { id: 'suv',     label: 'SUV EV',     range: '100 kWh · 580 km' },
+          { id: 'truck',   label: 'EV Truck',   range: '135 kWh · 480 km' },
+        ].map(c => (
+          <button key={c.id} onClick={() => setCls(c.id)} style={{
+            padding: '8px 16px', borderRadius: 10, cursor: 'pointer', fontSize: '0.8125rem',
+            background: cls === c.id ? '#22c55e' : 'var(--bg)',
+            color: cls === c.id ? '#fff' : 'var(--mid)',
+            border: `1px solid ${cls === c.id ? '#22c55e' : 'var(--border)'}`,
+            fontWeight: cls === c.id ? 700 : 400,
+          }}>
+            <div>{c.label}</div>
+            <div style={{ fontSize: '0.6875rem', opacity: 0.75, marginTop: 2 }}>{c.range}</div>
+          </button>
+        ))}
+      </div>
+      <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRadius: 8, border: '1px solid var(--border)', fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--mid)' }}>
+        <span style={{ color: '#3b82f6' }}>VehicleOptions.Builder</span>{'()'}
+        <br />{'  .'}<span style={{ color: '#3b82f6' }}>batteryCapacityKwh</span>{'('}<span style={{ color: '#22c55e' }}>{cls === 'compact' ? '38.0' : cls === 'family' ? '77.4' : cls === 'suv' ? '100.0' : '135.0'}</span>{')'}
+        <br />{'  .'}<span style={{ color: '#3b82f6' }}>maxChargeRateKw</span>{'('}<span style={{ color: '#22c55e' }}>{cls === 'compact' ? '100' : cls === 'family' ? '250' : cls === 'suv' ? '300' : '350'}</span>{')'}
+        <br />{'  .'}<span style={{ color: '#3b82f6' }}>build</span>{'()'}
+      </div>
+    </div>
+  );
+}

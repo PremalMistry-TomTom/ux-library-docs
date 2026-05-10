@@ -19,7 +19,7 @@ const SOC_STATES = {
 };
 
 /* ─── SoC indicator strip mock ───────────────────────────────────────────────── */
-function SoCStrip({ state }) {
+export function SoCStrip({ state }) {
   const s = SOC_STATES[state];
   return (
     <div style={{ background: '#0f1117', borderRadius: 20, padding: '10px 14px', border: '1px solid #21262d', width: 280 }}>
@@ -58,7 +58,7 @@ function SoCStrip({ state }) {
 }
 
 /* ─── Range ring (reachable range) mock ──────────────────────────────────────── */
-function RangeRingMock({ state }) {
+export function RangeRingMock({ state }) {
   const s = SOC_STATES[state];
   const rings = { healthy: 0.78, low: 0.28, critical: 0.12 };
   const r = rings[state];
@@ -119,7 +119,7 @@ function RangeRingMock({ state }) {
 }
 
 /* ─── Horizon panel mock with charging stop ───────────────────────────────────── */
-function HorizonMock({ state }) {
+export function HorizonMock({ state }) {
   const s = SOC_STATES[state];
   const hasStop = state !== 'healthy';
   return (

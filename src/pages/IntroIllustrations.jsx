@@ -4259,7 +4259,7 @@ function SectionHeader({ emoji, title, subtitle, color = '#e2001a' }) {
    Page
    ───────────────────────────────────────────────────────────────────────────── */
 
-const THEME_OPTIONS = [
+export const THEME_OPTIONS = [
   {
     id: 'day',
     icon: '☀️',
@@ -4307,7 +4307,7 @@ const THEME_OPTIONS = [
    cadmium / bright / red. Each entry supplies both variant IDs so the
    ThemeBar can render a paired L·D toggle per family.
    ─────────────────────────────────────────────────────────────────────────── */
-const COLOUR_FAMILIES = [
+export const COLOUR_FAMILIES = [
   {
     id: 'indigo',   label: 'Indigo',
     accent: '#00487F',   textOnAccent: '#fff',
@@ -4351,7 +4351,7 @@ const STYLE_OPTIONS = [
   { id: 'detailed', icon: '▦',  label: 'Detailed Wireframe',  desc: 'Rich HTML mockups · themed UI chrome' },
 ];
 
-function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClick }) {
+export function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClick, compact = false }) {
   const activeTheme = THEME_OPTIONS.find(o => o.id === theme) || THEME_OPTIONS[0];
   const activeStyle = STYLE_OPTIONS.find(o => o.id === illoStyle) || STYLE_OPTIONS[0];
   return (
@@ -4365,8 +4365,8 @@ function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClic
       borderBottom: '1px solid var(--border)',
     }}>
 
-      {/* ── Row 1: Style selector ── */}
-      <div style={{
+      {/* ── Row 1: Style selector — hidden when compact ── */}
+      {!compact && <div style={{
         display: 'flex',
         alignItems: 'center',
         gap: 10,
@@ -4424,7 +4424,7 @@ function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClic
           </svg>
           Figma Plugin
         </button>
-      </div>
+      </div>}
 
       {/* ── Row 2: Palette picker — system themes ── */}
       <div style={{

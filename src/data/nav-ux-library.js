@@ -93,7 +93,7 @@ export const UX_LIBRARY_NAV = [
     label: 'Plumbing', key: 'plumbing', type: 'group', defaultOpen: true, plumbing: true,
     items: [
       { id: 'typography',           label: 'Typography system' },
-      { id: 'screenshot-assets',    label: 'Screenshot assets & states' },
+      { id: 'screenshot-assets',    label: 'Interactive demos' },
       { id: 'intro-illustrations',  label: 'Intro hero illustrations' },
       { id: 'style-samples',        label: '⚡ Style samples (new)' },
       { id: 'content-spacing',      label: 'Content spacing' },

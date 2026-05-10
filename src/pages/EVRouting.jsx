@@ -37,7 +37,7 @@ function SoCBadge({ pct }) {
   );
 }
 
-function TripTimeline() {
+export function TripTimeline() {
   const Mc = { bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950', amber: '#d29922' };
 
   const totalKm = TRIP.legs.filter(l => l.type === 'leg').reduce((s, l) => s + l.km, 0);
@@ -198,7 +198,7 @@ function computeStops(minAtStopPct, minAtDestPct) {
 
 const STATION_NAMES = ['Ionity Reims', 'Fastned Lyon', 'Ionity Montpellier', 'bp pulse Nîmes', 'Electra Marseille'];
 
-function StopStrategyCalculator({ t }) {
+export function StopStrategyCalculator({ t }) {
   const [minStop, setMinStop] = useState(15);
   const [minDest, setMinDest] = useState(15);
 

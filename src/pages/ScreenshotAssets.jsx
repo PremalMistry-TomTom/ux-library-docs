@@ -1,9 +1,10 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { useIlloStyle } from '../context/IlloStyleContext';
+import { ThemeBar } from './IntroIllustrations';
 
-/* ─── UX Library component imports ──────────────────────────────────────────── */
+/* ─── UX Library — App Customisation imports ─────────────────────────────── */
 import { ZonesDiagram, ResizeDemo, UIStateExplorer }   from './HomeScreenLayout';
 import { ButtonBarConfig, SearchEntryConfig }           from './NavigationControls';
 import { GuidanceMock }                                  from './HorizonPanel';
@@ -11,12 +12,27 @@ import { NIPMock }                                       from './InstructionPane
 import { ETAMock, CONTENT_FIELDS as ETA_FIELDS }         from './ETAPanel';
 import { PositioningDiagram }                            from './RouteBar';
 import { SearchMock, LPPMock, TransitionExplorer, SearchUICustomiser } from './SearchEngine';
+
+/* ─── UX Library — EV Support imports (EVSupport overview) ──────────────── */
 import { ArchDiagram as EVArchDiagram, EVSearchMock, StationDetailMock, RouteMock, PreferencesMock } from './EVSupport';
+
+/* ─── UX Library — EV sub-page imports ──────────────────────────────────── */
+import { MSPBuilder }                                    from './EVChargingSearch';
+import { SoCStrip, RangeRingMock, HorizonMock }          from './EVNavUI';
+import { TripTimeline, StopStrategyCalculator }          from './EVRouting';
+import { EVBatteryDemo }                                 from './EVBattery';
+
+/* ─── UX Library — Map Customisation imports ─────────────────────────────── */
+import { LayerConfigurator, IncidentFilter, RefreshDemo } from './Traffic';
+import { StyleExplorer, TiltDemo, StyleURIDemo }          from './MapStyle';
+import { VisibilityConfigurator, ZoneDiagram, StyleTabs } from './SafetyLocations';
+
+/* ─── UX Library — Other imports ─────────────────────────────────────────── */
 import { ArchDiagram as TAIAArchDiagram }                from './TAIAOverview';
 import { BoundaryDiagram }                               from './SpeechToText';
 import { ClusterDisplay }                                from './Cluster';
 
-/* ─── NavSDK demo imports ────────────────────────────────────────────────────── */
+/* ─── NavSDK demo imports ────────────────────────────────────────────────── */
 import {
   NavQuickstartDemo, TurnByTurnDemo, VoiceInstructionsDemo,
   ReplanningDemo, SafetyDemo, FreeDrivingDemo,
@@ -28,7 +44,7 @@ import {
 import { MapComposeDemo, MapStylesDemo, MapTrafficDemo } from './NavSDKMapPages';
 import { OfflineDownloadDemo }                           from './NavSDKOfflinePages';
 
-/* ─── Status badge ───────────────────────────────────────────────────────────── */
+/* ─── Status badge ───────────────────────────────────────────────────────── */
 const STATUS = {
   mock:    { label: 'SVG mock',           bg: '#fefce8', color: '#92400e', border: '#fde68a' },
   needed:  { label: 'Screenshot needed',  bg: '#fff5f5', color: '#991b1b', border: '#fecaca' },
@@ -48,7 +64,7 @@ function StatusBadge({ status }) {
   );
 }
 
-/* ─── State chips ────────────────────────────────────────────────────────────── */
+/* ─── State chips ────────────────────────────────────────────────────────── */
 function StateChips({ states }) {
   if (!states?.length) return null;
   return (
@@ -64,8 +80,8 @@ function StateChips({ states }) {
   );
 }
 
-/* ─── Preview card — full width ──────────────────────────────────────────────── */
-function PreviewCard({ name, component, desc, states, status, preview, darkBg = '#0b0f14' }) {
+/* ─── Preview card — full width ──────────────────────────────────────────── */
+function PreviewCard({ name, component, desc, states, status, preview, demoBg }) {
   return (
     <div style={{
       border: '1px solid var(--border)',
@@ -76,9 +92,9 @@ function PreviewCard({ name, component, desc, states, status, preview, darkBg = 
       flexDirection: 'column',
       width: '100%',
     }}>
-      {/* Preview area — full width, no maxHeight clamp */}
+      {/* Preview area — full width, theme-driven background */}
       <div style={{
-        background: darkBg,
+        background: demoBg,
         width: '100%',
         overflowY: 'auto',
         overflowX: 'auto',
@@ -86,6 +102,7 @@ function PreviewCard({ name, component, desc, states, status, preview, darkBg = 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'flex-start',
+        transition: 'background 0.2s',
       }}>
         {preview
           ? preview.node
@@ -119,46 +136,11 @@ function PreviewCard({ name, component, desc, states, status, preview, darkBg = 
   );
 }
 
-/* ─── Theme toggle bar ───────────────────────────────────────────────────────── */
-function DemoThemeBar({ theme, onThemeChange }) {
-  const opts = [
-    { id: 'dark',  label: '🌙 Night', bg: '#0b0f14' },
-    { id: 'light', label: '☀️ Day',   bg: '#f0f4f8' },
-  ];
-  return (
-    <div style={{
-      position: 'sticky', top: 0, zIndex: 20,
-      background: 'var(--surface)', borderBottom: '1px solid var(--border)',
-      padding: '10px 0 10px', marginBottom: 24,
-      display: 'flex', alignItems: 'center', gap: 12,
-    }}>
-      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--muted)' }}>Demo background</span>
-      <div style={{ display: 'flex', gap: 6 }}>
-        {opts.map(o => (
-          <button
-            key={o.id}
-            onClick={() => onThemeChange(o.id)}
-            style={{
-              padding: '5px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
-              background: theme === o.id ? 'var(--text)' : 'var(--bg)',
-              color: theme === o.id ? 'var(--bg)' : 'var(--mid)',
-              border: `1px solid ${theme === o.id ? 'var(--text)' : 'var(--border)'}`,
-            }}
-          >{o.label}</button>
-        ))}
-      </div>
-      <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginLeft: 4 }}>
-        Connected to Intro Hero Illustrations style context
-      </span>
-    </div>
-  );
-}
-
-/* ─── Inventory sections ─────────────────────────────────────────────────────── */
+/* ─── Inventory sections ─────────────────────────────────────────────────── */
 
 function buildSections(t) {
   return [
-    /* ═══════════════════════════════════════════ UX Library ═══════════════════ */
+    /* ══════════════════════════════════════ UX Library — App Customisation ══ */
     {
       id: 'home-screen-layout', group: 'Home Screen Layout', navGroup: 'App Customisation',
       desc: 'Application area zones, dynamic resize, and UI state signalling.',
@@ -217,9 +199,40 @@ function buildSections(t) {
         { name: 'Location Preview Panel',       component: 'LPPMock',            desc: 'Bottom sheet showing place details after selecting a search result.', states: ['Default (no route)', 'With route options', 'POI details', 'Address only'], preview: { node: <LPPMock /> } },
       ],
     },
+
+    /* ═══════════════════════════════════════ UX Library — Map Customisation ═ */
     {
-      id: 'ev', group: 'EV Support', navGroup: 'Vehicle Integration',
-      desc: 'Charging station search, LDEVR route planning, and route preferences.',
+      id: 'map-style', group: 'Map Style', navGroup: 'Map Customisation',
+      desc: 'Style switcher, camera tilt/pitch controls, and style URI builder.',
+      screens: [
+        { name: 'Style explorer',  component: 'StyleExplorer', desc: 'Switch between Day, Night, and Custom OEM palette map styles.', states: ['Day', 'Night', 'Custom OEM'], status: 'live', preview: { node: <StyleExplorer /> } },
+        { name: 'Style URI builder', component: 'StyleURIDemo', desc: 'Compose a style URI from host, version, and variant parameters.', states: ['Default', 'Custom host', 'Versioned'], status: 'live', preview: { node: <StyleURIDemo /> } },
+        { name: 'Tilt / pitch demo', component: 'TiltDemo',     desc: 'Camera tilt control from 0° to 60° with live map preview.', states: ['0° (top-down)', '30°', '60° (perspective)'], status: 'live', preview: { node: <TiltDemo /> } },
+      ],
+    },
+    {
+      id: 'traffic', group: 'Traffic', navGroup: 'Map Customisation',
+      desc: 'Traffic flow and incident overlay configuration, filtering, and refresh.',
+      screens: [
+        { name: 'Layer configurator', component: 'LayerConfigurator', desc: 'Toggle flow (RELATIVE / ABSOLUTE) and incident layers independently on the map.', states: ['Flow only', 'Incidents only', 'Flow + incidents', 'All off'], status: 'live', preview: { node: <LayerConfigurator /> } },
+        { name: 'Incident filter',    component: 'IncidentFilter',    desc: 'Filter incident categories — construction, accident, congestion, hazard.', states: ['All categories', 'Accidents only', 'Construction only', 'Custom selection'], status: 'live', preview: { node: <IncidentFilter /> } },
+        { name: 'Refresh demo',       component: 'RefreshDemo',       desc: 'Configure automatic traffic data refresh interval (15 s – 5 min).', states: ['15 s', '30 s', '1 min', '5 min', 'Manual only'], status: 'live', preview: { node: <RefreshDemo /> } },
+      ],
+    },
+    {
+      id: 'safety-locations', group: 'Safety Locations', navGroup: 'Map Customisation',
+      desc: 'Safety location visibility, zone types, and custom iconography.',
+      screens: [
+        { name: 'Visibility configurator', component: 'VisibilityConfigurator', desc: 'Enable / disable speed cameras, danger zones, and school zones independently.', states: ['All visible', 'Cameras only', 'Zones only', 'All hidden'], status: 'live', preview: { node: <VisibilityConfigurator /> } },
+        { name: 'Zone diagram',            component: 'ZoneDiagram',            desc: 'Visual breakdown of all supported zone types and their alert radii.', states: ['Static'], status: 'mock', preview: { node: <ZoneDiagram /> } },
+        { name: 'Style tabs',              component: 'StyleTabs',              desc: 'Switch between icon packs (default, compact, high-visibility) for safety markers.', states: ['Default', 'Compact', 'High-visibility'], status: 'live', preview: { node: <StyleTabs /> } },
+      ],
+    },
+
+    /* ═══════════════════════════════════════ UX Library — EV & Charging ═════ */
+    {
+      id: 'ev-support', group: 'EV Support — Overview', navGroup: 'EV & Charging',
+      desc: 'Architecture overview, charging station search, and LDEVR route planning.',
       screens: [
         { name: 'Architecture diagram',  component: 'EVArchDiagram',    desc: 'Data flow: Vehicle BMS → Vehicle Integration API → NavSDK → LDEVR / EV Search API.', states: ['Static'], preview: { node: <EVArchDiagram /> } },
         { name: 'EV charging search',    component: 'EVSearchMock',     desc: 'Charging station list with speed / payment / services filter chips.', states: ['Speed filter', 'Payment filter', 'Services filter'], preview: { node: <EVSearchMock /> } },
@@ -228,6 +241,39 @@ function buildSections(t) {
         { name: 'Route preferences',     component: 'PreferencesMock',  desc: 'Min battery sliders and avoid-tolls/unpaved toggles.', states: ['Default 15%/15%', 'High threshold 30%/25%', 'Avoid tolls on'], preview: { node: <PreferencesMock /> } },
       ],
     },
+    {
+      id: 'ev-charging-search', group: 'EV Charging Search', navGroup: 'EV & Charging',
+      desc: 'MSP operator builder and charging network preference configuration.',
+      screens: [
+        { name: 'MSP operator builder', component: 'MSPBuilder', desc: 'Interactive configurator for Mobility Service Provider preferences — operator priority, contract type, and connector compatibility.', states: ['Default operators', 'Custom priority order', 'Contract filter active'], status: 'live', preview: { node: <MSPBuilder t={t} /> } },
+      ],
+    },
+    {
+      id: 'ev-routing', group: 'EV Long-Distance Routing', navGroup: 'EV & Charging',
+      desc: 'Trip timeline with charging waypoints and stop strategy optimisation.',
+      screens: [
+        { name: 'Trip timeline',           component: 'TripTimeline',           desc: 'Full trip visualisation with charging stops, SoC levels, and estimated charge times at each stop.', states: ['2-stop route', 'Direct (no stops)', 'Detour charging'], status: 'live', preview: { node: <TripTimeline /> } },
+        { name: 'Stop strategy calculator', component: 'StopStrategyCalculator', desc: 'Interactive planner comparing fast-charge few-stops vs slow-charge many-stops strategies.', states: ['Fastest strategy', 'Fewest stops', 'Cheapest stops', 'Custom'], status: 'live', preview: { node: <StopStrategyCalculator t={t} /> } },
+      ],
+    },
+    {
+      id: 'ev-nav-ui', group: 'EV In-Navigation UI', navGroup: 'EV & Charging',
+      desc: 'State-of-charge strip, range ring, and horizon panel during active EV navigation.',
+      screens: [
+        { name: 'SoC strip',     component: 'SoCStrip',   desc: 'Compact battery state-of-charge bar shown at the bottom of the navigation view.', states: ['High SoC (>60%)', 'Low SoC (<20%)', 'Charging'], status: 'live', preview: { node: <SoCStrip state="driving" /> } },
+        { name: 'Range ring',    component: 'RangeRingMock', desc: 'Circular range overlay on the map showing reachable distance on current charge.', states: ['Normal range', 'Low range warning', 'After charging'], status: 'live', preview: { node: <RangeRingMock state="driving" /> } },
+        { name: 'EV horizon panel', component: 'HorizonMock', desc: 'Horizon panel variant showing upcoming charging stops and SoC forecast along the route.', states: ['Upcoming stop 12 km', 'At charging stop', 'Final destination'], status: 'live', preview: { node: <HorizonMock state="driving" /> } },
+      ],
+    },
+    {
+      id: 'ev-battery', group: 'EV Vehicle & Battery', navGroup: 'EV & Charging',
+      desc: 'Vehicle class presets and battery model configuration for LDEVR integration.',
+      screens: [
+        { name: 'Battery model configurator', component: 'EVBatteryDemo', desc: 'Select a vehicle class preset (compact, sedan, SUV, van) and see the corresponding LDEVR battery model parameters.', states: ['Compact EV', 'Sedan EV', 'SUV EV', 'Commercial van'], status: 'live', preview: { node: <EVBatteryDemo /> } },
+      ],
+    },
+
+    /* ═══════════════════════════════════════ UX Library — TAIA & Cluster ════ */
     {
       id: 'ai-overview', group: 'TomTom AI Assistant (TAIA)', navGroup: 'TomTom AI Assistant',
       desc: 'Architecture diagrams for the full TAIA voice pipeline.',
@@ -244,7 +290,7 @@ function buildSections(t) {
       ],
     },
 
-    /* ═══════════════════════════════════════════ NavSDK ═══════════════════════ */
+    /* ══════════════════════════════════════════════════════════ NavSDK ═══════ */
     {
       id: 'navsdk-map', group: 'NavSDK — Map Display', navGroup: 'NavSDK',
       desc: 'TomTomMapComposable layer toggle, style switching, and traffic overlay configuration.',
@@ -287,7 +333,7 @@ function buildSections(t) {
   ];
 }
 
-/* ─── Summary counts ─────────────────────────────────────────────────────────── */
+/* ─── Summary counts ─────────────────────────────────────────────────────── */
 function countByStatus(sections) {
   const counts = { mock: 0, needed: 0, done: 0, planned: 0, live: 0, total: 0 };
   sections.forEach(s => s.screens.forEach(sc => {
@@ -298,31 +344,32 @@ function countByStatus(sections) {
   return counts;
 }
 
-/* ─── Page ───────────────────────────────────────────────────────────────────── */
+/* ─── Page ───────────────────────────────────────────────────────────────── */
 export default function ScreenshotAssets() {
   const { t } = useTranslation('pages');
-  const [demoTheme, setDemoTheme] = useState('dark');
+  const { theme, setTheme, palette, illoStyle, setIlloStyle } = useIlloStyle();
 
   const SECTIONS = buildSections(t);
   const counts = countByStatus(SECTIONS);
   const totalStates = SECTIONS.reduce((n, s) =>
     n + s.screens.reduce((m, sc) => m + (sc.states?.length ?? 0), 0), 0);
 
-  const demoBg = demoTheme === 'dark' ? '#0b0f14' : '#f0f4f8';
+  /* Use the context palette background as the demo background */
+  const demoBg = palette.bg;
 
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Screenshot Assets &amp; States</h1>
+        <h1>Interactive Demos</h1>
         <PageActions />
       </div>
 
       <div className="quick-answer">
-        Every interactive demo and UI mock across the UX Library and NavSDK — the reference inventory for screenshot capture planning and design team handoff.
+        Every interactive demo and UI mock across the UX Library and NavSDK — the reference inventory for design team exploration, screenshot capture planning, and handoff. Use the theme palette below to preview each demo in any colour family.
       </div>
 
       <Callout type="warn">
-        This page is for internal planning only. <strong>NavSDK demos</strong> are live interactive components. <strong>UX Library mocks</strong> are JSX/SVG representations. The goal is to identify, agree on, and capture real device screenshots for all states.
+        This page is for internal planning only. <strong>Live demos</strong> are fully interactive React components. <strong>SVG mocks</strong> are JSX representations. The goal is to agree on, refine, and capture real device screenshots for all states.
       </Callout>
 
       {/* Summary strip */}
@@ -349,11 +396,10 @@ export default function ScreenshotAssets() {
       <div className="zone" id="sa-how">
         <h2 className="sh">How to use this page</h2>
         <p className="body">
-          Each section maps to a documentation page. Live previews show the current JSX/SVG mock or interactive demo. State chips list distinct variants that need individual screenshots. Status badges track progress from <strong>SVG mock</strong> → <strong>Screenshot needed</strong> → <strong>Static .png</strong>.
+          Each section maps to a documentation page. Live previews show the current interactive demo or SVG mock. State chips list distinct variants that need individual screenshots. Status badges track progress from <strong>SVG mock</strong> → <strong>Screenshot needed</strong> → <strong>Static .png</strong>.
         </p>
         <p className="body">
-          <strong>NavSDK demos</strong> are fully interactive — you can tap through states, toggle options, and trigger animations directly on this page.
-          When a screenshot is ready, update the <code>status</code> field in <code>src/pages/ScreenshotAssets.jsx</code> from <code>&apos;mock&apos;</code> to <code>&apos;done&apos;</code>.
+          Use the theme palette below to apply any colour family to all demo backgrounds simultaneously — the same palette system as the Intro Hero Illustrations page. When a screenshot is ready, update the <code>status</code> field in <code>src/pages/ScreenshotAssets.jsx</code>.
         </p>
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
           {Object.entries(STATUS).map(([key, s]) => (
@@ -362,8 +408,14 @@ export default function ScreenshotAssets() {
         </div>
       </div>
 
-      {/* Theme toggle */}
-      <DemoThemeBar theme={demoTheme} onThemeChange={setDemoTheme} />
+      {/* Full ThemeBar — compact mode (palette picker only, no style/plugin row) */}
+      <ThemeBar
+        theme={theme}
+        onThemeChange={setTheme}
+        illoStyle={illoStyle}
+        onStyleChange={setIlloStyle}
+        compact={true}
+      />
 
       {/* Sections */}
       {SECTIONS.map(section => (
@@ -394,7 +446,7 @@ export default function ScreenshotAssets() {
                 states={screen.states}
                 status={screen.status}
                 preview={screen.preview}
-                darkBg={demoBg}
+                demoBg={demoBg}
               />
             ))}
           </div>

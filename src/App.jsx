@@ -479,7 +479,11 @@ export default function App() {
       )}
       {/* Plumbing portal — global overlay, accessible from (?) button */}
       {plumbingOpen && (
-        <PlumbingPortal onClose={() => setPlumbingOpen(false)} />
+        <PlumbingPortal
+          onClose={() => setPlumbingOpen(false)}
+          isDark={isDark}
+          onToggleTheme={() => setIsDark(d => !d)}
+        />
       )}
     </IlloStyleProvider>
   );

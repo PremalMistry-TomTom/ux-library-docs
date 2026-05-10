@@ -180,7 +180,7 @@ const INCIDENT_TYPES = [
 ];
 
 /* ─── Traffic layer configurator ─────────────────────────────── */
-function LayerConfigurator() {
+export function LayerConfigurator() {
   const [flowOn,    setFlowOn]    = useState(true);
   const [incOn,     setIncOn]     = useState(true);
   const [flowStyle, setFlowStyle] = useState('RELATIVE');
@@ -234,7 +234,7 @@ function LayerConfigurator() {
 }
 
 /* ─── Incident type filter ───────────────────────────────────── */
-function IncidentFilter() {
+export function IncidentFilter() {
   const [enabled, setEnabled] = useState(INCIDENT_TYPES.map(t => t.id));
   const toggle = id => setEnabled(e => e.includes(id) ? e.filter(x => x !== id) : [...e, id]);
 
@@ -290,7 +290,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
 }
 
 /* ─── Refresh interval demo ──────────────────────────────────── */
-function RefreshDemo() {
+export function RefreshDemo() {
   const PRESETS = [
     { id: 30,  label: '30 s',  note: 'Near real-time. Higher data usage.' },
     { id: 60,  label: '1 min', note: 'Balanced. Recommended default.' },

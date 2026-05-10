@@ -32,7 +32,7 @@ const ALL_NETWORKS = [
   { id: 'Tesla SC',       region: 'Global',  kw: '250 kW' },
 ];
 
-function MSPBuilder({ t }) {
+export function MSPBuilder({ t }) {
   const [active, setActive] = useState(['Ionity', 'Fastned', 'TotalEnergies']);
 
   const toggle = id => {

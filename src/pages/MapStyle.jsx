@@ -247,7 +247,7 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
 }
 
 /* ─── Style explorer ─────────────────────────────────────────── */
-function StyleExplorer() {
+export function StyleExplorer() {
   const [activeId, setActiveId] = useState('drive');
   const style = STYLES.find(s => s.id === activeId);
 
@@ -293,7 +293,7 @@ function StyleExplorer() {
 }
 
 /* ─── Tilt demo ──────────────────────────────────────────────── */
-function TiltDemo() {
+export function TiltDemo() {
   const [pitch, setPitch] = useState(35);
   const [zoom,  setZoom]  = useState(12.5);
 
@@ -347,7 +347,7 @@ function TiltDemo() {
 }
 
 /* ─── Custom URI demo ────────────────────────────────────────── */
-function StyleURIDemo() {
+export function StyleURIDemo() {
   const [source, setSource] = useState('asset');
 
   const snippets = {
