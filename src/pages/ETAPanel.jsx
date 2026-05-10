@@ -152,7 +152,7 @@ export default function ETAPanel({ onNavigate }) {
               <div key={f.id} onClick={() => toggleField(f.id)} style={{
                 display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
                 borderRadius: 7, cursor: 'pointer',
-                background: hidden ? 'var(--bg)' : '#fff',
+                background: hidden ? 'var(--bg)' : 'var(--surface)',
                 border: '1px solid var(--border)', opacity: hidden ? 0.5 : 1,
                 transition: 'all 0.12s',
               }}>

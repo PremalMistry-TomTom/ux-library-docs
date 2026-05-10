@@ -60,7 +60,7 @@ function Toggle({ value, onChange, label, secondary }) {
     <div onClick={() => onChange(!value)} style={{
       display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
       borderRadius: 7, cursor: 'pointer',
-      background: value ? '#fff' : 'var(--bg)',
+      background: value ? 'var(--surface)' : 'var(--bg)',
       border: '1px solid var(--border)', opacity: value ? 1 : 0.55,
       transition: 'all 0.12s',
     }}>
