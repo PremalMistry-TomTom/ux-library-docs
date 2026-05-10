@@ -6,7 +6,7 @@ import {
   makeThumb,
   L_ColourSystem, L_MapStyle, L_HomeScreen, L_Cluster, L_AIVoice,
   L_ETAPanel, L_SearchResult, L_ThemingTokens, L_ChargingSearch, L_ConversationPersonality, L_ADAS,
-  L_EVRouting, L_NavGuidance, L_Route, L_MapDisplay, L_HorizonPanel,
+  L_EVRouting, L_NavGuidance,
 } from '../illustrations/lightVariants';
 import {
   IlloColourSystem, IlloMapStyle, IlloSearchResult,
@@ -17,9 +17,6 @@ import {
   IlloRouteBar, IlloInstructionPanel,
   IlloSpeechToText, IlloAIConfig, IlloIntentRouting, IlloVoiceEngine,
   IlloVIBasics, IlloHUD, IlloTruck,
-  IlloMapDisplay,
-  IlloNavSDKLocation, IlloNavSDKSearch, IlloNavSDKRouting,
-  IlloNavSDKNavigation, IlloNavSDKOffline, IlloNavSDKVirtualHorizon, IlloNavSDKAdvanced,
 } from './IntroIllustrations';
 
 /* ─── Cross-link helpers ─────────────────────────────────────────────────────── */
@@ -81,23 +78,6 @@ const DOMAIN_CARDS = [
     pages: ['VI Basics', 'Cluster', 'Head-Up Display', 'ADAS Integration', 'Truck Support'] },
   { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: makeThumb(IlloIntentRouting,   L_AIVoice),
     pages: ['Overview', 'Personality', 'Intent Routing', 'Voice Engine', 'Speech to Text', 'Config'] },
-  // NavSDK domain pages
-  { id: 'navsdk-map-display',  key: 'navsdkMapDisplay',   Thumb: makeThumb(IlloMapDisplay,      L_MapDisplay),
-    pages: ['Map for Compose', 'Map for Views', 'Map Styles', 'Camera & Animations', 'Markers', 'Traffic'] },
-  { id: 'navsdk-location',     key: 'navsdkLocation',     Thumb: makeThumb(IlloNavSDKLocation,  L_MapDisplay),
-    pages: ['Location Provider', 'Background Location', 'Custom Engine'] },
-  { id: 'navsdk-search',       key: 'navsdkSearch',       Thumb: makeThumb(IlloNavSDKSearch,    L_SearchResult),
-    pages: ['Fuzzy Search', 'Along-Route Search', 'Reverse Geocoding', 'EV Station Search', 'BYOD'] },
-  { id: 'navsdk-routing',      key: 'navsdkRouting',      Thumb: makeThumb(IlloNavSDKRouting,   L_Route),
-    pages: ['Calculate Route', 'Alternative Routes', 'Route Sections', 'Import & Export'] },
-  { id: 'navsdk-navigation',   key: 'navsdkNavigation',   Thumb: makeThumb(IlloNavSDKNavigation,L_NavGuidance),
-    pages: ['Turn-by-Turn', 'Voice Instructions', 'Safety Locations', 'Replanning', 'Free Driving'] },
-  { id: 'navsdk-offline',      key: 'navsdkOffline',      Thumb: makeThumb(IlloNavSDKOffline,   L_MapDisplay),
-    pages: ['Map Downloads', 'Offline Routing', 'Incremental Updates', 'Map Management'] },
-  { id: 'navsdk-horizon',      key: 'navsdkHorizon',      Thumb: makeThumb(IlloNavSDKVirtualHorizon, L_HorizonPanel),
-    pages: ['Horizon Engine', 'ADAS Data', 'Speed Alerts', 'Hazards', 'Traffic'] },
-  { id: 'navsdk-advanced',     key: 'navsdkAdvanced',     Thumb: makeThumb(IlloNavSDKAdvanced,  L_NavGuidance),
-    pages: ['Simulation', 'Map-Matched Location', 'Telemetry', 'Vehicle Metadata'] },
 ];
 
 /* ─── Use-case card (thumbnail + group tag + title + desc) ──────────────────── */
