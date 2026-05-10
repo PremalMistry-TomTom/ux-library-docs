@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 /* ─── API references ─────────────────────────────────────────────────────────── */
 const SEARCH_APIS = [
@@ -14,21 +15,6 @@ const SEARCH_APIS = [
   { name: 'Bring Your Own Data',         type: 'Android SDK', description: 'Surface custom application-specific POIs — like internal locations or partner data — alongside TomTom results.',        pageId: 'navsdk-search-byod',       productId: 'navsdk' },
 ];
 
-/* ─── Mock palette ──────────────────────────────────────────────────────────── */
-const M = {
-  bg:     '#0f1117',
-  card:   '#1a1d27',
-  line:   '#2a2a3a',
-  text:   '#e2e8f0',
-  dim:    '#94a3b8',
-  muted:  '#64748b',
-  blue:   '#93c5fd',
-  green:  '#86efac',
-  amber:  '#fbbf24',
-  red:    '#f87171',
-  orange: '#fdba74',
-};
-
 /* ─── Shared mock data ──────────────────────────────────────────────────────── */
 const RESULTS = [
   { name: "Gianni's Ristorante", addr: '14 Via Roma · 0.3 km',  rating: '4.6', reviews: '1,240', price: '€€',  open: true  },
@@ -38,6 +24,7 @@ const RESULTS = [
 
 /* ─── Search panel mock ─────────────────────────────────────────────────────── */
 export function SearchMock({ isOnline = true, showAttribution = false, showEnrichment = false, showFilters = false }) {
+  const M = useDemoStyle();
   return (
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       {/* Search bar */}
@@ -47,15 +34,15 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
         </svg>
         <span style={{ fontSize: '0.75rem', color: M.muted, flex: 1 }}>Search destination…</span>
         {showAttribution && (
-          <span style={{ fontSize: '0.875rem', color: M.dim, background: '#1e293b', padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '0.875rem', color: M.dim, background: M.card, padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
             Powered by Google
           </span>
         )}
       </div>
 
       {/* Connectivity strip */}
-      <div style={{ padding: '5px 12px', background: isOnline ? '#0f2a1a' : '#1f1505', display: 'flex', alignItems: 'center', gap: 6 }}>
-        <div style={{ width: 6, height: 6, borderRadius: '50%', background: isOnline ? '#22c55e' : '#f97316', flexShrink: 0 }} />
+      <div style={{ padding: '5px 12px', background: isOnline ? `${M.green}22` : `${M.amber}22`, display: 'flex', alignItems: 'center', gap: 6 }}>
+        <div style={{ width: 6, height: 6, borderRadius: '50%', background: isOnline ? M.green : M.amber, flexShrink: 0 }} />
         <span style={{ fontSize: '0.875rem', color: isOnline ? M.green : M.orange }}>
           {isOnline ? '3rd-party search · online' : 'TomTom onboard · offline'}
         </span>
@@ -65,7 +52,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {showFilters && (
         <div style={{ padding: '7px 12px', display: 'flex', gap: 5, borderBottom: `1px solid ${M.line}` }}>
           {['★ 4+', 'Open now', '€€', 'Italian'].map(f => (
-            <span key={f} style={{ fontSize: '0.875rem', background: '#1e293b', color: M.blue, padding: '2px 7px', borderRadius: 20, whiteSpace: 'nowrap', border: '1px solid #1e3a5f' }}>{f}</span>
+            <span key={f} style={{ fontSize: '0.875rem', background: M.card, color: M.blue, padding: '2px 7px', borderRadius: 20, whiteSpace: 'nowrap', border: `1px solid ${M.line}` }}>{f}</span>
           ))}
         </div>
       )}
@@ -73,7 +60,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {/* Results */}
       {RESULTS.map((r, i) => (
         <div key={i} style={{ padding: '8px 12px', borderBottom: `1px solid ${M.line}`, display: 'flex', gap: 9, alignItems: 'flex-start' }}>
-          <div style={{ width: 28, height: 28, background: '#1e293b', borderRadius: 5, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 28, height: 28, background: M.card, borderRadius: 5, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={M.blue} strokeWidth="2">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
             </svg>
@@ -86,7 +73,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
                 <span style={{ fontSize: '0.875rem', color: M.amber }}>★ {r.rating}</span>
                 <span style={{ fontSize: '0.875rem', color: M.muted }}>({r.reviews})</span>
                 <span style={{ fontSize: '0.875rem', color: M.dim }}>{r.price}</span>
-                <span style={{ fontSize: '0.875rem', color: r.open ? '#22c55e' : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
+                <span style={{ fontSize: '0.875rem', color: r.open ? M.green : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
               </div>
             )}
           </div>
@@ -98,6 +85,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
 
 /* ─── Location Preview Panel mock ───────────────────────────────────────────── */
 export function LPPMock({ enriched = false, attribution = false }) {
+  const M = useDemoStyle();
   return (
     <div style={{ background: M.card, borderRadius: 20, overflow: 'hidden', width: 290, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '14px 14px 10px' }}>
@@ -110,7 +98,7 @@ export function LPPMock({ enriched = false, attribution = false }) {
               <span style={{ fontSize: '0.875rem', color: M.muted }}>(1,240 reviews)</span>
               <span style={{ fontSize: '0.875rem', color: M.dim }}>€€ · Italian</span>
             </div>
-            <div style={{ fontSize: '0.875rem', color: '#22c55e', marginBottom: 6 }}>Open · Closes 23:00</div>
+            <div style={{ fontSize: '0.875rem', color: M.green, marginBottom: 6 }}>Open · Closes 23:00</div>
             <div style={{ fontSize: '0.875rem', color: M.dim, fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>
               "Amazing pasta, great atmosphere — highly recommend!"
             </div>
@@ -119,7 +107,7 @@ export function LPPMock({ enriched = false, attribution = false }) {
       </div>
       <div style={{ padding: '0 14px 12px', display: 'flex', gap: 8 }}>
         <button style={{ flex: 1, padding: '7px 0', background: 'var(--red)', color: '#fff', border: 'none', borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Drive</button>
-        <button style={{ flex: 1, padding: '7px 0', background: '#1e293b', color: M.blue, border: `1px solid ${M.line}`, borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Route</button>
+        <button style={{ flex: 1, padding: '7px 0', background: M.card, color: M.blue, border: `1px solid ${M.line}`, borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Route</button>
       </div>
       {attribution && (
         <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.875rem', color: M.muted }}>

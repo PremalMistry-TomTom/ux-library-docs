@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 /* ─── Static IDs (no i18n needed — these are API identifiers) ────────────── */
 const HP_ELEMENT_IDS  = ['SLG', 'CMP', 'JV', 'UEP', 'ETA'];
@@ -366,6 +367,7 @@ export function ClusterDisplay({ showMap, showVignette, nipLayout, etaLayout, hp
 /* ─── Main page ───────────────────────────────────────────────────────────── */
 export default function Cluster({ onNavigate }) {
   const { t } = useTranslation('pages');
+  const M = useDemoStyle();
 
   const [showMap,      setShowMap]      = useState(true);
   const [showVignette, setShowVignette] = useState(true);
@@ -497,7 +499,7 @@ export default function Cluster({ onNavigate }) {
               <div key={key} onClick={() => set(v => !v)} style={{
                 display: 'flex', alignItems: 'center', gap: 10, padding: '7px 10px',
                 marginBottom: 5, borderRadius: 7, cursor: 'pointer',
-                background: value ? '#fff' : 'var(--bg)',
+                background: value ? M.card : 'var(--bg)',
                 border: '1px solid var(--border)', opacity: value ? 1 : 0.5,
                 transition: 'all 0.12s',
               }}>
@@ -523,7 +525,7 @@ export default function Cluster({ onNavigate }) {
                 <div key={id} onClick={() => showHp && toggleHpEl(id)} style={{
                   display: 'flex', alignItems: 'center', gap: 8, padding: '6px 10px',
                   marginBottom: 5, borderRadius: 7, cursor: showHp ? 'pointer' : 'default',
-                  background: active ? '#fff' : 'var(--bg)',
+                  background: active ? M.card : 'var(--bg)',
                   border: '1px solid var(--border)', opacity: (!showHp || !active) ? 0.4 : 1,
                   transition: 'all 0.12s',
                 }}>
@@ -546,7 +548,7 @@ export default function Cluster({ onNavigate }) {
               <button key={id} onClick={() => setNipLayout(id)} style={{
                 padding: '8px 10px', borderRadius: 7, cursor: 'pointer', textAlign: 'left',
                 fontWeight: nipLayout === id ? 600 : 400,
-                background: nipLayout === id ? '#fff5f5' : 'var(--bg)',
+                background: nipLayout === id ? `${M.red}12` : 'var(--bg)',
                 border: `1px solid ${nipLayout === id ? 'var(--red)' : 'var(--border)'}`,
                 color: nipLayout === id ? 'var(--red)' : 'var(--mid)',
                 transition: 'all 0.1s',
@@ -566,7 +568,7 @@ export default function Cluster({ onNavigate }) {
               <button key={id} onClick={() => setEtaLayout(id)} style={{
                 padding: '8px 10px', borderRadius: 7, cursor: 'pointer', textAlign: 'left',
                 fontWeight: etaLayout === id ? 600 : 400,
-                background: etaLayout === id ? '#fff5f5' : 'var(--bg)',
+                background: etaLayout === id ? `${M.red}12` : 'var(--bg)',
                 border: `1px solid ${etaLayout === id ? 'var(--red)' : 'var(--border)'}`,
                 color: etaLayout === id ? 'var(--red)' : 'var(--mid)',
                 transition: 'all 0.1s',

@@ -2,14 +2,9 @@ import { useState } from 'react';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 /* ─── Interactive calculator ─────────────────────────────────────────────────── */
-const M = {
-  bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d',
-  text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950',
-  amber: '#d29922', red: '#f85149',
-};
-
 function computeStops(minAtStopPct, minAtDestPct) {
   const battKwh = 75, totalKm = 679, startKwh = 45;
   const minStop = (minAtStopPct / 100) * battKwh;
@@ -39,6 +34,7 @@ function computeStops(minAtStopPct, minAtDestPct) {
 const STATION_NAMES = ['Ionity Reims', 'Fastned Lyon', 'Ionity Montpellier', 'bp pulse Nîmes'];
 
 function StopCalculator() {
+  const M = useDemoStyle();
   const [minStop, setMinStop] = useState(15);
   const [minDest, setMinDest] = useState(15);
   const { stops, arrPct, chargeMinsTotal, totalMins } = computeStops(minStop, minDest);
@@ -52,9 +48,9 @@ function StopCalculator() {
           <div key={label}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
               <span style={{ fontSize: '0.875rem', fontWeight: 600 }}>{label}</span>
-              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#3b82f6' }}>{val}%</span>
+              <span style={{ fontSize: '0.875rem', fontWeight: 700, color: M.blue }}>{val}%</span>
             </div>
-            <input type="range" min={5} max={35} step={5} value={val} onChange={e => set(Number(e.target.value))} aria-label={`${label}: ${val}%`} style={{ width: '100%', accentColor: '#3b82f6', cursor: 'pointer' }} />
+            <input type="range" min={5} max={35} step={5} value={val} onChange={e => set(Number(e.target.value))} aria-label={`${label}: ${val}%`} style={{ width: '100%', accentColor: M.blue, cursor: 'pointer' }} />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', color: 'var(--muted)', marginTop: 2 }}><span>5%</span><span>35%</span></div>
           </div>
         ))}

@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 /* ─── API references ─────────────────────────────────────────────────────────── */
 const ETA_APIS = [
@@ -44,10 +45,11 @@ export const CONTENT_FIELDS = [
 ];
 
 export function ETAMock({ position, visibleFields }) {
+  const M = useDemoStyle();
   const pos = POSITIONS.find(p => p.id === position);
   return (
-    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+    <div style={{ width: '100%', height: 300, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
           <path d="M20 100 Q80 70 150 100 T280 90" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
           <path d="M80 0 L85 190" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
@@ -57,16 +59,16 @@ export function ETAMock({ position, visibleFields }) {
       </div>
       <div style={{
         position: 'absolute', ...pos.anchor,
-        background: 'rgba(15,26,40,0.93)', borderRadius: 20,
-        padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)',
+        background: `${M.dark}ee`, borderRadius: 20,
+        padding: '12px 16px', border: `1px solid ${M.line}`,
         display: 'flex', alignItems: 'center', gap: 16, minWidth: 120,
       }}>
         {visibleFields.length === 0
-          ? <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.2)' }}>all hidden</span>
+          ? <span style={{ fontSize: '0.75rem', color: M.muted }}>all hidden</span>
           : visibleFields.map(f => (
             <div key={f.id} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#e2e8f0', lineHeight: 1 }}>{f.value}</div>
-              <div style={{ fontSize: '0.875rem', color: '#64748b', marginTop: 3 }}>{f.label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text, lineHeight: 1 }}>{f.value}</div>
+              <div style={{ fontSize: '0.875rem', color: M.muted, marginTop: 3 }}>{f.label}</div>
             </div>
           ))
         }

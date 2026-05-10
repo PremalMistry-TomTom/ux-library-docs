@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const STT_APIS = [
   { name: 'Voice Engine',             type: 'Android SDK', description: 'TTS counterpart to Speech-to-Text — handles the response audio output after STT delivers the recognised intent.',           pageId: 'voice-engine',     productId: 'ux-library' },
@@ -12,38 +13,27 @@ const STT_APIS = [
 ];
 
 /* ─── Boundary diagram ───────────────────────────────────────────────────────── */
-const M = {
-  bg:    '#0f1117',
-  card:  '#1a1d27',
-  line:  '#2a2a3a',
-  text:  '#e2e8f0',
-  dim:   '#94a3b8',
-  muted: '#64748b',
-  blue:  '#93c5fd',
-  teal:  '#5eead4',
-  amber: '#fbbf24',
-};
-
 export function BoundaryDiagram() {
+  const M = useDemoStyle();
   return (
     <div style={{ margin: '24px 0', overflowX: 'auto' }}>
       <svg viewBox="0 0 600 140" style={{ width: '100%', maxWidth: 600, display: 'block', background: M.bg, borderRadius: 20, border: `1px solid ${M.line}` }}>
 
         {/* OEM side */}
-        <rect x="10" y="15" width="280" height="110" rx="6" fill="none" stroke="#2a3a4a" strokeWidth="1" strokeDasharray="4 3" />
-        <text x="150" y="29" textAnchor="middle" fill="#3a5a7a" fontSize="9" fontFamily="system-ui">OEM / Integrator</text>
+        <rect x="10" y="15" width="280" height="110" rx="6" fill="none" stroke={M.line} strokeWidth="1" strokeDasharray="4 3" />
+        <text x="150" y="29" textAnchor="middle" fill={M.dim} fontSize="9" fontFamily="system-ui">OEM / Integrator</text>
 
         {/* TAIA side */}
-        <rect x="310" y="15" width="278" height="110" rx="6" fill="none" stroke="#2a4a2a" strokeWidth="1" strokeDasharray="4 3" />
-        <text x="449" y="29" textAnchor="middle" fill="#2a5a2a" fontSize="9" fontFamily="system-ui">TomTom TAIA</text>
+        <rect x="310" y="15" width="278" height="110" rx="6" fill="none" stroke={`${M.green}66`} strokeWidth="1" strokeDasharray="4 3" />
+        <text x="449" y="29" textAnchor="middle" fill={M.green} fontSize="9" fontFamily="system-ui">TomTom TAIA</text>
 
         {/* Mic */}
-        <circle cx="50" cy="80" r="16" fill="#1e293b" stroke={M.line} strokeWidth="1.5" />
+        <circle cx="50" cy="80" r="16" fill={M.card} stroke={M.line} strokeWidth="1.5" />
         <text x="50" y="76" textAnchor="middle" dominantBaseline="middle" fontSize="13">🎤</text>
         <text x="50" y="104" textAnchor="middle" fill={M.dim} fontSize="8" fontFamily="system-ui">Audio</text>
 
         {/* STT box */}
-        <rect x="85" y="62" width="90" height="36" rx="5" fill="#1a2535" stroke="#2a3a5a" strokeWidth="1.5" />
+        <rect x="85" y="62" width="90" height="36" rx="5" fill={M.card} stroke={M.line} strokeWidth="1.5" />
         <text x="130" y="76" textAnchor="middle" dominantBaseline="middle" fill={M.blue} fontSize="10" fontWeight="600" fontFamily="system-ui">STT Engine</text>
         <text x="130" y="89" textAnchor="middle" dominantBaseline="middle" fill={M.muted} fontSize="8" fontFamily="system-ui">OEM provided</text>
 
@@ -51,7 +41,7 @@ export function BoundaryDiagram() {
         <line x1="67" y1="80" x2="83" y2="80" stroke={M.dim} strokeWidth="1.5" markerEnd="url(#arr)" />
 
         {/* VPA box */}
-        <rect x="195" y="62" width="90" height="36" rx="5" fill="#1a2535" stroke="#2a3a5a" strokeWidth="1.5" />
+        <rect x="195" y="62" width="90" height="36" rx="5" fill={M.card} stroke={M.line} strokeWidth="1.5" />
         <text x="240" y="76" textAnchor="middle" dominantBaseline="middle" fill={M.blue} fontSize="10" fontWeight="600" fontFamily="system-ui">VPA Cloud</text>
         <text x="240" y="89" textAnchor="middle" dominantBaseline="middle" fill={M.muted} fontSize="8" fontFamily="system-ui">domain routing</text>
 
@@ -60,8 +50,8 @@ export function BoundaryDiagram() {
         <text x="184" y="74" textAnchor="middle" fill={M.muted} fontSize="7.5" fontFamily="system-ui">text</text>
 
         {/* TAIA SDK box */}
-        <rect x="320" y="62" width="100" height="36" rx="5" fill="#1e2535" stroke="#3a4a6a" strokeWidth="1.5" />
-        <text x="370" y="76" textAnchor="middle" dominantBaseline="middle" fill={M.teal} fontSize="10" fontWeight="600" fontFamily="system-ui">TAIA SDK</text>
+        <rect x="320" y="62" width="100" height="36" rx="5" fill={M.card} stroke={M.line} strokeWidth="1.5" />
+        <text x="370" y="76" textAnchor="middle" dominantBaseline="middle" fill={M.green} fontSize="10" fontWeight="600" fontFamily="system-ui">TAIA SDK</text>
         <text x="370" y="89" textAnchor="middle" dominantBaseline="middle" fill={M.muted} fontSize="8" fontFamily="system-ui">on-device</text>
 
         {/* Arrow: VPA → TAIA SDK */}
@@ -69,12 +59,12 @@ export function BoundaryDiagram() {
         <text x="302" y="74" textAnchor="middle" fill={M.amber} fontSize="7.5" fontFamily="system-ui" fontWeight="600">transcript</text>
 
         {/* TAIA Cloud box */}
-        <rect x="440" y="62" width="100" height="36" rx="5" fill="#152030" stroke="#1e4a6a" strokeWidth="1.5" />
-        <text x="490" y="76" textAnchor="middle" dominantBaseline="middle" fill={M.teal} fontSize="10" fontWeight="600" fontFamily="system-ui">TAIA Cloud</text>
+        <rect x="440" y="62" width="100" height="36" rx="5" fill={M.dark} stroke={M.line} strokeWidth="1.5" />
+        <text x="490" y="76" textAnchor="middle" dominantBaseline="middle" fill={M.green} fontSize="10" fontWeight="600" fontFamily="system-ui">TAIA Cloud</text>
         <text x="490" y="89" textAnchor="middle" dominantBaseline="middle" fill={M.muted} fontSize="8" fontFamily="system-ui">POST /chat</text>
 
         {/* Arrow: SDK → Cloud */}
-        <line x1="421" y1="80" x2="438" y2="80" stroke={M.teal} strokeWidth="1.5" markerEnd="url(#arrteal)" />
+        <line x1="421" y1="80" x2="438" y2="80" stroke={M.green} strokeWidth="1.5" markerEnd="url(#arrteal)" />
 
         {/* Arrow markers */}
         <defs>
@@ -85,13 +75,13 @@ export function BoundaryDiagram() {
             <path d="M0,0 L0,6 L7,3 z" fill={M.amber} />
           </marker>
           <marker id="arrteal" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L7,3 z" fill={M.teal} />
+            <path d="M0,0 L0,6 L7,3 z" fill={M.green} />
           </marker>
         </defs>
 
         {/* Boundary label */}
-        <line x1="300" y1="20" x2="300" y2="120" stroke="#ef4444" strokeWidth="1.5" strokeDasharray="4 2" />
-        <text x="300" y="14" textAnchor="middle" fill="#ef4444" fontSize="8" fontFamily="system-ui" fontWeight="600">TAIA boundary</text>
+        <line x1="300" y1="20" x2="300" y2="120" stroke={M.red} strokeWidth="1.5" strokeDasharray="4 2" />
+        <text x="300" y="14" textAnchor="middle" fill={M.red} fontSize="8" fontFamily="system-ui" fontWeight="600">TAIA boundary</text>
       </svg>
     </div>
   );

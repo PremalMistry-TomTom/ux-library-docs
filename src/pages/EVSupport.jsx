@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks, ApiRef } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const EV_APIS = [
   {
@@ -43,24 +44,6 @@ const EV_APIS = [
     url: 'https://docs.tomtom.com/electric-vehicle/ev-routing/introduction',
   },
 ];
-
-/* ─── Mock palette ──────────────────────────────────────────────────────────── */
-const M = {
-  bg:     '#0d1117',
-  card:   '#161b22',
-  card2:  '#1c2333',
-  line:   '#21262d',
-  text:   '#e6edf3',
-  dim:    '#8b949e',
-  muted:  '#6e7681',
-  blue:   '#58a6ff',
-  blueDim:'#1f3a5c',
-  green:  '#3fb950',
-  greenDim:'#0f2a17',
-  amber:  '#d29922',
-  red:    '#f85149',
-  teal:   '#39d353',
-};
 
 /* ─── Architecture diagram — stack pattern (same as TAIA) ───────────────────── */
 export function ArchDiagram() {
@@ -123,6 +106,7 @@ const STATIONS = [
 ];
 
 export function EVSearchMock({ activeFilter = 'speed' }) {
+  const M = useDemoStyle();
   const filters = [
     { id: 'speed', icon: '⚡', label: 'Speed' },
     { id: 'payment', icon: '💳', label: 'Payment' },
@@ -225,6 +209,7 @@ export function EVSearchMock({ activeFilter = 'speed' }) {
 
 /* ─── Station detail mock ───────────────────────────────────────────────────── */
 export function StationDetailMock() {
+  const M = useDemoStyle();
   return (
     <div style={{ background: M.card, borderRadius: 20, overflow: 'hidden', width: 260, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}` }}>
@@ -271,6 +256,7 @@ export function StationDetailMock() {
 
 /* ─── LDEVR route mock ──────────────────────────────────────────────────────── */
 export function RouteMock() {
+  const M = useDemoStyle();
   const stops = [
     { label: 'Current location', type: 'origin' },
     { leg: '50 min · 54 km', toll: '1 min' },
@@ -327,6 +313,7 @@ export function RouteMock() {
 
 /* ─── Route preferences mock ────────────────────────────────────────────────── */
 export function PreferencesMock() {
+  const M = useDemoStyle();
   return (
     <div style={{ background: M.card, borderRadius: 20, overflow: 'hidden', width: 260, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}`, fontSize: '0.75rem', fontWeight: 700, color: M.text }}>Route preferences</div>

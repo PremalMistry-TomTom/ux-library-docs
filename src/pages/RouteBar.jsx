@@ -1,6 +1,7 @@
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const ROUTE_BAR_APIS = [
   { name: 'Turn-by-Turn Navigation',   type: 'Android SDK', description: 'Provides real-time route progress data — incidents, cameras, and remaining distance — that populates the route bar.',   pageId: 'navsdk-nav-turn-by-turn',  productId: 'navsdk' },
@@ -39,13 +40,14 @@ const LAYOUT_MODES = [
 ];
 
 function PhoneFrame({ wide, children }) {
+  const M = useDemoStyle();
   const w = wide ? 160 : 90;
   const h = wide ? 90 : 160;
   return (
     <div style={{
       width: w, height: h, borderRadius: wide ? 8 : 12,
-      border: '2px solid rgba(255,255,255,0.18)',
-      background: 'linear-gradient(135deg,#1a2535,#0f1a28)',
+      border: `2px solid ${M.line}`,
+      background: `linear-gradient(135deg, ${M.card}, ${M.dark})`,
       position: 'relative', overflow: 'hidden', flexShrink: 0,
     }}>
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox={`0 0 ${w} ${h}`} fill="none">
@@ -60,6 +62,7 @@ function PhoneFrame({ wide, children }) {
 }
 
 function RouteBarMock({ wide }) {
+  const M = useDemoStyle();
   const w = wide ? 160 : 90;
   const h = wide ? 90 : 160;
   const barW = 14;
@@ -69,21 +72,22 @@ function RouteBarMock({ wide }) {
     : [{ y: 35 }, { y: 75 }, { y: 115 }];
   return (
     <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox={`0 0 ${w} ${h}`} fill="none">
-      <rect x={barX} y="4" width={barW} height={h - 8} rx="4" fill="rgba(0,0,0,0.55)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5"/>
+      <rect x={barX} y="4" width={barW} height={h - 8} rx="4" fill={`${M.dark}8c`} stroke={`${M.line}40`} strokeWidth="0.5"/>
       <line x1={barX + barW / 2} y1={h - 10} x2={barX + barW / 2} y2="10"
-        stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round"/>
+        stroke={`${M.muted}4d`} strokeWidth="1.5" strokeLinecap="round"/>
       <polygon points={`${barX + 2},${h - 12} ${barX + barW - 2},${h - 12} ${barX + barW / 2},${h - 18}`}
         fill="#e2001a" opacity="0.9"/>
       {events.map((e, i) => (
         <circle key={i} cx={barX + barW / 2} cy={e.y} r="3.5"
-          fill={i === 0 ? '#ef4444' : i === 1 ? '#f59e0b' : '#3b82f6'} opacity="0.9"/>
+          fill={i === 0 ? M.red : i === 1 ? M.amber : M.blue} opacity="0.9"/>
       ))}
-      <circle cx={barX + barW / 2} cy="8" r="3" fill="#22c55e" opacity="0.9"/>
+      <circle cx={barX + barW / 2} cy="8" r="3" fill={M.green} opacity="0.9"/>
     </svg>
   );
 }
 
 export function PositioningDiagram() {
+  const M = useDemoStyle();
   return (
     <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', margin: '24px 0' }}>
       {LAYOUT_MODES.map(mode => (
@@ -94,14 +98,14 @@ export function PositioningDiagram() {
               <div style={{
                 position: 'absolute', top: 6, left: 6, right: 20,
                 background: 'rgba(0,0,0,0.7)', borderRadius: 5, padding: '4px 6px',
-                fontSize: 7, color: '#e2e8f0', fontWeight: 600,
+                fontSize: 7, color: M.text, fontWeight: 600,
               }}>↑ 800 ft</div>
             )}
             {mode.showEta && (
               <div style={{
                 position: 'absolute', bottom: 6, left: 6,
                 background: 'rgba(0,0,0,0.7)', borderRadius: 4, padding: '3px 5px',
-                fontSize: 6, color: '#94a3b8',
+                fontSize: 6, color: M.dim,
               }}>5:53 · 4.0 mi</div>
             )}
           </PhoneFrame>

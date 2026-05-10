@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const NAV_CONTROLS_APIS = [
   { name: 'Turn-by-Turn Navigation',  type: 'Android SDK', description: 'Active navigation session that controls which buttons are context-driven — routing, mute, and settings.',          pageId: 'navsdk-nav-turn-by-turn', productId: 'navsdk' },
@@ -16,9 +17,10 @@ const BTN_ORDER = ['🔍', '⚡', '🔇', '⚙️'];
 const BTN_ENUM  = { '🔍': 'SEARCH', '⚡': 'CHARGING', '🔇': 'MUTE', '⚙️': 'QUICK_SETTINGS' };
 
 function MapMockBase({ children }) {
+  const M = useDemoStyle();
   return (
-    <div style={{ width: '100%', height: 300, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+    <div style={{ width: '100%', height: 300, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 175" fill="none">
           <path d="M20 90 Q80 60 140 90 T260 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
         </svg>
@@ -30,6 +32,7 @@ function MapMockBase({ children }) {
 }
 
 export function ButtonBarConfig({ t }) {
+  const M = useDemoStyle();
   const BTN_POSITIONS = [
     { id: 'LEFT',   label: t('navControls.positionOptions.vertLeft'),    icon: '⬅' },
     { id: 'RIGHT',  label: t('navControls.positionOptions.vertRight'),   icon: '➡' },
@@ -63,7 +66,7 @@ export function ButtonBarConfig({ t }) {
         {BTN_POSITIONS.map(p => (
           <button key={p.id} onClick={() => setPosition(p.id)} style={{
             padding: '8px 4px', borderRadius: 7, cursor: 'pointer', textAlign: 'center',
-            background: position === p.id ? '#fff5f5' : 'var(--bg)',
+            background: position === p.id ? `${M.red}12` : 'var(--bg)',
             border: `1px solid ${position === p.id ? 'var(--red)' : 'var(--border)'}`,
             color: position === p.id ? 'var(--red)' : 'var(--mid)',
             transition: 'all 0.1s',
@@ -123,6 +126,7 @@ export function ButtonBarConfig({ t }) {
 }
 
 export function SearchEntryConfig({ t }) {
+  const M = useDemoStyle();
   const [asButton, setAsButton] = useState(false);
 
   return (
@@ -132,7 +136,7 @@ export function SearchEntryConfig({ t }) {
           <button key={String(v)} onClick={() => setAsButton(v)} style={{
             padding: '7px 14px', borderRadius: 7, cursor: 'pointer', fontSize: '0.75rem',
             fontWeight: asButton === v ? 600 : 400,
-            background: asButton === v ? '#fff5f5' : 'var(--bg)',
+            background: asButton === v ? `${M.red}12` : 'var(--bg)',
             border: `1px solid ${asButton === v ? 'var(--red)' : 'var(--border)'}`,
             color: asButton === v ? 'var(--red)' : 'var(--mid)',
             transition: 'all 0.1s',
@@ -147,7 +151,7 @@ export function SearchEntryConfig({ t }) {
           ))}
         </div>
         {!asButton && (
-          <div style={{ position: 'absolute', bottom: 12, left: 40, right: 12, background: 'rgba(26,37,53,0.92)', borderRadius: 20, padding: '8px 10px', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ position: 'absolute', bottom: 12, left: 40, right: 12, background: `${M.dark}ec`, borderRadius: 20, padding: '8px 10px', border: `1px solid ${M.line}` }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{ fontSize: '0.875rem' }}>🔍</span>
               <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.35)', fontFamily: 'var(--font-mono)' }}>Search destination…</span>

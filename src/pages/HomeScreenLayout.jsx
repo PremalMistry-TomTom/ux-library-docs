@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const HOME_SCREEN_APIS = [
   { name: 'Map Display for Compose',    type: 'Android SDK', description: 'The composable map view that fills the main content zone of the home screen — configure insets to avoid content overlap.', pageId: 'navsdk-map-compose',      productId: 'navsdk' },
@@ -21,6 +22,7 @@ const ZONE_COLORS = {
 
 /* ─── Zone diagram ──────────────────────────────────────────── */
 export function ZonesDiagram({ t }) {
+  const M = useDemoStyle();
   const zones = [
     { id: 'nav',      ...ZONE_COLORS.nav,      label: t('homeScreen.zones.nav.label'),      desc: t('homeScreen.zones.nav.desc') },
     { id: 'safe',     ...ZONE_COLORS.safe,     label: t('homeScreen.zones.safe.label'),     desc: t('homeScreen.zones.safe.desc') },
@@ -34,12 +36,12 @@ export function ZonesDiagram({ t }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* IVI mock — full width */}
       <div style={{
-        width: '100%', height: 300, background: '#0c1318', borderRadius: 20,
-        border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden',
+        width: '100%', height: 300, background: M.bg, borderRadius: 20,
+        border: `1px solid ${M.line}`, overflow: 'hidden',
         position: 'relative',
       }}>
         {/* Map background */}
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
           <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 300 200" fill="none">
             <path d="M30 80 Q80 60 150 85 T270 75" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
             <path d="M0 110 Q60 70 150 110 T300 100" stroke="rgba(255,255,255,0.07)" strokeWidth="1.5"/>
@@ -103,6 +105,7 @@ export function ZonesDiagram({ t }) {
 
 /* ─── Resize demo ───────────────────────────────────────────── */
 export function ResizeDemo({ t }) {
+  const M = useDemoStyle();
   const [insets, setInsets] = useState({ top: 0, right: 30, bottom: 0, left: 0 });
   const set = (side, val) => setInsets(s => ({ ...s, [side]: Number(val) }));
 
@@ -154,8 +157,8 @@ export function ResizeDemo({ t }) {
         </button>
       </div>
       <div>
-        <div style={{ position: 'relative', width: '100%', height: 300, background: '#0c1318', borderRadius: 20, border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,#1a2535,#0f1a28)' }}>
+        <div style={{ position: 'relative', width: '100%', height: 300, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
             <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
               <path d="M20 90 Q80 60 150 95 T280 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
               <path d="M70 0 L75 190" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
@@ -168,9 +171,9 @@ export function ResizeDemo({ t }) {
             position: 'absolute',
             top: `${insets.top}%`, right: `${insets.right}%`,
             bottom: `${insets.bottom}%`, left: `${insets.left}%`,
-            border: '2px solid #f59e0b', borderRadius: 4,
+            border: `2px solid ${M.amber}`, borderRadius: 4,
           }}>
-            <span style={{ position: 'absolute', top: 3, left: 4, fontSize: '0.5rem', color: '#f59e0b', fontFamily: 'var(--font-mono)', background: 'rgba(0,0,0,0.6)', padding: '1px 3px', borderRadius: 2 }}>nav app area</span>
+            <span style={{ position: 'absolute', top: 3, left: 4, fontSize: '0.5rem', color: M.amber, fontFamily: 'var(--font-mono)', background: `${M.dark}99`, padding: '1px 3px', borderRadius: 2 }}>nav app area</span>
           </div>
           {insets.right > 5 && (
             <div style={{ position: 'absolute', top: 0, right: 0, width: `${insets.right}%`, height: '100%', background: 'rgba(0,0,0,0.6)', borderLeft: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', padding: 4, gap: 3 }}>
