@@ -5,6 +5,7 @@ import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import { EVSearchMock, StationDetailMock } from './EVSupport';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const CHARGING_SEARCH_APIS = [
   { name: 'EV Search',                type: 'Android SDK', description: 'Find compatible charging stations with connector type, power level, availability, and preferred network filters.',  pageId: 'navsdk-search-ev',    productId: 'navsdk' },
@@ -13,12 +14,7 @@ const CHARGING_SEARCH_APIS = [
   { name: 'Vehicle & Battery',        type: 'Android SDK', description: 'Battery model and connector profile that filters which stations appear as compatible in EV Search results.',           pageId: 'ev-battery',          productId: 'ux-library' },
 ];
 
-/* ─── Mock palette ──────────────────────────────────────────────────────────── */
-const M = {
-  bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d',
-  text: '#e6edf3', dim: '#8b949e', muted: '#6e7681',
-  blue: '#58a6ff', green: '#3fb950', amber: '#d29922',
-};
+/* ─── Mock palette is now supplied by useDemoStyle() inside MSPBuilder ─────── */
 
 /* ─── MSP Priority Builder ───────────────────────────────────────────────────── */
 const ALL_NETWORKS = [
@@ -33,6 +29,7 @@ const ALL_NETWORKS = [
 ];
 
 export function MSPBuilder({ t }) {
+  const M = useDemoStyle();
   const [active, setActive] = useState(['Ionity', 'Fastned', 'TotalEnergies']);
 
   const toggle = id => {
@@ -84,14 +81,14 @@ export function MSPBuilder({ t }) {
                 <div key={n.id} style={{
                   display: 'flex', alignItems: 'center', gap: 10,
                   padding: '8px 12px', borderRadius: 20,
-                  border: `1.5px solid ${on ? '#3b82f6' : 'var(--border)'}`,
-                  background: on ? 'rgba(59,130,246,0.06)' : 'var(--white)',
+                  border: `1.5px solid ${on ? M.blue : 'var(--border)'}`,
+                  background: on ? `${M.blue}0f` : 'var(--white)',
                   cursor: 'pointer', transition: 'all 0.12s',
                 }} onClick={() => toggle(n.id)}>
                   <div style={{
                     width: 18, height: 18, borderRadius: 4, flexShrink: 0,
-                    background: on ? '#3b82f6' : 'var(--bg)',
-                    border: `1.5px solid ${on ? '#3b82f6' : 'var(--border)'}`,
+                    background: on ? M.blue : 'var(--bg)',
+                    border: `1.5px solid ${on ? M.blue : 'var(--border)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     {on && <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5L8 3" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
@@ -121,10 +118,10 @@ export function MSPBuilder({ t }) {
                 <div key={id} style={{
                   display: 'flex', alignItems: 'center', gap: 8,
                   padding: '8px 12px', borderRadius: 20,
-                  border: '1.5px solid #3b82f6',
-                  background: 'rgba(59,130,246,0.08)',
+                  border: `1.5px solid ${M.blue}`,
+                  background: `${M.blue}14`,
                 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: '#3b82f6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
+                  <div style={{ width: 20, height: 20, borderRadius: '50%', background: M.blue, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', fontWeight: 700, flexShrink: 0 }}>{i + 1}</div>
                   <span style={{ flex: 1, fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)' }}>{id}</span>
                   <div style={{ display: 'flex', gap: 2 }}>
                     <button onClick={() => moveUp(id)} disabled={i === 0} style={{

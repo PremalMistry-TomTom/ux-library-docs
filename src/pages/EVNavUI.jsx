@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const NAV_UI_APIS = [
   { name: 'Reachable Range API',  type: 'REST API',    description: 'Calculate the reachable isoline for the range ring overlay — accounts for battery level, consumption model, and road network.', pageId: 'routing-reachable-range', productId: 'routing-api' },
@@ -20,27 +21,30 @@ const SOC_STATES = {
 
 /* ─── SoC indicator strip mock ───────────────────────────────────────────────── */
 export function SoCStrip({ state }) {
+  const M = useDemoStyle();
   const s = SOC_STATES[state];
+  const SOC_COLORS = { healthy: M.green, low: M.amber, critical: M.red };
+  const color = SOC_COLORS[state];
   return (
-    <div style={{ background: '#0f1117', borderRadius: 20, padding: '10px 14px', border: '1px solid #21262d', width: 280 }}>
+    <div style={{ background: M.bg, borderRadius: 20, padding: '10px 14px', border: `1px solid ${M.line}`, width: 280 }}>
       {/* Battery bar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-        <div style={{ flex: 1, height: 10, borderRadius: 5, background: '#21262d', overflow: 'hidden', position: 'relative' }}>
-          <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${s.pct}%`, background: s.color, borderRadius: 5, transition: 'all 0.4s ease' }} />
+        <div style={{ flex: 1, height: 10, borderRadius: 5, background: M.line, overflow: 'hidden', position: 'relative' }}>
+          <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${s.pct}%`, background: color, borderRadius: 5, transition: 'all 0.4s ease' }} />
         </div>
         {/* Battery terminal nub */}
-        <div style={{ width: 5, height: 6, background: '#21262d', borderRadius: '0 2px 2px 0', flexShrink: 0 }} />
+        <div style={{ width: 5, height: 6, background: M.line, borderRadius: '0 2px 2px 0', flexShrink: 0 }} />
       </div>
 
       {/* Stats row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <div>
-          <span style={{ fontSize: '1.5rem', fontWeight: 700, color: s.color, lineHeight: 1, transition: 'color 0.4s' }}>{s.pct}%</span>
-          <span style={{ fontSize: '0.875rem', color: '#8b949e', marginLeft: 6 }}>{s.rangeKm} km range</span>
+          <span style={{ fontSize: '1.5rem', fontWeight: 700, color, lineHeight: 1, transition: 'color 0.4s' }}>{s.pct}%</span>
+          <span style={{ fontSize: '0.875rem', color: M.dim, marginLeft: 6 }}>{s.rangeKm} km range</span>
         </div>
         {s.nextStop && (
-          <div style={{ fontSize: '0.875rem', color: '#8b949e', textAlign: 'right' }}>
-            <div style={{ color: s.color }}>⚡ Next stop</div>
+          <div style={{ fontSize: '0.875rem', color: M.dim, textAlign: 'right' }}>
+            <div style={{ color }}>⚡ Next stop</div>
             <div>{s.nextStop}</div>
           </div>
         )}
@@ -48,9 +52,9 @@ export function SoCStrip({ state }) {
 
       {/* Low battery warning banner */}
       {s.warning && (
-        <div style={{ marginTop: 8, padding: '6px 10px', borderRadius: 6, background: 'rgba(248,81,73,0.12)', border: '1px solid rgba(248,81,73,0.3)', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ marginTop: 8, padding: '6px 10px', borderRadius: 6, background: `${M.red}1e`, border: `1px solid ${M.red}4d`, display: 'flex', alignItems: 'center', gap: 8 }}>
           <span style={{ fontSize: '0.75rem' }}>⚠️</span>
-          <span style={{ fontSize: '0.875rem', color: '#f85149', lineHeight: 1.4 }}>Low battery — route recalculated to nearest charger</span>
+          <span style={{ fontSize: '0.875rem', color: M.red, lineHeight: 1.4 }}>Low battery — route recalculated to nearest charger</span>
         </div>
       )}
     </div>
@@ -59,7 +63,10 @@ export function SoCStrip({ state }) {
 
 /* ─── Range ring (reachable range) mock ──────────────────────────────────────── */
 export function RangeRingMock({ state }) {
+  const M = useDemoStyle();
   const s = SOC_STATES[state];
+  const SOC_COLORS = { healthy: M.green, low: M.amber, critical: M.red };
+  const color = SOC_COLORS[state];
   const rings = { healthy: 0.78, low: 0.28, critical: 0.12 };
   const r = rings[state];
   const cx = 140, cy = 110;
@@ -67,27 +74,27 @@ export function RangeRingMock({ state }) {
   const ringR = maxR * r;
   // Simple map grid lines
   return (
-    <div style={{ background: '#1a2235', borderRadius: 20, border: '1px solid #21262d', overflow: 'hidden', width: 280 }}>
+    <div style={{ background: M.card, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', width: 280 }}>
       <svg width="280" height="220" style={{ display: 'block' }}>
         {/* Map background tiles */}
-        <rect width="280" height="220" fill="#1a2235" />
+        <rect width="280" height="220" fill={M.card} />
         {/* Grid */}
-        {[40,80,120,160,200,240].map(x => <line key={`v${x}`} x1={x} y1={0} x2={x} y2={220} stroke="#1e2d47" strokeWidth="1"/>)}
-        {[40,80,120,160,200].map(y => <line key={`h${y}`} x1={0} y1={y} x2={280} y2={y} stroke="#1e2d47" strokeWidth="1"/>)}
+        {[40,80,120,160,200,240].map(x => <line key={`v${x}`} x1={x} y1={0} x2={x} y2={220} stroke={`${M.line}99`} strokeWidth="1"/>)}
+        {[40,80,120,160,200].map(y => <line key={`h${y}`} x1={0} y1={y} x2={280} y2={y} stroke={`${M.line}99`} strokeWidth="1"/>)}
         {/* Roads */}
-        <path d="M 0 110 Q 80 100 140 110 Q 200 120 280 108" stroke="#253352" strokeWidth="4" fill="none"/>
-        <path d="M 140 0 Q 145 60 140 110 Q 135 160 138 220" stroke="#253352" strokeWidth="3" fill="none"/>
+        <path d="M 0 110 Q 80 100 140 110 Q 200 120 280 108" stroke={`${M.line}dd`} strokeWidth="4" fill="none"/>
+        <path d="M 140 0 Q 145 60 140 110 Q 135 160 138 220" stroke={`${M.line}dd`} strokeWidth="3" fill="none"/>
 
         {/* Reachable range polygon (simplified circle) */}
         <circle cx={cx} cy={cy} r={ringR}
-          fill={`${s.color}14`}
-          stroke={s.color}
+          fill={`${color}14`}
+          stroke={color}
           strokeWidth="1.5"
           strokeDasharray={state === 'critical' ? '4 3' : 'none'}
           style={{ transition: 'all 0.5s ease' }}
         />
         {/* Range label */}
-        <text x={cx} y={cy - ringR - 6} textAnchor="middle" fontSize="10" fill={s.color} style={{ transition: 'all 0.5s ease' }}>
+        <text x={cx} y={cy - ringR - 6} textAnchor="middle" fontSize="10" fill={color} style={{ transition: 'all 0.5s ease' }}>
           {s.rangeKm} km
         </text>
 
@@ -98,19 +105,19 @@ export function RangeRingMock({ state }) {
         {/* Charging station pins (only visible within range) */}
         {state !== 'critical' && (
           <>
-            <circle cx={185} cy={75} r={7} fill="#3fb950" />
-            <text x={185} y={79} textAnchor="middle" fontSize="8" fill="#fff">⚡</text>
-            <text x={185} y={92} textAnchor="middle" fontSize="9" fill="#8b949e">Ionity</text>
+            <circle cx={185} cy={75} r={7} fill={M.green} />
+            <text x={185} y={79} textAnchor="middle" fontSize="8" fill={M.white}>⚡</text>
+            <text x={185} y={92} textAnchor="middle" fontSize="9" fill={M.dim}>Ionity</text>
           </>
         )}
         {state === 'healthy' && (
           <>
-            <circle cx={95}  cy={155} r={7} fill="#3fb950" />
-            <text x={95}  y={159} textAnchor="middle" fontSize="8" fill="#fff">⚡</text>
-            <text x={95}  y={172} textAnchor="middle" fontSize="9" fill="#8b949e">Fastned</text>
-            <circle cx={220} cy={135} r={7} fill="#d29922" />
-            <text x={220} y={139} textAnchor="middle" fontSize="8" fill="#fff">⚡</text>
-            <text x={220} y={152} textAnchor="middle" fontSize="9" fill="#8b949e">ChargePoint</text>
+            <circle cx={95}  cy={155} r={7} fill={M.green} />
+            <text x={95}  y={159} textAnchor="middle" fontSize="8" fill={M.white}>⚡</text>
+            <text x={95}  y={172} textAnchor="middle" fontSize="9" fill={M.dim}>Fastned</text>
+            <circle cx={220} cy={135} r={7} fill={M.amber} />
+            <text x={220} y={139} textAnchor="middle" fontSize="8" fill={M.white}>⚡</text>
+            <text x={220} y={152} textAnchor="middle" fontSize="9" fill={M.dim}>ChargePoint</text>
           </>
         )}
       </svg>
@@ -120,49 +127,52 @@ export function RangeRingMock({ state }) {
 
 /* ─── Horizon panel mock with charging stop ───────────────────────────────────── */
 export function HorizonMock({ state }) {
+  const M = useDemoStyle();
   const s = SOC_STATES[state];
+  const SOC_COLORS = { healthy: M.green, low: M.amber, critical: M.red };
+  const color = SOC_COLORS[state];
   const hasStop = state !== 'healthy';
   return (
-    <div style={{ background: '#0f1117', borderRadius: 20, border: '1px solid #21262d', padding: '10px 14px', width: 280 }}>
+    <div style={{ background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, padding: '10px 14px', width: 280 }}>
       {/* Progress bar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-        <span style={{ fontSize: '0.875rem', color: '#8b949e' }}>Lyon</span>
-        <div style={{ flex: 1, height: 3, borderRadius: 2, background: '#21262d', position: 'relative' }}>
+        <span style={{ fontSize: '0.875rem', color: M.dim }}>Lyon</span>
+        <div style={{ flex: 1, height: 3, borderRadius: 2, background: M.line, position: 'relative' }}>
           <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: '42%', background: '#C82020', borderRadius: 2 }} />
           {hasStop && (
-            <div style={{ position: 'absolute', top: -4, left: '58%', width: 12, height: 12, borderRadius: '50%', background: s.color, border: '2px solid #0f1117', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '6px' }}>⚡</div>
+            <div style={{ position: 'absolute', top: -4, left: '58%', width: 12, height: 12, borderRadius: '50%', background: color, border: `2px solid ${M.bg}`, transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '6px' }}>⚡</div>
           )}
         </div>
-        <span style={{ fontSize: '0.875rem', color: '#8b949e' }}>Marseille</span>
+        <span style={{ fontSize: '0.875rem', color: M.dim }}>Marseille</span>
       </div>
 
       {/* Upcoming events strip */}
       <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 2 }}>
         {/* NIP */}
-        <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: '#161b22', border: '1px solid #21262d', minWidth: 70 }}>
-          <div style={{ fontSize: '0.875rem', color: '#8b949e', marginBottom: 2 }}>1.2 km</div>
-          <div style={{ fontSize: '0.75rem', color: '#e6edf3', fontWeight: 700 }}>→ A7</div>
+        <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: M.card, border: `1px solid ${M.line}`, minWidth: 70 }}>
+          <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 2 }}>1.2 km</div>
+          <div style={{ fontSize: '0.75rem', color: M.text, fontWeight: 700 }}>→ A7</div>
         </div>
 
         {/* Speed */}
-        <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: '#161b22', border: '1px solid #21262d' }}>
-          <div style={{ fontSize: '0.875rem', color: '#8b949e', marginBottom: 2 }}>Speed</div>
-          <div style={{ fontSize: '0.75rem', color: '#e6edf3', fontWeight: 700 }}>130</div>
+        <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: M.card, border: `1px solid ${M.line}` }}>
+          <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 2 }}>Speed</div>
+          <div style={{ fontSize: '0.75rem', color: M.text, fontWeight: 700 }}>130</div>
         </div>
 
         {/* Charging stop card — only shown when SoC is low */}
         {hasStop && (
-          <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: `${s.color}18`, border: `1px solid ${s.color}50`, minWidth: 90 }}>
-            <div style={{ fontSize: '0.875rem', color: s.color, marginBottom: 2 }}>⚡ Charge · 18 km</div>
-            <div style={{ fontSize: '0.75rem', color: '#e6edf3', fontWeight: 700 }}>Ionity</div>
-            <div style={{ fontSize: '0.875rem', color: '#8b949e' }}>{s.pct}% → 80%</div>
+          <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: `${color}18`, border: `1px solid ${color}50`, minWidth: 90 }}>
+            <div style={{ fontSize: '0.875rem', color, marginBottom: 2 }}>⚡ Charge · 18 km</div>
+            <div style={{ fontSize: '0.75rem', color: M.text, fontWeight: 700 }}>Ionity</div>
+            <div style={{ fontSize: '0.875rem', color: M.dim }}>{s.pct}% → 80%</div>
           </div>
         )}
 
         {/* ETA */}
-        <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: '#161b22', border: '1px solid #21262d' }}>
-          <div style={{ fontSize: '0.875rem', color: '#8b949e', marginBottom: 2 }}>ETA</div>
-          <div style={{ fontSize: '0.75rem', color: '#e6edf3', fontWeight: 700 }}>17:45</div>
+        <div style={{ flexShrink: 0, padding: '6px 9px', borderRadius: 7, background: M.card, border: `1px solid ${M.line}` }}>
+          <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 2 }}>ETA</div>
+          <div style={{ fontSize: '0.75rem', color: M.text, fontWeight: 700 }}>17:45</div>
         </div>
       </div>
     </div>
@@ -208,6 +218,8 @@ navigationSession.setEVRerouteConfiguration(rerouteConfig)`;
 
 export default function EVNavUI({ onNavigate }) {
   const { t } = useTranslation('ev');
+  const M = useDemoStyle();
+  const SOC_COLORS = { healthy: M.green, low: M.amber, critical: M.red };
   const [socState, setSocState] = useState('healthy');
 
   return (
@@ -226,17 +238,20 @@ export default function EVNavUI({ onNavigate }) {
         <p className="body">{t('navUI.soc.body')}</p>
 
         <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-          {Object.entries(SOC_STATES).map(([key, s]) => (
-            <button key={key} onClick={() => setSocState(key)} style={{
-              padding: '7px 16px', borderRadius: 20, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem',
-              background: socState === key ? s.color : 'var(--white)',
-              color: socState === key ? (key === 'low' ? '#000' : '#fff') : 'var(--black)',
-              border: socState === key ? `1.5px solid ${s.color}` : '1.5px solid var(--border)',
-              transition: 'all 0.15s',
-            }}>
-              {s.label} ({s.pct}%)
-            </button>
-          ))}
+          {Object.entries(SOC_STATES).map(([key, s]) => {
+            const c = SOC_COLORS[key];
+            return (
+              <button key={key} onClick={() => setSocState(key)} style={{
+                padding: '7px 16px', borderRadius: 20, cursor: 'pointer', fontWeight: 700, fontSize: '0.875rem',
+                background: socState === key ? c : 'var(--white)',
+                color: socState === key ? (key === 'low' ? '#000' : '#fff') : 'var(--black)',
+                border: socState === key ? `1.5px solid ${c}` : '1.5px solid var(--border)',
+                transition: 'all 0.15s',
+              }}>
+                {s.label} ({s.pct}%)
+              </button>
+            );
+          })}
         </div>
 
         <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'flex-start' }}>

@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const SAFETY_APIS = [
   {
@@ -217,29 +218,30 @@ export function VisibilityConfigurator() {
 
 /* ─── Zone diagram ──────────────────────────────────────────── */
 export function ZoneDiagram() {
+  const M = useDemoStyle();
   return (
     <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start', margin: '24px 0' }}>
       <MapBase>
         <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 360 260" fill="none">
-          <line x1="100" y1="172" x2="178" y2="136" stroke="#3b82f6" strokeWidth="8" strokeLinecap="round" opacity="0.55"/>
-          <circle cx="100" cy="172" r="5" fill="#3b82f6" opacity="0.95"/>
-          <circle cx="100" cy="172" r="9" fill="none" stroke="#3b82f6" strokeWidth="2" opacity="0.5"/>
-          <circle cx="178" cy="136" r="5" fill="#3b82f6" opacity="0.95"/>
-          <circle cx="178" cy="136" r="9" fill="none" stroke="#3b82f6" strokeWidth="2" opacity="0.5"/>
-          <line x1="215" y1="110" x2="275" y2="72" stroke="#f97316" strokeWidth="8" strokeLinecap="round" opacity="0.55"/>
-          <circle cx="215" cy="110" r="5" fill="#f97316" opacity="0.95"/>
-          <circle cx="215" cy="110" r="9" fill="none" stroke="#f97316" strokeWidth="2" opacity="0.5"/>
-          <circle cx="275" cy="72" r="5" fill="#f97316" opacity="0.95"/>
-          <circle cx="275" cy="72" r="9" fill="none" stroke="#f97316" strokeWidth="2" opacity="0.5"/>
+          <line x1="100" y1="172" x2="178" y2="136" stroke={M.blue} strokeWidth="8" strokeLinecap="round" opacity="0.55"/>
+          <circle cx="100" cy="172" r="5" fill={M.blue} opacity="0.95"/>
+          <circle cx="100" cy="172" r="9" fill="none" stroke={M.blue} strokeWidth="2" opacity="0.5"/>
+          <circle cx="178" cy="136" r="5" fill={M.blue} opacity="0.95"/>
+          <circle cx="178" cy="136" r="9" fill="none" stroke={M.blue} strokeWidth="2" opacity="0.5"/>
+          <line x1="215" y1="110" x2="275" y2="72" stroke={M.amber} strokeWidth="8" strokeLinecap="round" opacity="0.55"/>
+          <circle cx="215" cy="110" r="5" fill={M.amber} opacity="0.95"/>
+          <circle cx="215" cy="110" r="9" fill="none" stroke={M.amber} strokeWidth="2" opacity="0.5"/>
+          <circle cx="275" cy="72" r="5" fill={M.amber} opacity="0.95"/>
+          <circle cx="275" cy="72" r="9" fill="none" stroke={M.amber} strokeWidth="2" opacity="0.5"/>
         </svg>
-        <div style={{ position: 'absolute', left: '22%', top: '57%', fontSize: 10, color: '#3b82f6', fontWeight: 700, background: 'rgba(0,0,0,0.5)', borderRadius: 4, padding: '2px 5px' }}>Speed zone</div>
-        <div style={{ position: 'absolute', left: '58%', top: '28%', fontSize: 10, color: '#f97316', fontWeight: 700, background: 'rgba(0,0,0,0.5)', borderRadius: 4, padding: '2px 5px' }}>Danger zone</div>
+        <div style={{ position: 'absolute', left: '22%', top: '57%', fontSize: 10, color: M.blue, fontWeight: 700, background: 'rgba(0,0,0,0.5)', borderRadius: 4, padding: '2px 5px' }}>Speed zone</div>
+        <div style={{ position: 'absolute', left: '58%', top: '28%', fontSize: 10, color: M.amber, fontWeight: 700, background: 'rgba(0,0,0,0.5)', borderRadius: 4, padding: '2px 5px' }}>Danger zone</div>
       </MapBase>
 
       <div style={{ flex: 1, minWidth: 220, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {[
-          { color: '#3b82f6', label: 'Speed zone', desc: 'A stretch of road with a defined speed limit enforcement zone.' },
-          { color: '#f97316', label: 'Danger zone', desc: 'A stretch of road marked as a hazardous area.' },
+          { color: M.blue,  label: 'Speed zone', desc: 'A stretch of road with a defined speed limit enforcement zone.' },
+          { color: M.amber, label: 'Danger zone', desc: 'A stretch of road marked as a hazardous area.' },
         ].map(item => (
           <div key={item.label} style={{
             display: 'flex', gap: 12, alignItems: 'flex-start',

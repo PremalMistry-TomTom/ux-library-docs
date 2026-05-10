@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const ROUTING_APIS = [
   { name: 'Long Distance EV Routing API', type: 'REST API',    description: 'Calculate multi-stop routes with automatic charging stop insertion, MSP preference, and battery curve awareness.', pageId: 'ldevr-calculate-route', productId: 'ldevr' },
@@ -27,18 +28,22 @@ const TRIP = {
   ],
 };
 
-const SOC_COLOR = soc => soc >= 40 ? '#3fb950' : soc >= 20 ? '#d29922' : '#f85149';
+function useSoCColor(pct) {
+  const M = useDemoStyle();
+  return pct >= 40 ? M.green : pct >= 20 ? M.amber : M.red;
+}
 
 function SoCBadge({ pct }) {
+  const color = useSoCColor(pct);
   return (
-    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 20, background: `${SOC_COLOR(pct)}22`, border: `1px solid ${SOC_COLOR(pct)}55`, fontSize: '0.875rem', fontWeight: 700, color: SOC_COLOR(pct), whiteSpace: 'nowrap' }}>
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 20, background: `${color}22`, border: `1px solid ${color}55`, fontSize: '0.875rem', fontWeight: 700, color, whiteSpace: 'nowrap' }}>
       ⚡ {pct}%
     </span>
   );
 }
 
 export function TripTimeline() {
-  const Mc = { bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d', text: '#e6edf3', dim: '#8b949e', blue: '#58a6ff', green: '#3fb950', amber: '#d29922' };
+  const Mc = useDemoStyle();
 
   const totalKm = TRIP.legs.filter(l => l.type === 'leg').reduce((s, l) => s + l.km, 0);
   const totalChargeMins = TRIP.legs.filter(l => l.type === 'stop').reduce((s, l) => s + l.mins, 0);
@@ -110,7 +115,7 @@ export function TripTimeline() {
           );
           if (item.type === 'dest') return (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#2d1f4a', border: `2px solid #a78bfa`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>🏁</div>
+              <div style={{ width: 28, height: 28, borderRadius: '50%', background: `${Mc.purple}33`, border: `2px solid ${Mc.purple}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.875rem', flexShrink: 0 }}>🏁</div>
               <div style={{ flex: 1 }}>
                 <span style={{ fontWeight: 700, fontSize: '0.875rem', color: Mc.text }}>{item.to}</span>
                 <span style={{ fontSize: '0.875rem', color: Mc.dim, marginLeft: 8 }}>Destination</span>
@@ -123,22 +128,17 @@ export function TripTimeline() {
       </div>
 
       {/* OEM value callout */}
-      <div style={{ marginTop: 14, background: '#0f2a1a', border: '1px solid #22533a', borderRadius: 20, padding: '10px 14px', display: 'flex', gap: 10 }}>
+      <div style={{ marginTop: 14, background: `${Mc.green}18`, border: `1px solid ${Mc.green}44`, borderRadius: 20, padding: '10px 14px', display: 'flex', gap: 10 }}>
         <span style={{ fontSize: '0.875rem', flexShrink: 0 }}>✅</span>
-        <div style={{ fontSize: '0.75rem', color: '#86efac', lineHeight: 1.55 }}>
-          <strong>Zero routing code from the OEM.</strong> Battery parameters set once via <code style={{ fontSize: '0.75rem', background: 'rgba(0,0,0,0.3)', padding: '1px 4px', borderRadius: 3 }}>VehicleInfoManager</code> are automatically forwarded to LDEVR. The SDK plans the stops, monitors SoC in-drive, and re-queries if conditions change.
+        <div style={{ fontSize: '0.75rem', color: Mc.green, lineHeight: 1.55 }}>
+          <strong>Zero routing code from the OEM.</strong> Battery parameters set once via <code style={{ fontSize: '0.75rem', background: `${Mc.line}66`, padding: '1px 4px', borderRadius: 3 }}>VehicleInfoManager</code> are automatically forwarded to LDEVR. The SDK plans the stops, monitors SoC in-drive, and re-queries if conditions change.
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── Mock palette ──────────────────────────────────────────────────────────── */
-const M = {
-  bg: '#0d1117', card: '#161b22', card2: '#1c2333', line: '#21262d',
-  text: '#e6edf3', dim: '#8b949e', muted: '#6e7681',
-  blue: '#58a6ff', green: '#3fb950', red: '#f85149',
-};
+/* ─── Mock palette is now supplied by useDemoStyle() inside each component ── */
 
 /* ─── Charging stop strategy calculator ──────────────────────────────────────── */
 // Model: 679 km trip, 75 kWh battery, 18 kWh/100 km average consumption
@@ -199,6 +199,7 @@ function computeStops(minAtStopPct, minAtDestPct) {
 const STATION_NAMES = ['Ionity Reims', 'Fastned Lyon', 'Ionity Montpellier', 'bp pulse Nîmes', 'Electra Marseille'];
 
 export function StopStrategyCalculator({ t }) {
+  const M = useDemoStyle();
   const [minStop, setMinStop] = useState(15);
   const [minDest, setMinDest] = useState(15);
 
@@ -307,6 +308,7 @@ export function StopStrategyCalculator({ t }) {
 
 /* ─── Preferences mock ───────────────────────────────────────────────────────── */
 function PreferencesMock() {
+  const M = useDemoStyle();
   return (
     <div style={{ background: M.card, borderRadius: 20, overflow: 'hidden', width: 260, flexShrink: 0, border: `1px solid ${M.line}` }}>
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}`, fontSize: '0.75rem', fontWeight: 700, color: M.text }}>Route preferences</div>
@@ -318,7 +320,7 @@ function PreferencesMock() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{ flex: 1, height: 4, borderRadius: 2, background: M.line, position: 'relative' }}>
                 <div style={{ position: 'absolute', left: 0, top: 0, height: '100%', width: `${p.pct}%`, background: M.blue, borderRadius: 2 }} />
-                <div style={{ position: 'absolute', top: -4, left: `${p.pct}%`, width: 12, height: 12, borderRadius: '50%', background: M.blue, border: '2px solid #fff', transform: 'translateX(-50%)' }} />
+                <div style={{ position: 'absolute', top: -4, left: `${p.pct}%`, width: 12, height: 12, borderRadius: '50%', background: M.blue, border: `2px solid ${M.bg}`, transform: 'translateX(-50%)' }} />
               </div>
               <span style={{ fontSize: '0.875rem', color: M.blue, minWidth: 28, textAlign: 'right' }}>{p.val}</span>
             </div>

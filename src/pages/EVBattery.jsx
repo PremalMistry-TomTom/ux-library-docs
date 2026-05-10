@@ -4,6 +4,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const BATTERY_APIS = [
   { name: 'Vehicle Metadata',             type: 'Android SDK', description: 'Build EV vehicle selection UIs and retrieve a configured EV object — battery, connectors, consumption — for route planning.', pageId: 'navsdk-adv-vehicle',    productId: 'navsdk' },
@@ -642,6 +643,7 @@ export default function EVBattery({ onNavigate }) {
 }
 
 export function EVBatteryDemo() {
+  const M = useDemoStyle();
   const [cls, setCls] = useState('family');
   return (
     <div style={{ padding: 20, background: 'var(--surface)', borderRadius: 14, border: '1px solid var(--border)' }}>
@@ -655,9 +657,9 @@ export function EVBatteryDemo() {
         ].map(c => (
           <button key={c.id} onClick={() => setCls(c.id)} style={{
             padding: '8px 16px', borderRadius: 10, cursor: 'pointer', fontSize: '0.8125rem',
-            background: cls === c.id ? '#22c55e' : 'var(--bg)',
+            background: cls === c.id ? M.green : 'var(--bg)',
             color: cls === c.id ? '#fff' : 'var(--mid)',
-            border: `1px solid ${cls === c.id ? '#22c55e' : 'var(--border)'}`,
+            border: `1px solid ${cls === c.id ? M.green : 'var(--border)'}`,
             fontWeight: cls === c.id ? 700 : 400,
           }}>
             <div>{c.label}</div>
@@ -666,10 +668,10 @@ export function EVBatteryDemo() {
         ))}
       </div>
       <div style={{ padding: '10px 14px', background: 'var(--bg)', borderRadius: 8, border: '1px solid var(--border)', fontFamily: 'monospace', fontSize: '0.75rem', color: 'var(--mid)' }}>
-        <span style={{ color: '#3b82f6' }}>VehicleOptions.Builder</span>{'()'}
-        <br />{'  .'}<span style={{ color: '#3b82f6' }}>batteryCapacityKwh</span>{'('}<span style={{ color: '#22c55e' }}>{cls === 'compact' ? '38.0' : cls === 'family' ? '77.4' : cls === 'suv' ? '100.0' : '135.0'}</span>{')'}
-        <br />{'  .'}<span style={{ color: '#3b82f6' }}>maxChargeRateKw</span>{'('}<span style={{ color: '#22c55e' }}>{cls === 'compact' ? '100' : cls === 'family' ? '250' : cls === 'suv' ? '300' : '350'}</span>{')'}
-        <br />{'  .'}<span style={{ color: '#3b82f6' }}>build</span>{'()'}
+        <span style={{ color: M.blue }}>VehicleOptions.Builder</span>{'()'}
+        <br />{'  .'}<span style={{ color: M.blue }}>batteryCapacityKwh</span>{'('}<span style={{ color: M.green }}>{cls === 'compact' ? '38.0' : cls === 'family' ? '77.4' : cls === 'suv' ? '100.0' : '135.0'}</span>{')'}
+        <br />{'  .'}<span style={{ color: M.blue }}>maxChargeRateKw</span>{'('}<span style={{ color: M.green }}>{cls === 'compact' ? '100' : cls === 'family' ? '250' : cls === 'suv' ? '300' : '350'}</span>{')'}
+        <br />{'  .'}<span style={{ color: M.blue }}>build</span>{'()'}
       </div>
     </div>
   );

@@ -5,6 +5,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const MAP_DISPLAY_APIS = [
   {
@@ -248,6 +249,7 @@ function TabletFrame({ children, nipOverlay, browseOverlay }) {
 
 /* ─── Style explorer ─────────────────────────────────────────── */
 export function StyleExplorer() {
+  const M = useDemoStyle();
   const [activeId, setActiveId] = useState('drive');
   const style = STYLES.find(s => s.id === activeId);
 
@@ -259,7 +261,7 @@ export function StyleExplorer() {
           <button key={s.id} onClick={() => setActiveId(s.id)} style={{
             flex: 1, padding: '8px 4px', borderRadius: 7, cursor: 'pointer',
             fontSize: '0.75rem', fontWeight: activeId === s.id ? 600 : 400,
-            background: activeId === s.id ? '#fff5f5' : 'var(--bg)',
+            background: activeId === s.id ? `${M.red}12` : 'var(--bg)',
             border: `1px solid ${activeId === s.id ? 'var(--red)' : 'var(--border)'}`,
             color: activeId === s.id ? 'var(--red)' : 'var(--mid)',
             transition: 'all 0.1s',
@@ -348,6 +350,7 @@ export function TiltDemo() {
 
 /* ─── Custom URI demo ────────────────────────────────────────── */
 export function StyleURIDemo() {
+  const M = useDemoStyle();
   const [source, setSource] = useState('asset');
 
   const snippets = {
@@ -364,7 +367,7 @@ export function StyleURIDemo() {
           <button key={k} onClick={() => setSource(k)} style={{
             padding: '6px 12px', borderRadius: 6, cursor: 'pointer', fontSize: '0.75rem',
             fontWeight: source === k ? 600 : 400,
-            background: source === k ? '#fff5f5' : 'var(--bg)',
+            background: source === k ? `${M.red}12` : 'var(--bg)',
             border: `1px solid ${source === k ? 'var(--red)' : 'var(--border)'}`,
             color: source === k ? 'var(--red)' : 'var(--mid)',
             transition: 'all 0.1s',

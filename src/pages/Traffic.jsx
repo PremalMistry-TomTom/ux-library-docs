@@ -5,6 +5,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
+import { useDemoStyle } from '../hooks/useDemoStyle';
 
 const MAP_DISPLAY_APIS = [
   {
@@ -154,11 +155,12 @@ function TabletFrame({ children, overlayChildren }) {
 
 /* ─── Toggle switch ──────────────────────────────────────────── */
 function Toggle({ label, on, onToggle }) {
+  const M = useDemoStyle();
   return (
     <div onClick={onToggle} style={{
       display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
       borderRadius: 7, cursor: 'pointer', marginBottom: 6,
-      background: on ? '#fff' : 'var(--bg)', border: '1px solid var(--border)',
+      background: on ? M.card : 'var(--bg)', border: '1px solid var(--border)',
       transition: 'all 0.12s',
     }}>
       <div style={{ width: 32, height: 18, borderRadius: 9, background: on ? 'var(--red)' : 'var(--border)', position: 'relative', flexShrink: 0, transition: 'background 0.15s' }}>
@@ -181,6 +183,7 @@ const INCIDENT_TYPES = [
 
 /* ─── Traffic layer configurator ─────────────────────────────── */
 export function LayerConfigurator() {
+  const M = useDemoStyle();
   const [flowOn,    setFlowOn]    = useState(true);
   const [incOn,     setIncOn]     = useState(true);
   const [flowStyle, setFlowStyle] = useState('RELATIVE');
@@ -216,7 +219,7 @@ export function LayerConfigurator() {
             ].map(opt => (
               <div key={opt.id} onClick={() => setFlowStyle(opt.id)} style={{
                 padding: '7px 10px', borderRadius: 7, cursor: 'pointer', marginBottom: 5,
-                background: flowStyle === opt.id ? '#fff5f5' : 'var(--bg)',
+                background: flowStyle === opt.id ? `${M.red}12` : 'var(--bg)',
                 border: `1px solid ${flowStyle === opt.id ? 'var(--red)' : 'var(--border)'}`,
                 transition: 'all 0.1s',
               }}>
@@ -235,6 +238,7 @@ export function LayerConfigurator() {
 
 /* ─── Incident type filter ───────────────────────────────────── */
 export function IncidentFilter() {
+  const M = useDemoStyle();
   const [enabled, setEnabled] = useState(INCIDENT_TYPES.map(t => t.id));
   const toggle = id => setEnabled(e => e.includes(id) ? e.filter(x => x !== id) : [...e, id]);
 
@@ -273,7 +277,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
             <div key={t.id} onClick={() => toggle(t.id)} style={{
               display: 'flex', alignItems: 'center', gap: 10, padding: '8px 12px',
               borderRadius: 7, cursor: 'pointer',
-              background: on ? '#fff' : 'var(--bg)', border: '1px solid var(--border)',
+              background: on ? M.card : 'var(--bg)', border: '1px solid var(--border)',
               opacity: on ? 1 : 0.45, transition: 'all 0.12s',
             }}>
               <span style={{ fontSize: '1rem' }}>{t.icon}</span>
@@ -291,6 +295,7 @@ ${INCIDENT_TYPES.filter(t => enabled.includes(t.id)).map(t => `            Incid
 
 /* ─── Refresh interval demo ──────────────────────────────────── */
 export function RefreshDemo() {
+  const M = useDemoStyle();
   const PRESETS = [
     { id: 30,  label: '30 s',  note: 'Near real-time. Higher data usage.' },
     { id: 60,  label: '1 min', note: 'Balanced. Recommended default.' },
@@ -306,7 +311,7 @@ export function RefreshDemo() {
         {PRESETS.map(p => (
           <button key={p.id} onClick={() => setInterval(p.id)} style={{
             padding: '8px 4px', borderRadius: 7, cursor: 'pointer', textAlign: 'center',
-            background: interval === p.id ? '#fff5f5' : 'var(--bg)',
+            background: interval === p.id ? `${M.red}12` : 'var(--bg)',
             border: `1px solid ${interval === p.id ? 'var(--red)' : 'var(--border)'}`,
             color: interval === p.id ? 'var(--red)' : 'var(--mid)',
             transition: 'all 0.1s',
