@@ -106,7 +106,7 @@ function SectionLabel({ children }) {
    1. MAP DISPLAY — COMPOSE
    ═══════════════════════════════════════════════════════════════════════════ */
 const MAP_COMPOSE_APIS = [
-  { name: 'Map Display for Views',   type: 'Android SDK', description: 'XML Views alternative to TomTomMapComposable for apps not yet on Jetpack Compose.',                    pageId: 'navsdk-map-views',    productId: 'navsdk' },
+  { name: 'Map Display API',         type: 'REST API',    description: 'Vector and raster tile endpoints that back the map tiles rendered by TomTomMapComposable.',               pageId: 'map-display-api-intro', productId: 'map-display-api' },
   { name: 'Map Styles',              type: 'Android SDK', description: 'Apply built-in day/night/satellite or custom JSON styles using MapStyleConfig.',                         pageId: 'navsdk-map-styles',   productId: 'navsdk' },
   { name: 'Camera & Animations',     type: 'Android SDK', description: 'Control map viewpoint — location, zoom, tilt, rotation — and animate camera transitions.',               pageId: 'navsdk-map-camera',   productId: 'navsdk' },
   { name: 'Markers',                 type: 'Android SDK', description: 'Place custom markers at geographic coordinates with tap events and balloon popups.',                       pageId: 'navsdk-map-markers',  productId: 'navsdk' },
@@ -262,11 +262,10 @@ export function NavSDKMapCompose({ onNavigate }) {
    2. MAP DISPLAY — VIEWS
    ═══════════════════════════════════════════════════════════════════════════ */
 const MAP_VIEWS_APIS = [
+  { name: 'Map Display API',          type: 'REST API',    description: 'Vector and raster tile endpoints that back the map tiles rendered by TomTomMapFragment.',                pageId: 'map-display-api-intro', productId: 'map-display-api' },
   { name: 'Map Display for Compose',  type: 'Android SDK', description: 'Jetpack Compose alternative to TomTomMapFragment — preferred for new Compose-based apps.',              pageId: 'navsdk-map-compose',  productId: 'navsdk' },
   { name: 'Map Styles',               type: 'Android SDK', description: 'Apply built-in day/night/satellite or custom JSON styles using MapStyleConfig.',                         pageId: 'navsdk-map-styles',   productId: 'navsdk' },
   { name: 'Camera & Animations',      type: 'Android SDK', description: 'Control map viewpoint — location, zoom, tilt, rotation — and animate camera transitions.',               pageId: 'navsdk-map-camera',   productId: 'navsdk' },
-  { name: 'Markers',                  type: 'Android SDK', description: 'Place custom markers at geographic coordinates with tap events and balloon popups.',                       pageId: 'navsdk-map-markers',  productId: 'navsdk' },
-  { name: 'Traffic Layers',           type: 'Android SDK', description: 'Enable real-time traffic flow and incident overlays on the Views-based map.',                             pageId: 'navsdk-map-traffic',  productId: 'navsdk' },
 ];
 export function NavSDKMapViews({ onNavigate }) {
   const [showFragment, setShowFragment] = useState(true);
@@ -387,8 +386,8 @@ const MAP_STYLES = [
 ];
 
 const MAP_STYLES_APIS = [
+  { name: 'Map Display API',          type: 'REST API',    description: 'Vector tile endpoint that serves the layer data styled by MapStyleConfig — supports custom style JSON.',  pageId: 'map-display-api-intro', productId: 'map-display-api' },
   { name: 'Map Display for Compose',  type: 'Android SDK', description: 'Composable map where MapStyleConfig is applied — start here to use styles in a Compose app.',          pageId: 'navsdk-map-compose',  productId: 'navsdk' },
-  { name: 'Map Display for Views',    type: 'Android SDK', description: 'XML Views map where MapStyleConfig is applied — use for View-system app styling.',                       pageId: 'navsdk-map-views',    productId: 'navsdk' },
   { name: 'Map Style (UX Library)',   type: 'Android SDK', description: 'UX Library map style page — configure built-in style variants and connect a TomTom Map Maker style.',    pageId: 'map-style',           productId: 'ux-library' },
   { name: 'TomTom Map Maker',         type: 'Tool',        description: 'Design and publish custom map styles — colours, typography, layer visibility — then load in the SDK.',   url: 'https://mapmaker.tomtom.com' },
 ];
@@ -701,10 +700,9 @@ function MarkerPin({ x, y, label, color, selected, onClick }) {
 }
 
 const MAP_MARKERS_APIS = [
+  { name: 'Search API',              type: 'REST API',    description: 'Fuzzy and POI search results are the primary source of GeoPoint data placed as map markers.',               pageId: 'search-api-intro',    productId: 'search-api' },
   { name: 'Map Display for Compose', type: 'Android SDK', description: 'Composable map that hosts the marker layer — markers are placed via the TomTomMapComposable API.',         pageId: 'navsdk-map-compose',  productId: 'navsdk' },
-  { name: 'Map Display for Views',   type: 'Android SDK', description: 'Views map variant where markers are added to the TomTomMap object.',                                         pageId: 'navsdk-map-views',    productId: 'navsdk' },
-  { name: 'Find a Location',         type: 'Android SDK', description: 'Search results returned as GeoPoint objects are typically visualised as map markers.',                        pageId: 'navsdk-search-find',  productId: 'navsdk' },
-  { name: 'Planning a Route',        type: 'Android SDK', description: 'Origin, destination, and waypoint markers are drawn on the map alongside the calculated route line.',         pageId: 'navsdk-route-planning', productId: 'navsdk' },
+  { name: 'Find a Location',         type: 'Android SDK', description: 'Search SDK that delivers the GeoPoint coordinates placed as markers.',                                        pageId: 'navsdk-search-find',  productId: 'navsdk' },
 ];
 export function NavSDKMapMarkers({ onNavigate }) {
   const [selectedMarker, setSelectedMarker] = useState(null);
@@ -837,11 +835,10 @@ const FLOW_TYPES = [
 ];
 
 const MAP_TRAFFIC_APIS = [
-  { name: 'Map Display for Compose', type: 'Android SDK', description: 'Composable map where traffic layers are toggled via MapOptionsState — start here for Compose apps.',         pageId: 'navsdk-map-compose',      productId: 'navsdk' },
-  { name: 'Map Display for Views',   type: 'Android SDK', description: 'Views map variant — traffic layers are enabled on the TomTomMap object.',                                     pageId: 'navsdk-map-views',        productId: 'navsdk' },
+  { name: 'Traffic API — Flow',      type: 'REST API',    description: 'Live traffic flow data — speed, jam factor, freeflow — that the SDK fetches to colour the traffic overlay.', pageId: 'traffic-api-intro',       productId: 'traffic-api' },
+  { name: 'Map Display API',         type: 'REST API',    description: 'Flow tile endpoint served as a map tile layer overlay alongside the base vector tiles.',                      pageId: 'map-display-api-intro',   productId: 'map-display-api' },
   { name: 'Navigation Traffic',      type: 'Android SDK', description: 'Traffic incidents shown along the active navigation route — extends map traffic with route context.',          pageId: 'navsdk-nav-traffic',      productId: 'navsdk' },
-  { name: 'Horizon Traffic',         type: 'Android SDK', description: 'Predictive traffic events from the Virtual Horizon engine — ahead-of-time data before reaching incidents.',    pageId: 'navsdk-horizon-traffic',  productId: 'navsdk' },
-  { name: 'Traffic (UX Library)',    type: 'Android SDK', description: 'UX Library traffic page — configure flow and incident display in the full navigation composable.',             pageId: 'traffic',                 productId: 'ux-library' },
+  { name: 'Map Display for Compose', type: 'Android SDK', description: 'Composable map where traffic layers are toggled via MapOptionsState.',                                         pageId: 'navsdk-map-compose',      productId: 'navsdk' },
 ];
 export function NavSDKMapTraffic({ onNavigate }) {
   const [showFlow, setShowFlow] = useState(true);

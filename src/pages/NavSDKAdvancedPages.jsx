@@ -30,10 +30,10 @@ function MapCanvas({ height = 260, children }) {
    8. SIMULATION
    ═══════════════════════════════════════════════════════════════════════════ */
 const ADV_SIMULATION_APIS = [
-  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that SimulatedLocationEngine replaces for test-drive and QA workflows.',                      pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Calculate Route',        type: 'REST API',    description: 'Route response object consumed by SimulatedLocationEngine to generate simulated GPS positions along the path.',pageId: 'routing-calculate-route',    productId: 'routing-api' },
   { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that receives position updates from the simulated engine.',                                 pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
-  { name: 'Map Camera',             type: 'Android SDK', description: 'Camera that follows the simulated vehicle position during playback.',                                           pageId: 'navsdk-map-camera',          productId: 'navsdk' },
-  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object consumed by SimulatedLocationEngine to generate GPS positions along the path.',                   pageId: 'navsdk-route-planning',      productId: 'navsdk' },
+  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that SimulatedLocationEngine replaces for test-drive and QA workflows.',                      pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Route planning options that determine the path the simulation follows.',                                        pageId: 'navsdk-route-planning',      productId: 'navsdk' },
 ];
 
 export function NavSDKAdvSimulation({ onNavigate }) {
@@ -204,6 +204,7 @@ engine.stop()`}</pre>
    9. MAP-MATCHED LOCATION
    ═══════════════════════════════════════════════════════════════════════════ */
 const ADV_MAP_MATCHED_APIS = [
+  { name: 'Snap to Roads API',      type: 'REST API',    description: 'Server-side road snapping REST endpoint — the conceptual equivalent of on-device MapMatchedLocationProvider.',  pageId: 'snap-to-roads-api-intro',    productId: 'snap-to-roads-api' },
   { name: 'Location Quickstart',    type: 'Android SDK', description: 'Raw LocationProvider that MapMatchedLocationProvider wraps and enhances with road-snapping.',                  pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
   { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that benefits from map-matched position for more accurate guidance.',                        pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
   { name: 'Free Driving Mode',      type: 'Android SDK', description: 'Free-driving that relies on map-matched position for accurate road-snapped display without a route.',          pageId: 'navsdk-nav-free-driving',    productId: 'navsdk' },
@@ -535,10 +536,10 @@ const VEHICLE_TYPES = ['CAR', 'TRUCK', 'BUS'];
 const FUEL_TYPES = ['COMBUSTION', 'ELECTRIC', 'HYBRID'];
 
 const ADV_VEHICLE_APIS = [
+  { name: 'Calculate Route',        type: 'REST API',    description: 'Vehicle profile REST parameters — truck dimensions, axle weight, height clearance — mapped from VehicleProviderOptions.',pageId: 'routing-calculate-route', productId: 'routing-api' },
+  { name: 'EV Route (LDEVR)',       type: 'REST API',    description: 'Long Distance EV Routing endpoint that consumes battery capacity, consumption model, and charge speed from this vehicle profile.',pageId: 'ldevr-calculate-route', productId: 'ldevr' },
   { name: 'Route Planning',         type: 'Android SDK', description: 'RoutePlanningOptions that consumes VehicleProviderOptions — truck dimensions, EV parameters applied here.',   pageId: 'navsdk-route-planning',     productId: 'navsdk' },
-  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that uses vehicle metadata for speed profiles and restriction warnings.',                    pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
   { name: 'EV Routing (UX)',        type: 'Android SDK', description: 'UX Library EV routing page that relies on batteryCapacityKwh and consumptionModel from this vehicle profile.',pageId: 'ev-routing',                productId: 'ux-library' },
-  { name: 'EV Battery & Range (UX)',type: 'Android SDK', description: 'Battery state display that uses vehicleType EV and batteryCapacityKwh configured here.',                       pageId: 'ev-battery',                productId: 'ux-library' },
 ];
 
 export function NavSDKAdvVehicle({ onNavigate }) {

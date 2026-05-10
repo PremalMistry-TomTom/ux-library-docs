@@ -351,9 +351,9 @@ searchAPI.search(query: query) { result in
 }`;
 
 const SEARCH_QUICKSTART_APIS = [
-  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search for POIs, addresses, and geography — the primary search operation built on this quickstart.',   pageId: 'navsdk-search-find',        productId: 'navsdk' },
+  { name: 'Search API',             type: 'REST API',    description: 'Fuzzy search, POI search, and geocoding REST endpoints that the Search SDK wraps.',                            pageId: 'search-api-intro',          productId: 'search-api' },
+  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search SDK call — the primary operation built on this SDK initialisation.',                              pageId: 'navsdk-search-find',        productId: 'navsdk' },
   { name: 'Location Quickstart',    type: 'Android SDK', description: 'Configure the LocationProvider that powers position-biased search results.',                                   pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
-  { name: 'Search Engine (UX)',     type: 'Android SDK', description: 'UX Library search engine component that consumes results from this SDK initialisation.',                        pageId: 'search-engine',              productId: 'ux-library' },
 ];
 
 export function NavSDKSearchQuickstart({ onNavigate }) {
@@ -564,11 +564,10 @@ searchAPI.search(query: query) { result in
 }`;
 
 const SEARCH_FIND_APIS = [
-  { name: 'Search Quickstart',      type: 'Android SDK', description: 'SDK initialisation and OnlineSearch.create() needed before fuzzy search is available.',                        pageId: 'navsdk-search-quickstart', productId: 'navsdk' },
+  { name: 'Search API — Fuzzy',     type: 'REST API',    description: 'Fuzzy search REST endpoint — the underlying call the SDK abstracts for free-text location matching.',          pageId: 'search-api-intro',         productId: 'search-api' },
+  { name: 'Search Quickstart',      type: 'Android SDK', description: 'OnlineSearch.create() SDK setup needed before fuzzy search calls are available.',                              pageId: 'navsdk-search-quickstart', productId: 'navsdk' },
   { name: 'Reverse Geocoding',      type: 'Android SDK', description: 'Convert a tapped coordinate back into a structured address using the same SearchApi instance.',                pageId: 'navsdk-search-reverse',    productId: 'navsdk' },
   { name: 'Bring Your Own Data',    type: 'Android SDK', description: 'Blend custom POI records into fuzzy search results via SearchIndexDataProvider.',                               pageId: 'navsdk-search-byod',       productId: 'navsdk' },
-  { name: 'Search Engine (UX)',     type: 'Android SDK', description: 'UX Library component that wraps fuzzy search results in an interactive list UI.',                               pageId: 'search-engine',            productId: 'ux-library' },
-  { name: 'Map Markers',            type: 'Android SDK', description: 'Pin fuzzy search results on the map using ImageMarker or ClusterLayer.',                                        pageId: 'navsdk-map-markers',       productId: 'navsdk' },
 ];
 
 export function NavSDKSearchFind({ onNavigate }) {
@@ -791,10 +790,10 @@ searchAPI.searchEVChargingStations(options: options) { result in
 }`;
 
 const SEARCH_EV_APIS = [
-  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search fundmentals — the same SearchApi instance powers EV station search.',                             pageId: 'navsdk-search-find',        productId: 'navsdk' },
-  { name: 'EV Charging Search (UX)',type: 'Android SDK', description: 'UX Library charging search page that renders station cards from this SDK call.',                               pageId: 'ev-charging-search',        productId: 'ux-library' },
-  { name: 'EV Battery & Range (UX)',type: 'Android SDK', description: 'Battery state and range estimate that determines which stations are reachable.',                               pageId: 'ev-battery',                productId: 'ux-library' },
-  { name: 'Route Planning',         type: 'Android SDK', description: 'Plan a route with an EV charging stop inserted at the station found by this search.',                          pageId: 'navsdk-route-planning',     productId: 'navsdk' },
+  { name: 'EV Charging API',        type: 'REST API',    description: 'Charging station search REST endpoint — real-time availability, connector types, and power levels.',           pageId: 'ev-charging-api-intro',     productId: 'ev-charging-api' },
+  { name: 'EV Route (LDEVR)',       type: 'REST API',    description: 'Long Distance EV Routing API — computes charging stops along a route from the stations found here.',          pageId: 'ldevr-calculate-route',     productId: 'ldevr' },
+  { name: 'Find a Location',        type: 'Android SDK', description: 'The same SearchApi instance powers EV station search via EVChargingStationsSearchOptions.',                    pageId: 'navsdk-search-find',        productId: 'navsdk' },
+  { name: 'EV Charging Search (UX)',type: 'Android SDK', description: 'UX Library page that renders station cards from this SDK call.',                                               pageId: 'ev-charging-search',        productId: 'ux-library' },
 ];
 
 export function NavSDKSearchEv({ onNavigate }) {
@@ -993,9 +992,10 @@ searchAPI.reverseGeocode(query: query) { result in
 }`;
 
 const SEARCH_REVERSE_APIS = [
-  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search using the same SearchApi instance — reverse geocoding and text search share one initialisation.',  pageId: 'navsdk-search-find',         productId: 'navsdk' },
+  { name: 'Geocoding API',          type: 'REST API',    description: 'Reverse geocoding REST endpoint — converts lat/lon into a structured address with freeFormAddress.',           pageId: 'geocoding-api-intro',        productId: 'geocoding-api' },
+  { name: 'Search API',             type: 'REST API',    description: 'The Search API also provides reverse geocoding — SDK wraps both APIs through the same SearchApi interface.',    pageId: 'search-api-intro',           productId: 'search-api' },
+  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search using the same SearchApi instance — text search and reverse geocoding share one initialisation.', pageId: 'navsdk-search-find',         productId: 'navsdk' },
   { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that supplies the vehicle\'s GeoCoordinate for reverse geocoding pin positions.',              pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
-  { name: 'Search Quickstart',      type: 'Android SDK', description: 'SDK initialisation with OnlineSearch.create() — required before reverse geocoding is available.',              pageId: 'navsdk-search-quickstart',   productId: 'navsdk' },
 ];
 
 export function NavSDKSearchReverse({ onNavigate }) {
@@ -1131,9 +1131,9 @@ searchAPI.search(query: query) { result in
 }`;
 
 const SEARCH_BYOD_APIS = [
-  { name: 'Find a Location',        type: 'Android SDK', description: 'Fuzzy search that blends BYOD records — the same FuzzySearchOptions call surfaces both cloud and custom results.',pageId: 'navsdk-search-find',       productId: 'navsdk' },
-  { name: 'Search Quickstart',      type: 'Android SDK', description: 'OnlineSearch.create() must be called with the SearchIndexDataProvider before BYOD records are available.',        pageId: 'navsdk-search-quickstart', productId: 'navsdk' },
-  { name: 'Search Engine (UX)',     type: 'Android SDK', description: 'UX Library search component that renders blended BYOD results alongside TomTom cloud results.',                   pageId: 'search-engine',            productId: 'ux-library' },
+  { name: 'Search API',             type: 'REST API',    description: 'Cloud-side fuzzy search endpoint — BYOD blends your custom records with results from this REST API.',           pageId: 'search-api-intro',         productId: 'search-api' },
+  { name: 'Find a Location',        type: 'Android SDK', description: 'The same FuzzySearchOptions call surfaces both BYOD and cloud results transparently.',                           pageId: 'navsdk-search-find',       productId: 'navsdk' },
+  { name: 'Search Quickstart',      type: 'Android SDK', description: 'OnlineSearch.create() must receive SearchIndexDataProvider before BYOD records are indexed.',                    pageId: 'navsdk-search-quickstart', productId: 'navsdk' },
 ];
 
 export function NavSDKSearchByod({ onNavigate }) {

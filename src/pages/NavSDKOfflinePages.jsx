@@ -35,9 +35,9 @@ function MapCanvas({ children, height = 260 }) {
    1. OFFLINE QUICKSTART
    ═══════════════════════════════════════════════════════════════════════════ */
 const OFFLINE_QUICKSTART_APIS = [
+  { name: 'Map Display API',        type: 'REST API',    description: 'Vector tile endpoint whose tiles are pre-fetched and stored in NativeMapStore for offline rendering.',         pageId: 'map-display-api-intro',    productId: 'map-display-api' },
   { name: 'Offline Map Setup',      type: 'Android SDK', description: 'OfflineMapRegionManager configuration that follows on from this NativeMapStore initialisation.',               pageId: 'navsdk-offline-setup',     productId: 'navsdk' },
   { name: 'Offline Map Management', type: 'Android SDK', description: 'Listing, updating, and deleting downloaded regions after the initial offline setup.',                          pageId: 'navsdk-offline-mgmt',      productId: 'navsdk' },
-  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Composable map that renders offline tiles from the downloaded NativeMapStore.',                                pageId: 'navsdk-map-compose',       productId: 'navsdk' },
   { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Navigation session that uses the offline map and routing data downloaded here.',                               pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
 ];
 
@@ -252,9 +252,9 @@ const DOWNLOAD_STATE_LABELS = {
 };
 
 const OFFLINE_SETUP_APIS = [
+  { name: 'Map Display API',        type: 'REST API',    description: 'Vector tile endpoint that defines the tile schema downloaded by OfflineMapRegionManager.',                    pageId: 'map-display-api-intro',     productId: 'map-display-api' },
   { name: 'Offline Quickstart',     type: 'Android SDK', description: 'NativeMapStore setup that must be completed before region manager policies take effect.',                      pageId: 'navsdk-offline-quickstart', productId: 'navsdk' },
   { name: 'Offline Map Management', type: 'Android SDK', description: 'Post-setup operations — list, update, and delete packages configured with this region manager.',               pageId: 'navsdk-offline-mgmt',       productId: 'navsdk' },
-  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Map composable that switches to offline tile rendering when the download region is active.',                   pageId: 'navsdk-map-compose',        productId: 'navsdk' },
 ];
 
 export function NavSDKOfflineSetup({ onNavigate }) {
@@ -445,9 +445,9 @@ const MOCK_REGIONS = [
 ];
 
 const OFFLINE_MGMT_APIS = [
+  { name: 'Map Display API',        type: 'REST API',    description: 'Tile endpoint whose downloaded packages are managed here — delta update URLs are served from this API.',       pageId: 'map-display-api-intro',     productId: 'map-display-api' },
   { name: 'Offline Quickstart',     type: 'Android SDK', description: 'Initial NativeMapStore and OfflineManager setup — required before regions are available to manage.',          pageId: 'navsdk-offline-quickstart', productId: 'navsdk' },
   { name: 'Offline Map Setup',      type: 'Android SDK', description: 'Region download configuration including bounding box, quota policy, and progress listeners.',                 pageId: 'navsdk-offline-setup',      productId: 'navsdk' },
-  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Map composable that uses managed offline packages for tile rendering.',                                        pageId: 'navsdk-map-compose',        productId: 'navsdk' },
 ];
 
 export function NavSDKOfflineMgmt({ onNavigate }) {

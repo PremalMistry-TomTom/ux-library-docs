@@ -157,10 +157,10 @@ function RoutingQuickstartDemo() {
 }
 
 const ROUTING_QUICKSTART_APIS = [
+  { name: 'Routing API',            type: 'REST API',    description: 'Calculate Route REST endpoint — the HTTP call this SDK quickstart abstracts into a typed Kotlin/Swift API.',   pageId: 'routing-api-intro',          productId: 'routing-api' },
+  { name: 'Calculate Route',        type: 'REST API',    description: 'Full request/response reference for the route planning call made by RoutingApi under the hood.',               pageId: 'routing-calculate-route',    productId: 'routing-api' },
   { name: 'Route Planning',         type: 'Android SDK', description: 'Travel modes, avoidances, and timing options built on top of this RoutingApi initialisation.',                 pageId: 'navsdk-route-planning',      productId: 'navsdk' },
-  { name: 'Location Quickstart',    type: 'Android SDK', description: 'LocationProvider that supplies the origin GeoCoordinate for route requests.',                                  pageId: 'navsdk-location-quickstart', productId: 'navsdk' },
   { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Turn-by-turn navigation that consumes the Route object returned by RoutingApi.',                               pageId: 'navsdk-nav-quickstart',      productId: 'navsdk' },
-  { name: 'Map Display for Compose',type: 'Android SDK', description: 'Composable map that renders the calculated route polyline.',                                                    pageId: 'navsdk-map-compose',         productId: 'navsdk' },
 ];
 
 export function NavSDKRoutingQuickstart({ onNavigate }) {
@@ -352,11 +352,11 @@ function RoutePlanningDemo() {
 }
 
 const ROUTE_PLANNING_APIS = [
-  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi setup required before planning options take effect.',                                               pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Calculate Route (v1)',   type: 'REST API',    description: 'Route planning REST endpoint — travel mode, avoidances, departure time parameters the SDK maps to.',          pageId: 'routing-calculate-route',   productId: 'routing-api' },
+  { name: 'Calculate Route (v3)',   type: 'REST API',    description: 'Latest routing REST endpoint with improved EV consumption model and weather consideration support.',           pageId: 'routing-v3-calculate-route',productId: 'routing-api' },
+  { name: 'Reachable Range',        type: 'REST API',    description: 'Calculates how far a vehicle can reach on a given fuel/charge budget — used in EV range display.',            pageId: 'routing-reachable-range',   productId: 'routing-api' },
+  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi SDK setup required before RoutePlanningOptions take effect.',                                       pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
   { name: 'Alternative Routes',     type: 'Android SDK', description: 'Request multiple scored alternatives alongside the primary planned route.',                                     pageId: 'navsdk-route-alternatives', productId: 'navsdk' },
-  { name: 'Route Sections',         type: 'Android SDK', description: 'Break the planned route into typed segments — traffic, tolls, ferries — for detailed cost display.',           pageId: 'navsdk-route-sections',     productId: 'navsdk' },
-  { name: 'Vehicle Profile',        type: 'Android SDK', description: 'Set truck dimensions, weight, and EV parameters used in route planning calculations.',                         pageId: 'navsdk-adv-vehicle',        productId: 'navsdk' },
-  { name: 'EV Routing (UX)',        type: 'Android SDK', description: 'UX Library EV routing page showing how battery range and charging stops are integrated with route planning.',  pageId: 'ev-routing',                productId: 'ux-library' },
 ];
 
 export function NavSDKRoutePlanning({ onNavigate }) {
@@ -553,10 +553,10 @@ routingApi.planRoute(options) { result in
 }`;
 
 const ROUTE_ALTERNATIVES_APIS = [
+  { name: 'Calculate Route',        type: 'REST API',    description: 'maxAlternatives parameter on the Calculate Route endpoint — the REST call the SDK wraps to return alternatives.',pageId: 'routing-calculate-route',  productId: 'routing-api' },
+  { name: 'Calculate Route (v3)',   type: 'REST API',    description: 'v3 endpoint also supports alternatives with improved scoring for eco and fastest options.',                     pageId: 'routing-v3-calculate-route',productId: 'routing-api' },
   { name: 'Route Planning',         type: 'Android SDK', description: 'RoutePlanningOptions where maxAlternatives is configured alongside travel mode and avoidances.',               pageId: 'navsdk-route-planning',     productId: 'navsdk' },
-  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi initialisation required before requesting alternatives.',                                            pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
-  { name: 'Navigation Replanning',  type: 'Android SDK', description: 'Automatic rerouting that selects among alternatives when the driver deviates from the planned route.',         pageId: 'navsdk-nav-replanning',     productId: 'navsdk' },
-  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Start guidance on the selected alternative route.',                                                             pageId: 'navsdk-nav-quickstart',     productId: 'navsdk' },
+  { name: 'Navigation Replanning',  type: 'Android SDK', description: 'Automatic rerouting that selects among alternatives when the driver deviates.',                                pageId: 'navsdk-nav-replanning',     productId: 'navsdk' },
 ];
 
 export function NavSDKRouteAlternatives({ onNavigate }) {
@@ -736,9 +736,10 @@ const SW_SECTIONS = `routingApi.planRoute(options) { result in
 }`;
 
 const ROUTE_SECTIONS_APIS = [
-  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object whose sections array is iterated — planning options determine which section types are included.',  pageId: 'navsdk-route-planning',     productId: 'navsdk' },
-  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi setup needed to request a route and access its sections.',                                           pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
-  { name: 'Turn-by-Turn Navigation',type: 'Android SDK', description: 'Navigation engine that uses section data for restriction warnings and toll notifications during guidance.',    pageId: 'navsdk-nav-turn-by-turn',   productId: 'navsdk' },
+  { name: 'Routing Instructions',   type: 'REST API',    description: 'Guidance instructions endpoint — turn types, exit numbers, street names per section.',                         pageId: 'routing-instructions',      productId: 'routing-api' },
+  { name: 'Guidance (v3)',          type: 'REST API',    description: 'v3 guidance REST endpoint with structured manoeuvre, lane, and road shield data per section.',                  pageId: 'routing-v3-guidance',       productId: 'routing-api' },
+  { name: 'Lane Guidance',          type: 'REST API',    description: 'Lane-level section data — which lanes to take at a junction — delivered as section attributes.',                pageId: 'routing-lane-guidance',     productId: 'routing-api' },
+  { name: 'Turn-by-Turn Navigation',type: 'Android SDK', description: 'Navigation engine that uses section data for restriction warnings and toll notifications.',                     pageId: 'navsdk-nav-turn-by-turn',   productId: 'navsdk' },
 ];
 
 export function NavSDKRouteSections({ onNavigate }) {
@@ -926,8 +927,8 @@ function ImportExportDemo() {
 }
 
 const ROUTE_IMPORT_EXPORT_APIS = [
-  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object that is serialised/deserialised — waypoints and options are preserved in the exported format.',   pageId: 'navsdk-route-planning',     productId: 'navsdk' },
-  { name: 'Routing Quickstart',     type: 'Android SDK', description: 'RoutingApi initialisation needed for re-planning after waypoint modification.',                                 pageId: 'navsdk-routing-quickstart', productId: 'navsdk' },
+  { name: 'Calculate Route',        type: 'REST API',    description: 'Route response JSON schema that the SDK serialises — the same structure is used for export/import.',           pageId: 'routing-calculate-route',   productId: 'routing-api' },
+  { name: 'Route Planning',         type: 'Android SDK', description: 'Route object that is serialised — waypoints and options are preserved in the exported format.',                pageId: 'navsdk-route-planning',     productId: 'navsdk' },
   { name: 'Alternative Routes',     type: 'Android SDK', description: 'Alternatives are also serialisable — useful for persisting route comparison sessions.',                         pageId: 'navsdk-route-alternatives', productId: 'navsdk' },
 ];
 

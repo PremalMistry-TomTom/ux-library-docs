@@ -49,7 +49,6 @@ const HORIZON_DATA_APIS = [
   { name: 'Horizon — Safety',       type: 'Android SDK', description: 'Speed limit change events delivered by the same HorizonEngine instance configured here.',                     pageId: 'navsdk-horizon-safety',    productId: 'navsdk' },
   { name: 'Horizon — Hazards',      type: 'Android SDK', description: 'Accident and road-works notifications from HorizonHazardObserver — same engine, different observer.',         pageId: 'navsdk-horizon-hazards',   productId: 'navsdk' },
   { name: 'Horizon — Traffic',      type: 'Android SDK', description: 'FlowObstacle data for traffic density ahead, also delivered via HorizonEngine.',                              pageId: 'navsdk-horizon-traffic',   productId: 'navsdk' },
-  { name: 'Navigation Quickstart',  type: 'Android SDK', description: 'Active navigation session required — HorizonEngine only operates when a route is set.',                       pageId: 'navsdk-nav-quickstart',    productId: 'navsdk' },
   { name: 'Horizon Panel (UX)',     type: 'Android SDK', description: 'UX Library horizon panel that visualises road properties from HorizonElementProperties.',                     pageId: 'horizon-panel',            productId: 'ux-library' },
 ];
 
@@ -550,8 +549,8 @@ const DELAY_LEVELS = [
 ];
 
 const HORIZON_TRAFFIC_APIS = [
+  { name: 'Traffic API',            type: 'REST API',    description: 'Live traffic flow REST endpoint — Horizon Engine enriches on-device road data with this live feed.',           pageId: 'traffic-api-intro',        productId: 'traffic-api' },
   { name: 'Retrieving Horizon Data',type: 'Android SDK', description: 'HorizonEngine setup where FlowObstacle observer is registered alongside road attribute observers.',            pageId: 'navsdk-horizon-data',      productId: 'navsdk' },
-  { name: 'Horizon — Hazards',      type: 'Android SDK', description: 'Hazard observer that pairs with traffic flow data for a complete ahead-of-road awareness feed.',              pageId: 'navsdk-horizon-hazards',   productId: 'navsdk' },
   { name: 'Traffic-Aware Navigation',type:'Android SDK', description: 'Navigation-layer traffic rerouting that complements horizon traffic preview.',                                 pageId: 'navsdk-nav-traffic',       productId: 'navsdk' },
   { name: 'Traffic (UX)',           type: 'Android SDK', description: 'UX Library traffic page showing how horizon traffic data feeds into the map and navigation overlay.',         pageId: 'traffic',                  productId: 'ux-library' },
 ];
