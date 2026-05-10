@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AskAIPanel from './AskAIPanel';
 
 /* ─── Icons ──────────────────────────────────────────────────────────────── */
@@ -58,6 +58,34 @@ function getPageText() {
 function MarkdownModal({ onClose }) {
   const [copied, setCopied] = useState(false);
   const text = getPageText();
+  const modalRef = useRef(null);
+  const closeBtnRef = useRef(null);
+
+  // Focus the close button when modal opens
+  useEffect(() => {
+    closeBtnRef.current?.focus();
+  }, []);
+
+  // Focus trap + Escape to close
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key !== 'Tab') return;
+      const focusable = modalRef.current?.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(text);
@@ -66,15 +94,23 @@ function MarkdownModal({ onClose }) {
   };
 
   return (
-    <div className="md-overlay" onClick={onClose}>
-      <div className="md-modal" onClick={e => e.stopPropagation()}>
+    <div className="md-overlay" onClick={onClose} aria-hidden="true">
+      <div
+        className="md-modal"
+        onClick={e => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="md-modal-title"
+        aria-hidden="false"
+        ref={modalRef}
+      >
         <div className="md-modal-header">
-          <span className="md-modal-title">Page content as text</span>
+          <span className="md-modal-title" id="md-modal-title">Page content as text</span>
           <div style={{ display: 'flex', gap: 8 }}>
             <button className="md-modal-copy" onClick={handleCopy}>
               {copied ? <><CheckIcon /> Copied</> : <><ClipboardIcon /> Copy</>}
             </button>
-            <button className="md-modal-close" onClick={onClose} aria-label="Close">
+            <button className="md-modal-close" onClick={onClose} aria-label="Close dialog" ref={closeBtnRef}>
               <CloseIcon />
             </button>
           </div>

@@ -121,7 +121,7 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
         )}
 
         {/* Product name — always visible */}
-        <span className="topnav-crumb-root" onClick={onHome}>{product.name}</span>
+        <span className="topnav-crumb-root" onClick={onHome} role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onHome?.())}>{product.name}</span>
 
         {/* Ellipsis — shown at ≤900px only when middle segments are hidden */}
         {showEllipsis && (
@@ -144,7 +144,7 @@ export default function Topnav({ currentPage, onHome, onNavigate, isDark, onTogg
             {/* Sep is hidden at tablet if ellipsis replaces it; visible otherwise (landing page, no platform) */}
             <span className={`topnav-crumb-sep${showEllipsis ? ' topnav-crumb-hide-tablet' : ''}`}>›</span>
             {ctx.type === 'page' && ctx.landingId ? (
-              <span className="topnav-crumb-domain topnav-crumb-hide-tablet" onClick={() => onNavigate(ctx.landingId)}>
+              <span className="topnav-crumb-domain topnav-crumb-hide-tablet" onClick={() => onNavigate(ctx.landingId)} role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onNavigate(ctx.landingId))}>
                 {domainLabel}
               </span>
             ) : (

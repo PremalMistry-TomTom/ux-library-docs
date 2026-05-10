@@ -44,6 +44,9 @@ function UseCaseCard({ title, desc, Thumb, onClick }) {
       className="nav-card"
       onClick={onClick}
       style={{ cursor: onClick ? 'pointer' : 'default' }}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onClick()) : undefined}
     >
       <div
         className="nav-card-thumb"

@@ -40,7 +40,7 @@ function addLineNumbers(html) {
   return lines.map(l => `<span class="cb-line">${l}</span>`).join('\n');
 }
 
-function HighlightedPre({ code, lang, maxHeight }) {
+function HighlightedPre({ code, lang, maxHeight, id, role, 'aria-labelledby': ariaLabelledBy, tabIndex }) {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -60,7 +60,14 @@ function HighlightedPre({ code, lang, maxHeight }) {
   }, [code, lang]);
 
   return (
-    <pre className="cb-pre" style={maxHeight ? { maxHeight, overflowY: 'auto' } : undefined}>
+    <pre
+      className="cb-pre"
+      style={maxHeight ? { maxHeight, overflowY: 'auto' } : undefined}
+      id={id}
+      role={role}
+      aria-labelledby={ariaLabelledBy}
+      tabIndex={tabIndex}
+    >
       <code ref={ref} />
     </pre>
   );
@@ -86,16 +93,29 @@ export default function CodeBlock({ label, tabs, children, code, language }) {
     setTimeout(() => setCopied(false), 1500);
   }
 
+  function handleTabKeyDown(e, i) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); setActiveTab((i + 1) % tabList.length); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); setActiveTab((i - 1 + tabList.length) % tabList.length); }
+    if (e.key === 'Home')       { e.preventDefault(); setActiveTab(0); }
+    if (e.key === 'End')        { e.preventDefault(); setActiveTab(tabList.length - 1); }
+  }
+
   return (
     <div className="code-block">
       <div className="code-bar">
         {tabList.length > 1 ? (
-          <div className="code-tabs">
+          <div className="code-tabs" role="tablist" aria-label="Code language">
             {tabList.map((tab, i) => (
               <span
                 key={tab}
                 className={`code-tab${activeTab === i ? ' active' : ''}`}
                 onClick={() => setActiveTab(i)}
+                role="tab"
+                tabIndex={activeTab === i ? 0 : -1}
+                aria-selected={activeTab === i}
+                aria-controls={`code-panel-${i}`}
+                id={`code-tab-${i}`}
+                onKeyDown={e => handleTabKeyDown(e, i)}
               >
                 {tab}
               </span>
@@ -104,11 +124,22 @@ export default function CodeBlock({ label, tabs, children, code, language }) {
         ) : tabList.length === 1 ? (
           <span className="code-bar-label">{tabList[0]}</span>
         ) : null}
-        <button className={`copy-btn${copied ? ' copied' : ''}`} onClick={handleCopy}>
+        <button
+          className={`copy-btn${copied ? ' copied' : ''}`}
+          onClick={handleCopy}
+          aria-label={copied ? 'Copied to clipboard' : 'Copy code to clipboard'}
+        >
           {copied ? t('ui.copied') : t('ui.copy')}
         </button>
       </div>
-      <HighlightedPre code={rawCode} lang={lang} />
+      <HighlightedPre
+        code={rawCode}
+        lang={lang}
+        tabIndex={0}
+        id={tabList.length > 1 ? `code-panel-${activeTab}` : undefined}
+        aria-labelledby={tabList.length > 1 ? `code-tab-${activeTab}` : undefined}
+        role={tabList.length > 1 ? 'tabpanel' : undefined}
+      />
     </div>
   );
 }

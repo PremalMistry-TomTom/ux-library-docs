@@ -397,6 +397,11 @@ export default function App() {
       setCurrentProduct(productId);
       const targetProduct = getProduct(productId);
       setCurrentPlatform(platform ?? targetProduct.defaultPlatform ?? 'android');
+    } else if (pageId?.startsWith('navsdk-') && currentProduct !== 'navsdk') {
+      // Auto-switch to NavSDK product when navigating to any navsdk- page
+      setCurrentProduct('navsdk');
+      const navsdkProduct = getProduct('navsdk');
+      setCurrentPlatform(platform ?? navsdkProduct.defaultPlatform ?? 'android');
     } else if (platform !== undefined && platform !== null) {
       setCurrentPlatform(platform);
     }
@@ -409,6 +414,7 @@ export default function App() {
 
   return (
     <IlloStyleProvider>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       {/* Single logo — stays pinned top-left regardless of header state */}
       <FixedLogo onClick={() => setDocsPortalOpen(true)} />
 
@@ -458,9 +464,9 @@ export default function App() {
             navCollapsed={navCollapsed}
             onCollapse={() => setNavCollapsed(true)}
           />
-          <div className="content-area">
+          <main id="main-content" className="content-area">
             <PageContent pageId={currentPage} onNavigate={navigate} product={product} platform={currentPlatform} />
-          </div>
+          </main>
           <TOC currentPage={currentPage} />
         </div>
       )}

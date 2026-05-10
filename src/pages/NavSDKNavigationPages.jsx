@@ -1435,6 +1435,7 @@ extension MyViewController: NavigationDelegate {
                 <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--accent)' }}>{delayThreshold} min</span>
               </div>
               <input type="range" min={1} max={15} value={delayThreshold} onChange={e => setDelayThreshold(+e.target.value)}
+                aria-label={`Reroute delay threshold: ${delayThreshold} minutes`}
                 style={{ width: '100%', accentColor: 'var(--accent)' }} />
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 4 }}>
                 <span>1 min (sensitive)</span><span>15 min (tolerant)</span>

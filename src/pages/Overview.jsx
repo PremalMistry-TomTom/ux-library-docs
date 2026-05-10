@@ -47,7 +47,8 @@ function WhenCard({ icon, title, children }) {
 function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
   const { theme, palette } = useIlloStyle();
   return (
-    <div className="nav-card" onClick={() => onNavigate(id)}>
+    <div className="nav-card" onClick={() => onNavigate(id)} role="button" tabIndex={0}
+      onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onNavigate(id))}>
       <div className="nav-card-thumb" style={theme !== 'dark' ? { background: palette.bg, padding: 0 } : undefined}>
         <Thumb />
       </div>
@@ -84,7 +85,8 @@ const DOMAIN_CARDS = [
 function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
   const { theme, palette } = useIlloStyle();
   return (
-    <div className="nav-card" onClick={() => onNavigate(id)}>
+    <div className="nav-card" onClick={() => onNavigate(id)} role="button" tabIndex={0}
+      onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onNavigate(id))}>
       <div className="nav-card-thumb" style={theme !== 'dark' ? { background: palette.bg, padding: 0 } : undefined}>
         <Thumb />
       </div>

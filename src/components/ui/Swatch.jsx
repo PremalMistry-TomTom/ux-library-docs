@@ -9,9 +9,20 @@ export function Swatch({ name, hex, compact }) {
     setTimeout(() => setCopied(false), 1100);
   }
 
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); }
+  }
+
   if (compact) {
     return (
-      <div className={`ctx-swatch${copied ? ' copied' : ''}`} onClick={handleClick}>
+      <div
+        className={`ctx-swatch${copied ? ' copied' : ''}`}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        role="button"
+        tabIndex={0}
+        aria-label={`Copy ${name} colour value ${hex}`}
+      >
         <div className="sw-color" style={{ background: hex }} />
         <div className="sw-info">
           <div className="sw-name">{name}</div>
@@ -23,7 +34,14 @@ export function Swatch({ name, hex, compact }) {
   }
 
   return (
-    <div className={`swatch${copied ? ' copied' : ''}`} onClick={handleClick}>
+    <div
+      className={`swatch${copied ? ' copied' : ''}`}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`Copy ${name} colour value ${hex}`}
+    >
       <div className="sw-color" style={{ background: hex }} />
       <div className="sw-info">
         <div className="sw-name">{name}</div>
@@ -44,11 +62,19 @@ export function TokenDot({ hex }) {
     setTimeout(() => setCopied(false), 1100);
   }
 
+  function handleKeyDown(e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(e); }
+  }
+
   return (
     <div
       className={`token-dot${copied ? ' copied' : ''}`}
       style={{ background: hex }}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`Copy colour value ${hex}`}
     >
       <div className="sw-toast">✓</div>
     </div>

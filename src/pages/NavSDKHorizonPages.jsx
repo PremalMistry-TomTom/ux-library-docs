@@ -83,7 +83,7 @@ export function NavSDKHorizonData() {
 
         <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
           <label style={{ fontSize: '0.8125rem', color: 'var(--mid)', whiteSpace: 'nowrap' }}>Look-ahead: {distance} m</label>
-          <input type="range" min={100} max={2000} step={50} value={distance} onChange={e => setDistance(+e.target.value)} style={{ flex: 1 }} />
+          <input type="range" min={100} max={2000} step={50} value={distance} onChange={e => setDistance(+e.target.value)} aria-label={`Look-ahead distance: ${distance} metres`} style={{ flex: 1 }} />
         </div>
 
         <RoadCanvas>
@@ -255,7 +255,7 @@ export function NavSDKHorizonSafety() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 12 }}>
           <div>
             <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 6 }}>Speed limit (km/h)</div>
-            <input type="range" min={30} max={130} step={10} value={speedLimit} onChange={e => setSpeedLimit(+e.target.value)} style={{ width: '100%' }} />
+            <input type="range" min={30} max={130} step={10} value={speedLimit} onChange={e => setSpeedLimit(+e.target.value)} aria-label={`Speed limit: ${speedLimit} km/h`} style={{ width: '100%' }} />
             <div style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginTop: 4 }}>{speedLimit} km/h</div>
           </div>
           <div>
@@ -425,7 +425,7 @@ export function NavSDKHorizonHazards() {
 
         <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
           <label style={{ fontSize: '0.8125rem', color: 'var(--mid)', whiteSpace: 'nowrap' }}>Alert threshold: {threshold} m</label>
-          <input type="range" min={200} max={2000} step={100} value={threshold} onChange={e => setThreshold(+e.target.value)} style={{ flex: 1 }} />
+          <input type="range" min={200} max={2000} step={100} value={threshold} onChange={e => setThreshold(+e.target.value)} aria-label={`Alert threshold: ${threshold} metres`} style={{ flex: 1 }} />
         </div>
 
         <RoadCanvas height={230}>

@@ -131,6 +131,7 @@ export function ResizeDemo({ t }) {
             <input
               type="range" min="0" max="50" value={insets[side]}
               onChange={e => set(side, e.target.value)}
+              aria-label={`${label}: ${insets[side]}%`}
               style={{ width: '100%', accentColor: 'var(--red)' }}
             />
           </div>

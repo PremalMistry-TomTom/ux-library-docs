@@ -587,7 +587,7 @@ export function NavSDKAdvVehicle() {
                 <span style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>{label}</span>
                 <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)' }}>{val.toFixed(1)}</span>
               </div>
-              <input type="range" min={min} max={max} step={step} value={val} onChange={e => set(+e.target.value)} style={{ width: '100%' }} />
+              <input type="range" min={min} max={max} step={step} value={val} onChange={e => set(+e.target.value)} aria-label={`${label}: ${val.toFixed(1)}`} style={{ width: '100%' }} />
             </div>
           ))}
           <div>
@@ -595,7 +595,7 @@ export function NavSDKAdvVehicle() {
               <span style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>Weight (kg)</span>
               <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)' }}>{weight.toLocaleString()}</span>
             </div>
-            <input type="range" min={800} max={44000} step={200} value={weight} onChange={e => setWeight(+e.target.value)} style={{ width: '100%' }} />
+            <input type="range" min={800} max={44000} step={200} value={weight} onChange={e => setWeight(+e.target.value)} aria-label={`Weight: ${weight.toLocaleString()} kg`} style={{ width: '100%' }} />
           </div>
           {isEV && (
             <div>
@@ -603,7 +603,7 @@ export function NavSDKAdvVehicle() {
                 <span style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>Battery (kWh)</span>
                 <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#22c55e' }}>{batteryKwh}</span>
               </div>
-              <input type="range" min={20} max={200} step={5} value={batteryKwh} onChange={e => setBatteryKwh(+e.target.value)} style={{ width: '100%' }} />
+              <input type="range" min={20} max={200} step={5} value={batteryKwh} onChange={e => setBatteryKwh(+e.target.value)} aria-label={`Battery capacity: ${batteryKwh} kWh`} style={{ width: '100%' }} />
             </div>
           )}
         </div>

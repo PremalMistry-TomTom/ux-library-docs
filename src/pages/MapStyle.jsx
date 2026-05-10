@@ -314,6 +314,7 @@ function TiltDemo() {
           </div>
           <input type="range" min="0" max="60" value={pitch}
             onChange={e => setPitch(Number(e.target.value))}
+            aria-label={`Tilt angle: ${pitch} degrees`}
             style={{ width: '100%', accentColor: 'var(--red)' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
@@ -330,6 +331,7 @@ function TiltDemo() {
           </div>
           <input type="range" min="10" max="18" step="0.5" value={zoom}
             onChange={e => setZoom(Number(e.target.value))}
+            aria-label={`Zoom level: ${zoom}`}
             style={{ width: '100%', accentColor: 'var(--red)' }}
           />
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>

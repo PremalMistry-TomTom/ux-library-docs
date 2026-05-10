@@ -223,6 +223,7 @@ function StopStrategyCalculator({ t }) {
             </div>
             <input type="range" min={5} max={35} step={5} value={val}
               onChange={e => set(Number(e.target.value))}
+              aria-label={`${label}: ${val}%`}
               style={{ width: '100%', accentColor: '#3b82f6', cursor: 'pointer' }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem', color: 'var(--muted)', marginTop: 2 }}>

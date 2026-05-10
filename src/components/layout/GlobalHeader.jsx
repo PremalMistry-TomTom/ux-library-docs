@@ -88,7 +88,7 @@ export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, on
       {/* Left — divider + "Docs" label + nav links (hidden on mobile) */}
       <div className="gh-left">
         <div className="gh-divider" />
-        <span className="gh-product-label" style={{ cursor: 'pointer' }} onClick={() => onDocsClick?.()}>Docs</span>
+        <span className="gh-product-label" style={{ cursor: 'pointer' }} onClick={() => onDocsClick?.()} role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onDocsClick?.())}>Docs</span>
 
         <nav className="gh-nav">
           {NAV_LINKS.map(link => (

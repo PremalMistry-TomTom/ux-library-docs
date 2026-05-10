@@ -69,6 +69,10 @@ function AnchorItems({ anchors, activeAnchor, onAnchorClick, open, extraIndent =
             key={anchor.id}
             className={`sidenav-item${activeAnchor === anchor.id ? ' active' : ''}`}
             onClick={() => onAnchorClick(anchor.id)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), onAnchorClick(anchor.id))}
+            aria-current={activeAnchor === anchor.id ? 'true' : undefined}
           >
             {isLast ? <CornerConnector /> : <TeeConnector />}
             <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
@@ -121,6 +125,10 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle,
       <div
         className={`sidenav-label${isOpen ? ' open' : ''}${isLandingActive ? ' landing-active' : ''}`}
         onClick={handleLabelClick}
+        onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), handleLabelClick())}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
         style={plumbing ? { opacity: 0.6 } : undefined}
       >
         {plumbing && <span style={{ marginRight: 5, fontSize: '0.75rem' }}>⚙</span>}
@@ -160,6 +168,10 @@ function NavGroup({ group, currentPage, onNavigate, plumbing, isOpen, onToggle,
               <span
                 className={`sidenav-item${showAsActive ? ' active' : ''}`}
                 onClick={handleItemClick}
+                onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), handleItemClick())}
+                role="button"
+                tabIndex={0}
+                aria-current={showAsActive ? 'page' : undefined}
               >
                 {/* Use corner only on true-last item that has no open sub-list */}
                 {isLast && !anchorOpen ? <CornerConnector /> : <TeeConnector />}
@@ -357,6 +369,10 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                 className={`sidenav-top-link${showAsActive ? ' active' : ''}`}
                 style={{ display: 'flex', alignItems: 'center' }}
                 onClick={handleClick}
+                onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), handleClick())}
+                role="button"
+                tabIndex={0}
+                aria-current={showAsActive ? 'page' : undefined}
               >
                 <span style={{ flex: 1 }}>{label}</span>
                 {entry.ref && (
@@ -402,7 +418,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
 
   return (
     <>
-      <aside className={`sidenav${navCollapsed ? ' sidenav--collapsed' : ''}`}>
+      <aside className={`sidenav${navCollapsed ? ' sidenav--collapsed' : ''}`} aria-label="Site navigation">
         <div className="sidenav-inner">
         {navContent}
         </div>
@@ -425,7 +441,7 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
       {drawerOpen && (
         <div className="sidenav-drawer-backdrop" onClick={onDrawerClose} aria-hidden="true" />
       )}
-      <aside className={`sidenav sidenav-drawer${drawerOpen ? ' sidenav-drawer--open' : ''}`}>
+      <aside className={`sidenav sidenav-drawer${drawerOpen ? ' sidenav-drawer--open' : ''}`} aria-label="Navigation drawer">
         <div className="sidenav-drawer-header">
           <div className="sidenav-drawer-header-actions">
             <button className="lang-toggle" onClick={toggleLang} title="Switch language" aria-label="Switch language">
