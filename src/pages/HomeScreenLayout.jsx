@@ -36,12 +36,12 @@ export function ZonesDiagram({ t }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* IVI mock — full width */}
       <div style={{
-        width: '100%', height: 300, background: M.bg, borderRadius: 20,
+        width: '100%', height: 300, background: M.dark, borderRadius: 20,
         border: `1px solid ${M.line}`, overflow: 'hidden',
         position: 'relative',
       }}>
         {/* Map background */}
-        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
+        <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.dark}cc, ${M.dark})` }}>
           <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 300 200" fill="none">
             <path d="M30 80 Q80 60 150 85 T270 75" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
             <path d="M0 110 Q60 70 150 110 T300 100" stroke="rgba(255,255,255,0.07)" strokeWidth="1.5"/>
@@ -157,8 +157,8 @@ export function ResizeDemo({ t }) {
         </button>
       </div>
       <div>
-        <div style={{ position: 'relative', width: '100%', height: 300, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
+        <div style={{ position: 'relative', width: '100%', height: 300, background: M.dark, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.dark}cc, ${M.dark})` }}>
             <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
               <path d="M20 90 Q80 60 150 95 T280 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
               <path d="M70 0 L75 190" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>

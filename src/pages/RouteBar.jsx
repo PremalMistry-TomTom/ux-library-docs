@@ -98,7 +98,7 @@ export function PositioningDiagram() {
               <div style={{
                 position: 'absolute', top: 6, left: 6, right: 20,
                 background: 'rgba(0,0,0,0.7)', borderRadius: 5, padding: '4px 6px',
-                fontSize: 7, color: M.text, fontWeight: 600,
+                fontSize: 7, color: M.white, fontWeight: 600,
               }}>↑ 800 ft</div>
             )}
             {mode.showEta && (

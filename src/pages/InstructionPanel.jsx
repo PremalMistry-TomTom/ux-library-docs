@@ -44,8 +44,8 @@ export function NIPMock({ position }) {
     : { borderRadius: '0 0 8px 8px', borderTop: 'none' };
 
   return (
-    <div style={{ width: '100%', height: 320, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
+    <div style={{ width: '100%', height: 320, background: M.dark, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.dark}cc, ${M.dark})` }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 200" fill="none">
           <path d="M20 110 Q80 75 150 105 T280 95" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
           <path d="M85 0 L90 200" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
@@ -59,14 +59,14 @@ export function NIPMock({ position }) {
         display: 'flex', alignItems: 'center', gap: 16,
         minWidth: 220, border: `1px solid ${M.line}`,
       }}>
-        <span style={{ fontSize: '2rem', color: 'white' }}>↖</span>
+        <span style={{ fontSize: '2rem', color: M.white }}>↖</span>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '1rem', fontWeight: 700, color: 'white' }}>1.2 mi</div>
-          <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.65)' }}>Oak Street North</div>
+          <div style={{ fontSize: '1rem', fontWeight: 700, color: M.white }}>1.2 mi</div>
+          <div style={{ fontSize: '0.75rem', color: M.dim }}>Oak Street North</div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.35)' }}>then</div>
-          <div style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.6)' }}>↗</div>
+          <div style={{ fontSize: '0.875rem', color: M.dim }}>then</div>
+          <div style={{ fontSize: '1.25rem', color: M.dim }}>↗</div>
         </div>
       </div>
     </div>

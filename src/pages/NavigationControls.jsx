@@ -19,8 +19,8 @@ const BTN_ENUM  = { '🔍': 'SEARCH', '⚡': 'CHARGING', '🔇': 'MUTE', '⚙️
 function MapMockBase({ children }) {
   const M = useDemoStyle();
   return (
-    <div style={{ width: '100%', height: 300, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
+    <div style={{ width: '100%', height: 300, background: M.dark, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.dark}cc, ${M.dark})` }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 280 175" fill="none">
           <path d="M20 90 Q80 60 140 90 T260 80" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
         </svg>

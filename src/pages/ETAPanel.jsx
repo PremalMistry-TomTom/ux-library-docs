@@ -48,8 +48,8 @@ export function ETAMock({ position, visibleFields }) {
   const M = useDemoStyle();
   const pos = POSITIONS.find(p => p.id === position);
   return (
-    <div style={{ width: '100%', height: 300, background: M.bg, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
-      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.card}, ${M.dark})` }}>
+    <div style={{ width: '100%', height: 300, background: M.dark, borderRadius: 20, border: `1px solid ${M.line}`, overflow: 'hidden', position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: `linear-gradient(135deg, ${M.dark}cc, ${M.dark})` }}>
         <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 300 190" fill="none">
           <path d="M20 100 Q80 70 150 100 T280 90" stroke="#e2001a" strokeWidth="2" strokeLinecap="round" opacity="0.8"/>
           <path d="M80 0 L85 190" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
@@ -64,11 +64,11 @@ export function ETAMock({ position, visibleFields }) {
         display: 'flex', alignItems: 'center', gap: 16, minWidth: 120,
       }}>
         {visibleFields.length === 0
-          ? <span style={{ fontSize: '0.75rem', color: M.muted }}>all hidden</span>
+          ? <span style={{ fontSize: '0.75rem', color: M.dim }}>all hidden</span>
           : visibleFields.map(f => (
             <div key={f.id} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text, lineHeight: 1 }}>{f.value}</div>
-              <div style={{ fontSize: '0.875rem', color: M.muted, marginTop: 3 }}>{f.label}</div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.white, lineHeight: 1 }}>{f.value}</div>
+              <div style={{ fontSize: '0.875rem', color: M.dim, marginTop: 3 }}>{f.label}</div>
             </div>
           ))
         }
