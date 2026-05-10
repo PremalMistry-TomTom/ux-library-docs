@@ -84,7 +84,7 @@ routingApi.planRoute(options) { result in
     }
 }`;
 
-function RoutingQuickstartDemo() {
+export function RoutingQuickstartDemo() {
   const [state, setState] = useState('idle'); // idle | calculating | done
 
   function calculate() {
@@ -279,7 +279,7 @@ const SW_PLAN_ROUTE = (mode, avoids) => `let options = RoutePlanningOptions(
     )
 )`;
 
-function RoutePlanningDemo() {
+export function RoutePlanningDemo() {
   const [mode, setMode] = useState('CAR');
   const [avoids, setAvoids] = useState([]);
   const current = TRAVEL_MODES.find(m => m.id === mode);
@@ -468,7 +468,7 @@ const ROUTE_PATHS = [
   'M50 180 Q80 195 140 190 Q210 185 270 160 T360 80',
 ];
 
-function RouteAlternativesDemo() {
+export function RouteAlternativesDemo() {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -626,7 +626,7 @@ const SECTION_TYPES = [
   { id: 'COUNTRY_CHANGE', label: 'Border crossing', color: '#10b981', x1: 330, x2: 360, y1: 90, y2: 80 },
 ];
 
-function RouteSectionsDemo() {
+export function RouteSectionsDemo() {
   const [active, setActive] = useState(null);
   const current = active !== null ? SECTION_TYPES[active] : null;
 
@@ -861,7 +861,7 @@ let updatedOptions = RoutePlanningOptions(
 )
 routingApi.planRoute(updatedOptions) { /* handle */ }`;
 
-function ImportExportDemo() {
+export function ImportExportDemo() {
   const [tab, setTab] = useState('export'); // export | import | waypoints
   const [waypointAdded, setWaypointAdded] = useState(false);
 

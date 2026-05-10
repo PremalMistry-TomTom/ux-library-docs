@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
@@ -4094,23 +4094,133 @@ export function IlloJunctionAnalytics() {
    Gallery components
    ───────────────────────────────────────────────────────────────────────────── */
 
+/* ─── SVG copy helper ────────────────────────────────────────────────────────
+   Serialises the rendered card div into an SVG <foreignObject> wrapper so the
+   design team can paste a self-contained SVG into Figma / Illustrator.
+   The asset name is embedded as the SVG <title> for identification.
+   ─────────────────────────────────────────────────────────────────────────── */
+function copyCardAsSvg(cardEl, label) {
+  if (!cardEl) return Promise.reject(new Error('No element'));
+  const { width, height } = cardEl.getBoundingClientRect();
+  const clone = cardEl.cloneNode(true);
+
+  // Inline all computed styles so they survive outside the app context
+  const allEls = [clone, ...clone.querySelectorAll('*')];
+  const srcEls  = [cardEl, ...cardEl.querySelectorAll('*')];
+  srcEls.forEach((srcEl, i) => {
+    const computed = window.getComputedStyle(srcEl);
+    // Copy a focused set of CSS properties that matter for visual fidelity
+    const props = [
+      'color','background-color','border-color','border-width','border-style','border-radius',
+      'font-size','font-weight','font-family','line-height','text-align',
+      'display','flex-direction','align-items','justify-content','gap','flex','flex-shrink','flex-wrap',
+      'padding','padding-top','padding-right','padding-bottom','padding-left',
+      'margin','margin-top','margin-right','margin-bottom','margin-left',
+      'width','height','min-height','max-height','min-width','max-width',
+      'position','top','right','bottom','left','overflow','z-index',
+      'opacity','transform','white-space','text-overflow',
+    ];
+    props.forEach(p => {
+      try { allEls[i].style[p] = computed.getPropertyValue(p); } catch (_) {}
+    });
+  });
+
+  const ns  = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(ns, 'svg');
+  svg.setAttribute('xmlns', ns);
+  svg.setAttribute('xmlns:xhtml', 'http://www.w3.org/1999/xhtml');
+  svg.setAttribute('width',  String(Math.round(width)));
+  svg.setAttribute('height', String(Math.round(height)));
+  svg.setAttribute('viewBox', `0 0 ${Math.round(width)} ${Math.round(height)}`);
+
+  const title = document.createElementNS(ns, 'title');
+  title.textContent = label || 'Illustration';
+  svg.appendChild(title);
+
+  const fo = document.createElementNS(ns, 'foreignObject');
+  fo.setAttribute('width',  '100%');
+  fo.setAttribute('height', '100%');
+  fo.setAttribute('x', '0');
+  fo.setAttribute('y', '0');
+
+  // foreignObject needs an XHTML namespace on the root element
+  clone.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+  fo.appendChild(clone);
+  svg.appendChild(fo);
+
+  const serializer = new XMLSerializer();
+  const svgString  = serializer.serializeToString(svg);
+  return navigator.clipboard.writeText(svgString);
+}
+
 function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, illoStyle = 'lofi' }) {
   const { palette } = useIlloStyle();
-  const Illo = illoStyle === 'detailed' && Dark ? Dark : Light;
+  const Illo    = illoStyle === 'detailed' && Dark ? Dark : Light;
+  const cardRef = useRef(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(() => {
+    copyCardAsSvg(cardRef.current, label)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1800);
+      })
+      .catch(() => {/* clipboard denied — silent fail */});
+  }, [label]);
+
   return (
-    <div style={{
-      border: '1px solid var(--border)',
-      borderRadius: 20,
-      overflow: 'hidden',
-      background: 'var(--surface)',
-      display: 'flex',
-      flexDirection: 'column',
-    }}>
+    <div
+      ref={cardRef}
+      onClick={handleCopy}
+      title={`Click to copy "${label}" as SVG`}
+      style={{
+        border: `1px solid ${copied ? '#22c55e' : 'var(--border)'}`,
+        borderRadius: 20,
+        overflow: 'hidden',
+        background: 'var(--surface)',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: 'pointer',
+        transition: 'border-color 0.2s, box-shadow 0.2s',
+        boxShadow: copied ? '0 0 0 3px rgba(34,197,94,0.2)' : 'none',
+        position: 'relative',
+      }}
+      onMouseEnter={e => { if (!copied) e.currentTarget.style.borderColor = 'var(--black)'; }}
+      onMouseLeave={e => { if (!copied) e.currentTarget.style.borderColor = 'var(--border)'; }}
+    >
+      {/* Copied toast overlay */}
+      {copied && (
+        <div style={{
+          position: 'absolute', top: 8, right: 8, zIndex: 10,
+          background: '#22c55e', color: '#fff',
+          fontSize: '0.625rem', fontWeight: 700,
+          padding: '3px 8px', borderRadius: 20,
+          pointerEvents: 'none',
+        }}>
+          ✓ Copied SVG
+        </div>
+      )}
+
+      {/* Copy hint on hover — bottom-right corner of illustration */}
+      <div style={{
+        position: 'absolute', bottom: 56, right: 8, zIndex: 9,
+        background: 'rgba(0,0,0,0.55)', color: '#fff',
+        fontSize: '0.5625rem', fontWeight: 600,
+        padding: '2px 7px', borderRadius: 20,
+        pointerEvents: 'none', opacity: 0,
+        transition: 'opacity 0.15s',
+      }}
+        className="illo-card-copy-hint"
+      >
+        Copy as SVG
+      </div>
+
       <div style={{
         height: 160,
         background: palette.bg,
         flexShrink: 0,
         overflow: 'hidden',
+        position: 'relative',
       }}>
         <Illo />
       </div>
@@ -4118,6 +4228,7 @@ function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, illo
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           {emoji && <span style={{ fontSize: '1rem' }}>{emoji}</span>}
           <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{label}</span>
+          <span style={{ marginLeft: 'auto', fontSize: '0.5625rem', color: 'var(--muted)', opacity: 0.6 }}>⎘</span>
         </div>
         {source && (
           <span style={{ fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)' }}>{source}</span>

@@ -48,7 +48,7 @@ function RouteLine({ progress = 0 }) {
    6. NAV QUICKSTART
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function NavQuickstartDemo() {
+export function NavQuickstartDemo() {
   const [status, setStatus] = useState('idle'); // idle | navigating | arrived
   const [progress, setProgress] = useState(0);
   const timerRef = useRef(null);
@@ -279,7 +279,7 @@ const MANEUVERS = [
   { icon: '↔', type: 'ROUNDABOUT_EXIT', street: 'Overtoom',        dist: '300 m', exit: '3rd' },
 ];
 
-function TurnByTurnDemo() {
+export function TurnByTurnDemo() {
   const [step, setStep] = useState(0);
   const m = MANEUVERS[step];
 
@@ -457,7 +457,7 @@ const VOICE_TRIGGERS = [
   { dist: 200,  label: '200 m ahead', prompt: 'Turn left onto Keizersgracht.' },
 ];
 
-function VoiceInstructionsDemo() {
+export function VoiceInstructionsDemo() {
   const [triggered, setTriggered] = useState(null);
 
   return (
@@ -616,7 +616,7 @@ export function NavSDKNavVoice({ onNavigate }) {
    9. CONTINUOUS REPLANNING
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function ReplanningDemo() {
+export function ReplanningDemo() {
   const [phase, setPhase] = useState('onroute'); // onroute | offroute | replanning | newroute
   const animRef = useRef(null);
 
@@ -808,7 +808,7 @@ const CAMERAS = [
   { id: 2, type: 'SCHOOL_ZONE',  cx: 300, cy: 105, dist: 2800 },
 ];
 
-function SafetyDemo() {
+export function SafetyDemo() {
   const [active, setActive] = useState(null);
 
   const current = active !== null ? CAMERAS[active] : null;
@@ -977,7 +977,7 @@ export function NavSDKNavSafety({ onNavigate }) {
    11. FREE DRIVING
    ═══════════════════════════════════════════════════════════════════════════ */
 
-function FreeDrivingDemo() {
+export function FreeDrivingDemo() {
   const [moving, setMoving] = useState(false);
   const [pos, setPos] = useState({ x: 200, y: 145 });
   const [speed, setSpeed] = useState(52);

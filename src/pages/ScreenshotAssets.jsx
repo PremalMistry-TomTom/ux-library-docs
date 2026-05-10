@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
 
-/* ─── Mock component imports ─────────────────────────────────────────────────── */
+/* ─── UX Library component imports ──────────────────────────────────────────── */
 import { ZonesDiagram, ResizeDemo, UIStateExplorer }   from './HomeScreenLayout';
 import { ButtonBarConfig, SearchEntryConfig }           from './NavigationControls';
 import { GuidanceMock }                                  from './HorizonPanel';
@@ -13,6 +14,19 @@ import { SearchMock, LPPMock, TransitionExplorer, SearchUICustomiser } from './S
 import { ArchDiagram as EVArchDiagram, EVSearchMock, StationDetailMock, RouteMock, PreferencesMock } from './EVSupport';
 import { ArchDiagram as TAIAArchDiagram }                from './TAIAOverview';
 import { BoundaryDiagram }                               from './SpeechToText';
+import { ClusterDisplay }                                from './Cluster';
+
+/* ─── NavSDK demo imports ────────────────────────────────────────────────────── */
+import {
+  NavQuickstartDemo, TurnByTurnDemo, VoiceInstructionsDemo,
+  ReplanningDemo, SafetyDemo, FreeDrivingDemo,
+} from './NavSDKNavigationPages';
+import {
+  RoutingQuickstartDemo, RoutePlanningDemo, RouteAlternativesDemo,
+  RouteSectionsDemo, ImportExportDemo,
+} from './NavSDKRoutingPages';
+import { MapComposeDemo, MapStylesDemo, MapTrafficDemo } from './NavSDKMapPages';
+import { OfflineDownloadDemo }                           from './NavSDKOfflinePages';
 
 /* ─── Status badge ───────────────────────────────────────────────────────────── */
 const STATUS = {
@@ -20,6 +34,7 @@ const STATUS = {
   needed:  { label: 'Screenshot needed',  bg: '#fff5f5', color: '#991b1b', border: '#fecaca' },
   done:    { label: 'Static .png',        bg: '#f0fdf4', color: '#14532d', border: '#bbf7d0' },
   planned: { label: 'Planned',            bg: 'var(--bg)', color: 'var(--muted)', border: 'var(--border)' },
+  live:    { label: 'Live demo',          bg: '#eff6ff', color: '#1e40af', border: '#bfdbfe' },
 };
 
 function StatusBadge({ status }) {
@@ -35,6 +50,7 @@ function StatusBadge({ status }) {
 
 /* ─── State chips ────────────────────────────────────────────────────────────── */
 function StateChips({ states }) {
+  if (!states?.length) return null;
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
       {states.map(s => (
@@ -48,8 +64,8 @@ function StateChips({ states }) {
   );
 }
 
-/* ─── Preview card ───────────────────────────────────────────────────────────── */
-function PreviewCard({ name, component, desc, states, status, preview }) {
+/* ─── Preview card — full width ──────────────────────────────────────────────── */
+function PreviewCard({ name, component, desc, states, status, preview, darkBg = '#0b0f14' }) {
   return (
     <div style={{
       border: '1px solid var(--border)',
@@ -58,18 +74,18 @@ function PreviewCard({ name, component, desc, states, status, preview }) {
       background: 'var(--surface)',
       display: 'flex',
       flexDirection: 'column',
+      width: '100%',
     }}>
-      {/* Preview area */}
+      {/* Preview area — full width, no maxHeight clamp */}
       <div style={{
-        background: '#0b0f14',
-        minHeight: 80,
-        maxHeight: 420,
+        background: darkBg,
+        width: '100%',
         overflowY: 'auto',
         overflowX: 'auto',
-        padding: 20,
+        padding: 24,
         display: 'flex',
         justifyContent: 'center',
-        alignItems: preview?.center !== false ? 'flex-start' : undefined,
+        alignItems: 'flex-start',
       }}>
         {preview
           ? preview.node
@@ -86,9 +102,9 @@ function PreviewCard({ name, component, desc, states, status, preview }) {
       </div>
 
       {/* Metadata strip */}
-      <div style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div style={{ padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 6 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-          <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--text)' }}>{name}</span>
+          <span style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--text)' }}>{name}</span>
           <StatusBadge status={status || 'mock'} />
         </div>
         {component && (
@@ -96,243 +112,184 @@ function PreviewCard({ name, component, desc, states, status, preview }) {
             {component}
           </div>
         )}
-        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</p>
+        <p style={{ margin: 0, fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</p>
         <StateChips states={states} />
       </div>
     </div>
   );
 }
 
-/* ─── Inventory data ─────────────────────────────────────────────────────────── */
-const SECTIONS = [
-  {
-    id: 'home-screen-layout',
-    group: 'Home Screen Layout',
-    navGroup: 'App Customisation',
-    desc: 'Application area zones, dynamic resize, and UI state signalling.',
-    screens: [
-      {
-        name: 'Zone overview',
-        component: 'ZonesDiagram',
-        desc: '4 named zones annotated over a dark map: Nav Application Area (amber), Map Safe Area (blue), Map Display Area (purple), Controls Zone (red).',
-        states: ['Nav area highlighted', 'Safe area highlighted', 'Display area highlighted', 'Controls zone highlighted'],
-      },
-      {
-        name: 'Resize demo',
-        component: 'ResizeDemo',
-        desc: 'Map fills screen with configurable insets on all 4 sides. Shows how the nav app area shrinks to make room for IVI widgets.',
-        states: ['Default 0,0,0,0', 'Right inset 35%', 'Right inset 50%', 'Top 10% + Right 35%', 'Bottom 20%'],
-      },
-      {
-        name: 'UI state — Passive',
-        component: 'UIStateExplorer',
-        desc: '4-dimension state signal in passive (non-guidance) mode. Shows state values for activity, panel, map interaction, trip.',
-        states: ['Idle browsing', 'Route planning', 'Search open', 'LPP open'],
-      },
-      {
-        name: 'UI state — Active',
-        component: 'UIStateExplorer',
-        desc: '4-dimension state signal when turn-by-turn guidance is running.',
-        states: ['Turn-by-turn', 'Route overview', 'Map free-pan during guidance', 'Arrival'],
-      },
-    ],
-  },
-  {
-    id: 'nav-controls',
-    group: 'Navigation Controls',
-    navGroup: 'App Customisation',
-    desc: 'Button bar position, button visibility toggles, and search entry point.',
-    screens: [
-      {
-        name: 'Button bar config',
-        component: 'ButtonBarConfig',
-        desc: 'Map controls bar with position (left/right/top/bottom) and per-button visibility toggles.',
-        states: ['All buttons visible', 'Search hidden', 'Mute hidden', 'Settings hidden', 'All hidden'],
-      },
-      {
-        name: 'Search entry point',
-        component: 'SearchEntryConfig',
-        desc: 'Search represented either as a full destination panel or as a button inside the button bar.',
-        states: ['Default (panel visible)', 'Button visible in bar', 'Button hidden'],
-      },
-    ],
-  },
-  {
-    id: 'horizon-panel',
-    group: 'Horizon Panel',
-    navGroup: 'App Customisation',
-    desc: 'The composed guidance panel combining NIP, Upcoming Events strip, and ETA bar.',
-    screens: [
-      {
-        name: 'Composed — right docked',
-        component: 'GuidanceMock',
-        desc: 'Full composed panel (NIP + Upcoming + ETA) anchored to the right edge.',
-        states: ['Composed — right'],
-      },
-      {
-        name: 'Composed — left docked',
-        component: 'GuidanceMock',
-        desc: 'Full composed panel anchored to the left edge.',
-        states: ['Composed — left'],
-      },
-      {
-        name: 'Composed — centre',
-        component: 'GuidanceMock',
-        desc: 'Full composed panel centred horizontally.',
-        states: ['Composed — centre'],
-      },
-      {
-        name: 'Decomposed',
-        component: 'GuidanceMock',
-        desc: 'NIP, Upcoming Events, and ETA rendered as separate floating panels.',
-        states: ['NIP only', 'NIP + upcoming strip', 'NIP + ETA bar'],
-      },
-    ],
-  },
-  {
-    id: 'instruction-panel',
-    group: 'Next Instruction Panel',
-    navGroup: 'App Customisation',
-    desc: 'Standalone NIP positioned freely anywhere on the map surface.',
-    screens: [
-      {
-        name: 'NIP positions',
-        component: 'NIPMock',
-        desc: 'The NIP can be anchored to 5 positions relative to the navigation area.',
-        states: ['Top left', 'Top centre', 'Top right', 'Bottom left', 'Bottom right'],
-      },
-    ],
-  },
-  {
-    id: 'eta-panel',
-    group: 'ETA Panel',
-    navGroup: 'App Customisation',
-    desc: 'Standalone ETA bar showing remaining time, distance, and arrival time.',
-    screens: [
-      {
-        name: 'ETA panel positions',
-        component: 'ETAMock',
-        desc: 'The ETA bar supports 6 anchor positions in a 2×3 grid (top/bottom × left/centre/right).',
-        states: ['Bottom left', 'Bottom centre', 'Bottom right', 'Top left', 'Top centre', 'Top right'],
-      },
-    ],
-  },
-  {
-    id: 'route-bar',
-    group: 'Route Bar',
-    navGroup: 'App Customisation',
-    desc: 'Upcoming events visualised as a scrollable strip along the active route.',
-    screens: [
-      {
-        name: 'Positioning diagram',
-        component: 'PositioningDiagram',
-        desc: 'Shows where the Route Bar sits in the layout relative to the NIP and ETA panel.',
-        states: ['Free drive (hidden)', 'Guided drive', 'Landscape'],
-        status: 'planned',
-      },
-    ],
-  },
-  {
-    id: 'search-engine',
-    group: 'Search Engine',
-    navGroup: 'App Customisation',
-    desc: 'Search provider integration, connectivity states, and LPP enrichment.',
-    screens: [
-      {
-        name: 'Online search (third-party)',
-        component: 'SearchMock',
-        desc: 'Search bar and results list in online mode with a third-party provider and attribution badge.',
-        states: ['Empty state', 'With results', 'With "Powered by Google" badge'],
-      },
-      {
-        name: 'Offline search (TomTom)',
-        component: 'SearchMock',
-        desc: 'TomTom-only offline search — no attribution badge, limited result set.',
-        states: ['Empty state', 'With results'],
-      },
-      {
-        name: 'Connectivity transitions',
-        component: 'TransitionExplorer',
-        desc: 'Modal or inline indicator that switches the provider when connectivity changes.',
-        states: ['Online → offline', 'Offline → online'],
-      },
-      {
-        name: 'Search UI customisation',
-        component: 'SearchUICustomiser',
-        desc: 'Interactive explorer for Basic, Enriched, Filtered, and Attribution UI variants.',
-        states: ['Basic', 'Enriched results', 'With filters', 'Google attribution'],
-      },
-      {
-        name: 'Location Preview Panel',
-        component: 'LPPMock',
-        desc: 'Bottom sheet showing place details after selecting a search result.',
-        states: ['Default (no route)', 'With route options', 'POI details', 'Address only'],
-      },
-    ],
-  },
-  {
-    id: 'ev',
-    group: 'EV Support',
-    navGroup: 'Vehicle Integration',
-    desc: 'Charging station search, LDEVR route planning, and route preferences.',
-    screens: [
-      {
-        name: 'Architecture diagram',
-        component: 'EVArchDiagram',
-        desc: 'SVG showing data flow: Vehicle BMS → Vehicle Integration API → Navigation SDK → LDEVR API / EV Search API.',
-        states: ['Static'],
-      },
-      {
-        name: 'EV charging search',
-        component: 'EVSearchMock',
-        desc: 'Charging station list with speed / payment / services filter chips.',
-        states: ['Speed filter', 'Payment filter', 'Services filter'],
-      },
-      {
-        name: 'Station detail panel',
-        component: 'StationDetailMock',
-        desc: 'Full station detail: name, address, distance, connector types with live availability.',
-        states: ['CCS + Type 2 station', 'Compatible', 'Incompatible connector'],
-      },
-      {
-        name: 'LDEVR route preview',
-        component: 'RouteMock',
-        desc: 'Route timeline with 2 charging stops showing arrival SoC, target SoC, charge time, and operator.',
-        states: ['Plan charging: ON', 'Plan charging: OFF', 'Out-of-range warning'],
-      },
-      {
-        name: 'Route preferences',
-        component: 'PreferencesMock',
-        desc: 'Min battery sliders for stops and destination, plus avoid-tolls / avoid-unpaved toggles.',
-        states: ['Default 15%/15%', 'High threshold 30%/25%', 'Avoid tolls on'],
-      },
-    ],
-  },
-  {
-    id: 'ai-overview',
-    group: 'TomTom AI Assistant (TAIA)',
-    navGroup: 'TomTom AI Assistant',
-    desc: 'Architecture diagrams for the full TAIA voice pipeline.',
-    screens: [
-      {
-        name: 'Full architecture diagram',
-        component: 'TAIAArchDiagram',
-        desc: 'Complete voice pipeline: Driver → STT → VPA Cloud → TAIA SDK → TAIA Cloud → TTS → Speaker.',
-        states: ['Static'],
-      },
-      {
-        name: 'STT boundary diagram',
-        component: 'BoundaryDiagram',
-        desc: 'Shows the TAIA integration boundary — OEM owns audio/STT/VPA; TAIA receives only the text transcript.',
-        states: ['Static'],
-      },
-    ],
-  },
-];
+/* ─── Theme toggle bar ───────────────────────────────────────────────────────── */
+function DemoThemeBar({ theme, onThemeChange }) {
+  const opts = [
+    { id: 'dark',  label: '🌙 Night', bg: '#0b0f14' },
+    { id: 'light', label: '☀️ Day',   bg: '#f0f4f8' },
+  ];
+  return (
+    <div style={{
+      position: 'sticky', top: 0, zIndex: 20,
+      background: 'var(--surface)', borderBottom: '1px solid var(--border)',
+      padding: '10px 0 10px', marginBottom: 24,
+      display: 'flex', alignItems: 'center', gap: 12,
+    }}>
+      <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--muted)' }}>Demo background</span>
+      <div style={{ display: 'flex', gap: 6 }}>
+        {opts.map(o => (
+          <button
+            key={o.id}
+            onClick={() => onThemeChange(o.id)}
+            style={{
+              padding: '5px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
+              background: theme === o.id ? 'var(--text)' : 'var(--bg)',
+              color: theme === o.id ? 'var(--bg)' : 'var(--mid)',
+              border: `1px solid ${theme === o.id ? 'var(--text)' : 'var(--border)'}`,
+            }}
+          >{o.label}</button>
+        ))}
+      </div>
+      <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginLeft: 4 }}>
+        Connected to Intro Hero Illustrations style context
+      </span>
+    </div>
+  );
+}
+
+/* ─── Inventory sections ─────────────────────────────────────────────────────── */
+
+function buildSections(t) {
+  return [
+    /* ═══════════════════════════════════════════ UX Library ═══════════════════ */
+    {
+      id: 'home-screen-layout', group: 'Home Screen Layout', navGroup: 'App Customisation',
+      desc: 'Application area zones, dynamic resize, and UI state signalling.',
+      screens: [
+        { name: 'Zone overview', component: 'ZonesDiagram', desc: '4 named zones annotated over a dark map.', states: ['Nav area highlighted', 'Safe area highlighted', 'Display area highlighted', 'Controls zone highlighted'], preview: { node: <ZonesDiagram t={t} /> } },
+        { name: 'Resize demo',   component: 'ResizeDemo',   desc: 'Map fills screen with configurable insets on all 4 sides.', states: ['Default 0,0,0,0', 'Right inset 35%', 'Right inset 50%', 'Top 10% + Right 35%', 'Bottom 20%'], preview: { node: <ResizeDemo t={t} /> } },
+        { name: 'UI state — Passive', component: 'UIStateExplorer', desc: '4-dimension state signal in passive mode.', states: ['Idle browsing', 'Route planning', 'Search open', 'LPP open'], preview: { node: <UIStateExplorer t={t} /> } },
+      ],
+    },
+    {
+      id: 'nav-controls', group: 'Navigation Controls', navGroup: 'App Customisation',
+      desc: 'Button bar position, button visibility toggles, and search entry point.',
+      screens: [
+        { name: 'Button bar config',   component: 'ButtonBarConfig',   desc: 'Map controls bar with position and per-button visibility toggles.', states: ['All buttons visible', 'Search hidden', 'Mute hidden', 'Settings hidden', 'All hidden'], preview: { node: <ButtonBarConfig t={t} /> } },
+        { name: 'Search entry point',  component: 'SearchEntryConfig', desc: 'Search as full panel or as a button inside the button bar.', states: ['Default (panel visible)', 'Button visible in bar', 'Button hidden'], preview: { node: <SearchEntryConfig t={t} /> } },
+      ],
+    },
+    {
+      id: 'horizon-panel', group: 'Horizon Panel', navGroup: 'App Customisation',
+      desc: 'Composed guidance panel combining NIP, Upcoming Events strip, and ETA bar.',
+      screens: [
+        { name: 'Composed — right docked', component: 'GuidanceMock', desc: 'Full composed panel (NIP + Upcoming + ETA) anchored to the right edge.', states: ['Composed — right'], preview: { node: <GuidanceMock position="RIGHT" decomposed={false} /> } },
+        { name: 'Composed — left docked',  component: 'GuidanceMock', desc: 'Full composed panel anchored to the left edge.', states: ['Composed — left'], preview: { node: <GuidanceMock position="LEFT"  decomposed={false} /> } },
+        { name: 'Decomposed panels',       component: 'GuidanceMock', desc: 'NIP, Upcoming Events, and ETA rendered as separate floating panels.', states: ['NIP only', 'NIP + upcoming strip', 'NIP + ETA bar'], preview: { node: <GuidanceMock position="RIGHT" decomposed={true} /> } },
+      ],
+    },
+    {
+      id: 'instruction-panel', group: 'Next Instruction Panel', navGroup: 'App Customisation',
+      desc: 'Standalone NIP positioned freely anywhere on the map surface.',
+      screens: [
+        { name: 'NIP positions', component: 'NIPMock', desc: 'The NIP can be anchored to 5 positions relative to the navigation area.', states: ['Top left', 'Top centre', 'Top right', 'Bottom left', 'Bottom right'], preview: { node: <NIPMock position="TOP_LEFT" /> } },
+      ],
+    },
+    {
+      id: 'eta-panel', group: 'ETA Panel', navGroup: 'App Customisation',
+      desc: 'Standalone ETA bar showing remaining time, distance, and arrival time.',
+      screens: [
+        { name: 'ETA panel positions', component: 'ETAMock', desc: 'The ETA bar supports 6 anchor positions.', states: ['Bottom left', 'Bottom centre', 'Bottom right', 'Top left', 'Top centre', 'Top right'], preview: { node: <ETAMock position="BOTTOM_LEFT" visibleFields={ETA_FIELDS.filter(f => f.id !== 'soc')} /> } },
+      ],
+    },
+    {
+      id: 'route-bar', group: 'Route Bar', navGroup: 'App Customisation',
+      desc: 'Upcoming events visualised as a scrollable strip along the active route.',
+      screens: [
+        { name: 'Positioning diagram', component: 'PositioningDiagram', desc: 'Shows where the Route Bar sits in the layout relative to NIP and ETA.', states: ['Free drive (hidden)', 'Guided drive', 'Landscape'], status: 'planned', preview: { node: <PositioningDiagram /> } },
+      ],
+    },
+    {
+      id: 'search-engine', group: 'Search Engine', navGroup: 'App Customisation',
+      desc: 'Search provider integration, connectivity states, and LPP enrichment.',
+      screens: [
+        { name: 'Online search (third-party)',  component: 'SearchMock',         desc: 'Search bar and results in online mode with third-party provider attribution.', states: ['Empty state', 'With results', '"Powered by Google" badge'], preview: { node: <SearchMock /> } },
+        { name: 'Offline search (TomTom)',      component: 'SearchMock',         desc: 'TomTom-only offline search — no attribution badge.', states: ['Empty state', 'With results'], preview: { node: <SearchMock isOnline={false} /> } },
+        { name: 'Connectivity transitions',     component: 'TransitionExplorer', desc: 'Modal or inline indicator when the provider switches on connectivity change.', states: ['Online → offline', 'Offline → online'], preview: { node: <TransitionExplorer /> } },
+        { name: 'Search UI customisation',      component: 'SearchUICustomiser', desc: 'Interactive explorer for Basic, Enriched, Filtered, and Attribution UI variants.', states: ['Basic', 'Enriched', 'With filters', 'Google attribution'], preview: { node: <SearchUICustomiser /> } },
+        { name: 'Location Preview Panel',       component: 'LPPMock',            desc: 'Bottom sheet showing place details after selecting a search result.', states: ['Default (no route)', 'With route options', 'POI details', 'Address only'], preview: { node: <LPPMock /> } },
+      ],
+    },
+    {
+      id: 'ev', group: 'EV Support', navGroup: 'Vehicle Integration',
+      desc: 'Charging station search, LDEVR route planning, and route preferences.',
+      screens: [
+        { name: 'Architecture diagram',  component: 'EVArchDiagram',    desc: 'Data flow: Vehicle BMS → Vehicle Integration API → NavSDK → LDEVR / EV Search API.', states: ['Static'], preview: { node: <EVArchDiagram /> } },
+        { name: 'EV charging search',    component: 'EVSearchMock',     desc: 'Charging station list with speed / payment / services filter chips.', states: ['Speed filter', 'Payment filter', 'Services filter'], preview: { node: <EVSearchMock /> } },
+        { name: 'Station detail panel',  component: 'StationDetailMock',desc: 'Full station detail: name, address, connectors with live availability.', states: ['CCS + Type 2', 'Compatible', 'Incompatible connector'], preview: { node: <StationDetailMock /> } },
+        { name: 'LDEVR route preview',   component: 'RouteMock',        desc: 'Route timeline with charging stops showing arrival SoC, target SoC, charge time.', states: ['Plan charging: ON', 'Plan charging: OFF', 'Out-of-range warning'], preview: { node: <RouteMock /> } },
+        { name: 'Route preferences',     component: 'PreferencesMock',  desc: 'Min battery sliders and avoid-tolls/unpaved toggles.', states: ['Default 15%/15%', 'High threshold 30%/25%', 'Avoid tolls on'], preview: { node: <PreferencesMock /> } },
+      ],
+    },
+    {
+      id: 'ai-overview', group: 'TomTom AI Assistant (TAIA)', navGroup: 'TomTom AI Assistant',
+      desc: 'Architecture diagrams for the full TAIA voice pipeline.',
+      screens: [
+        { name: 'Full architecture diagram', component: 'TAIAArchDiagram', desc: 'Complete voice pipeline: Driver → STT → VPA Cloud → TAIA SDK → TAIA Cloud → TTS.', states: ['Static'], preview: { node: <TAIAArchDiagram /> } },
+        { name: 'STT boundary diagram',      component: 'BoundaryDiagram', desc: 'Shows the TAIA integration boundary — OEM owns audio/STT/VPA; TAIA receives text.', states: ['Static'], preview: { node: <BoundaryDiagram /> } },
+      ],
+    },
+    {
+      id: 'cluster', group: 'Instrument Cluster', navGroup: 'Vehicle Integration',
+      desc: 'Cluster display composition — speedometer, map pane, NIP, ETA, horizon panel, and lane guidance.',
+      screens: [
+        { name: 'Cluster display — default', component: 'ClusterDisplay', desc: 'Full cluster composition with speedometer, map and navigation overlays.', states: ['Speedometer + map', 'With NIP', 'With ETA bar', 'With horizon panel', 'Lane guidance active'], status: 'live', preview: { node: <ClusterDisplay showMap showVignette={false} nipLayout="TOP" etaLayout="BOTTOM" hpElements={[]} showHp={false} /> } },
+      ],
+    },
+
+    /* ═══════════════════════════════════════════ NavSDK ═══════════════════════ */
+    {
+      id: 'navsdk-map', group: 'NavSDK — Map Display', navGroup: 'NavSDK',
+      desc: 'TomTomMapComposable layer toggle, style switching, and traffic overlay configuration.',
+      screens: [
+        { name: 'Map compose — layer toggle', component: 'MapComposeDemo', desc: 'Switch between Base (day), Night, and Satellite map layers. Demonstrates MapOptions.styleUri changes.', states: ['Base (day)', 'Night', 'Satellite'], status: 'live', preview: { node: <MapComposeDemo /> } },
+        { name: 'Map styles',                 component: 'MapStylesDemo',  desc: 'Day, Night, and Custom OEM palette styles applied via StyleDescriptor.', states: ['Day', 'Night', 'Custom OEM'], status: 'live', preview: { node: <MapStylesDemo /> } },
+        { name: 'Traffic layers',             component: 'MapTrafficDemo', desc: 'Toggle traffic flow (RELATIVE / ABSOLUTE) and incident overlays independently.', states: ['Flow only', 'Incidents only', 'Flow + incidents', 'All off'], status: 'live', preview: { node: <MapTrafficDemo /> } },
+      ],
+    },
+    {
+      id: 'navsdk-navigation', group: 'NavSDK — Navigation', navGroup: 'NavSDK',
+      desc: 'Turn-by-turn guidance, voice instructions, replanning, safety alerts, and free-driving mode.',
+      screens: [
+        { name: 'Navigation quickstart',     component: 'NavQuickstartDemo',      desc: 'Simple start/stop navigation flow with progress animation — the bare minimum NavSDK integration.', states: ['Idle', 'Navigating', 'Arrived'], status: 'live', preview: { node: <NavQuickstartDemo /> } },
+        { name: 'Turn-by-turn instructions', component: 'TurnByTurnDemo',         desc: 'NIP mock cycling through manoeuvre types — turn, roundabout, arrive, merge — with GuidanceInstruction field callout.', states: ['Turn left', 'Take motorway', 'Roundabout exit', 'U-turn', 'Arrive'], status: 'live', preview: { node: <TurnByTurnDemo /> } },
+        { name: 'Voice instructions',        component: 'VoiceInstructionsDemo',  desc: 'TTS trigger demo — tap any upcoming instruction to fire the audio event and see which TextToSpeechEngine callback is invoked.', states: ['Triggered', 'Idle'], status: 'live', preview: { node: <VoiceInstructionsDemo /> } },
+        { name: 'Continuous replanning',     component: 'ReplanningDemo',         desc: 'Four-phase animation: on route → off route → replanning → new route calculated. Demonstrates NavigationEventObserver.onOffRouteDetected.', states: ['On route', 'Off route', 'Replanning', 'New route'], status: 'live', preview: { node: <ReplanningDemo /> } },
+        { name: 'Safety alerts',             component: 'SafetyDemo',             desc: 'Speed camera, dangerous curve, and school zone alert cards as they appear at approach distance thresholds.', states: ['Speed camera', 'Dangerous curve', 'School zone', 'No alerts'], status: 'live', preview: { node: <SafetyDemo /> } },
+        { name: 'Free-driving mode',         component: 'FreeDrivingDemo',        desc: 'Animated vehicle position on map in free-drive (no active route) — shows road label, speed, and heading arrow.', states: ['Moving', 'Stopped'], status: 'live', preview: { node: <FreeDrivingDemo /> } },
+      ],
+    },
+    {
+      id: 'navsdk-routing', group: 'NavSDK — Routing', navGroup: 'NavSDK',
+      desc: 'Route calculation quickstart, planning options, alternatives, section highlighting, and import/export.',
+      screens: [
+        { name: 'Routing quickstart',     component: 'RoutingQuickstartDemo',  desc: 'One-tap route calculation flow — idle → calculating → route displayed. Wraps RoutingEngine.planRoute().', states: ['Idle', 'Calculating', 'Route ready'], status: 'live', preview: { node: <RoutingQuickstartDemo /> } },
+        { name: 'Route planning options', component: 'RoutePlanningDemo',      desc: 'Travel mode and avoidances selector — changes TravelMode and RouteAvoidance in RoutePlanningOptions.', states: ['CAR / ECO', 'TRUCK', 'PEDESTRIAN', 'Avoid tolls', 'Avoid motorways'], status: 'live', preview: { node: <RoutePlanningDemo /> } },
+        { name: 'Route alternatives',     component: 'RouteAlternativesDemo',  desc: 'Three route options (fastest, eco, no tolls) — select to highlight and see time/distance summary.', states: ['Fastest selected', 'Eco selected', 'No tolls selected'], status: 'live', preview: { node: <RouteAlternativesDemo /> } },
+        { name: 'Route sections',         component: 'RouteSectionsDemo',      desc: 'Tap any section type (motorway, urban, toll) to highlight matching segments on the route polyline.', states: ['Motorways', 'Urban roads', 'Toll segments', 'None selected'], status: 'live', preview: { node: <RouteSectionsDemo /> } },
+        { name: 'Import / Export',        component: 'ImportExportDemo',       desc: 'Export a route as GPX/JSON, re-import it, and add intermediate waypoints — with tab navigation between modes.', states: ['Export tab', 'Import tab', 'Waypoints tab'], status: 'live', preview: { node: <ImportExportDemo /> } },
+      ],
+    },
+    {
+      id: 'navsdk-offline', group: 'NavSDK — Offline Maps', navGroup: 'NavSDK',
+      desc: 'Offline map region download management — progress tracking and status indicators.',
+      screens: [
+        { name: 'Region download manager', component: 'OfflineDownloadDemo', desc: 'Three region cards with progress bars. Tap "Download Germany" to animate the download progress live.', states: ['Queued', 'Downloading', 'Ready'], status: 'live', preview: { node: <OfflineDownloadDemo /> } },
+      ],
+    },
+  ];
+}
 
 /* ─── Summary counts ─────────────────────────────────────────────────────────── */
 function countByStatus(sections) {
-  const counts = { mock: 0, needed: 0, done: 0, planned: 0, total: 0 };
+  const counts = { mock: 0, needed: 0, done: 0, planned: 0, live: 0, total: 0 };
   sections.forEach(s => s.screens.forEach(sc => {
     const st = sc.status || 'mock';
     counts[st] = (counts[st] || 0) + 1;
@@ -344,34 +301,14 @@ function countByStatus(sections) {
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function ScreenshotAssets() {
   const { t } = useTranslation('pages');
+  const [demoTheme, setDemoTheme] = useState('dark');
 
+  const SECTIONS = buildSections(t);
   const counts = countByStatus(SECTIONS);
   const totalStates = SECTIONS.reduce((n, s) =>
-    n + s.screens.reduce((m, sc) => m + sc.states.length, 0), 0);
+    n + s.screens.reduce((m, sc) => m + (sc.states?.length ?? 0), 0), 0);
 
-  /* Map component key → rendered React node */
-  const PREVIEW = {
-    'ZonesDiagram':       { node: <ZonesDiagram t={t} /> },
-    'ResizeDemo':         { node: <ResizeDemo t={t} /> },
-    'UIStateExplorer':    { node: <UIStateExplorer t={t} /> },
-    'ButtonBarConfig':    { node: <ButtonBarConfig t={t} /> },
-    'SearchEntryConfig':  { node: <SearchEntryConfig t={t} /> },
-    'GuidanceMock':       { node: <GuidanceMock position="RIGHT" decomposed={false} /> },
-    'NIPMock':            { node: <NIPMock position="TOP_LEFT" /> },
-    'ETAMock':            { node: <ETAMock position="BOTTOM_LEFT" visibleFields={ETA_FIELDS.filter(f => f.id !== 'soc')} /> },
-    'PositioningDiagram': { node: <PositioningDiagram /> },
-    'SearchMock':         { node: <SearchMock /> },
-    'LPPMock':            { node: <LPPMock /> },
-    'TransitionExplorer': { node: <TransitionExplorer /> },
-    'SearchUICustomiser': { node: <SearchUICustomiser /> },
-    'EVArchDiagram':      { node: <EVArchDiagram /> },
-    'EVSearchMock':       { node: <EVSearchMock /> },
-    'StationDetailMock':  { node: <StationDetailMock /> },
-    'RouteMock':          { node: <RouteMock /> },
-    'PreferencesMock':    { node: <PreferencesMock /> },
-    'TAIAArchDiagram':    { node: <TAIAArchDiagram /> },
-    'BoundaryDiagram':    { node: <BoundaryDiagram /> },
-  };
+  const demoBg = demoTheme === 'dark' ? '#0b0f14' : '#f0f4f8';
 
   return (
     <div className="page">
@@ -381,23 +318,21 @@ export default function ScreenshotAssets() {
       </div>
 
       <div className="quick-answer">
-        An inventory of every UI mock in the library — track which screens still need real device screenshots to replace the current SVG mocks.
+        Every interactive demo and UI mock across the UX Library and NavSDK — the reference inventory for screenshot capture planning and design team handoff.
       </div>
 
       <Callout type="warn">
-        This page is for internal planning only. All screens are currently JSX/SVG mocks.
-        The goal is to identify, agree on, and track the capture of real device screenshots
-        to replace them.
+        This page is for internal planning only. <strong>NavSDK demos</strong> are live interactive components. <strong>UX Library mocks</strong> are JSX/SVG representations. The goal is to identify, agree on, and capture real device screenshots for all states.
       </Callout>
 
       {/* Summary strip */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', margin: '24px 0' }}>
         {[
-          { label: 'Total screens', value: counts.total, color: 'var(--text)' },
-          { label: 'Total states',  value: totalStates,  color: 'var(--text)' },
-          { label: 'SVG mocks',     value: counts.mock,  color: '#92400e' },
-          { label: 'Screenshot needed', value: counts.needed,  color: '#991b1b' },
-          { label: 'Static .png',   value: counts.done,  color: '#14532d' },
+          { label: 'Total screens', value: counts.total,   color: 'var(--text)' },
+          { label: 'Total states',  value: totalStates,    color: 'var(--text)' },
+          { label: 'Live demos',    value: counts.live,    color: '#1e40af' },
+          { label: 'SVG mocks',     value: counts.mock,    color: '#92400e' },
+          { label: 'Screenshot needed', value: counts.needed, color: '#991b1b' },
           { label: 'Planned',       value: counts.planned, color: 'var(--muted)' },
         ].map(({ label, value, color }) => (
           <div key={label} style={{
@@ -414,26 +349,21 @@ export default function ScreenshotAssets() {
       <div className="zone" id="sa-how">
         <h2 className="sh">How to use this page</h2>
         <p className="body">
-          Each section below maps to a documentation page. Live previews show the current JSX/SVG mock
-          as it appears inline in the docs. The state chips list which distinct variants need individual
-          screenshots. Status badges track progress from <strong>SVG mock</strong> → <strong>Screenshot needed</strong> → <strong>Static .png</strong>.
+          Each section maps to a documentation page. Live previews show the current JSX/SVG mock or interactive demo. State chips list distinct variants that need individual screenshots. Status badges track progress from <strong>SVG mock</strong> → <strong>Screenshot needed</strong> → <strong>Static .png</strong>.
         </p>
         <p className="body">
-          When a screenshot is ready, update the <code>status</code> field in{' '}
-          <code>src/pages/ScreenshotAssets.jsx</code> from <code>&apos;mock&apos;</code> to{' '}
-          <code>&apos;done&apos;</code>.
-          Screens marked <strong>Planned</strong> have no interactive mock yet.
+          <strong>NavSDK demos</strong> are fully interactive — you can tap through states, toggle options, and trigger animations directly on this page.
+          When a screenshot is ready, update the <code>status</code> field in <code>src/pages/ScreenshotAssets.jsx</code> from <code>&apos;mock&apos;</code> to <code>&apos;done&apos;</code>.
         </p>
-        {/* Legend */}
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 16 }}>
           {Object.entries(STATUS).map(([key, s]) => (
-            <span key={key} style={{
-              fontSize: '0.875rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4,
-              background: s.bg, color: s.color, border: `1px solid ${s.border}`,
-            }}>{s.label}</span>
+            <span key={key} style={{ fontSize: '0.875rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, background: s.bg, color: s.color, border: `1px solid ${s.border}` }}>{s.label}</span>
           ))}
         </div>
       </div>
+
+      {/* Theme toggle */}
+      <DemoThemeBar theme={demoTheme} onThemeChange={setDemoTheme} />
 
       {/* Sections */}
       {SECTIONS.map(section => (
@@ -448,17 +378,13 @@ export default function ScreenshotAssets() {
             }}>{section.navGroup}</span>
             <span style={{ fontSize: '0.75rem', color: 'var(--muted)', marginLeft: 'auto' }}>
               {section.screens.length} screen{section.screens.length !== 1 ? 's' : ''}{' · '}
-              {section.screens.reduce((n, s) => n + s.states.length, 0)} states
+              {section.screens.reduce((n, s) => n + (s.states?.length ?? 0), 0)} states
             </span>
           </div>
           <p className="body" style={{ marginTop: 0, marginBottom: 16 }}>{section.desc}</p>
 
-          {/* Preview card grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-            gap: 16,
-          }}>
+          {/* Full-width card stack */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {section.screens.map(screen => (
               <PreviewCard
                 key={screen.name}
@@ -467,7 +393,8 @@ export default function ScreenshotAssets() {
                 desc={screen.desc}
                 states={screen.states}
                 status={screen.status}
-                preview={PREVIEW[screen.component] || null}
+                preview={screen.preview}
+                darkBg={demoBg}
               />
             ))}
           </div>

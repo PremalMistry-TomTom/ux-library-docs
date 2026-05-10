@@ -5,7 +5,7 @@ import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
 
 /* ─── Shared map mock background ─────────────────────────────────────────── */
-function MapBg({ style = 'day', showTrafficFlow = false, showTrafficIncidents = false }) {
+export function MapBg({ style = 'day', showTrafficFlow = false, showTrafficIncidents = false }) {
   const bgColor = style === 'night' ? '#0d1117' : style === 'satellite' ? '#1a2f1a' : '#1e2d40';
   const roadColor = style === 'night' ? 'rgba(255,255,255,0.15)' : style === 'satellite' ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.2)';
   const mainRoadColor = style === 'night' ? 'rgba(255,255,255,0.25)' : style === 'satellite' ? 'rgba(255,220,100,0.5)' : '#c8a96e';
@@ -940,6 +940,97 @@ export function NavSDKMapTraffic({ onNavigate }) {
         <Callout type="info">
           Traffic data requires an active network connection. In offline mode, traffic overlays are automatically hidden. See the <strong>Offline</strong> section for map caching options.
         </Callout>
+      </div>
+    </div>
+  );
+}
+
+export function MapComposeDemo() {
+  const [layer, setLayer] = useState('base');
+  const mapStyle = layer === 'satellite' ? 'satellite' : layer === 'night' ? 'night' : 'day';
+  const RadioGroup2 = ({ options, value, onChange }) => (
+    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+      {options.map(o => (
+        <button key={o.id} onClick={() => onChange(o.id)} style={{
+          padding: '6px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.8125rem',
+          background: value === o.id ? '#e2001a' : 'var(--bg)',
+          color: value === o.id ? '#fff' : 'var(--mid)',
+          border: `1px solid ${value === o.id ? '#e2001a' : 'var(--border)'}`,
+          fontWeight: value === o.id ? 700 : 400,
+        }}>{o.label}</button>
+      ))}
+    </div>
+  );
+  return (
+    <div>
+      <RadioGroup2
+        options={[{ id: 'base', label: 'Base (day)' }, { id: 'night', label: 'Night' }, { id: 'satellite', label: 'Satellite' }]}
+        value={layer} onChange={setLayer}
+      />
+      <div style={{ width: '100%', height: 280, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
+        <MapBg style={mapStyle} />
+        <div style={{ position: 'absolute', bottom: 10, left: 10, background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '4px 10px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'monospace' }}>TomTomMapComposable · styleUri: {mapStyle === 'day' ? 'DEFAULT' : mapStyle === 'night' ? 'DEFAULT_NIGHT' : 'satellite'}</div>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
+      </div>
+    </div>
+  );
+}
+
+export function MapStylesDemo() {
+  const [activeStyle, setActiveStyle] = useState('day');
+  const styles = [
+    { id: 'day',    label: 'Day',    uri: 'StyleDescriptor.DEFAULT' },
+    { id: 'night',  label: 'Night',  uri: 'StyleDescriptor.DEFAULT_NIGHT' },
+    { id: 'custom', label: 'Custom', uri: 'StyleDescriptor.fromUri(...)' },
+  ];
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+        {styles.map(s => (
+          <button key={s.id} onClick={() => setActiveStyle(s.id)} style={{
+            padding: '6px 14px', borderRadius: 20, cursor: 'pointer', fontSize: '0.8125rem',
+            background: activeStyle === s.id ? '#e2001a' : 'var(--bg)',
+            color: activeStyle === s.id ? '#fff' : 'var(--mid)',
+            border: `1px solid ${activeStyle === s.id ? '#e2001a' : 'var(--border)'}`,
+            fontWeight: activeStyle === s.id ? 700 : 400,
+          }}>{s.label}</button>
+        ))}
+      </div>
+      <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', border: '1px solid var(--border)', position: 'relative' }}>
+        <MapBg style={activeStyle === 'custom' ? 'night' : activeStyle} />
+        {activeStyle === 'custom' && (
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,80,60,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ background: 'rgba(0,0,0,0.7)', color: '#4ade80', fontSize: '0.75rem', fontFamily: 'monospace', padding: '6px 12px', borderRadius: 6 }}>OEM custom palette applied</span>
+          </div>
+        )}
+        <div style={{ position: 'absolute', bottom: 10, left: 10, background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '4px 10px', fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'monospace' }}>{styles.find(s => s.id === activeStyle)?.uri}</div>
+      </div>
+    </div>
+  );
+}
+
+export function MapTrafficDemo() {
+  const [showFlow, setShowFlow] = useState(true);
+  const [showIncidents, setShowIncidents] = useState(false);
+  const [flowType, setFlowType] = useState('RELATIVE');
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 16, marginBottom: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+        {[{ key: 'showFlow', label: 'Traffic flow', val: showFlow, set: setShowFlow }, { key: 'showIncidents', label: 'Incidents', val: showIncidents, set: setShowIncidents }].map(({ key, label, val, set }) => (
+          <label key={key} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.8125rem', color: 'var(--mid)' }}>
+            <input type="checkbox" checked={val} onChange={e => set(e.target.checked)} />
+            {label}
+          </label>
+        ))}
+        {showFlow && (
+          <select value={flowType} onChange={e => setFlowType(e.target.value)} style={{ fontSize: '0.75rem', padding: '4px 8px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)' }}>
+            <option value="RELATIVE">RELATIVE</option>
+            <option value="ABSOLUTE">ABSOLUTE</option>
+          </select>
+        )}
+      </div>
+      <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', border: '1px solid var(--border)', position: 'relative' }}>
+        <MapBg style="night" showTrafficFlow={showFlow} showTrafficIncidents={showIncidents} />
       </div>
     </div>
   );

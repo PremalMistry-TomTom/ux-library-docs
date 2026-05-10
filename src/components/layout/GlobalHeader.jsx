@@ -59,7 +59,7 @@ function HamburgerIcon({ open }) {
 
 const NAV_LINKS = ['Products', 'Resources', 'Pricing'];
 
-export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, onProductsClick, onDocsClick, docsPortalOpen }) {
+export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, onProductsClick, onDocsClick, docsPortalOpen, onHelpClick, plumbingOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   /* Close menu on resize back to desktop */
@@ -112,7 +112,12 @@ export default function GlobalHeader({ isVisible, onMouseEnter, onMouseLeave, on
         <button className="gh-icon-btn" aria-label="Search">
           <SearchIcon />
         </button>
-        <button className="gh-icon-btn gh-desktop-only" aria-label="Help">
+        <button
+          className={`gh-icon-btn gh-desktop-only${plumbingOpen ? ' gh-icon-btn--active' : ''}`}
+          aria-label="Plumbing docs"
+          title="Plumbing & design tools"
+          onClick={() => onHelpClick?.()}
+        >
           <HelpIcon />
         </button>
         <button className="gh-signin-btn gh-desktop-only">

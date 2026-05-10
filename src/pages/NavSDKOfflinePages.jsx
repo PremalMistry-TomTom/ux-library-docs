@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
@@ -610,6 +610,53 @@ regionManager.updateRegion(
           On iOS, tile cache refresh is handled automatically by the SDK — no explicit update call is required.
         </Callout>
       </div>
+    </div>
+  );
+}
+
+export function OfflineDownloadDemo() {
+  const [regions, setRegions] = React.useState([
+    { name: 'Benelux', size: '0.3 GB', pct: 100, status: 'ready' },
+    { name: 'Germany', size: '0.9 GB', pct: 72,  status: 'downloading' },
+    { name: 'France',  size: '1.1 GB', pct: 0,   status: 'queued' },
+  ]);
+  const [downloading, setDownloading] = React.useState(false);
+
+  function startDownload() {
+    setDownloading(true);
+    let pct = regions[1].pct;
+    const iv = setInterval(() => {
+      pct = Math.min(100, pct + 4);
+      setRegions(r => r.map((reg, i) => i === 1 ? { ...reg, pct, status: pct === 100 ? 'ready' : 'downloading' } : reg));
+      if (pct >= 100) { clearInterval(iv); setDownloading(false); }
+    }, 120);
+  }
+
+  return (
+    <div style={{ padding: 20, background: 'var(--surface)', borderRadius: 14, border: '1px solid var(--border)' }}>
+      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text)', marginBottom: 16 }}>Offline Map Regions</div>
+      {regions.map(({ name, size, pct, status }) => (
+        <div key={name} style={{ marginBottom: 14 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+            <span style={{ fontSize: '0.8125rem', color: 'var(--text)', fontWeight: 600 }}>{name}</span>
+            <span style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{size}</span>
+              <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: status === 'ready' ? '#22c55e' : status === 'downloading' ? '#60a5fa' : 'var(--muted)' }}>{status === 'ready' ? '✓ Ready' : status === 'downloading' ? `${pct}%` : 'Queued'}</span>
+            </span>
+          </div>
+          <div style={{ height: 6, background: 'var(--bg)', borderRadius: 3 }}>
+            <div style={{ height: '100%', width: `${pct}%`, background: pct === 100 ? '#22c55e' : '#60a5fa', borderRadius: 3, transition: 'width 0.1s linear' }} />
+          </div>
+        </div>
+      ))}
+      <button onClick={startDownload} disabled={downloading || regions.every(r => r.pct === 100)} style={{
+        marginTop: 8, padding: '8px 18px', borderRadius: 8, cursor: downloading ? 'default' : 'pointer',
+        background: downloading || regions.every(r => r.pct === 100) ? 'var(--bg)' : '#e2001a',
+        color: downloading || regions.every(r => r.pct === 100) ? 'var(--muted)' : '#fff',
+        border: '1px solid var(--border)', fontSize: '0.8125rem', fontWeight: 600,
+      }}>
+        {regions.every(r => r.pct === 100) ? '✓ All regions ready' : downloading ? 'Downloading…' : 'Download Germany →'}
+      </button>
     </div>
   );
 }

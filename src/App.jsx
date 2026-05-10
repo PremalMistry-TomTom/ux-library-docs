@@ -148,6 +148,7 @@ import ParkingFuelAPIIntro from './pages/ParkingFuelAPIIntro';
 import TrafficAnalyticsAPIIntro from './pages/TrafficAnalyticsAPIIntro';
 import SnapToRoadsAPIIntro from './pages/SnapToRoadsAPIIntro';
 import Placeholder from './pages/Placeholder';
+import PlumbingPortal from './pages/PlumbingPortal';
 import {
   NavSDKLocationQuickstart,
   NavSDKSearchQuickstart,
@@ -351,13 +352,17 @@ export default function App() {
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
   const [docsPortalOpen, setDocsPortalOpen] = useState(true);
   const [navCollapsed, setNavCollapsed] = useState(false);
+  const [plumbingOpen, setPlumbingOpen] = useState(false);
 
-  // [ key toggles sidebar on desktop
+  // [ key toggles sidebar on desktop; ? key toggles plumbing portal
   useEffect(() => {
     function handleKeyDown(e) {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
       if (e.key === '[' && !e.metaKey && !e.ctrlKey && !e.altKey) {
         setNavCollapsed(c => !c);
+      }
+      if (e.key === '?' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        setPlumbingOpen(v => !v);
       }
     }
     window.addEventListener('keydown', handleKeyDown);
@@ -426,6 +431,8 @@ export default function App() {
         onProductsClick={() => setDocsPortalOpen(v => !v)}
         onDocsClick={() => setDocsPortalOpen(true)}
         docsPortalOpen={docsPortalOpen}
+        onHelpClick={() => setPlumbingOpen(v => !v)}
+        plumbingOpen={plumbingOpen}
       />
 
       {/* Topnav: only shown inside the UX Library docs, not on the DocsPortal */}
@@ -469,6 +476,10 @@ export default function App() {
           </main>
           <TOC currentPage={currentPage} />
         </div>
+      )}
+      {/* Plumbing portal — global overlay, accessible from (?) button */}
+      {plumbingOpen && (
+        <PlumbingPortal onClose={() => setPlumbingOpen(false)} />
       )}
     </IlloStyleProvider>
   );

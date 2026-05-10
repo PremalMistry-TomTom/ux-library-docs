@@ -3014,3 +3014,10 @@ html.ai-panel-open .page {
 [data-theme="dark"] .ppb-root   { background: #0d1f38; border-color: #1e3a5c; border-left-color: #93c5fd; }
 [data-theme="dark"] .ppb-icon   { background: #1e3a5c; color: #93c5fd; }
 [data-theme="dark"] .ppb-link   { color: #93c5fd; }
+
+/* ── IlloCard copy hint ───────────────────────────────────────────────────────── */
+[data-theme] div:hover > .illo-card-copy-hint,
+div:hover > .illo-card-copy-hint { opacity: 1 !important; }
+
+/* ── GlobalHeader active icon button ─────────────────────────────────────────── */
+.gh-icon-btn--active { color: #e2001a !important; }
