@@ -32,7 +32,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={M.dim} strokeWidth="2.5">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
-        <span style={{ fontSize: '0.75rem', color: M.muted, flex: 1 }}>Search destination…</span>
+        <span style={{ fontSize: '0.75rem', color: M.dim, flex: 1 }}>Search destination…</span>
         {showAttribution && (
           <span style={{ fontSize: '0.875rem', color: M.dim, background: M.card, padding: '1px 5px', borderRadius: 3, whiteSpace: 'nowrap' }}>
             Powered by Google
@@ -43,7 +43,7 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
       {/* Connectivity strip */}
       <div style={{ padding: '5px 12px', background: isOnline ? `${M.green}22` : `${M.amber}22`, display: 'flex', alignItems: 'center', gap: 6 }}>
         <div style={{ width: 6, height: 6, borderRadius: '50%', background: isOnline ? M.green : M.amber, flexShrink: 0 }} />
-        <span style={{ fontSize: '0.875rem', color: isOnline ? M.green : M.orange }}>
+        <span style={{ fontSize: '0.875rem', color: isOnline ? M.green : M.amber }}>
           {isOnline ? '3rd-party search · online' : 'TomTom onboard · offline'}
         </span>
       </div>
@@ -67,11 +67,11 @@ export function SearchMock({ isOnline = true, showAttribution = false, showEnric
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: '0.75rem', fontWeight: 600, color: M.text, marginBottom: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.name}</div>
-            <div style={{ fontSize: '0.875rem', color: M.muted }}>{r.addr}</div>
+            <div style={{ fontSize: '0.875rem', color: M.dim }}>{r.addr}</div>
             {showEnrichment && (
               <div style={{ display: 'flex', gap: 5, marginTop: 3 }}>
                 <span style={{ fontSize: '0.875rem', color: M.amber }}>★ {r.rating}</span>
-                <span style={{ fontSize: '0.875rem', color: M.muted }}>({r.reviews})</span>
+                <span style={{ fontSize: '0.875rem', color: M.dim }}>({r.reviews})</span>
                 <span style={{ fontSize: '0.875rem', color: M.dim }}>{r.price}</span>
                 <span style={{ fontSize: '0.875rem', color: r.open ? M.green : M.red }}>{r.open ? 'Open' : 'Closed'}</span>
               </div>
@@ -95,7 +95,7 @@ export function LPPMock({ enriched = false, attribution = false }) {
           <>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 5 }}>
               <span style={{ fontSize: '0.875rem', color: M.amber }}>★ 4.6</span>
-              <span style={{ fontSize: '0.875rem', color: M.muted }}>(1,240 reviews)</span>
+              <span style={{ fontSize: '0.875rem', color: M.dim }}>(1,240 reviews)</span>
               <span style={{ fontSize: '0.875rem', color: M.dim }}>€€ · Italian</span>
             </div>
             <div style={{ fontSize: '0.875rem', color: M.green, marginBottom: 6 }}>Open · Closes 23:00</div>
@@ -110,7 +110,7 @@ export function LPPMock({ enriched = false, attribution = false }) {
         <button style={{ flex: 1, padding: '7px 0', background: M.card, color: M.blue, border: `1px solid ${M.line}`, borderRadius: 6, fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer' }}>Route</button>
       </div>
       {attribution && (
-        <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.875rem', color: M.muted }}>
+        <div style={{ padding: '6px 14px', borderTop: `1px solid ${M.line}`, background: M.bg, fontSize: '0.875rem', color: M.dim }}>
           Powered by Google
         </div>
       )}

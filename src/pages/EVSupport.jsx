@@ -198,7 +198,7 @@ export function EVSearchMock({ activeFilter = 'speed' }) {
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text }}>{s.n}</span>
               <span style={{ fontSize: '0.875rem', color: M.dim }}>{s.dist}</span>
             </div>
-            <div style={{ fontSize: '0.875rem', color: M.muted, marginBottom: 2 }}>{s.addr}</div>
+            <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 2 }}>{s.addr}</div>
             <div style={{ fontSize: '0.875rem', color: M.dim }}>⚡ {s.kw} · <span style={{ color: M.green }}>{s.avail}</span></div>
           </div>
         </div>
@@ -215,7 +215,7 @@ export function StationDetailMock() {
       <div style={{ padding: '10px 14px', borderBottom: `1px solid ${M.line}` }}>
         <div style={{ fontSize: '0.875rem', color: M.green, marginBottom: 2 }}>Charging station</div>
         <div style={{ fontSize: '0.875rem', fontWeight: 700, color: M.text }}>Indigo</div>
-        <div style={{ fontSize: '0.875rem', color: M.muted }}>Rue Soufflot, 75005 Paris</div>
+        <div style={{ fontSize: '0.875rem', color: M.dim }}>Rue Soufflot, 75005 Paris</div>
         <div style={{ display: 'flex', gap: 5, marginTop: 5 }}>
           {['24/7', '🅿', '♿', '🚻'].map(t => (
             <span key={t} style={{ fontSize: '0.875rem', background: M.card2, color: M.dim, padding: '2px 6px', borderRadius: 4, border: `1px solid ${M.line}` }}>{t}</span>
@@ -246,9 +246,9 @@ export function StationDetailMock() {
       <div style={{ padding: '8px 14px', fontSize: '0.875rem' }}>
         <div style={{ color: M.dim, marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}><span>Payment</span><span>∧</span></div>
         <div style={{ color: M.text, fontWeight: 600, marginBottom: 1 }}>In Network</div>
-        <div style={{ color: M.muted, marginBottom: 5 }}>Plugsurfing, Shell Recharge</div>
+        <div style={{ color: M.dim, marginBottom: 5 }}>Plugsurfing, Shell Recharge</div>
         <div style={{ color: M.text, fontWeight: 600, marginBottom: 1 }}>Payment methods</div>
-        <div style={{ color: M.muted }}>App, Charging card, Credit card</div>
+        <div style={{ color: M.dim }}>App, Charging card, Credit card</div>
       </div>
     </div>
   );
@@ -289,7 +289,7 @@ export function RouteMock() {
             <div key={i} style={{ background: M.card2, borderRadius: 20, padding: '8px 10px', marginBottom: 6, border: `1px solid ${M.line}` }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 3 }}>
                 <span style={{ fontSize: '0.75rem', fontWeight: 700, color: M.text }}>🔌 {s.label}</span>
-                <span style={{ fontSize: '0.875rem', color: M.muted }}>›</span>
+                <span style={{ fontSize: '0.875rem', color: M.dim }}>›</span>
               </div>
               <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 2 }}>🕐 {s.time} · 🔋 {s.socIn} → {s.socOut}</div>
               <div style={{ fontSize: '0.875rem', color: M.dim }}>{s.kw} · {s.chargeTime}</div>
@@ -331,7 +331,7 @@ export function PreferencesMock() {
             </div>
           </div>
         ))}
-        <div style={{ fontSize: '0.875rem', color: M.muted, lineHeight: 1.4 }}>While driving, arrival percentages might drop up to 2% below set value</div>
+        <div style={{ fontSize: '0.875rem', color: M.dim, lineHeight: 1.4 }}>While driving, arrival percentages might drop up to 2% below set value</div>
       </div>
       <div style={{ padding: '10px 14px' }}>
         <div style={{ fontSize: '0.875rem', color: M.dim, marginBottom: 8 }}>Avoid on this route</div>
@@ -340,8 +340,8 @@ export function PreferencesMock() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: '0.875rem', color: M.text }}>
               <span>{r.icon}</span>{r.label}
             </div>
-            <div style={{ width: 34, height: 18, borderRadius: 9, background: M.line, position: 'relative', border: `1px solid ${M.muted}` }}>
-              <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.muted, position: 'absolute', top: 1, left: 2 }} />
+            <div style={{ width: 34, height: 18, borderRadius: 9, background: M.line, position: 'relative' }}>
+              <div style={{ width: 14, height: 14, borderRadius: '50%', background: M.white, position: 'absolute', top: 2, left: 2 }} />
             </div>
           </div>
         ))}
