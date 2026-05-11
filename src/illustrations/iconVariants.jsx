@@ -391,18 +391,40 @@ export function IcoTrafficFlowTile() {
 
 export function IcoTrafficIncidents() {
   const { palette } = useIlloStyle();
+  // Three incident rows: roadworks (warn), accident (danger), closure (mid)
+  const rows = [
+    { icon: 'works',   color: palette.warn,   barW: 80 },
+    { icon: 'crash',   color: palette.danger,  barW: 58 },
+    { icon: 'closure', color: palette.mid,     barW: 70 },
+  ];
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Road */}
-      <rect x="20" y="78" width="160" height="28" rx="5" fill={palette.mid} opacity="0.25" />
-      <line x1="20" y1="92" x2="180" y2="92" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" strokeDasharray="10 6" />
-      {/* Warning triangle */}
-      <polygon points="100,22 135,78 65,78" fill={palette.accent} opacity="0.90" />
-      <polygon points="100,28 129,74 71,74" fill={palette.dark} opacity="0.60" />
-      {/* Exclamation mark */}
-      <rect x="96" y="40" width="8" height="22" rx="3" fill={palette.accent} />
-      <circle cx="100" cy="68" r="4.5" fill={palette.accent} />
+      {rows.map(({ icon, color, barW }, i) => {
+        const y = 18 + i * 34;
+        return (
+          <g key={i}>
+            {/* Row card */}
+            <rect x="14" y={y} width="172" height="26" rx="6" fill={palette.mid} opacity="0.10" stroke={color} strokeWidth="1" strokeOpacity="0.35" />
+            {/* Severity dot */}
+            <circle cx="28" cy={y + 13} r="6" fill={color} opacity="0.85" />
+            {/* Icon inside dot */}
+            {icon === 'works'   && <rect x="25" y={y + 10} width="6" height="7" rx="1" fill={palette.dark} opacity="0.8" />}
+            {icon === 'crash'   && <>
+              <line x1="25" y1={y+10} x2="31" y2={y+16} stroke={palette.dark} strokeWidth="2" strokeLinecap="round" />
+              <line x1="31" y1={y+10} x2="25" y2={y+16} stroke={palette.dark} strokeWidth="2" strokeLinecap="round" />
+            </>}
+            {icon === 'closure' && <rect x="24" y={y + 12} width="8" height="3" rx="1.5" fill={palette.dark} opacity="0.8" />}
+            {/* Type label bar */}
+            <rect x="40" y={y + 8} width={barW} height="5" rx="2.5" fill={color} opacity="0.65" />
+            {/* Severity sub-bar */}
+            <rect x="40" y={y + 16} width={barW - 18} height="4" rx="2" fill={palette.mid} opacity="0.35" />
+            {/* Distance badge */}
+            <rect x={160} y={y + 8} width="20" height="12" rx="4" fill={color} opacity="0.18" />
+            <rect x={163} y={y + 12} width="14" height="4" rx="2" fill={color} opacity="0.60" />
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -698,23 +720,46 @@ export function IcoCalculateRoute() {
         </g>
       ))}
       {/* Total row */}
-      <rect x="24" y="126" width="152" height="0" rx="2" fill={palette.mid} opacity="0.3" />
+      <line x1="24" y1="122" x2="176" y2="122" stroke={palette.mid} strokeWidth="1" opacity="0.25" />
+      <rect x="120" y="125" width="32" height="0" rx="2" fill={palette.accent} opacity="0" />
     </svg>
   );
 }
 
 export function IcoBatchRouting() {
   const { palette } = useIlloStyle();
+  // 4 concurrent route progress bars with different completion %
+  const routes = [
+    { pct: 0.85, color: palette.accent  },
+    { pct: 0.60, color: palette.mid     },
+    { pct: 0.40, color: palette.accent  },
+    { pct: 0.72, color: palette.mid     },
+  ];
+  const trackW = 130, ox = 30, oy = 20, rowH = 24;
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Three route lines */}
-      {[30, 58, 86].map((y, i) => (
-        <g key={i}>
-          <circle cx="28" cy={y + 7} r="6" fill={palette.accent} opacity={1 - i * 0.2} />
-          <line x1="34" y1={y + 7} x2="166" y2={y + 7} stroke={palette.mid} strokeWidth="3" opacity={1 - i * 0.2} strokeLinecap="round" />
-          <circle cx="172" cy={y + 7} r="6" fill={palette.accent} opacity={1 - i * 0.2} />
-        </g>
+      {routes.map(({ pct, color }, i) => {
+        const y = oy + i * rowH;
+        return (
+          <g key={i}>
+            {/* Origin dot */}
+            <circle cx={ox} cy={y + 5} r="4" fill={color} opacity={0.6 + i * 0.05} />
+            {/* Track */}
+            <rect x={ox + 8} y={y + 2} width={trackW} height="6" rx="3" fill={palette.mid} opacity="0.15" />
+            {/* Fill */}
+            <rect x={ox + 8} y={y + 2} width={trackW * pct} height="6" rx="3" fill={color} opacity={i % 2 === 0 ? 0.85 : 0.55} />
+            {/* km badge at right */}
+            <rect x={ox + 8 + trackW + 6} y={y} width="26" height="10" rx="3" fill={color} opacity="0.18" />
+            <rect x={ox + 8 + trackW + 9} y={y + 3} width="20" height="4" rx="2" fill={color} opacity="0.60" />
+          </g>
+        );
+      })}
+      {/* Parallel dispatch badge at bottom */}
+      <rect x="30" y="116" width="140" height="10" rx="4" fill={palette.mid} opacity="0.12" />
+      <rect x="30" y="116" width="140" height="10" rx="4" fill="none" stroke={palette.accent} strokeWidth="1" strokeOpacity="0.40" />
+      {[0,1,2,3].map(i => (
+        <rect key={i} x={38 + i * 32} y="119" width="20" height="4" rx="2" fill={palette.accent} opacity="0.55" />
       ))}
     </svg>
   );
