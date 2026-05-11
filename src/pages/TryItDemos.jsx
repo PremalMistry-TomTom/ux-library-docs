@@ -982,16 +982,21 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
     let map;
     loadSdk().then(tt => {
       if (!containerRef.current) return;
+      /* Ensure the container has explicit pixel dimensions before SDK measures it */
+      containerRef.current.style.width  = '100%';
+      containerRef.current.style.height = '340px';
       map = tt.map({
         key: apiKey,
         container: containerRef.current,
         center: [center.longitude, center.latitude],
         zoom: 10,
-        style: 'tomtom://vector/1/basic-main',
       });
       mapRef.current = map;
 
-      map.on('load', () => {
+      /* resize ensures the container is fully painted before the SDK measures it */
+      map.once('load', () => {
+        map.resize();
+
         /* Fill */
         map.addSource('range', { type: 'geojson', data: geojson });
         map.addLayer({
@@ -1025,7 +1030,7 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
 
   return (
     <div style={{ position: 'relative', borderTop: '1px solid var(--border)' }}>
-      <div ref={containerRef} style={{ width: '100%', height: 340 }} />
+      <div ref={containerRef} style={{ width: '100%', height: 340, minHeight: 340 }} />
       <span style={{
         position: 'absolute', bottom: 8, right: 8,
         fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff',
