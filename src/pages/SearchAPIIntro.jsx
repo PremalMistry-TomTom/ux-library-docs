@@ -6,12 +6,28 @@ import {
   L_SearchAlongRoute, L_SearchAutocomplete, L_BatchSearch, L_POIDetails, L_POIPhotos,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
+import {
   IlloSearchFuzzy, IlloSearchPOI, IlloSearchNearby,
   IlloSearchAlongRoute, IlloSearchAutocomplete, IlloPOIDetails, IlloPOIPhotos,
 } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloSearchFuzzy, L_SearchFuzzy);
+const HeroIllo = makeThumb(IlloSearchFuzzy, L_SearchFuzzy, IcoSearchFuzzy);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SearchAPIIntro({ onNavigate }) {
@@ -19,7 +35,7 @@ export default function SearchAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloSearchFuzzy, L_SearchFuzzy),
+      Thumb: makeThumb(IlloSearchFuzzy, L_SearchFuzzy, IcoSearchFuzzy),
       method: 'GET',
       title: 'Fuzzy Search',
       desc: 'Unified endpoint accepting free-form text — addresses, POIs, and coordinates resolved in a single query.',
@@ -27,7 +43,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloSearchPOI, L_SearchPOI),
+      Thumb: makeThumb(IlloSearchPOI, L_SearchPOI, IcoSearchPOI),
       method: 'GET',
       title: 'POI Search',
       desc: 'Search exclusively for Points of Interest by name with optional category and brand filters.',
@@ -35,7 +51,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(null, L_SearchCategory),
+      Thumb: makeThumb(null, L_SearchCategory, IcoSearchPOI),
       method: 'GET',
       title: 'Category Search',
       desc: 'Find POIs by category type such as restaurants, hospitals, or petrol stations.',
@@ -43,7 +59,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloSearchNearby, L_SearchNearby),
+      Thumb: makeThumb(IlloSearchNearby, L_SearchNearby, IcoSearchNearby),
       method: 'GET',
       title: 'Nearby Search',
       desc: 'Discover POIs within a radius around a given lat/lon coordinate without a text query.',
@@ -51,7 +67,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloSearchAlongRoute, L_SearchAlongRoute),
+      Thumb: makeThumb(IlloSearchAlongRoute, L_SearchAlongRoute, IcoSearchAlongRoute),
       method: 'POST',
       title: 'Along-Route Search',
       desc: 'Find POIs along a route corridor, ranked by deviation from the original path.',
@@ -59,7 +75,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloSearchAutocomplete, L_SearchAutocomplete),
+      Thumb: makeThumb(IlloSearchAutocomplete, L_SearchAutocomplete, IcoSearchAutocomplete),
       method: 'GET',
       title: 'Autocomplete',
       desc: 'Return type-ahead entity suggestions for partial queries to power instant search UIs.',
@@ -67,7 +83,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(null, L_BatchSearch),
+      Thumb: makeThumb(null, L_BatchSearch, IcoSearchFuzzy),
       method: 'POST',
       title: 'Batch Search',
       desc: 'Execute multiple search queries in a single HTTP request, synchronously or asynchronously.',
@@ -75,7 +91,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloPOIDetails, L_POIDetails),
+      Thumb: makeThumb(IlloPOIDetails, L_POIDetails, IcoPOIDetails),
       method: 'GET',
       title: 'POI Details',
       desc: 'Retrieve enriched POI data including ratings, price range, opening hours, and contact info.',
@@ -83,7 +99,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloPOIPhotos, L_POIPhotos),
+      Thumb: makeThumb(IlloPOIPhotos, L_POIPhotos, IcoPOIPhotos),
       method: 'GET',
       title: 'POI Photos',
       desc: 'Fetch photos associated with a POI to display visual content in your app.',

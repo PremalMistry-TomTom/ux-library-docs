@@ -8,6 +8,22 @@ import {
   L_CalculateRoute, L_ReachableRange, L_BatchRouting, L_TurnInstructions, L_LaneGuidance, L_RoadShields,
   L_RoutingComputeToll, L_RoutingWeather, L_RoutingDataFreshness,
 } from '../illustrations/lightVariants';
+import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
 import { IlloCalculateRoute, IlloReachableRange, IlloBatchRouting, IlloTurnInstructions, IlloRoutingWeather } from './IntroIllustrations';
 
 /* ─── Shared helpers ────────────────────────────────────────────────────────── */
@@ -393,15 +409,15 @@ export default function RoutingAPIIntro({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const ENDPOINTS_V1 = [
-    { Thumb: makeThumb(IlloCalculateRoute, L_CalculateRoute), title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
-    { Thumb: makeThumb(IlloReachableRange, L_ReachableRange), title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
-    { Thumb: makeThumb(IlloBatchRouting,   L_BatchRouting),   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
-    { Thumb: makeThumb(IlloTurnInstructions, L_TurnInstructions),title: 'Turn-by-Turn Instructions',method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
-    { Thumb: makeThumb(ThumbLaneGuidance,   L_LaneGuidance),   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
-    { Thumb: makeThumb(ThumbRoadShields,    L_RoadShields),    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
-    { Thumb: makeThumb(ThumbComputeToll,    L_RoutingComputeToll), title: 'Compute Toll Amounts',  method: 'GET',  path: '/routing/2/calculateRoute/…?computeTravelTimeFor=all', desc: t('routingIntro.endpointDescs.computeTollAmounts', { defaultValue: 'Calculate per-road-class toll costs along the route, with EV discount and currency breakdown.' }), pageId: 'routing-v2-compute-toll',    available: true, tag: 'v2+' },
-    { Thumb: makeThumb(IlloRoutingWeather,  L_RoutingWeather), title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',   desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-v3-weather',         available: true, tag: 'v3' },
-    { Thumb: makeThumb(ThumbDataFreshness,  L_RoutingDataFreshness), title: 'Dynamic Data Freshness', method: 'GET', path: '/routing/2/calculateRoute/…?dateFreshness=true',     desc: t('routingIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control how fresh traffic, closure, and speed-limit data must be before the route is recalculated.' }), pageId: 'routing-v2-data-freshness', available: true, tag: 'v2+' },
+    { Thumb: makeThumb(IlloCalculateRoute, L_CalculateRoute, IcoCalculateRoute), title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
+    { Thumb: makeThumb(IlloReachableRange, L_ReachableRange, IcoReachableRange), title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
+    { Thumb: makeThumb(IlloBatchRouting,   L_BatchRouting, IcoBatchRouting),   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
+    { Thumb: makeThumb(IlloTurnInstructions, L_TurnInstructions, IcoTurnInstructions),title: 'Turn-by-Turn Instructions',method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
+    { Thumb: makeThumb(ThumbLaneGuidance,   L_LaneGuidance, IcoADAS),   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
+    { Thumb: makeThumb(ThumbRoadShields,    L_RoadShields, IcoNavGuidance),    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
+    { Thumb: makeThumb(ThumbComputeToll,    L_RoutingComputeToll, IcoCalculateRoute), title: 'Compute Toll Amounts',  method: 'GET',  path: '/routing/2/calculateRoute/…?computeTravelTimeFor=all', desc: t('routingIntro.endpointDescs.computeTollAmounts', { defaultValue: 'Calculate per-road-class toll costs along the route, with EV discount and currency breakdown.' }), pageId: 'routing-v2-compute-toll',    available: true, tag: 'v2+' },
+    { Thumb: makeThumb(IlloRoutingWeather,  L_RoutingWeather, IcoRoutingWeather), title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',   desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-v3-weather',         available: true, tag: 'v3' },
+    { Thumb: makeThumb(ThumbDataFreshness,  L_RoutingDataFreshness, IcoTrafficStats), title: 'Dynamic Data Freshness', method: 'GET', path: '/routing/2/calculateRoute/…?dateFreshness=true',     desc: t('routingIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control how fresh traffic, closure, and speed-limit data must be before the route is recalculated.' }), pageId: 'routing-v2-data-freshness', available: true, tag: 'v2+' },
   ];
 
   const endpoints = ENDPOINTS_V1;

@@ -73,6 +73,21 @@ export const THEMES = {
     warn:   '#6B9FD8',   // replaces #fbbf24  (amber → muted mid-blue)
     danger: '#8BB8F0',   // replaces red tones → lighter steel-blue
   },
+  blueprintMid: {
+    bg:     '#EAF4FF',   // light drafting-paper blue — matches Style Samples bg
+    navy:   '#1B3D6E',   // deep navy — headlines, primary text, shapes
+    mid:    '#5B8AC5',   // medium blue — routes, borders, secondary
+    soft:   '#A8C8E8',   // soft blue — muted fills
+    panel:  '#D4E8FA',   // light panel surface
+    pill2:  '#6BA3CF',
+    border: '#9CC4E8',
+    grid:   '#C8DCF5',
+    white:  '#FFFFFF',
+    dark:   '#C8DCF5',   // icon SVG background = light panel blue (key token)
+    accent: '#1B5FAD',   // strong blue — icon shapes readable on light field
+    warn:   '#4A7EC0',   // mid-blue
+    danger: '#2E6DBF',   // deeper blue
+  },
   // ─── Functional colour-scale themes ────────────────────────────────────────
   // Each family has a light and dark variant derived from the scale in the
   // Functional colour chart (indigo / bolt / shamrock / cadmium / bright / red).
@@ -272,23 +287,23 @@ export const THEMES = {
   // 'dark' is the original dark/realistic style — no palette (uses ThumbXxx components)
 };
 
-/* Coupled pair: day mode ↔ 'day' palette, night mode ↔ 'blueprintDark' palette.
+/* Coupled pair: light-mode site ↔ 'blueprintMid' palette, dark-mode site ↔ 'blueprintDark'.
    Any theme outside this pair is treated as a manual override and left alone. */
-const SITE_COUPLED = { day: 'light', blueprintDark: 'dark' };
-const DEFAULT_THEME = 'day';
+const SITE_COUPLED = { blueprintMid: 'light', blueprintDark: 'dark' };
+const DEFAULT_THEME = 'blueprintMid';
 
 /** Maps the current site dark/light mode to its default illustration palette. */
 function themeForSite() {
   return document.documentElement.getAttribute('data-theme') === 'dark'
     ? 'blueprintDark'
-    : 'day';
+    : 'blueprintMid';
 }
 
 export const IlloStyleContext = createContext({
   theme:      DEFAULT_THEME,
   setTheme:   () => {},
   palette:    THEMES[DEFAULT_THEME],
-  illoStyle:  'detailed',
+  illoStyle:  'icon',
   setIlloStyle: () => {},
 });
 
@@ -296,10 +311,11 @@ export function IlloStyleProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     try {
       const stored = localStorage.getItem('illoStyle');
-      // migrate old values: 'light' → 'day', 'blueprint'|'blueprintLight' → 'blueprintDark', 'dark' → 'night'
-      if (stored === 'light' || stored === 'blueprintLight') return 'day';
+      // migrate old values: 'light' → 'blueprintMid', 'day' → 'blueprintMid',
+      // 'blueprint'|'blueprintLight' → 'blueprintDark', 'dark' → 'night'
+      if (stored === 'light' || stored === 'day') return 'blueprintMid';
       if (stored === 'dark')      return 'night';
-      if (stored === 'blueprint') return 'blueprintDark';
+      if (stored === 'blueprint' || stored === 'blueprintLight') return 'blueprintDark';
       if (THEMES[stored])         return stored;
       // No stored preference — auto-pick from site day/night mode
       return themeForSite();
@@ -309,9 +325,9 @@ export function IlloStyleProvider({ children }) {
   const [illoStyle, setIlloStyleState] = useState(() => {
     try {
       const stored = localStorage.getItem('illoStylePref');
-      if (stored === 'lofi' || stored === 'detailed') return stored;
+      if (stored === 'lofi' || stored === 'detailed' || stored === 'icon') return stored;
     } catch {}
-    return 'detailed'; // default: always show detailed wireframes
+    return 'icon'; // default: icon style
   });
 
   // Follow site day↔dark toggles when the current theme is part of the coupled pair
@@ -337,6 +353,7 @@ export function IlloStyleProvider({ children }) {
   };
 
   const setIlloStyle = (v) => {
+    if (v !== 'lofi' && v !== 'detailed' && v !== 'icon') return;
     setIlloStyleState(v);
     try { localStorage.setItem('illoStylePref', v); } catch {}
   };

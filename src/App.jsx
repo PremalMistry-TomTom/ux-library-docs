@@ -74,6 +74,9 @@ import EVNavUI from './pages/EVNavUI';
 import EVRequirements from './pages/EVRequirements';
 import Cluster from './pages/Cluster';
 import ADASIntegration from './pages/ADASIntegration';
+import HUD from './pages/HUD';
+import Truck from './pages/Truck';
+import VIBasics from './pages/VIBasics';
 import ScreenshotAssets from './pages/ScreenshotAssets';
 import Typography from './pages/Typography';
 import IntroIllustrations from './pages/IntroIllustrations';
@@ -102,6 +105,37 @@ import {
 import {
   NavSDKAdvSimulation, NavSDKAdvMapMatched, NavSDKAdvTelemetry, NavSDKAdvVehicle,
 } from './pages/NavSDKAdvancedPages';
+// NavSDK iOS domain pages
+import {
+  NavSDKiOSMapDisplay, NavSDKiOSLocation, NavSDKiOSSearch, NavSDKiOSRouting,
+  NavSDKiOSNavigation, NavSDKiOSCarPlay, NavSDKiOSVirtualHorizon, NavSDKiOSAdvanced,
+} from './pages/NavSDKiOSDomains';
+// NavSDK iOS Map detail pages
+import {
+  NavSDKiOSMapSwiftUI, NavSDKiOSMapUIKit, NavSDKiOSMapStyles,
+  NavSDKiOSMapCamera, NavSDKiOSMapMarkers, NavSDKiOSMapTraffic,
+} from './pages/NavSDKiOSMapPages';
+// NavSDK iOS Getting Started
+import {
+  NavSDKiOSProjectSetup, NavSDKiOSSdkInit, NavSDKiOSFirstMap,
+} from './pages/NavSDKiOSGettingStarted';
+// NavSDK iOS Location
+import { NavSDKiOSLocationQuickstart } from './pages/NavSDKiOSLocationPages';
+// NavSDK iOS Routing detail pages
+import {
+  NavSDKiOSRoutePlanning, NavSDKiOSRouteAlternatives,
+  NavSDKiOSRouteSections, NavSDKiOSRouteImportExport,
+} from './pages/NavSDKiOSRoutingPages';
+// NavSDK iOS Navigation detail pages
+import {
+  NavSDKiOSNavQuickstart, NavSDKiOSNavGuidance, NavSDKiOSNavVoice,
+  NavSDKiOSNavReplanning, NavSDKiOSNavSafety, NavSDKiOSNavCarPlay,
+} from './pages/NavSDKiOSNavigationPages';
+// NavSDK iOS Advanced + Horizon detail pages
+import {
+  NavSDKiOSAdvSimulation, NavSDKiOSAdvLocation, NavSDKiOSAdvTelemetry, NavSDKiOSAdvVehicle,
+  NavSDKiOSHorizonData, NavSDKiOSHorizonSafety, NavSDKiOSHorizonHazards,
+} from './pages/NavSDKiOSAdvancedPages';
 import ANAIntro from './pages/ANAIntro';
 import RoutingAPIIntro from './pages/RoutingAPIIntro';
 import RoutingCalculateRoute from './pages/RoutingCalculateRoute';
@@ -147,6 +181,45 @@ import MapDisplayAPIIntro from './pages/MapDisplayAPIIntro';
 import ParkingFuelAPIIntro from './pages/ParkingFuelAPIIntro';
 import TrafficAnalyticsAPIIntro from './pages/TrafficAnalyticsAPIIntro';
 import SnapToRoadsAPIIntro from './pages/SnapToRoadsAPIIntro';
+// Map Display API endpoint pages
+import MapRasterTile from './pages/MapRasterTile';
+import MapVectorTile from './pages/MapVectorTile';
+import MapSatelliteTile from './pages/MapSatelliteTile';
+import MapStaticImage from './pages/MapStaticImage';
+// Traffic API endpoint pages
+import TrafficFlowSegment from './pages/TrafficFlowSegment';
+import TrafficIncidentDetails from './pages/TrafficIncidentDetails';
+import TrafficFlowTiles from './pages/TrafficFlowTiles';
+import TrafficModelID from './pages/TrafficModelID';
+// Traffic Analytics API endpoint pages
+import TrafficRouteStats from './pages/TrafficRouteStats';
+import TrafficAreaAnalytics from './pages/TrafficAreaAnalytics';
+import TrafficODAnalysis from './pages/TrafficODAnalysis';
+import TrafficJunctionAnalytics from './pages/TrafficJunctionAnalytics';
+// Search API endpoint pages
+import SearchFuzzy from './pages/SearchFuzzy';
+import SearchPOI from './pages/SearchPOI';
+import SearchCategory from './pages/SearchCategory';
+import SearchNearby from './pages/SearchNearby';
+import SearchAlongRoute from './pages/SearchAlongRoute';
+import SearchAutocomplete from './pages/SearchAutocomplete';
+import SearchBatch from './pages/SearchBatch';
+import POIDetails from './pages/POIDetails';
+import POIPhotos from './pages/POIPhotos';
+// Geocoding API endpoint pages
+import GeocodePage from './pages/GeocodePage';
+import ReverseGeocodePage from './pages/ReverseGeocodePage';
+// EV Charging API endpoint pages
+import EVStationSearch from './pages/EVStationSearch';
+import EVChargingAvailability from './pages/EVChargingAvailability';
+import EVSupportedMarkets from './pages/EVSupportedMarkets';
+// Parking & Fuel API endpoint pages
+import ParkingAvailability from './pages/ParkingAvailability';
+import ParkingPrices from './pages/ParkingPrices';
+import OnStreetParking from './pages/OnStreetParking';
+import FuelPrices from './pages/FuelPrices';
+// Snap to Roads API endpoint page
+import SnapToRoads from './pages/SnapToRoads';
 import Placeholder from './pages/Placeholder';
 import PlumbingPortal from './pages/PlumbingPortal';
 import {
@@ -210,11 +283,18 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ev-charging':        return <DomainLanding groupKey="evCharging" onNavigate={onNavigate} />;
     case 'cluster':            return <Cluster onNavigate={onNavigate} />;
     case 'adas':               return <ADASIntegration onNavigate={onNavigate} />;
+    case 'hud':                return <HUD onNavigate={onNavigate} />;
+    case 'truck':              return <Truck onNavigate={onNavigate} />;
+    case 'vi-basics':          return <VIBasics onNavigate={onNavigate} />;
     case 'typography':             return <Typography />;
     case 'screenshot-assets':      return <ScreenshotAssets />;
     case 'intro-illustrations':        return <IntroIllustrations />;
     case 'intro-illustrations-legacy': return <IntroIllustrationsLegacy />;
     case 'style-samples':          return <StyleSamples />;
+    // NavSDK group landing redirects (group header clicks)
+    case 'navsdk-getting-started': return <NavSDKProjectSetup onNavigate={onNavigate} />;
+    case 'navsdk-example-app':     return <Placeholder pageId={pageId} pageTitles={product?.pageTitles} />;
+    case 'navsdk-ios-getting-started': return <NavSDKiOSProjectSetup onNavigate={onNavigate} />;
     // NavSDK
     case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
     case 'navsdk-map-display':     return <NavSDKMapDisplay onNavigate={onNavigate} />;
@@ -275,6 +355,50 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'navsdk-adv-map-matched':    return <NavSDKAdvMapMatched onNavigate={onNavigate} />;
     case 'navsdk-adv-telemetry':      return <NavSDKAdvTelemetry onNavigate={onNavigate} />;
     case 'navsdk-adv-vehicle':        return <NavSDKAdvVehicle onNavigate={onNavigate} />;
+    // NavSDK iOS — domain hub pages
+    case 'navsdk-ios-intro':          return <NavSDKIntro onNavigate={onNavigate} platform="ios" />;
+    case 'navsdk-ios-map-display':    return <NavSDKiOSMapDisplay onNavigate={onNavigate} />;
+    case 'navsdk-ios-location':       return <NavSDKiOSLocation onNavigate={onNavigate} />;
+    case 'navsdk-ios-search':         return <NavSDKiOSSearch onNavigate={onNavigate} />;
+    case 'navsdk-ios-routing':        return <NavSDKiOSRouting onNavigate={onNavigate} />;
+    case 'navsdk-ios-navigation':     return <NavSDKiOSNavigation onNavigate={onNavigate} />;
+    case 'navsdk-ios-carplay':        return <NavSDKiOSCarPlay onNavigate={onNavigate} />;
+    case 'navsdk-ios-horizon':        return <NavSDKiOSVirtualHorizon onNavigate={onNavigate} />;
+    case 'navsdk-ios-advanced':       return <NavSDKiOSAdvanced onNavigate={onNavigate} />;
+    // NavSDK iOS — Map detail pages
+    case 'navsdk-ios-map-swiftui':    return <NavSDKiOSMapSwiftUI onNavigate={onNavigate} />;
+    case 'navsdk-ios-map-uikit':      return <NavSDKiOSMapUIKit onNavigate={onNavigate} />;
+    case 'navsdk-ios-map-styles':     return <NavSDKiOSMapStyles onNavigate={onNavigate} />;
+    case 'navsdk-ios-map-camera':     return <NavSDKiOSMapCamera onNavigate={onNavigate} />;
+    case 'navsdk-ios-map-markers':    return <NavSDKiOSMapMarkers onNavigate={onNavigate} />;
+    case 'navsdk-ios-map-traffic':    return <NavSDKiOSMapTraffic onNavigate={onNavigate} />;
+    // NavSDK iOS — Getting Started
+    case 'navsdk-ios-project-setup':  return <NavSDKiOSProjectSetup onNavigate={onNavigate} />;
+    case 'navsdk-ios-sdk-init':       return <NavSDKiOSSdkInit onNavigate={onNavigate} />;
+    case 'navsdk-ios-first-map':      return <NavSDKiOSFirstMap onNavigate={onNavigate} />;
+    // NavSDK iOS — Location
+    case 'navsdk-ios-location-quickstart': return <NavSDKiOSLocationQuickstart onNavigate={onNavigate} />;
+    // NavSDK iOS — Routing detail pages
+    case 'navsdk-ios-route-planning':      return <NavSDKiOSRoutePlanning onNavigate={onNavigate} />;
+    case 'navsdk-ios-route-alternatives':  return <NavSDKiOSRouteAlternatives onNavigate={onNavigate} />;
+    case 'navsdk-ios-route-sections':      return <NavSDKiOSRouteSections onNavigate={onNavigate} />;
+    case 'navsdk-ios-route-import-export': return <NavSDKiOSRouteImportExport onNavigate={onNavigate} />;
+    // NavSDK iOS — Navigation detail pages
+    case 'navsdk-ios-nav-quickstart':  return <NavSDKiOSNavQuickstart onNavigate={onNavigate} />;
+    case 'navsdk-ios-nav-guidance':    return <NavSDKiOSNavGuidance onNavigate={onNavigate} />;
+    case 'navsdk-ios-nav-voice':       return <NavSDKiOSNavVoice onNavigate={onNavigate} />;
+    case 'navsdk-ios-nav-replanning':  return <NavSDKiOSNavReplanning onNavigate={onNavigate} />;
+    case 'navsdk-ios-nav-safety':      return <NavSDKiOSNavSafety onNavigate={onNavigate} />;
+    case 'navsdk-ios-nav-carplay':     return <NavSDKiOSNavCarPlay onNavigate={onNavigate} />;
+    // NavSDK iOS — Horizon detail pages
+    case 'navsdk-ios-horizon-data':    return <NavSDKiOSHorizonData onNavigate={onNavigate} />;
+    case 'navsdk-ios-horizon-safety':  return <NavSDKiOSHorizonSafety onNavigate={onNavigate} />;
+    case 'navsdk-ios-horizon-hazards': return <NavSDKiOSHorizonHazards onNavigate={onNavigate} />;
+    // NavSDK iOS — Advanced detail pages
+    case 'navsdk-ios-adv-simulation':  return <NavSDKiOSAdvSimulation onNavigate={onNavigate} />;
+    case 'navsdk-ios-adv-location':    return <NavSDKiOSAdvLocation onNavigate={onNavigate} />;
+    case 'navsdk-ios-adv-telemetry':   return <NavSDKiOSAdvTelemetry onNavigate={onNavigate} />;
+    case 'navsdk-ios-adv-vehicle':     return <NavSDKiOSAdvVehicle onNavigate={onNavigate} />;
     // ANA
     case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
     // Routing API
@@ -319,20 +443,51 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'waypoint-intro':         return <WaypointOptIntro onNavigate={onNavigate} />;
     // Search API
     case 'search-api-intro':       return <SearchAPIIntro onNavigate={onNavigate} />;
+    case 'search-fuzzy':           return <SearchFuzzy onNavigate={onNavigate} />;
+    case 'search-poi':             return <SearchPOI onNavigate={onNavigate} />;
+    case 'search-category':        return <SearchCategory onNavigate={onNavigate} />;
+    case 'search-nearby':          return <SearchNearby onNavigate={onNavigate} />;
+    case 'search-along-route':     return <SearchAlongRoute onNavigate={onNavigate} />;
+    case 'search-autocomplete':    return <SearchAutocomplete onNavigate={onNavigate} />;
+    case 'search-batch':           return <SearchBatch onNavigate={onNavigate} />;
+    case 'poi-details':            return <POIDetails onNavigate={onNavigate} />;
+    case 'poi-photos':             return <POIPhotos onNavigate={onNavigate} />;
     // Geocoding API
     case 'geocoding-api-intro':    return <GeocodingAPIIntro onNavigate={onNavigate} />;
+    case 'geocode':                return <GeocodePage onNavigate={onNavigate} />;
+    case 'reverse-geocode':        return <ReverseGeocodePage onNavigate={onNavigate} />;
     // Traffic API
     case 'traffic-api-intro':      return <TrafficAPIIntro onNavigate={onNavigate} />;
-    // EV & Charging API
-    case 'ev-charging-api-intro':  return <EVChargingAPIIntro onNavigate={onNavigate} />;
-    // Map Display API
-    case 'map-display-api-intro':  return <MapDisplayAPIIntro onNavigate={onNavigate} />;
-    // Parking & Fuel API
-    case 'parking-fuel-api-intro': return <ParkingFuelAPIIntro onNavigate={onNavigate} />;
+    case 'traffic-flow-segment':   return <TrafficFlowSegment onNavigate={onNavigate} />;
+    case 'traffic-incident-details': return <TrafficIncidentDetails onNavigate={onNavigate} />;
+    case 'traffic-flow-tiles':     return <TrafficFlowTiles onNavigate={onNavigate} />;
+    case 'traffic-model-id':       return <TrafficModelID onNavigate={onNavigate} />;
     // Traffic Analytics API
     case 'traffic-analytics-api-intro': return <TrafficAnalyticsAPIIntro onNavigate={onNavigate} />;
+    case 'traffic-route-stats':    return <TrafficRouteStats onNavigate={onNavigate} />;
+    case 'traffic-area-analytics': return <TrafficAreaAnalytics onNavigate={onNavigate} />;
+    case 'traffic-od-analysis':    return <TrafficODAnalysis onNavigate={onNavigate} />;
+    case 'traffic-junction-analytics': return <TrafficJunctionAnalytics onNavigate={onNavigate} />;
+    // EV & Charging API
+    case 'ev-charging-api-intro':  return <EVChargingAPIIntro onNavigate={onNavigate} />;
+    case 'ev-station-search':      return <EVStationSearch onNavigate={onNavigate} />;
+    case 'ev-charging-availability': return <EVChargingAvailability onNavigate={onNavigate} />;
+    case 'ev-supported-markets':   return <EVSupportedMarkets onNavigate={onNavigate} />;
+    // Map Display API
+    case 'map-display-api-intro':  return <MapDisplayAPIIntro onNavigate={onNavigate} />;
+    case 'map-raster-tile':        return <MapRasterTile onNavigate={onNavigate} />;
+    case 'map-vector-tile':        return <MapVectorTile onNavigate={onNavigate} />;
+    case 'map-satellite-tile':     return <MapSatelliteTile onNavigate={onNavigate} />;
+    case 'map-static-image':       return <MapStaticImage onNavigate={onNavigate} />;
+    // Parking & Fuel API
+    case 'parking-fuel-api-intro': return <ParkingFuelAPIIntro onNavigate={onNavigate} />;
+    case 'parking-availability':   return <ParkingAvailability onNavigate={onNavigate} />;
+    case 'parking-prices':         return <ParkingPrices onNavigate={onNavigate} />;
+    case 'on-street-parking':      return <OnStreetParking onNavigate={onNavigate} />;
+    case 'fuel-prices':            return <FuelPrices onNavigate={onNavigate} />;
     // Snap to Roads API
     case 'snap-to-roads-api-intro': return <SnapToRoadsAPIIntro onNavigate={onNavigate} />;
+    case 'snap-to-roads':          return <SnapToRoads onNavigate={onNavigate} />;
     // Domain landing pages
     case 'assets':                 return <DomainLanding groupKey="assets"             onNavigate={onNavigate} />;
     case 'map-customisation':      return <DomainLanding groupKey="mapCustomisation"   onNavigate={onNavigate} />;
@@ -348,7 +503,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('overview');
   const [currentProduct, setCurrentProduct] = useState('ux-library');
   const [currentPlatform, setCurrentPlatform] = useState('android');
-  const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') === 'dark');
+  const [isDark, setIsDark] = useState(() => localStorage.getItem('ux-theme') !== 'light');
   const [navDrawerOpen, setNavDrawerOpen] = useState(false);
   const [docsPortalOpen, setDocsPortalOpen] = useState(true);
   const [navCollapsed, setNavCollapsed] = useState(false);
@@ -398,10 +553,14 @@ export default function App() {
   }, [isDark]);
 
   function navigate(pageId, productId, platform) {
-    if (productId && productId !== currentProduct) {
+    if (pageId?.startsWith('navsdk-ios-')) {
+      // iOS-prefixed pages always route to navsdk product with ios platform (check before generic productId)
+      if (currentProduct !== 'navsdk') setCurrentProduct('navsdk');
+      setCurrentPlatform('ios');
+    } else if (productId && productId !== currentProduct && productId !== 'navsdk-ios') {
       setCurrentProduct(productId);
       const targetProduct = getProduct(productId);
-      setCurrentPlatform(platform ?? targetProduct.defaultPlatform ?? 'android');
+      setCurrentPlatform(platform ?? targetProduct?.defaultPlatform ?? 'android');
     } else if (pageId?.startsWith('navsdk-') && currentProduct !== 'navsdk') {
       // Auto-switch to NavSDK product when navigating to any navsdk- page
       setCurrentProduct('navsdk');
@@ -416,6 +575,9 @@ export default function App() {
   }
 
   const product = getProduct(currentProduct);
+  // Use iOS-specific nav when in NavSDK iOS mode
+  const productNav = (product.iosNav && currentPlatform === 'ios') ? product.iosNav : product.nav;
+  const productPageTitles = (product.iosPageTitles && currentPlatform === 'ios') ? product.iosPageTitles : product.pageTitles;
 
   return (
     <IlloStyleProvider>
@@ -466,13 +628,13 @@ export default function App() {
             onDrawerClose={() => setNavDrawerOpen(false)}
             isDark={isDark}
             onToggleTheme={() => setIsDark(d => !d)}
-            nav={product.nav}
+            nav={productNav}
             title={product.name}
             navCollapsed={navCollapsed}
             onCollapse={() => setNavCollapsed(true)}
           />
           <main id="main-content" className="content-area">
-            <PageContent pageId={currentPage} onNavigate={navigate} product={product} platform={currentPlatform} />
+            <PageContent pageId={currentPage} onNavigate={navigate} product={{ ...product, nav: productNav, pageTitles: productPageTitles }} platform={currentPlatform} />
           </main>
           <TOC currentPage={currentPage} />
         </div>

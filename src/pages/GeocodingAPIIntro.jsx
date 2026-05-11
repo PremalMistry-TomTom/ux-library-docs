@@ -1,10 +1,26 @@
 import PageActions from '../components/ui/PageActions';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import { makeThumb, L_Geocode, L_ReverseGeocode } from '../illustrations/lightVariants';
+import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
 import { IlloGeocode, IlloReverseGeocode } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloGeocode, L_Geocode);
+const HeroIllo = makeThumb(IlloGeocode, L_Geocode, IcoGeocode);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function GeocodingAPIIntro({ onNavigate }) {
@@ -12,7 +28,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloGeocode, L_Geocode),
+      Thumb: makeThumb(IlloGeocode, L_Geocode, IcoGeocode),
       method: 'GET',
       title: 'Geocode',
       desc: 'Convert a human-readable address string into precise geographic coordinates (latitude/longitude).',
@@ -20,7 +36,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode),
+      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode, IcoReverseGeocode),
       method: 'GET',
       title: 'Reverse Geocode',
       desc: 'Convert a lat/lon coordinate into a structured address, street name, or place name.',
@@ -28,7 +44,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloGeocode, L_Geocode),
+      Thumb: makeThumb(IlloGeocode, L_Geocode, IcoGeocode),
       method: 'GET',
       title: 'Structured Geocode',
       desc: 'Geocode addresses already split into discrete fields — street number, city, postal code — for higher precision.',
@@ -36,7 +52,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode),
+      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode, IcoReverseGeocode),
       method: 'GET',
       title: 'Cross Street Lookup',
       desc: 'Resolve a coordinate to the nearest road intersection or cross-street name for turn-by-turn context.',

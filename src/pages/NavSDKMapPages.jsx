@@ -380,9 +380,12 @@ export function NavSDKMapViews({ onNavigate }) {
    3. MAP STYLES
    ═══════════════════════════════════════════════════════════════════════════ */
 const MAP_STYLES = [
-  { id: 'day',       label: 'Default (Day)',    descriptor: 'StyleDescriptor.DEFAULT',       style: 'day' },
-  { id: 'night',     label: 'Default (Night)',  descriptor: 'StyleDescriptor.DEFAULT_NIGHT', style: 'night' },
-  { id: 'satellite', label: 'Custom URL',       descriptor: '"tomtom://maps/styles/satellite"', style: 'satellite' },
+  { id: 'browse',       label: 'Browse',        descriptor: 'StyleDescriptor.DEFAULT',           style: 'day',       desc: 'Full-colour day style — roads, POIs, and labels.' },
+  { id: 'browse-night', label: 'Browse Night',  descriptor: 'StyleDescriptor.DEFAULT_NIGHT',     style: 'night',     desc: 'Dark map style optimised for night-time driving.' },
+  { id: 'drive',        label: 'Drive',         descriptor: 'StyleDescriptor.DRIVE',             style: 'day',       desc: 'Simplified day style for active turn-by-turn navigation.' },
+  { id: 'drive-night',  label: 'Drive Night',   descriptor: 'StyleDescriptor.DRIVE_NIGHT',       style: 'night',     desc: 'Dark driving style with high-contrast lanes and junctions.' },
+  { id: 'mono',         label: 'Mono',          descriptor: 'StyleDescriptor.MONO',              style: 'satellite', desc: 'Monochrome style for branded or accessibility contexts.' },
+  { id: 'satellite',    label: 'Satellite',     descriptor: '"tomtom://maps/styles/satellite"',  style: 'satellite', desc: 'Aerial imagery with road and label overlay.' },
 ];
 
 const MAP_STYLES_APIS = [
@@ -392,8 +395,8 @@ const MAP_STYLES_APIS = [
   { name: 'TomTom Map Maker',         type: 'Tool',        description: 'Design and publish custom map styles — colours, typography, layer visibility — then load in the SDK.',   url: 'https://mapmaker.tomtom.com' },
 ];
 export function NavSDKMapStyles({ onNavigate }) {
-  const [activeStyle, setActiveStyle] = useState('day');
-  const current = MAP_STYLES.find(s => s.id === activeStyle);
+  const [activeStyle, setActiveStyle] = useState('browse');
+  const current = MAP_STYLES.find(s => s.id === activeStyle) ?? MAP_STYLES[0];
 
   return (
     <div className="page">
@@ -403,7 +406,7 @@ export function NavSDKMapStyles({ onNavigate }) {
       </div>
 
       <div className="quick-answer">
-        Switch between built-in day and night map styles or apply a custom style URL. Controls road colours, label visibility, POI icons, and landmark layers.
+        Switch between built-in Browse, Drive, Mono, and Satellite styles or supply a custom style URL. Controls road colours, label visibility, POI icons, and landmark layers.
       </div>
 
       <ApiLinks items={MAP_STYLES_APIS} onNavigate={onNavigate} />
@@ -415,7 +418,7 @@ export function NavSDKMapStyles({ onNavigate }) {
 
         <div style={{ marginBottom: 12 }}>
           <SectionLabel>Style preset</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: 6 }}>
             {MAP_STYLES.map(s => (
               <button key={s.id} onClick={() => setActiveStyle(s.id)} style={{
                 padding: '10px 8px', borderRadius: 8, cursor: 'pointer', textAlign: 'center',
@@ -423,13 +426,16 @@ export function NavSDKMapStyles({ onNavigate }) {
                 background: activeStyle === s.id ? '#fff5f5' : 'var(--bg)',
                 border: `1px solid ${activeStyle === s.id ? 'var(--red)' : 'var(--border)'}`,
                 color: activeStyle === s.id ? 'var(--red)' : 'var(--mid)',
-                fontSize: '0.8125rem', transition: 'all 0.1s',
+                fontSize: '0.8125rem', transition: 'background 0.1s, border-color 0.1s, color 0.1s',
               }}>{s.label}</button>
             ))}
           </div>
+          {current?.desc && (
+            <p style={{ fontSize: '0.8125rem', color: 'var(--muted)', marginTop: 8, marginBottom: 0 }}>{current.desc}</p>
+          )}
         </div>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)', transition: 'all 0.3s' }}>
+        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
           <MapBg style={current.style} />
           <div style={{
             position: 'absolute', bottom: 10, right: 10,
@@ -463,17 +469,19 @@ export function NavSDKMapStyles({ onNavigate }) {
       <div className="zone">
         <h2 className="sh" id="ms-builtins">Built-in style descriptors</h2>
         <table className="prop-table">
-          <thead><tr><th>Constant</th><th>Platform</th><th>Description</th></tr></thead>
+          <thead><tr><th>Constant</th><th>Appearance</th><th>Description</th></tr></thead>
           <tbody>
             {[
-              ['StyleDescriptor.DEFAULT', 'Android / iOS', 'Full-colour day style with roads, POIs, and labels.'],
-              ['StyleDescriptor.DEFAULT_NIGHT', 'Android / iOS', 'Dark map style optimised for night driving.'],
-              ['StyleDescriptor.BASIC', 'Android', 'Minimal style with roads and basic labels only.'],
-              ['Custom URL', 'Android / iOS', 'Pass any TomTom style URL for OEM brand styles.'],
-            ].map(([c, p, d]) => (
+              ['StyleDescriptor.DEFAULT',      'Browse (Day)',   'Full-colour day style with roads, POIs, and labels.'],
+              ['StyleDescriptor.DEFAULT_NIGHT','Browse (Night)', 'Dark map style optimised for night-time driving.'],
+              ['StyleDescriptor.DRIVE',        'Drive (Day)',    'Simplified day style for active turn-by-turn navigation.'],
+              ['StyleDescriptor.DRIVE_NIGHT',  'Drive (Night)',  'Dark driving style with high-contrast lanes and junctions.'],
+              ['StyleDescriptor.MONO',         'Mono',          'Monochrome style for branded or accessibility contexts.'],
+              ['Custom URL',                   'Any',           'Pass any TomTom style URL for OEM brand styles.'],
+            ].map(([c, a, d]) => (
               <tr key={c}>
                 <td><code>{c}</code></td>
-                <td style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>{p}</td>
+                <td style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>{a}</td>
                 <td style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{d}</td>
               </tr>
             ))}
@@ -481,22 +489,76 @@ export function NavSDKMapStyles({ onNavigate }) {
         </table>
       </div>
 
+      {/* Style URI schemes */}
+      <div className="zone">
+        <h2 className="sh" id="ms-uri">Style URI schemes</h2>
+        <p className="body">Beyond hosted HTTPS URLs, the SDK supports three local URI schemes for bundled or device-side styles:</p>
+        <table className="prop-table">
+          <thead><tr><th>Scheme</th><th>Example</th><th>Use case</th></tr></thead>
+          <tbody>
+            {[
+              ['asset://', 'asset://styles/my_style.json', 'Style JSON bundled in the Android assets/ folder.'],
+              ['file://', 'file:///sdcard/styles/brand.json', 'Style JSON on device external storage.'],
+              ['content://', 'content://com.example.provider/style', 'Style served by a ContentProvider — useful for shared style resources across apps.'],
+            ].map(([scheme, ex, uc]) => (
+              <tr key={scheme}>
+                <td><code>{scheme}</code></td>
+                <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--mid)' }}>{ex}</td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{uc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <CodeBlock tabs={['Kotlin']}>
+          <pre>
+            <span className="hl-c">{'// Load a style bundled in assets/\n'}</span>
+            {'tomTomMap.'}<span className="hl-f">setStyleDescriptor</span>{'('}<span className="hl-s">"asset://styles/brand_day.json"</span>{')\n\n'}
+            <span className="hl-c">{'// Load from external storage\n'}</span>
+            {'tomTomMap.'}<span className="hl-f">setStyleDescriptor</span>{'('}<span className="hl-s">"file:///sdcard/Download/custom_style.json"</span>{')'}
+          </pre>
+        </CodeBlock>
+      </div>
+
       {/* Custom style */}
       <div className="zone">
         <h2 className="sh" id="ms-custom">Custom style URL</h2>
-        <p className="body">Any hosted TomTom style can be referenced by URL. This enables full OEM branding — custom road colours, typography, and landmark visibility.</p>
+        <p className="body">Any hosted TomTom style can be referenced by URL. This enables full OEM branding — custom road colours, typography, and landmark visibility. Use <a href="https://mapmaker.tomtom.com" target="_blank" rel="noreferrer" style={{ color: 'var(--accent, var(--tt-red))' }}>TomTom Map Maker</a> to author and publish styles.</p>
         <CodeBlock tabs={['Kotlin', 'Swift']}>
           {[
             <pre key="kt">
-              <span className="hl-k">val</span>{' customStyle = '}<span className="hl-s">"https://api.tomtom.com/maps/orbis/styles/v1/tomtom/basic_main/style.json?key=\${API_KEY}"</span>{'\n'}
+              <span className="hl-k">val</span>{' customStyle = '}<span className="hl-s">{'"https://api.tomtom.com/maps/orbis/styles/v1/tomtom/basic_main/style.json?key=${API_KEY}"'}</span>{'\n'}
               {'tomTomMap.'}<span className="hl-f">setStyleDescriptor</span>{'(customStyle)'}
             </pre>,
             <pre key="sw">
-              <span className="hl-k">let</span>{' url = URL(string: '}<span className="hl-s">'"https://api.tomtom.com/maps/orbis/styles/v1/tomtom/basic_main/style.json?key=\(apiKey)"'</span>{')!\n'}
-              {'mapView.'}<span className="hl-f">applyStyleDescriptor</span>{'('}<span className="hl-t">StyleDescriptor</span>{'.'}<span className="hl-f">custom</span>{'(url: url))'}
+              <span className="hl-k">let</span>{' url = URL(string: '}<span className="hl-s">{'"https://api.tomtom.com/maps/orbis/styles/v1/tomtom/basic_main/style.json?key=\\(apiKey)"'}</span>{')!\n'}
+              {'map.'}<span className="hl-f">loadStyle</span>{'(styleURL: url)'}
             </pre>,
           ]}
         </CodeBlock>
+      </div>
+
+      {/* Requirements */}
+      <div className="zone">
+        <h2 className="sh" id="ms-requirements">Feature requirements</h2>
+        <table className="prop-table">
+          <thead><tr><th>Feature</th><th>Priority</th><th>Notes</th></tr></thead>
+          <tbody>
+            {[
+              ['Browse / Browse Night styles', 'P0', 'Included in core NavSDK map module.'],
+              ['Drive / Drive Night styles',   'P0', 'Auto-applied by NavigationController during active navigation.'],
+              ['Mono style',                   'P1', 'Useful for OEM display surfaces with limited colour depth.'],
+              ['Custom HTTPS style URL',        'P0', 'Requires valid TomTom Maps API key. Author styles in TomTom Map Maker.'],
+              ['Local asset:// style',          'P1', 'Bundle style JSON in assets/ — useful for offline-first deployments.'],
+              ['Style change listener',         'P1', 'Re-apply custom layers after style swap via addOnStyleChangedListener.'],
+            ].map(([f, p, n]) => (
+              <tr key={f}>
+                <td style={{ fontWeight: 500 }}>{f}</td>
+                <td><span style={{ background: p === 'P0' ? '#fee2e2' : p === 'P1' ? '#fef3c7' : '#f0fdf4', color: p === 'P0' ? '#991b1b' : p === 'P1' ? '#92400e' : '#166534', fontSize: '0.75rem', fontWeight: 700, padding: '2px 7px', borderRadius: 99 }}>{p}</span></td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{n}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -840,10 +902,27 @@ const MAP_TRAFFIC_APIS = [
   { name: 'Navigation Traffic',      type: 'Android SDK', description: 'Traffic incidents shown along the active navigation route — extends map traffic with route context.',          pageId: 'navsdk-nav-traffic',      productId: 'navsdk' },
   { name: 'Map Display for Compose', type: 'Android SDK', description: 'Composable map where traffic layers are toggled via MapOptionsState.',                                         pageId: 'navsdk-map-compose',      productId: 'navsdk' },
 ];
+const INCIDENT_CATEGORIES = [
+  { id: 'ACCIDENT',  label: 'Accident',  icon: '⚠️', desc: 'Collision or vehicle incident causing delays.' },
+  { id: 'ROAD_WORK', label: 'Road Work', icon: '🚧', desc: 'Planned or unplanned roadworks and lane restrictions.' },
+  { id: 'CLOSURE',   label: 'Closure',   icon: '🚫', desc: 'Full or partial road closure — typically long duration.' },
+  { id: 'HAZARD',    label: 'Hazard',    icon: '⚡', desc: 'Obstacles, debris, or other hazards on the roadway.' },
+  { id: 'WEATHER',   label: 'Weather',   icon: '🌧', desc: 'Weather-related conditions affecting road safety or speed.' },
+];
+
 export function NavSDKMapTraffic({ onNavigate }) {
   const [showFlow, setShowFlow] = useState(true);
   const [showIncidents, setShowIncidents] = useState(false);
   const [flowType, setFlowType] = useState('RELATIVE');
+  const [activeIncidents, setActiveIncidents] = useState(new Set(['ACCIDENT', 'ROAD_WORK', 'CLOSURE', 'HAZARD', 'WEATHER']));
+
+  const toggleIncident = (type) => {
+    setActiveIncidents(prev => {
+      const next = new Set(prev);
+      if (next.has(type)) next.delete(type); else next.add(type);
+      return next;
+    });
+  };
 
   return (
     <div className="page">
@@ -929,6 +1008,116 @@ export function NavSDKMapTraffic({ onNavigate }) {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Incident category filter */}
+      <div className="zone">
+        <h2 className="sh" id="tr-incidents">Incident category filter</h2>
+        <p className="body">Filter which incident categories are rendered on the map. By default all categories are shown when incidents are enabled.</p>
+
+        <div style={{ marginBottom: 12 }}>
+          <SectionLabel>Active categories</SectionLabel>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {INCIDENT_CATEGORIES.map(({ id, label, icon }) => {
+              const on = activeIncidents.has(id);
+              return (
+                <button key={id} onClick={() => toggleIncident(id)} style={{
+                  padding: '6px 12px', borderRadius: 20, cursor: 'pointer', fontSize: '0.8125rem',
+                  fontWeight: on ? 600 : 400,
+                  background: on ? '#fff5f5' : 'var(--bg)',
+                  border: `1px solid ${on ? 'var(--red)' : 'var(--border)'}`,
+                  color: on ? 'var(--red)' : 'var(--mid)',
+                  transition: 'all 0.1s',
+                }}>{icon} {label}</button>
+              );
+            })}
+          </div>
+        </div>
+
+        <CodeBlock tabs={['Kotlin']}>
+          <pre>
+            <span className="hl-c">{'// Show only selected incident categories\n'}</span>
+            <span className="hl-k">val</span>{' filter = '}<span className="hl-t">TrafficIncidentFilter</span>{'(\n'}
+            {'    categories = setOf(\n'}
+            {Array.from(activeIncidents).map((type, i, arr) => (
+              <span key={type}>{'        '}<span className="hl-t">IncidentCategory</span>{'.'}<span className="hl-n">{type}</span>{i < arr.length - 1 ? ',\n' : '\n'}</span>
+            ))}
+            {'    )\n'}{')'}
+            {'\ntomTomMap.'}<span className="hl-f">setTrafficIncidentFilter</span>{'(filter)'}
+          </pre>
+        </CodeBlock>
+
+        <table className="prop-table" style={{ marginTop: 16 }}>
+          <thead><tr><th>IncidentCategory</th><th>Description</th></tr></thead>
+          <tbody>
+            {INCIDENT_CATEGORIES.map(({ id, desc }) => (
+              <tr key={id}>
+                <td><code>{id}</code></td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{desc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Refresh intervals */}
+      <div className="zone">
+        <h2 className="sh" id="tr-refresh">Refresh intervals</h2>
+        <p className="body">
+          Override the default refresh intervals via <code>TrafficConfiguration</code> when constructing <code>MapOptions</code>. Lower intervals keep traffic fresher but consume more bandwidth.
+        </p>
+        <CodeBlock tabs={['Kotlin']}>
+          <pre>
+            <span className="hl-k">val</span>{' trafficConfig = '}<span className="hl-t">TrafficConfiguration</span>{'(\n'}
+            {'    flowRefreshInterval     = '}<span className="hl-n">{'30_000'}</span>{'L,'}<span className="hl-c">{'  // ms — default 30 s\n'}</span>
+            {'    incidentRefreshInterval = '}<span className="hl-n">{'60_000'}</span>{'L,'}<span className="hl-c">{'  // ms — default 60 s\n'}</span>
+            {')\n\n'}
+            <span className="hl-t">MapOptions</span>{'(trafficConfiguration = trafficConfig)'}
+          </pre>
+        </CodeBlock>
+        <table className="prop-table" style={{ marginTop: 16 }}>
+          <thead><tr><th>Interval</th><th>Default</th><th>Notes</th></tr></thead>
+          <tbody>
+            {[
+              ['30 s',  '✓ flow',      'Minimum recommended for live traffic flow accuracy.'],
+              ['1 min', '✓ incidents', 'Default incident refresh — incidents change less frequently.'],
+              ['2 min', '—',           'Suitable for background or battery-saving contexts.'],
+              ['5 min', '—',           'Low-frequency refresh for pre-trip planning views.'],
+            ].map(([i, d, n]) => (
+              <tr key={i}>
+                <td><code>{i}</code></td>
+                <td style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>{d}</td>
+                <td style={{ fontSize: '0.875rem', color: 'var(--mid)' }}>{n}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Custom traffic provider */}
+      <div className="zone">
+        <h2 className="sh" id="tr-provider">Custom traffic provider</h2>
+        <p className="body">
+          Replace the default TomTom traffic data source with a custom provider — useful for OEM platforms with proprietary traffic feeds or for testing with simulated data.
+        </p>
+        <CodeBlock tabs={['Kotlin']}>
+          <pre>
+            <span className="hl-k">class</span>{' '}<span className="hl-t">MyTrafficProvider</span>{' : '}<span className="hl-t">TrafficDataProvider</span>{' {\n\n'}
+            {'    '}<span className="hl-k">override fun</span>{' '}<span className="hl-f">getFlowTile</span>{'(\n'}
+            {'        request: '}<span className="hl-t">TileRequest</span>{',\n'}
+            {'    ): '}<span className="hl-t">Flow</span>{'<'}<span className="hl-t">TileResult</span>{'> =\n'}
+            {'        myTrafficFeed.'}<span className="hl-f">flowTile</span>{'(request.z, request.x, request.y)\n\n'}
+            {'    '}<span className="hl-k">override fun</span>{' '}<span className="hl-f">getIncidents</span>{'(\n'}
+            {'        bbox: '}<span className="hl-t">BoundingBox</span>{',\n'}
+            {'    ): '}<span className="hl-t">Flow</span>{'<'}<span className="hl-t">List</span>{'<'}<span className="hl-t">TrafficIncident</span>{'>> =\n'}
+            {'        myTrafficFeed.'}<span className="hl-f">incidents</span>{'(bbox)\n}\n\n'}
+            <span className="hl-c">{'// Register at MapOptions\n'}</span>
+            <span className="hl-t">MapOptions</span>{'(trafficDataProvider = '}<span className="hl-t">MyTrafficProvider</span>{'())'}
+          </pre>
+        </CodeBlock>
+        <Callout type="info">
+          When using a custom provider, ensure your tile format matches the SDK's expected MVT schema. Contact your TomTom integration engineer for the tile contract specification.
+        </Callout>
       </div>
 
       {/* Real-time updates */}

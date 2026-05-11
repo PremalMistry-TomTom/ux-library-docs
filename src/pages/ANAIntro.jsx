@@ -3,6 +3,22 @@ import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import { makeThumb, L_VIL, L_CIL, L_ANATheming, L_ANA_Traffic, L_ANA_Map, L_ANA_EVSearch, L_ANA_LDRoute, L_ANA_DriverExp } from '../illustrations/lightVariants';
+import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -360,10 +376,10 @@ function FeatureCard({ Thumb, src, objectPosition, title, desc, tag, pageId, onN
 function ScreenshotShowcase({ t }) {
   const { theme, palette } = useIlloStyle();
   const ITEMS = [
-    { labelKey: 'liveTraffic', Thumb: makeThumb(ThumbANATraffic,   L_ANA_Traffic)   },
-    { labelKey: 'premiumMap',  Thumb: makeThumb(ThumbANAMap,       L_ANA_Map)        },
-    { labelKey: 'evCharging',  Thumb: makeThumb(ThumbANAEVSearch,  L_ANA_EVSearch)   },
-    { labelKey: 'ldEvRoute',   Thumb: makeThumb(ThumbANALDRoute,   L_ANA_LDRoute)    },
+    { labelKey: 'liveTraffic', Thumb: makeThumb(ThumbANATraffic,   L_ANA_Traffic, IcoTrafficFlow)   },
+    { labelKey: 'premiumMap',  Thumb: makeThumb(ThumbANAMap,       L_ANA_Map, IcoMapDisplay)        },
+    { labelKey: 'evCharging',  Thumb: makeThumb(ThumbANAEVSearch,  L_ANA_EVSearch, IcoEVSearchNearby)   },
+    { labelKey: 'ldEvRoute',   Thumb: makeThumb(ThumbANALDRoute,   L_ANA_LDRoute, IcoEVRouting)    },
   ];
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
@@ -388,32 +404,32 @@ export default function ANAIntro({ onNavigate }) {
 
   const FEATURES = [
     {
-      Thumb: makeThumb(ThumbANADriverExp, L_ANA_DriverExp),
+      Thumb: makeThumb(ThumbANADriverExp, L_ANA_DriverExp, IcoNavGuidance),
       title: t('anaIntro.features.driverExperience.title'),
       desc: t('anaIntro.features.driverExperience.desc'),
       pageId: 'ana-driver-experience',
     },
     {
-      Thumb: makeThumb(ThumbVIL,    L_VIL),
+      Thumb: makeThumb(ThumbVIL,    L_VIL, IcoNavSDKNavigation),
       title: t('anaIntro.features.vil.title'),
       desc: t('anaIntro.features.vil.desc'),
       pageId: 'ana-vil',
     },
     {
-      Thumb: makeThumb(ThumbCIL,    L_CIL),
+      Thumb: makeThumb(ThumbCIL,    L_CIL, IcoNavSDKNavigation),
       title: t('anaIntro.features.cil.title'),
       desc: t('anaIntro.features.cil.desc'),
       pageId: 'ana-cil',
       tag: t('anaIntro.features.cil.tag'),
     },
     {
-      Thumb: makeThumb(ThumbTheming,L_ANATheming),
+      Thumb: makeThumb(ThumbTheming,L_ANATheming, IcoHomeScreen),
       title: t('anaIntro.features.theming.title'),
       desc: t('anaIntro.features.theming.desc'),
       pageId: 'ana-theming',
     },
     {
-      Thumb: makeThumb(ThumbANAEVSearch, L_ANA_EVSearch),
+      Thumb: makeThumb(ThumbANAEVSearch, L_ANA_EVSearch, IcoEVSearchNearby),
       title: t('anaIntro.features.evSupport.title'),
       desc: t('anaIntro.features.evSupport.desc'),
       pageId: 'ana-vil-ev',

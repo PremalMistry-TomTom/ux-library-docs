@@ -5,11 +5,27 @@ import {
   L_MapRasterTile, L_MapVectorTile, L_MapSatelliteTile, L_MapAssetsAPI, L_MapStaticImage,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
+import {
   IlloMapRasterTile, IlloMapVectorTile, IlloMapSatelliteTile, IlloMapStaticImage,
 } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloMapVectorTile, L_MapVectorTile);
+const HeroIllo = makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function MapDisplayAPIIntro({ onNavigate }) {
@@ -17,31 +33,31 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile),
+      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile, IcoMapRasterTile),
       method: 'GET',
       title: 'Raster Map Tile',
       desc: 'PNG map tiles at 256 or 512 px across 23 zoom levels — for standard slippy-map integrations.',
-      pageId: 'map-display-api-intro',
+      pageId: 'map-raster-tile',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile),
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
       method: 'GET',
       title: 'Vector Tile',
       desc: 'Protobuf (MVT) vector tiles at 23 zoom levels for client-side styled, resolution-independent rendering.',
-      pageId: 'map-display-api-intro',
+      pageId: 'map-vector-tile',
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloMapSatelliteTile, L_MapSatelliteTile),
+      Thumb: makeThumb(IlloMapSatelliteTile, L_MapSatelliteTile, IcoMapSatelliteTile),
       method: 'GET',
       title: 'Satellite Tile',
       desc: 'Aerial/satellite imagery tiles in JPG at 256 × 256 px across 20 zoom levels.',
-      pageId: 'map-display-api-intro',
+      pageId: 'map-satellite-tile',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile),
+      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile, IcoMapRasterTile),
       method: 'GET',
       title: 'Hillshade Tile',
       desc: 'Terrain hillshade imagery at 514 × 514 px across 14 zoom levels for topographic context.',
@@ -49,7 +65,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(null, L_MapAssetsAPI),
+      Thumb: makeThumb(null, L_MapAssetsAPI, IcoMapDisplay),
       method: 'GET',
       title: 'Map Styles',
       desc: 'Fetch style JSON, sprite sheets, and glyph fonts needed to render vector tiles client-side.',
@@ -57,15 +73,15 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloMapStaticImage, L_MapStaticImage),
+      Thumb: makeThumb(IlloMapStaticImage, L_MapStaticImage, IcoMapStaticImage),
       method: 'GET',
       title: 'Static Image',
       desc: 'Generate a single static map image at a defined bounding box, zoom, and pixel dimensions for reports or previews.',
-      pageId: 'map-display-api-intro',
+      pageId: 'map-static-image',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile),
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
       method: 'GET',
       title: 'WMS / WMTS',
       desc: 'OGC-compliant Web Map Service and Web Map Tile Service endpoints for GIS and enterprise integrations.',
@@ -73,7 +89,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile),
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
       method: 'GET',
       title: 'Vector Content',
       desc: 'Map feature collections for advanced client-side processing and custom cartographic workflows.',

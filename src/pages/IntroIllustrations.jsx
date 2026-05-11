@@ -13,6 +13,22 @@ import {
   L_POIDetails, L_POIPhotos,
   L_TrafficStats, L_AreaAnalytics, L_ODAnalysis, L_JunctionAnalytics,
 } from '../illustrations/lightVariants';
+import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    INTRO HERO ILLUSTRATIONS
@@ -4153,11 +4169,20 @@ function copyCardAsSvg(cardEl, label) {
   return navigator.clipboard.writeText(svgString);
 }
 
-function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, illoStyle = 'lofi' }) {
+/* Tiny context so IlloCard can read showRegenerate without prop-drilling 100+ calls */
+const RegenerateCtx = React.createContext(false);
+
+function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, prompt, illoStyle = 'lofi' }) {
   const { palette } = useIlloStyle();
-  const Illo    = illoStyle === 'detailed' && Dark ? Dark : Light;
+  const showRegenerate = React.useContext(RegenerateCtx);
+  const Illo = illoStyle === 'icon' && Icon ? Icon
+             : illoStyle === 'detailed' && Dark ? Dark
+             : Light;
   const cardRef = useRef(null);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied]         = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [refreshed, setRefreshed]   = useState(false);
+  const [refreshErr, setRefreshErr] = useState(null);
 
   const handleCopy = useCallback(() => {
     copyCardAsSvg(cardRef.current, label)
@@ -4168,77 +4193,167 @@ function IlloCard({ dark: Dark, light: Light, label, emoji, source, prompt, illo
       .catch(() => {/* clipboard denied — silent fail */});
   }, [label]);
 
+  const handleRefresh = useCallback(async (e) => {
+    e.stopPropagation();
+    if (refreshing) return;
+
+    /* Resolve which component name + style key to send */
+    const style = illoStyle === 'icon' ? 'icon'
+                : illoStyle === 'detailed' ? 'detailed'
+                : 'lofi';
+    const componentName = illoStyle === 'icon'     ? Icon?.name
+                        : illoStyle === 'detailed' ? Dark?.name
+                        : Light?.name;
+    if (!componentName) return;
+
+    setRefreshing(true);
+    setRefreshErr(null);
+    setRefreshed(false);
+
+    try {
+      /* 1 — Queue the request */
+      const res = await fetch('/api/refresh-illo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ componentName, style, promptDesc: prompt, label }),
+      });
+      const data = await res.json();
+      if (!data.queued) throw new Error(data.error ?? 'Queue failed');
+      const id = data.queued;
+
+      /* 2 — Poll for completion (every 2 s, up to 120 s) */
+      const deadline = Date.now() + 120_000;
+      await new Promise((resolve, reject) => {
+        const tick = async () => {
+          if (Date.now() > deadline) { reject(new Error('Timed out — agent took too long')); return; }
+          try {
+            const r = await fetch(`/api/refresh-status/${id}`);
+            const d = await r.json();
+            if (d.done)  { resolve(); return; }
+            if (d.error) { reject(new Error(d.error)); return; }
+            /* still pending */
+            setTimeout(tick, 2000);
+          } catch (pollErr) {
+            reject(pollErr);
+          }
+        };
+        setTimeout(tick, 2000);
+      });
+
+      setRefreshed(true);
+      setTimeout(() => setRefreshed(false), 3000);
+    } catch (err) {
+      setRefreshErr(err.message);
+      setTimeout(() => setRefreshErr(null), 6000);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [illoStyle, Icon, Dark, Light, prompt, label, refreshing]);
+
+  /* Refresh button label + colours */
+  const btnLabel  = refreshing ? 'Generating…' : refreshed ? '✓ Updated' : refreshErr ? '✗ Error' : 'Regenerate';
+  const btnBg     = refreshing ? 'rgba(255,255,255,0.18)'
+                  : refreshed  ? 'rgba(34,197,94,0.35)'
+                  : refreshErr ? 'rgba(239,68,68,0.35)'
+                  : 'rgba(255,255,255,0.10)';
+
   return (
-    <div
-      ref={cardRef}
-      onClick={handleCopy}
-      title={`Click to copy "${label}" as SVG`}
-      style={{
-        border: `1px solid ${copied ? '#22c55e' : 'var(--border)'}`,
-        borderRadius: 20,
-        overflow: 'hidden',
-        background: 'var(--surface)',
-        display: 'flex',
-        flexDirection: 'column',
-        cursor: 'pointer',
-        transition: 'border-color 0.2s, box-shadow 0.2s',
-        boxShadow: copied ? '0 0 0 3px rgba(34,197,94,0.2)' : 'none',
-        position: 'relative',
-      }}
-      onMouseEnter={e => { if (!copied) e.currentTarget.style.borderColor = 'var(--black)'; }}
-      onMouseLeave={e => { if (!copied) e.currentTarget.style.borderColor = 'var(--border)'; }}
-    >
-      {/* Copied toast overlay */}
-      {copied && (
-        <div style={{
-          position: 'absolute', top: 8, right: 8, zIndex: 10,
-          background: '#22c55e', color: '#fff',
-          fontSize: '0.625rem', fontWeight: 700,
-          padding: '3px 8px', borderRadius: 20,
-          pointerEvents: 'none',
-        }}>
-          ✓ Copied SVG
-        </div>
-      )}
-
-      {/* Copy hint on hover — bottom-right corner of illustration */}
-      <div style={{
-        position: 'absolute', bottom: 56, right: 8, zIndex: 9,
-        background: 'rgba(0,0,0,0.55)', color: '#fff',
-        fontSize: '0.5625rem', fontWeight: 600,
-        padding: '2px 7px', borderRadius: 20,
-        pointerEvents: 'none', opacity: 0,
-        transition: 'opacity 0.15s',
-      }}
-        className="illo-card-copy-hint"
+    <div className="illo-card-wrap">
+      {/* ── Card ── */}
+      <div
+        ref={cardRef}
+        onClick={handleCopy}
+        title={`Click to copy "${label}" as SVG`}
+        style={{
+          border: `1px solid ${copied ? '#22c55e' : 'var(--border)'}`,
+          borderRadius: 20,
+          overflow: 'hidden',
+          background: palette.bg,
+          position: 'relative',
+          height: 180,
+          cursor: 'pointer',
+          transition: 'border-color 0.2s, box-shadow 0.2s',
+          boxShadow: copied ? '0 0 0 3px rgba(34,197,94,0.2)' : 'none',
+        }}
+        onMouseEnter={e => { if (!copied) e.currentTarget.style.borderColor = 'var(--black)'; }}
+        onMouseLeave={e => { if (!copied) e.currentTarget.style.borderColor = 'var(--border)'; }}
       >
-        Copy as SVG
+        {/* Copied toast — top-right */}
+        {copied && (
+          <div style={{
+            position: 'absolute', top: 8, right: 8, zIndex: 10,
+            background: '#22c55e', color: '#fff',
+            fontSize: '0.625rem', fontWeight: 700,
+            padding: '3px 8px', borderRadius: 20,
+            pointerEvents: 'none',
+          }}>
+            ✓ Copied SVG
+          </div>
+        )}
+
+        {/* Copy hint pill — top-right on hover */}
+        <div
+          className="illo-card-copy-hint"
+          style={{
+            position: 'absolute', top: 8, right: 8, zIndex: 9,
+            background: 'rgba(0,0,0,0.52)', color: '#fff',
+            fontSize: '0.5625rem', fontWeight: 600,
+            padding: '2px 7px', borderRadius: 20,
+            pointerEvents: 'none', opacity: 0,
+            transition: 'opacity 0.15s',
+          }}
+        >
+          ⎘ Copy SVG
+        </div>
+
+        {/* Full-bleed illustration */}
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <Illo />
+        </div>
+
+        {/* Frosted glass text overlay */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0, left: 0, right: 0,
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          background: 'rgba(0, 0, 0, 0.44)',
+          padding: '7px 12px 10px',
+          borderTop: '1px solid rgba(255,255,255,0.07)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: source ? 2 : 0 }}>
+            {emoji && <span style={{ fontSize: '0.875rem', lineHeight: 1 }}>{emoji}</span>}
+            <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>{label}</span>
+          </div>
+          {source && (
+            <span style={{
+              fontSize: '0.5625rem', color: 'rgba(255,255,255,0.5)',
+              fontFamily: 'var(--font-mono, monospace)',
+            }}>
+              {source}
+            </span>
+          )}
+        </div>
       </div>
 
-      <div style={{
-        height: 160,
-        background: palette.bg,
-        flexShrink: 0,
-        overflow: 'hidden',
-        position: 'relative',
-      }}>
-        <Illo />
-      </div>
-      <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          {emoji && <span style={{ fontSize: '1rem' }}>{emoji}</span>}
-          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{label}</span>
-          <span style={{ marginLeft: 'auto', fontSize: '0.5625rem', color: 'var(--muted)', opacity: 0.6 }}>⎘</span>
-        </div>
-        {source && (
-          <span style={{ fontSize: '0.625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono, monospace)' }}>{source}</span>
+      {/* ── Action bar — only shown when Regenerate mode is enabled ── */}
+      {showRegenerate && <div className="illo-card-actions">
+        <button
+          className="illo-card-refresh"
+          onClick={handleRefresh}
+          disabled={refreshing}
+          title={refreshErr ?? `Regenerate "${label}" with AI`}
+          style={{ '--refresh-bg': btnBg }}
+        >
+          <span className={refreshing ? 'illo-refresh-spin' : ''} aria-hidden="true">↻</span>
+          <span>{btnLabel}</span>
+        </button>
+        {refreshErr && (
+          <span className="illo-card-refresh-err" title={refreshErr}>
+            {refreshErr.length > 48 ? refreshErr.slice(0, 48) + '…' : refreshErr}
+          </span>
         )}
-        {prompt && (
-          <p style={{ margin: '4px 0 0', padding: '6px 8px', background: 'var(--surface-raised, rgba(0,0,0,0.04))', borderRadius: 8, fontSize: '0.625rem', color: 'var(--mid)', lineHeight: 1.5, fontStyle: 'italic', borderLeft: '2px solid var(--border)' }}>
-            ✏️ {prompt}
-          </p>
-        )}
-      </div>
+      </div>}
     </div>
   );
 }
@@ -4300,6 +4415,16 @@ export const THEME_OPTIONS = [
     activeBorder: '#4B9EE8',
     swatch: ['#071420','#C2DFFF','#4B9EE8'],
   },
+  {
+    id: 'blueprintMid',
+    icon: '🌤️',
+    label: 'Blueprint Light',
+    desc: 'Light panel blue · deep navy shapes · blue accent',
+    activeBg: '#EAF4FF',
+    activeColor: '#1B3D6E',
+    activeBorder: '#5B8AC5',
+    swatch: ['#EAF4FF','#C8DCF5','#1B5FAD'],
+  },
 ];
 
 /* ─── Functional colour-scale families (light + dark per family) ─────────────
@@ -4349,9 +4474,10 @@ export const COLOUR_FAMILIES = [
 const STYLE_OPTIONS = [
   { id: 'lofi',     icon: '◻',  label: 'Lo-Fi Wireframe',     desc: 'Geometric SVG shapes · full palette system' },
   { id: 'detailed', icon: '▦',  label: 'Detailed Wireframe',  desc: 'Rich HTML mockups · themed UI chrome' },
+  { id: 'icon',     icon: '◆',  label: 'Icon Style',          desc: 'Bold symbols · dark field · palette accent' },
 ];
 
-export function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClick, compact = false }) {
+export function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPluginClick, compact = false, showRegenerate = false, onToggleRegenerate }) {
   const activeTheme = THEME_OPTIONS.find(o => o.id === theme) || THEME_OPTIONS[0];
   const activeStyle = STYLE_OPTIONS.find(o => o.id === illoStyle) || STYLE_OPTIONS[0];
   return (
@@ -4401,29 +4527,53 @@ export function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPlu
         </div>
         <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', marginLeft: 4 }}>{activeStyle.desc}</span>
 
-        {/* Figma plugin — right-aligned in this row */}
-        <button
-          onClick={onPluginClick}
-          style={{
-            marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6,
-            padding: '6px 12px', borderRadius: 100,
-            border: '1px solid var(--border)', background: 'transparent',
-            cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
-            color: 'var(--mid)', whiteSpace: 'nowrap', flexShrink: 0,
-            transition: 'border-color 0.15s, color 0.15s',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = '#2878CC'; e.currentTarget.style.color = 'var(--black)'; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--mid)'; }}
-        >
-          <svg width="11" height="11" viewBox="0 0 38 57" fill="none" style={{ flexShrink: 0 }}>
-            <path d="M19 28.5C19 25.98 20 23.56 21.78 21.78C23.56 20 25.98 19 28.5 19C31.02 19 33.44 20 35.22 21.78C37 23.56 38 25.98 38 28.5C38 31.02 37 33.44 35.22 35.22C33.44 37 31.02 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
-            <path d="M0 47.5C0 44.98 1 42.56 2.78 40.78C4.56 39 6.98 38 9.5 38H19V47.5C19 50.02 18 52.44 16.22 54.22C14.44 56 12.02 57 9.5 57C6.98 57 4.56 56 2.78 54.22C1 52.44 0 50.02 0 47.5Z" fill="#0ACF83"/>
-            <path d="M19 0V19H28.5C31.02 19 33.44 18 35.22 16.22C37 14.44 38 12.02 38 9.5C38 6.98 37 4.56 35.22 2.78C33.44 1 31.02 0 28.5 0H19Z" fill="#FF7262"/>
-            <path d="M0 9.5C0 12.02 1 14.44 2.78 16.22C4.56 18 6.98 19 9.5 19H19V0H9.5C6.98 0 4.56 1 2.78 2.78C1 4.56 0 6.98 0 9.5Z" fill="#F24E1E"/>
-            <path d="M0 28.5C0 31.02 1 33.44 2.78 35.22C4.56 37 6.98 38 9.5 38H19V19H9.5C6.98 19 4.56 20 2.78 21.78C1 23.56 0 25.98 0 28.5Z" fill="#A259FF"/>
-          </svg>
-          Figma Plugin
-        </button>
+        {/* Right-aligned controls */}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+
+          {/* AI Regenerate toggle — WIP, hidden from stakeholders by default */}
+          {onToggleRegenerate && (
+            <button
+              onClick={onToggleRegenerate}
+              title={showRegenerate ? 'Hide AI Regenerate buttons' : 'Show AI Regenerate buttons (WIP)'}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                padding: '6px 12px', borderRadius: 100,
+                border: showRegenerate ? '1.5px solid var(--black)' : '1px solid var(--border)',
+                background: showRegenerate ? 'var(--black)' : 'transparent',
+                cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
+                color: showRegenerate ? 'var(--bg)' : 'var(--mid)',
+                whiteSpace: 'nowrap', transition: 'all 0.15s',
+              }}
+            >
+              <span style={{ fontSize: '0.875rem', lineHeight: 1 }}>↻</span>
+              Regenerate
+            </button>
+          )}
+
+          {/* Figma plugin */}
+          <button
+            onClick={onPluginClick}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '6px 12px', borderRadius: 100,
+              border: '1px solid var(--border)', background: 'transparent',
+              cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600,
+              color: 'var(--mid)', whiteSpace: 'nowrap', flexShrink: 0,
+              transition: 'border-color 0.15s, color 0.15s',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = '#2878CC'; e.currentTarget.style.color = 'var(--black)'; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--mid)'; }}
+          >
+            <svg width="11" height="11" viewBox="0 0 38 57" fill="none" style={{ flexShrink: 0 }}>
+              <path d="M19 28.5C19 25.98 20 23.56 21.78 21.78C23.56 20 25.98 19 28.5 19C31.02 19 33.44 20 35.22 21.78C37 23.56 38 25.98 38 28.5C38 31.02 37 33.44 35.22 35.22C33.44 37 31.02 38 28.5 38H19V28.5Z" fill="#1ABCFE"/>
+              <path d="M0 47.5C0 44.98 1 42.56 2.78 40.78C4.56 39 6.98 38 9.5 38H19V47.5C19 50.02 18 52.44 16.22 54.22C14.44 56 12.02 57 9.5 57C6.98 57 4.56 56 2.78 54.22C1 52.44 0 50.02 0 47.5Z" fill="#0ACF83"/>
+              <path d="M19 0V19H28.5C31.02 19 33.44 18 35.22 16.22C37 14.44 38 12.02 38 9.5C38 6.98 37 4.56 35.22 2.78C33.44 1 31.02 0 28.5 0H19Z" fill="#FF7262"/>
+              <path d="M0 9.5C0 12.02 1 14.44 2.78 16.22C4.56 18 6.98 19 9.5 19H19V0H9.5C6.98 0 4.56 1 2.78 2.78C1 4.56 0 6.98 0 9.5Z" fill="#F24E1E"/>
+              <path d="M0 28.5C0 31.02 1 33.44 2.78 35.22C4.56 37 6.98 38 9.5 38H19V19H9.5C6.98 19 4.56 20 2.78 21.78C1 23.56 0 25.98 0 28.5Z" fill="#A259FF"/>
+            </svg>
+            Figma Plugin
+          </button>
+        </div>
       </div>}
 
       {/* ── Row 2: Palette picker — system themes ── */}
@@ -4691,13 +4841,15 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
   }
 
   const [showPlugin, setShowPlugin] = React.useState(false);
+  const [showRegenerate, setShowRegenerate] = React.useState(false);
 
   return (
+    <RegenerateCtx.Provider value={showRegenerate}>
     <div className="page" style={{ paddingTop: 0 }}>
       {showPlugin && <FigmaPluginPanel onClose={() => setShowPlugin(false)} />}
 
       {/* ── Sticky theme bar — hidden on legacy page ── */}
-      {!noThemeBar && <ThemeBar theme={theme} onThemeChange={setTheme} illoStyle={illoStyle} onStyleChange={handleStyleChange} onPluginClick={() => setShowPlugin(true)} />}
+      {!noThemeBar && <ThemeBar theme={theme} onThemeChange={setTheme} illoStyle={illoStyle} onStyleChange={handleStyleChange} onPluginClick={() => setShowPlugin(true)} showRegenerate={showRegenerate} onToggleRegenerate={() => setShowRegenerate(v => !v)} />}
 
       <div style={{ padding: '0 24px' }}>
         <div className="page-header" style={{ marginTop: 24 }}>
@@ -4739,38 +4891,38 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           subtitle="Capability and domain thumbnails from the UX Library introduction page."
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloEV}                      light={L_EV}                     label="EV Charging"                emoji="⚡" source="Overview · ThumbEV"                    prompt="Dark list of 3 stations showing provider name, power rating and available slot count with a green indicator. Speed, payment and services filter chips run across the top; the whole card is a compact real-time availability widget." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSearchResult}             light={L_SearchResult}            label="Search Results"             emoji="🔍" source="Overview · ThumbSearch"                prompt="Dark search bar above a dropdown of 3 nearby restaurant results, each with a location-pin icon, name and walking distance. A coloured status stripe below the bar reads '3rd-party search · online' to surface the integration layer." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavControls}              light={L_NavControls}             label="Nav Controls"               emoji="🎛️" source="Overview · ThumbNavControls"           prompt="Dark map canvas with a TomTom-red active-route arc and four icon-only control buttons (search, EV, mute, settings) overlaid at the bottom edge. The composition shows in-journey navigation UI sitting on top of a live map." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloAIVoice}                  light={L_AIVoice}                 label="AI Voice (TAIA)"            emoji="🎙️" source="Overview · ThumbAI"                    prompt="Waveform-style voice assistant panel with animated amplitude bars and a partial response text bubble. The illustration captures the AI in mid-response — audio active, text streaming — communicating real-time interaction." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRoute}                    light={L_Route}                   label="EV Route with Stops"        emoji="🔋" source="Overview · ThumbRoute"                 prompt="Route arc on a dark map with two green charging-stop circles between origin and destination pins. A bottom info bar shows battery SOC transitioning 18% → 78% → 22% across the three journey legs." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloColourSystem}             light={L_ColourSystem}            label="Colour System"              emoji="🎨" source="Overview · ThumbColour"                prompt="Light-background grid of named colour swatches (brand red, navy, greys) with hex labels and a split showing day vs night variants. Intentionally bright to show white surfaces and the full semantic palette together." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloHorizonPanel}             light={L_HorizonPanel}            label="Horizon Panel"              emoji="🌅" source="Overview · ThumbHorizonPanel"          prompt="Narrow horizontal HUD strip showing a junction manoeuvre arrow, street name and countdown distance — mimicking an ADAS horizon readout in an instrument cluster. The constrained landscape format communicates the strip's physical placement." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloCluster}                  light={L_Cluster}                 label="Instrument Cluster"         emoji="🚗" source="Overview · ThumbCluster"               prompt="Circular speedometer dial with a TomTom-red active zone, a turn-guidance icon and a small distance readout alongside it. The compact round format reflects real physical cluster dimensions and extreme DPI constraints." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloMapStyle}                 light={L_MapStyle}                label="Day / Night Map Style"      emoji="🌙" source="Overview · ThumbMapStyle"              prompt="Two map panels side-by-side — warm sand + yellow roads for day, deep navy + teal roads for night — sharing identical geometry. The split layout communicates live theme-switching without any change to underlying map data." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloHomeScreen}               light={L_HomeScreen}              label="Home Screen Layout"         emoji="📱" source="Overview · ThumbHomeScreen"            prompt="Full-screen in-vehicle home layout: large map canvas, destination search bar at the top, and a row of recent-place chips at the bottom. The composition prioritises map real-estate while keeping all key actions within thumb-reach." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloETAPanel}                 light={L_ETAPanel}                label="ETA Panel"                  emoji="⏱️" source="Overview · ThumbETAPanel"              prompt="Bottom-sheet panel showing arrival time in large type, distance remaining and a thin route-progress bar — nothing else. Minimal data-ink ratio reflects glanceable driving UI where a single glance must communicate journey state." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloThemingTokens}            light={L_ThemingTokens}           label="Design Token Override"      emoji="🎨" source="Overview · ThumbTheming"               prompt="Rows of named design tokens (primary, surface, accent, border) each with a colour swatch and an override arrow pointing to the OEM brand value. The illustration communicates how one JSON file rewires the entire visual theme." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloChargingSearch}           light={L_ChargingSearch}          label="Charging Station Search"    emoji="🔌" source="Overview · ThumbChargingSearch"        prompt="Map view with a user-location pin at centre surrounded by EV station pins at varying distances, some green (available), one red (full). A side strip shows the active filter state and total station count for the visible radius." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloConversationPersonality}  light={L_ConversationPersonality} label="Conversation Personality"   emoji="💬" source="Overview · ThumbConversationPersonality" prompt="Two speech-bubble exchanges showing the same driver query answered in distinct tones — formal vs casual — with different bubble border styles. The visual contrast communicates that personality is an OEM-configurable overlay, not a logic change." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloADAS}                     light={L_ADAS}                    label="ADAS — Lane Guidance"       emoji="🛣️" source="Overview · ThumbADAS"                  prompt="Top-down road cross-section with three lane marks, the ego lane highlighted in TomTom red and a dashed arrow showing a recommended lane change. The bird's-eye perspective communicates sub-lane navigation precision." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEV} icon={IcoEV}                      light={L_EV}                     label="EV Charging"                emoji="⚡" source="Overview · ThumbEV"                    prompt="Dark list of 3 stations showing provider name, power rating and available slot count with a green indicator. Speed, payment and services filter chips run across the top; the whole card is a compact real-time availability widget." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchResult} icon={IcoSearchFuzzy}             light={L_SearchResult}            label="Search Results"             emoji="🔍" source="Overview · ThumbSearch"                prompt="Dark search bar above a dropdown of 3 nearby restaurant results, each with a location-pin icon, name and walking distance. A coloured status stripe below the bar reads '3rd-party search · online' to surface the integration layer." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavControls} icon={IcoNavControls}              light={L_NavControls}             label="Nav Controls"               emoji="🎛️" source="Overview · ThumbNavControls"           prompt="Dark map canvas with a TomTom-red active-route arc and four icon-only control buttons (search, EV, mute, settings) overlaid at the bottom edge. The composition shows in-journey navigation UI sitting on top of a live map." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloAIVoice} icon={IcoAIVoice}                  light={L_AIVoice}                 label="AI Voice (TAIA)"            emoji="🎙️" source="Overview · ThumbAI"                    prompt="Waveform-style voice assistant panel with animated amplitude bars and a partial response text bubble. The illustration captures the AI in mid-response — audio active, text streaming — communicating real-time interaction." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoute} icon={IcoCalculateRoute}                    light={L_Route}                   label="EV Route with Stops"        emoji="🔋" source="Overview · ThumbRoute"                 prompt="Route arc on a dark map with two green charging-stop circles between origin and destination pins. A bottom info bar shows battery SOC transitioning 18% → 78% → 22% across the three journey legs." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloColourSystem} icon={IcoAIConfig}             light={L_ColourSystem}            label="Colour System"              emoji="🎨" source="Overview · ThumbColour"                prompt="Light-background grid of named colour swatches (brand red, navy, greys) with hex labels and a split showing day vs night variants. Intentionally bright to show white surfaces and the full semantic palette together." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloHorizonPanel} icon={IcoHorizonPanel}             light={L_HorizonPanel}            label="Horizon Panel"              emoji="🌅" source="Overview · ThumbHorizonPanel"          prompt="Narrow horizontal HUD strip showing a junction manoeuvre arrow, street name and countdown distance — mimicking an ADAS horizon readout in an instrument cluster. The constrained landscape format communicates the strip's physical placement." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCluster} icon={IcoCluster}                  light={L_Cluster}                 label="Instrument Cluster"         emoji="🚗" source="Overview · ThumbCluster"               prompt="Circular speedometer dial with a TomTom-red active zone, a turn-guidance icon and a small distance readout alongside it. The compact round format reflects real physical cluster dimensions and extreme DPI constraints." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapStyle} icon={IcoMapDisplay}                 light={L_MapStyle}                label="Day / Night Map Style"      emoji="🌙" source="Overview · ThumbMapStyle"              prompt="Two map panels side-by-side — warm sand + yellow roads for day, deep navy + teal roads for night — sharing identical geometry. The split layout communicates live theme-switching without any change to underlying map data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloHomeScreen} icon={IcoHomeScreen}               light={L_HomeScreen}              label="Home Screen Layout"         emoji="📱" source="Overview · ThumbHomeScreen"            prompt="Full-screen in-vehicle home layout: large map canvas, destination search bar at the top, and a row of recent-place chips at the bottom. The composition prioritises map real-estate while keeping all key actions within thumb-reach." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloETAPanel} icon={IcoETAPanel}                 light={L_ETAPanel}                label="ETA Panel"                  emoji="⏱️" source="Overview · ThumbETAPanel"              prompt="Bottom-sheet panel showing arrival time in large type, distance remaining and a thin route-progress bar — nothing else. Minimal data-ink ratio reflects glanceable driving UI where a single glance must communicate journey state." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloThemingTokens} icon={IcoHomeScreen}            light={L_ThemingTokens}           label="Design Token Override"      emoji="🎨" source="Overview · ThumbTheming"               prompt="Rows of named design tokens (primary, surface, accent, border) each with a colour swatch and an override arrow pointing to the OEM brand value. The illustration communicates how one JSON file rewires the entire visual theme." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloChargingSearch} icon={IcoEVSearchNearby}           light={L_ChargingSearch}          label="Charging Station Search"    emoji="🔌" source="Overview · ThumbChargingSearch"        prompt="Map view with a user-location pin at centre surrounded by EV station pins at varying distances, some green (available), one red (full). A side strip shows the active filter state and total station count for the visible radius." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloConversationPersonality} icon={IcoAIVoice}  light={L_ConversationPersonality} label="Conversation Personality"   emoji="💬" source="Overview · ThumbConversationPersonality" prompt="Two speech-bubble exchanges showing the same driver query answered in distinct tones — formal vs casual — with different bubble border styles. The visual contrast communicates that personality is an OEM-configurable overlay, not a logic change." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloADAS} icon={IcoADAS}                     light={L_ADAS}                    label="ADAS — Lane Guidance"       emoji="🛣️" source="Overview · ThumbADAS"                  prompt="Top-down road cross-section with three lane marks, the ego lane highlighted in TomTom red and a dashed arrow showing a recommended lane change. The bird's-eye perspective communicates sub-lane navigation precision." illoStyle={illoStyle}/>
           {/* App Customisation — new panels */}
-          <IlloCard dark={IlloInstructionPanel}         light={L_NavGuidance}             label="Instruction Panel"          emoji="↖️" source="DomainLanding · InstructionPanel"      prompt="Full-width next-turn banner showing a large directional arrow, bold street name, and countdown distance — the complete NIP layout used during active guidance." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRouteBar}                 light={L_Route}                   label="Route Bar"                  emoji="📍" source="DomainLanding · RouteBar"               prompt="Horizontal route progress bar with waypoint chips and a traffic summary strip below — showing time and distance remaining across the active journey." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloInstructionPanel} icon={IcoInstructionPanel}         light={L_NavGuidance}             label="Instruction Panel"          emoji="↖️" source="DomainLanding · InstructionPanel"      prompt="Full-width next-turn banner showing a large directional arrow, bold street name, and countdown distance — the complete NIP layout used during active guidance." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRouteBar} icon={IcoRouteBar}                 light={L_Route}                   label="Route Bar"                  emoji="📍" source="DomainLanding · RouteBar"               prompt="Horizontal route progress bar with waypoint chips and a traffic summary strip below — showing time and distance remaining across the active journey." illoStyle={illoStyle}/>
           {/* EV & Charging — new pages */}
-          <IlloCard dark={IlloEVBattery}                light={L_EV}                      label="EV Battery Model"           emoji="🔋" source="DomainLanding · EVBattery"              prompt="BMS integration panel with battery capacity figure, consumption curve graph, and a vehicle class preset selector — the foundation for range-accurate routing." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloEVRouting}                light={L_EVRouting}               label="Long-Distance EV Routing"   emoji="⚡" source="DomainLanding · EVRouting"              prompt="City-to-city route arc with two charging stop circles and a SOC trajectory bar spanning the full journey below — showing how automatic stop planning works." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloEVNavUI}                  light={L_EVRouting}               label="EV In-Navigation UI"        emoji="🔌" source="DomainLanding · EVNavUI"                prompt="In-guidance SoC strip at the bottom, reachable range ring on the map, and horizon charging stop countdown — all composited over the active navigation view." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloEVRequirements}           light={L_EV}                      label="EV Requirements"            emoji="📋" source="DomainLanding · EVRequirements"          prompt="Four-item integration checklist with green ticks for completed steps — SDK dependencies, Android permissions, BMS connection, and charging-park API key." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVBattery} icon={IcoEVBattery}                light={L_EV}                      label="EV Battery Model"           emoji="🔋" source="DomainLanding · EVBattery"              prompt="BMS integration panel with battery capacity figure, consumption curve graph, and a vehicle class preset selector — the foundation for range-accurate routing." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVRouting} icon={IcoEVRouting}                light={L_EVRouting}               label="Long-Distance EV Routing"   emoji="⚡" source="DomainLanding · EVRouting"              prompt="City-to-city route arc with two charging stop circles and a SOC trajectory bar spanning the full journey below — showing how automatic stop planning works." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVNavUI} icon={IcoEVNavUI}                  light={L_EVRouting}               label="EV In-Navigation UI"        emoji="🔌" source="DomainLanding · EVNavUI"                prompt="In-guidance SoC strip at the bottom, reachable range ring on the map, and horizon charging stop countdown — all composited over the active navigation view." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVRequirements} icon={IcoEVRequirements}           light={L_EV}                      label="EV Requirements"            emoji="📋" source="DomainLanding · EVRequirements"          prompt="Four-item integration checklist with green ticks for completed steps — SDK dependencies, Android permissions, BMS connection, and charging-park API key." illoStyle={illoStyle}/>
           {/* Vehicle Integration — new pages */}
-          <IlloCard dark={IlloVIBasics}                 light={L_VIL}                     label="Vehicle Integration Basics" emoji="🔧" source="DomainLanding · VIBasics"               prompt="Three-layer stack: NavSDK app at top, VIL middleware in the centre, and vehicle hardware APIs at the bottom — with bidirectional arrows showing the integration flow." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloHUD}                      light={L_ADAS}                    label="Head-Up Display"            emoji="🪟" source="DomainLanding · HUD"                     prompt="Windshield outline with a projected speed figure and a manoeuvre arrow rendered as a semi-transparent HUD overlay — communicating the combiner display format." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloTruck}                    light={L_Cluster}                 label="Truck & Commercial"         emoji="🚛" source="DomainLanding · Truck"                    prompt="Truck cab silhouette with a dashboard-mounted navigation screen showing a route summary with height and weight restriction icons along the corridor." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVIBasics} icon={IcoVIBasics}                 light={L_VIL}                     label="Vehicle Integration Basics" emoji="🔧" source="DomainLanding · VIBasics"               prompt="Three-layer stack: NavSDK app at top, VIL middleware in the centre, and vehicle hardware APIs at the bottom — with bidirectional arrows showing the integration flow." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloHUD} icon={IcoHUD}                      light={L_ADAS}                    label="Head-Up Display"            emoji="🪟" source="DomainLanding · HUD"                     prompt="Windshield outline with a projected speed figure and a manoeuvre arrow rendered as a semi-transparent HUD overlay — communicating the combiner display format." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTruck} icon={IcoTruck}                    light={L_Cluster}                 label="Truck & Commercial"         emoji="🚛" source="DomainLanding · Truck"                    prompt="Truck cab silhouette with a dashboard-mounted navigation screen showing a route summary with height and weight restriction icons along the corridor." illoStyle={illoStyle}/>
           {/* TomTom AI — new pages */}
-          <IlloCard dark={IlloIntentRouting}            light={L_AIVoice}                 label="Intent Routing"             emoji="🔀" source="DomainLanding · IntentRouting"           prompt="Speech bubble with a navigation command splitting into two outbound arrows — one to TAIA navigation handler, one forwarded to an OEM domain handler — showing intent classification." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloVoiceEngine}              light={L_AIVoice}                 label="Voice Engine"               emoji="🔊" source="DomainLanding · VoiceEngine"             prompt="TTS provider wiring diagram: TAIA text response feeds into an OEM voice engine block, with audio output waveform and a latency badge — communicating the TTS integration boundary." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSpeechToText}             light={L_AIVoice}                 label="Speech to Text"             emoji="🎤" source="DomainLanding · SpeechToText"            prompt="Microphone icon above an amplitude waveform that resolves into a transcribed text line — capturing the wake-word detection and STT pipeline in one compact visual." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloAIConfig}                 light={L_AIVoice}                 label="TAIA Configuration"         emoji="⚙️" source="DomainLanding · AIConfig"               prompt="Code-editor window with traffic-light dots showing TAIA SDK initialisation, navigation context binding, and an MQTT event handler wired up — the complete client setup." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloIntentRouting} icon={IcoIntentRouting}            light={L_AIVoice}                 label="Intent Routing"             emoji="🔀" source="DomainLanding · IntentRouting"           prompt="Speech bubble with a navigation command splitting into two outbound arrows — one to TAIA navigation handler, one forwarded to an OEM domain handler — showing intent classification." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVoiceEngine} icon={IcoVoiceEngine}              light={L_AIVoice}                 label="Voice Engine"               emoji="🔊" source="DomainLanding · VoiceEngine"             prompt="TTS provider wiring diagram: TAIA text response feeds into an OEM voice engine block, with audio output waveform and a latency badge — communicating the TTS integration boundary." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSpeechToText} icon={IcoSpeechToText}             light={L_AIVoice}                 label="Speech to Text"             emoji="🎤" source="DomainLanding · SpeechToText"            prompt="Microphone icon above an amplitude waveform that resolves into a transcribed text line — capturing the wake-word detection and STT pipeline in one compact visual." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloAIConfig} icon={IcoAIConfig}                 light={L_AIVoice}                 label="TAIA Configuration"         emoji="⚙️" source="DomainLanding · AIConfig"               prompt="Code-editor window with traffic-light dots showing TAIA SDK initialisation, navigation context binding, and an MQTT event handler wired up — the complete client setup." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4783,13 +4935,13 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#0066cc"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloMapDisplay}     light={L_MapDisplay}     label="Map Display"       emoji="🗺️" source="NavSDKIntro · ThumbMapDisplay"     prompt="Rendered map tile showing roads, a GPS accuracy halo and a pulsing TomTom-red route overlay at zoom 14. The illustration shows the SDK's core tile rendering with real-time data layers composited as one view." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSDKSearch}      light={L_SDKSearch}      label="Search"            emoji="🔍" source="NavSDKIntro · ThumbSearch"          prompt="Search input with three autocomplete suggestions in a dark dropdown, each prefixed with a type icon (place, address, POI). The card shows the SDK's built-in search widget with suggestion debouncing and type classification." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRouteOptions}   light={L_RouteOptions}   label="Route Options"     emoji="🚦" source="NavSDKIntro · ThumbRouting"         prompt="Three overlapping route lines in different colours (fast, eco, scenic) over the same map area with time and distance labels beside each. The side-by-side alternatives communicate the SDK's multi-route preference API." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavGuidance}    light={L_NavGuidance}    label="Navigation (NIP)"  emoji="↖️" source="NavSDKIntro · ThumbNavigation"      prompt="Large directional manoeuvre arrow (turn left), street name in bold below it, and a distance countdown in the corner — the complete NIP layout. High contrast and minimal chrome reflect in-car legibility requirements at speed." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloOfflineMaps}    light={L_OfflineMaps}    label="Offline Maps"      emoji="📴" source="NavSDKIntro · ThumbOffline"          prompt="Download progress UI showing a country region being cached with a file-size figure and a percentage bar. Cloud-to-device arrow communicates the offline-first tile delivery model." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloCarPlay}        light={L_CarPlay}        label="CarPlay"           emoji="🍎" source="NavSDKIntro · ThumbCarPlay"          prompt="Apple CarPlay-styled screen template with TomTom navigation constrained to the safe-zone and two large dashboard buttons. Rounded iOS chrome and simplified layout reflect strict CarPlay template guidelines." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloVirtualHorizon} light={L_VirtualHorizon} label="Virtual Horizon"   emoji="🛤️" source="NavSDKIntro · ThumbVirtualHorizon"  prompt="3D perspective road wireframe showing upcoming curves and gradient changes with data-annotation overlays. The forward-looking view illustrates ADAS horizon data feeding predictive cruise-control algorithms." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapDisplay} icon={IcoMapDisplay}     light={L_MapDisplay}     label="Map Display"       emoji="🗺️" source="NavSDKIntro · ThumbMapDisplay"     prompt="Rendered map tile showing roads, a GPS accuracy halo and a pulsing TomTom-red route overlay at zoom 14. The illustration shows the SDK's core tile rendering with real-time data layers composited as one view." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSDKSearch} icon={IcoNavSDKSearch}      light={L_SDKSearch}      label="Search"            emoji="🔍" source="NavSDKIntro · ThumbSearch"          prompt="Search input with three autocomplete suggestions in a dark dropdown, each prefixed with a type icon (place, address, POI). The card shows the SDK's built-in search widget with suggestion debouncing and type classification." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRouteOptions} icon={IcoCalculateRoute}   light={L_RouteOptions}   label="Route Options"     emoji="🚦" source="NavSDKIntro · ThumbRouting"         prompt="Three overlapping route lines in different colours (fast, eco, scenic) over the same map area with time and distance labels beside each. The side-by-side alternatives communicate the SDK's multi-route preference API." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavGuidance} icon={IcoNavGuidance}    light={L_NavGuidance}    label="Navigation (NIP)"  emoji="↖️" source="NavSDKIntro · ThumbNavigation"      prompt="Large directional manoeuvre arrow (turn left), street name in bold below it, and a distance countdown in the corner — the complete NIP layout. High contrast and minimal chrome reflect in-car legibility requirements at speed." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloOfflineMaps} icon={IcoNavSDKOffline}    light={L_OfflineMaps}    label="Offline Maps"      emoji="📴" source="NavSDKIntro · ThumbOffline"          prompt="Download progress UI showing a country region being cached with a file-size figure and a percentage bar. Cloud-to-device arrow communicates the offline-first tile delivery model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCarPlay} icon={IcoNavControls}        light={L_CarPlay}        label="CarPlay"           emoji="🍎" source="NavSDKIntro · ThumbCarPlay"          prompt="Apple CarPlay-styled screen template with TomTom navigation constrained to the safe-zone and two large dashboard buttons. Rounded iOS chrome and simplified layout reflect strict CarPlay template guidelines." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVirtualHorizon} icon={IcoHorizonPanel} light={L_VirtualHorizon} label="Virtual Horizon"   emoji="🛤️" source="NavSDKIntro · ThumbVirtualHorizon"  prompt="3D perspective road wireframe showing upcoming curves and gradient changes with data-annotation overlays. The forward-looking view illustrates ADAS horizon data feeding predictive cruise-control algorithms." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4802,14 +4954,14 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#0066cc"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloMapDisplay}           light={L_MapDisplay}     label="Map Display"          emoji="🗺️" source="NavSDKDomains · MapDisplay"       prompt="Dark map canvas with a TomTom-red route arc, a vehicle dot, and coloured POI pins — the NavSDK core map rendering view with real-time data layers composited." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKLocation}       light={L_MapDisplay}     label="Location"             emoji="📍" source="NavSDKDomains · Location"         prompt="Bird's-eye map grid with a GPS accuracy halo ring radiating from a red location dot and a blue heading arrow — communicating real-time GNSS positioning with satellite count and fix quality." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKSearch}         light={L_SearchResult}   label="SDK Search"           emoji="🔍" source="NavSDKDomains · Search"           prompt="Autocomplete search bar with the user's partial query and three location results below — each showing a place category and walking distance — mirroring the SDK's fuzzy search suggestion flow." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKRouting}        light={L_Route}          label="SDK Routing"          emoji="🚦" source="NavSDKDomains · Routing"         prompt="Three alternative route options listed with time and distance, the fastest highlighted in green — showing the SDK's multi-route planning API with preference-based selection." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKNavigation}     light={L_NavGuidance}    label="Navigation"           emoji="↖️" source="NavSDKDomains · Navigation"      prompt="Active navigation view with a NIP turn-instruction banner at the top and a three-field ETA/time/distance bar at the bottom, composited over a live route map." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKOffline}        light={L_MapDisplay}     label="Offline"              emoji="📴" source="NavSDKDomains · Offline"         prompt="Offline map download manager showing three regions with progress bars — one complete in green, two in progress — communicating the SDK's tile pre-caching and incremental update model." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKVirtualHorizon} light={L_HorizonPanel}   label="Virtual Horizon"      emoji="🛤️" source="NavSDKDomains · VirtualHorizon"  prompt="3D road perspective with coloured ADAS event pins ahead (speed limit, curve, incident) and a horizon data strip at the bottom showing distance-keyed events on the upcoming route." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloNavSDKAdvanced}       light={L_NavGuidance}    label="Advanced"             emoji="⚙️" source="NavSDKDomains · Advanced"        prompt="Code editor window showing SDK initialisation config keys (apiKey, logLevel, telemetry, vehicle) with syntax-highlighted values and a green success confirmation badge." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapDisplay} icon={IcoMapDisplay}           light={L_MapDisplay}     label="Map Display"          emoji="🗺️" source="NavSDKDomains · MapDisplay"       prompt="Dark map canvas with a TomTom-red route arc, a vehicle dot, and coloured POI pins — the NavSDK core map rendering view with real-time data layers composited." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKLocation} icon={IcoNavSDKLocation}       light={L_MapDisplay}     label="Location"             emoji="📍" source="NavSDKDomains · Location"         prompt="Bird's-eye map grid with a GPS accuracy halo ring radiating from a red location dot and a blue heading arrow — communicating real-time GNSS positioning with satellite count and fix quality." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKSearch} icon={IcoNavSDKSearch}         light={L_SearchResult}   label="SDK Search"           emoji="🔍" source="NavSDKDomains · Search"           prompt="Autocomplete search bar with the user's partial query and three location results below — each showing a place category and walking distance — mirroring the SDK's fuzzy search suggestion flow." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKRouting} icon={IcoNavSDKRouting}        light={L_Route}          label="SDK Routing"          emoji="🚦" source="NavSDKDomains · Routing"         prompt="Three alternative route options listed with time and distance, the fastest highlighted in green — showing the SDK's multi-route planning API with preference-based selection." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKNavigation} icon={IcoNavSDKNavigation}     light={L_NavGuidance}    label="Navigation"           emoji="↖️" source="NavSDKDomains · Navigation"      prompt="Active navigation view with a NIP turn-instruction banner at the top and a three-field ETA/time/distance bar at the bottom, composited over a live route map." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKOffline} icon={IcoNavSDKOffline}        light={L_MapDisplay}     label="Offline"              emoji="📴" source="NavSDKDomains · Offline"         prompt="Offline map download manager showing three regions with progress bars — one complete in green, two in progress — communicating the SDK's tile pre-caching and incremental update model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKVirtualHorizon} icon={IcoNavSDKVirtualHorizon} light={L_HorizonPanel}   label="Virtual Horizon"      emoji="🛤️" source="NavSDKDomains · VirtualHorizon"  prompt="3D road perspective with coloured ADAS event pins ahead (speed limit, curve, incident) and a horizon data strip at the bottom showing distance-keyed events on the upcoming route." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloNavSDKAdvanced} icon={IcoNavSDKAdvanced}       light={L_NavGuidance}    label="Advanced"             emoji="⚙️" source="NavSDKDomains · Advanced"        prompt="Code editor window showing SDK initialisation config keys (apiKey, logLevel, telemetry, vehicle) with syntax-highlighted values and a green success confirmation badge." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4822,18 +4974,18 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#3fb950"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloCalculateRoute}        light={L_CalculateRoute}        label="Calculate Route"       emoji="📍" source="RoutingAPIIntro · ThumbCalculateRoute"    prompt="Point-to-point route on a dark map with a green origin pin and red destination pin joined by a TomTom-red arc. ETA and distance labels are overlaid directly on the route line, not in a separate panel." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloReachableRange}        light={L_ReachableRange}        label="Reachable Range"       emoji="⭕" source="RoutingAPIIntro · ThumbReachableRange"    prompt="Filled isochrone polygon radiating from a centre pin, shading from solid at the core to near-transparent at the outer edge. The fade communicates decreasing reach confidence within a fixed time or fuel budget." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloEVRouting}             light={L_EVRouting}             label="EV Route"              emoji="⚡" source="RoutingAPIIntro · ThumbEVRoute"           prompt="Route arc connecting two city markers with two intermediate charging stops as green circles. A battery SOC bar below shows the charge level dropping and recovering across each leg of the journey." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloBatchRouting}          light={L_BatchRouting}          label="Batch Routing"         emoji="📦" source="RoutingAPIIntro · ThumbBatchRouting"      prompt="Four horizontal progress bars in brand colours representing concurrent route calculations with km values beside each. A green status line confirms all four resolved in parallel within 400ms." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloMatrixRouting}         light={L_MatrixRouting}         label="Matrix Routing"        emoji="⚡" source="RoutingAPIIntro · ThumbMatrix"            prompt="4×4 heat-matrix grid where each cell shows an origin-to-destination travel time, encoded by red intensity. The diagonal cells (same point) are the darkest reference anchors, establishing the visual key." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloWaypointOpt}           light={L_WaypointOpt}           label="Waypoint Optimization" emoji="📍" source="RoutingAPIIntro · ThumbWaypointOpt"       prompt="Before/after split: left shows a zigzag unordered stop sequence; right shows a smooth efficient path with numbered circles. The contrast communicates TSP-style waypoint reordering in a single API call." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloTurnInstructions}      light={L_TurnInstructions}      label="Turn Instructions"     emoji="↗️" source="RoutingAPIIntro · ThumbInstructions"      prompt="Vertical list of four manoeuvre steps (straight, left turn, right turn, roundabout) with monochrome icons and distance labels. The list format directly mirrors the structured guidance array returned in the JSON response." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRoadShields}           light={L_RoadShields}           label="Road Shields"          emoji="🛡️" source="RoutingAPIIntro · ThumbRoadShields"       prompt="A row of motorway, national and regional road shield shapes in country-specific colours and typefaces. The shields show how route summaries embed official signage references inside instruction text." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLaneGuidance}          light={L_LaneGuidance}          label="Lane Guidance"         emoji="🛣️" source="RoutingAPIIntro · ThumbLaneGuidance"      prompt="Five lane arrows in a row with the recommended lane in TomTom red and the others in muted grey. The per-lane state communicates high-resolution junction data available beyond standard turn-by-turn guidance." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRoutingComputeToll}    light={L_RoutingComputeToll}    label="Compute Toll Amounts"  emoji="💳" source="RoutingAPIIntro · ThumbComputeToll"       prompt="Route summary with itemised toll costs broken down by road segment and a total cost badge. The itemised layout communicates financial transparency for pre-trip planning and fleet cost estimation." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRoutingWeather}        light={L_RoutingWeather}        label="Weather Consideration" emoji="🌧️" source="RoutingAPIIntro · ThumbWeather"           prompt="Route arc with weather-condition icons pinned at waypoints (sun, cloud, rain) and adjusted travel-time labels beside each. The visual shows how real-time weather degrades speed estimates and influences route selection." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloRoutingDataFreshness}  light={L_RoutingDataFreshness}  label="Dynamic Data Freshness" emoji="🔄" source="RoutingAPIIntro · ThumbDataFreshness"  prompt="Panel showing a traffic data model version number, last-updated timestamp and a coloured freshness indicator dot. The visual communicates that route quality is tied directly to the recency of the underlying traffic model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCalculateRoute} icon={IcoCalculateRoute}        light={L_CalculateRoute}        label="Calculate Route"       emoji="📍" source="RoutingAPIIntro · ThumbCalculateRoute"    prompt="Point-to-point route on a dark map with a green origin pin and red destination pin joined by a TomTom-red arc. ETA and distance labels are overlaid directly on the route line, not in a separate panel." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloReachableRange} icon={IcoReachableRange}        light={L_ReachableRange}        label="Reachable Range"       emoji="⭕" source="RoutingAPIIntro · ThumbReachableRange"    prompt="Filled isochrone polygon radiating from a centre pin, shading from solid at the core to near-transparent at the outer edge. The fade communicates decreasing reach confidence within a fixed time or fuel budget." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVRouting} icon={IcoEVRouting}             light={L_EVRouting}             label="EV Route"              emoji="⚡" source="RoutingAPIIntro · ThumbEVRoute"           prompt="Route arc connecting two city markers with two intermediate charging stops as green circles. A battery SOC bar below shows the charge level dropping and recovering across each leg of the journey." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloBatchRouting} icon={IcoBatchRouting}          light={L_BatchRouting}          label="Batch Routing"         emoji="📦" source="RoutingAPIIntro · ThumbBatchRouting"      prompt="Four horizontal progress bars in brand colours representing concurrent route calculations with km values beside each. A green status line confirms all four resolved in parallel within 400ms." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMatrixRouting} icon={IcoMatrixRouting}         light={L_MatrixRouting}         label="Matrix Routing"        emoji="⚡" source="RoutingAPIIntro · ThumbMatrix"            prompt="4×4 heat-matrix grid where each cell shows an origin-to-destination travel time, encoded by red intensity. The diagonal cells (same point) are the darkest reference anchors, establishing the visual key." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloWaypointOpt} icon={IcoWaypointOpt}           light={L_WaypointOpt}           label="Waypoint Optimization" emoji="📍" source="RoutingAPIIntro · ThumbWaypointOpt"       prompt="Before/after split: left shows a zigzag unordered stop sequence; right shows a smooth efficient path with numbered circles. The contrast communicates TSP-style waypoint reordering in a single API call." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTurnInstructions} icon={IcoTurnInstructions}      light={L_TurnInstructions}      label="Turn Instructions"     emoji="↗️" source="RoutingAPIIntro · ThumbInstructions"      prompt="Vertical list of four manoeuvre steps (straight, left turn, right turn, roundabout) with monochrome icons and distance labels. The list format directly mirrors the structured guidance array returned in the JSON response." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoadShields} icon={IcoNavGuidance}           light={L_RoadShields}           label="Road Shields"          emoji="🛡️" source="RoutingAPIIntro · ThumbRoadShields"       prompt="A row of motorway, national and regional road shield shapes in country-specific colours and typefaces. The shields show how route summaries embed official signage references inside instruction text." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLaneGuidance} icon={IcoADAS}          light={L_LaneGuidance}          label="Lane Guidance"         emoji="🛣️" source="RoutingAPIIntro · ThumbLaneGuidance"      prompt="Five lane arrows in a row with the recommended lane in TomTom red and the others in muted grey. The per-lane state communicates high-resolution junction data available beyond standard turn-by-turn guidance." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoutingComputeToll} icon={IcoCalculateRoute}    light={L_RoutingComputeToll}    label="Compute Toll Amounts"  emoji="💳" source="RoutingAPIIntro · ThumbComputeToll"       prompt="Route summary with itemised toll costs broken down by road segment and a total cost badge. The itemised layout communicates financial transparency for pre-trip planning and fleet cost estimation." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoutingWeather} icon={IcoRoutingWeather}        light={L_RoutingWeather}        label="Weather Consideration" emoji="🌧️" source="RoutingAPIIntro · ThumbWeather"           prompt="Route arc with weather-condition icons pinned at waypoints (sun, cloud, rain) and adjusted travel-time labels beside each. The visual shows how real-time weather degrades speed estimates and influences route selection." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloRoutingDataFreshness} icon={IcoTrafficStats}  light={L_RoutingDataFreshness}  label="Dynamic Data Freshness" emoji="🔄" source="RoutingAPIIntro · ThumbDataFreshness"  prompt="Panel showing a traffic data model version number, last-updated timestamp and a coloured freshness indicator dot. The visual communicates that route quality is tied directly to the recency of the underlying traffic model." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4846,14 +4998,14 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#22c55e"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloLDEVRRoute}            light={L_LDEVRRoute}            label="Calculate EV Route"    emoji="⚡" source="LDEVRIntro · ThumbEVRoute"              prompt="Long-distance route arc spanning two charging stops, with SOC arcs dropping then recovering between each segment. The battery trajectory illustrates how the API selects stops to keep SOC above a safe minimum threshold." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVRBatch}            light={L_LDEVRBatch}            label="Batch EV Route"        emoji="📦" source="LDEVRIntro · ThumbBatchEV"             prompt="Side-by-side columns showing two EV route strategies — fewer stops vs faster charging — each with total trip duration. The comparison layout communicates the batch endpoint surfacing driver trade-offs in a single response." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVRVehicleBrand}     light={L_LDEVRVehicleBrand}     label="Vehicle Brand Lookup"  emoji="🚗" source="LDEVRIntro · ThumbVehicleBrand"        prompt="Vehicle selector card with make/model dropdown, battery capacity figure and a simplified charging-curve graph. The spec panel reflects the API's certified range and consumption data returned by vehicle brand ID." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVROemEmsp}          light={L_LDEVROemEmsp}          label="OEM EMSP Support"      emoji="🔌" source="LDEVRIntro · ThumbOemEmsp"             prompt="Connector-type grid overlaid with OEM card brand logos showing which EMSP credentials authenticate at which network. The matrix communicates multi-network authentication routing across roaming agreements." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVRComputeToll}      light={L_LDEVRComputeToll}      label="Compute Toll · EV"     emoji="💳" source="LDEVRIntro · ThumbComputeTollLDEVR"   prompt="Itemised toll-cost table with an EV-exemption badge applied to certain road segments and a total cost summary. The layout shows the EV-specific toll logic that waives or reduces fees for zero-emission vehicles." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVRChargingParks}    light={L_LDEVRChargingParks}    label="Charging Parks Hours"  emoji="🅿️" source="LDEVRIntro · ThumbChargingParks"       prompt="Station detail card with a weekly opening-hours grid and a peak-availability heatmap row below it. The illustration communicates the structured operating-hours data the API exposes per charging park location." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVRWeather}          light={L_LDEVRWeather}          label="Weather Consideration" emoji="🌧️" source="LDEVRIntro · ThumbWeatherLDEVR"         prompt="EV route with temperature and precipitation icons at each leg segment showing cold-weather range penalty as a percentage delta. The delta labels communicate the consumption model's per-condition range reduction." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloLDEVRDataFreshness}    light={L_LDEVRDataFreshness}    label="Data Freshness"        emoji="🔄" source="LDEVRIntro · ThumbDataFreshnessLDEVR" prompt="EV charging data model version badge with a last-updated timestamp and a coloured staleness indicator dot. The visual reinforces that charging-availability accuracy degrades as data ages." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRRoute} icon={IcoEVRouting}            light={L_LDEVRRoute}            label="Calculate EV Route"    emoji="⚡" source="LDEVRIntro · ThumbEVRoute"              prompt="Long-distance route arc spanning two charging stops, with SOC arcs dropping then recovering between each segment. The battery trajectory illustrates how the API selects stops to keep SOC above a safe minimum threshold." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRBatch} icon={IcoBatchRouting}            light={L_LDEVRBatch}            label="Batch EV Route"        emoji="📦" source="LDEVRIntro · ThumbBatchEV"             prompt="Side-by-side columns showing two EV route strategies — fewer stops vs faster charging — each with total trip duration. The comparison layout communicates the batch endpoint surfacing driver trade-offs in a single response." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRVehicleBrand} icon={IcoVIBasics}     light={L_LDEVRVehicleBrand}     label="Vehicle Brand Lookup"  emoji="🚗" source="LDEVRIntro · ThumbVehicleBrand"        prompt="Vehicle selector card with make/model dropdown, battery capacity figure and a simplified charging-curve graph. The spec panel reflects the API's certified range and consumption data returned by vehicle brand ID." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVROemEmsp} icon={IcoEVRequirements}          light={L_LDEVROemEmsp}          label="OEM EMSP Support"      emoji="🔌" source="LDEVRIntro · ThumbOemEmsp"             prompt="Connector-type grid overlaid with OEM card brand logos showing which EMSP credentials authenticate at which network. The matrix communicates multi-network authentication routing across roaming agreements." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRComputeToll} icon={IcoCalculateRoute}      light={L_LDEVRComputeToll}      label="Compute Toll · EV"     emoji="💳" source="LDEVRIntro · ThumbComputeTollLDEVR"   prompt="Itemised toll-cost table with an EV-exemption badge applied to certain road segments and a total cost summary. The layout shows the EV-specific toll logic that waives or reduces fees for zero-emission vehicles." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRChargingParks} icon={IcoEVChargingAvailability}    light={L_LDEVRChargingParks}    label="Charging Parks Hours"  emoji="🅿️" source="LDEVRIntro · ThumbChargingParks"       prompt="Station detail card with a weekly opening-hours grid and a peak-availability heatmap row below it. The illustration communicates the structured operating-hours data the API exposes per charging park location." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRWeather} icon={IcoRoutingWeather}          light={L_LDEVRWeather}          label="Weather Consideration" emoji="🌧️" source="LDEVRIntro · ThumbWeatherLDEVR"         prompt="EV route with temperature and precipitation icons at each leg segment showing cold-weather range penalty as a percentage delta. The delta labels communicate the consumption model's per-condition range reduction." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloLDEVRDataFreshness} icon={IcoTrafficStats}    light={L_LDEVRDataFreshness}    label="Data Freshness"        emoji="🔄" source="LDEVRIntro · ThumbDataFreshnessLDEVR" prompt="EV charging data model version badge with a last-updated timestamp and a coloured staleness indicator dot. The visual reinforces that charging-availability accuracy degrades as data ages." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4866,14 +5018,14 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#a855f7"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloANADriverExp} light={L_ANA_DriverExp} label="Driver Experience"         emoji="🧭" source="ANAIntro · ThumbANADriverExp"  prompt="Full HMI home screen with a large map region occupying two-thirds of the area, an ETA/destination bar at the bottom and media/call shortcuts in a corner. The balanced hierarchy shows navigation, infotainment and communication coexisting." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloANATraffic}   light={L_ANA_Traffic}   label="Live Traffic & Rerouting"  emoji="🚦" source="ANAIntro · ThumbANATraffic"    prompt="Map showing a congested segment crossed out in red and a highlighted green alternative route. A rerouting toast at the top communicates automatic traffic-avoidance firing without driver input." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloANAMap}       light={L_ANA_Map}       label="Premium Map Display"        emoji="🗺️" source="ANAIntro · ThumbANAMap"        prompt="Richly styled TomTom day-theme map tile with sharp road labels, coloured category POI icons and smooth building footprints. The visual quality signals premium map differentiation versus generic basemaps." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloANAEVSearch}  light={L_ANA_EVSearch}  label="EV Charging Search"         emoji="⚡" source="ANAIntro · ThumbANAEVSearch"   prompt="Side panel sliding over the map listing three nearby EV stations with connector type, power and availability status. The overlay approach shows integrated charging search without leaving the navigation context." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloANALDRoute}   light={L_ANA_LDRoute}   label="Long-Distance EV Route"     emoji="🔋" source="ANAIntro · ThumbANALDRoute"    prompt="City-to-city route arc with two charging waypoints and a SOC trajectory bar spanning the full journey below it. The illustration previews how LDEVR results surface inside the ANA in-car navigation UI." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloVIL}          light={L_VIL}           label="Vehicle Integration Layer"  emoji="🔧" source="ANAIntro · ThumbVIL"           prompt="Layered stack diagram — ANA app → VIL middleware → vehicle hardware APIs — with connector arrows between each layer. The VIL box abstracts OEM-specific vehicle signals into a uniform SDK interface." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloCIL}          light={L_CIL}           label="Control Integration Layer"  emoji="🕹️" source="ANAIntro · ThumbCIL"           prompt="Layered stack with OS UI framework → CIL → app components and bidirectional gesture/event arrows between layers. The CIL acts as the translation layer between platform input events and ANA's internal navigation controls." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloANATheming}   light={L_ANATheming}    label="OEM Theme Tokens"           emoji="🎨" source="ANAIntro · ThumbTheming"       prompt="Token swatch grid with TomTom defaults in one column and OEM brand override values in an adjacent column, row by row. The side-by-side format communicates that brand customisation is additive — one file, no code changes." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANADriverExp} icon={IcoNavGuidance} light={L_ANA_DriverExp} label="Driver Experience"         emoji="🧭" source="ANAIntro · ThumbANADriverExp"  prompt="Full HMI home screen with a large map region occupying two-thirds of the area, an ETA/destination bar at the bottom and media/call shortcuts in a corner. The balanced hierarchy shows navigation, infotainment and communication coexisting." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANATraffic} icon={IcoTrafficFlow}   light={L_ANA_Traffic}   label="Live Traffic & Rerouting"  emoji="🚦" source="ANAIntro · ThumbANATraffic"    prompt="Map showing a congested segment crossed out in red and a highlighted green alternative route. A rerouting toast at the top communicates automatic traffic-avoidance firing without driver input." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANAMap} icon={IcoMapDisplay}       light={L_ANA_Map}       label="Premium Map Display"        emoji="🗺️" source="ANAIntro · ThumbANAMap"        prompt="Richly styled TomTom day-theme map tile with sharp road labels, coloured category POI icons and smooth building footprints. The visual quality signals premium map differentiation versus generic basemaps." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANAEVSearch} icon={IcoEVSearchNearby}  light={L_ANA_EVSearch}  label="EV Charging Search"         emoji="⚡" source="ANAIntro · ThumbANAEVSearch"   prompt="Side panel sliding over the map listing three nearby EV stations with connector type, power and availability status. The overlay approach shows integrated charging search without leaving the navigation context." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANALDRoute} icon={IcoEVRouting}   light={L_ANA_LDRoute}   label="Long-Distance EV Route"     emoji="🔋" source="ANAIntro · ThumbANALDRoute"    prompt="City-to-city route arc with two charging waypoints and a SOC trajectory bar spanning the full journey below it. The illustration previews how LDEVR results surface inside the ANA in-car navigation UI." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloVIL} icon={IcoNavSDKNavigation}          light={L_VIL}           label="Vehicle Integration Layer"  emoji="🔧" source="ANAIntro · ThumbVIL"           prompt="Layered stack diagram — ANA app → VIL middleware → vehicle hardware APIs — with connector arrows between each layer. The VIL box abstracts OEM-specific vehicle signals into a uniform SDK interface." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloCIL} icon={IcoNavSDKNavigation}          light={L_CIL}           label="Control Integration Layer"  emoji="🕹️" source="ANAIntro · ThumbCIL"           prompt="Layered stack with OS UI framework → CIL → app components and bidirectional gesture/event arrows between layers. The CIL acts as the translation layer between platform input events and ANA's internal navigation controls." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloANATheming} icon={IcoHomeScreen}   light={L_ANATheming}    label="OEM Theme Tokens"           emoji="🎨" source="ANAIntro · ThumbTheming"       prompt="Token swatch grid with TomTom defaults in one column and OEM brand override values in an adjacent column, row by row. The side-by-side format communicates that brand customisation is additive — one file, no code changes." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4886,12 +5038,12 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#58a6ff"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloSearchFuzzy}       light={L_SearchFuzzy}       label="Fuzzy Search"           emoji="🔍" source="Search API · fuzzy"          prompt="Dark search bar above a scrollable result list mixing address pins and POI icons, with a 'Fuzzy' badge in the input. Results show emoji type markers, name and distance; the top-ranked row carries a subtle highlight." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSearchPOI}         light={L_SearchPOI}         label="POI Search"             emoji="📍" source="Search API · poi"            prompt="Category filter chips (Cafe, Fuel, Food, Hotel) at the top, the active chip highlighted, with three POI result rows below each showing icon, name, distance and star rating. The chip row communicates single-category filtering." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSearchCategory}    light={L_SearchCategory}    label="Category Search"        emoji="🗂️" source="Search API · category"       prompt="Tree-style taxonomy list with indented children, active node highlighted in blue and a result-count badge at the bottom. The tree communicates drilling into a POI hierarchy (Food & Drink → Restaurant) before triggering a search." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSearchNearby}      light={L_SearchNearby}      label="Nearby Search"          emoji="📡" source="Search API · nearby"         prompt="Radar-style map circle with a red user-location dot at centre, three blue POI pins within the ring and a named result list below with distances. The concentric ring visualises the search radius parameter." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSearchAlongRoute}  light={L_SearchAlongRoute}  label="Along Route Search"     emoji="🛣️" source="Search API · along-route"    prompt="TomTom-red route arc on a dark map with three fuel-station icons sitting inside the corridor, each shown as a blue circle. A caption reads '3 fuel stations · within 2 km deviation' to communicate the detour tolerance." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloSearchAutocomplete} light={L_SearchAutocomplete} label="Autocomplete"         emoji="⌨️" source="Search API · autocomplete"   prompt="Search input showing partial text 'Amster|' with a cursor and three ranked dropdown suggestions (airport, centre, Noord). A 'Debounce 300ms' footer communicates the real-time typeahead request cadence." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchFuzzy} icon={IcoSearchFuzzy}       light={L_SearchFuzzy}       label="Fuzzy Search"           emoji="🔍" source="Search API · fuzzy"          prompt="Dark search bar above a scrollable result list mixing address pins and POI icons, with a 'Fuzzy' badge in the input. Results show emoji type markers, name and distance; the top-ranked row carries a subtle highlight." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchPOI} icon={IcoSearchPOI}         light={L_SearchPOI}         label="POI Search"             emoji="📍" source="Search API · poi"            prompt="Category filter chips (Cafe, Fuel, Food, Hotel) at the top, the active chip highlighted, with three POI result rows below each showing icon, name, distance and star rating. The chip row communicates single-category filtering." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchCategory} icon={IcoSearchPOI}    light={L_SearchCategory}    label="Category Search"        emoji="🗂️" source="Search API · category"       prompt="Tree-style taxonomy list with indented children, active node highlighted in blue and a result-count badge at the bottom. The tree communicates drilling into a POI hierarchy (Food & Drink → Restaurant) before triggering a search." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchNearby} icon={IcoSearchNearby}      light={L_SearchNearby}      label="Nearby Search"          emoji="📡" source="Search API · nearby"         prompt="Radar-style map circle with a red user-location dot at centre, three blue POI pins within the ring and a named result list below with distances. The concentric ring visualises the search radius parameter." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchAlongRoute} icon={IcoSearchAlongRoute}  light={L_SearchAlongRoute}  label="Along Route Search"     emoji="🛣️" source="Search API · along-route"    prompt="TomTom-red route arc on a dark map with three fuel-station icons sitting inside the corridor, each shown as a blue circle. A caption reads '3 fuel stations · within 2 km deviation' to communicate the detour tolerance." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSearchAutocomplete} icon={IcoSearchAutocomplete} light={L_SearchAutocomplete} label="Autocomplete"         emoji="⌨️" source="Search API · autocomplete"   prompt="Search input showing partial text 'Amster|' with a cursor and three ranked dropdown suggestions (airport, centre, Noord). A 'Debounce 300ms' footer communicates the real-time typeahead request cadence." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4904,8 +5056,8 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#a78bfa"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloGeocode}        light={L_Geocode}        label="Geocode"         emoji="📌" source="Geocoding API · geocode"         prompt="Two stacked cards connected by a downward arrow: address text on top ('Hullenbergweg 11, Amsterdam'), coordinate output below ('52.2977°N 4.9418°E') with a confidence score. The card-to-card layout visualises the one-way text-to-coordinates transformation." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloReverseGeocode} light={L_ReverseGeocode} label="Reverse Geocode" emoji="🔄" source="Geocoding API · reverse-geocode" prompt="Miniature map with a red pin at a lat/lon crosshair intersection, with coordinate labels on the axes and an output address card below. The map-to-text layout communicates the inverse geocoding direction clearly." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloGeocode} icon={IcoGeocode}        light={L_Geocode}        label="Geocode"         emoji="📌" source="Geocoding API · geocode"         prompt="Two stacked cards connected by a downward arrow: address text on top ('Hullenbergweg 11, Amsterdam'), coordinate output below ('52.2977°N 4.9418°E') with a confidence score. The card-to-card layout visualises the one-way text-to-coordinates transformation." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloReverseGeocode} icon={IcoReverseGeocode} light={L_ReverseGeocode} label="Reverse Geocode" emoji="🔄" source="Geocoding API · reverse-geocode" prompt="Miniature map with a red pin at a lat/lon crosshair intersection, with coordinate labels on the axes and an output address card below. The map-to-text layout communicates the inverse geocoding direction clearly." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4918,10 +5070,10 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#ef4444"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloTrafficFlow}      light={L_TrafficFlow}      label="Traffic Flow"      emoji="🟢" source="Traffic API · flow"       prompt="Four equal-length horizontal bars colour-coded green → amber → orange → red, each labelled with a km/h speed and a congestion description. Bar length is constant; only colour encodes severity to maximise legibility at small size." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloTrafficIncidents} light={L_TrafficIncidents} label="Traffic Incidents" emoji="⚠️" source="Traffic API · incidents"  prompt="Three incident rows — roadworks, accident, road closure — each with an emoji icon, type name in a severity colour and a road/km reference. The list directly mirrors the structured incident feed the API returns for a bounding box." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloTrafficFlowTile}  light={L_TrafficFlowTile}  label="Flow Tile"         emoji="🗺️" source="Traffic API · flow-tile"  prompt="4×3 mosaic of colour blocks ranging green to red representing flow-speed intensity across adjacent 256×256 map tiles. A z/x/y coordinate header and 'PNG · traffic overlay' footer identify this as the raster tile endpoint." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloTrafficModelID}   light={L_TrafficModelID}   label="Traffic Model ID"  emoji="🔢" source="Traffic API · model-id"   prompt="A large model ID (#1680) in a highlighted card with an update timestamp, flanked by two older version badges in muted style. The visual communicates the polling pattern: check for a new model ID, then fetch fresh flow data only if it changed." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficFlow} icon={IcoTrafficFlow}      light={L_TrafficFlow}      label="Traffic Flow"      emoji="🟢" source="Traffic API · flow"       prompt="Four equal-length horizontal bars colour-coded green → amber → orange → red, each labelled with a km/h speed and a congestion description. Bar length is constant; only colour encodes severity to maximise legibility at small size." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficIncidents} icon={IcoTrafficIncidents} light={L_TrafficIncidents} label="Traffic Incidents" emoji="⚠️" source="Traffic API · incidents"  prompt="Three incident rows — roadworks, accident, road closure — each with an emoji icon, type name in a severity colour and a road/km reference. The list directly mirrors the structured incident feed the API returns for a bounding box." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficFlowTile} icon={IcoTrafficFlowTile}  light={L_TrafficFlowTile}  label="Flow Tile"         emoji="🗺️" source="Traffic API · flow-tile"  prompt="4×3 mosaic of colour blocks ranging green to red representing flow-speed intensity across adjacent 256×256 map tiles. A z/x/y coordinate header and 'PNG · traffic overlay' footer identify this as the raster tile endpoint." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficModelID} icon={IcoTrafficModelID}   light={L_TrafficModelID}   label="Traffic Model ID"  emoji="🔢" source="Traffic API · model-id"   prompt="A large model ID (#1680) in a highlighted card with an update timestamp, flanked by two older version badges in muted style. The visual communicates the polling pattern: check for a new model ID, then fetch fresh flow data only if it changed." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4934,9 +5086,9 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#22c55e"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloEVSearchNearby}          light={L_EVSearchNearby}          label="EV Stations Nearby"      emoji="⚡" source="EV API · nearby"          prompt="Compact list of three charging operators with power rating and coloured availability text (green = available, red = full). The ⚡ dot icons adopt the availability colour as status signal, matching EV app conventions." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloEVChargingAvailability}  light={L_EVChargingAvailability}  label="Charging Availability"   emoji="🔌" source="EV API · availability"    prompt="Four connector-type rows (CCS2, Type2, CHAdeMO, CCS2) each with a coloured status dot and a label (Available, Charging, Offline). The table communicates per-connector granularity, not just per-station availability." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloEVMarketCoverage}        light={L_EVMarketCoverage}        label="EV Market Coverage"      emoji="🗺️" source="EV API · market-coverage" prompt="Vertical list of five countries with percentage coverage bars graduating from green (high density) to orange (low density). The bars communicate relative EV charging network completeness across the TomTom data footprint." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVSearchNearby} icon={IcoEVSearchNearby}          light={L_EVSearchNearby}          label="EV Stations Nearby"      emoji="⚡" source="EV API · nearby"          prompt="Compact list of three charging operators with power rating and coloured availability text (green = available, red = full). The ⚡ dot icons adopt the availability colour as status signal, matching EV app conventions." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVChargingAvailability} icon={IcoEVChargingAvailability}  light={L_EVChargingAvailability}  label="Charging Availability"   emoji="🔌" source="EV API · availability"    prompt="Four connector-type rows (CCS2, Type2, CHAdeMO, CCS2) each with a coloured status dot and a label (Available, Charging, Offline). The table communicates per-connector granularity, not just per-station availability." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloEVMarketCoverage} icon={IcoAreaAnalytics}        light={L_EVMarketCoverage}        label="EV Market Coverage"      emoji="🗺️" source="EV API · market-coverage" prompt="Vertical list of five countries with percentage coverage bars graduating from green (high density) to orange (low density). The bars communicate relative EV charging network completeness across the TomTom data footprint." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4949,11 +5101,11 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#0066cc"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloMapRasterTile}   light={L_MapRasterTile}   label="Raster Map Tile"   emoji="🟦" source="Map Display API · raster"  prompt="3×3 mosaic of dark map tile blocks, the centre cell featuring a red location pin and a glow. A z/x/y coordinate header and 'PNG · 256×256' footer frame this as a standard slippy-map tile request." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloMapVectorTile}   light={L_MapVectorTile}   label="Vector Map Tile"   emoji="📐" source="Map Display API · vector"  prompt="Stylised vector map showing road lines, building footprint rectangles and a red POI circle on a dark canvas. Layer badges at the bottom (roads, labels, pois) communicate that vector tiles are multi-layer and styleable on the client." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloMapSatelliteTile} light={L_MapSatelliteTile} label="Satellite Tile"  emoji="🛰️" source="Map Display API · satellite" prompt="Simulated aerial photograph tile with irregular building footprints in muted earthy tones and a road corridor crossing the frame. The organic, non-geometric shapes contrast with vector tiles and communicate real-world imagery data." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloMapAssetsAPI}    light={L_MapAssetsAPI}    label="Map Assets API"    emoji="📦" source="Map Display API · assets"  prompt="File-list card showing four named map asset files — day/night sprite sheets, font PBF and style JSON — with file sizes. The file-explorer layout communicates that the endpoint delivers discrete assets consumed by a map renderer." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloMapStaticImage}  light={L_MapStaticImage}  label="Static Map Image"  emoji="🖼️" source="Map Display API · static"  prompt="Dark map thumbnail with a red pin at centre, a glow halo and a dashed bounding-box border. The '600×400 · zoom=14' caption communicates the parameterised static-image request format." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapRasterTile} icon={IcoMapRasterTile}   light={L_MapRasterTile}   label="Raster Map Tile"   emoji="🟦" source="Map Display API · raster"  prompt="3×3 mosaic of dark map tile blocks, the centre cell featuring a red location pin and a glow. A z/x/y coordinate header and 'PNG · 256×256' footer frame this as a standard slippy-map tile request." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapVectorTile} icon={IcoMapVectorTile}   light={L_MapVectorTile}   label="Vector Map Tile"   emoji="📐" source="Map Display API · vector"  prompt="Stylised vector map showing road lines, building footprint rectangles and a red POI circle on a dark canvas. Layer badges at the bottom (roads, labels, pois) communicate that vector tiles are multi-layer and styleable on the client." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapSatelliteTile} icon={IcoMapSatelliteTile} light={L_MapSatelliteTile} label="Satellite Tile"  emoji="🛰️" source="Map Display API · satellite" prompt="Simulated aerial photograph tile with irregular building footprints in muted earthy tones and a road corridor crossing the frame. The organic, non-geometric shapes contrast with vector tiles and communicate real-world imagery data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapAssetsAPI} icon={IcoMapDisplay}    light={L_MapAssetsAPI}    label="Map Assets API"    emoji="📦" source="Map Display API · assets"  prompt="File-list card showing four named map asset files — day/night sprite sheets, font PBF and style JSON — with file sizes. The file-explorer layout communicates that the endpoint delivers discrete assets consumed by a map renderer." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloMapStaticImage} icon={IcoMapStaticImage}  light={L_MapStaticImage}  label="Static Map Image"  emoji="🖼️" source="Map Display API · static"  prompt="Dark map thumbnail with a red pin at centre, a glow halo and a dashed bounding-box border. The '600×400 · zoom=14' caption communicates the parameterised static-image request format." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4966,10 +5118,10 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#fbbf24"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloParkingAvailability} light={L_ParkingAvailability} label="Parking Availability" emoji="🅿️" source="Parking API · availability" prompt="Four parking zones each with a name, a used/capacity fraction and a colour-coded percentage bar (green = space, red = full). Bar colour is the primary signal; the fraction provides the precise data." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloParkingPrices}       light={L_ParkingPrices}       label="Parking Prices"       emoji="💶" source="Parking API · prices"       prompt="Duration-tiered price table (0–1 hr, 1–3 hr, 3–8 hr, all day) with the lowest tier highlighted and prices right-aligned. Payment method badges at the bottom (card, contactless, cash) show accepted payment types." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloOnStreetParking}     light={L_OnStreetParking}     label="On-Street Parking"    emoji="🚗" source="Parking API · on-street"    prompt="Bird's-eye road cross-section with kerbside segments coloured green, amber and red for predicted availability probability on both sides of the road. A legend strip maps the three states: Available, Limited, Restricted." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloFuelPrices}          light={L_FuelPrices}          label="Fuel Prices"          emoji="⛽" source="Fuel Prices API · prices"  prompt="Fuel-type list (Unleaded, Diesel, LPG, Fast DC) with each price right-aligned in a distinct accent colour. Station name and distance above the list frame this as a single-station detail card, not a comparison view." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloParkingAvailability} icon={IcoParkingAvailability} light={L_ParkingAvailability} label="Parking Availability" emoji="🅿️" source="Parking API · availability" prompt="Four parking zones each with a name, a used/capacity fraction and a colour-coded percentage bar (green = space, red = full). Bar colour is the primary signal; the fraction provides the precise data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloParkingPrices} icon={IcoParkingPrices}       light={L_ParkingPrices}       label="Parking Prices"       emoji="💶" source="Parking API · prices"       prompt="Duration-tiered price table (0–1 hr, 1–3 hr, 3–8 hr, all day) with the lowest tier highlighted and prices right-aligned. Payment method badges at the bottom (card, contactless, cash) show accepted payment types." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloOnStreetParking} icon={IcoOnStreetParking}     light={L_OnStreetParking}     label="On-Street Parking"    emoji="🚗" source="Parking API · on-street"    prompt="Bird's-eye road cross-section with kerbside segments coloured green, amber and red for predicted availability probability on both sides of the road. A legend strip maps the three states: Available, Limited, Restricted." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloFuelPrices} icon={IcoFuelPrices}          light={L_FuelPrices}          label="Fuel Prices"          emoji="⛽" source="Fuel Prices API · prices"  prompt="Fuel-type list (Unleaded, Diesel, LPG, Fast DC) with each price right-aligned in a distinct accent colour. Station name and distance above the list frame this as a single-station detail card, not a comparison view." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4982,7 +5134,7 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#3fb950"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloSnapToRoads} light={L_SnapToRoads} label="Snap to Roads" emoji="📍" source="Snap-to-Roads API · snap" prompt="Road path with blue snapped points sitting on the line and faint grey raw-GPS points offset beside them, connected by short correction lines. The before/after proximity shows the sub-metre correction the API applies to noisy trace data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloSnapToRoads} icon={IcoSnapToRoads} light={L_SnapToRoads} label="Snap to Roads" emoji="📍" source="Snap-to-Roads API · snap" prompt="Road path with blue snapped points sitting on the line and faint grey raw-GPS points offset beside them, connected by short correction lines. The before/after proximity shows the sub-metre correction the API applies to noisy trace data." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -4995,7 +5147,7 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#58a6ff"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloBatchSearch} light={L_BatchSearch} label="Batch Search" emoji="📦" source="Batch Search API · batch" prompt="Four query rows each showing a search description, result count and a status dot (green = hit, red = zero results). A footer shows total elapsed time — all four queries resolving in a single round-trip under 250ms." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloBatchSearch} icon={IcoSearchFuzzy} light={L_BatchSearch} label="Batch Search" emoji="📦" source="Batch Search API · batch" prompt="Four query rows each showing a search description, result count and a status dot (green = hit, red = zero results). A footer shows total elapsed time — all four queries resolving in a single round-trip under 250ms." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -5008,8 +5160,8 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#a78bfa"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloPOIDetails} light={L_POIDetails} label="POI Details" emoji="🏢" source="POI API · details" prompt="Hotel POI card with brand icon, star rating and four structured data rows — phone, website, opening hours, accessibility. The row layout reflects the rich JSON fields the Details endpoint returns beyond basic name and coordinates." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloPOIPhotos}  light={L_POIPhotos}  label="POI Photos"  emoji="📷" source="POI API · photos"  prompt="3×2 photo-grid mosaic with each cell showing an emoji representing a scene category (exterior, dining, lobby, garden, pool, gym). The grid communicates that photos are categorised and available at defined sizes via the API." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloPOIDetails} icon={IcoPOIDetails} light={L_POIDetails} label="POI Details" emoji="🏢" source="POI API · details" prompt="Hotel POI card with brand icon, star rating and four structured data rows — phone, website, opening hours, accessibility. The row layout reflects the rich JSON fields the Details endpoint returns beyond basic name and coordinates." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloPOIPhotos} icon={IcoPOIPhotos}  light={L_POIPhotos}  label="POI Photos"  emoji="📷" source="POI API · photos"  prompt="3×2 photo-grid mosaic with each cell showing an emoji representing a scene category (exterior, dining, lobby, garden, pool, gym). The grid communicates that photos are categorised and available at defined sizes via the API." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -5022,10 +5174,10 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
           color="#e2001a"
         />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 14 }}>
-          <IlloCard dark={IlloTrafficStats}      light={L_TrafficStats}      label="Traffic Statistics"  emoji="📊" source="Traffic Analytics · stats"    prompt="Bar chart of 12 bars spanning a week, coloured blue/amber/red by speed bucket to show the typical daily congestion pattern. Day-of-week labels and a muted title communicate this is historical (not live) analytics data." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloAreaAnalytics}     light={L_AreaAnalytics}     label="Area Analytics"      emoji="🔥" source="Traffic Analytics · area"     prompt="4×4 heatmap grid with red-intensity cells representing aggregated traffic density per micro-zone, plus a Low→High gradient legend strip. The grid is the simplest encoding of spatial density without any geographic basemap." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloODAnalysis}        light={L_ODAnalysis}        label="O/D Analysis"        emoji="🔄" source="Traffic Analytics · od"       prompt="4×4 origin/destination matrix with blue-intensity cells showing flow volume between zone pairs and grey diagonal cells for same-zone trips. Row and column headers A–D communicate the zone-pair addressing model." illoStyle={illoStyle}/>
-          <IlloCard dark={IlloJunctionAnalytics} light={L_JunctionAnalytics} label="Junction Analytics"  emoji="🔀" source="Traffic Analytics · junction" prompt="Crossroads diagram with four directional arrows and vehicle-per-hour counts (340, 280, 190, 420) annotated at each arm, plus a blue junction circle. The per-approach flow counts communicate single-junction monitoring granularity." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloTrafficStats} icon={IcoTrafficStats}      light={L_TrafficStats}      label="Traffic Statistics"  emoji="📊" source="Traffic Analytics · stats"    prompt="Bar chart of 12 bars spanning a week, coloured blue/amber/red by speed bucket to show the typical daily congestion pattern. Day-of-week labels and a muted title communicate this is historical (not live) analytics data." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloAreaAnalytics} icon={IcoAreaAnalytics}     light={L_AreaAnalytics}     label="Area Analytics"      emoji="🔥" source="Traffic Analytics · area"     prompt="4×4 heatmap grid with red-intensity cells representing aggregated traffic density per micro-zone, plus a Low→High gradient legend strip. The grid is the simplest encoding of spatial density without any geographic basemap." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloODAnalysis} icon={IcoODAnalysis}        light={L_ODAnalysis}        label="O/D Analysis"        emoji="🔄" source="Traffic Analytics · od"       prompt="4×4 origin/destination matrix with blue-intensity cells showing flow volume between zone pairs and grey diagonal cells for same-zone trips. Row and column headers A–D communicate the zone-pair addressing model." illoStyle={illoStyle}/>
+          <IlloCard dark={IlloJunctionAnalytics} icon={IcoJunctionAnalytics} light={L_JunctionAnalytics} label="Junction Analytics"  emoji="🔀" source="Traffic Analytics · junction" prompt="Crossroads diagram with four directional arrows and vehicle-per-hour counts (340, 280, 190, 420) annotated at each arm, plus a blue junction circle. The per-approach flow counts communicate single-junction monitoring granularity." illoStyle={illoStyle}/>
         </div>
       </div>
 
@@ -5055,5 +5207,6 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
       </div>
       </div>{/* /padding wrapper */}
     </div>
+    </RegenerateCtx.Provider>
   );
 }

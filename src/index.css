@@ -1612,6 +1612,33 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   min-width: 0;
 }
 
+/* Related chips — used in page-body sections */
+.page-related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.page-related-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg-subtle, var(--bg));
+  color: var(--fg);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.page-related-chip:hover {
+  border-color: var(--accent, var(--tt-red));
+  color: var(--accent, var(--tt-red));
+  background: var(--bg);
+}
+
 /* Markdown modal overlay */
 .md-overlay {
   position: fixed;
@@ -2196,10 +2223,14 @@ html.ai-panel-open .page {
   position: sticky;
   top: var(--global-h, 50px);
   z-index: 20;
-  background: var(--s0);
+  background: transparent;
+  /* Match dp2-block-container horizontal rhythm exactly */
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
   display: flex;
-  justify-content: center;
-  padding: 12px 24px;
+  justify-content: flex-start;
+  padding: 10px 40px;
 }
 /* Inner row: filter pill LEFT + view toggle RIGHT */
 .dp2-viewbar-inner {
@@ -2207,9 +2238,78 @@ html.ai-panel-open .page {
   align-items: center;
   gap: 12px;
   flex-wrap: nowrap;
-  width: 100%;
-  max-width: 1200px;
+  width: fit-content;        /* shrink-wrap to content — no trailing empty bar */
+  background: var(--s0);     /* background lives here, not on the full-width wrap */
+  border-radius: var(--r-xl);
+  padding: 6px 10px;
 }
+/* Runtime filter bar */
+.dp2-runtime-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0 4px;
+  /* Scrollable on narrow screens */
+  overflow-x: auto;
+  scrollbar-width: none;          /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+.dp2-runtime-bar::-webkit-scrollbar { display: none; }
+.dp2-runtime-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 99px;
+  padding: 3px 12px 3px 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--mid);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  line-height: 1.5;
+}
+.dp2-runtime-btn:hover {
+  background: var(--s1);
+  color: var(--black);
+}
+.dp2-runtime-btn--active {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--black);
+  font-weight: 600;
+}
+.dp2-runtime-count {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--bg);
+  border-radius: 99px;
+  padding: 1px 6px;
+  min-width: 20px;
+  text-align: center;
+}
+.dp2-runtime-btn--active .dp2-runtime-count {
+  background: var(--s1);
+  color: var(--mid);
+}
+.dp2-runtime-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dp2-runtime-dot--rest    { background: #3b82f6; }
+.dp2-runtime-dot--android { background: #22c55e; }
+.dp2-runtime-dot--ios     { background: #60a5fa; }
+/* dark mode */
+[data-theme="dark"] .dp2-runtime-btn:hover   { background: var(--s3); }
+[data-theme="dark"] .dp2-runtime-btn--active { background: var(--s2); border-color: var(--b-hi); }
+[data-theme="dark"] .dp2-runtime-count       { background: var(--s3); color: var(--t-med); }
+[data-theme="dark"] .dp2-runtime-btn--active .dp2-runtime-count { background: var(--s3); }
 /* View toggle (Catalogue / Discovery) */
 .dp2-view-toggle {
   display: inline-flex;
@@ -2248,7 +2348,13 @@ html.ai-panel-open .page {
   padding: 4px;
   gap: 2px;
   overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  /* Fills remaining width after ViewToggle without overflowing */
+  flex: 1;
+  min-width: 0;
 }
+.dp2-tabbar-pill::-webkit-scrollbar { display: none; }
 .dp2-tab-btn {
   background: transparent;
   border: none;
@@ -2393,6 +2499,93 @@ html.ai-panel-open .page {
 .dp2-product-doc-btn--disabled {
   color: #aaa; border-color: #e5e5e5; background: #fafafa;
   cursor: default; pointer-events: none;
+}
+
+/* ── Frosted-glass overlay variant (mosaic cards with illustration) ───────── */
+.dp2-product-card--illo {
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  height: 220px;
+}
+.dp2-illo-fill {
+  position: absolute;
+  inset: 0;
+}
+.dp2-glass {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.46);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 10px 14px 12px;
+  overflow: hidden;
+}
+/* Default layer: title + tags */
+.dp2-glass-default {
+  transition: opacity 0.22s, transform 0.22s;
+}
+.dp2-glass-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0 0;
+  line-height: 1.3;
+}
+/* Hover layer: body text */
+.dp2-glass-body {
+  position: absolute;
+  inset: 0;
+  padding: 10px 14px 12px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.22s, transform 0.22s;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+.dp2-glass-desc {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.88);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* Cross-fade on hover */
+.dp2-product-card--illo:hover .dp2-glass-default {
+  opacity: 0;
+  transform: translateY(-5px);
+  pointer-events: none;
+}
+.dp2-product-card--illo:hover .dp2-glass-body {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+/* Glass-context tag pills — dark field, white text */
+.dp2-product-doc-btn--glass {
+  background: rgba(255,255,255,0.10) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  color: rgba(255,255,255,0.82) !important;
+  font-size: 0.625rem !important;
+  height: 22px !important;
+  padding: 0 9px !important;
+}
+.dp2-product-doc-btn--glass:hover {
+  background: rgba(255,255,255,0.18) !important;
+  border-color: rgba(255,255,255,0.3) !important;
+}
+/* Red hover border still works on linked overlay cards */
+.dp2-product-card--illo.dp2-product-card--linked:hover {
+  border-color: var(--brand);
+  box-shadow: 0 4px 20px rgba(223,27,18,0.18);
+}
+[data-theme="dark"] .dp2-product-card--illo.dp2-product-card--linked:hover {
+  border-color: #DF1B12;
 }
 
 /* Tool / support cards — inline text link with arrow */
@@ -2591,11 +2784,20 @@ html.ai-panel-open .page {
   .dp2-hero { padding: 24px 0; }
   .dp2-block-container { padding: 0 16px; }
 }
-/* Stack view toggle above filter tabs on tablet / mobile */
+/* Tablet / mobile: tighten padding and ensure both rows scroll horizontally */
 @media (max-width: 768px) {
-  .dp2-tabbar-wrap { padding: 10px 16px; justify-content: flex-start; }
-  .dp2-viewbar-inner { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
-  .dp2-tabbar-pill { overflow-x: auto; border-radius: var(--r-xl); width: 100%; }
+  .dp2-tabbar-wrap { padding: 8px 16px; }
+  .dp2-viewbar-inner { flex-direction: column; align-items: flex-start; gap: 6px; width: fit-content; max-width: calc(100vw - 32px); }
+  /* Pills take full width of the column, then scroll internally */
+  .dp2-tabbar-pill { width: max-content; flex: none; border-radius: var(--r-xl); }
+  .dp2-runtime-bar { width: 100%; }
+}
+@media (max-width: 480px) {
+  /* Smaller text on runtime pills to fit more before scrolling */
+  .dp2-runtime-btn { font-size: 0.6875rem; padding: 3px 9px 3px 8px; gap: 5px; }
+  .dp2-runtime-count { font-size: 0.625rem; padding: 1px 5px; }
+  /* Tighter category tab text */
+  .dp2-tab-btn { font-size: 0.8125rem; padding: 6px 14px; }
 }
 
 /* ── Dark mode overrides for DocsPortal (dp2-) — uses site CSS variables ── */
@@ -2606,7 +2808,7 @@ html.ai-panel-open .page {
 [data-theme="dark"] .dp2-search-bar          { background: var(--bg); border-color: var(--border); }
 [data-theme="dark"] .dp2-search-icon         { color: var(--muted); }
 [data-theme="dark"] .dp2-search-placeholder  { color: var(--muted); }
-[data-theme="dark"] .dp2-tabbar-wrap         { background: var(--white); }
+[data-theme="dark"] .dp2-viewbar-inner        { background: var(--white); }
 [data-theme="dark"] .dp2-tabbar-pill         { background: var(--bg); }
 [data-theme="dark"] .dp2-tab-btn             { color: var(--mid); }
 [data-theme="dark"] .dp2-tab-btn:hover       { background: var(--border); }
@@ -2616,6 +2818,219 @@ html.ai-panel-open .page {
 [data-theme="dark"] .dp2-view-btn--active    { background: var(--black); color: var(--white); }
 [data-theme="dark"] .dp2-section-heading     { color: var(--black); }
 [data-theme="dark"] .dp2-navsdk-card         { background: var(--bg); border-color: var(--border); }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   DISCOVERY SECTION
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.dp2-discovery-section {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--b-lo);
+}
+
+.dp2-discovery-container {
+  padding-top: 48px;
+  padding-bottom: 56px;
+}
+
+/* Section label (Discovery + Catalogue headings) */
+.dp2-section-label {
+  margin-bottom: 24px;
+}
+.dp2-section-label-text {
+  font-family: var(--f-title);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--t-hi);
+  margin-bottom: 4px;
+}
+.dp2-section-label-sub {
+  font-size: 0.8125rem;
+  color: var(--t-lo);
+}
+.dp2-section-label--catalogue {
+  padding-top: 40px;
+}
+
+/* ── Sticky filter bar for discovery section ── */
+.dp2-disc-sticky {
+  position: sticky;
+  top: var(--global-h, 50px);
+  z-index: 19;                  /* just below catalogue sticky (z-index 20) */
+  background: var(--s0);
+  border-bottom: 1px solid var(--b-lo);
+}
+.dp2-disc-sticky-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 40px 0;
+}
+[data-theme="dark"] .dp2-disc-sticky         { background: var(--s0); border-bottom-color: var(--border); }
+
+@media (max-width: 640px) {
+  .dp2-disc-sticky-inner { padding: 8px 16px 0; }
+}
+
+/* Use-case tab chips */
+.dp2-disc-tabs-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+.dp2-disc-tabs-row::-webkit-scrollbar { display: none; }
+
+.dp2-disc-tab {
+  flex-shrink: 0;
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1.5px solid var(--b-lo);
+  background: transparent;
+  color: var(--t-med);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.12s;
+}
+.dp2-disc-tab:hover {
+  border-color: var(--b-med);
+  color: var(--t-hi);
+  background: var(--s1);
+}
+.dp2-disc-tab--active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+  font-weight: 600;
+}
+.dp2-disc-tab--active:hover {
+  background: #c41710;
+  border-color: #c41710;
+}
+
+/* Discovery card grid — 6 cols desktop, 4 tablet, 3 mobile, 2 small mobile */
+.dp2-discovery-grid {
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+@media (max-width: 1200px) {
+  .dp2-discovery-grid { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 768px) {
+  .dp2-discovery-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+}
+@media (max-width: 480px) {
+  .dp2-discovery-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+}
+
+/* ── Discovery compact card — mirrors plumbing IconCard layout ── */
+.dp2-disc-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--b-lo);
+  background: var(--s0);
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.dp2-disc-card--linked {
+  cursor: pointer;
+}
+.dp2-disc-card--linked:hover {
+  border-color: var(--brand);
+  box-shadow: 0 4px 20px rgba(223,27,18,0.12);
+}
+.dp2-disc-card--stub {
+  opacity: 0.55;
+  cursor: default;
+}
+.dp2-disc-card-illo {
+  height: 90px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.dp2-disc-card-body {
+  padding: 8px 10px 10px;
+  flex: 1;
+}
+.dp2-disc-card-label {
+  font-size: 0.625rem;
+  color: var(--t-lo);
+  margin-bottom: 3px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dp2-disc-card-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--t-hi);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+/* Dark mode */
+[data-theme="dark"] .dp2-disc-card              { background: var(--bg); border-color: var(--border); }
+[data-theme="dark"] .dp2-disc-card--linked:hover { border-color: var(--brand); box-shadow: 0 4px 20px rgba(223,27,18,0.18); }
+[data-theme="dark"] .dp2-disc-card-label        { color: var(--mid); }
+[data-theme="dark"] .dp2-disc-card-title        { color: var(--black); }
+
+/* Show more button */
+.dp2-show-more-row {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 0;
+}
+.dp2-show-more-btn {
+  padding: 10px 28px;
+  border-radius: 99px;
+  border: 1.5px solid var(--b-med);
+  background: transparent;
+  color: var(--t-med);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+.dp2-show-more-btn:hover {
+  border-color: var(--t-hi);
+  color: var(--t-hi);
+  background: var(--s1);
+}
+
+/* Catalogue section top separator */
+.dp2-catalogue-section {
+  /* nothing needed — section-label--catalogue handles top padding */
+}
+
+/* Dark-mode overrides for discovery */
+[data-theme="dark"] .dp2-disc-tab          { border-color: var(--border); color: var(--mid); }
+[data-theme="dark"] .dp2-disc-tab:hover    { background: var(--border); color: var(--black); }
+[data-theme="dark"] .dp2-disc-tab--active  { background: var(--brand); border-color: var(--brand); color: #fff; }
+[data-theme="dark"] .dp2-section-label-text { color: var(--black); }
+[data-theme="dark"] .dp2-section-label-sub  { color: var(--mid); }
+[data-theme="dark"] .dp2-show-more-btn     { border-color: var(--border); color: var(--mid); }
+[data-theme="dark"] .dp2-show-more-btn:hover { border-color: var(--black); color: var(--black); background: var(--border); }
+[data-theme="dark"] .dp2-discovery-section { border-bottom-color: var(--border); }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .dp2-discovery-container { padding-top: 24px; padding-bottom: 24px; }
+  .dp2-section-label--catalogue { padding-top: 24px; }
+  .dp2-disc-tabs-row { gap: 6px; }
+  .dp2-disc-tab { padding: 5px 13px; font-size: 0.75rem; }
+}
 [data-theme="dark"] .dp2-navsdk-title        { color: var(--black); }
 [data-theme="dark"] .dp2-navsdk-sub          { color: var(--mid); }
 [data-theme="dark"] .dp2-navsdk-cta          { color: var(--brand); }
@@ -3038,6 +3453,78 @@ html.ai-panel-open .page {
 /* ── IlloCard copy hint ───────────────────────────────────────────────────────── */
 [data-theme] div:hover > .illo-card-copy-hint,
 div:hover > .illo-card-copy-hint { opacity: 1 !important; }
+
+/* ── IlloCard wrapper + AI Regenerate action bar ─────────────────────────────── */
+.illo-card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Action bar sits below the card, hidden by default */
+.illo-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.18s, transform 0.18s;
+  pointer-events: none;
+  min-height: 26px;
+}
+.illo-card-wrap:hover .illo-card-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Regenerate button */
+.illo-card-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--refresh-bg, var(--surface));
+  color: var(--mid);
+  font-size: 0.625rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1;
+  white-space: nowrap;
+}
+.illo-card-refresh:hover:not(:disabled) {
+  border-color: var(--black);
+  color: var(--black);
+}
+.illo-card-refresh:disabled {
+  cursor: wait;
+  opacity: 0.8;
+}
+
+/* Error message beside button */
+.illo-card-refresh-err {
+  font-size: 0.5625rem;
+  color: #ef4444;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+/* Spin animation for the ↻ icon during generation */
+.illo-refresh-spin {
+  display: inline-block;
+  animation: illo-spin 0.8s linear infinite;
+}
+@keyframes illo-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 
 /* ── GlobalHeader active icon button ─────────────────────────────────────────── */
 .gh-icon-btn--active { color: #e2001a !important; }

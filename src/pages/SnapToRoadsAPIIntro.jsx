@@ -2,6 +2,22 @@ import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import { makeThumb, L_SnapToRoads } from '../illustrations/lightVariants';
+import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
 import { IlloSnapToRoads } from './IntroIllustrations';
 
 /* ─── Shared helpers ─────────────────────────────────────────────────────────── */
@@ -14,9 +30,13 @@ function MethodBadge({ method }) {
   );
 }
 
-function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
+function EndpointCard({ Illo, title, method = 'GET', path, desc, pageId, onNavigate }) {
+  const handleClick = pageId && onNavigate ? () => onNavigate(pageId) : undefined;
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
+    <div
+      onClick={handleClick}
+      style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column', cursor: handleClick ? 'pointer' : 'default' }}
+    >
       <div style={{ height: 140, flexShrink: 0, overflow: 'hidden' }}>
         <Illo />
       </div>
@@ -32,7 +52,7 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloSnapToRoads, L_SnapToRoads);
+const HeroIllo = makeThumb(IlloSnapToRoads, L_SnapToRoads, IcoSnapToRoads);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SnapToRoadsAPIIntro({ onNavigate }) {
@@ -40,11 +60,12 @@ export default function SnapToRoadsAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(IlloSnapToRoads, L_SnapToRoads),
+      Illo: makeThumb(IlloSnapToRoads, L_SnapToRoads, IcoSnapToRoads),
       title: 'Snap GPS Trace',
-      method: 'POST',
+      method: 'GET',
       path: '/maps/orbis/roads/snap-to-roads/v1',
       desc: 'Match a raw GPS trace to the road network, returning a clean path snapped to actual road geometry.',
+      pageId: 'snap-to-roads',
     },
   ];
 
@@ -71,7 +92,7 @@ export default function SnapToRoadsAPIIntro({ onNavigate }) {
         <h2 className="sh" id="endpoints">Endpoints</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
           {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} />
+            <EndpointCard key={ep.title} {...ep} onNavigate={onNavigate} />
           ))}
         </div>
       </div>

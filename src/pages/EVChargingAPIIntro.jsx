@@ -5,11 +5,27 @@ import {
   L_EVSearchNearby, L_EVChargingAvailability, L_EVMarketCoverage,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
+import {
   IlloEVSearchNearby, IlloEVChargingAvailability,
 } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloEVSearchNearby, L_EVSearchNearby);
+const HeroIllo = makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function EVChargingAPIIntro({ onNavigate }) {
@@ -17,51 +33,51 @@ export default function EVChargingAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby),
+      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby),
       method: 'GET',
       title: 'EV Station Search',
       desc: 'Search for charging stations near a coordinate using category set 7309, with connector type and operator filters.',
-      pageId: 'ev-charging-api-intro',
+      pageId: 'ev-station-search',
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability),
+      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability, IcoEVChargingAvailability),
       method: 'GET',
       title: 'Charging Availability',
       desc: 'Query real-time connector availability at a charging station — number of occupied and free slots per connector type.',
-      pageId: 'ev-charging-api-intro',
+      pageId: 'ev-charging-availability',
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(null, L_EVMarketCoverage),
+      Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics),
       method: 'GET',
       title: 'Supported Markets',
       desc: 'Return the list of countries and regions where TomTom EV charging availability data is provided.',
-      pageId: 'ev-charging-api-intro',
+      pageId: 'ev-supported-markets',
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability),
+      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability, IcoEVChargingAvailability),
       method: 'GET',
       title: 'Charging Park Details',
       desc: 'Retrieve enriched details for a charging park including operator, amenities, opening hours, and pricing information.',
-      pageId: 'ev-charging-api-intro',
+      pageId: 'ev-station-search',
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby),
+      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby),
       method: 'GET',
       title: 'Along-Route Charging',
       desc: 'Find charging stations along a route corridor, ranked by deviation from the original path and compatible connectors.',
-      pageId: 'ev-charging-api-intro',
+      pageId: 'ev-station-search',
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(null, L_EVMarketCoverage),
+      Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics),
       method: 'GET',
       title: 'Connector Categories',
       desc: 'List supported EV connector type categories — CCS, CHAdeMO, Type 2, and more — for filtering search results.',
-      pageId: 'ev-charging-api-intro',
+      pageId: 'ev-supported-markets',
       tag: 'v2',
     },
   ];

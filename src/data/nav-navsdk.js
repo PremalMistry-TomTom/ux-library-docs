@@ -167,3 +167,126 @@ export const NAVSDK_PAGE_TITLES = {
   'navsdk-release-notes': 'Release Notes',
   'navsdk-api-ref': 'API Reference',
 };
+
+/* ─── iOS Nav ─────────────────────────────────────────────────────────────── */
+export const NAVSDK_IOS_NAV = [
+  { id: 'navsdk-ios-intro', label: 'Introduction', type: 'top' },
+  {
+    label: 'Getting Started', key: 'navsdkIosGettingStarted', type: 'group', landingId: 'navsdk-ios-getting-started',
+    items: [
+      { id: 'navsdk-ios-project-setup', label: 'Project Setup' },
+      { id: 'navsdk-ios-sdk-init',      label: 'Initializing the SDK' },
+      { id: 'navsdk-ios-first-map',     label: 'Displaying Your First Map' },
+    ],
+  },
+  {
+    label: 'Map Display', key: 'navsdkIosMapDisplay', type: 'group', landingId: 'navsdk-ios-map-display',
+    items: [
+      { id: 'navsdk-ios-map-swiftui',  label: 'Map Display for SwiftUI' },
+      { id: 'navsdk-ios-map-uikit',    label: 'Map Display for UIKit' },
+      { id: 'navsdk-ios-map-styles',   label: 'Map Styles' },
+      { id: 'navsdk-ios-map-camera',   label: 'Camera & Animations' },
+      { id: 'navsdk-ios-map-markers',  label: 'Markers' },
+      { id: 'navsdk-ios-map-traffic',  label: 'Traffic' },
+    ],
+  },
+  {
+    label: 'Location', key: 'navsdkIosLocation', type: 'group', landingId: 'navsdk-ios-location',
+    items: [
+      { id: 'navsdk-ios-location-quickstart', label: 'Quickstart' },
+    ],
+  },
+  { id: 'navsdk-ios-search', label: 'Search', type: 'top' },
+  {
+    label: 'Routing', key: 'navsdkIosRouting', type: 'group', landingId: 'navsdk-ios-routing',
+    items: [
+      { id: 'navsdk-ios-route-planning',      label: 'Planning a Route' },
+      { id: 'navsdk-ios-route-alternatives',  label: 'Alternative Routes' },
+      { id: 'navsdk-ios-route-sections',      label: 'Route Sections' },
+      { id: 'navsdk-ios-route-import-export', label: 'Import, Export & Modify' },
+    ],
+  },
+  {
+    label: 'Navigation', key: 'navsdkIosNavigation', type: 'group', landingId: 'navsdk-ios-navigation',
+    items: [
+      { id: 'navsdk-ios-nav-quickstart',   label: 'Quickstart' },
+      { id: 'navsdk-ios-nav-guidance',     label: 'Guidance' },
+      { id: 'navsdk-ios-nav-voice',        label: 'Voice Instructions' },
+      { id: 'navsdk-ios-nav-replanning',   label: 'Continuous Replanning' },
+      { id: 'navsdk-ios-nav-safety',       label: 'Safety Locations' },
+      { id: 'navsdk-ios-nav-carplay',      label: 'CarPlay Integration' },
+    ],
+  },
+  { id: 'navsdk-ios-carplay', label: 'CarPlay', type: 'top' },
+  {
+    label: 'Virtual Horizon', key: 'navsdkIosHorizon', type: 'group', landingId: 'navsdk-ios-horizon',
+    items: [
+      { id: 'navsdk-ios-horizon-data',    label: 'Horizon Data' },
+      { id: 'navsdk-ios-horizon-safety',  label: 'Safety Locations' },
+      { id: 'navsdk-ios-horizon-hazards', label: 'Hazards' },
+    ],
+  },
+  {
+    label: 'Advanced', key: 'navsdkIosAdvanced', type: 'group', landingId: 'navsdk-ios-advanced',
+    items: [
+      { id: 'navsdk-ios-adv-simulation', label: 'Simulation Location' },
+      { id: 'navsdk-ios-adv-location',   label: 'Location Provider' },
+      { id: 'navsdk-ios-adv-telemetry',  label: 'Telemetry Configuration' },
+      { id: 'navsdk-ios-adv-vehicle',    label: 'Vehicle Metadata' },
+    ],
+  },
+  {
+    label: 'Releases', key: 'navsdkIosReleases', type: 'group',
+    items: [
+      { id: 'navsdk-ios-release-notes', label: 'Release Notes' },
+    ],
+  },
+  {
+    label: 'API Reference', key: 'navsdkIosApiRef', type: 'group',
+    items: [
+      { id: 'navsdk-ios-api-ref', label: 'API Reference' },
+    ],
+  },
+];
+
+export const NAVSDK_IOS_PAGE_TITLES = {
+  'navsdk-ios-intro':             'Introduction',
+  'navsdk-ios-getting-started':   'Getting Started',
+  'navsdk-ios-project-setup':     'Project Setup',
+  'navsdk-ios-sdk-init':          'Initializing the SDK',
+  'navsdk-ios-first-map':         'Displaying Your First Map',
+  'navsdk-ios-map-display':       'Map Display',
+  'navsdk-ios-map-swiftui':       'Map Display for SwiftUI',
+  'navsdk-ios-map-uikit':         'Map Display for UIKit',
+  'navsdk-ios-map-styles':        'Map Styles',
+  'navsdk-ios-map-camera':        'Camera & Animations',
+  'navsdk-ios-map-markers':       'Markers',
+  'navsdk-ios-map-traffic':       'Traffic',
+  'navsdk-ios-location':          'Location',
+  'navsdk-ios-location-quickstart': 'Quickstart',
+  'navsdk-ios-search':            'Search',
+  'navsdk-ios-routing':           'Routing',
+  'navsdk-ios-route-planning':    'Planning a Route',
+  'navsdk-ios-route-alternatives':'Alternative Routes',
+  'navsdk-ios-route-sections':    'Route Sections',
+  'navsdk-ios-route-import-export': 'Import, Export & Modify',
+  'navsdk-ios-navigation':        'Navigation',
+  'navsdk-ios-nav-quickstart':    'Quickstart',
+  'navsdk-ios-nav-guidance':      'Guidance',
+  'navsdk-ios-nav-voice':         'Voice Instructions',
+  'navsdk-ios-nav-replanning':    'Continuous Replanning',
+  'navsdk-ios-nav-safety':        'Safety Locations',
+  'navsdk-ios-nav-carplay':       'CarPlay Integration',
+  'navsdk-ios-carplay':           'CarPlay',
+  'navsdk-ios-horizon':           'Virtual Horizon',
+  'navsdk-ios-horizon-data':      'Horizon Data',
+  'navsdk-ios-horizon-safety':    'Safety Locations',
+  'navsdk-ios-horizon-hazards':   'Hazards',
+  'navsdk-ios-advanced':          'Advanced',
+  'navsdk-ios-adv-simulation':    'Simulation Location',
+  'navsdk-ios-adv-location':      'Location Provider',
+  'navsdk-ios-adv-telemetry':     'Telemetry Configuration',
+  'navsdk-ios-adv-vehicle':       'Vehicle Metadata',
+  'navsdk-ios-release-notes':     'Release Notes',
+  'navsdk-ios-api-ref':           'API Reference',
+};

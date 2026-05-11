@@ -1,5 +1,5 @@
 import { UX_LIBRARY_NAV, UX_LIBRARY_PAGE_TITLES } from './nav-ux-library';
-import { NAVSDK_NAV, NAVSDK_PAGE_TITLES } from './nav-navsdk';
+import { NAVSDK_NAV, NAVSDK_PAGE_TITLES, NAVSDK_IOS_NAV, NAVSDK_IOS_PAGE_TITLES } from './nav-navsdk';
 import { ANA_NAV, ANA_PAGE_TITLES } from './nav-ana';
 import { ROUTING_API_NAV, ROUTING_API_PAGE_TITLES } from './nav-routing-api';
 import { LDEVR_NAV, LDEVR_PAGE_TITLES } from './nav-ldevr';
@@ -31,7 +31,9 @@ export const PRODUCTS = {
     platforms: ['android', 'ios'],
     defaultPlatform: 'android',
     nav: NAVSDK_NAV,
+    iosNav: NAVSDK_IOS_NAV,
     pageTitles: NAVSDK_PAGE_TITLES,
+    iosPageTitles: NAVSDK_IOS_PAGE_TITLES,
   },
   'ana': {
     id: 'ana',

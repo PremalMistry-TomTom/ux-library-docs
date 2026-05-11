@@ -8,6 +8,22 @@ import {
   L_LDEVRVehicleBrand, L_LDEVROemEmsp, L_LDEVRComputeToll,
   L_LDEVRChargingParks, L_LDEVRWeather, L_LDEVRDataFreshness,
 } from '../illustrations/lightVariants';
+import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
 import { IlloEVRouting } from './IntroIllustrations';
 
 /* ─── Endpoint thumbnails ────────────────────────────────────────────────────── */
@@ -237,14 +253,14 @@ export default function LDEVRIntro({ onNavigate }) {
         <p className="quick-answer" style={{ marginBottom: 20 }}>{t('ldevrIntro.endpointsSubtitle')}</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
           {[
-            { Thumb: makeThumb(IlloEVRouting,           L_LDEVRRoute),           method: 'POST', titleKey: 'calculateEvRoute',      path: '/routing/1/calculateLongDistanceEVRoute/{locations}/json',       desc: t('ldevrIntro.endpointDescs.calculateEvRoute'),                                                                                          pageId: 'ldevr-calculate-route' },
-            { Thumb: makeThumb(ThumbBatchEV,            L_LDEVRBatch),           method: 'POST', titleKey: 'batchEvRoute',          path: '/routing/1/calculateLongDistanceEVRoute/batch/sync/json',        desc: t('ldevrIntro.endpointDescs.batchEvRoute'),                                                                                                  pageId: 'ldevr-batch'           },
-            { Thumb: makeThumb(ThumbVehicleBrand,       L_LDEVRVehicleBrand),    method: 'GET',  titleKey: 'vehicleBrandLookup',    path: '/maps/orbis/routing/v2/vehicles/brands',                         desc: t('ldevrIntro.endpointDescs.vehicleBrandLookup',   { defaultValue: 'Look up registered EV brands and model variants to resolve battery and connector specs automatically.' }), pageId: 'ldevr-vehicle-brand',  tag: 'v2' },
-            { Thumb: makeThumb(ThumbOemEmsp,            L_LDEVROemEmsp),         method: 'GET',  titleKey: 'oemEmspSupport',        path: '/maps/orbis/routing/v2/vehicles/emsp',                           desc: t('ldevrIntro.endpointDescs.oemEmspSupport',       { defaultValue: 'Retrieve OEM-contracted EMSP charging networks compatible with the selected vehicle brand.' }),          pageId: 'ldevr-oem-emsp',       tag: 'v2' },
-            { Thumb: makeThumb(ThumbComputeTollLDEVR,  L_LDEVRComputeToll),     method: 'POST', titleKey: 'computeTollAmounts',    path: '/maps/orbis/routing/v2/…?computeTravelTimeFor=all',              desc: t('ldevrIntro.endpointDescs.computeTollAmounts',   { defaultValue: 'Include per-road-class toll costs and EV exemptions in the long-distance route response.' }),             pageId: 'ldevr-compute-toll',   tag: 'v2' },
-            { Thumb: makeThumb(ThumbChargingParks,      L_LDEVRChargingParks),   method: 'GET',  titleKey: 'chargingParksHours',    path: '/maps/orbis/routing/v2/chargingparks/{id}/hours',                desc: t('ldevrIntro.endpointDescs.chargingParksHours',   { defaultValue: 'Fetch opening hours and real-time availability for a specific charging park along the route.' }),           pageId: 'ldevr-charging-parks', tag: 'v2' },
-            { Thumb: makeThumb(ThumbWeatherLDEVR,       L_LDEVRWeather),         method: 'POST', titleKey: 'weatherConsideration',  path: '/maps/orbis/routing/v2/…?weatherConsideration=true',             desc: t('ldevrIntro.endpointDescs.weatherConsideration', { defaultValue: 'Factor in temperature and precipitation data to refine EV range estimates and stop selection.' }),             pageId: 'ldevr-weather',        tag: 'v2' },
-            { Thumb: makeThumb(ThumbDataFreshnessLDEVR, L_LDEVRDataFreshness),  method: 'POST', titleKey: 'dynamicDataFreshness',  path: '/maps/orbis/routing/v2/…?dateFreshness=true',                    desc: t('ldevrIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control the freshness of charger-status, park-capacity, and pricing data used during route planning.' }),         pageId: 'ldevr-data-freshness', tag: 'v2' },
+            { Thumb: makeThumb(IlloEVRouting,           L_LDEVRRoute, IcoEVRouting),           method: 'POST', titleKey: 'calculateEvRoute',      path: '/routing/1/calculateLongDistanceEVRoute/{locations}/json',       desc: t('ldevrIntro.endpointDescs.calculateEvRoute'),                                                                                          pageId: 'ldevr-calculate-route' },
+            { Thumb: makeThumb(ThumbBatchEV,            L_LDEVRBatch, IcoBatchRouting),           method: 'POST', titleKey: 'batchEvRoute',          path: '/routing/1/calculateLongDistanceEVRoute/batch/sync/json',        desc: t('ldevrIntro.endpointDescs.batchEvRoute'),                                                                                                  pageId: 'ldevr-batch'           },
+            { Thumb: makeThumb(ThumbVehicleBrand,       L_LDEVRVehicleBrand, IcoVIBasics),    method: 'GET',  titleKey: 'vehicleBrandLookup',    path: '/maps/orbis/routing/v2/vehicles/brands',                         desc: t('ldevrIntro.endpointDescs.vehicleBrandLookup',   { defaultValue: 'Look up registered EV brands and model variants to resolve battery and connector specs automatically.' }), pageId: 'ldevr-vehicle-brand',  tag: 'v2' },
+            { Thumb: makeThumb(ThumbOemEmsp,            L_LDEVROemEmsp, IcoEVRequirements),         method: 'GET',  titleKey: 'oemEmspSupport',        path: '/maps/orbis/routing/v2/vehicles/emsp',                           desc: t('ldevrIntro.endpointDescs.oemEmspSupport',       { defaultValue: 'Retrieve OEM-contracted EMSP charging networks compatible with the selected vehicle brand.' }),          pageId: 'ldevr-oem-emsp',       tag: 'v2' },
+            { Thumb: makeThumb(ThumbComputeTollLDEVR,  L_LDEVRComputeToll, IcoCalculateRoute),     method: 'POST', titleKey: 'computeTollAmounts',    path: '/maps/orbis/routing/v2/…?computeTravelTimeFor=all',              desc: t('ldevrIntro.endpointDescs.computeTollAmounts',   { defaultValue: 'Include per-road-class toll costs and EV exemptions in the long-distance route response.' }),             pageId: 'ldevr-compute-toll',   tag: 'v2' },
+            { Thumb: makeThumb(ThumbChargingParks,      L_LDEVRChargingParks, IcoEVChargingAvailability),   method: 'GET',  titleKey: 'chargingParksHours',    path: '/maps/orbis/routing/v2/chargingparks/{id}/hours',                desc: t('ldevrIntro.endpointDescs.chargingParksHours',   { defaultValue: 'Fetch opening hours and real-time availability for a specific charging park along the route.' }),           pageId: 'ldevr-charging-parks', tag: 'v2' },
+            { Thumb: makeThumb(ThumbWeatherLDEVR,       L_LDEVRWeather, IcoRoutingWeather),         method: 'POST', titleKey: 'weatherConsideration',  path: '/maps/orbis/routing/v2/…?weatherConsideration=true',             desc: t('ldevrIntro.endpointDescs.weatherConsideration', { defaultValue: 'Factor in temperature and precipitation data to refine EV range estimates and stop selection.' }),             pageId: 'ldevr-weather',        tag: 'v2' },
+            { Thumb: makeThumb(ThumbDataFreshnessLDEVR, L_LDEVRDataFreshness, IcoTrafficStats),  method: 'POST', titleKey: 'dynamicDataFreshness',  path: '/maps/orbis/routing/v2/…?dateFreshness=true',                    desc: t('ldevrIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control the freshness of charger-status, park-capacity, and pricing data used during route planning.' }),         pageId: 'ldevr-data-freshness', tag: 'v2' },
           ].map(({ Thumb, method, titleKey, path, desc, pageId, tag }) => (
             <div
               key={pageId}

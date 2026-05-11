@@ -2590,11 +2590,12 @@ export function L_JunctionAnalytics() {
    Safe to call at module level (hook is only invoked at render time).
    ══════════════════════════════════════════════════════════════════════════════ */
 
-export function makeThumb(Dark, Light) {
+export function makeThumb(Dark, Light, Icon) {
   function IlloSwitch() {
     const { illoStyle } = useIlloStyle();
+    if (illoStyle === 'icon' && Icon) return <Icon />;
     return (illoStyle === 'detailed' && Dark) ? <Dark /> : <Light />;
   }
-  IlloSwitch.displayName = `IlloSwitch(${Dark?.name || 'Dark'}/${Light?.name || 'Light'})`;
+  IlloSwitch.displayName = `IlloSwitch(${Dark?.name || 'Dark'}/${Light?.name || 'Light'}/${Icon?.name || 'Icon'})`;
   return IlloSwitch;
 }

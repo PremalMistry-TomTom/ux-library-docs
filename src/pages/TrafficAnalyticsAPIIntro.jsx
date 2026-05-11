@@ -5,11 +5,27 @@ import {
   L_TrafficStats, L_AreaAnalytics, L_ODAnalysis, L_JunctionAnalytics,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
+import {
   IlloTrafficStats, IlloAreaAnalytics, IlloODAnalysis, IlloJunctionAnalytics,
 } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloAreaAnalytics, L_AreaAnalytics);
+const HeroIllo = makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
@@ -17,51 +33,51 @@ export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloTrafficStats, L_TrafficStats),
+      Thumb: makeThumb(IlloTrafficStats, L_TrafficStats, IcoTrafficStats),
       method: 'POST',
       title: 'Route Statistics',
       desc: 'Compute historical travel time, speed, and delay statistics along a defined route or corridor.',
-      pageId: 'traffic-analytics-api-intro',
+      pageId: 'traffic-route-stats',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloAreaAnalytics, L_AreaAnalytics),
+      Thumb: makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics),
       method: 'POST',
       title: 'Area Analytics',
       desc: 'Analyse historical congestion metrics — density, speed index, and travel time — within a custom geographic area.',
-      pageId: 'traffic-analytics-api-intro',
+      pageId: 'traffic-area-analytics',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloODAnalysis, L_ODAnalysis),
+      Thumb: makeThumb(IlloODAnalysis, L_ODAnalysis, IcoODAnalysis),
       method: 'POST',
       title: 'O/D Analysis',
       desc: 'Measure historical traffic flows and travel times between origin-destination pairs to understand mobility patterns.',
-      pageId: 'traffic-analytics-api-intro',
+      pageId: 'traffic-od-analysis',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloJunctionAnalytics, L_JunctionAnalytics),
+      Thumb: makeThumb(IlloJunctionAnalytics, L_JunctionAnalytics, IcoJunctionAnalytics),
       method: 'POST',
       title: 'Junction Analytics',
       desc: 'Retrieve turning movement counts, queue lengths, and signal performance metrics at road junctions.',
-      pageId: 'traffic-analytics-api-intro',
+      pageId: 'traffic-junction-analytics',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloTrafficStats, L_TrafficStats),
+      Thumb: makeThumb(IlloTrafficStats, L_TrafficStats, IcoTrafficStats),
       method: 'POST',
       title: 'Road Segment Stats',
       desc: 'Query speed percentiles, delay indices, and reliability scores for individual road segments over a date range.',
-      pageId: 'traffic-analytics-api-intro',
+      pageId: 'traffic-route-stats',
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloAreaAnalytics, L_AreaAnalytics),
+      Thumb: makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics),
       method: 'GET',
       title: 'Probe Metadata',
       desc: 'Retrieve available time ranges and geographic coverage regions for probe-based traffic analytics datasets.',
-      pageId: 'traffic-analytics-api-intro',
+      pageId: 'traffic-route-stats',
       tag: 'v1',
     },
   ];

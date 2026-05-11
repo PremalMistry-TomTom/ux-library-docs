@@ -5,11 +5,27 @@ import {
   L_TrafficFlow, L_TrafficIncidents, L_TrafficFlowTile, L_TrafficModelID,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
+import {
   IlloTrafficFlow, IlloTrafficIncidents, IlloTrafficFlowTile, IlloTrafficModelID,
 } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloTrafficFlow, L_TrafficFlow);
+const HeroIllo = makeThumb(IlloTrafficFlow, L_TrafficFlow, IcoTrafficFlow);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function TrafficAPIIntro({ onNavigate }) {
@@ -17,59 +33,59 @@ export default function TrafficAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloTrafficFlow, L_TrafficFlow),
+      Thumb: makeThumb(IlloTrafficFlow, L_TrafficFlow, IcoTrafficFlow),
       method: 'GET',
       title: 'Flow Segment Data',
       desc: 'Retrieve real-time traffic flow for a road segment — current speed, free-flow speed, and confidence level.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-flow-segment',
       tag: 'v4',
     },
     {
-      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents),
+      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
       method: 'GET',
       title: 'Incident Details',
       desc: 'Get traffic incidents — accidents, road works, closures — with location, delay type, and severity within a bounding box.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-incident-details',
       tag: 'v5',
     },
     {
-      Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile),
+      Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile, IcoTrafficFlowTile),
       method: 'GET',
       title: 'Raster Flow Tiles',
       desc: 'PNG map tiles colour-coded by current traffic speed for overlay on raster maps. Supports 22 zoom levels.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-flow-tiles',
       tag: 'v4',
     },
     {
-      Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile),
+      Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile, IcoTrafficFlowTile),
       method: 'GET',
       title: 'Vector Flow Tiles',
       desc: 'Protocol Buffer vector tiles carrying traffic speed and flow data for client-side styled overlays.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-flow-tiles',
       tag: 'v4',
     },
     {
-      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents),
+      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
       method: 'GET',
       title: 'Raster Incident Tiles',
       desc: 'Raster tiles showing traffic incident pins and severity overlays for quick visual integration.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-incident-details',
       tag: 'v5',
     },
     {
-      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents),
+      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
       method: 'GET',
       title: 'Incident Viewport',
       desc: 'Return incidents within a viewport bounding box — optimised for map-aligned incident data fetching.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-incident-details',
       tag: 'v5',
     },
     {
-      Thumb: makeThumb(IlloTrafficModelID, L_TrafficModelID),
+      Thumb: makeThumb(IlloTrafficModelID, L_TrafficModelID, IcoTrafficModelID),
       method: 'GET',
       title: 'Traffic Model ID',
       desc: 'Return the latest traffic data model identifier — use for cache invalidation when tiles are refreshed.',
-      pageId: 'traffic-api-intro',
+      pageId: 'traffic-model-id',
       tag: 'v4',
     },
   ];

@@ -9,6 +9,23 @@ import {
   L_EVRouting, L_NavGuidance,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+  IcoColourSystem, IcoConversationPersonality, IcoMapStyle, IcoSearchResult, IcoThemingTokens,
+} from '../illustrations/iconVariants';
+import {
   IlloColourSystem, IlloMapStyle, IlloSearchResult,
   IlloHomeScreen, IlloETAPanel, IlloThemingTokens, IlloChargingSearch,
   IlloAIVoice, IlloNavControls, IlloHorizonPanel,
@@ -67,17 +84,17 @@ function DomainCard({ id, label, desc, pages, Thumb, onNavigate }) {
 
 /* ─── Domain data (one card per nav group, in nav order) ─────────────────────── */
 const DOMAIN_CARDS = [
-  { id: 'assets',              key: 'assets',             Thumb: makeThumb(IlloColourSystem,    L_ColourSystem),
+  { id: 'assets',              key: 'assets',             Thumb: makeThumb(IlloColourSystem,    L_ColourSystem, IcoColourSystem),
     pages: ['Design Tokens', 'Theming', 'Colour', 'Font', 'Corner Radius'] },
-  { id: 'map-customisation',   key: 'mapCustomisation',   Thumb: makeThumb(IlloMapStyle,        L_MapStyle),
+  { id: 'map-customisation',   key: 'mapCustomisation',   Thumb: makeThumb(IlloMapStyle,        L_MapStyle, IcoMapStyle),
     pages: ['Map Style', 'Traffic', 'Safety Locations'] },
-  { id: 'app-customisation',   key: 'appCustomisation',   Thumb: makeThumb(IlloHomeScreen,      L_HomeScreen),
+  { id: 'app-customisation',   key: 'appCustomisation',   Thumb: makeThumb(IlloHomeScreen,      L_HomeScreen, IcoHomeScreen),
     pages: ['Home Screen', 'Search Engine', 'Nav Controls', 'Horizon Panel', 'Instruction Panel', 'ETA Panel', 'Route Bar'] },
-  { id: 'ev-charging',         key: 'evCharging',         Thumb: makeThumb(IlloEVRouting,       L_EVRouting),
+  { id: 'ev-charging',         key: 'evCharging',         Thumb: makeThumb(IlloEVRouting,       L_EVRouting, IcoEVRouting),
     pages: ['EV Overview', 'Battery Model', 'Charging Search', 'Long-Distance Routing', 'In-Navigation UI', 'Requirements'] },
-  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: makeThumb(IlloCluster,         L_Cluster),
+  { id: 'vehicle-integration', key: 'vehicleIntegration', Thumb: makeThumb(IlloCluster,         L_Cluster, IcoCluster),
     pages: ['VI Basics', 'Cluster', 'Head-Up Display', 'ADAS Integration', 'Truck Support'] },
-  { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: makeThumb(IlloIntentRouting,   L_AIVoice),
+  { id: 'ai-assistant',        key: 'aiAssistant',        Thumb: makeThumb(IlloIntentRouting,   L_AIVoice, IcoIntentRouting),
     pages: ['Overview', 'Personality', 'Intent Routing', 'Voice Engine', 'Speech to Text', 'Config'] },
 ];
 
@@ -100,15 +117,15 @@ function UseCaseCard({ id, label, desc, group, Thumb, onNavigate }) {
 }
 
 const USE_CASE_CARDS = [
-  { id: 'home-screen-layout', key: 'homeScreenLayout',  Thumb: makeThumb(IlloHomeScreen,              L_HomeScreen)           },
-  { id: 'theming',            key: 'theming',           Thumb: makeThumb(IlloThemingTokens,           L_ThemingTokens)        },
-  { id: 'search-engine',      key: 'searchEngine',      Thumb: makeThumb(IlloSearchResult,            L_SearchResult)         },
-  { id: 'eta-panel',          key: 'etaPanel',          Thumb: makeThumb(IlloETAPanel,                L_ETAPanel)             },
-  { id: 'ev-routing',         key: 'evRouting',         Thumb: makeThumb(IlloEVRouting,               L_EVRouting)            },
-  { id: 'cluster',            key: 'cluster',           Thumb: makeThumb(IlloCluster,                 L_Cluster)              },
-  { id: 'ai-personality',     key: 'aiPersonality',     Thumb: makeThumb(IlloConversationPersonality, L_ConversationPersonality) },
-  { id: 'instruction-panel',  key: 'instructionPanel',  Thumb: makeThumb(IlloInstructionPanel,        L_NavGuidance)          },
-  { id: 'hud',                key: 'hud',               Thumb: makeThumb(IlloHUD,                     L_ADAS)                 },
+  { id: 'home-screen-layout', key: 'homeScreenLayout',  Thumb: makeThumb(IlloHomeScreen,              L_HomeScreen, IcoHomeScreen)           },
+  { id: 'theming',            key: 'theming',           Thumb: makeThumb(IlloThemingTokens,           L_ThemingTokens, IcoThemingTokens)        },
+  { id: 'search-engine',      key: 'searchEngine',      Thumb: makeThumb(IlloSearchResult,            L_SearchResult, IcoSearchResult)         },
+  { id: 'eta-panel',          key: 'etaPanel',          Thumb: makeThumb(IlloETAPanel,                L_ETAPanel, IcoETAPanel)             },
+  { id: 'ev-routing',         key: 'evRouting',         Thumb: makeThumb(IlloEVRouting,               L_EVRouting, IcoEVRouting)            },
+  { id: 'cluster',            key: 'cluster',           Thumb: makeThumb(IlloCluster,                 L_Cluster, IcoCluster)              },
+  { id: 'ai-personality',     key: 'aiPersonality',     Thumb: makeThumb(IlloConversationPersonality, L_ConversationPersonality, IcoConversationPersonality) },
+  { id: 'instruction-panel',  key: 'instructionPanel',  Thumb: makeThumb(IlloInstructionPanel,        L_NavGuidance, IcoInstructionPanel)          },
+  { id: 'hud',                key: 'hud',               Thumb: makeThumb(IlloHUD,                     L_ADAS, IcoHUD)                 },
 ];
 
 /* ─── Page ──────────────────────────────────────────────────────────────────── */

@@ -6,6 +6,22 @@ import {
   L_ParkingAvailability, L_ParkingPrices, L_OnStreetParking, L_FuelPrices,
 } from '../illustrations/lightVariants';
 import {
+  IcoADAS, IcoAIConfig, IcoAIVoice, IcoAreaAnalytics, IcoBatchRouting,
+  IcoCalculateRoute, IcoCluster, IcoETAPanel, IcoEV, IcoEVBattery,
+  IcoEVChargingAvailability, IcoEVNavUI, IcoEVRequirements, IcoEVRouting, IcoEVSearchNearby,
+  IcoFuelPrices, IcoGeocode, IcoHUD, IcoHomeScreen, IcoHorizonPanel,
+  IcoInstructionPanel, IcoIntentRouting, IcoJunctionAnalytics, IcoMapDisplay,
+  IcoMapRasterTile, IcoMapSatelliteTile, IcoMapStaticImage, IcoMapVectorTile, IcoMatrixRouting,
+  IcoNavControls, IcoNavGuidance, IcoNavSDKAdvanced, IcoNavSDKLocation, IcoNavSDKNavigation,
+  IcoNavSDKOffline, IcoNavSDKRouting, IcoNavSDKSearch, IcoNavSDKVirtualHorizon,
+  IcoODAnalysis, IcoOnStreetParking, IcoPOIDetails, IcoPOIPhotos, IcoParkingAvailability,
+  IcoParkingPrices, IcoReachableRange, IcoReverseGeocode, IcoRouteBar, IcoRoutingWeather,
+  IcoSearchAlongRoute, IcoSearchAutocomplete, IcoSearchFuzzy, IcoSearchNearby, IcoSearchPOI,
+  IcoSnapToRoads, IcoSpeechToText, IcoTrafficFlow, IcoTrafficFlowTile, IcoTrafficIncidents,
+  IcoTrafficModelID, IcoTrafficStats, IcoTruck, IcoTurnInstructions, IcoVIBasics,
+  IcoVoiceEngine, IcoWaypointOpt,
+} from '../illustrations/iconVariants';
+import {
   IlloParkingAvailability, IlloParkingPrices, IlloOnStreetParking, IlloFuelPrices,
 } from './IntroIllustrations';
 
@@ -19,9 +35,13 @@ function MethodBadge({ method }) {
   );
 }
 
-function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
+function EndpointCard({ Illo, title, method = 'GET', path, desc, pageId, onNavigate }) {
+  const handleClick = pageId && onNavigate ? () => onNavigate(pageId) : undefined;
   return (
-    <div style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column' }}>
+    <div
+      onClick={handleClick}
+      style={{ border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', background: 'var(--surface)', display: 'flex', flexDirection: 'column', cursor: handleClick ? 'pointer' : 'default' }}
+    >
       <div style={{ height: 140, flexShrink: 0, overflow: 'hidden' }}>
         <Illo />
       </div>
@@ -37,7 +57,7 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc }) {
 }
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloParkingAvailability, L_ParkingAvailability);
+const HeroIllo = makeThumb(IlloParkingAvailability, L_ParkingAvailability, IcoParkingAvailability);
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function ParkingFuelAPIIntro({ onNavigate }) {
@@ -45,32 +65,36 @@ export default function ParkingFuelAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Illo: makeThumb(IlloParkingAvailability, L_ParkingAvailability),
+      Illo: makeThumb(IlloParkingAvailability, L_ParkingAvailability, IcoParkingAvailability),
       title: 'Parking Availability',
       method: 'GET',
       path: '/parking/2/parkingAvailability/{id}.json',
       desc: 'Retrieve real-time available spot counts, capacity, and trend data for off-street car parks.',
+      pageId: 'parking-availability',
     },
     {
-      Illo: makeThumb(IlloParkingPrices, L_ParkingPrices),
+      Illo: makeThumb(IlloParkingPrices, L_ParkingPrices, IcoParkingPrices),
       title: 'Parking Prices',
       method: 'GET',
       path: '/parking/2/parkingDetails/{id}.json',
       desc: 'Get estimated parking costs, hourly rate breakdowns, and accepted payment methods for a facility.',
+      pageId: 'parking-prices',
     },
     {
-      Illo: makeThumb(IlloOnStreetParking, L_OnStreetParking),
+      Illo: makeThumb(IlloOnStreetParking, L_OnStreetParking, IcoOnStreetParking),
       title: 'On-Street Parking',
       method: 'GET',
       path: '/parking/2/onStreetParking.json',
       desc: 'Query real-time on-street parking availability near a location, including restrictions and time limits.',
+      pageId: 'on-street-parking',
     },
     {
-      Illo: makeThumb(IlloFuelPrices, L_FuelPrices),
+      Illo: makeThumb(IlloFuelPrices, L_FuelPrices, IcoFuelPrices),
       title: 'Fuel Prices',
       method: 'GET',
       path: '/search/2/poiSearch/fuel.json',
       desc: 'Fetch current fuel prices by fuel type at petrol stations near a given location.',
+      pageId: 'fuel-prices',
     },
   ];
 
@@ -97,7 +121,7 @@ export default function ParkingFuelAPIIntro({ onNavigate }) {
         <h2 className="sh" id="endpoints">Endpoints</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 14 }}>
           {endpoints.map(ep => (
-            <EndpointCard key={ep.title} {...ep} />
+            <EndpointCard key={ep.title} {...ep} onNavigate={onNavigate} />
           ))}
         </div>
       </div>

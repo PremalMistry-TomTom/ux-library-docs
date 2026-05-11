@@ -11,14 +11,26 @@ import ScreenshotAssets from './ScreenshotAssets';
 import IntroIllustrations from './IntroIllustrations';
 import StyleSamples  from './StyleSamples';
 import ContentSpacing from './ContentSpacing';
+import DocPageGuidelines  from './DocPageGuidelines';
+import DocIntroTemplate   from './DocIntroTemplate';
+import DocFeatureTemplate from './DocFeatureTemplate';
+import DocUseCaseTemplate from './DocUseCaseTemplate';
+import DocDosDonts        from './DocDosDonts';
+import IconStyleSandbox   from './IconStyleSandbox';
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
-  { id: 'typography',          label: 'Typography system',         icon: '🔤' },
-  { id: 'screenshot-assets',   label: 'Interactive demos',         icon: '📸' },
-  { id: 'intro-illustrations', label: 'Intro hero illustrations',  icon: '🖼️' },
-  { id: 'style-samples',       label: 'Style samples',             icon: '⚡' },
-  { id: 'content-spacing',     label: 'Content spacing',           icon: '📐' },
+  { id: 'typography',          label: 'Typography system',         icon: '🔤',  group: 'Design system' },
+  { id: 'screenshot-assets',   label: 'Interactive demos',         icon: '📸',  group: 'Design system' },
+  { id: 'intro-illustrations', label: 'Intro hero illustrations',  icon: '🖼️', group: 'Design system' },
+  { id: 'style-samples',       label: 'Style samples',             icon: '⚡',  group: 'Design system' },
+  { id: 'content-spacing',     label: 'Content spacing',           icon: '📐',  group: 'Design system' },
+  { id: 'doc-guidelines',      label: 'Page guidelines',           icon: '📋',  group: 'Doc authoring' },
+  { id: 'doc-intro',           label: 'Intro page template',       icon: '🗺️', group: 'Doc authoring' },
+  { id: 'doc-feature',         label: 'Feature page template',     icon: '⚙️', group: 'Doc authoring' },
+  { id: 'doc-usecase',         label: 'Use case template',         icon: '✅',  group: 'Doc authoring' },
+  { id: 'doc-dosdont',         label: "Dos & Don'ts",              icon: '🚦',  group: 'Doc authoring' },
+  { id: 'icon-sandbox',        label: 'Icon style sandbox',        icon: '✦',   group: 'Illustration' },
 ];
 
 /* ─── Icons ──────────────────────────────────────────────────────────────────── */
@@ -63,13 +75,19 @@ function PlumbingPage({ pageId }) {
     case 'intro-illustrations': return <IntroIllustrations />;
     case 'style-samples':       return <StyleSamples />;
     case 'content-spacing':     return <ContentSpacing />;
+    case 'doc-guidelines':      return <DocPageGuidelines />;
+    case 'doc-intro':           return <DocIntroTemplate />;
+    case 'doc-feature':         return <DocFeatureTemplate />;
+    case 'doc-usecase':         return <DocUseCaseTemplate />;
+    case 'doc-dosdont':         return <DocDosDonts />;
+    case 'icon-sandbox':        return <IconStyleSandbox />;
     default:                    return <Typography />;
   }
 }
 
 /* ─── Main component ─────────────────────────────────────────────────────────── */
 export default function PlumbingPortal({ onClose, isDark, onToggleTheme }) {
-  const [activePage, setActivePage] = useState('intro-illustrations');
+  const [activePage, setActivePage] = useState('doc-guidelines');
 
   return (
     <div style={{
@@ -148,34 +166,41 @@ export default function PlumbingPortal({ onClose, isDark, onToggleTheme }) {
           overflowY: 'auto',
           padding: '16px 0',
         }}>
-          <div style={{ padding: '0 16px 10px', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-            Pages
-          </div>
-          {NAV_ITEMS.map(item => {
-            const active = activePage === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActivePage(item.id)}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 10,
-                  width: '100%', padding: '9px 16px',
-                  background: active ? 'var(--bg)' : 'transparent',
-                  borderTop: 0, borderRight: 0, borderBottom: 0,
-                  borderLeft: active ? '2px solid #e2001a' : '2px solid transparent',
-                  cursor: 'pointer', textAlign: 'left',
-                  fontSize: '0.8125rem', fontWeight: active ? 700 : 400,
-                  color: active ? 'var(--text)' : 'var(--mid)',
-                  transition: 'all 0.1s',
-                }}
-                onMouseEnter={e => { if (!active) { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.color = 'var(--text)'; } }}
-                onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--mid)'; } }}
-              >
-                <span style={{ fontSize: '1rem', lineHeight: 1, flexShrink: 0 }}>{item.icon}</span>
-                <span style={{ lineHeight: 1.3 }}>{item.label}</span>
-              </button>
-            );
-          })}
+          {(() => {
+            const groups = [...new Set(NAV_ITEMS.map(i => i.group))];
+            return groups.map(group => (
+              <div key={group}>
+                <div style={{ padding: '12px 16px 6px', fontSize: '0.625rem', fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  {group}
+                </div>
+                {NAV_ITEMS.filter(i => i.group === group).map(item => {
+                  const active = activePage === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActivePage(item.id)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 10,
+                        width: '100%', padding: '9px 16px',
+                        background: active ? 'var(--bg)' : 'transparent',
+                        borderTop: 0, borderRight: 0, borderBottom: 0,
+                        borderLeft: active ? '2px solid #e2001a' : '2px solid transparent',
+                        cursor: 'pointer', textAlign: 'left',
+                        fontSize: '0.8125rem', fontWeight: active ? 700 : 400,
+                        color: active ? 'var(--text)' : 'var(--mid)',
+                        transition: 'all 0.1s',
+                      }}
+                      onMouseEnter={e => { if (!active) { e.currentTarget.style.background = 'var(--bg)'; e.currentTarget.style.color = 'var(--text)'; } }}
+                      onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--mid)'; } }}
+                    >
+                      <span style={{ fontSize: '1rem', lineHeight: 1, flexShrink: 0 }}>{item.icon}</span>
+                      <span style={{ lineHeight: 1.3 }}>{item.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            ));
+          })()}
 
           {/* Divider + back hint */}
           <div style={{ margin: '20px 16px 0', borderTop: '1px solid var(--border)', paddingTop: 16 }}>
