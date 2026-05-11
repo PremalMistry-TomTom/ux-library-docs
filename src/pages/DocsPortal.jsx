@@ -738,13 +738,17 @@ function DiscoverySection({ onNavigate }) {
   return (
     <section className="dp2-discovery-section" ref={sectionRef}>
 
-      {/* ── Sticky filter bar — title + chips + runtime all stick together ── */}
+      {/* ── Section header (scrolls away) ── */}
+      <div className="dp2-block-container dp2-discovery-container">
+        <div className="dp2-section-label">
+          <h2 className="dp2-section-label-text">Use cases</h2>
+          <p className="dp2-section-label-sub">Browse by what you want to build</p>
+        </div>
+      </div>
+
+      {/* ── Sticky filter bar (tabs + runtime only) ── */}
       <div className="dp2-disc-sticky">
         <div className="dp2-disc-sticky-inner">
-          <div className="dp2-section-label dp2-section-label--sticky">
-            <h2 className="dp2-section-label-text">Use cases</h2>
-            <p className="dp2-section-label-sub">Browse by what you want to build</p>
-          </div>
           {/* Use-case tab chips */}
           <div className="dp2-disc-tabs-row">
             {DISC_TABS.map(tab => (
@@ -878,13 +882,17 @@ function CatalogueSection({ onNavigate }) {
   return (
     <section className="dp2-catalogue-section">
 
-      {/* ── Sticky category bar — title + tabs stick together ── */}
+      {/* ── Section label (scrolls away) ── */}
+      <div className="dp2-block-container">
+        <div className="dp2-section-label dp2-section-label--catalogue">
+          <h2 className="dp2-section-label-text">Product catalogue</h2>
+          <p className="dp2-section-label-sub">All APIs, SDKs, and developer tools</p>
+        </div>
+      </div>
+
+      {/* ── Sticky category bar (tabs only) ── */}
       <div className="dp2-tabbar-wrap" ref={tabBarRef}>
         <div className="dp2-viewbar-inner">
-          <div className="dp2-section-label dp2-section-label--sticky dp2-section-label--catalogue">
-            <h2 className="dp2-section-label-text">Product catalogue</h2>
-            <p className="dp2-section-label-sub">All APIs, SDKs, and developer tools</p>
-          </div>
           <div className="dp2-tabbar-pill">
             {TABS.map(tab => (
               <button

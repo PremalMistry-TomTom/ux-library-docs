@@ -2223,17 +2223,20 @@ html.ai-panel-open .page {
   position: sticky;
   top: var(--global-h, 50px);
   z-index: 20;
-  background: var(--s0);     /* full-width background covers title + tabs */
-  width: 100%;
-}
-/* Inner: centres content, stacks title above tab pill */
-.dp2-viewbar-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  background: var(--s0);
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px 12px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 40px;
+}
+.dp2-viewbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap;
+  width: fit-content;
 }
 /* Runtime filter bar */
 .dp2-runtime-bar {
@@ -2778,8 +2781,8 @@ html.ai-panel-open .page {
 }
 /* Tablet / mobile: tighten padding and ensure both rows scroll horizontally */
 @media (max-width: 768px) {
-  .dp2-tabbar-wrap { width: 100%; }
-  .dp2-viewbar-inner { padding: 0 16px 10px; }
+  .dp2-tabbar-wrap { padding: 8px 16px; max-width: 100%; }
+  .dp2-viewbar-inner { flex-direction: column; align-items: flex-start; gap: 6px; width: fit-content; max-width: calc(100vw - 32px); }
   /* Pills take full width of the column, then scroll internally */
   .dp2-tabbar-pill { width: max-content; flex: none; border-radius: var(--r-xl); }
   .dp2-runtime-bar { width: 100%; }
@@ -2819,13 +2822,14 @@ html.ai-panel-open .page {
   padding-bottom: 0;
 }
 
-/* Section label — when inside a sticky bar */
+.dp2-discovery-container {
+  padding-top: 48px;
+  padding-bottom: 12px;
+}
+
+/* Section label */
 .dp2-section-label {
   margin-bottom: 20px;
-}
-.dp2-section-label--sticky {
-  padding-top: 28px;
-  margin-bottom: 16px;
 }
 .dp2-section-label-text {
   font-family: var(--f-title);
@@ -2839,7 +2843,7 @@ html.ai-panel-open .page {
   color: var(--t-lo);
 }
 .dp2-section-label--catalogue {
-  /* no extra top padding needed — already inside sticky bar with padding-top */
+  padding-top: 40px;
 }
 
 /* ── Sticky filter bar for discovery section ── */
@@ -2852,13 +2856,13 @@ html.ai-panel-open .page {
 .dp2-disc-sticky-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 10px 40px 0;
 }
 [data-theme="dark"] .dp2-disc-sticky { background: var(--s0); }
 
 @media (max-width: 640px) {
-  .dp2-disc-sticky-inner { padding: 0 16px; }
-  .dp2-section-label--sticky { padding-top: 20px; }
+  .dp2-disc-sticky-inner { padding: 8px 16px 0; }
+  .dp2-discovery-container { padding-top: 24px; padding-bottom: 8px; }
 }
 
 /* Use-case tab chips */
