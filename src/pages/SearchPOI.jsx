@@ -119,6 +119,7 @@ export default function SearchPOI({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'poi-search',
           note: 'https://api.tomtom.com/search/2/poiSearch/{query}.json',
           params: PARAMS,
           code: CODE,

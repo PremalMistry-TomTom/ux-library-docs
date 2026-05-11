@@ -177,6 +177,7 @@ export default function RoutingReachableRange({ onNavigate }) {
       id: 'api-rr-budget',
       heading: 'Budget & origin',
       method: 'GET',
+      demoId: 'reachable-range',
       params: PARAMS_BUDGET,
       note: 'Exactly one budget type is required: fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters. Fuel and energy budgets require a matching consumption model.',
       code: CODE_TIME,

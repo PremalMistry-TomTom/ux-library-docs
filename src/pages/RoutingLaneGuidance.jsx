@@ -206,6 +206,7 @@ export default function RoutingLaneGuidance({ onNavigate }) {
       id: 'api-lane-request',
       heading: 'Enabling lane guidance',
       method: 'GET',
+      demoId: 'lane-guidance',
       params: PARAMS_REQUEST,
       note: 'Lane guidance is only available on roads where TomTom has lane-level map data. At junctions without coverage the lanes[] array will be absent from the instruction object.',
       extra: (

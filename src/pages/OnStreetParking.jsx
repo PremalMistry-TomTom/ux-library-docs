@@ -98,6 +98,7 @@ export default function OnStreetParking({ onNavigate }) {
           id: 'request',
           heading: 'On-Street Segments Near Coordinate',
           method: 'GET',
+          demoId: 'on-street-parking',
           note: 'https://api.tomtom.com/parking/2/onstreet/geo/{lat}/{lon}.json',
           params: PARAMS,
           code: CODE,

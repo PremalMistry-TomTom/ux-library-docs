@@ -122,6 +122,7 @@ export default function LDEVRComputeToll() {
       id: 'ldevr-toll-request',
       heading: 'Request parameters',
       method: 'POST',
+      demoId: 'ldevr-toll',
       note: PRIVATE_PREVIEW_NOTE,
       params: PARAMS_REQUEST,
       code: CODE_REQUEST,

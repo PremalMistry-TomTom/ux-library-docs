@@ -74,6 +74,7 @@ export default function EVStationSearch({ onNavigate }) {
           id: 'ev-station-search',
           heading: 'EV Station Search',
           method: 'GET',
+          demoId: 'ev-station-search',
           note: 'https://api.tomtom.com/search/2/nearbySearch/.json — Pass categorySet=7309 to target EV charging stations specifically. Use chargingAvailability=true to include live connector slot data alongside POI results.',
           params: SEARCH_PARAMS,
           code: SEARCH_CODE,

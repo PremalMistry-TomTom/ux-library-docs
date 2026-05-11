@@ -124,6 +124,7 @@ export default function SearchAutocomplete({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'autocomplete',
           note: 'https://api.tomtom.com/search/2/autocomplete/{query}.json — language is required. Results are POI categories and brand names only, not individual place results.',
           params: PARAMS,
           code: CODE,

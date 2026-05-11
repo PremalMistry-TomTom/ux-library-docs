@@ -56,6 +56,7 @@ export default function LDEVRVehicleBrand() {
       id: 'ldevr-vehicle-brand-params',
       heading: 'Request parameters',
       method: 'POST',
+      demoId: 'ldevr-vehicle-brand',
       note: PRIVATE_PREVIEW_NOTE,
       params: PARAMS_VEHICLE_BRAND,
       code: CODE_REQUEST,

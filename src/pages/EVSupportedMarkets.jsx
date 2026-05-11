@@ -17,6 +17,7 @@ export default function EVSupportedMarkets({ onNavigate }) {
           id: 'supported-markets',
           heading: 'Supported Markets',
           method: 'GET',
+          demoId: 'ev-market-coverage',
           note: 'https://api.tomtom.com/search/2/charger/supportedMarkets.json — Returns an array of country objects. Each entry includes an ISO 3166-1 alpha-2 country code, a human-readable country name, and a coverageType field. REAL_TIME means live connector availability data is available via the Charging Availability endpoint. STATIC means station locations are available but connector slot counts are not updated in real time. NONE means no EV charging data is currently available for that market.',
           params: PARAMS,
           code: CODE,

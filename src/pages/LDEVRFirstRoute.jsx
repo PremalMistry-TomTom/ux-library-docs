@@ -1,5 +1,8 @@
+import { lazy, Suspense } from 'react';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
+
+const TryItEmbed = lazy(() => import('../components/demos/TryItEmbed'));
 
 const addLn = t => {
   const esc = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -100,6 +103,10 @@ export default function LDEVRFirstRoute({ onNavigate }) {
         This guide walks through a complete Amsterdam → Paris EV route request — first using the
         REST API directly, then using the Kotlin Navigation SDK for Android.
       </p>
+
+      <Suspense fallback={<div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', color: 'var(--muted)' }}>Loading demo…</div>}>
+        <TryItEmbed demoId="ldevr-calculate" />
+      </Suspense>
 
       {/* ── REST request ── */}
       <div className="zone">

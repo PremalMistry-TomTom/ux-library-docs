@@ -115,6 +115,7 @@ export default function SearchBatch({ onNavigate }) {
           id: 'sync-request',
           heading: 'Synchronous Batch',
           method: 'POST',
+          demoId: 'batch-search',
           note: 'https://api.tomtom.com/search/2/batch/sync.json — Executes up to 100 items and returns all results in a single response. Response time scales with the number of items.',
           params: PARAMS_SYNC,
           code: CODE_SYNC,

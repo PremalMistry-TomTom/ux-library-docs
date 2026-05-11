@@ -90,6 +90,7 @@ export default function MapRasterTile({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'raster-tile',
           note: 'https://api.tomtom.com/map/1/tile/{layer}/{style}/{zoom}/{x}/{y}.png',
           params: PARAMS_REQUEST,
           code: CODE_REQUEST,

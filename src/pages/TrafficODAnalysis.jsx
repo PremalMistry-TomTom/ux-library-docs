@@ -92,6 +92,7 @@ export default function TrafficODAnalysis({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'POST',
+          demoId: 'od-analysis',
           note: 'https://api.tomtom.com/trafficstats/1/odMatrix — Origin and destination arrays are matched by index in the response. O/D pairs with fewer trips than the privacy threshold are omitted from the results.',
           params: BODY_PARAMS,
           code: CODE,

@@ -171,6 +171,7 @@ export default function RoutingInstructions({ onNavigate }) {
       id: 'api-instr-request',
       heading: 'Request parameters',
       method: 'GET',
+      demoId: 'turn-by-turn',
       params: PARAMS_REQUEST,
       note: 'Add these parameters to any calculateRoute request. instructionsType activates guidance; all other guidance parameters are ignored if it is omitted.',
       code: CODE_REQUEST,

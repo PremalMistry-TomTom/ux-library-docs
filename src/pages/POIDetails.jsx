@@ -133,6 +133,7 @@ export default function POIDetails({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'poi-details',
           note: 'https://api.tomtom.com/search/2/place.json — entityId is a required query parameter obtained from results[].id in any search response.',
           params: PARAMS,
           code: CODE,

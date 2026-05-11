@@ -83,7 +83,7 @@ function parseLatLon(str) {
 }
 
 /* ─── Demo definitions ───────────────────────────────────────────────────────── */
-const DEMOS = [
+export const DEMOS = [
 
   /* ════════════════════ SEARCH API ════════════════════ */
   {
@@ -91,7 +91,7 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map',
     description: 'Typo-tolerant search across addresses, POIs and geographies.',
     fields: [
-      { id: 'query', label: 'Query', placeholder: 'Amsterdam Centraal', defaultValue: 'Amsterdam Centraal', flex: true },
+      { id: 'query', label: 'Query', placeholder: 'Piccadilly Circus', defaultValue: 'Piccadilly Circus', flex: true },
       { id: 'limit', label: 'Limit', placeholder: '5', defaultValue: '5', width: 60 },
     ],
     run: async ({ query, limit }, key) => {
@@ -119,8 +119,8 @@ const DEMOS = [
     description: 'Search for a specific business or POI by name with location bias.',
     fields: [
       { id: 'query',  label: 'Name',       placeholder: 'Starbucks', defaultValue: 'Starbucks', flex: true },
-      { id: 'lat',    label: 'Lat',        placeholder: '52.3676',   defaultValue: '52.3676',   width: 90 },
-      { id: 'lon',    label: 'Lon',        placeholder: '4.9041',    defaultValue: '4.9041',    width: 90 },
+      { id: 'lat',    label: 'Lat',        placeholder: '51.5074',   defaultValue: '51.5074',   width: 90 },
+      { id: 'lon',    label: 'Lon',        placeholder: '-0.1278',   defaultValue: '-0.1278',   width: 90 },
       { id: 'radius', label: 'Radius (m)', placeholder: '10000',     defaultValue: '10000',     width: 90 },
     ],
     run: async ({ query, lat, lon, radius }, key) => {
@@ -149,8 +149,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map',
     description: 'Find all places within a radius of a coordinate, sorted by distance.',
     fields: [
-      { id: 'lat',    label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
-      { id: 'lon',    label: 'Lon',        placeholder: '4.9041',  defaultValue: '4.9041',  width: 100 },
+      { id: 'lat',    label: 'Lat',        placeholder: '51.5074', defaultValue: '51.5074', width: 100 },
+      { id: 'lon',    label: 'Lon',        placeholder: '-0.1278', defaultValue: '-0.1278', width: 100 },
       { id: 'radius', label: 'Radius (m)', placeholder: '500',     defaultValue: '500',     width: 90  },
       { id: 'limit',  label: 'Limit',      placeholder: '10',      defaultValue: '10',      width: 60  },
     ],
@@ -182,9 +182,9 @@ const DEMOS = [
     description: 'Find POIs within a corridor along a calculated route between two points.',
     note: 'Makes two API calls: calculate route → search along it.',
     fields: [
-      { id: 'query',       label: 'Query',           placeholder: 'coffee',         defaultValue: 'coffee',         width: 100 },
-      { id: 'origin',      label: 'Origin (lat,lon)', placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
-      { id: 'destination', label: 'Dest (lat,lon)',   placeholder: '52.0705,4.3007', defaultValue: '52.0705,4.3007', flex: true },
+      { id: 'query',       label: 'Query',           placeholder: 'coffee',          defaultValue: 'coffee',          width: 100 },
+      { id: 'origin',      label: 'Origin (lat,lon)', placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Dest (lat,lon)',   placeholder: '51.5079,-0.0877', defaultValue: '51.5079,-0.0877', flex: true },
     ],
     run: async ({ query, origin, destination }, key) => {
       const { lat: oLat, lon: oLon } = parseLatLon(origin);
@@ -227,7 +227,7 @@ const DEMOS = [
     method: 'GET', renderMode: 'table',
     description: 'Returns query completion suggestions as the user types. Powers search-as-you-type UI.',
     fields: [
-      { id: 'query',    label: 'Partial query', placeholder: 'Amster', defaultValue: 'Amster',   flex: true },
+      { id: 'query',    label: 'Partial query', placeholder: 'Lond',   defaultValue: 'Lond',     flex: true },
       { id: 'language', label: 'Language',      placeholder: 'en-US',  defaultValue: 'en-US',    width: 80  },
     ],
     run: async ({ query, language }, key) => {
@@ -245,8 +245,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table',
     description: 'Run multiple search queries in a single request and get batched responses.',
     fields: [
-      { id: 'q1', label: 'Query 1', placeholder: 'Pizza Amsterdam',  defaultValue: 'Pizza Amsterdam',  flex: true },
-      { id: 'q2', label: 'Query 2', placeholder: 'Hotels Rotterdam', defaultValue: 'Hotels Rotterdam', flex: true },
+      { id: 'q1', label: 'Query 1', placeholder: 'Pizza London',  defaultValue: 'Pizza London',  flex: true },
+      { id: 'q2', label: 'Query 2', placeholder: 'Hotels London', defaultValue: 'Hotels London', flex: true },
     ],
     run: async ({ q1, q2 }, key) => {
       const r = await fetch(`https://api.tomtom.com/search/2/batch/sync.json?key=${key}`, {
@@ -320,7 +320,7 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map',
     description: 'Convert a street address or place name to geographic coordinates.',
     fields: [
-      { id: 'address', label: 'Address', placeholder: 'Eiffel Tower, Paris', defaultValue: 'Eiffel Tower, Paris', flex: true },
+      { id: 'address', label: 'Address', placeholder: 'Tower Bridge, London', defaultValue: 'Tower Bridge, London', flex: true },
       { id: 'limit',   label: 'Limit',   placeholder: '3', defaultValue: '3', width: 60 },
     ],
     run: async ({ address, limit }, key) => {
@@ -347,8 +347,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map',
     description: 'Convert geographic coordinates to a human-readable street address.',
     fields: [
-      { id: 'lat', label: 'Lat', placeholder: '48.8584', defaultValue: '48.8584', width: 120 },
-      { id: 'lon', label: 'Lon', placeholder: '2.2945',  defaultValue: '2.2945',  width: 120 },
+      { id: 'lat', label: 'Lat', placeholder: '51.5007', defaultValue: '51.5007', width: 120 },
+      { id: 'lon', label: 'Lon', placeholder: '-0.1246', defaultValue: '-0.1246', width: 120 },
     ],
     run: async ({ lat, lon }, key) => {
       const r = await fetch(`https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=${key}`);
@@ -398,8 +398,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-polygon',
     description: 'Calculate the polygon of area reachable within a time or distance budget. Rendered as a live isochrone overlay using the Maps Web SDK.',
     fields: [
-      { id: 'lat',        label: 'Origin Lat', placeholder: '52.3676', defaultValue: '52.3676', width: 110 },
-      { id: 'lon',        label: 'Origin Lon', placeholder: '4.9041',  defaultValue: '4.9041',  width: 110 },
+      { id: 'lat',        label: 'Origin Lat', placeholder: '51.5074', defaultValue: '51.5074', width: 110 },
+      { id: 'lon',        label: 'Origin Lon', placeholder: '-0.1278', defaultValue: '-0.1278', width: 110 },
       { id: 'timeBudget', label: 'Time (sec)', placeholder: '1800',    defaultValue: '1800',    width: 100 },
     ],
     run: async ({ lat, lon, timeBudget }, key) => {
@@ -412,8 +412,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'table',
     description: 'Returns step-by-step manoeuvre instructions for a route in text or coded format.',
     fields: [
-      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041',  defaultValue: '52.3676,4.9041',  flex: true },
-      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '52.0705,4.3007',  defaultValue: '52.0705,4.3007',  flex: true },
+      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '51.5079,-0.0877', defaultValue: '51.5079,-0.0877', flex: true },
     ],
     run: async ({ origin, destination }, key) => {
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateRoute/${origin}:${destination}/json?key=${key}&travelMode=car&instructionsType=text`);
@@ -448,8 +448,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'table',
     description: 'Returns per-manoeuvre lane data — which lanes to use at each turn.',
     fields: [
-      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041',  defaultValue: '52.3676,4.9041',  flex: true },
-      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '52.0705,4.3007',  defaultValue: '52.0705,4.3007',  flex: true },
+      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '51.5079,-0.0877', defaultValue: '51.5079,-0.0877', flex: true },
     ],
     run: async ({ origin, destination }, key) => {
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateRoute/${origin}:${destination}/json?key=${key}&travelMode=car&sectionType=lanes`);
@@ -472,8 +472,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table',
     description: 'Calculate multiple routes in a single request. Returns an array of route summaries.',
     fields: [
-      { id: 'r1', label: 'Route 1 (origin:dest)', placeholder: '52.3676,4.9041:51.5074,-0.1278', defaultValue: '52.3676,4.9041:51.5074,-0.1278', flex: true },
-      { id: 'r2', label: 'Route 2 (origin:dest)', placeholder: '48.8566,2.3522:52.5200,13.4050', defaultValue: '48.8566,2.3522:52.5200,13.4050', flex: true },
+      { id: 'r1', label: 'Route 1 (origin:dest)', placeholder: '51.5074,-0.1278:52.4862,-1.8904', defaultValue: '51.5074,-0.1278:52.4862,-1.8904', flex: true },
+      { id: 'r2', label: 'Route 2 (origin:dest)', placeholder: '51.5074,-0.1278:53.4808,-2.2426', defaultValue: '51.5074,-0.1278:53.4808,-2.2426', flex: true },
     ],
     run: async ({ r1, r2 }, key) => {
       const r = await fetch(`https://api.tomtom.com/routing/1/batch/sync.json?key=${key}`, {
@@ -504,7 +504,7 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map',
     description: 'Fetch real-time traffic incidents within a geographic bounding box.',
     fields: [
-      { id: 'bbox', label: 'Bounding box (minLon,minLat,maxLon,maxLat)', placeholder: '4.84,52.33,5.02,52.43', defaultValue: '4.84,52.33,5.02,52.43', flex: true },
+      { id: 'bbox', label: 'Bounding box (minLon,minLat,maxLon,maxLat)', placeholder: '-0.15,51.48,0.02,51.54', defaultValue: '-0.15,51.48,0.02,51.54', flex: true },
     ],
     run: async ({ bbox }, key) => {
       const fields = encodeURIComponent('{incidents{type,geometry{type,coordinates},properties{iconCategory,magnitudeOfDelay,events{description,code},from,to,delay,roadNumbers}}}');
@@ -545,8 +545,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'table',
     description: 'Current traffic flow data for a road segment — speed, free-flow speed, confidence.',
     fields: [
-      { id: 'lat',   label: 'Point Lat', placeholder: '52.41072',  defaultValue: '52.41072',  width: 120 },
-      { id: 'lon',   label: 'Point Lon', placeholder: '4.84239',   defaultValue: '4.84239',   width: 120 },
+      { id: 'lat',   label: 'Point Lat', placeholder: '51.5080',   defaultValue: '51.5080',   width: 120 },
+      { id: 'lon',   label: 'Point Lon', placeholder: '-0.1281',   defaultValue: '-0.1281',   width: 120 },
       { id: 'zoom',  label: 'Zoom',      placeholder: '10',        defaultValue: '10',        width: 70  },
     ],
     run: async ({ lat, lon, zoom }, key) => {
@@ -572,7 +572,7 @@ const DEMOS = [
     method: 'GET', renderMode: 'table',
     description: 'Returns the current traffic model version ID — use to cache-bust traffic tile requests.',
     fields: [
-      { id: 'bbox', label: 'Bounding box', placeholder: '4.84,52.33,5.02,52.43', defaultValue: '4.84,52.33,5.02,52.43', flex: true },
+      { id: 'bbox', label: 'Bounding box', placeholder: '-0.15,51.48,0.02,51.54', defaultValue: '-0.15,51.48,0.02,51.54', flex: true },
     ],
     run: async ({ bbox }, key) => {
       const [minLon, minLat, maxLon, maxLat] = bbox.split(',').map(Number);
@@ -596,8 +596,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table', draft: true,
     description: 'Historical speed and travel time statistics along a road segment by time-of-day.',
     fields: [
-      { id: 'origin',      label: 'Segment start (lat,lon)', placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
-      { id: 'destination', label: 'Segment end (lat,lon)',   placeholder: '52.0705,4.3007', defaultValue: '52.0705,4.3007', flex: true },
+      { id: 'origin',      label: 'Segment start (lat,lon)', placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Segment end (lat,lon)',   placeholder: '51.5079,-0.0877', defaultValue: '51.5079,-0.0877', flex: true },
     ],
     run: async ({ origin, destination }, key) => {
       const { lat: oLat, lon: oLon } = parseLatLon(origin);
@@ -623,8 +623,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table', draft: true,
     description: 'Aggregate traffic flow statistics across all road segments within a polygon.',
     fields: [
-      { id: 'lat', label: 'Centre Lat', placeholder: '52.3676', defaultValue: '52.3676', width: 110 },
-      { id: 'lon', label: 'Centre Lon', placeholder: '4.9041',  defaultValue: '4.9041',  width: 110 },
+      { id: 'lat', label: 'Centre Lat', placeholder: '51.5074', defaultValue: '51.5074', width: 110 },
+      { id: 'lon', label: 'Centre Lon', placeholder: '-0.1278', defaultValue: '-0.1278', width: 110 },
     ],
     run: async ({ lat, lon }, key) => {
       const d = 0.05;
@@ -647,10 +647,10 @@ const DEMOS = [
     method: 'POST', renderMode: 'table', draft: true,
     description: 'Origin-destination traffic flow counts between two geographic zones.',
     fields: [
-      { id: 'originLat',  label: 'Origin zone Lat',  placeholder: '52.3676', defaultValue: '52.3676', width: 120 },
-      { id: 'originLon',  label: 'Origin zone Lon',  placeholder: '4.9041',  defaultValue: '4.9041',  width: 120 },
-      { id: 'destLat',    label: 'Dest zone Lat',    placeholder: '52.0705', defaultValue: '52.0705', width: 120 },
-      { id: 'destLon',    label: 'Dest zone Lon',    placeholder: '4.3007',  defaultValue: '4.3007',  width: 120 },
+      { id: 'originLat',  label: 'Origin zone Lat',  placeholder: '51.5074', defaultValue: '51.5074', width: 120 },
+      { id: 'originLon',  label: 'Origin zone Lon',  placeholder: '-0.1278', defaultValue: '-0.1278', width: 120 },
+      { id: 'destLat',    label: 'Dest zone Lat',    placeholder: '51.5079', defaultValue: '51.5079', width: 120 },
+      { id: 'destLon',    label: 'Dest zone Lon',    placeholder: '-0.0877', defaultValue: '-0.0877', width: 120 },
     ],
     run: async ({ originLat, originLon, destLat, destLon }, key) => {
       const d = 0.03;
@@ -675,8 +675,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table', draft: true,
     description: 'Turning movement counts at a specific intersection.',
     fields: [
-      { id: 'lat', label: 'Junction Lat', placeholder: '52.3676', defaultValue: '52.3676', width: 120 },
-      { id: 'lon', label: 'Junction Lon', placeholder: '4.9041',  defaultValue: '4.9041',  width: 120 },
+      { id: 'lat', label: 'Junction Lat', placeholder: '51.5074', defaultValue: '51.5074', width: 120 },
+      { id: 'lon', label: 'Junction Lon', placeholder: '-0.1278', defaultValue: '-0.1278', width: 120 },
     ],
     run: async ({ lat, lon }, key) => {
       const r = await fetch(`https://api.tomtom.com/traffic/trafficstats/junctionAnalysis/1?key=${key}`, {
@@ -698,8 +698,8 @@ const DEMOS = [
     description: 'Returns a PNG map tile. Renders directly as an <img> — no SDK needed.',
     fields: [
       { id: 'z', label: 'Z', placeholder: '10', defaultValue: '10', width: 60 },
-      { id: 'x', label: 'X', placeholder: '526', defaultValue: '526', width: 70 },
-      { id: 'y', label: 'Y', placeholder: '340', defaultValue: '340', width: 70 },
+      { id: 'x', label: 'X', placeholder: '511', defaultValue: '511', width: 70 },
+      { id: 'y', label: 'Y', placeholder: '341', defaultValue: '341', width: 70 },
     ],
     tileUrl: ({ z, x, y }, key) =>
       `https://api.tomtom.com/map/1/tile/basic/main/${z}/${x}/${y}.png?key=${key}&tileSize=512`,
@@ -711,8 +711,8 @@ const DEMOS = [
     sdkNote: 'Web SDK (MapLibre GL) initialises a map in a <div>, loads the vector style, and renders tiles automatically. No direct fetch needed.',
     fields: [
       { id: 'z', label: 'Z', placeholder: '10', defaultValue: '10', width: 60 },
-      { id: 'x', label: 'X', placeholder: '526', defaultValue: '526', width: 70 },
-      { id: 'y', label: 'Y', placeholder: '340', defaultValue: '340', width: 70 },
+      { id: 'x', label: 'X', placeholder: '511', defaultValue: '511', width: 70 },
+      { id: 'y', label: 'Y', placeholder: '341', defaultValue: '341', width: 70 },
     ],
     run: async ({ z, x, y }, key) => {
       const r = await fetch(`https://api.tomtom.com/map/1/tile/basic/main/${z}/${x}/${y}.pbf?key=${key}`);
@@ -726,8 +726,8 @@ const DEMOS = [
     description: 'Returns a JPEG satellite imagery tile. Renders directly as an <img>.',
     fields: [
       { id: 'z', label: 'Z', placeholder: '10', defaultValue: '10', width: 60 },
-      { id: 'x', label: 'X', placeholder: '526', defaultValue: '526', width: 70 },
-      { id: 'y', label: 'Y', placeholder: '340', defaultValue: '340', width: 70 },
+      { id: 'x', label: 'X', placeholder: '511', defaultValue: '511', width: 70 },
+      { id: 'y', label: 'Y', placeholder: '341', defaultValue: '341', width: 70 },
     ],
     tileUrl: ({ z, x, y }, key) =>
       `https://api.tomtom.com/map/1/tile/sat/main/${z}/${x}/${y}.jpg?key=${key}&tileSize=512`,
@@ -737,8 +737,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'image',
     description: 'Generates a static map image at given centre and zoom. Renders as an <img> — no SDK needed.',
     fields: [
-      { id: 'lon',   label: 'Centre Lon', placeholder: '4.9041',  defaultValue: '4.9041',  width: 100 },
-      { id: 'lat',   label: 'Centre Lat', placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
+      { id: 'lon',   label: 'Centre Lon', placeholder: '-0.1278', defaultValue: '-0.1278', width: 100 },
+      { id: 'lat',   label: 'Centre Lat', placeholder: '51.5074', defaultValue: '51.5074', width: 100 },
       { id: 'zoom',  label: 'Zoom',       placeholder: '13',      defaultValue: '13',      width: 70  },
       { id: 'layer', label: 'Layer',      placeholder: 'basic',   defaultValue: 'basic',   width: 80  },
     ],
@@ -763,8 +763,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map',
     description: 'Find EV charging stations nearby with real-time connector availability.',
     fields: [
-      { id: 'lat',        label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
-      { id: 'lon',        label: 'Lon',        placeholder: '4.9041',  defaultValue: '4.9041',  width: 100 },
+      { id: 'lat',        label: 'Lat',        placeholder: '51.5074', defaultValue: '51.5074', width: 100 },
+      { id: 'lon',        label: 'Lon',        placeholder: '-0.1278', defaultValue: '-0.1278', width: 100 },
       { id: 'radius',     label: 'Radius (m)', placeholder: '5000',    defaultValue: '5000',    width: 90  },
       { id: 'minPowerKW', label: 'Min kW',     placeholder: 'any',     defaultValue: '',        width: 70  },
     ],
@@ -815,8 +815,8 @@ const DEMOS = [
     description: 'Long-distance EV route with automatic charging stop optimisation.',
     note: 'Requires an LDEVR-enabled API key — standard keys return 403.',
     fields: [
-      { id: 'origin',        label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041',  flex: true },
-      { id: 'destination',   label: 'Destination (lat,lon)', placeholder: '48.8584,2.2945', defaultValue: '48.8584,2.2945',  flex: true },
+      { id: 'origin',        label: 'Origin (lat,lon)',      placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination',   label: 'Destination (lat,lon)', placeholder: '55.9533,-3.1883', defaultValue: '55.9533,-3.1883', flex: true },
       { id: 'batteryKWh',    label: 'Battery (kWh)',         placeholder: '77',             defaultValue: '77',              width: 90  },
       { id: 'chargePercent', label: 'Charge %',              placeholder: '80',             defaultValue: '80',              width: 80  },
     ],
@@ -873,8 +873,8 @@ const DEMOS = [
     description: 'EV route calculation with real-time weather data factored into battery consumption.',
     note: 'LDEVR v2 — requires separate v2-enabled credentials.',
     fields: [
-      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
-      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '48.8584,2.2945', defaultValue: '48.8584,2.2945', flex: true },
+      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '55.9533,-3.1883', defaultValue: '55.9533,-3.1883', flex: true },
     ],
     run: async ({ origin, destination }, key) => {
       const { lat: oLat, lon: oLon } = parseLatLon(origin);
@@ -924,8 +924,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table', draft: true,
     description: 'Calculates expected toll costs along an EV route by country and toll system.',
     fields: [
-      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
-      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '48.8584,2.2945', defaultValue: '48.8584,2.2945', flex: true },
+      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '55.9533,-3.1883', defaultValue: '55.9533,-3.1883', flex: true },
     ],
     run: async ({ origin, destination }, key) => {
       const { lat: oLat, lon: oLon } = parseLatLon(origin);
@@ -948,8 +948,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table', draft: true,
     description: 'Returns opening hours for EV charging parks along a route.',
     fields: [
-      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
-      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '48.8584,2.2945', defaultValue: '48.8584,2.2945', flex: true },
+      { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '55.9533,-3.1883', defaultValue: '55.9533,-3.1883', flex: true },
     ],
     run: async ({ origin, destination }, key) => {
       const { lat: oLat, lon: oLon } = parseLatLon(origin);
@@ -983,8 +983,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map', draft: true,
     description: 'Find parking facilities near a location with real-time space availability.',
     fields: [
-      { id: 'lat',    label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
-      { id: 'lon',    label: 'Lon',        placeholder: '4.9041',  defaultValue: '4.9041',  width: 100 },
+      { id: 'lat',    label: 'Lat',        placeholder: '51.5074', defaultValue: '51.5074', width: 100 },
+      { id: 'lon',    label: 'Lon',        placeholder: '-0.1278', defaultValue: '-0.1278', width: 100 },
       { id: 'radius', label: 'Radius (m)', placeholder: '1000',    defaultValue: '1000',    width: 90  },
     ],
     run: async ({ lat, lon, radius }, key) => {
@@ -1031,8 +1031,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map', draft: true,
     description: 'Find on-street parking regulations and availability in an area.',
     fields: [
-      { id: 'lat',    label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
-      { id: 'lon',    label: 'Lon',        placeholder: '4.9041',  defaultValue: '4.9041',  width: 100 },
+      { id: 'lat',    label: 'Lat',        placeholder: '51.5074', defaultValue: '51.5074', width: 100 },
+      { id: 'lon',    label: 'Lon',        placeholder: '-0.1278', defaultValue: '-0.1278', width: 100 },
       { id: 'radius', label: 'Radius (m)', placeholder: '500',     defaultValue: '500',     width: 90  },
     ],
     run: async ({ lat, lon, radius }, key) => {
@@ -1061,8 +1061,8 @@ const DEMOS = [
     method: 'GET', renderMode: 'sdk-map', draft: true,
     description: 'Find nearby fuel stations with live pricing per fuel type.',
     fields: [
-      { id: 'lat',     label: 'Lat',        placeholder: '52.3676',  defaultValue: '52.3676',  width: 100 },
-      { id: 'lon',     label: 'Lon',        placeholder: '4.9041',   defaultValue: '4.9041',   width: 100 },
+      { id: 'lat',     label: 'Lat',        placeholder: '51.5074',  defaultValue: '51.5074',  width: 100 },
+      { id: 'lon',     label: 'Lon',        placeholder: '-0.1278',  defaultValue: '-0.1278',  width: 100 },
       { id: 'radius',  label: 'Radius (m)', placeholder: '5000',     defaultValue: '5000',     width: 90  },
       { id: 'fuelSet', label: 'Fuel type',  placeholder: 'Petrol',   defaultValue: 'Petrol',   width: 80  },
     ],
@@ -1094,7 +1094,7 @@ const DEMOS = [
     method: 'POST', renderMode: 'sdk-map', draft: true,
     description: 'Takes a series of GPS coordinates and snaps them to the nearest road geometry.',
     fields: [
-      { id: 'points', label: 'GPS points (lat,lon per line)', placeholder: '52.3676,4.9041\n52.3700,4.9100\n52.3750,4.9150', defaultValue: '52.3676,4.9041\n52.3700,4.9100\n52.3750,4.9150', flex: true },
+      { id: 'points', label: 'GPS points (lat,lon per line)', placeholder: '51.5074,-0.1278\n51.5080,-0.1220\n51.5090,-0.1160', defaultValue: '51.5074,-0.1278\n51.5080,-0.1220\n51.5090,-0.1160', flex: true },
     ],
     run: async ({ points }, key) => {
       const pts = points.split('\n').filter(Boolean).map(line => { const { lat, lon } = parseLatLon(line.trim()); return { latitude: lat, longitude: lon }; });
@@ -1128,8 +1128,8 @@ const DEMOS = [
     method: 'POST', renderMode: 'table',
     description: 'Calculate travel times and distances from N origins to M destinations in one call.',
     fields: [
-      { id: 'origins',      label: 'Origins (lat,lon one per line)',      placeholder: '52.3676,4.9041\n51.5074,-0.1278', defaultValue: '52.3676,4.9041\n51.5074,-0.1278', flex: true },
-      { id: 'destinations', label: 'Destinations (lat,lon one per line)', placeholder: '48.8566,2.3522\n52.5200,13.4050', defaultValue: '48.8566,2.3522\n52.5200,13.4050', flex: true },
+      { id: 'origins',      label: 'Origins (lat,lon one per line)',      placeholder: '51.5074,-0.1278\n52.4862,-1.8904', defaultValue: '51.5074,-0.1278\n52.4862,-1.8904', flex: true },
+      { id: 'destinations', label: 'Destinations (lat,lon one per line)', placeholder: '53.4808,-2.2426\n53.8008,-1.5491', defaultValue: '53.4808,-2.2426\n53.8008,-1.5491', flex: true },
     ],
     run: async ({ origins, destinations }, key) => {
       const parse = str => str.split('\n').filter(Boolean).map(line => { const { lat, lon } = parseLatLon(line.trim()); return { point: { latitude: lat, longitude: lon } }; });
@@ -1158,8 +1158,8 @@ const DEMOS = [
     description: 'Submit a large matrix job asynchronously. Returns a job ID — poll for results.',
     note: 'This endpoint returns a 202 + Location header with the job URL. Polling is needed to fetch the result.',
     fields: [
-      { id: 'origins',      label: 'Origins (lat,lon per line)',      placeholder: '52.3676,4.9041\n51.5074,-0.1278', defaultValue: '52.3676,4.9041\n51.5074,-0.1278', flex: true },
-      { id: 'destinations', label: 'Destinations (lat,lon per line)', placeholder: '48.8566,2.3522\n52.5200,13.4050', defaultValue: '48.8566,2.3522\n52.5200,13.4050', flex: true },
+      { id: 'origins',      label: 'Origins (lat,lon per line)',      placeholder: '51.5074,-0.1278\n52.4862,-1.8904', defaultValue: '51.5074,-0.1278\n52.4862,-1.8904', flex: true },
+      { id: 'destinations', label: 'Destinations (lat,lon per line)', placeholder: '53.4808,-2.2426\n53.8008,-1.5491', defaultValue: '53.4808,-2.2426\n53.8008,-1.5491', flex: true },
     ],
     run: async ({ origins, destinations }, key) => {
       const parse = str => str.split('\n').filter(Boolean).map(line => { const { lat, lon } = parseLatLon(line.trim()); return { point: { latitude: lat, longitude: lon } }; });
@@ -1184,7 +1184,7 @@ const DEMOS = [
     method: 'POST', renderMode: 'sdk-map',
     description: 'Reorders a set of waypoints to minimise total travel time — solves the TSP.',
     fields: [
-      { id: 'waypoints', label: 'Waypoints (lat,lon one per line)', placeholder: '52.3676,4.9041\n52.3790,4.8990\n52.3600,4.8900\n52.3700,4.9100', defaultValue: '52.3676,4.9041\n52.3790,4.8990\n52.3600,4.8900\n52.3700,4.9100', flex: true },
+      { id: 'waypoints', label: 'Waypoints (lat,lon one per line)', placeholder: '51.5074,-0.1278\n51.5136,-0.0984\n51.5007,-0.1246\n51.5081,-0.0760', defaultValue: '51.5074,-0.1278\n51.5136,-0.0984\n51.5007,-0.1246\n51.5081,-0.0760', flex: true },
     ],
     run: async ({ waypoints }, key) => {
       const pts = waypoints.split('\n').filter(Boolean).map(line => { const { lat, lon } = parseLatLon(line.trim()); return { point: { latitude: lat, longitude: lon } }; });
@@ -1448,7 +1448,7 @@ function SdkMapOutput({ demo, result, values, apiKey }) {
 }
 
 /* ─── Main panel ─────────────────────────────────────────────────────────────── */
-function TryItPanel({ demo, apiKey }) {
+export function TryItPanel({ demo, apiKey }) {
   const [values, setValues] = useState(() => Object.fromEntries(demo.fields.map(f => [f.id, f.defaultValue ?? ''])));
   const [status, setStatus] = useState('idle');
   const [result, setResult] = useState(null);

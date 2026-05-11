@@ -105,6 +105,7 @@ export default function TrafficRouteStats({ onNavigate }) {
           id: 'route-statistics',
           heading: 'Route Statistics',
           method: 'POST',
+          demoId: 'traffic-stats',
           note: 'https://api.tomtom.com/trafficstats/1/routeStatistics',
           params: ROUTE_STATS_BODY,
           code: CODE_ROUTE,

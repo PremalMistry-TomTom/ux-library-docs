@@ -95,6 +95,7 @@ export default function TrafficAreaAnalytics({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'POST',
+          demoId: 'area-analytics',
           note: 'https://api.tomtom.com/trafficstats/1/areaStatistics',
           params: BODY_PARAMS,
           code: CODE,

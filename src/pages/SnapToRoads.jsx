@@ -94,6 +94,7 @@ export default function SnapToRoads({ onNavigate }) {
           id: 'request',
           heading: 'Snap GPS Trace',
           method: 'GET',
+          demoId: 'snap-to-roads',
           note: 'https://api.tomtom.com/maps/orbis/roads/snap-to-roads/v1',
           params: PARAMS,
           code: GET_CODE,

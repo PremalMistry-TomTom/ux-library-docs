@@ -46,6 +46,7 @@ export default function GeocodePage({ onNavigate }) {
           id: 'geocode',
           heading: 'Geocode',
           method: 'GET',
+          demoId: 'geocode',
           note: 'https://api.tomtom.com/search/2/geocode/{query}.json',
           params: GEOCODE_PARAMS,
           code: GEOCODE_CODE,

@@ -93,6 +93,7 @@ export default function FuelPrices({ onNavigate }) {
           id: 'request',
           heading: 'Nearby Fuel Price Search',
           method: 'GET',
+          demoId: 'fuel-prices',
           note: 'https://api.tomtom.com/fuel/1/prices/nearbySearch.json',
           params: PARAMS,
           code: CODE,

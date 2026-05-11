@@ -143,6 +143,7 @@ export default function RoutingBatch({ onNavigate }) {
       id: 'api-batch-sync',
       heading: 'Synchronous batch',
       method: 'POST',
+      demoId: 'batch-routing',
       params: PARAMS_SYNC,
       note: 'Returns results immediately in a single response. Maximum 100 items. Use this for real-time multi-route comparisons, ETA matrices, or when results are needed in a single round trip.',
       code: CODE_SYNC,

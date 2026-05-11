@@ -294,6 +294,7 @@ export default function RoutingCalculateRoute({ onNavigate }) {
           id: 'api-rc-route-planning',
           heading: 'Route planning',
           method: 'GET',
+          demoId: 'calculate-route',
           params: PARAMS_ROUTE,
           tokens: {
             routeType: 'routeType=fastest',

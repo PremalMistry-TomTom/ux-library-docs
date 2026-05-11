@@ -105,6 +105,7 @@ export default function SearchNearby({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'nearby-search',
           note: 'https://api.tomtom.com/search/2/nearbySearch/.json — Note the path ends with a literal dot before .json; there is no query segment.',
           params: PARAMS,
           code: CODE,

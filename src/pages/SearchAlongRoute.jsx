@@ -106,6 +106,7 @@ export default function SearchAlongRoute({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'POST',
+          demoId: 'along-route-search',
           note: 'https://api.tomtom.com/search/2/searchAlongRoute/{query}.json — Route geometry is sent in the request body as JSON. maxDetourTime is a required query parameter.',
           params: PARAMS_QUERY,
           code: CODE,

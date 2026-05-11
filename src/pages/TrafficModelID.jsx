@@ -52,6 +52,7 @@ export default function TrafficModelID({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'traffic-model-id',
           note: 'https://api.tomtom.com/traffic/services/4/trafficModelID/json — Also available as /trafficModelID/jsonp and /trafficModelID/xml.',
           params: QUERY_PARAMS,
           code: CODE,

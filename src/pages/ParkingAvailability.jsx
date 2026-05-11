@@ -94,6 +94,7 @@ export default function ParkingAvailability({ onNavigate }) {
           id: 'realtime',
           heading: 'Real-time Availability',
           method: 'GET',
+          demoId: 'parking-availability',
           note: 'https://api.tomtom.com/parking/2/realtime/{parkingId}.json',
           params: REALTIME_PARAMS,
           code: REALTIME_CODE,

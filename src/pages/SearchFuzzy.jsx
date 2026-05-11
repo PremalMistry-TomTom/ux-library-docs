@@ -136,6 +136,7 @@ export default function SearchFuzzy({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'fuzzy-search',
           note: 'https://api.tomtom.com/search/2/search/{query}.json',
           params: PARAMS,
           code: CODE,

@@ -65,6 +65,7 @@ export default function TrafficFlowSegment({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'traffic-flow',
           note: 'https://api.tomtom.com/traffic/services/4/flowSegmentData/{style}/{zoom}/{format}',
           params: [
             ...PATH_PARAMS,

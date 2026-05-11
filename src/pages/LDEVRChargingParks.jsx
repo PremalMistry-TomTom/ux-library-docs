@@ -147,6 +147,7 @@ export default function LDEVRChargingParks() {
       id: 'ldevr-parks-request',
       heading: 'Request parameters',
       method: 'POST',
+      demoId: 'ldevr-parks',
       note: PRIVATE_PREVIEW_NOTE,
       params: PARAMS_REQUEST,
       code: CODE_REQUEST,

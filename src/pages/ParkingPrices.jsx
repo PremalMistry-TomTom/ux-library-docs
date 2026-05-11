@@ -70,6 +70,7 @@ export default function ParkingPrices({ onNavigate }) {
           id: 'request',
           heading: 'Parking Prices',
           method: 'GET',
+          demoId: 'parking-prices',
           note: 'https://api.tomtom.com/parking/2/prices/{parkingId}.json',
           params: PARAMS,
           code: CODE,

@@ -106,6 +106,7 @@ export default function LDEVROemEmsp() {
       id: 'ldevr-emsp-headers',
       heading: 'Request headers',
       method: 'POST',
+      demoId: 'ldevr-emsp',
       note: PRIVATE_PREVIEW_NOTE,
       params: PARAMS_HEADERS,
       code: CODE_REQUEST,

@@ -115,6 +115,7 @@ export default function LDEVRWeather() {
       id: 'ldevr-weather-request-params',
       heading: 'Request parameters',
       method: 'POST',
+      demoId: 'ldevr-weather',
       note: PRIVATE_PREVIEW_NOTE,
       params: PARAMS_WEATHER_REQUEST,
       code: CODE_REQUEST,

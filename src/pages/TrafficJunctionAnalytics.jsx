@@ -101,6 +101,7 @@ export default function TrafficJunctionAnalytics({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'POST',
+          demoId: 'junction-analytics',
           note: 'https://api.tomtom.com/trafficstats/1/junctionAnalytics — Provide either junctionId (from the TomTom junction catalogue) or junctionGeometry (lat/lon + radius) to identify the junction. Not both.',
           params: BODY_PARAMS,
           code: CODE,

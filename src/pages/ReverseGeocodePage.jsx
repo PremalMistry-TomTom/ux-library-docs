@@ -53,6 +53,7 @@ export default function ReverseGeocodePage({ onNavigate }) {
           id: 'reverse-geocode',
           heading: 'Reverse Geocode',
           method: 'GET',
+          demoId: 'reverse-geocode',
           note: 'https://api.tomtom.com/search/2/reverseGeocode/{position}.json',
           params: REVERSE_PARAMS,
           code: REVERSE_CODE,

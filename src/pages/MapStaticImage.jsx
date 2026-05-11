@@ -132,6 +132,7 @@ export default function MapStaticImage({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'static-image',
           note: 'https://api.tomtom.com/map/1/staticimage',
           params: PARAMS_REQUEST,
           code: CODE_REQUEST,

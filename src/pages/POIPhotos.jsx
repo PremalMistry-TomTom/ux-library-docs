@@ -81,6 +81,7 @@ export default function POIPhotos({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'poi-photos',
           note: 'https://api.tomtom.com/search/2/poiPhoto — Returns binary image data (image/jpeg), not JSON. The photo ID must come from a Place by ID response (poi.photos[].id). Some requests may return HTTP 302; follow the redirect to reach the CDN URL.',
           params: PARAMS,
           code: CODE,

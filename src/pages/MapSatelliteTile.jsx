@@ -98,6 +98,7 @@ export default function MapSatelliteTile({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'satellite-tile',
           note: 'https://api.tomtom.com/map/1/tile/sat/main/{zoom}/{x}/{y}.jpg',
           params: PARAMS_REQUEST,
           code: CODE_REQUEST,

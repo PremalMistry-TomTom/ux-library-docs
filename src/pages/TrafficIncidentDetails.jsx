@@ -98,6 +98,7 @@ export default function TrafficIncidentDetails({ onNavigate }) {
           id: 'incident-details',
           heading: 'Incident Details',
           method: 'GET',
+          demoId: 'traffic-incidents',
           note: 'https://api.tomtom.com/traffic/services/5/incidentDetails',
           params: INCIDENT_DETAILS_PARAMS,
           code: CODE_DETAILS,

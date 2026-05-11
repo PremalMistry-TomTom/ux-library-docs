@@ -97,6 +97,7 @@ export default function MapVectorTile({ onNavigate }) {
           id: 'request',
           heading: 'Request',
           method: 'GET',
+          demoId: 'vector-tile',
           note: 'https://api.tomtom.com/map/1/tile/basic/main/{zoom}/{x}/{y}.pbf',
           params: PARAMS_REQUEST,
           code: CODE_REQUEST,
