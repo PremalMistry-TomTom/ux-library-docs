@@ -347,18 +347,24 @@ export function IcoTrafficFlow() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Road */}
-      <rect x="14" y="50" width="172" height="30" rx="5" fill={palette.mid} opacity="0.18" />
-      {/* Congested segment — crossed out in red */}
-      <rect x="60" y="50" width="70" height="30" rx="4" fill={palette.danger} opacity="0.20" />
-      <line x1="62" y1="52" x2="128" y2="78" stroke={palette.danger} strokeWidth="2.5" strokeLinecap="round" opacity="0.70" />
-      <line x1="128" y1="52" x2="62" y2="78" stroke={palette.danger} strokeWidth="2.5" strokeLinecap="round" opacity="0.70" />
-      {/* Detour arc — green alternative route above */}
-      <path d="M 62,65 C 70,30 125,30 130,65" fill="none" stroke={palette.accent} strokeWidth="4" strokeLinecap="round" />
-      <polygon points="130,65 124,54 136,57" fill={palette.accent} />
-      {/* Normal flow segments — before and after */}
-      <rect x="14" y="57" width="44" height="16" rx="4" fill={palette.accent} opacity="0.55" />
-      <rect x="132" y="57" width="54" height="16" rx="4" fill={palette.accent} opacity="0.55" />
+      {/* Road lane */}
+      <rect x="14" y="54" width="172" height="22" rx="4" fill={palette.mid} opacity="0.16" />
+      {/* Clear flow before — accent */}
+      <rect x="14" y="58" width="50" height="14" rx="3" fill={palette.accent} opacity="0.60" />
+      {/* Congested segment — danger fill + X */}
+      <rect x="68" y="54" width="64" height="22" rx="4" fill={palette.danger} opacity="0.22" />
+      <line x1="72" y1="57" x2="128" y2="73" stroke={palette.danger} strokeWidth="2.5" strokeLinecap="round" opacity="0.75" />
+      <line x1="128" y1="57" x2="72" y2="73" stroke={palette.danger} strokeWidth="2.5" strokeLinecap="round" opacity="0.75" />
+      {/* Clear flow after — accent */}
+      <rect x="136" y="58" width="50" height="14" rx="3" fill={palette.accent} opacity="0.60" />
+      {/* Detour arc overhead */}
+      <path d="M 68,65 C 76,28 124,28 132,65" fill="none" stroke={palette.accent} strokeWidth="4.5" strokeLinecap="round" />
+      <polygon points="132,65 125,53 138,56" fill={palette.accent} />
+      {/* Rerouting toast at top */}
+      <rect x="50" y="10" width="100" height="18" rx="9" fill={palette.mid} opacity="0.20" stroke={palette.accent} strokeWidth="1.5" strokeOpacity="0.55" />
+      <circle cx="64" cy="19" r="4" fill={palette.accent} opacity="0.80" />
+      <rect x="72" y="14" width="52" height="4" rx="2" fill={palette.mid} opacity="0.55" />
+      <rect x="72" y="21" width="36" height="3" rx="1.5" fill={palette.mid} opacity="0.35" />
     </svg>
   );
 }
@@ -1047,12 +1053,18 @@ export function IcoHUD() {
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
       {/* Windshield arch */}
-      <path d="M 15,118 Q 15,25 100,25 Q 185,25 185,118" fill="none" stroke={palette.mid} strokeWidth="3.5" />
-      {/* HUD speed numbers */}
-      <text x="100" y="82" textAnchor="middle" fontSize="34" fontWeight="bold" fill={palette.accent} fontFamily="monospace">87</text>
-      <text x="100" y="100" textAnchor="middle" fontSize="12" fill={palette.mid} opacity="0.7">km/h</text>
-      {/* Small arrow indicator */}
-      <polygon points="148,72 158,88 138,88" fill={palette.mid} opacity="0.6" />
+      <path d="M 18,118 Q 18,22 100,22 Q 182,22 182,118" fill="none" stroke={palette.mid} strokeWidth="3" opacity="0.5" />
+      {/* HUD combiner glass — semi-transparent panel */}
+      <rect x="52" y="42" width="96" height="52" rx="8" fill={palette.mid} opacity="0.10" stroke={palette.accent} strokeWidth="1.5" strokeOpacity="0.45" />
+      {/* Speed — three bold rect blocks simulating digits */}
+      <rect x="64" y="52" width="12" height="22" rx="3" fill={palette.accent} opacity="0.85" />
+      <rect x="80" y="52" width="12" height="22" rx="3" fill={palette.accent} opacity="0.85" />
+      <rect x="96" y="52" width="12" height="22" rx="3" fill={palette.accent} opacity="0.85" />
+      {/* Unit bar below digits */}
+      <rect x="64" y="78" width="44" height="5" rx="2.5" fill={palette.mid} opacity="0.45" />
+      {/* Turn arrow — right turn */}
+      <path d="M 126,75 L 126,58 L 140,58" fill="none" stroke={palette.accent} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity="0.80" />
+      <polygon points="140,52 148,58 140,64" fill={palette.accent} opacity="0.80" />
     </svg>
   );
 }
@@ -1150,21 +1162,25 @@ export function IcoTruck() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Cargo box */}
-      <rect x="22" y="44" width="100" height="52" rx="4" fill={palette.mid} opacity="0.55" stroke={palette.mid} strokeWidth="2" />
-      {/* Cab box */}
-      <rect x="122" y="58" width="54" height="38" rx="5" fill={palette.mid} opacity="0.65" stroke={palette.mid} strokeWidth="2" />
+      {/* Cargo trailer */}
+      <rect x="16" y="38" width="108" height="58" rx="5" fill={palette.mid} opacity="0.30" stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.50" />
+      {/* Trailer door mid-line */}
+      <line x1="16" y1="67" x2="124" y2="67" stroke={palette.mid} strokeWidth="1" opacity="0.25" />
+      {/* Cab */}
+      <rect x="124" y="52" width="58" height="44" rx="6" fill={palette.mid} opacity="0.45" stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.55" />
       {/* Cab windshield */}
-      <rect x="128" y="63" width="36" height="20" rx="3" fill={palette.accent} opacity="0.30" />
-      {/* Cargo door line */}
-      <line x1="22" y1="70" x2="122" y2="70" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" />
+      <rect x="130" y="57" width="38" height="22" rx="4" fill={palette.accent} opacity="0.25" stroke={palette.accent} strokeWidth="1" strokeOpacity="0.50" />
+      {/* Height restriction badge — triangle warning on trailer */}
+      <polygon points="70,44 62,58 78,58" fill={palette.warn} opacity="0.85" />
+      <rect x="68" y="50" width="4" height="5" rx="1" fill={palette.dark} opacity="0.7" />
+      <rect x="68" y="56" width="4" height="2" rx="1" fill={palette.dark} opacity="0.7" />
       {/* Wheels */}
-      <circle cx="50" cy="96" r="14" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
-      <circle cx="50" cy="96" r="6" fill={palette.mid} opacity="0.4" />
-      <circle cx="96" cy="96" r="14" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
-      <circle cx="96" cy="96" r="6" fill={palette.mid} opacity="0.4" />
-      <circle cx="148" cy="96" r="12" fill={palette.dark} stroke={palette.mid} strokeWidth="3" />
-      <circle cx="148" cy="96" r="5" fill={palette.mid} opacity="0.4" />
+      <circle cx="44" cy="96" r="13" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
+      <circle cx="44" cy="96" r="5" fill={palette.mid} opacity="0.45" />
+      <circle cx="100" cy="96" r="13" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
+      <circle cx="100" cy="96" r="5" fill={palette.mid} opacity="0.45" />
+      <circle cx="150" cy="96" r="11" fill={palette.dark} stroke={palette.mid} strokeWidth="2.5" strokeOpacity="0.6" />
+      <circle cx="150" cy="96" r="4" fill={palette.mid} opacity="0.40" />
     </svg>
   );
 }
@@ -1209,22 +1225,24 @@ export function IcoETAPanel() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Bottom-sheet panel */}
-      <rect x="14" y="22" width="172" height="86" rx="12" fill={palette.mid} opacity="0.16" stroke={palette.mid} strokeWidth="1" strokeOpacity="0.25" />
+      {/* Panel card */}
+      <rect x="14" y="18" width="172" height="94" rx="14" fill={palette.mid} opacity="0.13" stroke={palette.mid} strokeWidth="1" strokeOpacity="0.22" />
       {/* Drag handle */}
-      <rect x="84" y="30" width="32" height="4" rx="2" fill={palette.mid} opacity="0.45" />
-      {/* Arrival time — large block (no text) */}
-      <rect x="28" y="42" width="80" height="22" rx="6" fill={palette.white} opacity="0.30" />
-      {/* Distance remaining — right */}
-      <rect x="120" y="42" width="52" height="10" rx="4" fill={palette.mid} opacity="0.40" />
-      <rect x="120" y="55" width="36" height="7" rx="3.5" fill={palette.mid} opacity="0.25" />
+      <rect x="82" y="27" width="36" height="4" rx="2" fill={palette.mid} opacity="0.40" />
+      {/* ETA block — left: large arrival time representation */}
+      <rect x="26" y="40" width="56" height="28" rx="7" fill={palette.accent} opacity="0.22" />
+      <rect x="32" y="47" width="36" height="14" rx="4" fill={palette.accent} opacity="0.75" />
+      {/* Distance block — right */}
+      <rect x="98" y="40" width="80" height="12" rx="4" fill={palette.mid} opacity="0.45" />
+      <rect x="98" y="57" width="56" height="8" rx="3" fill={palette.mid} opacity="0.28" />
       {/* Divider */}
-      <line x1="28" y1="74" x2="172" y2="74" stroke={palette.mid} strokeWidth="0.75" opacity="0.22" />
-      {/* Progress bar */}
-      <rect x="28" y="80" width="144" height="10" rx="5" fill={palette.mid} opacity="0.20" />
-      <rect x="28" y="80" width="88" height="10" rx="5" fill={palette.accent} opacity="0.75" />
-      {/* Progress thumb */}
-      <circle cx="116" cy="85" r="7" fill={palette.accent} stroke={palette.dark} strokeWidth="2" />
+      <line x1="26" y1="79" x2="174" y2="79" stroke={palette.mid} strokeWidth="1" opacity="0.20" />
+      {/* Progress track */}
+      <rect x="26" y="86" width="148" height="9" rx="4.5" fill={palette.mid} opacity="0.18" />
+      {/* Progress fill ~60% */}
+      <rect x="26" y="86" width="90" height="9" rx="4.5" fill={palette.accent} opacity="0.80" />
+      {/* Thumb */}
+      <circle cx="116" cy="90" r="7" fill={palette.accent} stroke={palette.dark} strokeWidth="2.5" />
     </svg>
   );
 }
@@ -1290,20 +1308,27 @@ export function IcoVoiceEngine() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Microphone body */}
-      <rect x="84" y="20" width="32" height="52" rx="16" fill={palette.accent} />
-      {/* Mic stand */}
-      <path d="M 68,68 Q 68,92 100,92 Q 132,92 132,68" fill="none" stroke={palette.mid} strokeWidth="3" strokeLinecap="round" />
-      <line x1="100" y1="92" x2="100" y2="112" stroke={palette.mid} strokeWidth="3" strokeLinecap="round" />
-      <line x1="82" y1="112" x2="118" y2="112" stroke={palette.mid} strokeWidth="3" strokeLinecap="round" />
-      {/* Sound arcs left */}
-      <path d="M 62,42 Q 50,56 62,70" fill="none" stroke={palette.accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-      <path d="M 52,36 Q 34,56 52,76" fill="none" stroke={palette.accent} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
-      <path d="M 42,30 Q 18,56 42,82" fill="none" stroke={palette.accent} strokeWidth="1.5" strokeLinecap="round" opacity="0.30" />
-      {/* Sound arcs right */}
-      <path d="M 138,42 Q 150,56 138,70" fill="none" stroke={palette.accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.8" />
-      <path d="M 148,36 Q 166,56 148,76" fill="none" stroke={palette.accent} strokeWidth="2" strokeLinecap="round" opacity="0.55" />
-      <path d="M 158,30 Q 182,56 158,82" fill="none" stroke={palette.accent} strokeWidth="1.5" strokeLinecap="round" opacity="0.30" />
+      {/* TAIA input block — left */}
+      <rect x="14" y="30" width="52" height="36" rx="8" fill={palette.mid} opacity="0.20" stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.45" />
+      <rect x="22" y="40" width="36" height="5" rx="2.5" fill={palette.accent} opacity="0.80" />
+      <rect x="22" y="50" width="26" height="4" rx="2" fill={palette.mid} opacity="0.50" />
+      {/* Arrow: TAIA → engine */}
+      <line x1="66" y1="48" x2="84" y2="48" stroke={palette.accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.70" />
+      <polygon points="84,43 92,48 84,53" fill={palette.accent} opacity="0.70" />
+      {/* OEM Voice Engine block — centre */}
+      <rect x="92" y="24" width="60" height="48" rx="10" fill={palette.accent} opacity="0.18" stroke={palette.accent} strokeWidth="2" strokeOpacity="0.60" />
+      {/* Speaker cone inside engine block */}
+      <polygon points="108,38 108,58 118,52 118,44" fill={palette.accent} opacity="0.75" />
+      <path d="M 122,40 Q 130,48 122,56" fill="none" stroke={palette.accent} strokeWidth="2.5" strokeLinecap="round" opacity="0.70" />
+      <path d="M 126,36 Q 138,48 126,60" fill="none" stroke={palette.accent} strokeWidth="2" strokeLinecap="round" opacity="0.45" />
+      {/* Arrow: engine → output */}
+      <line x1="152" y1="48" x2="168" y2="48" stroke={palette.mid} strokeWidth="2.5" strokeLinecap="round" opacity="0.65" />
+      <polygon points="168,43 176,48 168,53" fill={palette.mid} opacity="0.65" />
+      {/* Audio waveform output — right */}
+      {[4, 9, 14, 9, 5].map((h, i) => (
+        <rect key={i} x={178 + i * 4} y={48 - h} width="2.5" height={h * 2} rx="1.5"
+          fill={palette.mid} opacity={0.35 + i * 0.08} />
+      ))}
     </svg>
   );
 }
