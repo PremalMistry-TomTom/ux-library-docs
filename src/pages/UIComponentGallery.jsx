@@ -3500,7 +3500,7 @@ function ShellLayoutSection() {
         </div>
       </Row>
 
-      <Row label=".shell--nav-collapsed.shell--no-toc — full-width content" noBorder>
+      <Row label=".shell--nav-collapsed.shell--no-toc — full-width content">
         <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
           <HeaderBar />
           <TopnavBar />
@@ -3508,6 +3508,94 @@ function ShellLayoutSection() {
             <NavCol collapsed />
             <ContentCol />
             <TocCol hidden />
+          </div>
+        </div>
+      </Row>
+
+      {/* ── Two-column API ref layout inside shell ── */}
+      <Row label=".shell + .api-ref-sections — 2-col API reference layout (left: prose+params · right: dark code)" noBorder>
+        <div style={{ width: '100%', maxWidth: 760, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <HeaderBar />
+          <TopnavBar />
+          <div style={{ display: 'flex', minHeight: 260 }}>
+            {/* Left nav */}
+            <NavCol />
+            {/* Two-col content area */}
+            <div style={{ flex: 1, minWidth: 0, display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+              {/* Left prose column */}
+              <div style={{ padding: '16px 20px', borderRight: '1px solid var(--border)', background: 'var(--white)' }}>
+                {/* Section header with method + endpoint */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10, paddingBottom: 10, borderBottom: '1px solid var(--border)' }}>
+                  <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: '#dcfce7', color: '#166534', letterSpacing: '0.04em' }}>GET</span>
+                  <code style={{ fontSize: '0.625rem', color: 'var(--black)', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>/routing/1/calculateRoute</code>
+                </div>
+                {/* Prose */}
+                <p style={{ fontSize: '0.7rem', color: 'var(--mid)', lineHeight: 1.6, margin: '0 0 12px' }}>
+                  Calculates a route between two or more locations using real-time traffic.
+                </p>
+                {/* Param table */}
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.65rem' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                      <th style={{ textAlign: 'left', padding: '4px 6px 4px 0', color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.55rem' }}>Parameter</th>
+                      <th style={{ textAlign: 'left', padding: '4px 0', color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.55rem' }}>Required</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { name: 'routePlanningLocations', req: true },
+                      { name: 'travelMode', req: false },
+                      { name: 'traffic', req: false },
+                    ].map(p => (
+                      <tr key={p.name} style={{ borderBottom: '1px solid var(--bg)' }}>
+                        <td style={{ padding: '4px 6px 4px 0' }}><code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--black)' }}>{p.name}</code></td>
+                        <td style={{ padding: '4px 0' }}>
+                          <span style={{ fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: p.req ? 'var(--danger-bg)' : 'var(--bg)', color: p.req ? 'var(--danger-text)' : 'var(--muted)', border: `1px solid ${p.req ? 'var(--danger-border)' : 'var(--border)'}` }}>
+                            {p.req ? 'required' : 'optional'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {/* Right code column */}
+              <div style={{ background: '#0d1117', display: 'flex', flexDirection: 'column' }}>
+                {/* Code bar */}
+                <div style={{ padding: '6px 12px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ fontSize: '0.55rem', color: '#94a3b8', fontWeight: 600 }}>cURL</span>
+                  <div style={{ flex: 1 }} />
+                  <button style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.6rem', borderRadius: 4, padding: '2px 7px', cursor: 'default' }}>Copy</button>
+                </div>
+                <pre style={{ margin: 0, padding: '12px 14px', fontSize: '0.6rem', color: '#c9d1d9', lineHeight: 1.65, flex: 1 }}>
+{`curl -X GET \\
+  "https://api.tomtom.com/
+  routing/1/calculateRoute/
+  52.37,4.90:48.86,2.35/
+  json?key=YOUR_KEY
+  &travelMode=car"`}
+                </pre>
+                {/* Response bar */}
+                <div style={{ padding: '5px 12px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.03)' }}>
+                  <span style={{ fontSize: '0.55rem', color: '#4ade80', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} /> Response
+                  </span>
+                  <span style={{ fontSize: '0.55rem', color: '#64748b', marginLeft: 'auto' }}>124ms</span>
+                </div>
+                <pre style={{ margin: 0, padding: '10px 14px', fontSize: '0.6rem', color: '#c9d1d9', lineHeight: 1.65, background: '#0d1117', borderTop: '1px solid rgba(255,255,255,0.05)', maxHeight: 80, overflow: 'hidden' }}>
+{`{
+  "routes": [{
+    "summary": {
+      "travelTimeInSeconds": 3720,
+      "lengthInMeters": 499200
+    }
+  }]
+}`}
+                </pre>
+              </div>
+            </div>
+            {/* Right TOC */}
+            <TocCol />
           </div>
         </div>
       </Row>
