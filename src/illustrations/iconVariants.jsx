@@ -13,8 +13,6 @@ export function IcoMapDisplay() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Block fill — map terrain */}
-      <rect x="0" y="0" width="200" height="130" fill={palette.navy} opacity="0.30" />
       {/* Road grid — major roads */}
       <line x1="0" y1="65" x2="200" y2="65" stroke={palette.mid} strokeWidth="5" opacity="0.35" />
       <line x1="100" y1="0" x2="100" y2="130" stroke={palette.mid} strokeWidth="5" opacity="0.35" />
@@ -93,8 +91,8 @@ export function IcoMapSatelliteTile() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Ground fill */}
-      <rect width="200" height="130" fill={palette.navy} opacity="0.45" />
+      {/* Subtle ground tint */}
+      <rect width="200" height="130" fill={palette.mid} opacity="0.12" />
       {/* Road grid */}
       <rect x="80" y="0" width="12" height="130" fill={palette.mid} opacity="0.22" />
       <rect x="0" y="55" width="200" height="10" fill={palette.mid} opacity="0.22" />
@@ -923,7 +921,6 @@ export function IcoNavControls() {
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
       {/* Map canvas — road grid */}
-      <rect width="200" height="130" fill={palette.navy} opacity="0.30" />
       <line x1="0" y1="55" x2="200" y2="55" stroke={palette.mid} strokeWidth="4" opacity="0.25" />
       <line x1="90" y1="0" x2="90" y2="130" stroke={palette.mid} strokeWidth="4" opacity="0.25" />
       <line x1="0" y1="100" x2="200" y2="100" stroke={palette.mid} strokeWidth="2" opacity="0.14" />
@@ -1180,7 +1177,7 @@ export function IcoHomeScreen() {
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
       {/* Full-screen map canvas — two-thirds of height */}
-      <rect x="0" y="0" width="200" height="88" fill={palette.navy} opacity="0.35" />
+      <rect x="0" y="0" width="200" height="88" fill={palette.mid} opacity="0.12" />
       {/* Road grid on map */}
       <line x1="0" y1="44" x2="200" y2="44" stroke={palette.mid} strokeWidth="4" opacity="0.22" />
       <line x1="100" y1="0" x2="100" y2="88" stroke={palette.mid} strokeWidth="4" opacity="0.22" />
