@@ -129,16 +129,23 @@ export function IcoMapStaticImage() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Image frame */}
-      <rect x="32" y="22" width="136" height="86" rx="6" fill={palette.mid} opacity="0.25" stroke={palette.mid} strokeWidth="2.5" />
-      {/* Camera icon centered */}
-      {/* Camera body */}
-      <rect x="75" y="52" width="50" height="34" rx="5" fill={palette.accent} opacity="0.9" />
-      {/* Camera lens circle */}
-      <circle cx="100" cy="69" r="11" fill={palette.dark} stroke={palette.accent} strokeWidth="2.5" />
-      <circle cx="100" cy="69" r="5" fill={palette.accent} opacity="0.7" />
-      {/* Camera viewfinder bump */}
-      <rect x="88" y="46" width="14" height="8" rx="3" fill={palette.accent} opacity="0.9" />
+      {/* Map image frame */}
+      <rect x="22" y="14" width="156" height="102" rx="7" fill={palette.mid} opacity="0.20" />
+      {/* Road grid */}
+      <line x1="22" y1="50" x2="178" y2="50" stroke={palette.mid} strokeWidth="3" opacity="0.22" strokeLinecap="round" />
+      <line x1="22" y1="76" x2="178" y2="76" stroke={palette.mid} strokeWidth="2" opacity="0.14" strokeLinecap="round" />
+      <line x1="70" y1="14" x2="70" y2="116" stroke={palette.mid} strokeWidth="3" opacity="0.22" strokeLinecap="round" />
+      <line x1="130" y1="14" x2="130" y2="116" stroke={palette.mid} strokeWidth="2" opacity="0.14" strokeLinecap="round" />
+      {/* Dashed bounding box */}
+      <rect x="50" y="30" width="100" height="70" rx="3" fill="none"
+        stroke={palette.accent} strokeWidth="1.5" strokeDasharray="5 3" opacity="0.70" />
+      {/* Pin glow halo */}
+      <circle cx="100" cy="63" r="18" fill={palette.danger} opacity="0.13" />
+      <circle cx="100" cy="63" r="11" fill={palette.danger} opacity="0.18" />
+      {/* Map pin — teardrop */}
+      <path d="M 100,82 C 100,82 86,68 86,60 A 14,14 0 0 1 114,60 C 114,68 100,82 100,82 Z"
+        fill={palette.danger} opacity="0.88" />
+      <circle cx="100" cy="59" r="5" fill={palette.dark} opacity="0.65" />
     </svg>
   );
 }
@@ -371,60 +378,70 @@ export function IcoTrafficFlow() {
 
 export function IcoTrafficFlowTile() {
   const { palette } = useIlloStyle();
+  // 4×3 tile mosaic — green→amber→red flow intensity
+  const cw = 38, ch = 32, gap = 2, ox = 21, oy = 15;
+  const levels = [
+    [0, 0, 1, 2],
+    [0, 1, 2, 3],
+    [1, 2, 3, 3],
+  ];
+  const fillColors = ['#52b447', palette.accent, palette.warn, '#e03a3a'];
+  const ops = [0.78, 0.72, 0.80, 0.84];
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Tile frame */}
-      <rect x="30" y="15" width="140" height="100" rx="6" fill={palette.mid} opacity="0.20" stroke={palette.mid} strokeWidth="2" />
-      {/* Diagonal gradient color bands */}
-      <clipPath id="tftClip">
-        <rect x="30" y="15" width="140" height="100" rx="6" />
-      </clipPath>
-      <g clipPath="url(#tftClip)">
-        <polygon points="30,15 110,15 30,80" fill="#4caf50" opacity="0.65" />
-        <polygon points="110,15 170,15 170,50 30,115 30,80" fill={palette.accent} opacity="0.65" />
-        <polygon points="170,50 170,115 30,115" fill="#e53935" opacity="0.65" />
-      </g>
+      {levels.map((row, ri) =>
+        row.map((lv, ci) => (
+          <rect key={`${ri}-${ci}`}
+            x={ox + ci * (cw + gap)} y={oy + ri * (ch + gap)}
+            width={cw} height={ch} rx="3"
+            fill={fillColors[lv]} opacity={ops[lv]} />
+        ))
+      )}
     </svg>
   );
 }
 
 export function IcoTrafficIncidents() {
   const { palette } = useIlloStyle();
-  // Three incident rows: roadworks (warn), accident (danger), closure (mid)
-  const rows = [
-    { icon: 'works',   color: palette.warn,   barW: 80 },
-    { icon: 'crash',   color: palette.danger,  barW: 58 },
-    { icon: 'closure', color: palette.mid,     barW: 70 },
-  ];
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {rows.map(({ icon, color, barW }, i) => {
-        const y = 18 + i * 34;
-        return (
-          <g key={i}>
-            {/* Row card */}
-            <rect x="14" y={y} width="172" height="26" rx="6" fill={palette.mid} opacity="0.10" stroke={color} strokeWidth="1" strokeOpacity="0.35" />
-            {/* Severity dot */}
-            <circle cx="28" cy={y + 13} r="6" fill={color} opacity="0.85" />
-            {/* Icon inside dot */}
-            {icon === 'works'   && <rect x="25" y={y + 10} width="6" height="7" rx="1" fill={palette.dark} opacity="0.8" />}
-            {icon === 'crash'   && <>
-              <line x1="25" y1={y+10} x2="31" y2={y+16} stroke={palette.dark} strokeWidth="2" strokeLinecap="round" />
-              <line x1="31" y1={y+10} x2="25" y2={y+16} stroke={palette.dark} strokeWidth="2" strokeLinecap="round" />
-            </>}
-            {icon === 'closure' && <rect x="24" y={y + 12} width="8" height="3" rx="1.5" fill={palette.dark} opacity="0.8" />}
-            {/* Type label bar */}
-            <rect x="40" y={y + 8} width={barW} height="5" rx="2.5" fill={color} opacity="0.65" />
-            {/* Severity sub-bar */}
-            <rect x="40" y={y + 16} width={barW - 18} height="4" rx="2" fill={palette.mid} opacity="0.35" />
-            {/* Distance badge */}
-            <rect x={160} y={y + 8} width="20" height="12" rx="4" fill={color} opacity="0.18" />
-            <rect x={163} y={y + 12} width="14" height="4" rx="2" fill={color} opacity="0.60" />
-          </g>
-        );
-      })}
+      {/* Top alert status bar */}
+      <rect x="14" y="10" width="172" height="8" rx="3" fill={palette.mid} opacity="0.20" />
+      <rect x="14" y="10" width="62" height="8" rx="3" fill={palette.warn} opacity="0.42" />
+
+      {/* Row 1 — Roadworks (warn) */}
+      <rect x="14" y="24" width="172" height="28" rx="6" fill={palette.mid} opacity="0.12" stroke={palette.warn} strokeWidth="1" strokeOpacity="0.40" />
+      <polygon points="28,46 22,36 34,36" fill={palette.warn} opacity="0.88" />
+      <rect x="26" y="40" width="3" height="4" rx="1" fill={palette.dark} opacity="0.75" />
+      <rect x="26" y="45" width="3" height="2" rx="1" fill={palette.dark} opacity="0.75" />
+      <rect x="42" y="30" width="88" height="6" rx="3" fill={palette.warn} opacity="0.55" />
+      <rect x="42" y="39" width="58" height="5" rx="2.5" fill={palette.mid} opacity="0.30" />
+      <rect x="155" y="29" width="24" height="22" rx="5" fill={palette.warn} opacity="0.20" />
+      <rect x="159" y="34" width="16" height="4" rx="2" fill={palette.warn} opacity="0.70" />
+      <rect x="161" y="40" width="12" height="4" rx="2" fill={palette.mid} opacity="0.38" />
+
+      {/* Row 2 — Accident (danger) */}
+      <rect x="14" y="57" width="172" height="28" rx="6" fill={palette.mid} opacity="0.12" stroke={palette.danger} strokeWidth="1" strokeOpacity="0.40" />
+      <polygon points="28,71 22,65 28,59 34,65" fill={palette.danger} opacity="0.88" />
+      <rect x="26" y="63" width="3" height="5" rx="1" fill={palette.dark} opacity="0.75" />
+      <rect x="26" y="69" width="3" height="2" rx="1" fill={palette.dark} opacity="0.75" />
+      <rect x="42" y="63" width="72" height="6" rx="3" fill={palette.danger} opacity="0.55" />
+      <rect x="42" y="72" width="44" height="5" rx="2.5" fill={palette.mid} opacity="0.30" />
+      <rect x="155" y="62" width="24" height="22" rx="5" fill={palette.danger} opacity="0.20" />
+      <rect x="159" y="67" width="16" height="4" rx="2" fill={palette.danger} opacity="0.70" />
+      <rect x="161" y="73" width="12" height="4" rx="2" fill={palette.mid} opacity="0.38" />
+
+      {/* Row 3 — Road closure (mid) */}
+      <rect x="14" y="90" width="172" height="28" rx="6" fill={palette.mid} opacity="0.12" stroke={palette.mid} strokeWidth="1" strokeOpacity="0.35" />
+      <circle cx="28" cy="104" r="7" fill={palette.mid} opacity="0.35" />
+      <line x1="22.5" y1="104" x2="33.5" y2="104" stroke={palette.dark} strokeWidth="2.5" strokeLinecap="round" opacity="0.72" />
+      <rect x="42" y="96" width="80" height="6" rx="3" fill={palette.mid} opacity="0.50" />
+      <rect x="42" y="105" width="52" height="5" rx="2.5" fill={palette.mid} opacity="0.28" />
+      <rect x="155" y="95" width="24" height="22" rx="5" fill={palette.mid} opacity="0.18" />
+      <rect x="159" y="100" width="16" height="4" rx="2" fill={palette.mid} opacity="0.55" />
+      <rect x="161" y="106" width="12" height="4" rx="2" fill={palette.mid} opacity="0.30" />
     </svg>
   );
 }
@@ -560,37 +577,42 @@ export function IcoEVRouting() {
 
 export function IcoEVSearchNearby() {
   const { palette } = useIlloStyle();
-  // List of 3 charging operators with power + availability
-  const ops = [
-    { avail: true,  pct: 0.80 },
-    { avail: true,  pct: 0.50 },
-    { avail: false, pct: 0.15 },
+  const stations = [
+    { avail: true,  pct: 0.75 },
+    { avail: true,  pct: 0.45 },
+    { avail: false, pct: 0.06 },
   ];
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* List header */}
-      <rect x="16" y="12" width="168" height="14" rx="4" fill={palette.mid} opacity="0.18" />
-      <rect x="22" y="16" width="50" height="5" rx="2.5" fill={palette.mid} opacity="0.50" />
-      {ops.map(({ avail, pct }, i) => (
+      {/* Search header */}
+      <rect x="16" y="8" width="168" height="20" rx="6" fill={palette.mid} opacity="0.18" />
+      <circle cx="32" cy="18" r="5.5" fill="none" stroke={palette.accent} strokeWidth="1.5" opacity="0.70" />
+      <line x1="36" y1="22" x2="40" y2="26" stroke={palette.accent} strokeWidth="1.5" strokeLinecap="round" opacity="0.70" />
+      <rect x="48" y="14" width="70" height="5" rx="2.5" fill={palette.mid} opacity="0.40" />
+      <rect x="48" y="21" width="44" height="4" rx="2" fill={palette.mid} opacity="0.25" />
+      {stations.map(({ avail, pct }, i) => (
         <g key={i}>
           {/* Row bg */}
-          <rect x="16" y={32 + i * 30} width="168" height="24" rx="6"
-            fill={avail ? palette.accent : palette.mid} opacity={avail ? 0.10 : 0.07} />
-          {/* Availability dot */}
-          <circle cx="30" cy={44 + i * 30} r="5"
-            fill={avail ? palette.accent : palette.danger} opacity="0.85" />
+          <rect x="16" y={34 + i * 29} width="168" height="25" rx="6"
+            fill={avail ? palette.accent : palette.mid} opacity={avail ? 0.09 : 0.07} />
+          {/* EV station icon — bolt in circle */}
+          <circle cx="30" cy={46 + i * 29} r="8"
+            fill={avail ? palette.accent : palette.mid} opacity={avail ? 0.20 : 0.15} />
+          <polygon
+            points={`30,${40 + i * 29} 27,${46 + i * 29} 30,${46 + i * 29} 27,${52 + i * 29} 33,${45 + i * 29} 30,${45 + i * 29}`}
+            fill={avail ? palette.accent : palette.mid} opacity={avail ? 0.90 : 0.45} />
           {/* Operator name bar */}
-          <rect x="42" y={40 + i * 30} width={[60, 52, 44][i]} height="6" rx="3"
+          <rect x="44" y={41 + i * 29} width={[56, 48, 52][i]} height="6" rx="3"
             fill={palette.white} opacity="0.40" />
-          {/* Power rating bar */}
-          <rect x="42" y={48 + i * 30} width="28" height="4" rx="2"
-            fill={palette.mid} opacity="0.35" />
-          {/* Availability fill bar */}
-          <rect x="118" y={39 + i * 30} width="54" height="10" rx="3"
-            fill={palette.mid} opacity="0.18" />
-          <rect x="118" y={39 + i * 30} width={Math.round(54 * pct)} height="10" rx="3"
-            fill={avail ? palette.accent : palette.danger} opacity="0.65" />
+          {/* Power bar */}
+          <rect x="44" y={50 + i * 29} width="26" height="4" rx="2"
+            fill={palette.mid} opacity="0.32" />
+          {/* Availability bar */}
+          <rect x="118" y={40 + i * 29} width="52" height="11" rx="3.5"
+            fill={palette.mid} opacity="0.16" />
+          <rect x="118" y={40 + i * 29} width={Math.round(52 * pct)} height="11" rx="3.5"
+            fill={avail ? palette.accent : palette.danger} opacity="0.68" />
         </g>
       ))}
     </svg>
@@ -599,44 +621,53 @@ export function IcoEVSearchNearby() {
 
 export function IcoEVChargingAvailability() {
   const { palette } = useIlloStyle();
-  // Four connector-type rows with status badge
   const connectors = [
-    { avail: true,  full: false },  // CCS2 — available
-    { avail: true,  full: false },  // Type2 — available
-    { avail: false, full: true  },  // CHAdeMO — in use
-    { avail: false, full: false },  // CCS2 DC — offline
+    { status: 'available', color: null, barW: [34, 22] },
+    { status: 'charging',  color: null, barW: [28, 18] },
+    { status: 'offline',   color: null, barW: [40, 14] },
+    { status: 'available', color: null, barW: [32, 20] },
   ];
-  const statusColor = (c) => c.avail ? palette.accent : c.full ? palette.warn : palette.mid;
-  const statusOp    = (c) => c.avail ? 0.85 : 0.70;
+  const getColor = (s) => s === 'available' ? palette.accent : s === 'charging' ? palette.warn : palette.mid;
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Card header */}
-      <rect x="18" y="10" width="164" height="16" rx="5" fill={palette.mid} opacity="0.18" />
-      <polygon points="97,13 92,19 95,19 90,25 102,18 99,18" fill={palette.accent} opacity="0.80" />
-      <rect x="106" y="13" width="50" height="5" rx="2.5" fill={palette.mid} opacity="0.40" />
-      <rect x="106" y="20" width="34" height="4" rx="2" fill={palette.mid} opacity="0.25" />
-      {connectors.map((c, i) => (
-        <g key={i}>
-          <rect x="18" y={32 + i * 22} width="164" height="18" rx="5"
-            fill={palette.mid} opacity="0.10"
-            stroke={statusColor(c)} strokeWidth="1" strokeOpacity={c.avail ? 0.40 : 0.15} />
-          {/* Connector icon — simplified plug rectangle */}
-          <rect x="26" y={36 + i * 22} width="10" height="10" rx="2"
-            fill={statusColor(c)} opacity={statusOp(c) * 0.7} />
-          {/* Connector type bar */}
-          <rect x="42" y={37 + i * 22} width={[36, 28, 44, 36][i]} height="5" rx="2.5"
-            fill={palette.white} opacity="0.40" />
-          {/* kW bar */}
-          <rect x="42" y={44 + i * 22} width={[24, 18, 20, 30][i]} height="4" rx="2"
-            fill={palette.mid} opacity="0.35" />
-          {/* Status badge */}
-          <rect x="148" y={35 + i * 22} width="28" height="12" rx="4"
-            fill={statusColor(c)} opacity={c.avail ? 0.25 : 0.15} />
-          <rect x="152" y={39 + i * 22} width="18" height="4" rx="2"
-            fill={statusColor(c)} opacity={statusOp(c)} />
-        </g>
-      ))}
+      {/* Header — station card */}
+      <rect x="16" y="8" width="168" height="14" rx="5" fill={palette.mid} opacity="0.18" />
+      <polygon points="28,11 24,17 27,17 23,22 33,16 30,16" fill={palette.accent} opacity="0.85" />
+      <rect x="38" y="11" width="56" height="4" rx="2" fill={palette.mid} opacity="0.45" />
+      <rect x="38" y="17" width="38" height="3" rx="1.5" fill={palette.mid} opacity="0.28" />
+      {connectors.map(({ status, barW }, i) => {
+        const col = getColor(status);
+        const isActive = status !== 'offline';
+        return (
+          <g key={i}>
+            <rect x="16" y={28 + i * 23} width="168" height="19" rx="5"
+              fill={palette.mid} opacity="0.10"
+              stroke={col} strokeWidth="0.75" strokeOpacity={isActive ? 0.35 : 0.15} />
+            {/* Plug body */}
+            <rect x="24" y={32 + i * 23} width="9" height="11" rx="2"
+              fill={col} opacity={isActive ? 0.75 : 0.30} />
+            {/* Plug prongs */}
+            <rect x="26" y={30 + i * 23} width="2" height="3" rx="1"
+              fill={col} opacity={isActive ? 0.70 : 0.28} />
+            <rect x="30" y={30 + i * 23} width="2" height="3" rx="1"
+              fill={col} opacity={isActive ? 0.70 : 0.28} />
+            {/* Connector type bar */}
+            <rect x="40" y={32 + i * 23} width={barW[0]} height="5" rx="2.5"
+              fill={palette.white} opacity="0.38" />
+            {/* kW bar */}
+            <rect x="40" y={39 + i * 23} width={barW[1]} height="4" rx="2"
+              fill={palette.mid} opacity="0.32" />
+            {/* Status badge */}
+            <rect x="148" y={31 + i * 23} width="30" height="13" rx="4"
+              fill={col} opacity={isActive ? 0.22 : 0.12} />
+            <circle cx="156" cy={37 + i * 23} r="3.5"
+              fill={col} opacity={isActive ? 0.85 : 0.35} />
+            <rect x="163" y={35 + i * 23} width="12" height="4" rx="2"
+              fill={col} opacity={isActive ? 0.72 : 0.35} />
+          </g>
+        );
+      })}
     </svg>
   );
 }
@@ -1207,25 +1238,33 @@ export function IcoTruck() {
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Cargo trailer */}
-      <rect x="16" y="38" width="108" height="58" rx="5" fill={palette.mid} opacity="0.30" stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.50" />
-      {/* Trailer door mid-line */}
-      <line x1="16" y1="67" x2="124" y2="67" stroke={palette.mid} strokeWidth="1" opacity="0.25" />
-      {/* Cab */}
-      <rect x="124" y="52" width="58" height="44" rx="6" fill={palette.mid} opacity="0.45" stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.55" />
-      {/* Cab windshield */}
-      <rect x="130" y="57" width="38" height="22" rx="4" fill={palette.accent} opacity="0.25" stroke={palette.accent} strokeWidth="1" strokeOpacity="0.50" />
-      {/* Height restriction badge — triangle warning on trailer */}
-      <polygon points="70,44 62,58 78,58" fill={palette.warn} opacity="0.85" />
-      <rect x="68" y="50" width="4" height="5" rx="1" fill={palette.dark} opacity="0.7" />
-      <rect x="68" y="56" width="4" height="2" rx="1" fill={palette.dark} opacity="0.7" />
+      {/* Trailer body */}
+      <rect x="10" y="36" width="106" height="58" rx="5" fill={palette.mid} opacity="0.28"
+        stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.45" />
+      <line x1="63" y1="36" x2="63" y2="94" stroke={palette.mid} strokeWidth="1" opacity="0.22" />
+      <line x1="10" y1="65" x2="116" y2="65" stroke={palette.mid} strokeWidth="0.75" opacity="0.16" />
+      {/* Cab body */}
+      <rect x="116" y="48" width="64" height="46" rx="6" fill={palette.mid} opacity="0.38"
+        stroke={palette.mid} strokeWidth="1.5" strokeOpacity="0.48" />
+      {/* Nav screen inside cab windshield */}
+      <rect x="122" y="53" width="52" height="28" rx="5" fill={palette.dark} opacity="0.60" />
+      {/* Route path on screen */}
+      <path d="M 126,78 L 140,70 L 158,66 L 170,58"
+        fill="none" stroke={palette.accent} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.82" />
+      {/* Height restriction badge on route */}
+      <circle cx="141" cy="70" r="5" fill={palette.warn} opacity="0.85" />
+      <rect x="139" y="68" width="4" height="5" rx="1" fill={palette.dark} opacity="0.72" />
+      {/* Weight restriction badge on route */}
+      <circle cx="158" cy="66" r="5" fill={palette.warn} opacity="0.68" />
+      <rect x="155" y="65" width="6" height="2" rx="1" fill={palette.dark} opacity="0.72" />
+      <rect x="155" y="68" width="6" height="2" rx="1" fill={palette.dark} opacity="0.72" />
       {/* Wheels */}
-      <circle cx="44" cy="96" r="13" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
-      <circle cx="44" cy="96" r="5" fill={palette.mid} opacity="0.45" />
-      <circle cx="100" cy="96" r="13" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
-      <circle cx="100" cy="96" r="5" fill={palette.mid} opacity="0.45" />
-      <circle cx="150" cy="96" r="11" fill={palette.dark} stroke={palette.mid} strokeWidth="2.5" strokeOpacity="0.6" />
-      <circle cx="150" cy="96" r="4" fill={palette.mid} opacity="0.40" />
+      <circle cx="36" cy="94" r="13" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
+      <circle cx="36" cy="94" r="5" fill={palette.mid} opacity="0.45" />
+      <circle cx="88" cy="94" r="13" fill={palette.dark} stroke={palette.accent} strokeWidth="3" />
+      <circle cx="88" cy="94" r="5" fill={palette.mid} opacity="0.45" />
+      <circle cx="144" cy="94" r="11" fill={palette.dark} stroke={palette.mid} strokeWidth="2.5" strokeOpacity="0.55" />
+      <circle cx="144" cy="94" r="4" fill={palette.mid} opacity="0.40" />
     </svg>
   );
 }
@@ -1434,35 +1473,46 @@ export function IcoSpeechToText() {
 
 export function IcoAIConfig() {
   const { palette } = useIlloStyle();
-  // Color swatch grid — day/night split
-  const swatches = [
-    palette.accent, palette.navy, palette.mid, palette.soft,
-    palette.warn,   palette.dark, palette.white, palette.border ?? palette.mid,
+  // Code editor window — TAIA SDK initialisation
+  const lines = [
+    { indent: 0, w: 80, color: palette.accent,  op: 0.72 },
+    { indent: 1, w: 60, color: palette.mid,     op: 0.50 },
+    { indent: 1, w: 72, color: palette.accent,  op: 0.58 },
+    { indent: 0, w: 66, color: palette.warn,    op: 0.72 },
+    { indent: 2, w: 52, color: palette.mid,     op: 0.45 },
+    { indent: 2, w: 44, color: palette.accent,  op: 0.52 },
+    { indent: 0, w: 36, color: palette.mid,     op: 0.35 },
   ];
+  const lineH = 11, oy = 40, indent = 14;
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
-      {/* Day half — left */}
-      <rect x="10" y="10" width="88" height="110" rx="8" fill={palette.mid} opacity="0.14" />
-      {/* Night half — right */}
-      <rect x="102" y="10" width="88" height="110" rx="8" fill={palette.navy} opacity="0.35" />
-      {/* Divider */}
-      <line x1="100" y1="10" x2="100" y2="120" stroke={palette.mid} strokeWidth="1.5" opacity="0.30" strokeDasharray="4 3" />
-      {/* Swatches — 4 per side, stacked */}
-      {swatches.map((color, i) => {
-        const side = i < 4 ? 0 : 1;
-        const row  = i % 4;
-        const x    = side === 0 ? 18 : 110;
-        const y    = 22 + row * 24;
-        return (
-          <g key={i}>
-            <rect x={x} y={y} width="16" height="14" rx="3" fill={color} opacity={color === palette.dark ? 0.0 : 0.9}
-              stroke={palette.mid} strokeWidth="0.75" strokeOpacity="0.25" />
-            {color === palette.dark && <rect x={x} y={y} width="16" height="14" rx="3" fill={palette.white} opacity="0.12" stroke={palette.mid} strokeWidth="0.75" strokeOpacity="0.35" />}
-            <rect x={x + 22} y={y + 4} width={[40, 32, 36, 28][row]} height="5" rx="2.5" fill={palette.mid} opacity="0.35" />
-          </g>
-        );
-      })}
+      {/* Editor window frame */}
+      <rect x="14" y="10" width="172" height="112" rx="8" fill={palette.mid} opacity="0.14"
+        stroke={palette.mid} strokeWidth="1" strokeOpacity="0.22" />
+      {/* Title bar */}
+      <rect x="14" y="10" width="172" height="24" rx="8" fill={palette.mid} opacity="0.24" />
+      <rect x="14" y="26" width="172" height="8" fill={palette.mid} opacity="0.24" />
+      {/* Traffic light dots */}
+      <circle cx="28" cy="22" r="4" fill={palette.danger} opacity="0.75" />
+      <circle cx="40" cy="22" r="4" fill={palette.warn}   opacity="0.75" />
+      <circle cx="52" cy="22" r="4" fill={palette.accent} opacity="0.75" />
+      {/* Tab label bar */}
+      <rect x="80" y="19" width="52" height="5" rx="2.5" fill={palette.mid} opacity="0.40" />
+      {/* Code lines */}
+      {lines.map(({ indent: ind, w, color, op }, i) => (
+        <g key={i}>
+          <rect x="18" y={oy + i * lineH + 2} width="6" height="5" rx="1.5"
+            fill={palette.mid} opacity="0.20" />
+          <rect x={32 + ind * indent} y={oy + i * lineH + 2} width={w} height="6" rx="2.5"
+            fill={color} opacity={op} />
+          {ind > 0 && (
+            <rect x={32 + ind * indent + w + 6} y={oy + i * lineH + 3}
+              width={[0, 26, 18, 0, 16, 12, 0][i]} height="4" rx="2"
+              fill={palette.mid} opacity="0.25" />
+          )}
+        </g>
+      ))}
     </svg>
   );
 }
@@ -1803,27 +1853,30 @@ export function IcoNavSDKAdvanced() {
 
 export function IcoAreaAnalytics() {
   const { palette } = useIlloStyle();
-  // Vertical list: 5 countries with % coverage bars, green → amber → red
+  // 5 country coverage bars: green (high) → amber → red (low)
   const rows = [
-    { w: 118, color: palette.accent,  op: 0.80 },  // ~90%
-    { w:  96, color: palette.accent,  op: 0.65 },  // ~73%
-    { w:  72, color: palette.warn,    op: 0.80 },  // ~55%
-    { w:  44, color: palette.warn,    op: 0.70 },  // ~34%
-    { w:  20, color: palette.danger,  op: 0.75 },  // ~15%
+    { w: 116, color: palette.accent,  op: 0.82 },
+    { w:  90, color: palette.accent,  op: 0.65 },
+    { w:  70, color: palette.warn,    op: 0.82 },
+    { w:  48, color: palette.warn,    op: 0.72 },
+    { w:  22, color: palette.danger,  op: 0.78 },
   ];
-  const trackW = 130, ox = 54, oy = 15, rowH = 20;
+  const trackW = 120, ox = 62, oy = 11, rowH = 21;
   return (
     <svg viewBox="0 0 200 130" preserveAspectRatio="xMidYMid slice" style={{ width: '100%', height: '100%' }}>
       <rect width="200" height="130" fill={palette.dark} />
       {rows.map(({ w, color, op }, i) => (
         <g key={i}>
-          {/* Country flag placeholder */}
-          <rect x="14" y={oy + i * rowH + 3} width="30" height="14" rx="3" fill={palette.mid} opacity="0.22" />
-          <rect x="16" y={oy + i * rowH + 5} width="26" height="4" rx="2" fill={color} opacity={op * 0.5} />
+          {/* Flag block */}
+          <rect x="14" y={oy + i * rowH + 2} width="36" height="16" rx="4" fill={palette.mid} opacity="0.18" />
+          <rect x="14" y={oy + i * rowH + 2} width="36" height="5" rx="2" fill={color} opacity={op * 0.38} />
+          <rect x="14" y={oy + i * rowH + 8} width="36" height="5" rx="0" fill={palette.mid} opacity="0.10" />
           {/* Track */}
-          <rect x={ox} y={oy + i * rowH + 5} width={trackW} height="10" rx="4" fill={palette.mid} opacity="0.15" />
-          {/* Fill */}
-          <rect x={ox} y={oy + i * rowH + 5} width={w} height="10" rx="4" fill={color} opacity={op} />
+          <rect x={ox} y={oy + i * rowH + 4} width={trackW} height="12" rx="5" fill={palette.mid} opacity="0.14" />
+          {/* Coverage fill */}
+          <rect x={ox} y={oy + i * rowH + 4} width={w} height="12" rx="5" fill={color} opacity={op} />
+          {/* End cap dot */}
+          <circle cx={ox + w} cy={oy + i * rowH + 10} r="4" fill={color} opacity={Math.min(op + 0.10, 1.0)} />
         </g>
       ))}
     </svg>
