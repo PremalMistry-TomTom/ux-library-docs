@@ -2906,15 +2906,46 @@ function DocsPortal2Section() {
         </div>
       </Row>
 
-      {/* dp2-navsdk-card */}
-      <Row label="dp2-navsdk-card — featured SDK card" noBorder>
-        <div className="dp2-navsdk-card" style={{ display: 'flex', gap: 16, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--white)', maxWidth: 480 }}>
-          <div className="dp2-navsdk-img" style={{ width: 120, flexShrink: 0, background: '#1e1b4b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>🧭</div>
-          <div className="dp2-navsdk-wrap" style={{ padding: '16px 16px 16px 0', flex: 1 }}>
-            <div className="dp2-navsdk-badge" style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: 'var(--info-bg)', color: 'var(--info-text)', border: '1px solid var(--info-border)', display: 'inline-block', marginBottom: 6 }}>Navigation SDK</div>
-            <h2 className="dp2-navsdk-title" style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--black)', margin: '0 0 4px' }}>Build turn-by-turn navigation</h2>
-            <p className="dp2-navsdk-sub" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, margin: '0 0 10px' }}>For Android and iOS — batteries included.</p>
-            <button className="dp2-navsdk-cta" style={{ padding: '6px 14px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--black)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'default' }}>Get started →</button>
+      {/* dp2-navsdk-wrap + card */}
+      <Row label="dp2-navsdk-wrap — image background + dp2-navsdk-card overlay (position:absolute)" noBorder>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: 10, lineHeight: 1.6 }}>
+          <strong style={{ color: 'var(--black)' }}>Structure:</strong>{' '}
+          <code>.dp2-navsdk-wrap</code> (position:relative, overflow:hidden) wraps a{' '}
+          <code>.dp2-navsdk-img</code> background image/fill, with{' '}
+          <code>.dp2-navsdk-card</code> absolutely positioned over it (bottom:16px, left:16px).
+        </div>
+        {/* Default */}
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <div>
+            <StateLabel>Default</StateLabel>
+            <div className="dp2-navsdk-wrap">
+              {/* Background image fill */}
+              <div className="dp2-navsdk-img" style={{ background: 'linear-gradient(160deg, #1e1b4b 0%, #312e81 60%, #1e3a5f 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>
+                🧭
+              </div>
+              {/* Floating card overlay */}
+              <div className="dp2-navsdk-card">
+                <div className="dp2-navsdk-badge">Navigation SDK</div>
+                <h2 className="dp2-navsdk-title">Build turn-by-turn navigation</h2>
+                <p className="dp2-navsdk-sub">For Android and iOS — batteries included.</p>
+                <div className="dp2-navsdk-cta">Get started →</div>
+              </div>
+            </div>
+          </div>
+          {/* Hover */}
+          <div>
+            <StateLabel>Hover — card lifts (.dp2-navsdk-wrap:hover .dp2-navsdk-card)</StateLabel>
+            <div className="dp2-navsdk-wrap" style={{ cursor: 'default' }}>
+              <div className="dp2-navsdk-img" style={{ background: 'linear-gradient(160deg, #064e3b 0%, #065f46 60%, #0f4c75 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>
+                📍
+              </div>
+              <div className="dp2-navsdk-card" style={{ transform: 'translateY(-4px) translateX(4px) scale(1.02)' }}>
+                <div className="dp2-navsdk-badge">Maps SDK</div>
+                <h2 className="dp2-navsdk-title">Render interactive maps</h2>
+                <p className="dp2-navsdk-sub">Web, Android and iOS — fully customisable styles.</p>
+                <div className="dp2-navsdk-cta">Get started →</div>
+              </div>
+            </div>
           </div>
         </div>
       </Row>
