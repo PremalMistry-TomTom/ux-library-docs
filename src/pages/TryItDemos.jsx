@@ -1196,9 +1196,29 @@ function loadSdk() {
   });
 }
 
+/* ─── Theme hook — watches data-theme on <html> ──────────────────────────────── */
+function useMapTheme() {
+  const [isDark, setIsDark] = useState(
+    () => document.documentElement.getAttribute('data-theme') === 'dark'
+  );
+  useEffect(() => {
+    const obs = new MutationObserver(() =>
+      setIsDark(document.documentElement.getAttribute('data-theme') === 'dark')
+    );
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => obs.disconnect();
+  }, []);
+  return isDark;
+}
+
+const MAP_STYLE_DAY   = 'tomtom://vector/1/basic-main';
+const MAP_STYLE_NIGHT = 'tomtom://vector/1/basic-night';
+
+/* ─── SDK Polygon Map ────────────────────────────────────────────────────────── */
 function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
   const containerRef = useRef(null);
   const mapRef       = useRef(null);
+  const isDark       = useMapTheme();
 
   useEffect(() => {
     if (!result || !apiKey || !containerRef.current) return;
@@ -1218,7 +1238,6 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
     let map;
     loadSdk().then(tt => {
       if (!containerRef.current) return;
-      /* Ensure the container has explicit pixel dimensions before SDK measures it */
       containerRef.current.style.width  = '100%';
       containerRef.current.style.height = '340px';
       map = tt.map({
@@ -1226,52 +1245,31 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
         container: containerRef.current,
         center: [center.longitude, center.latitude],
         zoom: 10,
+        style: isDark ? MAP_STYLE_NIGHT : MAP_STYLE_DAY,
       });
       mapRef.current = map;
 
-      /* resize ensures the container is fully painted before the SDK measures it */
       map.once('load', () => {
         map.resize();
-
-        /* Fill */
         map.addSource('range', { type: 'geojson', data: geojson });
-        map.addLayer({
-          id: 'range-fill',
-          type: 'fill',
-          source: 'range',
-          paint: { 'fill-color': '#e2001a', 'fill-opacity': 0.15 },
-        });
-        /* Outline */
-        map.addLayer({
-          id: 'range-line',
-          type: 'line',
-          source: 'range',
-          paint: { 'line-color': '#e2001a', 'line-width': 2, 'line-opacity': 0.8 },
-        });
-        /* Origin marker */
+        map.addLayer({ id: 'range-fill', type: 'fill', source: 'range', paint: { 'fill-color': '#e2001a', 'fill-opacity': 0.15 } });
+        map.addLayer({ id: 'range-line', type: 'line', source: 'range', paint: { 'line-color': '#e2001a', 'line-width': 2, 'line-opacity': 0.8 } });
         const el = document.createElement('div');
         el.style.cssText = 'width:12px;height:12px;border-radius:50%;background:#e2001a;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4)';
-        new tt.Marker({ element: el })
-          .setLngLat([center.longitude, center.latitude])
-          .addTo(map);
+        new tt.Marker({ element: el }).setLngLat([center.longitude, center.latitude]).addTo(map);
       });
     }).catch(err => console.warn('TomTom SDK failed to load', err));
 
     return () => {
       if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
     };
-  /* Re-draw whenever the API result changes */
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result, apiKey]);
+  }, [result, apiKey, isDark]);
 
   return (
     <div style={{ position: 'relative', borderTop: '1px solid var(--border)' }}>
       <div ref={containerRef} style={{ width: '100%', height: 340, minHeight: 340 }} />
-      <span style={{
-        position: 'absolute', bottom: 8, right: 8,
-        fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff',
-        padding: '2px 6px', borderRadius: 3, pointerEvents: 'none',
-      }}>
+      <span style={{ position: 'absolute', bottom: 8, right: 8, fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff', padding: '2px 6px', borderRadius: 3, pointerEvents: 'none' }}>
         Maps Web SDK — isochrone polygon
       </span>
     </div>
@@ -1282,6 +1280,7 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
 function SdkMapOutput({ demo, result, values, apiKey }) {
   const containerRef = useRef(null);
   const mapRef       = useRef(null);
+  const isDark       = useMapTheme();
 
   useEffect(() => {
     if (!result || !apiKey || !containerRef.current) return;
@@ -1299,6 +1298,7 @@ function SdkMapOutput({ demo, result, values, apiKey }) {
         container: containerRef.current,
         center: [center.lon, center.lat],
         zoom: center.zoom ?? 12,
+        style: isDark ? MAP_STYLE_NIGHT : MAP_STYLE_DAY,
       });
       mapRef.current = map;
 
@@ -1312,16 +1312,14 @@ function SdkMapOutput({ demo, result, values, apiKey }) {
       if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [result, apiKey]);
+  }, [result, apiKey, isDark]);
 
   return (
     <div style={{ position: 'relative', borderTop: '1px solid var(--border)' }}>
       <div ref={containerRef} style={{ width: '100%', height: 320, minHeight: 320 }} />
-      <span style={{
-        position: 'absolute', bottom: 8, right: 8, pointerEvents: 'none',
-        fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff',
-        padding: '2px 6px', borderRadius: 3,
-      }}>Maps Web SDK</span>
+      <span style={{ position: 'absolute', bottom: 8, right: 8, pointerEvents: 'none', fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff', padding: '2px 6px', borderRadius: 3 }}>
+        Maps Web SDK
+      </span>
     </div>
   );
 }
