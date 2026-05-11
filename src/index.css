@@ -1433,7 +1433,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   border-top: 1px solid var(--border);
   background: var(--white);
 }
-[data-theme="dark"] .sidenav-drawer-footer { background: var(--s-hi); border-color: var(--border); }
+[data-theme="dark"] .sidenav-drawer-footer { background: var(--s0); border-color: var(--border); }
 .sidenav-drawer--open {
   transform: translateX(0);
 }
@@ -1474,8 +1474,8 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 }
 .sidenav-drawer-close:hover { background: var(--bg); color: var(--black); }
 
-[data-theme="dark"] .sidenav-drawer { background: var(--s-hi); }
-[data-theme="dark"] .sidenav-drawer-header { background: var(--s-hi); }
+[data-theme="dark"] .sidenav-drawer { background: var(--s0); }
+[data-theme="dark"] .sidenav-drawer-header { background: var(--s0); }
 [data-theme="dark"] .sidenav-drawer-close { border-color: var(--border); }
 
 
@@ -1540,10 +1540,10 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 }
 
 [data-theme="dark"] .gh-mobile-menu {
-  background: var(--s-hi);
+  background: var(--s0);
   border-color: var(--border);
 }
-[data-theme="dark"] .gh-mobile-link:hover { background: #252525; }
+[data-theme="dark"] .gh-mobile-link:hover { background: var(--s1); }
 
 /* ── Page Actions bar (Stripe-style) ── */
 .page-actions {
@@ -2743,9 +2743,10 @@ html.ai-panel-open .page {
 
 /* ── Footer ── */
 .dp2-footer {
-  background: var(--s-hi);
+  background: #1a1a22;
   padding: 0;
 }
+[data-theme="dark"] .dp2-footer { background: #0f0f18; }
 .dp2-footer-inner {
   max-width: 1200px;
   margin: 0 auto;

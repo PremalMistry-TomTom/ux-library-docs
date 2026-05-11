@@ -17,6 +17,7 @@ import DocFeatureTemplate from './DocFeatureTemplate';
 import DocUseCaseTemplate from './DocUseCaseTemplate';
 import DocDosDonts        from './DocDosDonts';
 import IconStyleSandbox   from './IconStyleSandbox';
+import TryItDemos        from './TryItDemos';
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
   { id: 'doc-usecase',         label: 'Use case template',         icon: '✅',  group: 'Doc authoring' },
   { id: 'doc-dosdont',         label: "Dos & Don'ts",              icon: '🚦',  group: 'Doc authoring' },
   { id: 'icon-sandbox',        label: 'Icon style sandbox',        icon: '✦',   group: 'Illustration' },
+  { id: 'try-it-demos',        label: 'Try it — endpoint demos',   icon: '▶',   group: 'API demos' },
 ];
 
 /* ─── Icons ──────────────────────────────────────────────────────────────────── */
@@ -81,6 +83,7 @@ function PlumbingPage({ pageId }) {
     case 'doc-usecase':         return <DocUseCaseTemplate />;
     case 'doc-dosdont':         return <DocDosDonts />;
     case 'icon-sandbox':        return <IconStyleSandbox />;
+    case 'try-it-demos':        return <TryItDemos />;
     default:                    return <Typography />;
   }
 }
