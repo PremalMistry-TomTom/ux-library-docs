@@ -1658,6 +1658,492 @@ function StatusSection() {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
+// §13  NAVIGATION CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function NavCardsSection() {
+  const Thumb = ({ bg = '#e8f0fe', accent = '#4f46e5' }) => (
+    <div style={{ width: '100%', height: '100%', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: 48, height: 48, borderRadius: 12, background: accent, opacity: 0.18 }} />
+      <div style={{ position: 'absolute', width: 28, height: 28, borderRadius: 8, background: accent, opacity: 0.35 }} />
+    </div>
+  );
+
+  return (
+    <GallerySection title="Navigation Cards" desc=".nav-card, .example-card — illustrated destination cards">
+      <Row label="nav-card — default / hover">
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {/* Default */}
+          <div style={{ width: 200 }}>
+            <StateLabel>Default</StateLabel>
+            <div className="nav-card" style={{ pointerEvents: 'none' }}>
+              <div className="nav-card-thumb"><Thumb bg="#e8f0fe" accent="#4f46e5" /></div>
+              <div className="nav-card-body">
+                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 4 }}>Routing API</span>
+                <p style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, margin: 0 }}>Calculate routes between locations with live traffic.</p>
+              </div>
+            </div>
+          </div>
+          {/* Hover (CSS :hover — simulated with box-shadow) */}
+          <div style={{ width: 200 }}>
+            <StateLabel>Hover (simulated)</StateLabel>
+            <div className="nav-card" style={{ borderColor: 'var(--black)', boxShadow: 'var(--e2)', pointerEvents: 'none' }}>
+              <div className="nav-card-thumb"><Thumb bg="#fef3c7" accent="#d97706" /></div>
+              <div className="nav-card-body">
+                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 4 }}>Search API</span>
+                <p style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, margin: 0 }}>Find POIs and addresses worldwide.</p>
+              </div>
+            </div>
+          </div>
+          {/* Disabled */}
+          <div style={{ width: 200 }}>
+            <StateLabel>Disabled (.nav-card--disabled)</StateLabel>
+            <div className="nav-card nav-card--disabled">
+              <div className="nav-card-thumb"><Thumb bg="#f0fdf4" accent="#16a34a" /></div>
+              <div className="nav-card-body">
+                <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 4 }}>EV Routing</span>
+                <p style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, margin: 0 }}>Coming soon.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Row>
+      <Row label="example-card (nav-card variant)" noBorder>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ width: 200 }}>
+            <StateLabel>Default</StateLabel>
+            <a className="nav-card example-card" href="#" onClick={e => e.preventDefault()}>
+              <div className="example-card-thumb">
+                <Thumb bg="#fdf4ff" accent="#9333ea" />
+              </div>
+              <div className="example-card-body">
+                <span className="example-card-title">EV Station Finder</span>
+                <p className="example-card-desc">Interactive demo — search nearby charging stations and show live availability.</p>
+                <div className="example-card-tags">
+                  <span style={{ display: 'inline-flex', alignItems: 'center', padding: '2px 8px', borderRadius: 99, fontSize: '0.625rem', fontWeight: 600, background: 'var(--success-bg)', color: 'var(--success-text)' }}>Live</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', padding: '2px 8px', borderRadius: 99, fontSize: '0.625rem', fontWeight: 600, background: 'var(--info-bg)', color: 'var(--info-text)' }}>Custom</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §14  DOMAIN CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function DomainCardsSection() {
+  const Illo = ({ bg = '#e8f0fe' }) => (
+    <div style={{ width: '100%', height: '100%', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'rgba(0,0,0,0.08)' }} />
+    </div>
+  );
+  const ArrowIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+
+  return (
+    <GallerySection title="Domain Cards" desc=".domain-card — product/domain landing destination cards">
+      <Row label="variants">
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {/* Default */}
+          <div style={{ width: 190 }}>
+            <StateLabel>Default</StateLabel>
+            <div className="domain-card" style={{ display: 'flex', flexDirection: 'column', pointerEvents: 'none' }}>
+              <div className="domain-card-illo"><Illo bg="#dbeafe" /></div>
+              <div className="domain-card-bottom">
+                <div className="domain-card-body">
+                  <span className="domain-card-title">Navigation SDK</span>
+                  <p className="domain-card-desc">Turn-by-turn guidance with real-time rerouting.</p>
+                </div>
+                <span className="domain-card-arrow"><ArrowIcon /></span>
+              </div>
+            </div>
+          </div>
+          {/* Hover */}
+          <div style={{ width: 190 }}>
+            <StateLabel>Hover (simulated)</StateLabel>
+            <div className="domain-card" style={{ borderColor: 'var(--black)', boxShadow: 'var(--e2)', display: 'flex', flexDirection: 'column', pointerEvents: 'none' }}>
+              <div className="domain-card-illo"><Illo bg="#dcfce7" /></div>
+              <div className="domain-card-bottom" style={{ background: 'var(--bg)' }}>
+                <div className="domain-card-body">
+                  <span className="domain-card-title">Traffic API</span>
+                  <p className="domain-card-desc">Real-time flow, incidents, and historical data.</p>
+                </div>
+                <span className="domain-card-arrow"><ArrowIcon /></span>
+              </div>
+            </div>
+          </div>
+          {/* Soon */}
+          <div style={{ width: 190 }}>
+            <StateLabel>Coming soon (.domain-card--soon)</StateLabel>
+            <div className="domain-card domain-card--soon" style={{ display: 'flex', flexDirection: 'column', pointerEvents: 'none' }}>
+              <div className="domain-card-illo"><Illo bg="#fdf4ff" /></div>
+              <div className="domain-card-bottom">
+                <div className="domain-card-body">
+                  <span className="domain-card-title">Fleet SDK</span>
+                  <p className="domain-card-desc" />
+                  <span className="domain-card-soon-badge">Coming soon</span>
+                </div>
+                <span className="domain-card-arrow"><ArrowIcon /></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §15  API LINKS & API REF CHIP
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ApiLinksSection() {
+  return (
+    <GallerySection title="ApiLinks + ApiRef chip" desc=".api-links-block, .api-links-card, .api-ref-chip">
+      <Row label="api-links-grid — 3 cards">
+        <div style={{ width: '100%', maxWidth: 640 }}>
+          <div className="api-links-block">
+            <div className="api-links-header">APIs used on this page</div>
+            <div className="api-links-grid">
+              {[
+                { type: 'REST API',    col: { bg: '#fff5f5', border: '#fecaca', text: '#c0392b' }, name: 'Long Distance EV Route API', desc: 'Multi-stop EV route planning with charging stops' },
+                { type: 'Android SDK', col: { bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8' }, name: 'Navigation SDK for Android',   desc: 'Turn-by-turn guidance with live rerouting' },
+                { type: 'iOS SDK',     col: { bg: '#f0fdf4', border: '#bbf7d0', text: '#15803d' }, name: 'Navigation SDK for iOS',       desc: 'SwiftUI and UIKit navigation integration' },
+              ].map(item => (
+                <a key={item.name} className="api-links-card" href="#" onClick={e => e.preventDefault()}>
+                  <span className="api-links-badge" style={{ background: item.col.bg, border: `1px solid ${item.col.border}`, color: item.col.text }}>{item.type}</span>
+                  <span className="api-links-name">{item.name}</span>
+                  <span className="api-links-desc">{item.desc}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Row>
+      <Row label="api-links-card — hover state">
+        <div>
+          <StateLabel>Hover (simulated)</StateLabel>
+          <a className="api-links-card" href="#" onClick={e => e.preventDefault()} style={{ display: 'flex', flexDirection: 'column', gap: 4, borderColor: 'var(--brand)', boxShadow: '0 4px 20px rgba(223,27,18,0.12)', maxWidth: 260 }}>
+            <span className="api-links-badge" style={{ background: '#fff5f5', border: '1px solid #fecaca', color: '#c0392b' }}>REST API</span>
+            <span className="api-links-name">Routing API</span>
+            <span className="api-links-desc">Calculate routes with live traffic and waypoints</span>
+          </a>
+        </div>
+      </Row>
+      <Row label="api-ref-chip — inline link" noBorder>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+          <StateLabel>Default</StateLabel>
+          <a className="api-ref-chip" href="#" onClick={e => e.preventDefault()}>
+            Routing API
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <StateLabel>Hover (simulated)</StateLabel>
+          <a className="api-ref-chip" href="#" onClick={e => e.preventDefault()} style={{ background: 'var(--danger-bg)', borderColor: 'var(--red)', color: 'var(--red)' }}>
+            LDEVR API
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §16  PRIVATE PREVIEW BANNER
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PrivatePreviewSection() {
+  const LightningIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M13 2L4.5 13.5H11L10 22L20.5 10H14L13 2Z"/>
+    </svg>
+  );
+  return (
+    <GallerySection title="Private Preview Banner" desc=".ppb-root — shown at top of private-preview API pages">
+      <Row label="default" noBorder>
+        <div style={{ width: '100%', maxWidth: 640 }}>
+          <div className="ppb-root">
+            <div className="ppb-icon"><LightningIcon /></div>
+            <div className="ppb-body">
+              <p className="ppb-title">Private Preview — Long Distance EV Route API v2</p>
+              <p className="ppb-desc">
+                This version is currently available to selected partners only. Features, request formats, and
+                response schemas are subject to change before general availability. Do not use in production.
+                To request access,{' '}
+                <a href="#" onClick={e => e.preventDefault()} className="ppb-link">contact TomTom developer support</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §17  BENEFIT CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function BenefitCardsSection() {
+  return (
+    <GallerySection title="Benefit Cards" desc=".benefit-grid, .benefit-card — 2-col feature highlights">
+      <Row label="2-col grid" noBorder>
+        <div style={{ width: '100%', maxWidth: 560 }}>
+          <div className="benefit-grid">
+            {[
+              { icon: '⚡', title: 'Real-time charging data',  desc: 'Live availability from 800+ network operators across 50 countries.' },
+              { icon: '🔋', title: 'Battery-aware routing',    desc: 'Factor in current SoC, charging curves, and auxiliary power draw.' },
+              { icon: '🗺️', title: 'Seamless SDK integration', desc: 'Results plug directly into the Navigation SDK — no mapping required.' },
+              { icon: '🔄', title: 'Automatic re-routing',     desc: 'Dynamically updates the plan if conditions change mid-journey.' },
+            ].map(b => (
+              <div key={b.title} className="benefit-card">
+                <div className="benefit-icon">{b.icon}</div>
+                <div className="benefit-title">{b.title}</div>
+                <div className="benefit-desc">{b.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §18  PAGE ANATOMY SHELL
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PageAnatomySection() {
+  return (
+    <GallerySection title="Page Anatomy Shell" desc=".page-header, .quick-answer, .zone, .page-related, .feedback-strip">
+
+      {/* page-header */}
+      <Row label=".page-header">
+        <div style={{ width: '100%', maxWidth: 640, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <div className="page-header" style={{ padding: '16px 20px', borderBottom: '1px solid var(--border)' }}>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '1.375rem', fontWeight: 800, color: 'var(--black)', fontFamily: 'var(--font-display)' }}>
+                Long Distance EV Route API
+              </h1>
+            </div>
+            {/* PageActions placeholder */}
+            <div style={{ display: 'flex', gap: 6 }}>
+              <button className="page-action-btn" style={{ pointerEvents: 'none' }}>★ Bookmark</button>
+              <button className="page-action-btn" style={{ pointerEvents: 'none' }}>⎘ Copy link</button>
+            </div>
+          </div>
+          {/* quick-answer */}
+          <div style={{ padding: '12px 20px', borderBottom: '1px solid var(--border)', background: 'var(--white)' }}>
+            <p className="quick-answer" style={{ margin: 0 }}>
+              Plan a multi-stop EV journey from origin to destination with automatic charging stop selection,
+              battery-aware routing, and live charging availability.
+            </p>
+          </div>
+          <div style={{ padding: '12px 20px', fontSize: '0.75rem', color: 'var(--muted)' }}>
+            ↑ <code>.page-header</code> + <code>.quick-answer</code> — every page starts with these two blocks
+          </div>
+        </div>
+      </Row>
+
+      {/* zone */}
+      <Row label=".zone — content section with .sh heading">
+        <div style={{ width: '100%', maxWidth: 640 }}>
+          <div className="zone">
+            <h2 className="sh" id="anatomy-demo-sh">Request Parameters</h2>
+            <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, margin: '0 0 12px' }}>
+              All route coordinates go in the URL path. Battery and connector settings go in the query string.
+            </p>
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)', borderTop: '1px dashed var(--border)', paddingTop: 8, marginTop: 8 }}>
+              ↑ <code>.zone</code> wrapper + <code>h2.sh</code> section heading
+            </div>
+          </div>
+        </div>
+      </Row>
+
+      {/* page-related */}
+      <Row label=".page-related + .page-related-chip">
+        <div style={{ width: '100%', maxWidth: 640 }}>
+          <div className="page-related">
+            <button className="page-related-chip">Introduction</button>
+            <button className="page-related-chip">Battery Model</button>
+            <button className="page-related-chip">Connector Types</button>
+            <button className="page-related-chip">Charging Stops</button>
+            <button className="page-related-chip">Batch Requests</button>
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+            ↑ <code>.page-related</code> chip row — always at page bottom, 3–5 chips
+          </div>
+        </div>
+      </Row>
+
+      {/* feedback-strip */}
+      <Row label=".feedback-strip" noBorder>
+        <div style={{ width: '100%', maxWidth: 640 }}>
+          <div className="feedback-strip">
+            <span>Was this page helpful?</span>
+            <button>👍 Yes</button>
+            <button>👎 No</button>
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 6 }}>
+            ↑ <code>.feedback-strip</code> — optional CTA below page-related
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §19  TOKEN NAMING ANATOMY
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TokenNamingSection() {
+  return (
+    <GallerySection title="Token Naming Anatomy" desc=".tna-* — colour-coded token name breakdown">
+      <Row label="full token anatomy" noBorder>
+        <div>
+          <div className="tna-token">--color-brand-primary-default</div>
+          <div className="tna-parts">
+            <div className="tna-part tna-prefix">
+              <div className="tna-highlight">color</div>
+              <div className="tna-part-label">Category</div>
+            </div>
+            <div className="tna-sep">-</div>
+            <div className="tna-part tna-tier">
+              <div className="tna-highlight">brand</div>
+              <div className="tna-part-label">Tier</div>
+            </div>
+            <div className="tna-sep">-</div>
+            <div className="tna-part tna-type">
+              <div className="tna-highlight">primary</div>
+              <div className="tna-part-label">Type</div>
+            </div>
+            <div className="tna-sep">-</div>
+            <div className="tna-part tna-name">
+              <div className="tna-highlight">default</div>
+              <div className="tna-part-label">Variant</div>
+            </div>
+          </div>
+          <p style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 16, lineHeight: 1.6 }}>
+            Each segment highlighted with its semantic colour token:
+            <code style={{ margin: '0 4px', fontSize: '0.7rem' }}>.tna-prefix</code>→ info,
+            <code style={{ margin: '0 4px', fontSize: '0.7rem' }}>.tna-tier</code>→ success,
+            <code style={{ margin: '0 4px', fontSize: '0.7rem' }}>.tna-type</code>→ warn,
+            <code style={{ margin: '0 4px', fontSize: '0.7rem' }}>.tna-name</code>→ danger/purple.
+          </p>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §20  THEMING CARD
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ThemingCardSection() {
+  return (
+    <GallerySection title="Theming Card" desc=".tm-card, .tm-bar, .tm-btns, .tm-btn-primary, .tm-btn-secondary">
+      <Row label="tm-card specimen" noBorder>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          {/* Light variant */}
+          <div style={{ width: 180 }}>
+            <StateLabel>Light theme</StateLabel>
+            <div className="tm-card" style={{ width: 180 }}>
+              <div className="tm-bar" style={{ height: 8, background: 'var(--brand)', borderRadius: '0 0 4px 4px' }} />
+              <div style={{ padding: '10px 10px 4px', display: 'flex', gap: 6 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 6, background: 'var(--bg)' }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ height: 8, background: 'var(--border)', borderRadius: 3, marginBottom: 5 }} />
+                  <div style={{ height: 6, width: '70%', background: 'var(--border)', borderRadius: 3 }} />
+                </div>
+              </div>
+              <div className="tm-btns">
+                <button className="tm-btn-primary" style={{ pointerEvents: 'none' }}>Primary</button>
+                <button className="tm-btn-secondary" style={{ pointerEvents: 'none', color: 'var(--mid)', borderColor: 'var(--border)' }}>Secondary</button>
+              </div>
+              <div style={{ display: 'flex', gap: 4, padding: '4px 10px 10px', alignItems: 'center' }}>
+                <div className="tm-dot" style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--brand)' }} />
+                <div className="tm-label" style={{ fontSize: '0.625rem', color: 'var(--muted)', fontWeight: 600 }}>TomTom Red</div>
+              </div>
+            </div>
+          </div>
+          {/* Dark variant hint */}
+          <div style={{ width: 180 }}>
+            <StateLabel>Dark theme (tm-card in dark mode)</StateLabel>
+            <div className="tm-card" style={{ width: 180, background: '#1a1a2e', borderColor: '#2d2d4e' }}>
+              <div className="tm-bar" style={{ height: 8, background: 'var(--brand)', borderRadius: '0 0 4px 4px' }} />
+              <div style={{ padding: '10px 10px 4px', display: 'flex', gap: 6 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 6, background: '#2d2d4e' }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ height: 8, background: '#2d2d4e', borderRadius: 3, marginBottom: 5 }} />
+                  <div style={{ height: 6, width: '70%', background: '#2d2d4e', borderRadius: 3 }} />
+                </div>
+              </div>
+              <div className="tm-btns">
+                <button className="tm-btn-primary" style={{ pointerEvents: 'none' }}>Primary</button>
+                <button className="tm-btn-secondary" style={{ pointerEvents: 'none', color: '#94a3b8', borderColor: '#2d2d4e' }}>Secondary</button>
+              </div>
+              <div style={{ display: 'flex', gap: 4, padding: '4px 10px 10px', alignItems: 'center' }}>
+                <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--brand)' }} />
+                <div style={{ fontSize: '0.625rem', color: '#64748b', fontWeight: 600 }}>TomTom Red</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §21  SPEC METHOD TABLE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SpecMethodTableSection() {
+  const rows = [
+    { val: 'car',          ctx: 'travelMode',   highlight: false },
+    { val: 'truck',        ctx: 'travelMode',   highlight: false },
+    { val: 'electric',     ctx: 'vehicleEngineType', highlight: true  },
+    { val: 'combustion',   ctx: 'vehicleEngineType', highlight: false },
+    { val: 'IEC62196Type2CCS', ctx: 'connectorSet', highlight: false },
+  ];
+  return (
+    <GallerySection title="Spec Method Table" desc=".smt-row, .smt-val, .smt-ctx, .smt-highlight — enumerated values table">
+      <Row label="table with highlight row" noBorder>
+        <div style={{ width: '100%', maxWidth: 480, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          {/* Header */}
+          <div className="smt-row smt-header">
+            <span>Value</span>
+            <span>Parameter</span>
+            <span>Notes</span>
+          </div>
+          {/* Rows */}
+          {rows.map(r => (
+            <div key={r.val} className={`smt-row${r.highlight ? ' smt-highlight' : ''}`}>
+              <span className="smt-val">{r.val}</span>
+              <span className="smt-ctx">{r.ctx}</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--mid)' }}>
+                {r.highlight ? <><span className="smt-default">default</span> Uses EV consumption model</> : '—'}
+              </span>
+            </div>
+          ))}
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ROOT — PAGE HEADER + ALL SECTIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -1695,6 +2181,15 @@ export default function UIComponentGallery() {
             ['#s10', '10 Scenarios'],
             ['#s11', '11 Tables'],
             ['#s12', '12 Status'],
+            ['#s13', '13 Nav Cards'],
+            ['#s14', '14 Domain Cards'],
+            ['#s15', '15 ApiLinks'],
+            ['#s16', '16 PPB'],
+            ['#s17', '17 Benefits'],
+            ['#s18', '18 Page Shell'],
+            ['#s19', '19 Token Names'],
+            ['#s20', '20 Theming'],
+            ['#s21', '21 Spec Table'],
           ].map(([href, label]) => (
             <a
               key={href}
@@ -1728,13 +2223,22 @@ export default function UIComponentGallery() {
       <div id="s10"><ScenarioCardsSection /></div>
       <div id="s11"><TablesSection /></div>
       <div id="s12"><StatusSection /></div>
+      <div id="s13"><NavCardsSection /></div>
+      <div id="s14"><DomainCardsSection /></div>
+      <div id="s15"><ApiLinksSection /></div>
+      <div id="s16"><PrivatePreviewSection /></div>
+      <div id="s17"><BenefitCardsSection /></div>
+      <div id="s18"><PageAnatomySection /></div>
+      <div id="s19"><TokenNamingSection /></div>
+      <div id="s20"><ThemingCardSection /></div>
+      <div id="s21"><SpecMethodTableSection /></div>
 
       {/* Footer note */}
       <div style={{
         marginTop: 12, paddingTop: 20, borderTop: '1px solid var(--border)',
         fontSize: '0.75rem', color: 'var(--t-dis)', lineHeight: 1.6,
       }}>
-        Internal audit page · Plumbing Portal · All components sourced from{' '}
+        Internal audit page · Plumbing Portal · 21 sections · All components sourced from{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/components/ui/</code> and{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/index.css</code>
       </div>
