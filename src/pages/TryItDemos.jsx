@@ -1458,7 +1458,6 @@ export function TryItPanel({ demo, apiKey }) {
 
   const ps = PRODUCT_STYLES[demo.product] || { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' };
   const ms = METHOD_STYLES[demo.method] || { bg: '#f1f5f9', text: '#334155' };
-  const rb = RENDER_BADGES[demo.renderMode] || RENDER_BADGES.table;
 
   /* tile/image endpoints — no fetch needed */
   const isTileMode       = demo.renderMode === 'tile'        && demo.tileUrl;
@@ -1510,8 +1509,14 @@ export function TryItPanel({ demo, apiKey }) {
         <span style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, border: `1px solid ${ps.border}`, background: ps.bg, color: ps.text }}>{demo.product}</span>
         <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: ms.bg, color: ms.text, letterSpacing: '0.04em' }}>{demo.method}</span>
         <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', flex: 1 }}>{demo.endpoint}</span>
-        <span style={{ fontSize: '0.5625rem', fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: rb.bg, color: rb.text }}>{rb.label}</span>
         {demo.draft && <span style={{ fontSize: '0.5625rem', padding: '2px 6px', borderRadius: 4, background: '#fef9c3', color: '#854d0e', border: '1px solid #fde68a' }}>URL unverified</span>}
+        <button
+          onClick={run}
+          disabled={!apiKey || status === 'running'}
+          style={{ padding: '4px 12px', borderRadius: 5, border: 'none', background: !apiKey ? 'var(--border)' : status === 'running' ? 'var(--mid)' : 'var(--brand,#e2001a)', color: '#fff', fontSize: '0.6875rem', fontWeight: 700, cursor: !apiKey || status === 'running' ? 'not-allowed' : 'pointer', flexShrink: 0 }}
+        >
+          {status === 'running' ? '…' : '▶ Preview'}
+        </button>
       </div>
 
       {/* Description */}
@@ -1548,13 +1553,6 @@ export function TryItPanel({ demo, apiKey }) {
             )}
           </div>
         ))}
-        <button
-          onClick={run}
-          disabled={!apiKey || status === 'running'}
-          style={{ alignSelf: 'flex-end', padding: '6px 14px', borderRadius: 6, border: 'none', background: !apiKey ? 'var(--border)' : status === 'running' ? 'var(--mid)' : 'var(--brand,#e2001a)', color: '#fff', fontSize: '0.75rem', fontWeight: 700, cursor: !apiKey || status === 'running' ? 'not-allowed' : 'pointer', flexShrink: 0 }}
-        >
-          {status === 'running' ? '…' : isTileMode || isImageMode ? '▶ Preview' : '▶ Run'}
-        </button>
       </div>
 
       {/* SDK panel */}
@@ -1630,7 +1628,7 @@ export function TryItPanel({ demo, apiKey }) {
       {/* Idle state */}
       {status === 'idle' && !isSdkMode && !isSdkPolygonMode && !isSdkMapMode && (
         <div style={{ padding: '10px 14px', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', color: 'var(--muted)', background: 'var(--bg)', fontStyle: 'italic' }}>
-          {apiKey ? 'Click Run to see a live response.' : '⚠ Enter your API key above to enable live calls.'}
+          {apiKey ? 'Click Preview to see a live response.' : '⚠ Enter your API key above to enable live calls.'}
         </div>
       )}
     </div>
