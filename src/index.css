@@ -2824,13 +2824,12 @@ html.ai-panel-open .page {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 .dp2-discovery-section {
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--b-lo);
+  padding-bottom: 0;
 }
 
 .dp2-discovery-container {
   padding-top: 48px;
-  padding-bottom: 56px;
+  padding-bottom: 12px;
 }
 
 /* Section label (Discovery + Catalogue headings) */
@@ -2858,14 +2857,13 @@ html.ai-panel-open .page {
   top: var(--global-h, 50px);
   z-index: 19;                  /* just below catalogue sticky (z-index 20) */
   background: var(--s0);
-  border-bottom: 1px solid var(--b-lo);
 }
 .dp2-disc-sticky-inner {
   max-width: 1200px;
   margin: 0 auto;
   padding: 10px 40px 0;
 }
-[data-theme="dark"] .dp2-disc-sticky         { background: var(--s0); border-bottom-color: var(--border); }
+[data-theme="dark"] .dp2-disc-sticky         { background: var(--s0); }
 
 @media (max-width: 640px) {
   .dp2-disc-sticky-inner { padding: 8px 16px 0; }
@@ -3022,11 +3020,10 @@ html.ai-panel-open .page {
 [data-theme="dark"] .dp2-section-label-sub  { color: var(--mid); }
 [data-theme="dark"] .dp2-show-more-btn     { border-color: var(--border); color: var(--mid); }
 [data-theme="dark"] .dp2-show-more-btn:hover { border-color: var(--black); color: var(--black); background: var(--border); }
-[data-theme="dark"] .dp2-discovery-section { border-bottom-color: var(--border); }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .dp2-discovery-container { padding-top: 24px; padding-bottom: 24px; }
+  .dp2-discovery-container { padding-top: 24px; padding-bottom: 8px; }
   .dp2-section-label--catalogue { padding-top: 24px; }
   .dp2-disc-tabs-row { gap: 6px; }
   .dp2-disc-tab { padding: 5px 13px; font-size: 0.75rem; }
