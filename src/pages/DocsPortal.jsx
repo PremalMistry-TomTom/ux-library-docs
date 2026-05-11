@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -713,8 +713,21 @@ function DiscoverySection({ onNavigate }) {
   const [showAll, setShowAll] = useState(false);
   const sectionRef = useRef(null);
 
+  // Shuffle once on mount so "All" shows a varied product mix, not UX Library first
+  const shuffledCards = useMemo(() => {
+    const arr = [...MOSAIC_CARDS];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, []);
+
+  // For specific tabs keep original authored order; only "All" uses the shuffle
+  const sourceCards = activeTab === 'all' ? shuffledCards : MOSAIC_CARDS;
+
   // Cards matching the active use-case tab only (for runtime counts)
-  const tabFiltered = MOSAIC_CARDS.filter(c =>
+  const tabFiltered = sourceCards.filter(c =>
     activeTab === 'all' || c.solutions?.includes(activeTab)
   );
   // Cards matching both tab and runtime
