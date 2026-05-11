@@ -2144,6 +2144,893 @@ function SpecMethodTableSection() {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
+// §22  APREF TWO-COLUMN LAYOUT
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ApiRefLayoutSection() {
+  return (
+    <GallerySection title="ApiRef Two-Column Layout" desc=".api-ref-sections, .api-ref-section-left/right/code/header — every API reference page frame">
+      <Row label="full layout specimen" noBorder>
+        <div style={{ width: '100%', maxWidth: 760, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <div className="api-ref-sections" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 200 }}>
+            {/* Left prose column */}
+            <div className="api-ref-section-left" style={{ padding: '20px 24px', borderRight: '1px solid var(--border)' }}>
+              <div className="api-ref-section-header" style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, background: '#e6f4ea', color: '#1e7e34', border: '1px solid #c3e6cb' }}>GET</span>
+                <code style={{ fontSize: '0.75rem', color: 'var(--black)', fontFamily: 'var(--font-mono)' }}>/routing/1/calculateRoute</code>
+              </div>
+              <p style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.6, margin: '0 0 12px' }}>
+                Calculates a route between two or more locations using real-time traffic data.
+              </p>
+              <table className="prop-table" style={{ width: '100%' }}>
+                <thead>
+                  <tr><th>Parameter</th><th>Type</th><th>Required</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code>routePlanningLocations</code></td><td><code>string</code></td><td><span className="prop-req">required</span></td></tr>
+                  <tr><td><code>travelMode</code></td><td><code>string</code></td><td><span className="prop-opt">optional</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            {/* Right code column */}
+            <div className="api-ref-section-right" style={{ padding: 0, background: '#0d1117' }}>
+              <div className="api-ref-section-code" style={{ padding: '16px 20px' }}>
+                <pre style={{ margin: 0, fontSize: '0.7rem', color: '#c9d1d9', lineHeight: 1.6 }}>
+{`GET https://api.tomtom.com/
+  routing/1/calculateRoute/
+  52.3676,4.9041:48.8566,2.3522/
+  json?key=YOUR_API_KEY
+      &travelMode=car`}
+                </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+          ↑ <code>.api-ref-sections</code> grid → <code>.api-ref-section-left</code> (prose+params) | <code>.api-ref-section-right</code> (code, dark bg) with <code>.api-ref-section-header</code> and <code>.api-ref-section-code</code> inside
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §23  SIDENAV ANATOMY
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SidenavSection() {
+  const MethodPill = ({ m }) => {
+    const cols = { GET: '#e6f4ea:#c3e6cb:#1e7e34', POST: '#e8f0fe:#c5d3f8:#1d4ed8', DEL: '#fff5f5:#fecaca:#c0392b' };
+    const [bg, border, text] = (cols[m] || cols.GET).split(':');
+    return <span style={{ fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: bg, border: `1px solid ${border}`, color: text, lineHeight: 1 }}>{m}</span>;
+  };
+  return (
+    <GallerySection title="Sidenav Anatomy" desc=".sidenav-group, .sidenav-label, .sidenav-item, .sidenav-anchors, .sidenav-anchor-item">
+      <Row label="group + items + anchors" noBorder>
+        <div style={{ width: 220, background: 'var(--white)', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          {/* Group with label */}
+          <div className="sidenav-group">
+            <div className="sidenav-label open" style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6, cursor: 'default', fontSize: '0.75rem', fontWeight: 600, color: 'var(--black)' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+              <span className="sidenav-label-text">Routing API</span>
+            </div>
+            <div className="sidenav-items open" style={{ display: 'block' }}>
+              {/* Default item */}
+              <div className="sidenav-item" style={{ display: 'flex', alignItems: 'center', padding: '7px 12px 7px 20px', fontSize: '0.8125rem', color: 'var(--mid)', cursor: 'default' }}>
+                <span className="sidenav-item-label">Introduction</span>
+              </div>
+              {/* Active item + anchors */}
+              <div className="sidenav-item active" style={{ display: 'flex', alignItems: 'center', padding: '7px 12px 7px 20px', fontSize: '0.8125rem', cursor: 'default' }}>
+                <span className="sidenav-item-label">Calculate Route</span>
+              </div>
+              <div className="sidenav-anchors">
+                <div className="sidenav-anchor-item" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 6px', fontSize: '0.75rem', color: 'var(--mid)', cursor: 'default' }}>
+                  <div className="sidenav-anchor-rail" />
+                  <span className="sidenav-anchor-label">Request</span>
+                  <MethodPill m="GET" />
+                </div>
+                <div className="sidenav-anchor-item active" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 6px', fontSize: '0.75rem', color: 'var(--red)', cursor: 'default' }}>
+                  <div className="sidenav-anchor-rail" />
+                  <span className="sidenav-anchor-label" style={{ fontWeight: 600 }}>Response</span>
+                </div>
+              </div>
+              {/* Disabled item */}
+              <div className="sidenav-item" style={{ display: 'flex', alignItems: 'center', padding: '7px 12px 7px 20px', fontSize: '0.8125rem', color: 'var(--mid)', opacity: 0.55, cursor: 'default' }}>
+                <span className="sidenav-item-label">Batch Route</span>
+              </div>
+            </div>
+          </div>
+          {/* Divider */}
+          <div className="sidenav-plumbing-divider" />
+          {/* Top-level link */}
+          <div className="sidenav-top-link" style={{ padding: '7px 12px', fontSize: '0.8125rem', color: 'var(--mid)', cursor: 'default' }}>
+            Changelog
+          </div>
+        </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+          Active item uses <code>.sidenav-item.active</code> → <code>background: var(--s1)</code> + bold label.
+          Active anchor uses <code>.sidenav-anchor-item.active</code> → <code>color: var(--red)</code>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §24  GLOBAL HEADER + TOPNAV
+// ─────────────────────────────────────────────────────────────────────────────
+
+function HeaderNavSection() {
+  return (
+    <GallerySection title="Global Header + TopNav" desc=".global-header, .gh-nav, .topnav, .topnav-crumb-* — the two fixed chrome bars">
+      <Row label="global-header bar">
+        <div style={{ width: '100%', maxWidth: 680 }}>
+          <div className="global-header" style={{
+            position: 'relative', height: 48, padding: '0 20px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            background: 'var(--white)', borderBottom: '1px solid var(--border)',
+            borderRadius: 8,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <div style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--red)', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>TomTom</div>
+              <div style={{ height: 16, width: 1, background: 'var(--border)' }} />
+              <div className="gh-nav" style={{ display: 'flex', gap: 4 }}>
+                {['Maps', 'Routing', 'Navigation', 'EV'].map(l => (
+                  <button key={l} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 500, color: 'var(--mid)', background: 'none', border: 'none', cursor: 'default', borderRadius: 6 }}>{l}</button>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+              <button className="gh-icon-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)', background: 'none', cursor: 'default' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+              </button>
+              <button className="gh-signin-btn" style={{ padding: '5px 14px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--red)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'default' }}>Sign in</button>
+            </div>
+          </div>
+        </div>
+      </Row>
+      <Row label="topnav breadcrumb bar" noBorder>
+        <div style={{ width: '100%', maxWidth: 680 }}>
+          <div className="topnav" style={{
+            position: 'relative', height: 40, padding: '0 20px',
+            display: 'flex', alignItems: 'center', gap: 0,
+            background: 'var(--white)', borderBottom: '1px solid var(--border)',
+            borderRadius: 8,
+          }}>
+            <div className="topnav-crumb" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.75rem', overflow: 'hidden' }}>
+              <span className="topnav-crumb-root">Developer Portal</span>
+              <span className="topnav-crumb-sep">/</span>
+              <span className="topnav-crumb-domain">Routing</span>
+              <span className="topnav-crumb-sep">/</span>
+              <span className="topnav-crumb-page">Calculate Route</span>
+            </div>
+            <div className="topnav-right">
+              <span className="topnav-badge">Beta</span>
+              <span className="topnav-version">v1.28</span>
+            </div>
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 6 }}>
+            <code>.topnav-badge</code> uses warn tokens · <code>.topnav-version</code> uses border+bg tokens
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §25  TAB BAR
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TabBarSection() {
+  const [active, setActive] = useState('rest');
+  return (
+    <GallerySection title="Tab Bar" desc=".tab-bar, .tab-btn — language/platform code switcher">
+      <Row label="interactive" noBorder>
+        <div style={{ width: '100%', maxWidth: 480 }}>
+          <div className="tab-bar">
+            {['rest', 'kotlin', 'swift', 'js'].map(t => (
+              <button
+                key={t}
+                className={`tab-btn${active === t ? ' active' : ''}`}
+                onClick={() => setActive(t)}
+              >
+                {t.toUpperCase()}
+              </button>
+            ))}
+          </div>
+          <div style={{ padding: '12px 16px', background: '#0d1117', borderRadius: '0 0 8px 8px', fontSize: '0.75rem', color: '#94a3b8', fontFamily: 'var(--font-mono)' }}>
+            {active === 'rest'   && '# REST example for selected tab'}
+            {active === 'kotlin' && '// Kotlin example for selected tab'}
+            {active === 'swift'  && '// Swift example for selected tab'}
+            {active === 'js'     && '// JavaScript example for selected tab'}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+            Active tab: <code>.tab-btn.active</code> → <code>color: var(--red)</code> + <code>border-bottom-color: var(--red)</code>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §26  TEXT CARD
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TextCardSection() {
+  return (
+    <GallerySection title="Text Card" desc=".text-card, .text-card--active — plain bordered content card with active state">
+      <Row label="states" noBorder>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ width: 200 }}>
+            <StateLabel>Default</StateLabel>
+            <div className="text-card" style={{ padding: '14px 16px', pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>Quick Start</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>Set up your first routing request in under 5 minutes.</div>
+            </div>
+          </div>
+          <div style={{ width: 200 }}>
+            <StateLabel>Hover (simulated)</StateLabel>
+            <div className="text-card" style={{ padding: '14px 16px', borderColor: 'var(--black)', boxShadow: 'var(--e2)', pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>API Reference</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>Full endpoint listing with parameters and response schemas.</div>
+            </div>
+          </div>
+          <div style={{ width: 200 }}>
+            <StateLabel>Active (.text-card--active)</StateLabel>
+            <div className="text-card text-card--active" style={{ padding: '14px 16px', pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>Selected Page</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>Red border, very light red background tint.</div>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §27  ANATOMY CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function AnatomyCardsSection() {
+  return (
+    <GallerySection title="Anatomy Cards" desc=".anatomy-card, .anatomy-row, .anatomy-prop, .anatomy-arrow, .anatomy-note — page section diagram">
+      <Row label="specimen" noBorder>
+        <div style={{ width: '100%', maxWidth: 560 }}>
+          <div className="anatomy-card">
+            <div className="anatomy-row">
+              <span className="anatomy-prop">.page</span>
+              <span className="anatomy-arrow">→</span>
+              <span>Root page scroll container, max-width 800px, padded</span>
+              <span className="anatomy-note">required</span>
+            </div>
+            <div className="anatomy-row">
+              <span className="anatomy-prop">.page-header</span>
+              <span className="anatomy-arrow">→</span>
+              <span>Flex row: h1 title + PageActions buttons</span>
+              <span className="anatomy-note">required</span>
+            </div>
+            <div className="anatomy-row">
+              <span className="anatomy-prop">.quick-answer</span>
+              <span className="anatomy-arrow">→</span>
+              <span>1–2 sentence summary below the title</span>
+              <span className="anatomy-note">required</span>
+            </div>
+            <div className="anatomy-row">
+              <span className="anatomy-prop">.zone</span>
+              <span className="anatomy-arrow">→</span>
+              <span>Content section wrapper with <code>h2.sh</code> heading</span>
+              <span className="anatomy-note">repeatable</span>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §28  MODAL
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ModalSection() {
+  const [open, setOpen] = useState(false);
+  return (
+    <GallerySection title="Modal" desc=".md-overlay, .md-modal, .md-modal-header, .md-modal-body, .md-modal-close, .md-modal-copy">
+      <Row label="trigger + overlay" noBorder>
+        <div>
+          <button className="page-action-btn" onClick={() => setOpen(true)}>Open modal demo</button>
+          {open && (
+            <>
+              <div
+                className="md-overlay"
+                onClick={() => setOpen(false)}
+                style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 1000 }}
+              />
+              <div className="md-modal" style={{
+                position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                zIndex: 1001, width: 480, maxWidth: '90vw',
+                background: 'var(--white)', borderRadius: 12, overflow: 'hidden',
+                boxShadow: '0 20px 60px rgba(0,0,0,0.2)',
+              }}>
+                <div className="md-modal-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 20px', borderBottom: '1px solid var(--border)' }}>
+                  <span className="md-modal-title" style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--black)' }}>Copy for LLM context</span>
+                  <button className="md-modal-close" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, borderRadius: 6, border: '1px solid var(--border)', background: 'none', cursor: 'pointer', color: 'var(--muted)' }}>✕</button>
+                </div>
+                <div className="md-modal-body" style={{ padding: '16px 20px' }}>
+                  <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 12, lineHeight: 1.6 }}>
+                    The text below is formatted for LLM context windows. Copy it and paste into your AI tool of choice.
+                  </p>
+                  <pre style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '10px 14px', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, overflow: 'auto', maxHeight: 140 }}>
+# Calculate Route — TomTom Routing API{'\n'}GET /routing/1/calculateRoute/:locations/json{'\n'}Parameters: travelMode, traffic, routeType...
+                  </pre>
+                  <button className="md-modal-copy" onClick={() => setOpen(false)} style={{ marginTop: 12, padding: '8px 18px', background: 'var(--black)', color: '#fff', border: 'none', borderRadius: 8, fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}>
+                    Copy to clipboard
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+            <code>.md-overlay</code> dims the page · <code>.md-modal</code> is the white card · <code>.md-modal-close</code> is the ✕ button
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §29  AI PANEL
+// ─────────────────────────────────────────────────────────────────────────────
+
+function AIPanelSection() {
+  const SparkleIcon = () => (
+    <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1v3M8 12v3M1 8h3M12 8h3M3.22 3.22l2.12 2.12M10.66 10.66l2.12 2.12M3.22 12.78l2.12-2.12M10.66 5.34l2.12-2.12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  );
+  return (
+    <GallerySection title="AI Panel" desc=".ai-panel, .ai-panel-header, .ai-msg--user, .ai-msg--ai, .ai-msg--typing, .ai-panel-footer">
+      <Row label="static panel specimen" noBorder>
+        <div style={{ width: 320, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--white)' }}>
+          {/* Header */}
+          <div className="ai-panel-header" style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', background: 'var(--white)' }}>
+            <div className="ai-panel-header-top" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <span className="ai-panel-title" style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <SparkleIcon /> Ask AI
+              </span>
+              <div className="ai-panel-header-actions" style={{ display: 'flex', gap: 4 }}>
+                <button className="ai-panel-icon-btn" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid var(--border)', background: 'none', cursor: 'default', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: '0.75rem' }}>✕</button>
+              </div>
+            </div>
+            <div className="ai-panel-source" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.6875rem', color: 'var(--muted)' }}>
+              Context:
+              <span className="ai-panel-source-chip" style={{ padding: '2px 8px', borderRadius: 99, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', fontSize: '0.625rem', fontWeight: 600 }}>
+                Calculate Route
+              </span>
+            </div>
+          </div>
+          {/* Messages */}
+          <div className="ai-panel-messages" style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, minHeight: 140 }}>
+            {/* AI message */}
+            <div className="ai-msg ai-msg--ai" style={{ display: 'flex', gap: 8, alignSelf: 'flex-start', maxWidth: '88%' }}>
+              <span className="ai-msg-avatar" style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--s1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--red)' }}><SparkleIcon /></span>
+              <span className="ai-msg-text" style={{ fontSize: '0.8125rem', color: 'var(--black)', background: 'var(--bg)', padding: '7px 10px', borderRadius: '0 8px 8px 8px', lineHeight: 1.5 }}>
+                Hi! I have context for this page. Ask me anything about the Calculate Route endpoint.
+              </span>
+            </div>
+            {/* User message */}
+            <div className="ai-msg ai-msg--user" style={{ display: 'flex', justifyContent: 'flex-end', maxWidth: '88%', alignSelf: 'flex-end' }}>
+              <span className="ai-msg-text" style={{ fontSize: '0.8125rem', color: '#fff', background: 'var(--red)', padding: '7px 10px', borderRadius: '8px 0 8px 8px', lineHeight: 1.5 }}>
+                What parameters are required?
+              </span>
+            </div>
+            {/* Typing dots */}
+            <div className="ai-msg ai-msg--ai ai-msg--typing" style={{ display: 'flex', gap: 8, alignSelf: 'flex-start' }}>
+              <span className="ai-msg-avatar" style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--s1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--red)' }}><SparkleIcon /></span>
+              <span className="ai-msg-dots" style={{ display: 'flex', gap: 3, alignItems: 'center', padding: '8px 10px', background: 'var(--bg)', borderRadius: '0 8px 8px 8px' }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--muted)', display: 'inline-block' }} />
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--muted)', display: 'inline-block' }} />
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--muted)', display: 'inline-block' }} />
+              </span>
+            </div>
+          </div>
+          {/* Footer */}
+          <div className="ai-panel-footer" style={{ padding: '8px 12px', borderTop: '1px solid var(--border)' }}>
+            <div className="ai-panel-input-wrap" style={{ display: 'flex', gap: 6, alignItems: 'center', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 10px' }}>
+              <input className="ai-panel-input" placeholder="Ask a question…" style={{ flex: 1, border: 'none', background: 'none', fontSize: '0.8125rem', color: 'var(--black)', outline: 'none' }} readOnly />
+              <button className="ai-panel-send" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 26, height: 26, borderRadius: 6, background: 'var(--red)', border: 'none', cursor: 'default', color: '#fff', fontSize: '0.875rem' }}>→</button>
+            </div>
+            <p className="ai-panel-disclaimer" style={{ fontSize: '0.625rem', color: 'var(--muted)', textAlign: 'center', margin: '6px 0 0', lineHeight: 1.4 }}>
+              AI answers may be inaccurate. Verify against the docs.
+            </p>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §30  TOKEN DISPLAY + COLOUR SWATCHES
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TokenDisplaySection() {
+  return (
+    <GallerySection title="Token Display + Colour Swatches" desc=".token-group, .token-table, .token-cell, .dt-swatch-row, .dt-swatch-ex, .swatch / .sw-*">
+      <Row label="token-group + token-table">
+        <div style={{ width: '100%', maxWidth: 540 }}>
+          <div className="token-group">
+            <div className="token-group-label">Brand Colours</div>
+            <table className="token-table">
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th>Value</th>
+                  <th>Preview</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { name: '--brand', hex: '#DF1B12' },
+                  { name: '--brand-hover', hex: '#C01008' },
+                  { name: '--brand-light', hex: '#FF6B61' },
+                ].map(t => (
+                  <tr key={t.name}>
+                    <td><div className="token-cell"><code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{t.name}</code></div></td>
+                    <td><code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--mid)' }}>{t.hex}</code></td>
+                    <td><div style={{ width: 28, height: 18, borderRadius: 4, background: t.hex, border: '1px solid rgba(0,0,0,0.08)' }} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Row>
+      <Row label="dt-swatch-row — design token swatches">
+        <div>
+          <div className="dt-swatch-row">
+            {[
+              { label: '--brand', bg: '#DF1B12', color: '#fff' },
+              { label: '--warn-bg', bg: '#fef9c3', color: '#854d0e' },
+              { label: '--info-bg', bg: '#e0f2fe', color: '#0369a1' },
+              { label: '--success-bg', bg: '#dcfce7', color: '#15803d' },
+              { label: '--danger-bg', bg: '#fee2e2', color: '#b91c1c' },
+            ].map(s => (
+              <div key={s.label} className="dt-swatch-ex" style={{ background: s.bg, color: s.color }}>{s.label}</div>
+            ))}
+          </div>
+        </div>
+      </Row>
+      <Row label="swatch — click-to-copy colour card" noBorder>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {[
+            { name: 'brand-red', hex: '#DF1B12' },
+            { name: 'brand-dark', hex: '#C01008' },
+            { name: 'blue-500',  hex: '#3b82f6' },
+          ].map(s => (
+            <div key={s.name} style={{ width: 80, borderRadius: 8, border: '1px solid var(--border)', overflow: 'hidden', cursor: 'pointer' }}>
+              <div className="sw-color" style={{ background: s.hex }} />
+              <div className="sw-info" style={{ padding: '6px 8px' }}>
+                <div className="sw-name">{s.name}</div>
+                <div className="sw-hex">{s.hex}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §31  TYPOGRAPHY PATTERNS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TypographyPatternsSection() {
+  return (
+    <GallerySection title="Typography Patterns" desc=".type-category-grid, .type-cat, .type-scale-table, .weight-preview, .font-token-group">
+      <Row label="type-category-grid (5-col)">
+        <div style={{ width: '100%' }}>
+          <div className="type-category-grid" style={{ maxWidth: 640 }}>
+            {[
+              { label: 'Display', desc: 'Hero headings, page titles' },
+              { label: 'Heading', desc: 'Section h2/h3 headings' },
+              { label: 'Body',    desc: 'Paragraph and prose text' },
+              { label: 'Label',   desc: 'UI labels, caps headers' },
+              { label: 'Code',    desc: 'Mono, code blocks, tokens' },
+            ].map(c => (
+              <div key={c.label} className="type-cat">
+                <div className="type-cat-label">{c.label}</div>
+                <div className="type-cat-desc">{c.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Row>
+      <Row label="weight-preview row">
+        <div style={{ width: '100%', maxWidth: 560 }}>
+          <div className="weight-preview">
+            {[
+              { w: 400, label: 'Regular' },
+              { w: 500, label: 'Medium' },
+              { w: 600, label: 'SemiBold' },
+              { w: 700, label: 'Bold' },
+              { w: 800, label: 'ExtraBold' },
+            ].map(({ w, label }) => (
+              <div key={w} style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <span style={{ fontWeight: w, fontSize: '1rem', color: 'var(--black)' }}>Ag</span>
+                <span style={{ fontSize: '0.625rem', color: 'var(--muted)', fontWeight: 600 }}>{label}</span>
+                <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>{w}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Row>
+      <Row label="font-token-group" noBorder>
+        <div style={{ width: '100%', maxWidth: 480 }}>
+          <div className="font-token-group">
+            <div style={{ fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8, paddingBottom: 6, borderBottom: '1px solid var(--border)' }}>Display / Inter</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, lineHeight: 1.2, color: 'var(--black)' }}>The quick brown fox</div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 6 }}>
+              <code>var(--font-display)</code> · used for <code>h1</code>, hero headings
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §32  ILLO CARD
+// ─────────────────────────────────────────────────────────────────────────────
+
+function IlloCardSection() {
+  return (
+    <GallerySection title="Illo Card" desc=".illo-card-wrap, .illo-card-actions, .illo-card-gen-name, .illo-card-refresh, .illo-card-ts — AI-generated illustration tiles">
+      <Row label="specimen (hover to reveal actions)" noBorder>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {/* Default */}
+          <div>
+            <StateLabel>Default (no hover)</StateLabel>
+            <div className="illo-card-wrap" style={{
+              position: 'relative', width: 160, height: 160, borderRadius: 12,
+              border: '1px solid var(--border)', overflow: 'hidden',
+              background: 'linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <div style={{ fontSize: '2.5rem' }}>🗺️</div>
+              <div className="illo-card-gen-name" style={{ position: 'absolute', bottom: 6, left: 8, fontSize: '0.5625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>RouteMap_v3.svg</div>
+              <div className="illo-card-ts" style={{ position: 'absolute', bottom: 6, right: 8, fontSize: '0.5rem', color: 'var(--muted)' }}>2min ago</div>
+            </div>
+          </div>
+          {/* Hover (actions revealed) */}
+          <div>
+            <StateLabel>Hover (actions visible)</StateLabel>
+            <div className="illo-card-wrap" style={{
+              position: 'relative', width: 160, height: 160, borderRadius: 12,
+              border: '1px solid var(--border)', overflow: 'hidden',
+              background: 'linear-gradient(135deg, #fdf4ff 0%, #ede9fe 100%)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <div style={{ fontSize: '2.5rem' }}>⚡</div>
+              {/* Actions overlay */}
+              <div className="illo-card-actions" style={{
+                position: 'absolute', top: 0, right: 0, left: 0,
+                padding: '8px', display: 'flex', justifyContent: 'flex-end', gap: 4,
+                background: 'linear-gradient(to bottom, rgba(255,255,255,0.85) 0%, transparent 100%)',
+              }}>
+                <button className="illo-card-refresh" style={{
+                  width: 28, height: 28, borderRadius: 6, border: '1px solid var(--border)',
+                  background: 'var(--white)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'default', fontSize: '0.875rem',
+                }}>↻</button>
+              </div>
+              <div className="illo-card-gen-name" style={{ position: 'absolute', bottom: 6, left: 8, fontSize: '0.5625rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>EVStation_v1.svg</div>
+            </div>
+          </div>
+          {/* Error state */}
+          <div>
+            <StateLabel>Refresh error</StateLabel>
+            <div className="illo-card-wrap" style={{
+              position: 'relative', width: 160, height: 160, borderRadius: 12,
+              border: '1px solid var(--danger-border)', overflow: 'hidden',
+              background: 'var(--danger-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8,
+            }}>
+              <div className="illo-card-refresh-err" style={{ fontSize: '0.75rem', color: 'var(--danger-text)', textAlign: 'center', padding: '0 12px', lineHeight: 1.5 }}>Generation failed — try again</div>
+              <button className="illo-card-refresh" style={{
+                padding: '5px 12px', borderRadius: 6, border: '1px solid var(--danger-border)',
+                background: 'var(--white)', cursor: 'default', fontSize: '0.75rem', color: 'var(--danger-text)', fontWeight: 600,
+              }}>Retry</button>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §33  PLATFORM SWITCHER
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PlatformSwitcherSection() {
+  const [activePlatform, setActivePlatform] = useState('android');
+  return (
+    <GallerySection title="Platform Switcher" desc=".platform-switcher, .platform-btn, .platform-btn-compact — SDK platform filter">
+      <Row label="full + compact variants" noBorder>
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <div>
+            <StateLabel>Full (.platform-switcher)</StateLabel>
+            <div className="platform-switcher" style={{ display: 'inline-flex', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+              {['android', 'ios', 'web'].map(p => (
+                <button
+                  key={p}
+                  className={`platform-btn${activePlatform === p ? ' active' : ''}`}
+                  onClick={() => setActivePlatform(p)}
+                  style={{
+                    padding: '6px 16px', fontSize: '0.75rem', fontWeight: 600, border: 'none', cursor: 'pointer',
+                    background: activePlatform === p ? 'var(--black)' : 'transparent',
+                    color: activePlatform === p ? '#fff' : 'var(--mid)',
+                    borderRight: p !== 'web' ? '1px solid var(--border)' : 'none',
+                  }}
+                >
+                  {p.charAt(0).toUpperCase() + p.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <StateLabel>Compact (.platform-btn-compact)</StateLabel>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {['android', 'ios', 'web'].map(p => (
+                <button
+                  key={p}
+                  className={`platform-btn-compact${activePlatform === p ? ' active' : ''}`}
+                  onClick={() => setActivePlatform(p)}
+                  style={{
+                    padding: '4px 10px', fontSize: '0.6875rem', fontWeight: 600,
+                    border: '1px solid var(--border)', borderRadius: 6, cursor: 'pointer',
+                    background: activePlatform === p ? 'var(--black)' : 'var(--bg)',
+                    color: activePlatform === p ? '#fff' : 'var(--mid)',
+                  }}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §34  DOCSPORTAL2 CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function DocsPortal2Section() {
+  const Illo = ({ bg = '#dbeafe', icon = '🗺️' }) => (
+    <div style={{ width: '100%', height: '100%', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>{icon}</div>
+  );
+
+  return (
+    <GallerySection title="DocsPortal2 Cards" desc=".dp2-product-card, .dp2-disc-card, .dp2-glass, .dp2-navsdk-card, .dp2-resource-card, .dp2-tool-card, .dp2-support-card">
+
+      {/* Product card (plain) */}
+      <Row label="dp2-product-card — plain + linked + in-progress">
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {[
+            { label: 'Routing API', linked: true, inProgress: false, desc: 'Fastest + shortest routes with real-time traffic.' },
+            { label: 'Fleet SDK',   linked: false, inProgress: true,  desc: 'Vehicle tracking and dispatch tools.' },
+          ].map(({ label, linked, inProgress, desc }) => (
+            <div key={label} style={{ width: 200 }}>
+              <StateLabel>{linked ? 'Linked' : 'In Progress'}</StateLabel>
+              <div
+                className={`dp2-product-card${linked ? ' dp2-product-card--linked' : ' dp2-product-card--stub'}${inProgress ? ' dp2-product-card--in-progress' : ''}`}
+                style={{ padding: '16px', border: '1px solid var(--border)', borderRadius: 12, background: 'var(--white)', cursor: linked ? 'pointer' : 'default', opacity: inProgress ? 0.7 : 1 }}
+              >
+                <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🗺️</div>
+                <h2 className="dp2-product-name" style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', margin: '0 0 4px' }}>{label}</h2>
+                <div className="dp2-product-desc" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+                <div className="dp2-product-footer" style={{ marginTop: 10, display: 'flex', gap: 6 }}>
+                  {linked
+                    ? <span className="dp2-product-doc-btn" style={{ fontSize: '0.6875rem', padding: '3px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--mid)', cursor: 'default' }}>Docs →</span>
+                    : <span className="dp2-product-doc-btn dp2-product-doc-btn--disabled" style={{ fontSize: '0.6875rem', padding: '3px 10px', borderRadius: 6, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--muted)', opacity: 0.55, cursor: 'default' }}>Coming soon</span>
+                  }
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Row>
+
+      {/* Disc card */}
+      <Row label="dp2-disc-card — discovery card with illo + body">
+        <div style={{ width: 220, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--white)' }}
+          className="dp2-disc-card dp2-disc-card--linked">
+          <div className="dp2-disc-card-illo" style={{ height: 100 }}><Illo bg="#dcfce7" icon="⚡" /></div>
+          <div className="dp2-disc-card-body" style={{ padding: '12px 14px' }}>
+            <div className="dp2-disc-card-label" style={{ fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--muted)', marginBottom: 4 }}>EV</div>
+            <h2 className="dp2-disc-card-title" style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', margin: '0 0 4px' }}>Plan a multi-stop EV journey</h2>
+          </div>
+        </div>
+      </Row>
+
+      {/* Glass card */}
+      <Row label="dp2-glass — hover reveal overlay">
+        <div style={{ width: 220, position: 'relative', borderRadius: 12, overflow: 'hidden', border: '1px solid var(--border)' }}
+          className="dp2-product-card dp2-product-card--illo dp2-product-card--linked">
+          <div className="dp2-illo-fill" style={{ height: 140 }}><Illo bg="#e0f2fe" icon="🧭" /></div>
+          <div className="dp2-glass" style={{ padding: '12px 14px', background: 'var(--white)' }}>
+            <div className="dp2-glass-default">
+              <h2 className="dp2-glass-title" style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', margin: '0 0 4px' }}>Navigation SDK</h2>
+            </div>
+            <div className="dp2-glass-body" style={{ marginTop: 6 }}>
+              <p className="dp2-glass-desc" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, margin: 0 }}>Turn-by-turn guidance with live rerouting and EV charging stops.</p>
+            </div>
+          </div>
+        </div>
+      </Row>
+
+      {/* Resource card */}
+      <Row label="dp2-resource-card + dp2-tool-card + dp2-support-card">
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {/* Resource */}
+          <div className="dp2-resource-card" style={{ width: 180, padding: '14px', border: '1px solid var(--border)', borderRadius: 12, background: 'var(--white)' }}>
+            <div className="dp2-resource-icon-area" style={{ fontSize: '1.5rem', marginBottom: 8 }}>📚</div>
+            <div className="dp2-resource-body">
+              <h2 className="dp2-resource-name" style={{ fontSize: '0.8125rem', fontWeight: 700, margin: '0 0 4px' }}>SDK Changelog</h2>
+              <div className="dp2-resource-desc" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>Version history and migration guides.</div>
+            </div>
+          </div>
+          {/* Tool */}
+          <div className="dp2-tool-card" style={{ width: 180, padding: '14px', border: '1px solid var(--border)', borderRadius: 12, background: 'var(--white)' }}>
+            <div style={{ width: 32, height: 32, background: 'var(--bg)', borderRadius: 8, marginBottom: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>🔧</div>
+            <div className="dp2-tool-body">
+              <h2 className="dp2-tool-name" style={{ fontSize: '0.8125rem', fontWeight: 700, margin: '0 0 4px' }}>API Explorer</h2>
+              <div className="dp2-tool-desc" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>Interactive endpoint tester.</div>
+            </div>
+          </div>
+          {/* Support */}
+          <div className="dp2-support-card" style={{ width: 180, padding: '14px', border: '1px solid var(--border)', borderRadius: 12, background: 'var(--white)' }}>
+            <div style={{ fontSize: '1.5rem', marginBottom: 8 }}>🎧</div>
+            <span className="dp2-support-title" style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', display: 'block', marginBottom: 4 }}>Developer Support</span>
+            <div className="dp2-support-desc" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>Get technical help for TomTom APIs.</div>
+          </div>
+        </div>
+      </Row>
+
+      {/* dp2-navsdk-card */}
+      <Row label="dp2-navsdk-card — featured SDK card" noBorder>
+        <div className="dp2-navsdk-card" style={{ display: 'flex', gap: 16, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--white)', maxWidth: 480 }}>
+          <div className="dp2-navsdk-img" style={{ width: 120, flexShrink: 0, background: '#1e1b4b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>🧭</div>
+          <div className="dp2-navsdk-wrap" style={{ padding: '16px 16px 16px 0', flex: 1 }}>
+            <div className="dp2-navsdk-badge" style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: 'var(--info-bg)', color: 'var(--info-text)', border: '1px solid var(--info-border)', display: 'inline-block', marginBottom: 6 }}>Navigation SDK</div>
+            <h2 className="dp2-navsdk-title" style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--black)', margin: '0 0 4px' }}>Build turn-by-turn navigation</h2>
+            <p className="dp2-navsdk-sub" style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5, margin: '0 0 10px' }}>For Android and iOS — batteries included.</p>
+            <button className="dp2-navsdk-cta" style={{ padding: '6px 14px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--black)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'default' }}>Get started →</button>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §35  ADAS STACK + CAPABILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+
+function AdasSection() {
+  return (
+    <GallerySection title="ADAS Stack + Capabilities" desc=".adas-stack, .adas-stack-layer, .adas-stack-highlight, .adas-cap-grid, .adas-highlights">
+      <Row label="adas-stack — layered architecture diagram">
+        <div style={{ width: '100%', maxWidth: 480 }}>
+          <div className="adas-stack">
+            {[
+              { label: 'ADAS Application Layer', badge: 'OEM', badgeCls: 'adas-stack-badge adas-stack-badge-oem', cls: 'adas-stack-muted' },
+              { label: 'TomTom ADAS SDK',         badge: 'TomTom', badgeCls: 'adas-stack-badge adas-stack-badge-tt', cls: 'adas-stack-highlight' },
+              { label: 'Maps & Routing APIs',      badge: 'TomTom', badgeCls: 'adas-stack-badge adas-stack-badge-tt', cls: '' },
+              { label: 'Platform / OS',            badge: 'OEM', badgeCls: 'adas-stack-badge adas-stack-badge-oem', cls: 'adas-stack-muted' },
+            ].map((layer, i) => (
+              <div key={i} className={`adas-stack-layer${layer.cls ? ` ${layer.cls}` : ''}`} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '10px 14px', border: '1px solid var(--border)',
+                background: layer.cls === 'adas-stack-highlight' ? 'var(--info-bg)' : layer.cls === 'adas-stack-muted' ? 'var(--bg)' : 'var(--white)',
+              }}>
+                <span className="adas-stack-text" style={{ fontSize: '0.8125rem', fontWeight: layer.cls === 'adas-stack-highlight' ? 700 : 400, color: 'var(--black)' }}>{layer.label}</span>
+                <span className="adas-stack-label" style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 99, background: layer.badgeCls.includes('tt') ? 'var(--danger-bg)' : 'var(--bg)', color: layer.badgeCls.includes('tt') ? 'var(--red)' : 'var(--muted)', border: '1px solid var(--border)' }}>{layer.badge}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Row>
+      <Row label="adas-cap-grid — capability cards" noBorder>
+        <div style={{ width: '100%' }}>
+          <div className="adas-cap-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, maxWidth: 540 }}>
+            {[
+              { icon: '🚦', title: 'Speed Alerts',   tag: 'ISA' },
+              { icon: '⚠️', title: 'Hazard Warning',  tag: 'ADAS' },
+              { icon: '🔄', title: 'Lane Guidance',   tag: 'TJA' },
+            ].map(c => (
+              <div key={c.title} className="adas-cap-card" style={{ padding: '12px', border: '1px solid var(--border)', borderRadius: 10, background: 'var(--white)' }}>
+                <div className="adas-cap-icon" style={{ fontSize: '1.25rem', marginBottom: 6 }}>{c.icon}</div>
+                <div className="adas-cap-title" style={{ fontSize: '0.8125rem', fontWeight: 700, marginBottom: 3 }}>{c.title}</div>
+                <span className="adas-cap-tag" style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '1px 6px', borderRadius: 99, background: 'var(--info-bg)', color: 'var(--info-text)', border: '1px solid var(--info-border)' }}>{c.tag}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §36  SEMANTIC CARDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SemanticCardsSection() {
+  return (
+    <GallerySection title="Semantic Cards" desc=".sem-card, .sem-title, .sem-body — tinted semantic colour blocks">
+      <Row label="four semantic variants" noBorder>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: 480 }}>
+          {[
+            { title: 'Info',    body: 'Neutral informational context. No urgency.',   bg: 'var(--info-bg)',    border: 'var(--info-border)',    text: 'var(--info-text)' },
+            { title: 'Success', body: 'Confirmation that something worked correctly.', bg: 'var(--success-bg)', border: 'var(--success-border)', text: 'var(--success-text)' },
+            { title: 'Warning', body: 'Something to watch out for — not yet broken.',  bg: 'var(--warn-bg)',    border: 'var(--warn-border)',    text: 'var(--warn-text)' },
+            { title: 'Danger',  body: 'Critical issue or destructive action ahead.',   bg: 'var(--danger-bg)',  border: 'var(--danger-border)',  text: 'var(--danger-text)' },
+          ].map(s => (
+            <div key={s.title} className="sem-card" style={{ borderLeftColor: s.border, borderLeftWidth: 3, borderLeftStyle: 'solid', background: s.bg, borderTopColor: s.border, borderRightColor: s.border, borderBottomColor: s.border, borderWidth: 1, borderStyle: 'solid' }}>
+              <div className="sem-title" style={{ color: s.text }}>{s.title}</div>
+              <div className="sem-body">{s.body}</div>
+            </div>
+          ))}
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §37  TOKEN FLOW (tfi-*)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TokenFlowSection() {
+  return (
+    <GallerySection title="Token Flow" desc=".tfi-step, .tfi-icon, .tfi-icon-token/component/product, .tfi-arrow, .tfi-label — design token pipeline diagram">
+      <Row label="3-step flow" noBorder>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, flexWrap: 'wrap' }}>
+          {[
+            { icon: '🎨', cls: 'tfi-icon-token',     label: 'Design Tokens',    desc: 'Raw values' },
+            { arrow: true },
+            { icon: '🧩', cls: 'tfi-icon-component', label: 'Components',       desc: 'Semantic use' },
+            { arrow: true },
+            { icon: '📦', cls: 'tfi-icon-product',   label: 'Product UI',       desc: 'In-product' },
+          ].map((s, i) => s.arrow ? (
+            <div key={i} className="tfi-arrow" style={{ fontSize: '1.25rem', color: 'var(--border)', alignSelf: 'flex-start', paddingTop: 10 }}>→</div>
+          ) : (
+            <div key={i} className="tfi-step">
+              <div className={`tfi-icon ${s.cls}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>{s.icon}</div>
+              <div className="tfi-label" style={{ textAlign: 'center', lineHeight: 1.3 }}>
+                <div style={{ fontWeight: 700, fontSize: '0.75rem', color: 'var(--black)' }}>{s.label}</div>
+                <div style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>{s.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ROOT — PAGE HEADER + ALL SECTIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -2190,6 +3077,22 @@ export default function UIComponentGallery() {
             ['#s19', '19 Token Names'],
             ['#s20', '20 Theming'],
             ['#s21', '21 Spec Table'],
+            ['#s22', '22 ApiRef Layout'],
+            ['#s23', '23 Sidenav'],
+            ['#s24', '24 Header/Nav'],
+            ['#s25', '25 Tab Bar'],
+            ['#s26', '26 Text Card'],
+            ['#s27', '27 Anatomy Cards'],
+            ['#s28', '28 Modal'],
+            ['#s29', '29 AI Panel'],
+            ['#s30', '30 Token Display'],
+            ['#s31', '31 Typography'],
+            ['#s32', '32 Illo Card'],
+            ['#s33', '33 Platform'],
+            ['#s34', '34 dp2 Cards'],
+            ['#s35', '35 ADAS Stack'],
+            ['#s36', '36 Sem Cards'],
+            ['#s37', '37 Token Flow'],
           ].map(([href, label]) => (
             <a
               key={href}
@@ -2232,13 +3135,29 @@ export default function UIComponentGallery() {
       <div id="s19"><TokenNamingSection /></div>
       <div id="s20"><ThemingCardSection /></div>
       <div id="s21"><SpecMethodTableSection /></div>
+      <div id="s22"><ApiRefLayoutSection /></div>
+      <div id="s23"><SidenavSection /></div>
+      <div id="s24"><HeaderNavSection /></div>
+      <div id="s25"><TabBarSection /></div>
+      <div id="s26"><TextCardSection /></div>
+      <div id="s27"><AnatomyCardsSection /></div>
+      <div id="s28"><ModalSection /></div>
+      <div id="s29"><AIPanelSection /></div>
+      <div id="s30"><TokenDisplaySection /></div>
+      <div id="s31"><TypographyPatternsSection /></div>
+      <div id="s32"><IlloCardSection /></div>
+      <div id="s33"><PlatformSwitcherSection /></div>
+      <div id="s34"><DocsPortal2Section /></div>
+      <div id="s35"><AdasSection /></div>
+      <div id="s36"><SemanticCardsSection /></div>
+      <div id="s37"><TokenFlowSection /></div>
 
       {/* Footer note */}
       <div style={{
         marginTop: 12, paddingTop: 20, borderTop: '1px solid var(--border)',
         fontSize: '0.75rem', color: 'var(--t-dis)', lineHeight: 1.6,
       }}>
-        Internal audit page · Plumbing Portal · 21 sections · All components sourced from{' '}
+        Internal audit page · Plumbing Portal · 37 sections · All components sourced from{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/components/ui/</code> and{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/index.css</code>
       </div>
