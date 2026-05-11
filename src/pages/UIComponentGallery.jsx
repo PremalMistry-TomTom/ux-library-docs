@@ -3031,6 +3031,327 @@ function TokenFlowSection() {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
+// §38  TRYIT PANEL (API DEMO WIDGET)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TryItPanelSection() {
+  const [status, setStatus] = useState('idle'); // idle | running | ok | error
+
+  const FAKE_RESULT = {
+    summary: { numResults: 3, totalResults: 42, queryTime: 87 },
+    results: [
+      { id: 'POI:528009004684813', score: 10.651, type: 'POI', poi: { name: 'Piccadilly Circus Underground' }, address: { freeformAddress: 'Piccadilly Circus, London' }, position: { lat: 51.5099, lon: -0.1342 } },
+      { id: 'POI:528009004684814', score: 9.2,   type: 'POI', poi: { name: 'Piccadilly Circus (Stop A)' },   address: { freeformAddress: 'London W1J 9HP' },               position: { lat: 51.5098, lon: -0.1340 } },
+    ],
+  };
+
+  const runDemo = () => {
+    setStatus('running');
+    setTimeout(() => setStatus('ok'), 900);
+  };
+  const reset = () => setStatus('idle');
+
+  const productStyle = { bg: '#eff6ff', border: '#bfdbfe', text: '#1d4ed8' };
+  const methodStyle  = { bg: '#dcfce7', text: '#166534' };
+
+  return (
+    <GallerySection title="TryIt Panel (API Demo Widget)" desc="The live-preview widget embedded in API reference pages — all states side by side">
+
+      {/* Anatomy labels */}
+      <Row label="component anatomy">
+        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.8 }}>
+          <strong style={{ color: 'var(--black)' }}>Structure (all inline styles, no custom CSS classes):</strong><br/>
+          <code>container</code> → border + borderRadius:12 + bg:var(--surface)<br/>
+          <code>header bar</code> → product badge | method badge | endpoint name | ▶ Preview button<br/>
+          <code>description</code> → small muted text + optional ⚠ note callout<br/>
+          <code>inputs row</code> → flex row of labelled mono-font input fields<br/>
+          <code>status bar</code> → ● Response/Error + count + elapsed + copy button<br/>
+          <code>output area</code> → SDK map | JSON scroll | table | tile image<br/>
+          <code>idle state</code> → italic muted "Click Preview…" placeholder
+        </div>
+      </Row>
+
+      {/* Idle */}
+      <Row label="idle state">
+        <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)', width: '100%', maxWidth: 540 }}>
+          <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, border: `1px solid ${productStyle.border}`, background: productStyle.bg, color: productStyle.text }}>Search API</span>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: methodStyle.bg, color: methodStyle.text, letterSpacing: '0.04em' }}>GET</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', flex: 1 }}>Fuzzy Search</span>
+            <button onClick={runDemo} style={{ padding: '4px 12px', borderRadius: 5, border: 'none', background: 'var(--brand,#e2001a)', color: '#fff', fontSize: '0.6875rem', fontWeight: 700, cursor: 'pointer' }}>
+              ▶ Preview
+            </button>
+          </div>
+          <div style={{ padding: '8px 14px 0', fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>
+            Typo-tolerant search across addresses, POIs and geographies.
+          </div>
+          <div style={{ padding: '10px 14px', display: 'flex', gap: 7, flexWrap: 'wrap', alignItems: 'flex-end' }}>
+            {[{ label: 'Query', placeholder: 'Piccadilly Circus', flex: true }, { label: 'Limit', placeholder: '5', width: 60 }].map(f => (
+              <div key={f.label} style={{ display: 'flex', flexDirection: 'column', gap: 3, flex: f.flex ? 1 : 'none', minWidth: f.width ?? 110 }}>
+                <label style={{ fontSize: '0.5rem', fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{f.label}</label>
+                <input readOnly placeholder={f.placeholder} style={{ padding: '5px 8px', borderRadius: 5, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--black)', fontSize: '0.6875rem', fontFamily: 'var(--font-mono,monospace)', width: f.flex ? '100%' : `${f.width}px`, boxSizing: 'border-box' }} />
+              </div>
+            ))}
+          </div>
+          <div style={{ padding: '10px 14px', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', color: 'var(--muted)', background: 'var(--bg)', fontStyle: 'italic' }}>
+            Click Preview to see a live response.
+          </div>
+        </div>
+      </Row>
+
+      {/* Running */}
+      <Row label="running state (button disabled, spinner text)">
+        <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)', width: '100%', maxWidth: 540 }}>
+          <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, border: `1px solid ${productStyle.border}`, background: productStyle.bg, color: productStyle.text }}>Search API</span>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: methodStyle.bg, color: methodStyle.text }}>GET</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', flex: 1 }}>Fuzzy Search</span>
+            <button disabled style={{ padding: '4px 12px', borderRadius: 5, border: 'none', background: 'var(--mid)', color: '#fff', fontSize: '0.6875rem', fontWeight: 700, cursor: 'not-allowed' }}>…</button>
+          </div>
+          <div style={{ padding: '10px 14px', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', color: 'var(--muted)', background: 'var(--bg)', fontStyle: 'italic' }}>
+            Fetching…
+          </div>
+        </div>
+      </Row>
+
+      {/* Success with response */}
+      <Row label="success state — response bar + JSON output">
+        <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)', width: '100%', maxWidth: 540 }}>
+          <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 7 }}>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, border: `1px solid ${productStyle.border}`, background: productStyle.bg, color: productStyle.text }}>Search API</span>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: methodStyle.bg, color: methodStyle.text }}>GET</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', flex: 1 }}>Fuzzy Search</span>
+            <button style={{ padding: '4px 12px', borderRadius: 5, border: 'none', background: 'var(--brand,#e2001a)', color: '#fff', fontSize: '0.6875rem', fontWeight: 700, cursor: 'pointer' }}>▶ Preview</button>
+          </div>
+          <div style={{ padding: '8px 14px 0', fontSize: '0.75rem', color: 'var(--mid)' }}>Typo-tolerant search across addresses, POIs and geographies.</div>
+          <div style={{ padding: '8px 14px 10px', display: 'flex', gap: 7 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 3, flex: 1 }}>
+              <label style={{ fontSize: '0.5rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Query</label>
+              <input readOnly defaultValue="Piccadilly Circus" style={{ padding: '5px 8px', borderRadius: 5, border: '1px solid var(--brand,#e2001a)', background: 'var(--bg)', fontSize: '0.6875rem', fontFamily: 'var(--font-mono,monospace)', width: '100%', boxSizing: 'border-box', color: 'var(--black)' }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <label style={{ fontSize: '0.5rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Limit</label>
+              <input readOnly defaultValue="5" style={{ padding: '5px 8px', borderRadius: 5, border: '1px solid var(--border)', background: 'var(--bg)', fontSize: '0.6875rem', fontFamily: 'var(--font-mono,monospace)', width: 60, color: 'var(--black)' }} />
+            </div>
+          </div>
+          {/* Status bar */}
+          <div style={{ borderTop: '1px solid var(--border)' }}>
+            <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg)', fontSize: '0.6875rem' }}>
+              <span style={{ color: '#15803d', fontWeight: 600 }}><span style={{ fontSize: '0.5rem' }}>●</span> Response</span>
+              <span style={{ color: 'var(--mid)' }}>2 results</span>
+              <span style={{ color: 'var(--muted)' }}>87ms</span>
+              <div style={{ flex: 1 }} />
+              <button style={{ marginLeft: 'auto', background: 'rgba(0,0,0,0.06)', border: 'none', color: 'var(--mid)', fontSize: '0.75rem', borderRadius: 4, padding: '3px 8px', cursor: 'pointer' }}>Copy</button>
+            </div>
+            {/* JSON */}
+            <div style={{ padding: '10px 14px', background: 'var(--bg)', maxHeight: 160, overflowY: 'auto', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', fontFamily: 'var(--font-mono,monospace)', color: 'var(--mid)', lineHeight: 1.6 }}>
+              <pre style={{ margin: 0 }}>{JSON.stringify(FAKE_RESULT, null, 2)}</pre>
+            </div>
+          </div>
+        </div>
+      </Row>
+
+      {/* Error */}
+      <Row label="error state — red status bar" noBorder>
+        <div style={{ border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--surface)', width: '100%', maxWidth: 540 }}>
+          <div style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 7 }}>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 700, padding: '2px 7px', borderRadius: 4, border: `1px solid ${productStyle.border}`, background: productStyle.bg, color: productStyle.text }}>Search API</span>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: methodStyle.bg, color: methodStyle.text }}>GET</span>
+            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', flex: 1 }}>Fuzzy Search</span>
+            <button style={{ padding: '4px 12px', borderRadius: 5, border: 'none', background: 'var(--brand,#e2001a)', color: '#fff', fontSize: '0.6875rem', fontWeight: 700, cursor: 'pointer' }}>▶ Preview</button>
+          </div>
+          <div style={{ borderTop: '1px solid var(--border)' }}>
+            <div style={{ padding: '5px 14px', display: 'flex', alignItems: 'center', gap: 8, background: '#fff1f2', fontSize: '0.6875rem' }}>
+              <span style={{ color: '#be123c', fontWeight: 600 }}><span style={{ fontSize: '0.5rem' }}>●</span> Error</span>
+              <div style={{ flex: 1 }} />
+            </div>
+            <div style={{ padding: '10px 14px', background: 'var(--bg)', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', fontFamily: 'var(--font-mono,monospace)', color: '#be123c', lineHeight: 1.6 }}>
+              <pre style={{ margin: 0 }}>{`{ "error": "401 Unauthorized — check your API key" }`}</pre>
+            </div>
+          </div>
+        </div>
+      </Row>
+
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §39  PAGE ACTIONS BAR
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PageActionsSection() {
+  const SparkleIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+      <path d="M8 1v3M8 12v3M1 8h3M12 8h3M3.22 3.22l2.12 2.12M10.66 10.66l2.12 2.12M3.22 12.78l2.12-2.12M10.66 5.34l2.12-2.12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  );
+  const ClipboardIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+      <rect x="5" y="1" width="6" height="3" rx="1" stroke="currentColor" strokeWidth="1.4"/>
+      <path d="M4 2.5H3a1 1 0 00-1 1v10a1 1 0 001 1h10a1 1 0 001-1v-10a1 1 0 00-1-1h-1" stroke="currentColor" strokeWidth="1.4"/>
+    </svg>
+  );
+
+  return (
+    <GallerySection title="Page Actions Bar" desc=".page-actions, .page-action-btn, .page-action-btn--ai, .page-action-sep, .page-action-btn--disabled">
+      <Row label="full bar — all button types">
+        <div style={{ width: '100%', maxWidth: 560 }}>
+          <div className="page-actions" style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
+            {/* AI button */}
+            <button className="page-action-btn page-action-btn--ai" style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <SparkleIcon /> Ask AI
+            </button>
+            {/* Separator */}
+            <div className="page-action-sep" style={{ width: 1, height: 16, background: 'var(--border)', margin: '0 2px' }} />
+            {/* Copy link */}
+            <button className="page-action-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <ClipboardIcon /> Copy link
+            </button>
+            {/* Copy for LLM */}
+            <button className="page-action-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ fontSize: '0.625rem', fontWeight: 700, border: '1.5px solid currentColor', borderRadius: 3, padding: '0 2px', lineHeight: '13px', opacity: 0.75 }}>M↓</span>
+              Copy for LLM
+            </button>
+            {/* Separator */}
+            <div className="page-action-sep" style={{ width: 1, height: 16, background: 'var(--border)', margin: '0 2px' }} />
+            {/* Disabled */}
+            <button className="page-action-btn page-action-btn--disabled" disabled>
+              Bookmark
+            </button>
+          </div>
+        </div>
+      </Row>
+
+      <Row label="individual button states">
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div>
+            <StateLabel>Default</StateLabel>
+            <button className="page-action-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <ClipboardIcon /> Copy link
+            </button>
+          </div>
+          <div>
+            <StateLabel>Hover (simulated)</StateLabel>
+            <button className="page-action-btn" style={{ background: 'var(--border)', color: 'var(--black)', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <ClipboardIcon /> Copy link
+            </button>
+          </div>
+          <div>
+            <StateLabel>AI variant</StateLabel>
+            <button className="page-action-btn page-action-btn--ai" style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <SparkleIcon /> Ask AI
+            </button>
+          </div>
+          <div>
+            <StateLabel>AI hover (simulated)</StateLabel>
+            <button className="page-action-btn page-action-btn--ai" style={{ display: 'inline-flex', alignItems: 'center', gap: 5, background: 'var(--s1)', borderColor: 'var(--red)', color: 'var(--red)' }}>
+              <SparkleIcon /> Ask AI
+            </button>
+          </div>
+          <div>
+            <StateLabel>Disabled</StateLabel>
+            <button className="page-action-btn page-action-btn--disabled" disabled>Bookmark</button>
+          </div>
+        </div>
+      </Row>
+
+      <Row label="copy-btn (inside code blocks)" noBorder>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div>
+            <StateLabel>Default</StateLabel>
+            <div style={{ background: 'var(--code-bg)', borderRadius: 6, padding: '4px 6px', display: 'inline-flex' }}>
+              <button className="copy-btn">Copy</button>
+            </div>
+          </div>
+          <div>
+            <StateLabel>Hover (simulated)</StateLabel>
+            <div style={{ background: 'var(--code-bg)', borderRadius: 6, padding: '4px 6px', display: 'inline-flex' }}>
+              <button className="copy-btn" style={{ background: 'rgba(255,255,255,0.15)', color: '#fff' }}>Copy</button>
+            </div>
+          </div>
+          <div>
+            <StateLabel>Copied (.copied)</StateLabel>
+            <div style={{ background: 'var(--code-bg)', borderRadius: 6, padding: '4px 6px', display: 'inline-flex' }}>
+              <button className="copy-btn copied" style={{ color: '#4ade80' }}>Copied!</button>
+            </div>
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §40  PAGE LAYOUT UTILITIES
+// ─────────────────────────────────────────────────────────────────────────────
+
+function PageLayoutUtilitiesSection() {
+  return (
+    <GallerySection title="Page Layout Utilities" desc=".page-subtitle, .page-body, .grid-2-col, .examples-grid, .ctx-grid">
+
+      {/* page-subtitle */}
+      <Row label=".page-subtitle — optional one-liner below h1">
+        <div style={{ width: '100%', maxWidth: 560, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--border)' }}>
+            <h1 style={{ margin: '0 0 4px', fontSize: '1.375rem', fontWeight: 800, color: 'var(--black)', fontFamily: 'var(--font-display)' }}>Vehicle Interface</h1>
+            <p className="page-subtitle" style={{ margin: 0, fontSize: '0.9375rem', color: 'var(--mid)', lineHeight: 1.55 }}>Displays map, guidance and media controls on the vehicle touchscreen.</p>
+          </div>
+          <div style={{ padding: '8px 20px', fontSize: '0.75rem', color: 'var(--muted)' }}>
+            ↑ <code>h1</code> + <code>.page-subtitle</code> — subtitle is a single sentence, max 12 words
+          </div>
+        </div>
+      </Row>
+
+      {/* page-body */}
+      <Row label=".page-body — doc-template content wrapper">
+        <div style={{ width: '100%', maxWidth: 560, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <div className="page-body" style={{ padding: '16px 20px' }}>
+            <p style={{ fontSize: '0.875rem', color: 'var(--mid)', lineHeight: 1.6, margin: '0 0 8px' }}>
+              <code>.page-body</code> is the main scrolling prose container used in doc template pages
+              (<code>DocIntroTemplate</code>, <code>DocFeatureTemplate</code>, <code>DocUseCaseTemplate</code>).
+              It sets <code>max-width</code>, padding, and line-height for long-form content.
+            </p>
+          </div>
+        </div>
+      </Row>
+
+      {/* grid-2-col */}
+      <Row label=".grid-2-col — responsive 2-column grid (collapses to 1 on mobile)">
+        <div style={{ width: '100%', maxWidth: 480 }}>
+          <div className="grid-2-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 12 }}>
+            {['Card A', 'Card B', 'Card C', 'Card D'].map(c => (
+              <div key={c} style={{ padding: '12px 14px', border: '1px solid var(--border)', borderRadius: 8, background: 'var(--bg)', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--black)', textAlign: 'center' }}>{c}</div>
+            ))}
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
+            Collapses to 1 column below 760px. Used for feature cards, EV options, navigation controls.
+          </div>
+        </div>
+      </Row>
+
+      {/* examples-grid */}
+      <Row label=".examples-grid — ExampleCard grid (auto-fill, min 280px columns)" noBorder>
+        <div style={{ width: '100%', maxWidth: 560 }}>
+          <div className="examples-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+            {['EV Station Finder', 'Route Planner', 'Traffic Heatmap'].map(t => (
+              <a key={t} className="nav-card example-card" href="#" onClick={e => e.preventDefault()}>
+                <div className="example-card-thumb" style={{ height: 80, background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem' }}>🗺️</div>
+                <div className="example-card-body">
+                  <span className="example-card-title">{t}</span>
+                  <p className="example-card-desc">Interactive live demo with TomTom Maps SDK.</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ROOT — PAGE HEADER + ALL SECTIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -3093,6 +3414,9 @@ export default function UIComponentGallery() {
             ['#s35', '35 ADAS Stack'],
             ['#s36', '36 Sem Cards'],
             ['#s37', '37 Token Flow'],
+            ['#s38', '38 TryIt Panel'],
+            ['#s39', '39 Page Actions'],
+            ['#s40', '40 Layout Utils'],
           ].map(([href, label]) => (
             <a
               key={href}
@@ -3151,13 +3475,16 @@ export default function UIComponentGallery() {
       <div id="s35"><AdasSection /></div>
       <div id="s36"><SemanticCardsSection /></div>
       <div id="s37"><TokenFlowSection /></div>
+      <div id="s38"><TryItPanelSection /></div>
+      <div id="s39"><PageActionsSection /></div>
+      <div id="s40"><PageLayoutUtilitiesSection /></div>
 
       {/* Footer note */}
       <div style={{
         marginTop: 12, paddingTop: 20, borderTop: '1px solid var(--border)',
         fontSize: '0.75rem', color: 'var(--t-dis)', lineHeight: 1.6,
       }}>
-        Internal audit page · Plumbing Portal · 37 sections · All components sourced from{' '}
+        Internal audit page · Plumbing Portal · 40 sections · All components sourced from{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/components/ui/</code> and{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/index.css</code>
       </div>
