@@ -37,17 +37,42 @@ const METHOD_STYLES = {
 };
 
 const RENDER_BADGES = {
-  map:         { label: '🗺 Map',        bg: '#ecfdf5', text: '#065f46' },
-  tile:        { label: '◻ Tile',       bg: '#f0f9ff', text: '#0369a1' },
-  image:       { label: '🖼 Image',     bg: '#f5f3ff', text: '#6d28d9' },
-  table:       { label: '▦ Table',      bg: '#fff7ed', text: '#c2410c' },
-  sdk:         { label: '⚡ SDK',       bg: '#fdf4ff', text: '#7e22ce' },
-  'sdk-polygon': { label: '⚡ SDK Map', bg: '#f0fdf4', text: '#15803d' },
-  card:        { label: '▤ Card',       bg: '#fefce8', text: '#854d0e' },
-  json:        { label: '{ } JSON',     bg: '#f1f5f9', text: '#475569' },
+  'sdk-map':     { label: '⚡ SDK Map',  bg: '#f0fdf4', text: '#15803d' },
+  'sdk-polygon': { label: '⚡ SDK Map',  bg: '#f0fdf4', text: '#15803d' },
+  tile:          { label: '◻ Tile',     bg: '#f0f9ff', text: '#0369a1' },
+  image:         { label: '🖼 Image',   bg: '#f5f3ff', text: '#6d28d9' },
+  table:         { label: '▦ Table',    bg: '#fff7ed', text: '#c2410c' },
+  sdk:           { label: '⚡ SDK',     bg: '#fdf4ff', text: '#7e22ce' },
+  card:          { label: '▤ Card',     bg: '#fefce8', text: '#854d0e' },
+  json:          { label: '{ } JSON',   bg: '#f1f5f9', text: '#475569' },
 };
 
 /* ─── Helpers ────────────────────────────────────────────────────────────────── */
+/** Round coloured marker element for TomTom SDK. */
+function markerEl(color, label) {
+  const el = document.createElement('div');
+  el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.5625rem;font-weight:800;font-family:sans-serif;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);cursor:default;line-height:1;`;
+  el.textContent = label;
+  return el;
+}
+
+/** Add a GeoJSON LineString route layer to an SDK map. */
+function addRouteLine(map, coordinates, color = '#0066cc', width = 4, id = 'route') {
+  if (!coordinates?.length) return;
+  map.addSource(id, { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates } } });
+  map.addLayer({ id: `${id}-casing`, type: 'line', source: id, paint: { 'line-color': '#fff', 'line-width': width + 3, 'line-opacity': 0.6 } });
+  map.addLayer({ id, type: 'line', source: id, paint: { 'line-color': color, 'line-width': width, 'line-opacity': 0.9 } });
+}
+
+/** Fit an SDK map to an array of [lon, lat] pairs. */
+function fitBounds(map, tt, lngLats, padding = 60, maxZoom = 15) {
+  if (!lngLats?.length) return;
+  if (lngLats.length === 1) { map.setCenter(lngLats[0]); return; }
+  const bounds = new tt.LngLatBounds();
+  lngLats.forEach(p => bounds.extend(p));
+  map.fitBounds(bounds, { padding, maxZoom });
+}
+
 function staticMapUrl(key, lon, lat, zoom = 13, w = 600, h = 260) {
   return `https://api.tomtom.com/map/1/staticimage?key=${key}&center=${lon},${lat}&zoom=${zoom}&width=${w}&height=${h}&layer=basic&style=main&format=png`;
 }
@@ -65,7 +90,7 @@ const DEMOS = [
   /* ════════════════════ SEARCH API ════════════════════ */
   {
     id: 'fuzzy-search', product: 'Search API', endpoint: 'Fuzzy Search',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Typo-tolerant search across addresses, POIs and geographies.',
     fields: [
       { id: 'query', label: 'Query', placeholder: 'Amsterdam Centraal', defaultValue: 'Amsterdam Centraal', flex: true },
@@ -75,14 +100,24 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/search/${encodeURIComponent(query)}.json?key=${key}&limit=${limit || 5}`);
       return r.json();
     },
-    mapCenter: (result) => {
-      const p = result.results?.[0]?.position;
-      return p ? { lon: p.lon, lat: p.lat, zoom: 13 } : null;
+    sdkCenter: (result) => { const p = result.results?.[0]?.position; return p ? { lon: p.lon, lat: p.lat, zoom: 12 } : null; },
+    sdkSetup: (map, tt, result) => {
+      const results = result?.results || [];
+      const lngs = [];
+      results.forEach((r, i) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#e2001a', String(i + 1)) })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || r.address?.freeformAddress || `Result ${i + 1}`))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
     },
   },
   {
     id: 'poi-search', product: 'Search API', endpoint: 'POI Search',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Search for a specific business or POI by name with location bias.',
     fields: [
       { id: 'query',  label: 'Name',       placeholder: 'Starbucks', defaultValue: 'Starbucks', flex: true },
@@ -91,14 +126,29 @@ const DEMOS = [
       { id: 'radius', label: 'Radius (m)', placeholder: '10000',     defaultValue: '10000',     width: 90 },
     ],
     run: async ({ query, lat, lon, radius }, key) => {
-      const r = await fetch(`https://api.tomtom.com/search/2/poiSearch/${encodeURIComponent(query)}.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 10000}&limit=5`);
+      const r = await fetch(`https://api.tomtom.com/search/2/poiSearch/${encodeURIComponent(query)}.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 10000}&limit=8`);
       return r.json();
     },
-    mapCenter: (result, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 12 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 12 }),
+    sdkSetup: (map, tt, result, values) => {
+      const results = result?.results || [];
+      const cLon = parseFloat(values.lon), cLat = parseFloat(values.lat);
+      new tt.Marker({ element: markerEl('#64748b', '◎') }).setLngLat([cLon, cLat]).addTo(map);
+      const lngs = [[cLon, cLat]];
+      results.forEach((r, i) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#e2001a', String(i + 1)) })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || `Result ${i + 1}`))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
+    },
   },
   {
     id: 'nearby-search', product: 'Search API', endpoint: 'Nearby Search',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Find all places within a radius of a coordinate, sorted by distance.',
     fields: [
       { id: 'lat',    label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
@@ -110,11 +160,27 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/nearbySearch/.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 500}&limit=${limit || 10}`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 15 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 15 }),
+    sdkSetup: (map, tt, result, values) => {
+      const results = result?.results || [];
+      const cLon = parseFloat(values.lon), cLat = parseFloat(values.lat);
+      new tt.Marker({ element: markerEl('#64748b', '◎') }).setLngLat([cLon, cLat]).addTo(map);
+      const lngs = [[cLon, cLat]];
+      results.forEach((r, i) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        const cat = r.poi?.categories?.[0] || '';
+        new tt.Marker({ element: markerEl('#0369a1', String(i + 1)) })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || cat || `Result ${i + 1}`))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
+    },
   },
   {
     id: 'along-route-search', product: 'Search API', endpoint: 'Along-Route Search',
-    method: 'POST', renderMode: 'map',
+    method: 'POST', renderMode: 'sdk-map',
     description: 'Find POIs within a corridor along a calculated route between two points.',
     note: 'Makes two API calls: calculate route → search along it.',
     fields: [
@@ -127,15 +193,35 @@ const DEMOS = [
       const { lat: dLat, lon: dLon } = parseLatLon(destination);
       const routeRes = await fetch(`https://api.tomtom.com/routing/1/calculateRoute/${oLat},${oLon}:${dLat},${dLon}/json?key=${key}&routeRepresentation=polyline&computeTravelTimeFor=none`);
       const routeData = await routeRes.json();
-      const points = routeData.routes[0].legs[0].points.map(p => ({ lat: p.latitude, lon: p.longitude }));
+      const pts = routeData.routes[0].legs[0].points;
+      const points = pts.map(p => ({ lat: p.latitude, lon: p.longitude }));
       const r = await fetch(`https://api.tomtom.com/search/2/searchAlongRoute/${encodeURIComponent(query)}.json?key=${key}&maxDetourTime=1200&limit=5`,
         { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ route: { points } }) });
-      return r.json();
+      const data = await r.json();
+      data._routeCoords = pts.map(p => [p.longitude, p.latitude]);
+      return data;
     },
-    mapCenter: (_, { origin, destination }) => {
+    sdkCenter: (_, { origin, destination }) => {
       const { lat: oLat, lon: oLon } = parseLatLon(origin);
       const { lat: dLat, lon: dLon } = parseLatLon(destination);
       return { lon: midpoint(oLon, dLon), lat: midpoint(oLat, dLat), zoom: 9 };
+    },
+    sdkSetup: (map, tt, result, values) => {
+      addRouteLine(map, result._routeCoords, '#0066cc', 3);
+      const { lat: oLat, lon: oLon } = parseLatLon(values.origin);
+      const { lat: dLat, lon: dLon } = parseLatLon(values.destination);
+      new tt.Marker({ element: markerEl('#15803d', 'A') }).setLngLat([oLon, oLat]).addTo(map);
+      new tt.Marker({ element: markerEl('#be123c', 'B') }).setLngLat([dLon, dLat]).addTo(map);
+      const lngs = [[oLon, oLat], [dLon, dLat]];
+      (result.results || []).forEach((r, i) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#b45309', String(i + 1)) })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || `POI ${i + 1}`))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs, 50, 13);
     },
   },
   {
@@ -201,7 +287,7 @@ const DEMOS = [
   /* ════════════════════ GEOCODING API ════════════════════ */
   {
     id: 'geocode', product: 'Geocoding API', endpoint: 'Geocode',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Convert a street address or place name to geographic coordinates.',
     fields: [
       { id: 'address', label: 'Address', placeholder: 'Eiffel Tower, Paris', defaultValue: 'Eiffel Tower, Paris', flex: true },
@@ -211,14 +297,24 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/geocode/${encodeURIComponent(address)}.json?key=${key}&limit=${limit || 3}`);
       return r.json();
     },
-    mapCenter: (result) => {
-      const p = result.results?.[0]?.position;
-      return p ? { lon: p.lon, lat: p.lat, zoom: 14 } : null;
+    sdkCenter: (result) => { const p = result.results?.[0]?.position; return p ? { lon: p.lon, lat: p.lat, zoom: 14 } : null; },
+    sdkSetup: (map, tt, result) => {
+      const results = result?.results || [];
+      const lngs = [];
+      results.forEach((r, i) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#e2001a', String(i + 1)) })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.address?.freeformAddress || `Result ${i + 1}`))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs, 80, 16);
     },
   },
   {
     id: 'reverse-geocode', product: 'Geocoding API', endpoint: 'Reverse Geocode',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Convert geographic coordinates to a human-readable street address.',
     fields: [
       { id: 'lat', label: 'Lat', placeholder: '48.8584', defaultValue: '48.8584', width: 120 },
@@ -228,13 +324,23 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/reverseGeocode/${lat},${lon}.json?key=${key}`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 16 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 16 }),
+    sdkSetup: (map, tt, result, values) => {
+      const lon = parseFloat(values.lon), lat = parseFloat(values.lat);
+      const addr = result.addresses?.[0]?.address?.freeformAddress || 'Location';
+      new tt.Marker({ element: markerEl('#e2001a', '📍') })
+        .setLngLat([lon, lat])
+        .setPopup(new tt.Popup({ offset: 16 }).setText(addr))
+        .addTo(map);
+      map.setCenter([lon, lat]);
+      map.setZoom(16);
+    },
   },
 
   /* ════════════════════ ROUTING API ════════════════════ */
   {
     id: 'calculate-route', product: 'Routing API', endpoint: 'Calculate Route',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Calculate the optimal route between an origin and destination with live traffic.',
     fields: [
       { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041',  defaultValue: '52.3676,4.9041',  flex: true },
@@ -245,10 +351,16 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateRoute/${origin}:${destination}/json?key=${key}&travelMode=${travelMode || 'car'}&traffic=true`);
       return r.json();
     },
-    mapCenter: (_, { origin, destination }) => {
-      const { lat: oLat, lon: oLon } = parseLatLon(origin);
-      const { lat: dLat, lon: dLon } = parseLatLon(destination);
-      return { lon: midpoint(oLon, dLon), lat: midpoint(oLat, dLat), zoom: 6 };
+    sdkCenter: (_, { origin }) => { const { lat, lon } = parseLatLon(origin); return { lon, lat, zoom: 6 }; },
+    sdkSetup: (map, tt, result, values) => {
+      const pts = (result?.routes?.[0]?.legs || []).flatMap(leg => leg.points || []);
+      const coords = pts.map(p => [p.longitude, p.latitude]);
+      addRouteLine(map, coords, '#0066cc', 4);
+      const { lat: oLat, lon: oLon } = parseLatLon(values.origin);
+      const { lat: dLat, lon: dLon } = parseLatLon(values.destination);
+      new tt.Marker({ element: markerEl('#15803d', 'A') }).setLngLat([oLon, oLat]).addTo(map);
+      new tt.Marker({ element: markerEl('#e2001a', 'B') }).setLngLat([dLon, dLat]).addTo(map);
+      fitBounds(map, tt, [[oLon, oLat], [dLon, dLat], ...coords.filter((_, i) => i % 20 === 0)], 60, 13);
     },
   },
   {
@@ -338,7 +450,7 @@ const DEMOS = [
   /* ════════════════════ TRAFFIC API ════════════════════ */
   {
     id: 'traffic-incidents', product: 'Traffic API', endpoint: 'Traffic Incidents',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Fetch real-time traffic incidents within a geographic bounding box.',
     fields: [
       { id: 'bbox', label: 'Bounding box (minLon,minLat,maxLon,maxLat)', placeholder: '4.84,52.33,5.02,52.43', defaultValue: '4.84,52.33,5.02,52.43', flex: true },
@@ -348,9 +460,33 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/traffic/services/5/incidentDetails?key=${key}&bbox=${bbox.trim()}&fields=${fields}&language=en-GB`);
       return r.json();
     },
-    mapCenter: (_, { bbox }) => {
+    sdkCenter: (_, { bbox }) => {
       const [minLon, minLat, maxLon, maxLat] = bbox.split(',').map(Number);
       return { lon: midpoint(minLon, maxLon), lat: midpoint(minLat, maxLat), zoom: 12 };
+    },
+    sdkSetup: (map, tt, result, values) => {
+      const incidents = result?.incidents || [];
+      const lngs = [];
+      incidents.forEach((inc) => {
+        const coords = inc.geometry?.coordinates;
+        if (!coords) return;
+        const pt = Array.isArray(coords[0]) ? coords[Math.floor(coords.length / 2)] : coords;
+        const [lon, lat] = pt;
+        const sev = inc.properties?.magnitudeOfDelay ?? 0;
+        const color = sev >= 4 ? '#dc2626' : sev >= 2 ? '#f59e0b' : '#6b7280';
+        const desc = inc.properties?.events?.[0]?.description || inc.properties?.iconCategory || 'Incident';
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl(color, '!') })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(desc))
+          .addTo(map);
+      });
+      /* bbox rectangle */
+      const [minLon, minLat, maxLon, maxLat] = values.bbox.split(',').map(Number);
+      map.addSource('bbox', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'Polygon', coordinates: [[[minLon,minLat],[maxLon,minLat],[maxLon,maxLat],[minLon,maxLat],[minLon,minLat]]] } } });
+      map.addLayer({ id: 'bbox-fill', type: 'fill', source: 'bbox', paint: { 'fill-color': '#0066cc', 'fill-opacity': 0.05 } });
+      map.addLayer({ id: 'bbox-line', type: 'line', source: 'bbox', paint: { 'line-color': '#0066cc', 'line-width': 1.5, 'line-dasharray': [4, 3] } });
+      fitBounds(map, tt, [[minLon, minLat], [maxLon, maxLat]], 40, 14);
     },
   },
   {
@@ -551,7 +687,7 @@ const DEMOS = [
   /* ════════════════════ EV CHARGING API ════════════════════ */
   {
     id: 'ev-station-search', product: 'EV Charging API', endpoint: 'EV Station Search + Availability',
-    method: 'GET', renderMode: 'map',
+    method: 'GET', renderMode: 'sdk-map',
     description: 'Find EV charging stations nearby with real-time connector availability.',
     fields: [
       { id: 'lat',        label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
@@ -564,7 +700,24 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/nearbySearch/.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 5000}&categorySet=7309&chargingAvailability=true${power}&limit=10`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 13 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 13 }),
+    sdkSetup: (map, tt, result, values) => {
+      const results = result?.results || [];
+      const cLon = parseFloat(values.lon), cLat = parseFloat(values.lat);
+      new tt.Marker({ element: markerEl('#64748b', '◎') }).setLngLat([cLon, cLat]).addTo(map);
+      const lngs = [[cLon, cLat]];
+      results.forEach((r) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        const avail = r.chargingPark?.connectors?.some(c => c.availability?.current?.available > 0);
+        const color = avail ? '#15803d' : avail === false ? '#dc2626' : '#0369a1';
+        new tt.Marker({ element: markerEl(color, '⚡') })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'EV Charger'))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
+    },
   },
   {
     id: 'ev-market-coverage', product: 'EV Charging API', endpoint: 'Market Coverage',
@@ -580,7 +733,7 @@ const DEMOS = [
   /* ════════════════════ LDEVR ════════════════════ */
   {
     id: 'ldevr-calculate', product: 'LDEVR', endpoint: 'Calculate EV Route',
-    method: 'POST', renderMode: 'map',
+    method: 'POST', renderMode: 'sdk-map',
     description: 'Long-distance EV route with automatic charging stop optimisation.',
     note: 'Requires an LDEVR-enabled API key — standard keys return 403.',
     fields: [
@@ -614,10 +767,26 @@ const DEMOS = [
       });
       return r.json();
     },
-    mapCenter: (_, { origin, destination }) => {
-      const { lat: oLat, lon: oLon } = parseLatLon(origin);
-      const { lat: dLat, lon: dLon } = parseLatLon(destination);
-      return { lon: midpoint(oLon, dLon), lat: midpoint(oLat, dLat), zoom: 5 };
+    sdkCenter: (_, { origin }) => { const { lat, lon } = parseLatLon(origin); return { lon, lat, zoom: 5 }; },
+    sdkSetup: (map, tt, result, values) => {
+      const legs = result?.routes?.[0]?.legs || [];
+      const allCoords = legs.flatMap(leg => (leg.points || []).map(p => [p.longitude, p.latitude]));
+      addRouteLine(map, allCoords, '#15803d', 4);
+      const { lat: oLat, lon: oLon } = parseLatLon(values.origin);
+      const { lat: dLat, lon: dLon } = parseLatLon(values.destination);
+      new tt.Marker({ element: markerEl('#15803d', 'A') }).setLngLat([oLon, oLat]).addTo(map);
+      new tt.Marker({ element: markerEl('#e2001a', 'B') }).setLngLat([dLon, dLat]).addTo(map);
+      /* charging stops at end of each intermediate leg */
+      legs.slice(0, -1).forEach((leg, i) => {
+        const last = leg.points?.[leg.points.length - 1];
+        if (last) {
+          new tt.Marker({ element: markerEl('#0369a1', '⚡') })
+            .setLngLat([last.longitude, last.latitude])
+            .setPopup(new tt.Popup({ offset: 16 }).setText(`Charging stop ${i + 1}`))
+            .addTo(map);
+        }
+      });
+      fitBounds(map, tt, [[oLon, oLat], [dLon, dLat]], 60, 8);
     },
   },
   {
@@ -700,7 +869,7 @@ const DEMOS = [
   /* ════════════════════ PARKING & FUEL API ════════════════════ */
   {
     id: 'parking-availability', product: 'Parking & Fuel API', endpoint: 'Parking Availability',
-    method: 'GET', renderMode: 'map', draft: true,
+    method: 'GET', renderMode: 'sdk-map', draft: true,
     description: 'Find parking facilities near a location with real-time space availability.',
     fields: [
       { id: 'lat',    label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
@@ -711,7 +880,22 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/nearbySearch/.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 1000}&categorySet=7369&parkingAvailability=true&limit=10`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 15 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 15 }),
+    sdkSetup: (map, tt, result, values) => {
+      const results = result?.results || [];
+      const cLon = parseFloat(values.lon), cLat = parseFloat(values.lat);
+      new tt.Marker({ element: markerEl('#64748b', '◎') }).setLngLat([cLon, cLat]).addTo(map);
+      const lngs = [[cLon, cLat]];
+      results.forEach((r) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#0369a1', 'P') })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'Parking'))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
+    },
   },
   {
     id: 'parking-prices', product: 'Parking & Fuel API', endpoint: 'Parking Prices',
@@ -728,7 +912,7 @@ const DEMOS = [
   },
   {
     id: 'on-street-parking', product: 'Parking & Fuel API', endpoint: 'On-Street Parking',
-    method: 'GET', renderMode: 'map', draft: true,
+    method: 'GET', renderMode: 'sdk-map', draft: true,
     description: 'Find on-street parking regulations and availability in an area.',
     fields: [
       { id: 'lat',    label: 'Lat',        placeholder: '52.3676', defaultValue: '52.3676', width: 100 },
@@ -739,11 +923,26 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/nearbySearch/.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 500}&categorySet=7374&limit=10`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 16 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 16 }),
+    sdkSetup: (map, tt, result, values) => {
+      const results = result?.results || [];
+      const cLon = parseFloat(values.lon), cLat = parseFloat(values.lat);
+      new tt.Marker({ element: markerEl('#64748b', '◎') }).setLngLat([cLon, cLat]).addTo(map);
+      const lngs = [[cLon, cLat]];
+      results.forEach((r) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#7c3aed', 'P') })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'On-street parking'))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
+    },
   },
   {
     id: 'fuel-prices', product: 'Parking & Fuel API', endpoint: 'Fuel Prices',
-    method: 'GET', renderMode: 'map', draft: true,
+    method: 'GET', renderMode: 'sdk-map', draft: true,
     description: 'Find nearby fuel stations with live pricing per fuel type.',
     fields: [
       { id: 'lat',     label: 'Lat',        placeholder: '52.3676',  defaultValue: '52.3676',  width: 100 },
@@ -755,19 +954,34 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/nearbySearch/.json?key=${key}&lat=${lat}&lon=${lon}&radius=${radius || 5000}&categorySet=7311&fuelSet=${fuelSet || 'Petrol'}&limit=10`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 13 }),
+    sdkCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 13 }),
+    sdkSetup: (map, tt, result, values) => {
+      const results = result?.results || [];
+      const cLon = parseFloat(values.lon), cLat = parseFloat(values.lat);
+      new tt.Marker({ element: markerEl('#64748b', '◎') }).setLngLat([cLon, cLat]).addTo(map);
+      const lngs = [[cLon, cLat]];
+      results.forEach((r) => {
+        const { lon, lat } = r.position;
+        lngs.push([lon, lat]);
+        new tt.Marker({ element: markerEl('#b45309', '⛽') })
+          .setLngLat([lon, lat])
+          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'Fuel station'))
+          .addTo(map);
+      });
+      fitBounds(map, tt, lngs);
+    },
   },
 
   /* ════════════════════ SNAP TO ROADS ════════════════════ */
   {
     id: 'snap-to-roads', product: 'Snap to Roads', endpoint: 'Snap GPS Trace',
-    method: 'POST', renderMode: 'map', draft: true,
+    method: 'POST', renderMode: 'sdk-map', draft: true,
     description: 'Takes a series of GPS coordinates and snaps them to the nearest road geometry.',
     fields: [
       { id: 'points', label: 'GPS points (lat,lon per line)', placeholder: '52.3676,4.9041\n52.3700,4.9100\n52.3750,4.9150', defaultValue: '52.3676,4.9041\n52.3700,4.9100\n52.3750,4.9150', flex: true },
     ],
     run: async ({ points }, key) => {
-      const pts = points.split('\n').map(line => { const { lat, lon } = parseLatLon(line.trim()); return { latitude: lat, longitude: lon }; });
+      const pts = points.split('\n').filter(Boolean).map(line => { const { lat, lon } = parseLatLon(line.trim()); return { latitude: lat, longitude: lon }; });
       const r = await fetch(`https://api.tomtom.com/snap-to-roads/1/snap?key=${key}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -775,9 +989,20 @@ const DEMOS = [
       });
       return r.json();
     },
-    mapCenter: (_, { points }) => {
-      const first = parseLatLon(points.split('\n')[0].trim());
-      return { lon: first.lon, lat: first.lat, zoom: 14 };
+    sdkCenter: (_, { points }) => { const { lat, lon } = parseLatLon(points.split('\n')[0].trim()); return { lon, lat, zoom: 14 }; },
+    sdkSetup: (map, tt, result, values) => {
+      const inputPts = values.points.split('\n').filter(Boolean).map(l => { const { lat, lon } = parseLatLon(l); return [lon, lat]; });
+      const snappedPts = (result?.snappedPoints || []).map(p => [p.location?.longitude ?? p.longitude, p.location?.latitude ?? p.latitude]);
+      /* original GPS trace — grey dashed */
+      if (inputPts.length > 1) {
+        map.addSource('gps', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: inputPts } } });
+        map.addLayer({ id: 'gps', type: 'line', source: 'gps', paint: { 'line-color': '#94a3b8', 'line-width': 2, 'line-dasharray': [3, 3] } });
+      }
+      /* snapped line — red */
+      if (snappedPts.length > 1) addRouteLine(map, snappedPts, '#e2001a', 3, 'snapped');
+      /* input markers */
+      inputPts.forEach((pt, i) => new tt.Marker({ element: markerEl('#94a3b8', String(i + 1)) }).setLngLat(pt).addTo(map));
+      fitBounds(map, tt, [...inputPts, ...snappedPts]);
     },
   },
 
@@ -835,7 +1060,7 @@ const DEMOS = [
   /* ════════════════════ WAYPOINT OPTIMIZATION ════════════════════ */
   {
     id: 'waypoint-optimize', product: 'Waypoint API', endpoint: 'Optimize Waypoints',
-    method: 'POST', renderMode: 'map',
+    method: 'POST', renderMode: 'sdk-map',
     description: 'Reorders a set of waypoints to minimise total travel time — solves the TSP.',
     fields: [
       { id: 'waypoints', label: 'Waypoints (lat,lon one per line)', placeholder: '52.3676,4.9041\n52.3790,4.8990\n52.3600,4.8900\n52.3700,4.9100', defaultValue: '52.3676,4.9041\n52.3790,4.8990\n52.3600,4.8900\n52.3700,4.9100', flex: true },
@@ -849,11 +1074,22 @@ const DEMOS = [
       });
       return r.json();
     },
-    mapCenter: (_, { waypoints }) => {
+    sdkCenter: (_, { waypoints }) => {
       const pts = waypoints.split('\n').filter(Boolean).map(l => parseLatLon(l.trim()));
-      const lat = pts.reduce((s, p) => s + p.lat, 0) / pts.length;
-      const lon = pts.reduce((s, p) => s + p.lon, 0) / pts.length;
-      return { lon, lat, zoom: 14 };
+      return { lon: pts.reduce((s, p) => s + p.lon, 0) / pts.length, lat: pts.reduce((s, p) => s + p.lat, 0) / pts.length, zoom: 13 };
+    },
+    sdkSetup: (map, tt, result, values) => {
+      const inputPts = values.waypoints.split('\n').filter(Boolean).map(l => { const { lat, lon } = parseLatLon(l); return [lon, lat]; });
+      const order = result?.optimizedOrder ?? result?.waypointOrder ?? inputPts.map((_, i) => i);
+      const ordered = order.map(i => inputPts[i]).filter(Boolean);
+      /* dashed connector in optimized order */
+      if (ordered.length > 1) {
+        map.addSource('opt', { type: 'geojson', data: { type: 'Feature', geometry: { type: 'LineString', coordinates: ordered } } });
+        map.addLayer({ id: 'opt', type: 'line', source: 'opt', paint: { 'line-color': '#7c3aed', 'line-width': 2, 'line-dasharray': [4, 2] } });
+      }
+      /* numbered markers in optimized visit order */
+      ordered.forEach((pt, i) => new tt.Marker({ element: markerEl('#7c3aed', String(i + 1)) }).setLngLat(pt).addTo(map));
+      fitBounds(map, tt, inputPts);
     },
   },
 ];
@@ -1042,6 +1278,54 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
   );
 }
 
+/* ─── Generic SDK map output ─────────────────────────────────────────────────── */
+function SdkMapOutput({ demo, result, values, apiKey }) {
+  const containerRef = useRef(null);
+  const mapRef       = useRef(null);
+
+  useEffect(() => {
+    if (!result || !apiKey || !containerRef.current) return;
+    if (!demo.sdkCenter || !demo.sdkSetup) return;
+    const center = demo.sdkCenter(result, values);
+    if (!center) return;
+
+    let map;
+    loadSdk().then(tt => {
+      if (!containerRef.current) return;
+      containerRef.current.style.width  = '100%';
+      containerRef.current.style.height = '320px';
+      map = tt.map({
+        key: apiKey,
+        container: containerRef.current,
+        center: [center.lon, center.lat],
+        zoom: center.zoom ?? 12,
+      });
+      mapRef.current = map;
+
+      map.once('load', () => {
+        map.resize();
+        try { demo.sdkSetup(map, tt, result, values); } catch (e) { console.warn('sdkSetup error', e); }
+      });
+    }).catch(err => console.warn('TomTom SDK load failed', err));
+
+    return () => {
+      if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result, apiKey]);
+
+  return (
+    <div style={{ position: 'relative', borderTop: '1px solid var(--border)' }}>
+      <div ref={containerRef} style={{ width: '100%', height: 320, minHeight: 320 }} />
+      <span style={{
+        position: 'absolute', bottom: 8, right: 8, pointerEvents: 'none',
+        fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff',
+        padding: '2px 6px', borderRadius: 3,
+      }}>Maps Web SDK</span>
+    </div>
+  );
+}
+
 /* ─── Main panel ─────────────────────────────────────────────────────────────── */
 function TryItPanel({ demo, apiKey }) {
   const [values, setValues] = useState(() => Object.fromEntries(demo.fields.map(f => [f.id, f.defaultValue ?? ''])));
@@ -1060,6 +1344,7 @@ function TryItPanel({ demo, apiKey }) {
   const isImageMode      = demo.renderMode === 'image'       && demo.imageUrl;
   const isSdkMode        = demo.renderMode === 'sdk';
   const isSdkPolygonMode = demo.renderMode === 'sdk-polygon';
+  const isSdkMapMode     = demo.renderMode === 'sdk-map';
 
   const run = async () => {
     if (!apiKey) return;
@@ -1181,6 +1466,11 @@ function TryItPanel({ demo, apiKey }) {
             <CopyBtn text={resultStr} />
           </div>
 
+          {/* Generic SDK map (markers, routes, clusters) */}
+          {isSdkMapMode && result && !result.error && (
+            <SdkMapOutput demo={demo} result={result} values={values} apiKey={apiKey} />
+          )}
+
           {/* SDK polygon map (reachable range / isochrone) */}
           {isSdkPolygonMode && result && !result.error && (
             <SdkPolygonMap
@@ -1191,7 +1481,7 @@ function TryItPanel({ demo, apiKey }) {
             />
           )}
 
-          {/* Static image map */}
+          {/* Static image map (legacy fallback) */}
           {mapImgUrl && (
             <div style={{ position: 'relative' }}>
               <img src={mapImgUrl} alt="Result area map" style={{ width: '100%', display: 'block', maxHeight: 280, objectFit: 'cover' }} />
@@ -1217,7 +1507,7 @@ function TryItPanel({ demo, apiKey }) {
       )}
 
       {/* Idle state */}
-      {status === 'idle' && !isSdkMode && !isSdkPolygonMode && (
+      {status === 'idle' && !isSdkMode && !isSdkPolygonMode && !isSdkMapMode && (
         <div style={{ padding: '10px 14px', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', color: 'var(--muted)', background: 'var(--bg)', fontStyle: 'italic' }}>
           {apiKey ? 'Click Run to see a live response.' : '⚠ Enter your API key above to enable live calls.'}
         </div>
