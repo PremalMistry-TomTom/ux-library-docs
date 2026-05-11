@@ -20,30 +20,7 @@ const TYPE_COLORS = {
 
 const DEFAULT_COLOR = { bg: '#f8f8f8', border: '#e0e0e0', text: '#444' };
 
-function ExternalIcon() {
-  return (
-    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.6 }}>
-      <path d="M2 10L10 2M10 2H5M10 2V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-function InternalIcon() {
-  return (
-    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.6 }}>
-      <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
-  );
-}
-
-const MAX_COLS = 4;
-
 export function ApiLinks({ items = [], title = 'APIs used on this page', onNavigate }) {
-  // Pad the last row only when there IS a second row — single-row layouts need no spacers
-  const hasMultipleRows = items.length > MAX_COLS;
-  const remainder       = items.length % MAX_COLS;
-  const spacers         = hasMultipleRows && remainder !== 0 ? MAX_COLS - remainder : 0;
-
   return (
     <div className="api-links-block">
       <div className="api-links-header">{title}</div>
@@ -54,18 +31,15 @@ export function ApiLinks({ items = [], title = 'APIs used on this page', onNavig
 
           const cardContent = (
             <>
-              <div className="api-links-card-top">
-                <span className="api-links-name">{item.name}</span>
-                {isInternal ? <InternalIcon /> : <ExternalIcon />}
-              </div>
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-                {item.description && (
-                  <span className="api-links-desc">{item.description}</span>
-                )}
+              {item.type && (
                 <span className="api-links-badge" style={{ background: col.bg, border: `1px solid ${col.border}`, color: col.text }}>
                   {item.type}
                 </span>
-              </div>
+              )}
+              <span className="api-links-name">{item.name}</span>
+              {item.description && (
+                <span className="api-links-desc">{item.description}</span>
+              )}
             </>
           );
 
@@ -74,8 +48,8 @@ export function ApiLinks({ items = [], title = 'APIs used on this page', onNavig
               <button
                 key={item.name}
                 onClick={() => onNavigate(item.pageId, item.productId)}
-                className="api-links-card api-links-card--internal"
-                style={{ textAlign: 'left', background: 'none', cursor: 'pointer' }}
+                className="api-links-card"
+                style={{ textAlign: 'left' }}
               >
                 {cardContent}
               </button>
@@ -94,9 +68,6 @@ export function ApiLinks({ items = [], title = 'APIs used on this page', onNavig
             </a>
           );
         })}
-        {Array.from({ length: spacers }, (_, i) => (
-          <div key={`spacer-${i}`} className="api-links-spacer" />
-        ))}
       </div>
     </div>
   );
