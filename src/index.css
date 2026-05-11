@@ -3509,6 +3509,25 @@ div:hover > .illo-card-copy-hint { opacity: 1 !important; }
   max-width: 200px;
 }
 
+/* Component name shown during generation */
+.illo-card-gen-name {
+  font-size: 0.5625rem;
+  color: rgba(255,255,255,0.55);
+  font-family: var(--font-mono, monospace);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+/* Last-updated timestamp */
+.illo-card-ts {
+  font-size: 0.5625rem;
+  color: var(--mid);
+  white-space: nowrap;
+  margin-left: auto;
+}
+
 /* Spin animation for the ↻ icon during generation */
 .illo-refresh-spin {
   display: inline-block;

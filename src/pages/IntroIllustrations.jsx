@@ -4172,6 +4172,17 @@ function copyCardAsSvg(cardEl, label) {
 /* Tiny context so IlloCard can read showRegenerate without prop-drilling 100+ calls */
 const RegenerateCtx = React.createContext(false);
 
+function relTime(ts) {
+  const secs = Math.floor((Date.now() - ts) / 1000);
+  if (secs < 15)  return 'just now';
+  if (secs < 60)  return `${secs}s ago`;
+  const mins = Math.floor(secs / 60);
+  if (mins < 60)  return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24)   return `${hrs}h ago`;
+  return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+}
+
 function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, prompt, illoStyle = 'lofi' }) {
   const { palette } = useIlloStyle();
   const showRegenerate = React.useContext(RegenerateCtx);
@@ -4179,10 +4190,28 @@ function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, 
              : illoStyle === 'detailed' && Dark ? Dark
              : Light;
   const cardRef = useRef(null);
+
+  /* Derive component name once — used for display and localStorage key */
+  const componentName = illoStyle === 'icon'     ? Icon?.name
+                      : illoStyle === 'detailed' ? Dark?.name
+                      : Light?.name;
+
   const [copied, setCopied]         = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshed, setRefreshed]   = useState(false);
   const [refreshErr, setRefreshErr] = useState(null);
+
+  /* Persist last-updated timestamp per component in localStorage */
+  const [lastUpdated, setLastUpdated] = useState(() => {
+    const stored = componentName && localStorage.getItem(`illo-ts-${componentName}`);
+    return stored ? parseInt(stored, 10) : null;
+  });
+  const [, tickRelTime] = useState(0);
+  useEffect(() => {
+    if (!lastUpdated) return;
+    const t = setInterval(() => tickRelTime(n => n + 1), 30_000);
+    return () => clearInterval(t);
+  }, [lastUpdated]);
 
   const handleCopy = useCallback(() => {
     copyCardAsSvg(cardRef.current, label)
@@ -4197,13 +4226,10 @@ function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, 
     e.stopPropagation();
     if (refreshing) return;
 
-    /* Resolve which component name + style key to send */
+    /* Resolve style key — componentName already derived above */
     const style = illoStyle === 'icon' ? 'icon'
                 : illoStyle === 'detailed' ? 'detailed'
                 : 'lofi';
-    const componentName = illoStyle === 'icon'     ? Icon?.name
-                        : illoStyle === 'detailed' ? Dark?.name
-                        : Light?.name;
     if (!componentName) return;
 
     setRefreshing(true);
@@ -4241,6 +4267,9 @@ function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, 
       });
 
       setRefreshed(true);
+      const ts = Date.now();
+      setLastUpdated(ts);
+      if (componentName) localStorage.setItem(`illo-ts-${componentName}`, String(ts));
       setTimeout(() => setRefreshed(false), 3000);
     } catch (err) {
       setRefreshErr(err.message);
@@ -4248,7 +4277,7 @@ function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, 
     } finally {
       setRefreshing(false);
     }
-  }, [illoStyle, Icon, Dark, Light, prompt, label, refreshing]);
+  }, [illoStyle, Icon, Dark, Light, prompt, label, refreshing, componentName]);
 
   /* Refresh button label + colours */
   const btnLabel  = refreshing ? 'Generating…' : refreshed ? '✓ Updated' : refreshErr ? '✗ Error' : 'Regenerate';
@@ -4337,23 +4366,34 @@ function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, 
       </div>
 
       {/* ── Action bar — only shown when Regenerate mode is enabled ── */}
-      {showRegenerate && <div className="illo-card-actions">
-        <button
-          className="illo-card-refresh"
-          onClick={handleRefresh}
-          disabled={refreshing}
-          title={refreshErr ?? `Regenerate "${label}" with AI`}
-          style={{ '--refresh-bg': btnBg }}
+      {showRegenerate && (
+        <div
+          className="illo-card-actions"
+          style={refreshing ? { opacity: 1, transform: 'translateY(0)', pointerEvents: 'auto' } : undefined}
         >
-          <span className={refreshing ? 'illo-refresh-spin' : ''} aria-hidden="true">↻</span>
-          <span>{btnLabel}</span>
-        </button>
-        {refreshErr && (
-          <span className="illo-card-refresh-err" title={refreshErr}>
-            {refreshErr.length > 48 ? refreshErr.slice(0, 48) + '…' : refreshErr}
-          </span>
-        )}
-      </div>}
+          <button
+            className="illo-card-refresh"
+            onClick={handleRefresh}
+            disabled={refreshing}
+            title={refreshErr ?? `Regenerate "${label}" with AI`}
+            style={{ '--refresh-bg': btnBg }}
+          >
+            <span className={refreshing ? 'illo-refresh-spin' : ''} aria-hidden="true">↻</span>
+            <span>{btnLabel}</span>
+          </button>
+          {refreshing && componentName && (
+            <span className="illo-card-gen-name">{componentName}</span>
+          )}
+          {refreshErr && (
+            <span className="illo-card-refresh-err" title={refreshErr}>
+              {refreshErr.length > 48 ? refreshErr.slice(0, 48) + '…' : refreshErr}
+            </span>
+          )}
+          {lastUpdated && !refreshing && !refreshErr && (
+            <span className="illo-card-ts">Updated {relTime(lastUpdated)}</span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
