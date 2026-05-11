@@ -49,9 +49,53 @@ const RENDER_BADGES = {
 /** Round coloured marker element for TomTom SDK. */
 function markerEl(color, label) {
   const el = document.createElement('div');
-  el.style.cssText = `width:26px;height:26px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.5625rem;font-weight:800;font-family:sans-serif;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,0.35);cursor:default;line-height:1;`;
-  el.textContent = label;
+  const s = String(label);
+  const fs = s.length > 2 ? '0.5rem' : s.length > 1 ? '0.5625rem' : '0.75rem';
+  el.style.cssText = `width:30px;height:30px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-size:${fs};font-weight:800;font-family:system-ui,-apple-system,sans-serif;border:2.5px solid rgba(255,255,255,0.95);box-shadow:0 2px 8px rgba(0,0,0,0.45);cursor:pointer;line-height:1;user-select:none;`;
+  el.textContent = s;
   return el;
+}
+
+/** Rich popup card with key fields + collapsible raw JSON. */
+function makePopup(tt, title, data) {
+  const fields = [];
+  const seen = new Set();
+  const SKIP = new Set(['id','score','type','viewport','boundingBox','entryPoints','dataSources','_routeCoords','resultType','entityType','mapcodes']);
+  function flatten(obj, depth) {
+    if (!obj || typeof obj !== 'object' || depth > 2) return;
+    Object.entries(obj).forEach(([k, v]) => {
+      if (SKIP.has(k) || seen.has(k)) return;
+      if (Array.isArray(v)) return;
+      if (v && typeof v === 'object') { flatten(v, depth + 1); return; }
+      if (v === null || v === undefined) return;
+      const str = String(v);
+      if (str.length > 80 || str.length === 0) return;
+      seen.add(k);
+      fields.push([k, str]);
+    });
+  }
+  flatten(data, 0);
+
+  const rowsHtml = fields.slice(0, 9).map(([k, v]) =>
+    `<tr>
+      <td style="color:#94a3b8;font-size:10px;padding:2px 10px 2px 0;white-space:nowrap;vertical-align:top">${k}</td>
+      <td style="color:#1e293b;font-size:10px;padding:2px 0;word-break:break-word">${v.length > 55 ? v.slice(0, 55) + '…' : v}</td>
+    </tr>`
+  ).join('');
+
+  const jsonEsc = JSON.stringify(data, null, 2)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  return new tt.Popup({ offset: 20, maxWidth: '300px' }).setHTML(
+    `<div style="font-family:system-ui,-apple-system,sans-serif;min-width:190px;max-width:280px">
+      <div style="font-size:12px;font-weight:700;color:#0f172a;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid #e2e8f0;line-height:1.3">${title}</div>
+      ${rowsHtml ? `<table style="border-collapse:collapse;width:100%;margin-bottom:6px">${rowsHtml}</table>` : ''}
+      <details>
+        <summary style="font-size:10px;color:#64748b;cursor:pointer;user-select:none;outline:none;list-style:none">▸ Raw JSON</summary>
+        <pre style="margin:6px 0 0;padding:7px 8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;font-size:9px;line-height:1.55;max-height:130px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;color:#334155">${jsonEsc}</pre>
+      </details>
+    </div>`
+  );
 }
 
 /** Add a GeoJSON LineString route layer to an SDK map. */
@@ -107,7 +151,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#e2001a', String(i + 1)) })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || r.address?.freeformAddress || `Result ${i + 1}`))
+          .setPopup(makePopup(tt, r.poi?.name || r.address?.freeformAddress || `Result ${i + 1}`, r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
@@ -138,7 +182,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#e2001a', String(i + 1)) })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || `Result ${i + 1}`))
+          .setPopup(makePopup(tt, r.poi?.name || `Result ${i + 1}`, r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
@@ -170,7 +214,7 @@ export const DEMOS = [
         const cat = r.poi?.categories?.[0] || '';
         new tt.Marker({ element: markerEl('#0369a1', String(i + 1)) })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || cat || `Result ${i + 1}`))
+          .setPopup(makePopup(tt, r.poi?.name || cat || `Result ${i + 1}`, r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
@@ -216,7 +260,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#b45309', String(i + 1)) })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || `POI ${i + 1}`))
+          .setPopup(makePopup(tt, r.poi?.name || `POI ${i + 1}`, r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs, 50, 13);
@@ -336,7 +380,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#e2001a', String(i + 1)) })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.address?.freeformAddress || `Result ${i + 1}`))
+          .setPopup(makePopup(tt, r.address?.freeformAddress || `Result ${i + 1}`, r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs, 80, 16);
@@ -360,7 +404,7 @@ export const DEMOS = [
       const addr = result.addresses?.[0]?.address?.freeformAddress || 'Location';
       new tt.Marker({ element: markerEl('#e2001a', '📍') })
         .setLngLat([lon, lat])
-        .setPopup(new tt.Popup({ offset: 16 }).setText(addr))
+        .setPopup(makePopup(tt, addr, result.addresses?.[0] ?? {}))
         .addTo(map);
       map.setCenter([lon, lat]);
       map.setZoom(16);
@@ -529,7 +573,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl(color, '!') })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(desc))
+          .setPopup(makePopup(tt, desc, inc.properties ?? inc))
           .addTo(map);
       });
       /* bbox rectangle */
@@ -786,7 +830,7 @@ export const DEMOS = [
         const color = avail ? '#15803d' : avail === false ? '#dc2626' : '#0369a1';
         new tt.Marker({ element: markerEl(color, '⚡') })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'EV Charger'))
+          .setPopup(makePopup(tt, r.poi?.name || 'EV Charger', r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
@@ -860,7 +904,7 @@ export const DEMOS = [
         if (last) {
           new tt.Marker({ element: markerEl('#0369a1', '⚡') })
             .setLngLat([last.longitude, last.latitude])
-            .setPopup(new tt.Popup({ offset: 16 }).setText(`Charging stop ${i + 1}`))
+            .setPopup(makePopup(tt, `Charging stop ${i + 1}`, { stop: i + 1, lat: last.latitude, lon: last.longitude, ...leg }))
             .addTo(map);
         }
       });
@@ -1002,7 +1046,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#0369a1', 'P') })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'Parking'))
+          .setPopup(makePopup(tt, r.poi?.name || 'Parking', r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
@@ -1050,7 +1094,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#7c3aed', 'P') })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'On-street parking'))
+          .setPopup(makePopup(tt, r.poi?.name || 'On-street parking', r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
@@ -1081,7 +1125,7 @@ export const DEMOS = [
         lngs.push([lon, lat]);
         new tt.Marker({ element: markerEl('#b45309', '⛽') })
           .setLngLat([lon, lat])
-          .setPopup(new tt.Popup({ offset: 16 }).setText(r.poi?.name || 'Fuel station'))
+          .setPopup(makePopup(tt, r.poi?.name || 'Fuel station', r))
           .addTo(map);
       });
       fitBounds(map, tt, lngs);
