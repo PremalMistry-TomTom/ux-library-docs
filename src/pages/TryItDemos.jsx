@@ -1366,7 +1366,8 @@ function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
         container: containerRef.current,
         center: [center.longitude, center.latitude],
         zoom: 10,
-        style: isDark ? MAP_STYLE_NIGHT : MAP_STYLE_DAY,
+        // style: isDark ? MAP_STYLE_NIGHT : MAP_STYLE_DAY,
+        // ↑ tomtom:// URIs fail as explicit style param — SDK auto-selects from key
       });
       mapRef.current = map;
 
@@ -1419,7 +1420,8 @@ function SdkMapOutput({ demo, result, values, apiKey }) {
         container: containerRef.current,
         center: [center.lon, center.lat],
         zoom: center.zoom ?? 12,
-        style: isDark ? MAP_STYLE_NIGHT : MAP_STYLE_DAY,
+        // style: isDark ? MAP_STYLE_NIGHT : MAP_STYLE_DAY,
+        // ↑ tomtom:// URIs fail as explicit style param — SDK auto-selects from key
       });
       mapRef.current = map;
 
