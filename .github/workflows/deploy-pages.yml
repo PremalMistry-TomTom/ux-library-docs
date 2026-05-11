@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - playbook-style-audit
   workflow_dispatch:
 
 permissions:
