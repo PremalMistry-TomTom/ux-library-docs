@@ -5,6 +5,13 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UX Library</title>
+    <!-- Apply theme before React renders to prevent flash -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('ux-theme');
+        document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      })();
+    </script>
     <!-- GitHub Pages SPA: restore path encoded by 404.html -->
     <script>
       (function() {
