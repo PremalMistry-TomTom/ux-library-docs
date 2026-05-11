@@ -27,5 +27,10 @@ export function useDemoStyle() {
     purple: C.accent,   // decorative accent (maps to same as green in most themes)
     dark:   C.dark,
     white:  C.white,
+    // Cluster-specific: always readable on C.dark background in any theme.
+    // In dark themes C.navy is light; in light themes C.navy is dark navy — both
+    // contrast against their respective C.dark value.
+    clusterText: C.navy,  // primary text on cluster (M.dark) panels
+    clusterSub:  C.mid,   // secondary / ghost text on cluster panels
   };
 }

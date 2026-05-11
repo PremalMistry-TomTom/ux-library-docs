@@ -14,19 +14,21 @@ const CLUSTER_API_URL = 'https://docs.tomtom.com/automotive-solutions/en/guides/
 
 /* ─── Lane arrow SVGs ─────────────────────────────────────────────────────── */
 function LaneArrow({ type = 'straight', recommended = false }) {
-  const col = recommended ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.28)';
+  const M = useDemoStyle();
+  const col = recommended ? M.clusterText : M.clusterSub;
+  const op  = recommended ? 0.92 : 0.32;
   if (type === 'straight') return (
-    <svg width="20" height="32" viewBox="0 0 10 16" fill={col}>
+    <svg width="20" height="32" viewBox="0 0 10 16" fill={col} opacity={op}>
       <polygon points="5,0 10,5.5 7,5.5 7,16 3,16 3,5.5 0,5.5" />
     </svg>
   );
   if (type === 'right') return (
-    <svg width="28" height="28" viewBox="0 0 14 14" fill={col}>
+    <svg width="28" height="28" viewBox="0 0 14 14" fill={col} opacity={op}>
       <path d="M2 14 L2 8 Q2 3 7 3 L10.5 3 L8 0.5 L14 0.5 L14 6.5 L11.5 4 Q9 4 9 8 L9 14 Z" />
     </svg>
   );
   if (type === 'left') return (
-    <svg width="28" height="28" viewBox="0 0 14 14" fill={col}>
+    <svg width="28" height="28" viewBox="0 0 14 14" fill={col} opacity={op}>
       <path d="M12 14 L12 8 Q12 3 7 3 L3.5 3 L6 0.5 L0 0.5 L0 6.5 L2.5 4 Q5 4 5 8 L5 14 Z" />
     </svg>
   );
@@ -52,15 +54,15 @@ function ClusterNIP({ layout }) {
       {/* Turn icon */}
       <svg width={isMinimal ? 28 : 40} height={isMinimal ? 28 : 40} viewBox="0 0 20 20" fill="none" style={{ flexShrink: 0 }}>
         <path d="M3 20 L3 10 Q3 3 10 3 L15 3 L11.5 0 L20 0 L20 8 L16.5 5 Q13 5 13 10 L13 20 Z"
-          fill="rgba(255,255,255,0.92)" />
+          fill={M.clusterText} opacity="0.88" />
       </svg>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: isMinimal ? '1rem' : '1.25rem', fontWeight: 700, color: 'white', lineHeight: 1 }}>
+        <div style={{ fontSize: isMinimal ? '1rem' : '1.25rem', fontWeight: 700, color: M.clusterText, lineHeight: 1 }}>
           {isMinimal ? '800m' : '600 m'}
         </div>
         {!isMinimal && (
-          <div style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.55)', marginTop: 4, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+          <div style={{ fontSize: '0.875rem', color: M.clusterSub, marginTop: 4, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
             Walter P Chrysler…
           </div>
         )}
@@ -68,9 +70,9 @@ function ClusterNIP({ layout }) {
 
       {isMaximal && (
         <div style={{
-          flexShrink: 0, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)',
+          flexShrink: 0, background: `${M.clusterText}22`, border: `1px solid ${M.clusterText}55`,
           borderRadius: 3, padding: '2px 8px',
-          fontSize: '0.75rem', color: 'white', fontWeight: 700, letterSpacing: '0.03em',
+          fontSize: '0.75rem', color: M.clusterText, fontWeight: 700, letterSpacing: '0.03em',
         }}>EXIT 32a</div>
       )}
     </div>
@@ -115,10 +117,10 @@ function ClusterCMP() {
       borderBottom: '1px solid rgba(255,255,255,0.05)',
       flexShrink: 0,
     }}>
-      <svg width="26" height="26" viewBox="0 0 14 14" fill="rgba(255,255,255,0.65)" style={{ flexShrink: 0 }}>
+      <svg width="26" height="26" viewBox="0 0 14 14" fill={M.clusterText} opacity="0.65" style={{ flexShrink: 0 }}>
         <path d="M2 14 L2 8 Q2 3 7 3 L10.5 3 L8 0.5 L14 0.5 L14 6.5 L11.5 4 Q9 4 9 8 L9 14 Z" />
       </svg>
-      <span style={{ fontSize: '1rem', color: 'rgba(255,255,255,0.55)', fontWeight: 500 }}>Then</span>
+      <span style={{ fontSize: '1rem', color: M.clusterSub, fontWeight: 500 }}>Then</span>
     </div>
   );
 }
@@ -135,10 +137,10 @@ function ClusterJV() {
       flexShrink: 0,
     }}>
       <svg viewBox="0 0 50 30" width="100" height="60" fill="none">
-        <line x1="25" y1="30" x2="25" y2="14" stroke="rgba(255,255,255,0.3)" strokeWidth="4"/>
-        <line x1="25" y1="14" x2="10" y2="0"  stroke="rgba(255,255,255,0.2)" strokeWidth="3"/>
+        <line x1="25" y1="30" x2="25" y2="14" stroke={M.clusterText} strokeWidth="4" opacity="0.30"/>
+        <line x1="25" y1="14" x2="10" y2="0"  stroke={M.clusterText} strokeWidth="3" opacity="0.20"/>
         <line x1="25" y1="14" x2="40" y2="0"  stroke="#e2001a" strokeWidth="3"/>
-        <circle cx="25" cy="14" r="2.5" fill={M.line}/>
+        <circle cx="25" cy="14" r="2.5" fill={M.clusterSub}/>
         <polygon points="38,1 43,7 36,7" fill="#e2001a"/>
       </svg>
     </div>
@@ -174,16 +176,16 @@ function ClusterETA({ layout }) {
       marginTop: 'auto',
       flexShrink: 0,
     }}>
-      <span style={{ fontSize: '1rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>10:59 PM</span>
+      <span style={{ fontSize: '1rem', fontWeight: 700, color: M.clusterText }}>10:59 PM</span>
       {layout !== 'MINIMAL' && (
         <>
-          <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.25)' }}>·</span>
-          <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.5)' }}>26.5 km</span>
+          <span style={{ fontSize: '0.875rem', color: M.clusterSub, opacity: 0.5 }}>·</span>
+          <span style={{ fontSize: '0.875rem', color: M.clusterSub }}>26.5 km</span>
         </>
       )}
       {(layout === 'MAXIMAL' || layout === 'NORMAL_LAYOUT_WIDE') && (
         <>
-          <span style={{ fontSize: '0.875rem', color: 'rgba(255,255,255,0.25)' }}>·</span>
+          <span style={{ fontSize: '0.875rem', color: M.clusterSub, opacity: 0.5 }}>·</span>
           <span style={{ fontSize: '0.875rem', color: M.amber }}>🔋 25%</span>
         </>
       )}
@@ -213,16 +215,16 @@ function SpeedGauge({ speed = 72 }) {
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="#e2001a" strokeWidth="5"
         strokeDasharray={`${fillLen} ${C - fillLen}`} strokeDashoffset={-offset}
         strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.3s' }} />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={M.white} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-      <circle cx={cx} cy={cy} r="3" fill={M.line} />
-      <text x={cx} y={cy + 6} textAnchor="middle" fill={M.white}
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={M.clusterText} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+      <circle cx={cx} cy={cy} r="3" fill={M.clusterSub} />
+      <text x={cx} y={cy + 6} textAnchor="middle" fill={M.clusterText}
         style={{ fontSize: 15, fontWeight: 700, fontFamily: 'system-ui' }}>{speed}</text>
-      <text x={cx} y={cy + 15} textAnchor="middle" fill={M.muted}
+      <text x={cx} y={cy + 15} textAnchor="middle" fill={M.clusterSub}
         style={{ fontSize: 6, fontFamily: 'system-ui' }}>km/h</text>
       {[0, 40, 80, 120, 160].map(v => {
         const a = (-120 + (v / 160) * 240 - 90) * Math.PI / 180;
         return <text key={v} x={cx + 46 * Math.cos(a)} y={cy + 46 * Math.sin(a) + 2}
-          textAnchor="middle" fill={M.muted} style={{ fontSize: 5, fontFamily: 'system-ui' }}>{v}</text>;
+          textAnchor="middle" fill={M.clusterSub} style={{ fontSize: 5, fontFamily: 'system-ui' }}>{v}</text>;
       })}
     </svg>
   );
@@ -251,11 +253,11 @@ function BatteryGauge({ soc = 74 }) {
       <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth="5"
         strokeDasharray={`${fillLen} ${C - fillLen}`} strokeDashoffset={-offset}
         strokeLinecap="round" style={{ transition: 'stroke-dasharray 0.3s' }} />
-      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={M.white} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
-      <circle cx={cx} cy={cy} r="3" fill={M.line} />
+      <line x1={cx} y1={cy} x2={nx} y2={ny} stroke={M.clusterText} strokeWidth="1.5" strokeLinecap="round" opacity="0.8" />
+      <circle cx={cx} cy={cy} r="3" fill={M.clusterSub} />
       <text x={cx} y={cy + 5} textAnchor="middle" fill={color}
         style={{ fontSize: 13, fontWeight: 700, fontFamily: 'system-ui' }}>{soc}%</text>
-      <text x={cx} y={cy + 15} textAnchor="middle" fill={M.muted}
+      <text x={cx} y={cy + 15} textAnchor="middle" fill={M.clusterSub}
         style={{ fontSize: 5.5, fontFamily: 'system-ui' }}>BATTERY</text>
     </svg>
   );
@@ -263,21 +265,27 @@ function BatteryGauge({ soc = 74 }) {
 
 /* ─── Map background ──────────────────────────────────────────────────────── */
 function ClusterMapBg() {
+  const M = useDemoStyle();
   return (
     <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
       viewBox="0 0 220 130" preserveAspectRatio="xMidYMid slice" fill="none">
-      <line x1="0" y1="40"  x2="220" y2="40"  stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      <line x1="0" y1="75"  x2="220" y2="75"  stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      <line x1="0" y1="110" x2="220" y2="110" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      <line x1="50"  y1="0" x2="50"  y2="130" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      <line x1="110" y1="0" x2="110" y2="130" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      <line x1="170" y1="0" x2="170" y2="130" stroke="rgba(255,255,255,0.04)" strokeWidth="1"/>
-      <path d="M0 55 Q60 50 110 56 T220 52"  stroke="rgba(255,255,255,0.12)" strokeWidth="2.5" strokeLinecap="round"/>
-      <path d="M0 90 Q70 85 110 90 T220 87"  stroke="rgba(255,255,255,0.09)" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M110 0 Q112 55 110 95 T108 130" stroke="rgba(255,255,255,0.11)" strokeWidth="2.5" strokeLinecap="round"/>
+      {/* Grid lines — use border token so they're visible in both themes */}
+      <line x1="0" y1="40"  x2="220" y2="40"  stroke={M.line} strokeWidth="1" opacity="0.18"/>
+      <line x1="0" y1="75"  x2="220" y2="75"  stroke={M.line} strokeWidth="1" opacity="0.18"/>
+      <line x1="0" y1="110" x2="220" y2="110" stroke={M.line} strokeWidth="1" opacity="0.18"/>
+      <line x1="50"  y1="0" x2="50"  y2="130" stroke={M.line} strokeWidth="1" opacity="0.18"/>
+      <line x1="110" y1="0" x2="110" y2="130" stroke={M.line} strokeWidth="1" opacity="0.18"/>
+      <line x1="170" y1="0" x2="170" y2="130" stroke={M.line} strokeWidth="1" opacity="0.18"/>
+      {/* Roads */}
+      <path d="M0 55 Q60 50 110 56 T220 52"  stroke={M.clusterSub} strokeWidth="2.5" strokeLinecap="round" opacity="0.40"/>
+      <path d="M0 90 Q70 85 110 90 T220 87"  stroke={M.clusterSub} strokeWidth="2"   strokeLinecap="round" opacity="0.28"/>
+      <path d="M110 0 Q112 55 110 95 T108 130" stroke={M.clusterSub} strokeWidth="2.5" strokeLinecap="round" opacity="0.35"/>
+      {/* Active route */}
       <path d="M0 55 Q60 50 110 56 T220 52" stroke="#e2001a" strokeWidth="3.5"
         strokeLinecap="round" opacity="0.8"/>
-      <ellipse cx="185" cy="110" rx="40" ry="18" fill="rgba(20,50,90,0.35)"/>
+      {/* Horizon ellipse — use clusterSub so it reads as ground shadow in both themes */}
+      <ellipse cx="185" cy="110" rx="40" ry="18" fill={M.clusterSub} opacity="0.25"/>
+      {/* Position dot */}
       <circle cx="110" cy="55" r="4.5" fill="#e2001a" opacity="0.9"/>
       <circle cx="110" cy="55" r="8"   fill="rgba(226,0,26,0.2)"/>
     </svg>
