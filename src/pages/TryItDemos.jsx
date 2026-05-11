@@ -43,8 +43,6 @@ const RENDER_BADGES = {
   image:         { label: '🖼 Image',   bg: '#f5f3ff', text: '#6d28d9' },
   table:         { label: '▦ Table',    bg: '#fff7ed', text: '#c2410c' },
   sdk:           { label: '⚡ SDK',     bg: '#fdf4ff', text: '#7e22ce' },
-  card:          { label: '▤ Card',     bg: '#fefce8', text: '#854d0e' },
-  json:          { label: '{ } JSON',   bg: '#f1f5f9', text: '#475569' },
 };
 
 /* ─── Helpers ────────────────────────────────────────────────────────────────── */
@@ -226,7 +224,7 @@ const DEMOS = [
   },
   {
     id: 'autocomplete', product: 'Search API', endpoint: 'Autocomplete',
-    method: 'GET', renderMode: 'card',
+    method: 'GET', renderMode: 'table',
     description: 'Returns query completion suggestions as the user types. Powers search-as-you-type UI.',
     fields: [
       { id: 'query',    label: 'Partial query', placeholder: 'Amster', defaultValue: 'Amster',   flex: true },
@@ -236,10 +234,15 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/search/2/autocomplete/${encodeURIComponent(query)}.json?key=${key}&language=${language || 'en-US'}&limit=8`);
       return r.json();
     },
+    tableRows: result => (result?.results || []).map((r, i) => ({
+      '#':           i + 1,
+      'Suggestion':  r.segments?.map(s => s.value).join('') || '—',
+      'Last type':   r.segments?.[r.segments.length - 1]?.type || '—',
+    })),
   },
   {
     id: 'batch-search', product: 'Search API', endpoint: 'Batch Search',
-    method: 'POST', renderMode: 'json',
+    method: 'POST', renderMode: 'table',
     description: 'Run multiple search queries in a single request and get batched responses.',
     fields: [
       { id: 'q1', label: 'Query 1', placeholder: 'Pizza Amsterdam',  defaultValue: 'Pizza Amsterdam',  flex: true },
@@ -256,10 +259,19 @@ const DEMOS = [
       });
       return r.json();
     },
+    tableRows: result => (result?.batchItems || []).map((item, i) => {
+      const top = item.response?.results?.[0];
+      return {
+        'Query':       `#${i + 1}`,
+        'Top result':  top?.poi?.name || top?.address?.freeformAddress || '—',
+        'Type':        top?.type || '—',
+        'Results':     item.response?.summary?.numResults ?? '—',
+      };
+    }),
   },
   {
     id: 'poi-details', product: 'Search API', endpoint: 'POI Details',
-    method: 'GET', renderMode: 'card',
+    method: 'GET', renderMode: 'table',
     description: 'Fetch rich details for a specific POI by entity ID — hours, phone, website, categories.',
     note: 'Requires an entityId from a Fuzzy or POI search result.',
     fields: [
@@ -268,6 +280,24 @@ const DEMOS = [
     run: async ({ entityId }, key) => {
       const r = await fetch(`https://api.tomtom.com/search/2/place.json?key=${key}&entityId=${encodeURIComponent(entityId)}`);
       return r.json();
+    },
+    tableRows: result => {
+      const res = result?.results?.[0] || {};
+      const poi = res.poi || {};
+      const addr = res.address || {};
+      const pos = res.position || {};
+      const rows = [
+        { Field: 'Name',        Value: poi.name || '—' },
+        { Field: 'Categories',  Value: poi.categories?.join(', ') || '—' },
+        { Field: 'Phone',       Value: poi.phone || '—' },
+        { Field: 'Website',     Value: poi.url || '—' },
+        { Field: 'Address',     Value: addr.freeformAddress || '—' },
+        { Field: 'Country',     Value: addr.country || '—' },
+        { Field: 'Coordinates', Value: pos.lat != null ? `${pos.lat}, ${pos.lon}` : '—' },
+      ];
+      const hours = poi.openingHours?.timeRanges;
+      if (hours?.length) rows.push({ Field: 'Hours', Value: hours.map(h => `${h.startTime?.hour}:${String(h.startTime?.minute||0).padStart(2,'0')}–${h.endTime?.hour}:${String(h.endTime?.minute||0).padStart(2,'0')}`).join(', ') });
+      return rows.filter(r => r.Value !== '—');
     },
   },
   {
@@ -415,7 +445,7 @@ const DEMOS = [
   },
   {
     id: 'lane-guidance', product: 'Routing API', endpoint: 'Lane Guidance',
-    method: 'GET', renderMode: 'card',
+    method: 'GET', renderMode: 'table',
     description: 'Returns per-manoeuvre lane data — which lanes to use at each turn.',
     fields: [
       { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041',  defaultValue: '52.3676,4.9041',  flex: true },
@@ -425,10 +455,21 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateRoute/${origin}:${destination}/json?key=${key}&travelMode=car&sectionType=lanes`);
       return r.json();
     },
+    tableRows: result => {
+      const instructions = result?.routes?.[0]?.guidance?.instructions ?? [];
+      const rows = instructions.map((ins, i) => ({
+        '#':          i + 1,
+        'Manoeuvre':  ins.message || ins.maneuverType || '—',
+        'Street':     ins.street || ins.roadNumbers?.join(' / ') || '—',
+        'At (m)':     ins.routeOffsetInMeters?.toLocaleString() ?? '—',
+        'Lane info':  ins.laneInfo ? `${ins.laneInfo.lanes?.filter(l => l.isDrivable !== false).length ?? '?'} drivable` : '—',
+      }));
+      return rows.length ? rows : [{ '#': '—', 'Manoeuvre': 'Lane sections are in routes[0].sections — no instruction-level lane data found', 'Street': '—', 'At (m)': '—', 'Lane info': '—' }];
+    },
   },
   {
     id: 'batch-routing', product: 'Routing API', endpoint: 'Batch Routing',
-    method: 'POST', renderMode: 'json',
+    method: 'POST', renderMode: 'table',
     description: 'Calculate multiple routes in a single request. Returns an array of route summaries.',
     fields: [
       { id: 'r1', label: 'Route 1 (origin:dest)', placeholder: '52.3676,4.9041:51.5074,-0.1278', defaultValue: '52.3676,4.9041:51.5074,-0.1278', flex: true },
@@ -445,6 +486,16 @@ const DEMOS = [
       });
       return r.json();
     },
+    tableRows: result => (result?.batchItems || []).map((item, i) => {
+      const s = item.response?.routes?.[0]?.summary;
+      return {
+        'Route':          `#${i + 1}`,
+        'Distance':       s?.lengthInMeters ? `${(s.lengthInMeters / 1000).toFixed(1)} km` : '—',
+        'Travel time':    s?.travelTimeInSeconds ? `${Math.round(s.travelTimeInSeconds / 60)} min` : '—',
+        'Traffic delay':  s?.trafficDelayInSeconds ? `+${s.trafficDelayInSeconds}s` : '0s',
+        'Status':         item.statusCode ?? 200,
+      };
+    }),
   },
 
   /* ════════════════════ TRAFFIC API ════════════════════ */
@@ -491,7 +542,7 @@ const DEMOS = [
   },
   {
     id: 'traffic-flow', product: 'Traffic API', endpoint: 'Traffic Flow',
-    method: 'GET', renderMode: 'card',
+    method: 'GET', renderMode: 'table',
     description: 'Current traffic flow data for a road segment — speed, free-flow speed, confidence.',
     fields: [
       { id: 'lat',   label: 'Point Lat', placeholder: '52.41072',  defaultValue: '52.41072',  width: 120 },
@@ -502,10 +553,23 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/traffic/services/4/flowSegmentData/relative0/${zoom || 10}/json?key=${key}&point=${lat},${lon}&unit=KMPH`);
       return r.json();
     },
+    tableRows: result => {
+      const d = result?.flowSegmentData;
+      if (!d) return [{ Field: 'Error', Value: result?.message || 'No data returned' }];
+      return [
+        { Field: 'Current speed',    Value: d.currentSpeed    != null ? `${d.currentSpeed} km/h` : '—' },
+        { Field: 'Free-flow speed',  Value: d.freeFlowSpeed   != null ? `${d.freeFlowSpeed} km/h` : '—' },
+        { Field: 'Current travel time', Value: d.currentTravelTime != null ? `${d.currentTravelTime}s` : '—' },
+        { Field: 'Free-flow travel time', Value: d.freeFlowTravelTime != null ? `${d.freeFlowTravelTime}s` : '—' },
+        { Field: 'Confidence',       Value: d.confidence      != null ? `${(d.confidence * 100).toFixed(0)}%` : '—' },
+        { Field: 'Road closure',     Value: d.roadClosure ? 'Yes' : 'No' },
+        { Field: 'FRC',              Value: d.frc || '—' },
+      ];
+    },
   },
   {
     id: 'traffic-model-id', product: 'Traffic API', endpoint: 'Traffic Model ID',
-    method: 'GET', renderMode: 'json',
+    method: 'GET', renderMode: 'table',
     description: 'Returns the current traffic model version ID — use to cache-bust traffic tile requests.',
     fields: [
       { id: 'bbox', label: 'Bounding box', placeholder: '4.84,52.33,5.02,52.43', defaultValue: '4.84,52.33,5.02,52.43', flex: true },
@@ -514,6 +578,15 @@ const DEMOS = [
       const [minLon, minLat, maxLon, maxLat] = bbox.split(',').map(Number);
       const r = await fetch(`https://api.tomtom.com/traffic/services/4/incidentViewport.json?key=${key}&boundingBox=${minLat},${minLon},${maxLat},${maxLon}&boundingZoom=11&overviewBox=${minLat},${minLon},${maxLat},${maxLon}&overviewZoom=5&copyright=false`);
       return r.json();
+    },
+    tableRows: result => {
+      const vp = result?.viewpRect || result;
+      const rows = [];
+      if (vp?.modelId)  rows.push({ Field: 'Model ID',  Value: String(vp.modelId) });
+      if (vp?.expiry)   rows.push({ Field: 'Expires',   Value: vp.expiry });
+      if (vp?.version)  rows.push({ Field: 'Version',   Value: String(vp.version) });
+      if (result?.copyrightIds) rows.push({ Field: 'Copyright IDs', Value: result.copyrightIds.join(', ') });
+      return rows.length ? rows : Object.entries(result || {}).slice(0, 8).map(([k, v]) => ({ Field: k, Value: String(v) }));
     },
   },
 
@@ -721,12 +794,17 @@ const DEMOS = [
   },
   {
     id: 'ev-market-coverage', product: 'EV Charging API', endpoint: 'Market Coverage',
-    method: 'GET', renderMode: 'json', draft: true,
+    method: 'GET', renderMode: 'table', draft: true,
     description: 'Returns the list of countries and regions where EV charging data is available.',
     fields: [],
     run: async (_, key) => {
       const r = await fetch(`https://api.tomtom.com/search/2/supportedMarkets.json?key=${key}`);
       return r.json();
+    },
+    tableRows: result => {
+      const markets = result?.markets || result?.supportedMarkets || (Array.isArray(result) ? result : []);
+      if (markets.length) return markets.map(m => ({ Country: m.name || m.country || String(m), 'ISO': m.iso3 || m.countryCode || '—', 'EV data': m.evData ? 'Yes' : '—' }));
+      return Object.entries(result || {}).slice(0, 10).map(([k, v]) => ({ Field: k, Value: String(v) }));
     },
   },
 
@@ -791,7 +869,7 @@ const DEMOS = [
   },
   {
     id: 'ldevr-weather', product: 'LDEVR', endpoint: 'Weather Consideration (v2)',
-    method: 'POST', renderMode: 'json', draft: true,
+    method: 'POST', renderMode: 'table', draft: true,
     description: 'EV route calculation with real-time weather data factored into battery consumption.',
     note: 'LDEVR v2 — requires separate v2-enabled credentials.',
     fields: [
@@ -808,20 +886,42 @@ const DEMOS = [
       });
       return r.json();
     },
+    tableRows: result => {
+      const legs = result?.routes?.[0]?.legs || [];
+      if (!legs.length) return [{ Field: 'Note', Value: result?.message || result?.note || 'Draft endpoint — see LDEVR v2 docs' }];
+      return legs.map((leg, i) => ({
+        'Leg':        i + 1,
+        'Distance':   leg.summary?.lengthInMeters ? `${(leg.summary.lengthInMeters / 1000).toFixed(1)} km` : '—',
+        'Duration':   leg.summary?.travelTimeInSeconds ? `${Math.round(leg.summary.travelTimeInSeconds / 60)} min` : '—',
+        'Temp (°C)':  leg.weatherConditions?.temperature ?? '—',
+        'Condition':  leg.weatherConditions?.description || '—',
+      }));
+    },
   },
   {
     id: 'ldevr-vehicle-brand', product: 'LDEVR', endpoint: 'Vehicle Brand (v2)',
-    method: 'GET', renderMode: 'json', draft: true,
+    method: 'GET', renderMode: 'table', draft: true,
     description: 'Returns the list of supported EV brands and models with their battery profiles.',
     fields: [],
     run: async (_, key) => {
       const r = await fetch(`https://api.tomtom.com/routing/wayfinding/ev/vehiclebrand/1?key=${key}`);
       return r.json();
     },
+    tableRows: result => {
+      const brands = result?.brands || result?.vehicleBrands || (Array.isArray(result) ? result : []);
+      if (!brands.length) return [{ Field: 'Note', Value: 'Draft endpoint — response structure unverified' }];
+      return brands.flatMap(brand =>
+        (brand.models?.length ? brand.models : [{ name: brand.model || brand.name || '—' }]).map(model => ({
+          'Brand':        brand.name || brand.brand || '—',
+          'Model':        model.name || model.model || '—',
+          'Battery (kWh)': model.batteryCapacityKWh ?? model.batteryCapacity ?? '—',
+        }))
+      );
+    },
   },
   {
     id: 'ldevr-toll', product: 'LDEVR', endpoint: 'Compute Toll Amounts (v2)',
-    method: 'POST', renderMode: 'json', draft: true,
+    method: 'POST', renderMode: 'table', draft: true,
     description: 'Calculates expected toll costs along an EV route by country and toll system.',
     fields: [
       { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
@@ -837,10 +937,15 @@ const DEMOS = [
       });
       return r.json();
     },
+    tableRows: result => {
+      const tolls = result?.tolls || result?.tollCosts || (Array.isArray(result) ? result : []);
+      if (tolls.length) return tolls.map(t => ({ Country: t.countryCode || t.country || '—', 'System': t.tollSystemName || t.system || '—', 'Amount': t.amount ?? '—', 'Currency': t.currency || '—' }));
+      return [{ Field: 'Note', Value: result?.message || result?.note || 'Draft endpoint — see LDEVR v2 docs' }];
+    },
   },
   {
     id: 'ldevr-parks', product: 'LDEVR', endpoint: 'Charging Parks Hours (v2)',
-    method: 'POST', renderMode: 'json', draft: true,
+    method: 'POST', renderMode: 'table', draft: true,
     description: 'Returns opening hours for EV charging parks along a route.',
     fields: [
       { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041', defaultValue: '52.3676,4.9041', flex: true },
@@ -856,14 +961,20 @@ const DEMOS = [
       });
       return r.json();
     },
+    tableRows: result => {
+      const parks = result?.chargingParks || result?.parks || (Array.isArray(result) ? result : []);
+      if (parks.length) return parks.map((p, i) => ({ '#': i + 1, 'Park': p.name || p.id || `Park ${i + 1}`, 'Opens': p.openingHours?.opens || p.openTime || '—', 'Closes': p.openingHours?.closes || p.closeTime || '—' }));
+      return [{ Field: 'Note', Value: result?.message || result?.note || 'Draft endpoint — see LDEVR v2 docs' }];
+    },
   },
   {
     id: 'ldevr-emsp', product: 'LDEVR', endpoint: 'OEM eMSP Support (v2)',
-    method: 'GET', renderMode: 'json', draft: true,
+    method: 'GET', renderMode: 'table', draft: true,
     description: 'Returns the eMSP entitlement configuration for OEM fleet charging integrations.',
     note: 'This is an authentication/header contract spec. Requires OEM eMSP credentials, not a standard API key.',
     fields: [],
     run: async (_, key) => ({ note: 'OEM eMSP requires dedicated fleet credentials. See LDEVR v2 docs for SEV entitlement key setup.' }),
+    tableRows: result => [{ Field: 'Note', Value: result?.note || String(result) }],
   },
 
   /* ════════════════════ PARKING & FUEL API ════════════════════ */
@@ -899,7 +1010,7 @@ const DEMOS = [
   },
   {
     id: 'parking-prices', product: 'Parking & Fuel API', endpoint: 'Parking Prices',
-    method: 'GET', renderMode: 'json', draft: true,
+    method: 'GET', renderMode: 'table', draft: true,
     description: 'Returns tariff and pricing information for a specific parking facility.',
     note: 'Requires a parking facility ID from a search result. Endpoint URL needs verification.',
     fields: [
@@ -908,6 +1019,11 @@ const DEMOS = [
     run: async ({ id }, key) => {
       const r = await fetch(`https://api.tomtom.com/parking/1/getParkinPrices?key=${key}&id=${encodeURIComponent(id)}`);
       return r.json();
+    },
+    tableRows: result => {
+      const tariffs = result?.tariffs || result?.prices || result?.pricingTiers || (Array.isArray(result) ? result : []);
+      if (tariffs.length) return tariffs.map((t, i) => ({ '#': i + 1, 'Type': t.type || t.name || '—', 'Duration': t.duration || t.maxDuration || '—', 'Price': t.price ?? '—', 'Currency': t.currency || '—' }));
+      return [{ Field: 'Note', Value: result?.message || 'Draft endpoint — response structure unverified' }];
     },
   },
   {
@@ -1038,7 +1154,7 @@ const DEMOS = [
   },
   {
     id: 'matrix-async', product: 'Matrix Routing', endpoint: 'Asynchronous Matrix',
-    method: 'POST', renderMode: 'json',
+    method: 'POST', renderMode: 'table',
     description: 'Submit a large matrix job asynchronously. Returns a job ID — poll for results.',
     note: 'This endpoint returns a 202 + Location header with the job URL. Polling is needed to fetch the result.',
     fields: [
@@ -1055,6 +1171,11 @@ const DEMOS = [
       const location = r.headers.get('Location');
       return { statusCode: r.status, jobLocation: location, note: 'Poll the Location URL to retrieve results when ready.' };
     },
+    tableRows: result => [
+      { Field: 'HTTP status',   Value: String(result?.statusCode ?? '—') },
+      { Field: 'Job location',  Value: result?.jobLocation || '—' },
+      { Field: 'Next step',     Value: result?.note || '—' },
+    ],
   },
 
   /* ════════════════════ WAYPOINT OPTIMIZATION ════════════════════ */
@@ -1335,7 +1456,7 @@ function TryItPanel({ demo, apiKey }) {
 
   const ps = PRODUCT_STYLES[demo.product] || { bg: '#f1f5f9', border: '#cbd5e1', text: '#334155' };
   const ms = METHOD_STYLES[demo.method] || { bg: '#f1f5f9', text: '#334155' };
-  const rb = RENDER_BADGES[demo.renderMode] || RENDER_BADGES.json;
+  const rb = RENDER_BADGES[demo.renderMode] || RENDER_BADGES.table;
 
   /* tile/image endpoints — no fetch needed */
   const isTileMode       = demo.renderMode === 'tile'        && demo.tileUrl;
