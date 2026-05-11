@@ -3383,6 +3383,369 @@ function PageLayoutUtilitiesSection() {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
+// §41  APP SHELL LAYOUT
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ShellLayoutSection() {
+  const NavCol = ({ collapsed }) => (
+    <div style={{
+      width: collapsed ? 0 : 200,
+      minWidth: collapsed ? 0 : 200,
+      borderRight: collapsed ? 'none' : '1px solid var(--border)',
+      background: 'var(--white)',
+      overflow: 'hidden',
+      transition: 'width 0.32s',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {!collapsed && (
+        <div style={{ padding: '12px 16px', flex: 1 }}>
+          <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>Routing API</div>
+          {['Introduction', 'Calculate Route ●', 'Batch Route', 'Matrix Routing'].map((l, i) => (
+            <div key={l} style={{ padding: '5px 8px', fontSize: '0.7rem', color: i === 1 ? 'var(--black)' : 'var(--mid)', fontWeight: i === 1 ? 600 : 400, background: i === 1 ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 2 }}>{l.replace(' ●', '')}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const ContentCol = () => (
+    <div style={{ flex: 1, padding: '16px 20px', minWidth: 0, background: 'var(--white)' }}>
+      <div style={{ height: 12, width: '60%', background: 'var(--border)', borderRadius: 4, marginBottom: 8 }} />
+      <div style={{ height: 8, width: '90%', background: 'var(--bg)', borderRadius: 3, marginBottom: 5 }} />
+      <div style={{ height: 8, width: '75%', background: 'var(--bg)', borderRadius: 3, marginBottom: 5 }} />
+      <div style={{ height: 8, width: '82%', background: 'var(--bg)', borderRadius: 3 }} />
+    </div>
+  );
+
+  const TocCol = ({ hidden }) => (
+    <div style={{
+      width: hidden ? 0 : 120,
+      minWidth: hidden ? 0 : 120,
+      borderLeft: hidden ? 'none' : '1px solid var(--border)',
+      background: 'var(--white)',
+      overflow: 'hidden',
+      transition: 'width 0.32s',
+    }}>
+      {!hidden && (
+        <div style={{ padding: '12px 14px' }}>
+          <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>On this page</div>
+          {['Request', 'Parameters', 'Response', 'Examples'].map((l, i) => (
+            <div key={l} style={{ padding: '3px 0 3px 8px', borderLeft: `1px solid ${i === 1 ? 'var(--red)' : 'var(--border)'}`, fontSize: '0.6rem', color: i === 1 ? 'var(--red)' : 'var(--muted)', fontWeight: i === 1 ? 600 : 400, marginBottom: 2 }}>{l}</div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const HeaderBar = () => (
+    <div style={{ height: 36, background: 'var(--white)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 8 }}>
+      <div style={{ fontWeight: 800, fontSize: '0.7rem', color: 'var(--red)', fontFamily: 'var(--font-display)' }}>TomTom</div>
+      <div style={{ height: 12, width: 1, background: 'var(--border)' }} />
+      {['Maps', 'Nav', 'EV'].map(l => <span key={l} style={{ fontSize: '0.6rem', color: 'var(--mid)', padding: '2px 6px' }}>{l}</span>)}
+      <div style={{ marginLeft: 'auto', display: 'flex', gap: 6, alignItems: 'center' }}>
+        <div style={{ width: 18, height: 18, borderRadius: 4, border: '1px solid var(--border)' }} />
+        <div style={{ width: 44, height: 18, borderRadius: 4, background: 'var(--red)' }} />
+      </div>
+    </div>
+  );
+
+  const TopnavBar = () => (
+    <div style={{ height: 28, background: 'var(--white)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 4, fontSize: '0.6rem' }}>
+      <span style={{ color: 'var(--muted)' }}>Developer Portal</span>
+      <span style={{ color: 'var(--border)' }}>/</span>
+      <span style={{ color: 'var(--muted)' }}>Routing</span>
+      <span style={{ color: 'var(--border)' }}>/</span>
+      <span style={{ color: 'var(--black)', fontWeight: 500 }}>Calculate Route</span>
+      <span style={{ marginLeft: 'auto', fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: 'var(--warn-bg)', color: 'var(--warn-text)', border: '1px solid var(--warn-border)' }}>Beta</span>
+      <span style={{ fontSize: '0.5rem', padding: '1px 5px', borderRadius: 3, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--muted)' }}>v1.28</span>
+    </div>
+  );
+
+  return (
+    <GallerySection title="App Shell Layout" desc=".shell (3-col grid) · .sidenav | content | .toc — four grid variants">
+      <Row label=".shell — default (sidenav + content + toc)">
+        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <HeaderBar />
+          <TopnavBar />
+          <div style={{ display: 'flex', height: 140 }}>
+            <NavCol />
+            <ContentCol />
+            <TocCol />
+          </div>
+        </div>
+      </Row>
+
+      <Row label=".shell--no-toc — sidenav + content (API detail pages, wide layouts)">
+        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <HeaderBar />
+          <TopnavBar />
+          <div style={{ display: 'flex', height: 120 }}>
+            <NavCol />
+            <ContentCol />
+            <TocCol hidden />
+          </div>
+        </div>
+      </Row>
+
+      <Row label=".shell--nav-collapsed — sidenav hidden + content + toc">
+        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <HeaderBar />
+          <TopnavBar />
+          <div style={{ display: 'flex', height: 120 }}>
+            <NavCol collapsed />
+            <ContentCol />
+            <TocCol />
+          </div>
+        </div>
+      </Row>
+
+      <Row label=".shell--nav-collapsed.shell--no-toc — full-width content" noBorder>
+        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+          <HeaderBar />
+          <TopnavBar />
+          <div style={{ display: 'flex', height: 120 }}>
+            <NavCol collapsed />
+            <ContentCol />
+            <TocCol hidden />
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §42  TOC — TABLE OF CONTENTS (RIGHT SIDEBAR)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TocSection() {
+  return (
+    <GallerySection title="TOC — Table of Contents" desc=".toc, .toc-heading, .toc-list — right-column sticky nav, all link states">
+      <Row label="full toc component">
+        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+
+          {/* Default specimen */}
+          <div>
+            <StateLabel>Default (no active)</StateLabel>
+            <aside className="toc" style={{ position: 'relative', width: 160, padding: '0 0 0 0' }}>
+              <div className="toc-heading">On this page</div>
+              <ul className="toc-list" style={{ paddingLeft: 0 }}>
+                {['Overview', 'Request format', 'Parameters', 'Response schema', 'Error codes', 'Examples'].map(l => (
+                  <li key={l}><a href="#" onClick={e => e.preventDefault()}>{l}</a></li>
+                ))}
+                <li><a href="#" onClick={e => e.preventDefault()} className="indent">cURL</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()} className="indent">Kotlin</a></li>
+              </ul>
+            </aside>
+          </div>
+
+          {/* Active + hover states */}
+          <div>
+            <StateLabel>With active item + indent links</StateLabel>
+            <aside className="toc" style={{ position: 'relative', width: 160 }}>
+              <div className="toc-heading">On this page</div>
+              <ul className="toc-list" style={{ paddingLeft: 0 }}>
+                <li><a href="#" onClick={e => e.preventDefault()}>Overview</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()}>Request format</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()} className="active">Parameters</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()} className="indent active">travelMode</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()} className="indent">routeType</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()}>Response schema</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()}>Examples</a></li>
+              </ul>
+            </aside>
+          </div>
+
+          {/* Hover simulated */}
+          <div>
+            <StateLabel>Hover state (simulated)</StateLabel>
+            <aside className="toc" style={{ position: 'relative', width: 160 }}>
+              <div className="toc-heading">On this page</div>
+              <ul className="toc-list" style={{ paddingLeft: 0 }}>
+                <li><a href="#" onClick={e => e.preventDefault()}>Overview</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()} style={{ color: 'var(--red)', borderLeftColor: 'var(--red)' }}>Request format</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()}>Parameters</a></li>
+                <li><a href="#" onClick={e => e.preventDefault()}>Response schema</a></li>
+              </ul>
+            </aside>
+          </div>
+
+        </div>
+      </Row>
+
+      <Row label="token values" noBorder>
+        <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.8 }}>
+          Default link: <code>color: var(--muted)</code> · <code>border-left: 1px solid var(--border)</code><br/>
+          Hover / active: <code>color: var(--red)</code> · <code>border-left-color: var(--red)</code><br/>
+          Indent: <code>padding-left: 20px</code> · <code>font-size: 0.75rem</code>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §43  SIDENAV — COLLAPSE, EXPAND & MOBILE DRAWER
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SidenavFullSection() {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+
+  const ChevronIcon = () => (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
+  );
+  const CollapseIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M11 19l-7-7 7-7M18 19l-7-7 7-7"/></svg>
+  );
+  const ExpandIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M13 5l7 7-7 7M6 5l7 7-7 7"/></svg>
+  );
+  const CloseIcon = () => (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+  );
+
+  return (
+    <GallerySection title="Sidenav — Collapse, Expand & Mobile Drawer" desc=".sidenav-collapse-btn, .nav-expand-btn, .sidenav-drawer — states missing from §23">
+
+      {/* Desktop collapse / expand */}
+      <Row label="desktop collapse bar (.sidenav-collapse-bar + .sidenav-collapse-btn) + nav-expand-btn">
+        <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+
+          {/* Sidenav with collapse bar */}
+          <div>
+            <StateLabel>Sidenav expanded — collapse bar fixed bottom-left</StateLabel>
+            <div style={{ position: 'relative', width: 200, height: 200, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', background: 'var(--white)' }}>
+              <div style={{ padding: '12px 16px' }}>
+                <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>Routing API</div>
+                {['Introduction', 'Calculate Route', 'Matrix Routing'].map((l, i) => (
+                  <div key={l} style={{ padding: '5px 8px', fontSize: '0.7rem', color: i === 1 ? 'var(--black)' : 'var(--mid)', fontWeight: i === 1 ? 600 : 400, background: i === 1 ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 2 }}>{l}</div>
+                ))}
+              </div>
+              {/* Collapse btn — simulated at bottom of container */}
+              <div style={{ position: 'absolute', bottom: 10, left: 10 }}>
+                <button
+                  className="sidenav-collapse-btn"
+                  onClick={() => setCollapsed(true)}
+                  title="Collapse sidebar"
+                  style={{ width: 28, height: 28, borderRadius: 6, border: '1px solid transparent', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                >
+                  <CollapseIcon />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Collapsed state — nav-expand-btn visible */}
+          <div>
+            <StateLabel>Nav collapsed — .nav-expand-btn appears</StateLabel>
+            <div style={{ position: 'relative', width: 200, height: 200, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', background: 'var(--bg)' }}>
+              <div style={{ padding: '12px 16px', opacity: 0.4, fontSize: '0.7rem', color: 'var(--muted)' }}>← nav is hidden</div>
+              {/* Expand btn */}
+              <div style={{ position: 'absolute', bottom: 10, left: 10 }}>
+                <button
+                  className="nav-expand-btn"
+                  onClick={() => setCollapsed(false)}
+                  title="Expand sidebar"
+                  style={{ width: 28, height: 28, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--mid)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--e2)' }}
+                >
+                  <ExpandIcon />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive toggle */}
+          <div>
+            <StateLabel>Interactive ↔</StateLabel>
+            <div style={{ position: 'relative', width: 200, height: 200, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', background: 'var(--white)' }}>
+              <div style={{ padding: '12px 16px', opacity: collapsed ? 0 : 1, transition: 'opacity 0.2s' }}>
+                <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>Routing API</div>
+                {['Introduction', 'Calculate Route'].map((l, i) => (
+                  <div key={l} style={{ padding: '5px 8px', fontSize: '0.7rem', color: i === 1 ? 'var(--black)' : 'var(--mid)', background: i === 1 ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 2 }}>{l}</div>
+                ))}
+              </div>
+              {collapsed && <div style={{ padding: '12px 16px', fontSize: '0.7rem', color: 'var(--muted)', opacity: 0.5 }}>← collapsed</div>}
+              <div style={{ position: 'absolute', bottom: 10, left: 10 }}>
+                {!collapsed ? (
+                  <button className="sidenav-collapse-btn" onClick={() => setCollapsed(true)} style={{ width: 28, height: 28, borderRadius: 6, border: '1px solid transparent', background: 'transparent', color: 'var(--muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CollapseIcon />
+                  </button>
+                ) : (
+                  <button className="nav-expand-btn" onClick={() => setCollapsed(false)} style={{ width: 28, height: 28, borderRadius: 6, border: '1px solid var(--border)', background: 'var(--white)', color: 'var(--mid)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--e2)' }}>
+                    <ExpandIcon />
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Row>
+
+      {/* Mobile drawer */}
+      <Row label=".sidenav-drawer (mobile) — open/close with backdrop" noBorder>
+        <div>
+          <button className="page-action-btn" onClick={() => setDrawerOpen(true)}>☰ Open mobile drawer</button>
+
+          {drawerOpen && (
+            <>
+              {/* Backdrop */}
+              <div
+                className="sidenav-drawer-backdrop"
+                onClick={() => setDrawerOpen(false)}
+                style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.32)', zIndex: 590 }}
+              />
+              {/* Drawer */}
+              <div
+                className="sidenav-drawer sidenav-drawer--open"
+                style={{ position: 'fixed', top: 0, left: 0, width: 260, height: '100dvh', zIndex: 600, background: 'var(--white)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', boxShadow: '4px 0 24px rgba(0,0,0,0.12)' }}
+              >
+                {/* Header */}
+                <div className="sidenav-drawer-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px', height: 44, borderBottom: '1px solid var(--border)', flexShrink: 0, background: 'var(--white)' }}>
+                  <div className="sidenav-drawer-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <div style={{ fontWeight: 800, fontSize: '0.875rem', color: 'var(--red)', fontFamily: 'var(--font-display)' }}>TomTom</div>
+                  </div>
+                  <button className="sidenav-drawer-close" onClick={() => setDrawerOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', height: 30, border: '1px solid var(--border)', background: 'transparent', cursor: 'pointer', color: 'var(--muted)', borderRadius: 6, fontSize: '0.75rem' }}>
+                    <CloseIcon /> Close
+                  </button>
+                </div>
+
+                {/* Scroll area */}
+                <div className="sidenav-drawer-scroll" style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
+                  <div className="sidenav-drawer-title" style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: 'var(--black)', padding: '10px 10px 4px', letterSpacing: '-0.01em' }}>Routing API</div>
+                  {/* Nav items */}
+                  {['Introduction', 'Calculate Route', 'Batch Route', 'Matrix Routing', 'Waypoints'].map((l, i) => (
+                    <div key={l} style={{ padding: '8px 16px', fontSize: '0.875rem', color: i === 1 ? 'var(--black)' : 'var(--mid)', fontWeight: i === 1 ? 600 : 400, background: i === 1 ? 'var(--s1)' : 'transparent', cursor: 'pointer' }}>{l}</div>
+                  ))}
+                  <div style={{ height: 1, background: 'var(--border)', margin: '8px 10px', opacity: 0.6 }} />
+                  {['Long Distance EV Route', 'Traffic API', 'Search API'].map(l => (
+                    <div key={l} style={{ padding: '8px 16px', fontSize: '0.875rem', color: 'var(--mid)', cursor: 'pointer' }}>{l}</div>
+                  ))}
+                </div>
+
+                {/* Footer */}
+                <div className="sidenav-drawer-footer" style={{ flexShrink: 0, display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', borderTop: '1px solid var(--border)', background: 'var(--white)' }}>
+                  <span style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--muted)' }}>v1.28</span>
+                  <span style={{ fontSize: '0.625rem', color: 'var(--muted)' }}>Developer Portal</span>
+                </div>
+              </div>
+            </>
+          )}
+
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8, lineHeight: 1.6 }}>
+            <code>.sidenav-drawer</code> — <code>position:fixed</code>, slides in from left with <code>transform:translateX(0)</code><br/>
+            <code>.sidenav-drawer-backdrop</code> — full-screen dim layer behind the drawer<br/>
+            <code>.sidenav-drawer--open</code> — modifier that removes the <code>translateX(-100%)</code> offscreen state
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ROOT — PAGE HEADER + ALL SECTIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -3448,6 +3811,9 @@ export default function UIComponentGallery() {
             ['#s38', '38 TryIt Panel'],
             ['#s39', '39 Page Actions'],
             ['#s40', '40 Layout Utils'],
+            ['#s41', '41 Shell Layout'],
+            ['#s42', '42 TOC'],
+            ['#s43', '43 Sidenav Full'],
           ].map(([href, label]) => (
             <a
               key={href}
@@ -3509,13 +3875,16 @@ export default function UIComponentGallery() {
       <div id="s38"><TryItPanelSection /></div>
       <div id="s39"><PageActionsSection /></div>
       <div id="s40"><PageLayoutUtilitiesSection /></div>
+      <div id="s41"><ShellLayoutSection /></div>
+      <div id="s42"><TocSection /></div>
+      <div id="s43"><SidenavFullSection /></div>
 
       {/* Footer note */}
       <div style={{
         marginTop: 12, paddingTop: 20, borderTop: '1px solid var(--border)',
         fontSize: '0.75rem', color: 'var(--t-dis)', lineHeight: 1.6,
       }}>
-        Internal audit page · Plumbing Portal · 40 sections · All components sourced from{' '}
+        Internal audit page · Plumbing Portal · 43 sections · All components sourced from{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/components/ui/</code> and{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/index.css</code>
       </div>
