@@ -18,9 +18,11 @@ import DocUseCaseTemplate from './DocUseCaseTemplate';
 import DocDosDonts        from './DocDosDonts';
 import IconStyleSandbox   from './IconStyleSandbox';
 import TryItDemos        from './TryItDemos';
+import UIComponentGallery from './UIComponentGallery';
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
+  { id: 'ui-gallery',           label: 'UI component gallery',      icon: '🎨',  group: 'Design system' },
   { id: 'typography',          label: 'Typography system',         icon: '🔤',  group: 'Design system' },
   { id: 'screenshot-assets',   label: 'Interactive demos',         icon: '📸',  group: 'Design system' },
   { id: 'intro-illustrations', label: 'Intro hero illustrations',  icon: '🖼️', group: 'Design system' },
@@ -72,6 +74,7 @@ function MoonIcon() {
 /* ─── Page renderer ──────────────────────────────────────────────────────────── */
 function PlumbingPage({ pageId }) {
   switch (pageId) {
+    case 'ui-gallery':          return <UIComponentGallery />;
     case 'typography':          return <Typography />;
     case 'screenshot-assets':   return <ScreenshotAssets />;
     case 'intro-illustrations': return <IntroIllustrations />;
