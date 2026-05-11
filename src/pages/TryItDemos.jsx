@@ -11,7 +11,7 @@
  * Demos marked draft:true have unverified endpoint URLs — check API docs.
  * ───────────────────────────────────────────────────────────────────────────── */
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const LS_KEY = 'tt-demo-api-key';
 
@@ -37,13 +37,14 @@ const METHOD_STYLES = {
 };
 
 const RENDER_BADGES = {
-  map:   { label: '🗺 Map',       bg: '#ecfdf5', text: '#065f46' },
-  tile:  { label: '◻ Tile',      bg: '#f0f9ff', text: '#0369a1' },
-  image: { label: '🖼 Image',    bg: '#f5f3ff', text: '#6d28d9' },
-  table: { label: '▦ Table',     bg: '#fff7ed', text: '#c2410c' },
-  sdk:   { label: '⚡ SDK',      bg: '#fdf4ff', text: '#7e22ce' },
-  card:  { label: '▤ Card',      bg: '#fefce8', text: '#854d0e' },
-  json:  { label: '{ } JSON',    bg: '#f1f5f9', text: '#475569' },
+  map:         { label: '🗺 Map',        bg: '#ecfdf5', text: '#065f46' },
+  tile:        { label: '◻ Tile',       bg: '#f0f9ff', text: '#0369a1' },
+  image:       { label: '🖼 Image',     bg: '#f5f3ff', text: '#6d28d9' },
+  table:       { label: '▦ Table',      bg: '#fff7ed', text: '#c2410c' },
+  sdk:         { label: '⚡ SDK',       bg: '#fdf4ff', text: '#7e22ce' },
+  'sdk-polygon': { label: '⚡ SDK Map', bg: '#f0fdf4', text: '#15803d' },
+  card:        { label: '▤ Card',       bg: '#fefce8', text: '#854d0e' },
+  json:        { label: '{ } JSON',     bg: '#f1f5f9', text: '#475569' },
 };
 
 /* ─── Helpers ────────────────────────────────────────────────────────────────── */
@@ -252,8 +253,8 @@ const DEMOS = [
   },
   {
     id: 'reachable-range', product: 'Routing API', endpoint: 'Reachable Range',
-    method: 'GET', renderMode: 'map',
-    description: 'Calculate the polygon of area reachable within a time or distance budget.',
+    method: 'GET', renderMode: 'sdk-polygon',
+    description: 'Calculate the polygon of area reachable within a time or distance budget. Rendered as a live isochrone overlay using the Maps Web SDK.',
     fields: [
       { id: 'lat',        label: 'Origin Lat', placeholder: '52.3676', defaultValue: '52.3676', width: 110 },
       { id: 'lon',        label: 'Origin Lon', placeholder: '4.9041',  defaultValue: '4.9041',  width: 110 },
@@ -263,11 +264,10 @@ const DEMOS = [
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateReachableRange/${lat},${lon}/json?key=${key}&timeBudgetInSec=${timeBudget || 1800}`);
       return r.json();
     },
-    mapCenter: (_, { lat, lon }) => ({ lon: parseFloat(lon), lat: parseFloat(lat), zoom: 10 }),
   },
   {
     id: 'turn-by-turn', product: 'Routing API', endpoint: 'Turn-by-Turn Instructions',
-    method: 'GET', renderMode: 'card',
+    method: 'GET', renderMode: 'table',
     description: 'Returns step-by-step manoeuvre instructions for a route in text or coded format.',
     fields: [
       { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041',  defaultValue: '52.3676,4.9041',  flex: true },
@@ -276,6 +276,29 @@ const DEMOS = [
     run: async ({ origin, destination }, key) => {
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateRoute/${origin}:${destination}/json?key=${key}&travelMode=car&instructionsType=text`);
       return r.json();
+    },
+    tableRows: result => {
+      const instructions = result?.routes?.[0]?.guidance?.instructions ?? [];
+      const summary = result?.routes?.[0]?.summary;
+      const rows = instructions.map((ins, i) => ({
+        '#':            i + 1,
+        'Instruction':  ins.message ?? ins.maneuver ?? '—',
+        'Street':       ins.street || ins.roadNumbers?.join(' / ') || '—',
+        'At (m)':       ins.routeOffsetInMeters?.toLocaleString() ?? '—',
+        'Duration (s)': ins.travelTimeInSeconds ?? '—',
+      }));
+      if (summary && rows.length > 0) {
+        const km = (summary.lengthInMeters / 1000).toFixed(1);
+        const min = Math.round(summary.travelTimeInSeconds / 60);
+        rows.push({
+          '#':            '—',
+          'Instruction':  `▸ Total route: ${km} km, ${min} min`,
+          'Street':       '',
+          'At (m)':       summary.lengthInMeters.toLocaleString(),
+          'Duration (s)': summary.travelTimeInSeconds,
+        });
+      }
+      return rows;
     },
   },
   {
@@ -908,6 +931,112 @@ function SdkPanel({ demo }) {
   );
 }
 
+/* ─── SDK Polygon Map ────────────────────────────────────────────────────────── */
+const SDK_JS  = 'https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.1/maps/maps-web.min.js';
+const SDK_CSS = 'https://api.tomtom.com/maps-sdk-for-web/cdn/6.x/6.25.1/maps/maps.css';
+
+function loadSdk() {
+  return new Promise((resolve, reject) => {
+    if (window.tt) { resolve(window.tt); return; }
+    /* CSS */
+    if (!document.querySelector(`link[href="${SDK_CSS}"]`)) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet'; link.href = SDK_CSS;
+      document.head.appendChild(link);
+    }
+    /* JS */
+    if (!document.querySelector(`script[src="${SDK_JS}"]`)) {
+      const script = document.createElement('script');
+      script.src = SDK_JS;
+      script.onload  = () => resolve(window.tt);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    } else {
+      /* already injected but not yet loaded — poll */
+      const interval = setInterval(() => {
+        if (window.tt) { clearInterval(interval); resolve(window.tt); }
+      }, 50);
+    }
+  });
+}
+
+function SdkPolygonMap({ result, apiKey, centerLat, centerLon }) {
+  const containerRef = useRef(null);
+  const mapRef       = useRef(null);
+
+  useEffect(() => {
+    if (!result || !apiKey || !containerRef.current) return;
+
+    const boundary = result?.reachableRange?.boundary;
+    const center   = result?.reachableRange?.center;
+    if (!boundary?.length || !center) return;
+
+    /* GeoJSON polygon — close the ring by repeating the first point */
+    const coords = boundary.map(p => [p.longitude, p.latitude]);
+    coords.push(coords[0]);
+    const geojson = {
+      type: 'Feature',
+      geometry: { type: 'Polygon', coordinates: [coords] },
+    };
+
+    let map;
+    loadSdk().then(tt => {
+      if (!containerRef.current) return;
+      map = tt.map({
+        key: apiKey,
+        container: containerRef.current,
+        center: [center.longitude, center.latitude],
+        zoom: 10,
+        style: 'tomtom://vector/1/basic-main',
+      });
+      mapRef.current = map;
+
+      map.on('load', () => {
+        /* Fill */
+        map.addSource('range', { type: 'geojson', data: geojson });
+        map.addLayer({
+          id: 'range-fill',
+          type: 'fill',
+          source: 'range',
+          paint: { 'fill-color': '#e2001a', 'fill-opacity': 0.15 },
+        });
+        /* Outline */
+        map.addLayer({
+          id: 'range-line',
+          type: 'line',
+          source: 'range',
+          paint: { 'line-color': '#e2001a', 'line-width': 2, 'line-opacity': 0.8 },
+        });
+        /* Origin marker */
+        const el = document.createElement('div');
+        el.style.cssText = 'width:12px;height:12px;border-radius:50%;background:#e2001a;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4)';
+        new tt.Marker({ element: el })
+          .setLngLat([center.longitude, center.latitude])
+          .addTo(map);
+      });
+    }).catch(err => console.warn('TomTom SDK failed to load', err));
+
+    return () => {
+      if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; }
+    };
+  /* Re-draw whenever the API result changes */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [result, apiKey]);
+
+  return (
+    <div style={{ position: 'relative', borderTop: '1px solid var(--border)' }}>
+      <div ref={containerRef} style={{ width: '100%', height: 340 }} />
+      <span style={{
+        position: 'absolute', bottom: 8, right: 8,
+        fontSize: '0.5625rem', background: 'rgba(0,0,0,0.55)', color: '#fff',
+        padding: '2px 6px', borderRadius: 3, pointerEvents: 'none',
+      }}>
+        Maps Web SDK — isochrone polygon
+      </span>
+    </div>
+  );
+}
+
 /* ─── Main panel ─────────────────────────────────────────────────────────────── */
 function TryItPanel({ demo, apiKey }) {
   const [values, setValues] = useState(() => Object.fromEntries(demo.fields.map(f => [f.id, f.defaultValue ?? ''])));
@@ -922,9 +1051,10 @@ function TryItPanel({ demo, apiKey }) {
   const rb = RENDER_BADGES[demo.renderMode] || RENDER_BADGES.json;
 
   /* tile/image endpoints — no fetch needed */
-  const isTileMode  = demo.renderMode === 'tile'  && demo.tileUrl;
-  const isImageMode = demo.renderMode === 'image' && demo.imageUrl;
-  const isSdkMode   = demo.renderMode === 'sdk';
+  const isTileMode       = demo.renderMode === 'tile'        && demo.tileUrl;
+  const isImageMode      = demo.renderMode === 'image'       && demo.imageUrl;
+  const isSdkMode        = demo.renderMode === 'sdk';
+  const isSdkPolygonMode = demo.renderMode === 'sdk-polygon';
 
   const run = async () => {
     if (!apiKey) return;
@@ -1046,7 +1176,17 @@ function TryItPanel({ demo, apiKey }) {
             <CopyBtn text={resultStr} />
           </div>
 
-          {/* Map */}
+          {/* SDK polygon map (reachable range / isochrone) */}
+          {isSdkPolygonMode && result && !result.error && (
+            <SdkPolygonMap
+              result={result}
+              apiKey={apiKey}
+              centerLat={parseFloat(values.lat)}
+              centerLon={parseFloat(values.lon)}
+            />
+          )}
+
+          {/* Static image map */}
           {mapImgUrl && (
             <div style={{ position: 'relative' }}>
               <img src={mapImgUrl} alt="Result area map" style={{ width: '100%', display: 'block', maxHeight: 280, objectFit: 'cover' }} />
@@ -1072,7 +1212,7 @@ function TryItPanel({ demo, apiKey }) {
       )}
 
       {/* Idle state */}
-      {status === 'idle' && !isSdkMode && (
+      {status === 'idle' && !isSdkMode && !isSdkPolygonMode && (
         <div style={{ padding: '10px 14px', borderTop: '1px solid var(--border)', fontSize: '0.6875rem', color: 'var(--muted)', background: 'var(--bg)', fontStyle: 'italic' }}>
           {apiKey ? 'Click Run to see a live response.' : '⚠ Enter your API key above to enable live calls.'}
         </div>
