@@ -160,7 +160,7 @@ export default function LDEVROemEmsp() {
     <ApiRefTwoCol
       title="OEM eMSP Support"
       description="Restrict route planning to charging stations affiliated with specific eMSP (Mobility Service Provider) networks. Pass the TomTom-Entitlements request header with a SEV entitlement key listing the allowed provider IDs."
-      version="v2-private"
+      version="v2"
       sections={sections}
     />
   );

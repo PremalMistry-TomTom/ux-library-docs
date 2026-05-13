@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Request parameters ─────────────────────────────────────────────────── */
 const PARAMS_REQUEST = [
@@ -172,7 +173,7 @@ const CODE_RESPONSE = `{
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV2Guidance() {
+export function RoutingV2GuidanceContent() {
   const sections = [
     {
       id: 'routing-v2-guidance-request',
@@ -202,11 +203,23 @@ export default function RoutingV2Guidance() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Guidance Instructions"
-      description="Activate turn-by-turn navigation instructions on Routing API v2 Calculate Route requests. Choose between coded maneuver IDs, human-readable text, or XML-tagged output for custom rendering."
-      version="v2-public"
-      sections={sections}
-    />
+    <>
+      <p className="quick-answer">Activate turn-by-turn navigation instructions on Routing API v2 Calculate Route requests. Choose between coded maneuver IDs, human-readable text, or XML-tagged output for custom rendering.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV2Guidance() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Guidance Instructions</h1>
+        <PageActions />
+      </div>
+      <RoutingV2GuidanceContent />
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Budget & origin parameters ─────────────────────────────────────────── */
 const PARAMS_BUDGET = [
@@ -187,7 +188,7 @@ const CODE_RESPONSE = `{
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV2ReachableRange() {
+export function RoutingV2ReachableRangeContent() {
   const sections = [
     {
       id: 'routing-v2-rr-budget',
@@ -266,11 +267,23 @@ export default function RoutingV2ReachableRange() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Calculate Reachable Range"
-      description="Calculate the geographic area reachable from a given origin within a fuel, energy, time, or distance budget. Returns a polygon representing the boundary of the reachable area."
-      version="v2-public"
-      sections={sections}
-    />
+    <>
+      <p className="quick-answer">Calculate the geographic area reachable from a given origin within a fuel, energy, time, or distance budget. Returns a polygon representing the boundary of the reachable area.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV2ReachableRange() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Reachable Range</h1>
+        <PageActions />
+      </div>
+      <RoutingV2ReachableRangeContent />
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Request parameters ─────────────────────────────────────────────────── */
 const PARAMS_ROUTE = [
@@ -230,7 +231,7 @@ const CODE_RESPONSE = `// HTTP 200 — route summary
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV2CalculateRoute() {
+export function RoutingV2CalculateRouteContent() {
   const sections = [
     {
       id: 'routing-v2-route',
@@ -316,11 +317,23 @@ export default function RoutingV2CalculateRoute() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Calculate Route"
-      description="Calculates one or more optimal routes between waypoints on the Orbis Maps v2 platform. Supports full vehicle profiles, combustion and electric consumption models, and turn-by-turn guidance. Authentication uses the TomTom-Api-Key header."
-      version="v2-public"
-      sections={sections}
-    />
+    <>
+      <p className="quick-answer">Calculates one or more optimal routes between waypoints on the Orbis Maps v2 platform. Supports full vehicle profiles, combustion and electric consumption models, and turn-by-turn guidance. Authentication uses the TomTom-Api-Key header.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV2CalculateRoute() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Calculate Route</h1>
+        <PageActions />
+      </div>
+      <RoutingV2CalculateRouteContent />
+    </div>
   );
 }

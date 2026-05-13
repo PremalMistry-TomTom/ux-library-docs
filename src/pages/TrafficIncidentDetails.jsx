@@ -92,7 +92,7 @@ export default function TrafficIncidentDetails({ onNavigate }) {
     <ApiRefTwoCol
       title="Incident Details"
       description="Retrieve real-time traffic incidents — accidents, road works, closures, weather events — within a bounding box. Returns GeoJSON features with location, severity, delay estimate, and event descriptions. Use the Incident Viewport endpoint for map-aligned queries that return pre-clustered results optimised for a specific zoom level."
-      version="v5"
+      version="v1"
       sections={[
         {
           id: 'incident-details',

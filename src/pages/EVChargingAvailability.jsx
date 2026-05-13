@@ -37,12 +37,10 @@ curl "https://api.tomtom.com/search/2/chargingAvailability.json?key=YOUR_API_KEY
 
 const POI_CATEGORIES_CODE = `curl "https://api.tomtom.com/search/2/poiCategories.json?key=YOUR_API_KEY&language=en-GB"`;
 
-export default function EVChargingAvailability({ onNavigate }) {
+export function EVChargingAvailabilityV1Content({ onNavigate }) {
   return (
     <ApiRefTwoCol
-      title="Charging Availability"
       description="Query real-time connector availability at a charging station — how many connectors are available, occupied, or in an unknown state, per connector type. Coverage varies by country; use the Supported Markets endpoint to check before integrating."
-      version="v2"
       sections={[
         {
           id: 'charging-availability',

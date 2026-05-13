@@ -63,12 +63,10 @@ const ALONG_ROUTE_CODE = `curl -X POST \\
     "maxDetourTime": 300
   }'`;
 
-export default function EVStationSearch({ onNavigate }) {
+export function EVStationSearchV1Content({ onNavigate }) {
   return (
     <ApiRefTwoCol
-      title="EV Station Search"
       description="Find electric vehicle charging stations near a coordinate using TomTom's Search API with category set 7309. Filter by connector type, power level, and operator. Optionally include real-time slot availability. Also covers the Along-Route Charging endpoint for finding stations along a planned route."
-      version="v2"
       sections={[
         {
           id: 'ev-station-search',

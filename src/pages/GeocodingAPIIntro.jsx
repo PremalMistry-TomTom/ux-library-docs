@@ -19,9 +19,6 @@ import {
 } from '../illustrations/iconVariants';
 import { IlloGeocode, IlloReverseGeocode } from './IntroIllustrations';
 
-/* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloGeocode, L_Geocode, IcoGeocode);
-
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function GeocodingAPIIntro({ onNavigate }) {
   const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
@@ -48,7 +45,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       method: 'GET',
       title: 'Structured Geocode',
       desc: 'Geocode addresses already split into discrete fields — street number, city, postal code — for higher precision.',
-      pageId: 'geocode',
+      pageId: 'structured-geocode',
       tag: 'v2',
     },
     {
@@ -56,8 +53,8 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       method: 'GET',
       title: 'Cross Street Lookup',
       desc: 'Resolve a coordinate to the nearest road intersection or cross-street name for turn-by-turn context.',
-      pageId: 'reverse-geocode',
-      tag: 'v2',
+      pageId: 'cross-street-lookup',
+      tag: 'v1',
     },
   ];
 
@@ -93,9 +90,20 @@ export default function GeocodingAPIIntro({ onNavigate }) {
         to label GPS positions with readable street addresses.
       </p>
 
-      {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
-        <HeroIllo />
+      {/* Quickstart CTA */}
+      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onNavigate?.('geocoding-quickstart', 'geocoding-api')}
+          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Quickstart →
+        </button>
+        <button
+          onClick={() => onNavigate?.('geocode', 'geocoding-api')}
+          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          API Reference
+        </button>
       </div>
 
       {/* Endpoint grid */}
@@ -127,6 +135,73 @@ export default function GeocodingAPIIntro({ onNavigate }) {
         </div>
       </div>
 
+      {/* Guides — before version table */}
+      <div className="zone">
+        <h2 className="sh" id="guides">Guides</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+          {[
+            { id: 'geocoding-guide-accuracy', title: 'Improving Accuracy', desc: 'Use countrySet, geoBias, and entityType filtering to get higher-precision geocode results.' },
+            { id: 'geocoding-guide-batch', title: 'Batch Geocoding', desc: 'Process large lists of addresses efficiently using the Batch Search API with geocode queries.' },
+            { id: 'geocoding-guide-structured', title: 'Structured vs Free-form', desc: 'When to use Structured Geocode vs free-form geocoding — tradeoffs in precision and flexibility.' },
+          ].map(({ id, title, desc }) => (
+            <button key={id} onClick={() => onNavigate?.(id, 'geocoding-api')}
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '1.25rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--brand)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--black)', marginBottom: '0.375rem' }}>{title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Version comparison table */}
+      <div className="zone">
+        <h2 className="sh" id="versions">Versions</h2>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                <th style={{ padding: '10px 14px', textAlign: 'left', width: '34%', color: 'var(--muted)', fontWeight: 600, fontSize: '0.75rem' }}>Feature</th>
+                {[
+                  { label: 'V1', platform: 'TomTom Maps',  status: 'Production',   statusBg: 'rgba(34,197,94,0.1)',   statusColor: '#15803d', color: '#15803d' },
+                  { label: 'V2', platform: 'Orbis Maps v1', status: 'Production',  statusBg: 'rgba(34,197,94,0.1)',   statusColor: '#15803d', color: '#7c3aed' },
+                  { label: 'V3', platform: 'Orbis Maps v2', status: 'Public Preview', statusBg: 'rgba(167,139,250,0.1)', statusColor: '#7c3aed', color: '#c2410c' },
+                ].map(v => (
+                  <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '22%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 2 }}>{v.platform}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Free-form Geocode',    '✓', '✓', '✓'],
+                ['Structured Geocode',   '✓', '✓', '✓'],
+                ['Reverse Geocode',      '✓', '✓', '✓'],
+                ['Cross-Street Lookup',  '✓', '—', '—'],
+                ['Region-specific results','✓', '✓', '✓'],
+                ['Extended postal codes','✓', '✓', '✓'],
+                ['Entity type filtering','✓', '✓', '✓'],
+                ['Copyrights endpoint',  '—', '✓', '✓'],
+              ].map(([feat, v1, v2, v3], i) => (
+                <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                  <td style={{ padding: '9px 14px', color: 'var(--black)', fontWeight: 500 }}>{feat}</td>
+                  {[v1, v2, v3].map((val, j) => (
+                    <td key={j} style={{ padding: '9px 14px', color: val === '✓' ? '#15803d' : 'var(--t-dis)', fontWeight: val === '✓' ? 700 : 400 }}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Base URL table */}
       <div className="zone">
         <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
@@ -140,31 +215,6 @@ export default function GeocodingAPIIntro({ onNavigate }) {
         </div>
       </div>
 
-      {/* Getting started */}
-      <div className="zone">
-        <h2 className="sh" id="getting-started">Getting started</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
-          Convert an address to coordinates with a single request:
-        </p>
-        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`const API_KEY = 'your-api-key';
-
-// Forward geocoding — address → coordinates
-const geocodeRes = await fetch(
-  \`https://api.tomtom.com/search/2/geocode/\${
-    encodeURIComponent('De Ruyterkade 154, Amsterdam')
-  }.json?key=\${API_KEY}\`
-);
-const { results: [first] } = await geocodeRes.json();
-const { lat, lon } = first.position;   // 52.3800, 4.9003
-
-// Reverse geocoding — coordinates → address
-const reverseRes = await fetch(
-  \`https://api.tomtom.com/search/2/reverseGeocode/\${lat},\${lon}.json?key=\${API_KEY}\`
-);
-const { addresses: [addr] } = await reverseRes.json();
-console.log(addr.address.freeformAddress);
-// → "De Ruyterkade 154, 1011 AC Amsterdam, Netherlands"`}</pre>
-      </div>
     </div>
   );
 }

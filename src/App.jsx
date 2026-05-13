@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getProduct } from './data/products';
+import { ROUTING_API_NAV_B, ROUTING_API_NAV_C } from './data/nav-routing-api';
 import { IlloStyleProvider } from './context/IlloStyleContext';
 import Topnav from './components/layout/Topnav';
 import GlobalHeader from './components/layout/GlobalHeader';
@@ -166,11 +167,27 @@ import RoutingV2Guidance from './pages/RoutingV2Guidance';
 import RoutingV2DataFreshness from './pages/RoutingV2DataFreshness';
 // Routing API v3
 import RoutingV3Overview from './pages/RoutingV3Overview';
+import RoutingQuickStart from './pages/RoutingQuickStart';
+import RoutingEVGuide from './pages/RoutingEVGuide';
+import RoutingEVConsumption from './pages/RoutingEVConsumption';
+import RoutingEVVehicle from './pages/RoutingEVVehicle';
+import {
+  RoutingReconstruction, RoutingAvoidAreas, RoutingTollSystems, RoutingHowToLanding, RoutingEVLanding,
+  RoutingTomTomMaps, RoutingOrbisMaps, RoutingMigration, RoutingPlatformLanding,
+  RoutingParamIndex, RoutingResponseRef, RoutingErrorCodes, RoutingCoverage,
+} from './pages/RoutingGuidePages';
 import RoutingV3CalculateRoute from './pages/RoutingV3CalculateRoute';
 import RoutingV3Guidance from './pages/RoutingV3Guidance';
 import RoutingV3ReachableRange from './pages/RoutingV3ReachableRange';
 import RoutingV3ComputeToll from './pages/RoutingV3ComputeToll';
 import RoutingV3Weather from './pages/RoutingV3Weather';
+import {
+  RoutingCalculateRouteUnified,
+  RoutingReachableRangeUnified,
+  RoutingGuidanceInstructionsUnified,
+  RoutingLaneGuidanceUnified,
+  RoutingComputeTollUnified,
+} from './pages/RoutingUnifiedPages';
 import MatrixRoutingIntro from './pages/MatrixRoutingIntro';
 import WaypointOptIntro from './pages/WaypointOptIntro';
 import SearchAPIIntro from './pages/SearchAPIIntro';
@@ -182,10 +199,14 @@ import ParkingFuelAPIIntro from './pages/ParkingFuelAPIIntro';
 import TrafficAnalyticsAPIIntro from './pages/TrafficAnalyticsAPIIntro';
 import SnapToRoadsAPIIntro from './pages/SnapToRoadsAPIIntro';
 // Map Display API endpoint pages
-import MapRasterTile from './pages/MapRasterTile';
-import MapVectorTile from './pages/MapVectorTile';
-import MapSatelliteTile from './pages/MapSatelliteTile';
 import MapStaticImage from './pages/MapStaticImage';
+import {
+  MapRasterTileUnified,
+  MapVectorTileUnified,
+  MapSatelliteTileUnified,
+  MapHillshadeTileUnified,
+  MapCopyrightsUnified,
+} from './pages/MapDisplayUnifiedPages';
 // Traffic API endpoint pages
 import TrafficFlowSegment from './pages/TrafficFlowSegment';
 import TrafficIncidentDetails from './pages/TrafficIncidentDetails';
@@ -209,9 +230,9 @@ import POIPhotos from './pages/POIPhotos';
 // Geocoding API endpoint pages
 import GeocodePage from './pages/GeocodePage';
 import ReverseGeocodePage from './pages/ReverseGeocodePage';
-// EV Charging API endpoint pages
-import EVStationSearch from './pages/EVStationSearch';
-import EVChargingAvailability from './pages/EVChargingAvailability';
+// EV Charging API endpoint pages (unified v1/v3)
+import { EVStationSearchUnified } from './pages/EVStationSearchUnified';
+import { EVChargingAvailabilityUnified } from './pages/EVChargingAvailabilityUnified';
 import EVSupportedMarkets from './pages/EVSupportedMarkets';
 // Parking & Fuel API endpoint pages
 import ParkingAvailability from './pages/ParkingAvailability';
@@ -220,6 +241,114 @@ import OnStreetParking from './pages/OnStreetParking';
 import FuelPrices from './pages/FuelPrices';
 // Snap to Roads API endpoint page
 import SnapToRoads from './pages/SnapToRoads';
+// Search API — new endpoint pages
+import SearchGeometry from './pages/SearchGeometry';
+import SearchPlaceById from './pages/SearchPlaceById';
+import SearchAdditionalData from './pages/SearchAdditionalData';
+import SearchPoiCategories from './pages/SearchPoiCategories';
+import { SearchGuidesLanding, SearchPlatformLanding } from './pages/SearchGuidePages';
+// Geocoding API — new endpoint pages
+import StructuredGeocode from './pages/StructuredGeocode';
+import CrossStreetLookup from './pages/CrossStreetLookup';
+import { GeocodingGuidesLanding, GeocodingPlatformLanding } from './pages/GeocodingGuidePages';
+// Traffic API — new endpoint pages
+import TrafficRasterFlow from './pages/TrafficRasterFlow';
+import TrafficVectorFlow from './pages/TrafficVectorFlow';
+import TrafficRasterIncident from './pages/TrafficRasterIncident';
+import TrafficVectorIncident from './pages/TrafficVectorIncident';
+import { TrafficGuidesLanding, TrafficPlatformLanding } from './pages/TrafficGuidePages';
+// Map Display API — new endpoint pages
+import MapWMS from './pages/MapWMS';
+import MapWMTS from './pages/MapWMTS';
+import MapAssetsApi from './pages/MapAssetsApi';
+import Map3dLandmarks from './pages/Map3dLandmarks';
+import MapExtendedTiles from './pages/MapExtendedTiles';
+import { MapDisplayGuidesLanding, MapDisplayPlatformLanding } from './pages/MapDisplayGuidePages';
+// EV Charging API — new endpoint pages (unified v1/v3)
+import { EVSearchNearbyUnified } from './pages/EVSearchNearbyUnified';
+import { EVSearchAlongRouteUnified } from './pages/EVSearchAlongRouteUnified';
+import { EVSearchByIdUnified } from './pages/EVSearchByIdUnified';
+import { EVChargingGuidesLanding, EVChargingPlatformLanding } from './pages/EVChargingGuidePages';
+// Reference pages — Search API
+import SearchTomTomMaps from './pages/SearchTomTomMaps';
+import SearchOrbisMaps from './pages/SearchOrbisMaps';
+import SearchMigration from './pages/SearchMigration';
+import SearchErrorCodes from './pages/SearchErrorCodes';
+import SearchCoverage from './pages/SearchCoverage';
+// Reference pages — Geocoding API
+import GeocodingTomTomMaps from './pages/GeocodingTomTomMaps';
+import GeocodingOrbisMaps from './pages/GeocodingOrbisMaps';
+import GeocodingMigration from './pages/GeocodingMigration';
+import GeocodingErrorCodes from './pages/GeocodingErrorCodes';
+import GeocodingCoverage from './pages/GeocodingCoverage';
+// Reference pages — Traffic API
+import TrafficTomTomMaps from './pages/TrafficTomTomMaps';
+import TrafficOrbisMaps from './pages/TrafficOrbisMaps';
+import TrafficMigration from './pages/TrafficMigration';
+import TrafficErrorCodes from './pages/TrafficErrorCodes';
+import TrafficCoverage from './pages/TrafficCoverage';
+// Reference pages — Map Display API
+import MapTomTomMaps from './pages/MapTomTomMaps';
+import MapOrbisMaps from './pages/MapOrbisMaps';
+import MapMigration from './pages/MapMigration';
+import MapErrorCodes from './pages/MapErrorCodes';
+import MapCoverage from './pages/MapCoverage';
+// Reference pages — EV Charging API
+import EVTomTomMaps from './pages/EVTomTomMaps';
+import EVOrbisMaps from './pages/EVOrbisMaps';
+import EVConnectorTypes from './pages/EVConnectorTypes';
+import EVErrorCodes from './pages/EVErrorCodes';
+import EVChargingCoverage from './pages/EVChargingCoverage';
+// Parameter Index + Response Schema pages
+import SearchParamIndex from './pages/SearchParamIndex';
+import SearchResponseRef from './pages/SearchResponseRef';
+import GeocodingParamIndex from './pages/GeocodingParamIndex';
+import GeocodingResponseRef from './pages/GeocodingResponseRef';
+import TrafficParamIndex from './pages/TrafficParamIndex';
+import TrafficResponseRef from './pages/TrafficResponseRef';
+import MapParamIndex from './pages/MapParamIndex';
+import MapResponseRef from './pages/MapResponseRef';
+import EVParamIndex from './pages/EVParamIndex';
+import EVResponseRef from './pages/EVResponseRef';
+import LDEVRParamIndex from './pages/LDEVRParamIndex';
+import LDEVRResponseRef from './pages/LDEVRResponseRef';
+// Reference pages — LDEVR
+import LDEVRTomTomMaps from './pages/LDEVRTomTomMaps';
+import LDEVROrbisV2 from './pages/LDEVROrbisV2';
+import LDEVROrbisV3 from './pages/LDEVROrbisV3';
+import LDEVRMigration from './pages/LDEVRMigration';
+import LDEVRErrors from './pages/LDEVRErrors';
+import LDEVRCoverage from './pages/LDEVRCoverage';
+// Quickstart pages
+import SearchQuickstart from './pages/SearchQuickstart';
+import GeocodingQuickstart from './pages/GeocodingQuickstart';
+import TrafficQuickstart from './pages/TrafficQuickstart';
+import MapDisplayQuickstart from './pages/MapDisplayQuickstart';
+import EVChargingQuickstart from './pages/EVChargingQuickstart';
+import LDEVRQuickstart from './pages/LDEVRQuickstart';
+// Search API guide pages
+import SearchGuideTypeahead from './pages/SearchGuideTypeahead';
+import SearchGuideEV from './pages/SearchGuideEV';
+import SearchGuideFuzzyTips from './pages/SearchGuideFuzzyTips';
+// Geocoding API guide pages
+import GeocodingGuideAccuracy from './pages/GeocodingGuideAccuracy';
+import GeocodingGuideBatch from './pages/GeocodingGuideBatch';
+import GeocodingGuideStructured from './pages/GeocodingGuideStructured';
+// Traffic API guide pages
+import TrafficGuideTiles from './pages/TrafficGuideTiles';
+import TrafficGuideFlow from './pages/TrafficGuideFlow';
+import TrafficGuideModel from './pages/TrafficGuideModel';
+// Map Display API guide pages
+import MapGuideZoom from './pages/MapGuideZoom';
+import MapGuideStyles from './pages/MapGuideStyles';
+import MapGuideHybrid from './pages/MapGuideHybrid';
+// EV Charging API guide pages
+import EVGuideDiscovery from './pages/EVGuideDiscovery';
+import EVGuideConnectors from './pages/EVGuideConnectors';
+import EVGuideJMESPath from './pages/EVGuideJMESPath';
+// LDEVR — new endpoint pages
+import LDEVRGuidance from './pages/LDEVRGuidance';
+import { LDEVRPlatformLanding } from './pages/LDEVRGuidePages';
 import Placeholder from './pages/Placeholder';
 import PlumbingPortal from './pages/PlumbingPortal';
 import {
@@ -249,7 +378,7 @@ const FULL_PAGES = new Set([
   'screenshot-assets', 'typography',
 ]);
 
-function PageContent({ pageId, onNavigate, product, platform }) {
+function PageContent({ pageId, onNavigate, product, platform, routingNavMode = 'a' }) {
   switch (pageId) {
     case 'overview':           return <Overview onNavigate={onNavigate} />;
     case 'colour':             return <Colour />;
@@ -403,12 +532,42 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ana-intro':              return <ANAIntro onNavigate={onNavigate} />;
     // Routing API
     case 'routing-api-intro':        return <RoutingAPIIntro onNavigate={onNavigate} platform={platform} />;
-    case 'routing-calculate-route':  return <RoutingCalculateRoute onNavigate={onNavigate} platform={platform} />;
-    case 'routing-reachable-range':  return <RoutingReachableRange onNavigate={onNavigate} />;
+    case 'routing-calculate-route':
+      return routingNavMode !== 'a'
+        ? <RoutingCalculateRouteUnified onNavigate={onNavigate} />
+        : <RoutingCalculateRoute onNavigate={onNavigate} platform={platform} />;
+    case 'routing-reachable-range':
+      return routingNavMode !== 'a'
+        ? <RoutingReachableRangeUnified onNavigate={onNavigate} />
+        : <RoutingReachableRange onNavigate={onNavigate} />;
     case 'routing-batch':            return <RoutingBatch onNavigate={onNavigate} />;
     case 'routing-instructions':     return <RoutingInstructions onNavigate={onNavigate} />;
-    case 'routing-lane-guidance':    return <RoutingLaneGuidance onNavigate={onNavigate} />;
+    case 'routing-lane-guidance':
+      return routingNavMode !== 'a'
+        ? <RoutingLaneGuidanceUnified onNavigate={onNavigate} />
+        : <RoutingLaneGuidance onNavigate={onNavigate} />;
     case 'routing-road-shields':     return <RoutingRoadShields onNavigate={onNavigate} />;
+    case 'routing-quickstart':      return <RoutingQuickStart onNavigate={onNavigate} />;
+    // Routing API — EV guides
+    case 'routing-ev':              return <RoutingEVLanding onNavigate={onNavigate} />;
+    case 'routing-ev-overview':     return <RoutingEVGuide onNavigate={onNavigate} />;
+    case 'routing-ev-consumption':  return <RoutingEVConsumption onNavigate={onNavigate} />;
+    case 'routing-ev-connectors':   return <RoutingEVVehicle onNavigate={onNavigate} />;
+    // Routing API — How-to guides
+    case 'routing-howto':           return <RoutingHowToLanding onNavigate={onNavigate} />;
+    case 'routing-reconstruction':  return <RoutingReconstruction onNavigate={onNavigate} />;
+    case 'routing-avoid-areas':     return <RoutingAvoidAreas onNavigate={onNavigate} />;
+    case 'routing-tolls':           return <RoutingTollSystems onNavigate={onNavigate} />;
+    // Routing API — Map platforms
+    case 'routing-platform':        return <RoutingPlatformLanding onNavigate={onNavigate} />;
+    case 'routing-tomtom-maps':     return <RoutingTomTomMaps onNavigate={onNavigate} />;
+    case 'routing-orbis-maps':      return <RoutingOrbisMaps onNavigate={onNavigate} />;
+    case 'routing-migration':       return <RoutingMigration onNavigate={onNavigate} />;
+    // Routing API — Reference
+    case 'routing-params-ref':      return <RoutingParamIndex onNavigate={onNavigate} />;
+    case 'routing-response-ref':    return <RoutingResponseRef onNavigate={onNavigate} />;
+    case 'routing-error-codes':     return <RoutingErrorCodes onNavigate={onNavigate} />;
+    case 'routing-coverage':        return <RoutingCoverage onNavigate={onNavigate} />;
     // Long Distance EV Routing API
     case 'ldevr-intro':            return <LDEVRIntro onNavigate={onNavigate} />;
     case 'ldevr-first-route':      return <LDEVRFirstRoute onNavigate={onNavigate} />;
@@ -425,11 +584,26 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'ldevr-charging-parks':   return <LDEVRChargingParks    onNavigate={onNavigate} />;
     case 'ldevr-oem-emsp':         return <LDEVROemEmsp          onNavigate={onNavigate} />;
     case 'ldevr-data-freshness':   return <LDEVRDataFreshness    onNavigate={onNavigate} />;
+    case 'ldevr-guidance':         return <LDEVRGuidance         onNavigate={onNavigate} />;
+    case 'ldevr-v3-calculate-route': return <LDEVRCalculateRoute onNavigate={onNavigate} platform="orbis-v3" />;
+    case 'ldevr-platform':         return <LDEVRPlatformLanding  onNavigate={onNavigate} />;
+    case 'ldevr-tomtom-maps':      return <LDEVRTomTomMaps       onNavigate={onNavigate} />;
+    case 'ldevr-orbis-v2':         return <LDEVROrbisV2           onNavigate={onNavigate} />;
+    case 'ldevr-orbis-v3':         return <LDEVROrbisV3           onNavigate={onNavigate} />;
+    case 'ldevr-migration':        return <LDEVRMigration         onNavigate={onNavigate} />;
+    case 'ldevr-errors':           return <LDEVRErrors            onNavigate={onNavigate} />;
+    case 'ldevr-coverage':         return <LDEVRCoverage          onNavigate={onNavigate} />;
     // Routing API v2 / v3
     case 'routing-v2-calculate-route': return <RoutingV2CalculateRoute  onNavigate={onNavigate} />;
     case 'routing-v2-reachable-range': return <RoutingV2ReachableRange  onNavigate={onNavigate} />;
-    case 'routing-v2-compute-toll':    return <RoutingV2ComputeToll     onNavigate={onNavigate} />;
-    case 'routing-v2-guidance':        return <RoutingV2Guidance        onNavigate={onNavigate} />;
+    case 'routing-v2-compute-toll':
+      return routingNavMode !== 'a'
+        ? <RoutingComputeTollUnified onNavigate={onNavigate} />
+        : <RoutingV2ComputeToll onNavigate={onNavigate} />;
+    case 'routing-v2-guidance':
+      return routingNavMode !== 'a'
+        ? <RoutingGuidanceInstructionsUnified onNavigate={onNavigate} />
+        : <RoutingV2Guidance onNavigate={onNavigate} />;
     case 'routing-v2-data-freshness':  return <RoutingV2DataFreshness   onNavigate={onNavigate} />;
     case 'routing-v3-overview':        return <RoutingV3Overview        onNavigate={onNavigate} />;
     case 'routing-v3-calculate-route': return <RoutingV3CalculateRoute  onNavigate={onNavigate} />;
@@ -452,16 +626,32 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'search-batch':           return <SearchBatch onNavigate={onNavigate} />;
     case 'poi-details':            return <POIDetails onNavigate={onNavigate} />;
     case 'poi-photos':             return <POIPhotos onNavigate={onNavigate} />;
+    case 'search-geometry':        return <SearchGeometry onNavigate={onNavigate} />;
+    case 'search-place-by-id':     return <SearchPlaceById onNavigate={onNavigate} />;
+    case 'search-additional-data': return <SearchAdditionalData onNavigate={onNavigate} />;
+    case 'search-poi-categories':  return <SearchPoiCategories onNavigate={onNavigate} />;
+    case 'search-guides':          return <SearchGuidesLanding onNavigate={onNavigate} />;
+    case 'search-platform':        return <SearchPlatformLanding onNavigate={onNavigate} />;
     // Geocoding API
     case 'geocoding-api-intro':    return <GeocodingAPIIntro onNavigate={onNavigate} />;
     case 'geocode':                return <GeocodePage onNavigate={onNavigate} />;
     case 'reverse-geocode':        return <ReverseGeocodePage onNavigate={onNavigate} />;
+    case 'structured-geocode':     return <StructuredGeocode onNavigate={onNavigate} />;
+    case 'cross-street-lookup':    return <CrossStreetLookup onNavigate={onNavigate} />;
+    case 'geocoding-guides':       return <GeocodingGuidesLanding onNavigate={onNavigate} />;
+    case 'geocoding-platform':     return <GeocodingPlatformLanding onNavigate={onNavigate} />;
     // Traffic API
     case 'traffic-api-intro':      return <TrafficAPIIntro onNavigate={onNavigate} />;
     case 'traffic-flow-segment':   return <TrafficFlowSegment onNavigate={onNavigate} />;
     case 'traffic-incident-details': return <TrafficIncidentDetails onNavigate={onNavigate} />;
     case 'traffic-flow-tiles':     return <TrafficFlowTiles onNavigate={onNavigate} />;
     case 'traffic-model-id':       return <TrafficModelID onNavigate={onNavigate} />;
+    case 'traffic-raster-flow':    return <TrafficRasterFlow onNavigate={onNavigate} />;
+    case 'traffic-vector-flow':    return <TrafficVectorFlow onNavigate={onNavigate} />;
+    case 'traffic-raster-incident': return <TrafficRasterIncident onNavigate={onNavigate} />;
+    case 'traffic-vector-incident': return <TrafficVectorIncident onNavigate={onNavigate} />;
+    case 'traffic-guides':         return <TrafficGuidesLanding onNavigate={onNavigate} />;
+    case 'traffic-platform':       return <TrafficPlatformLanding onNavigate={onNavigate} />;
     // Traffic Analytics API
     case 'traffic-analytics-api-intro': return <TrafficAnalyticsAPIIntro onNavigate={onNavigate} />;
     case 'traffic-route-stats':    return <TrafficRouteStats onNavigate={onNavigate} />;
@@ -470,15 +660,99 @@ function PageContent({ pageId, onNavigate, product, platform }) {
     case 'traffic-junction-analytics': return <TrafficJunctionAnalytics onNavigate={onNavigate} />;
     // EV & Charging API
     case 'ev-charging-api-intro':  return <EVChargingAPIIntro onNavigate={onNavigate} />;
-    case 'ev-station-search':      return <EVStationSearch onNavigate={onNavigate} />;
-    case 'ev-charging-availability': return <EVChargingAvailability onNavigate={onNavigate} />;
+    case 'ev-station-search':      return <EVStationSearchUnified onNavigate={onNavigate} />;
+    case 'ev-charging-availability': return <EVChargingAvailabilityUnified onNavigate={onNavigate} />;
     case 'ev-supported-markets':   return <EVSupportedMarkets onNavigate={onNavigate} />;
+    case 'ev-search-nearby':       return <EVSearchNearbyUnified onNavigate={onNavigate} />;
+    case 'ev-search-along-route':  return <EVSearchAlongRouteUnified onNavigate={onNavigate} />;
+    case 'ev-search-by-id':        return <EVSearchByIdUnified onNavigate={onNavigate} />;
+    case 'ev-charging-guides':     return <EVChargingGuidesLanding onNavigate={onNavigate} />;
+    case 'ev-charging-platform':   return <EVChargingPlatformLanding onNavigate={onNavigate} />;
+    // Quickstart pages
+    case 'search-quickstart':      return <SearchQuickstart onNavigate={onNavigate} />;
+    case 'geocoding-quickstart':   return <GeocodingQuickstart onNavigate={onNavigate} />;
+    case 'traffic-quickstart':     return <TrafficQuickstart onNavigate={onNavigate} />;
+    case 'map-quickstart':         return <MapDisplayQuickstart onNavigate={onNavigate} />;
+    case 'ev-quickstart':          return <EVChargingQuickstart onNavigate={onNavigate} />;
+    case 'ldevr-quickstart':       return <LDEVRQuickstart onNavigate={onNavigate} />;
+    // Search API guide pages
+    case 'search-guide-typeahead': return <SearchGuideTypeahead onNavigate={onNavigate} />;
+    case 'search-guide-ev':        return <SearchGuideEV onNavigate={onNavigate} />;
+    case 'search-guide-fuzzy-tips': return <SearchGuideFuzzyTips onNavigate={onNavigate} />;
+    // Geocoding API guide pages
+    case 'geocoding-guide-accuracy': return <GeocodingGuideAccuracy onNavigate={onNavigate} />;
+    case 'geocoding-guide-batch':  return <GeocodingGuideBatch onNavigate={onNavigate} />;
+    case 'geocoding-guide-structured': return <GeocodingGuideStructured onNavigate={onNavigate} />;
+    // Traffic API guide pages
+    case 'traffic-guide-tiles':    return <TrafficGuideTiles onNavigate={onNavigate} />;
+    case 'traffic-guide-flow':     return <TrafficGuideFlow onNavigate={onNavigate} />;
+    case 'traffic-guide-model':    return <TrafficGuideModel onNavigate={onNavigate} />;
+    // Map Display API guide pages
+    case 'map-guide-zoom':         return <MapGuideZoom onNavigate={onNavigate} />;
+    case 'map-guide-styles':       return <MapGuideStyles onNavigate={onNavigate} />;
+    case 'map-guide-hybrid':       return <MapGuideHybrid onNavigate={onNavigate} />;
+    // EV Charging API guide pages
+    case 'ev-guide-discovery':     return <EVGuideDiscovery onNavigate={onNavigate} />;
+    case 'ev-guide-connectors':    return <EVGuideConnectors onNavigate={onNavigate} />;
+    case 'ev-guide-jmespath':      return <EVGuideJMESPath onNavigate={onNavigate} />;
+    // Parameter Index + Response Schema pages
+    case 'search-params-ref':       return <SearchParamIndex onNavigate={onNavigate} />;
+    case 'search-response-ref':     return <SearchResponseRef onNavigate={onNavigate} />;
+    case 'geocoding-params-ref':    return <GeocodingParamIndex onNavigate={onNavigate} />;
+    case 'geocoding-response-ref':  return <GeocodingResponseRef onNavigate={onNavigate} />;
+    case 'traffic-params-ref':      return <TrafficParamIndex onNavigate={onNavigate} />;
+    case 'traffic-response-ref':    return <TrafficResponseRef onNavigate={onNavigate} />;
+    case 'map-params-ref':          return <MapParamIndex onNavigate={onNavigate} />;
+    case 'map-response-ref':        return <MapResponseRef onNavigate={onNavigate} />;
+    case 'ev-params-ref':           return <EVParamIndex onNavigate={onNavigate} />;
+    case 'ev-response-ref':         return <EVResponseRef onNavigate={onNavigate} />;
+    case 'ldevr-params-ref':        return <LDEVRParamIndex onNavigate={onNavigate} />;
+    case 'ldevr-response-ref':      return <LDEVRResponseRef onNavigate={onNavigate} />;
+    // Reference pages — Search API
+    case 'search-tomtom-maps':     return <SearchTomTomMaps    onNavigate={onNavigate} />;
+    case 'search-orbis-maps':      return <SearchOrbisMaps     onNavigate={onNavigate} />;
+    case 'search-migration':       return <SearchMigration     onNavigate={onNavigate} />;
+    case 'search-error-codes':     return <SearchErrorCodes    onNavigate={onNavigate} />;
+    case 'search-coverage':        return <SearchCoverage      onNavigate={onNavigate} />;
+    // Reference pages — Geocoding API
+    case 'geocoding-tomtom-maps':  return <GeocodingTomTomMaps onNavigate={onNavigate} />;
+    case 'geocoding-orbis-maps':   return <GeocodingOrbisMaps  onNavigate={onNavigate} />;
+    case 'geocoding-migration':    return <GeocodingMigration  onNavigate={onNavigate} />;
+    case 'geocoding-error-codes':  return <GeocodingErrorCodes onNavigate={onNavigate} />;
+    case 'geocoding-coverage':     return <GeocodingCoverage   onNavigate={onNavigate} />;
+    // Reference pages — Traffic API
+    case 'traffic-tomtom-maps':    return <TrafficTomTomMaps   onNavigate={onNavigate} />;
+    case 'traffic-orbis-maps':     return <TrafficOrbisMaps    onNavigate={onNavigate} />;
+    case 'traffic-migration':      return <TrafficMigration    onNavigate={onNavigate} />;
+    case 'traffic-error-codes':    return <TrafficErrorCodes   onNavigate={onNavigate} />;
+    case 'traffic-coverage':       return <TrafficCoverage     onNavigate={onNavigate} />;
+    // Reference pages — EV Charging API
+    case 'ev-tomtom-maps':         return <EVTomTomMaps        onNavigate={onNavigate} />;
+    case 'ev-orbis-maps':          return <EVOrbisMaps         onNavigate={onNavigate} />;
+    case 'ev-connector-types':     return <EVConnectorTypes    onNavigate={onNavigate} />;
+    case 'ev-error-codes':         return <EVErrorCodes        onNavigate={onNavigate} />;
+    case 'ev-charging-coverage':   return <EVChargingCoverage  onNavigate={onNavigate} />;
     // Map Display API
     case 'map-display-api-intro':  return <MapDisplayAPIIntro onNavigate={onNavigate} />;
-    case 'map-raster-tile':        return <MapRasterTile onNavigate={onNavigate} />;
-    case 'map-vector-tile':        return <MapVectorTile onNavigate={onNavigate} />;
-    case 'map-satellite-tile':     return <MapSatelliteTile onNavigate={onNavigate} />;
+    case 'map-raster-tile':        return <MapRasterTileUnified onNavigate={onNavigate} />;
+    case 'map-vector-tile':        return <MapVectorTileUnified onNavigate={onNavigate} />;
+    case 'map-satellite-tile':     return <MapSatelliteTileUnified onNavigate={onNavigate} />;
     case 'map-static-image':       return <MapStaticImage onNavigate={onNavigate} />;
+    case 'map-hillshade-tile':     return <MapHillshadeTileUnified onNavigate={onNavigate} />;
+    case 'map-copyrights':         return <MapCopyrightsUnified onNavigate={onNavigate} />;
+    case 'map-wms':                return <MapWMS onNavigate={onNavigate} />;
+    case 'map-wmts':               return <MapWMTS onNavigate={onNavigate} />;
+    case 'map-assets-api':         return <MapAssetsApi onNavigate={onNavigate} />;
+    case 'map-3d-landmarks':       return <Map3dLandmarks onNavigate={onNavigate} />;
+    case 'map-extended-tiles':     return <MapExtendedTiles onNavigate={onNavigate} />;
+    case 'map-styles':             return <MapStyle onNavigate={onNavigate} />;
+    case 'map-guides':             return <MapDisplayGuidesLanding onNavigate={onNavigate} />;
+    case 'map-platform':           return <MapDisplayPlatformLanding onNavigate={onNavigate} />;
+    case 'map-tomtom-maps':        return <MapTomTomMaps   onNavigate={onNavigate} />;
+    case 'map-orbis-maps':         return <MapOrbisMaps    onNavigate={onNavigate} />;
+    case 'map-migration':          return <MapMigration    onNavigate={onNavigate} />;
+    case 'map-error-codes':        return <MapErrorCodes   onNavigate={onNavigate} />;
+    case 'map-coverage':           return <MapCoverage     onNavigate={onNavigate} />;
     // Parking & Fuel API
     case 'parking-fuel-api-intro': return <ParkingFuelAPIIntro onNavigate={onNavigate} />;
     case 'parking-availability':   return <ParkingAvailability onNavigate={onNavigate} />;
@@ -508,6 +782,13 @@ export default function App() {
   const [docsPortalOpen, setDocsPortalOpen] = useState(true);
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [plumbingOpen, setPlumbingOpen] = useState(false);
+  const [routingNavMode, setRoutingNavMode] = useState(
+    () => localStorage.getItem('routing-nav-ia-mode') || 'a'
+  );
+  const handleRoutingNavModeChange = useCallback((mode) => {
+    setRoutingNavMode(mode);
+    localStorage.setItem('routing-nav-ia-mode', mode);
+  }, []);
 
   // [ key toggles sidebar on desktop; ? key toggles plumbing portal
   useEffect(() => {
@@ -576,7 +857,10 @@ export default function App() {
 
   const product = getProduct(currentProduct);
   // Use iOS-specific nav when in NavSDK iOS mode
-  const productNav = (product.iosNav && currentPlatform === 'ios') ? product.iosNav : product.nav;
+  const baseNav = (product.iosNav && currentPlatform === 'ios') ? product.iosNav : product.nav;
+  const productNav = currentProduct === 'routing-api' && routingNavMode !== 'a'
+    ? (routingNavMode === 'b' ? ROUTING_API_NAV_B : ROUTING_API_NAV_C)
+    : baseNav;
   const productPageTitles = (product.iosPageTitles && currentPlatform === 'ios') ? product.iosPageTitles : product.pageTitles;
 
   return (
@@ -634,7 +918,7 @@ export default function App() {
             onCollapse={() => setNavCollapsed(true)}
           />
           <main id="main-content" className="content-area">
-            <PageContent pageId={currentPage} onNavigate={navigate} product={{ ...product, nav: productNav, pageTitles: productPageTitles }} platform={currentPlatform} />
+            <PageContent pageId={currentPage} onNavigate={navigate} product={{ ...product, nav: productNav, pageTitles: productPageTitles }} platform={currentPlatform} routingNavMode={routingNavMode} />
           </main>
           <TOC currentPage={currentPage} />
         </div>
@@ -645,6 +929,8 @@ export default function App() {
           onClose={() => setPlumbingOpen(false)}
           isDark={isDark}
           onToggleTheme={() => setIsDark(d => !d)}
+          routingNavMode={routingNavMode}
+          onRoutingNavModeChange={handleRoutingNavModeChange}
         />
       )}
     </IlloStyleProvider>

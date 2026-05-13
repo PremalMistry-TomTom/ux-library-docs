@@ -24,9 +24,6 @@ import {
   IlloTrafficFlow, IlloTrafficIncidents, IlloTrafficFlowTile, IlloTrafficModelID,
 } from './IntroIllustrations';
 
-/* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloTrafficFlow, L_TrafficFlow, IcoTrafficFlow);
-
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function TrafficAPIIntro({ onNavigate }) {
   const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
@@ -38,7 +35,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Flow Segment Data',
       desc: 'Retrieve real-time traffic flow for a road segment — current speed, free-flow speed, and confidence level.',
       pageId: 'traffic-flow-segment',
-      tag: 'v4',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
@@ -46,7 +43,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Incident Details',
       desc: 'Get traffic incidents — accidents, road works, closures — with location, delay type, and severity within a bounding box.',
       pageId: 'traffic-incident-details',
-      tag: 'v5',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile, IcoTrafficFlowTile),
@@ -54,7 +51,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Raster Flow Tiles',
       desc: 'PNG map tiles colour-coded by current traffic speed for overlay on raster maps. Supports 22 zoom levels.',
       pageId: 'traffic-flow-tiles',
-      tag: 'v4',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile, IcoTrafficFlowTile),
@@ -62,7 +59,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Vector Flow Tiles',
       desc: 'Protocol Buffer vector tiles carrying traffic speed and flow data for client-side styled overlays.',
       pageId: 'traffic-flow-tiles',
-      tag: 'v4',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
@@ -70,7 +67,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Raster Incident Tiles',
       desc: 'Raster tiles showing traffic incident pins and severity overlays for quick visual integration.',
       pageId: 'traffic-incident-details',
-      tag: 'v5',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
@@ -78,7 +75,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Incident Viewport',
       desc: 'Return incidents within a viewport bounding box — optimised for map-aligned incident data fetching.',
       pageId: 'traffic-incident-details',
-      tag: 'v5',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloTrafficModelID, L_TrafficModelID, IcoTrafficModelID),
@@ -86,7 +83,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       title: 'Traffic Model ID',
       desc: 'Return the latest traffic data model identifier — use for cache invalidation when tiles are refreshed.',
       pageId: 'traffic-model-id',
-      tag: 'v4',
+      tag: 'v1',
     },
   ];
 
@@ -122,9 +119,20 @@ export default function TrafficAPIIntro({ onNavigate }) {
         data, incident details, and map tiles updated every minute.
       </p>
 
-      {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
-        <HeroIllo />
+      {/* Quickstart CTA */}
+      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onNavigate?.('traffic-quickstart', 'traffic-api')}
+          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Quickstart →
+        </button>
+        <button
+          onClick={() => onNavigate?.('traffic-flow-tile', 'traffic-api')}
+          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          API Reference
+        </button>
       </div>
 
       {/* Endpoint grid */}
@@ -156,6 +164,74 @@ export default function TrafficAPIIntro({ onNavigate }) {
         </div>
       </div>
 
+      {/* Guides — before version table */}
+      <div className="zone">
+        <h2 className="sh" id="guides">Guides</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+          {[
+            { id: 'traffic-guide-tiles', title: 'Rendering Traffic Tiles', desc: 'Overlay raster and vector traffic tiles on a map — tile URL construction, cache strategies, and refresh timing.' },
+            { id: 'traffic-guide-flow', title: 'Flow Data in Your App', desc: 'Use Flow Segment Data to display per-road speed data, calculate congestion levels, and update ETAs.' },
+            { id: 'traffic-guide-model', title: 'Using Traffic Model ID', desc: 'Invalidate tile caches reliably by polling the Traffic Model ID endpoint to detect data updates.' },
+          ].map(({ id, title, desc }) => (
+            <button key={id} onClick={() => onNavigate?.(id, 'traffic-api')}
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '1.25rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--brand)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--black)', marginBottom: '0.375rem' }}>{title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Version comparison table */}
+      <div className="zone">
+        <h2 className="sh" id="versions">Versions</h2>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                <th style={{ padding: '10px 14px', textAlign: 'left', width: '40%', color: 'var(--muted)', fontWeight: 600, fontSize: '0.75rem' }}>Feature</th>
+                {[
+                  { label: 'V1', platform: 'TomTom Maps', status: 'Production', statusBg: 'rgba(34,197,94,0.1)', statusColor: '#15803d', color: '#15803d' },
+                  { label: 'V2', platform: 'Orbis Maps',  status: 'Production', statusBg: 'rgba(34,197,94,0.1)', statusColor: '#15803d', color: '#7c3aed' },
+                ].map(v => (
+                  <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '30%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 2 }}>{v.platform}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Flow Segment Data',      '✓', '✓'],
+                ['Raster Flow Tiles',      '✓', '✓'],
+                ['Vector Flow Tiles',      '✓', '✓'],
+                ['Incident Details',       '✓', '✓'],
+                ['Raster Incident Tiles',  '✓', '✓'],
+                ['Vector Incident Tiles',  '✓', '✓'],
+                ['Traffic Model ID',       '✓', '✓'],
+                ['Extended flow tiles',    '—', '✓'],
+                ['Extended incident tiles','—', '✓'],
+                ['Production details',     '—', '✓'],
+              ].map(([feat, v1, v2], i) => (
+                <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                  <td style={{ padding: '9px 14px', color: 'var(--black)', fontWeight: 500 }}>{feat}</td>
+                  {[v1, v2].map((val, j) => (
+                    <td key={j} style={{ padding: '9px 14px', color: val === '✓' ? '#15803d' : 'var(--t-dis)', fontWeight: val === '✓' ? 700 : 400 }}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Base URL table */}
       <div className="zone">
         <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
@@ -169,29 +245,6 @@ export default function TrafficAPIIntro({ onNavigate }) {
         </div>
       </div>
 
-      {/* Getting started */}
-      <div className="zone">
-        <h2 className="sh" id="getting-started">Getting started</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
-          Fetch real-time flow data for a road segment near a known coordinate:
-        </p>
-        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`const API_KEY = 'your-api-key';
-const lat = 52.3731;
-const lon = 4.8922;
-
-// Flow Segment Data — current vs free-flow speed
-const flowRes = await fetch(
-  \`https://api.tomtom.com/traffic/services/4/flowSegmentData/absolute/10/json\` +
-  \`?key=\${API_KEY}&point=\${lat},\${lon}\`
-);
-const { flowSegmentData } = await flowRes.json();
-const { currentSpeed, freeFlowSpeed, confidence } = flowSegmentData;
-console.log(\`\${currentSpeed} km/h (free-flow: \${freeFlowSpeed}, confidence: \${confidence})\`);
-
-// Raster flow tile URL for a map overlay (zoom 12, tile 2094,1362)
-const tileUrl =
-  \`https://api.tomtom.com/traffic/map/4/tile/flow/relative/12/2094/1362.png?key=\${API_KEY}\`;`}</pre>
-      </div>
     </div>
   );
 }

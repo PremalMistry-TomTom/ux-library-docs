@@ -78,13 +78,11 @@ function setNightMode() {
   );
 }`;
 
-/* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function MapRasterTile({ onNavigate }) {
+/* ─── V1 Content (named export for Unified wrapper) ─────────────────────────── */
+export function MapRasterTileV1Content({ onNavigate }) {
   return (
     <ApiRefTwoCol
-      title="Raster Map Tile"
       description="Retrieve a 256 or 512 px PNG map tile at any zoom level using the standard XYZ tile scheme. Compatible with Leaflet, OpenLayers, Google Maps API, and any slippy-map library that accepts a tile URL template."
-      version="v1"
       sections={[
         {
           id: 'request',

@@ -1,6 +1,7 @@
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import VersionTabBar from '../components/ui/VersionTabBar';
 
 /* ─── Parameter data ─────────────────────────────────────────────────────────── */
 
@@ -143,7 +144,6 @@ export default function RoutingBatch({ onNavigate }) {
       id: 'api-batch-sync',
       heading: 'Synchronous batch',
       method: 'POST',
-      demoId: 'batch-routing',
       params: PARAMS_SYNC,
       note: 'Returns results immediately in a single response. Maximum 100 items. Use this for real-time multi-route comparisons, ETA matrices, or when results are needed in a single round trip.',
       code: CODE_SYNC,
@@ -235,9 +235,10 @@ export default function RoutingBatch({ onNavigate }) {
 
   return (
     <div className="page page--wide">
-      <div className="page-header">
+      <div className="page-header page-header--with-tabs">
         <h1>Batch Routing</h1>
         <PageActions />
+        <VersionTabBar versions={['v1']} activeTab="v1" onTabChange={() => {}} />
       </div>
 
       <p className="quick-answer">

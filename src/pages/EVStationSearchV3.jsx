@@ -1,0 +1,149 @@
+import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+
+/* ─── V3 Orbis Maps — EV Station Search ─────────────────────────────────────
+   Endpoint: GET /maps/orbis/places/ev/nearby
+   Requires: TomTom-Api-Version: 1 header
+   Status:   Private Preview
+────────────────────────────────────────────────────────────────────────────── */
+
+const SEARCH_PARAMS = [
+  { name: 'key', required: true, type: 'string', desc: 'Your TomTom API key.' },
+  { name: 'lat', type: 'double', desc: 'Latitude of the search centre. Range: −90 to 90. Must be paired with lon and radius.' },
+  { name: 'lon', type: 'double', desc: 'Longitude of the search centre. Range: −180 to 180. Must be paired with lat and radius.' },
+  { name: 'radius', type: 'integer', desc: 'Search radius in metres (1–100000). Must be paired with lat and lon.' },
+  { name: 'topLeft', type: 'string', desc: 'Top-left corner of bounding box as "lat,lon". Must be paired with btmRight.' },
+  { name: 'btmRight', type: 'string', desc: 'Bottom-right corner of bounding box as "lat,lon". Must be paired with topLeft. Boxes >200 km diagonal are clipped.' },
+  { name: 'limit', type: 'integer', default: 10, desc: 'Maximum number of results to return (1–100).' },
+  { name: 'status', type: 'string', values: ['Available', 'Reserved', 'Occupied', 'OutOfService', 'Unknown'], desc: 'Comma-separated charging point status values to filter by.' },
+  { name: 'connector', type: 'string', desc: 'Comma-separated connector type IDs. Example: IEC62196Type2Outlet,IEC62196Type2CCS,Chademo.' },
+  { name: 'accessType', type: 'string', values: ['Public', 'Authorized', 'Restricted', 'Private', 'Unknown'], desc: 'Comma-separated access types to filter by.' },
+  { name: 'restriction', type: 'string', values: ['evOnly', 'plugged', 'disabled', 'customers', 'motorcycles'], desc: 'Comma-separated parking restriction types to filter by.' },
+  { name: 'capability', type: 'string', desc: 'Comma-separated capability filters: ChargingProfileCapable, RemoteStartStopCapable, Reservable, RfidReader, CreditCardPayable, ContactlessCardSupport, PlugAndCharge, and others.' },
+  { name: 'minPowerKW', type: 'double', desc: 'Minimum connector power in kilowatts (closed interval). Example: 22.2.' },
+  { name: 'maxPowerKW', type: 'double', desc: 'Maximum connector power in kilowatts (closed interval). Example: 150.0.' },
+  { name: 'vehicleType', type: 'string', values: ['Car', 'Truck'], desc: 'Comma-separated vehicle types the station must support.' },
+  { name: 'vehicleCategory', type: 'string', values: ['N1', 'N2', 'N3', 'N3+O4'], desc: 'Comma-separated vehicle categories. URL-encode the plus sign: N3%2BO4.' },
+  { name: 'vehicleHeight', type: 'double', desc: 'Restrict to stations accessible by vehicles up to this height in metres.' },
+  { name: 'vehicleWidth', type: 'double', desc: 'Restrict to stations accessible by vehicles up to this width in metres.' },
+  { name: 'vehicleLength', type: 'double', desc: 'Restrict to stations accessible by vehicles up to this length in metres.' },
+  { name: 'vehicleWeight', type: 'integer', desc: 'Restrict to stations accessible by vehicles up to this weight in kilograms.' },
+  { name: 'vehicleBrand', type: 'string', desc: 'Restrict to stations where this vehicle brand is permitted to charge. Example: Tesla.' },
+  { name: 'nearby', type: 'string', desc: 'Comma-separated POI category IDs for nearby amenities filter. Values: 7315 (Restaurant), 9932 (Public Amenity), 9376 (Café/Pub), 7314 (Hotel/Motel), 9361 (Shop), 9362 (Park).' },
+  { name: 'brand', type: 'string', desc: 'Comma-separated EV network brand names or IDs. Example: TotalEnergies,Allego.' },
+  { name: 'paymentBrand', type: 'string', desc: 'Comma-separated payment brand names or IDs. Example: Shell Recharge,Plugsurfing,Eneco.' },
+  { name: 'include', type: 'string', values: ['tariffs'], desc: 'Additional data to include. Use include=tariffs to receive pricing information for each connector.' },
+  { name: 'view', type: 'string', values: ['Unified', 'AR', 'IL', 'IN', 'MA', 'PK', 'RS', 'RU', 'TR', 'CN', 'TW'], desc: 'Geopolitical view for disputed territories. Default varies by origin country.' },
+];
+
+const RESPONSE_FIELDS = [
+  { name: 'summary', type: 'object', desc: 'Metadata: numResults (results in response) and totalResults (total matching results).' },
+  { name: 'results', type: 'array', desc: 'Array of EV POI results sorted by distance.' },
+  { name: 'results[].id', type: 'string', desc: 'Unique EV POI ID (UUID). Use with EV Search by Id for full detail.' },
+  { name: 'results[].name', type: 'string', desc: 'Display name of the charging location.' },
+  { name: 'results[].position', type: 'object', desc: '{ lat, lon } coordinates of the EV POI.' },
+  { name: 'results[].chargingStations', type: 'array', desc: 'Array of charging stations at this POI.', children: [
+    { name: 'chargingStations[].id', type: 'string', desc: 'Station ID in EVSE format, e.g. NL*POD*E1234.' },
+    { name: 'chargingStations[].chargingPoints', type: 'array', desc: 'Array of individual charging points (EVSEs).', children: [
+      { name: 'chargingPoints[].evseId', type: 'string', desc: 'Unique EVSE ID for the charging point.' },
+      { name: 'chargingPoints[].status', type: 'string', desc: 'Live availability: Available, Reserved, Occupied, OutOfService, Unknown.' },
+      { name: 'chargingPoints[].capabilities', type: 'string[]', desc: 'List of charging point capabilities.' },
+      { name: 'chargingPoints[].connectors', type: 'array', desc: 'Array of connectors on this charging point.', children: [
+        { name: 'connectors[].id', type: 'string', desc: 'Connector identifier.' },
+        { name: 'connectors[].type', type: 'string', desc: 'Connector standard, e.g. IEC62196Type2Outlet, IEC62196Type2CCS, Chademo.' },
+        { name: 'connectors[].currentType', type: 'string', desc: 'Electrical current type: AC1, AC3, or DC.' },
+        { name: 'connectors[].ratedPowerKW', type: 'double', desc: 'Rated power of the connector in kilowatts.' },
+        { name: 'connectors[].tariffId', type: 'string', desc: 'Tariff identifier — only present when include=tariffs is requested.' },
+      ]},
+    ]},
+  ]},
+  { name: 'results[].address', type: 'object', desc: 'Structured address: streetName, streetNumber, municipality, postalCode, countryCode, freeformAddress.' },
+  { name: 'results[].accessType', type: 'string', desc: 'Access restriction: Public, Authorized, Restricted, or Private.' },
+  { name: 'results[].timeZone', type: 'object', desc: 'IANA time zone ID. Example: { ianaId: "Europe/Amsterdam" }.' },
+  { name: 'results[].nearbyPois', type: 'array', desc: 'Category IDs of POIs within walking distance.' },
+  { name: 'references', type: 'object', desc: 'Tariff details when include=tariffs is used.' },
+];
+
+const CODE = `# EV Station Search (v3 Orbis) — available CCS chargers ≥50 kW near Amsterdam
+curl "https://api.tomtom.com/maps/orbis/places/ev/nearby?key=YOUR_API_KEY\\
+&lat=52.3791&lon=4.9003\\
+&radius=2000\\
+&connector=IEC62196Type2CCS\\
+&minPowerKW=50\\
+&status=Available\\
+&accessType=Public\\
+&limit=10\\
+&view=Unified" \\
+  -H "TomTom-Api-Version: 1"`;
+
+const CODE_RESPONSE = `{
+  "summary": { "numResults": 2, "totalResults": 7 },
+  "results": [
+    {
+      "id": "0b903425-3f5a-4072-9d5d-070f6f0647b3",
+      "name": "Allego Charging Hub AMS",
+      "position": { "lat": 52.3812, "lon": 4.9014 },
+      "chargingStations": [
+        {
+          "id": "NL*ALG*E00123",
+          "chargingPoints": [
+            {
+              "evseId": "NL*ALG*E00123*1",
+              "status": "Available",
+              "capabilities": ["RemoteStartStopCapable", "RfidReader", "CreditCardPayable"],
+              "connectors": [
+                {
+                  "id": "1",
+                  "type": "IEC62196Type2CCS",
+                  "currentType": "DC",
+                  "ratedPowerKW": 150.0
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "address": {
+        "streetName": "Stationsplein",
+        "streetNumber": "10",
+        "municipality": "Amsterdam",
+        "postalCode": "1012 AB",
+        "countryCode": "NL",
+        "freeformAddress": "Stationsplein 10, 1012 AB Amsterdam"
+      },
+      "accessType": "Public",
+      "timeZone": { "ianaId": "Europe/Amsterdam" },
+      "nearbyPois": [7315, 9361]
+    }
+  ]
+}`;
+
+/* ─── V3 Content (named export for Unified wrapper) ─────────────────────────── */
+export function EVStationSearchV3Content({ onNavigate }) {
+  return (
+    <>
+      <PrivatePreviewBanner api="EV & Charging API v3 (Orbis Maps)" />
+      <ApiRefTwoCol
+        description="Find EV charging stations near a coordinate using the Orbis Maps EV Search Nearby endpoint. Supports all v1 filter parameters plus JMESPath response filtering. Requires the TomTom-Api-Version: 1 header on every request."
+        sections={[
+          {
+            id: 'request',
+            heading: 'Request',
+            method: 'GET',
+            note: 'https://api.tomtom.com/maps/orbis/places/ev/nearby — Orbis Maps v3 (Private Preview). Requires TomTom-Api-Version: 1 header. Use either lat+lon+radius or topLeft+btmRight for the search area.',
+            params: SEARCH_PARAMS,
+            code: CODE,
+            lang: 'bash',
+          },
+          {
+            id: 'response',
+            heading: 'Response',
+            params: RESPONSE_FIELDS,
+            code: CODE_RESPONSE,
+            lang: 'json',
+          },
+        ]}
+      />
+    </>
+  );
+}

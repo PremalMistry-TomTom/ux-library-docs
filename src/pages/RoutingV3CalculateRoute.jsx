@@ -1,5 +1,6 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
 import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Request parameters ─────────────────────────────────────────────────── */
 const PARAMS_ROUTE = [
@@ -234,7 +235,7 @@ const CODE_RESPONSE = `// HTTP 200 — route summary
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV3CalculateRoute() {
+export function RoutingV3CalculateRouteContent() {
   const sections = [
     {
       id: 'routing-v3-route',
@@ -320,12 +321,24 @@ export default function RoutingV3CalculateRoute() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Calculate Route"
-      description="Full Routing API v3 calculateRoute reference. Supports GET and POST with the same comprehensive vehicle profile, consumption model, and guidance parameters as v1, with v3 URL patterns and header-based authentication."
-      version="v3-private"
-      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <p className="quick-answer">Full Routing API v3 calculateRoute reference. Supports GET and POST with the same comprehensive vehicle profile, consumption model, and guidance parameters as v1, with v3 URL patterns and header-based authentication.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV3CalculateRoute() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Calculate Route</h1>
+        <PageActions />
+      </div>
+      <RoutingV3CalculateRouteContent />
+    </div>
   );
 }

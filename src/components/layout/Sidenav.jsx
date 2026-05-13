@@ -217,7 +217,13 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
   )?.key ?? null;
 
   const [openKey, setOpenKey] = useState(activeGroupKey);
+  const [versionFilter, setVersionFilter] = useState('all');
   useEffect(() => { if (activeGroupKey) setOpenKey(activeGroupKey); }, [activeGroupKey]);
+
+  // Reset the version filter whenever the nav switches to one that has no filter control
+  // (e.g. switching from Option C → B should not leave the filter stuck on v3)
+  const hasVersionFilter = nav.some(e => e.type === 'version-filter');
+  useEffect(() => { if (!hasVersionFilter) setVersionFilter('all'); }, [hasVersionFilter]);
 
   const handleToggle = useCallback((groupKey, forceOpen) => {
     setOpenKey(prev => {
@@ -340,7 +346,43 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
           );
         }
 
+        if (entry.type === 'version-filter') {
+          const VF_COLORS = {
+            v1: { active: '#22c55e', activeBg: 'rgba(34,  197,  94, 0.15)' },
+            v2: { active: '#a78bfa', activeBg: 'rgba(167, 139, 250, 0.15)' },
+            v3: { active: '#fb923c', activeBg: 'rgba(251, 146,  60, 0.15)' },
+          };
+          return (
+            <div key="version-filter" style={{ padding: '6px 10px 8px' }}>
+              <div style={{ display: 'flex', borderRadius: 6, border: '1px solid var(--border)', overflow: 'hidden' }}>
+                {['all','v1','v2','v3'].map((v, vi) => {
+                  const isActive = versionFilter === v;
+                  const vc = VF_COLORS[v];
+                  return (
+                    <button key={v} onClick={() => setVersionFilter(v)} style={{
+                      flex: 1, padding: '4px 0',
+                      border: 'none',
+                      borderRight: vi < 3 ? '1px solid var(--border)' : 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.6rem', fontWeight: 700,
+                      background: isActive ? (v === 'all' ? 'var(--text)' : vc.activeBg) : 'transparent',
+                      color:      isActive ? (v === 'all' ? 'var(--bg)'   : vc.active)   : 'var(--muted)',
+                      transition: 'all 0.1s',
+                    }}>
+                      {v === 'all' ? 'All' : v.toUpperCase()}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        }
+
         if (entry.type === 'top') {
+          // Hide when version filter is active and this endpoint doesn't match
+          if (entry.vDots && versionFilter !== 'all' && !entry.vDots.includes(versionFilter)) {
+            return null;
+          }
           const label     = t(`nav.${entry.id}`, { defaultValue: entry.label });
           const isActive  = currentPage === entry.id;
           const hasAnchors = entry.anchors?.length > 0;
@@ -375,12 +417,22 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                 aria-current={showAsActive ? 'page' : undefined}
               >
                 <span style={{ flex: 1 }}>{label}</span>
+                {entry.vDots && versionFilter === 'all' && (
+                  <span style={{ display: 'flex', gap: 3, alignItems: 'center', flexShrink: 0 }}>
+                    {entry.vDots.map(v => (
+                      <span key={v} style={{
+                        width: 5, height: 5, borderRadius: '50%',
+                        background: v === 'v1' ? '#22c55e' : v === 'v2' ? '#a78bfa' : '#fb923c',
+                      }} />
+                    ))}
+                  </span>
+                )}
                 {entry.ref && (
                   <span style={{
                     fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px',
                     borderRadius: 3, background: 'var(--info-bg)',
                     color: 'var(--info-text)', fontFamily: 'monospace',
-                    letterSpacing: '0.04em', flexShrink: 0, marginRight: 4,
+                    letterSpacing: '0.04em', flexShrink: 0,
                   }}>REF</span>
                 )}
                 {hasAnchors && <ChevronIcon open={anchorOpen} />}

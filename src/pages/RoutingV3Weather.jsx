@@ -1,5 +1,7 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
 import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+import PageActions from '../components/ui/PageActions';
+import VersionTabBar from '../components/ui/VersionTabBar';
 
 const PUBLIC_PREVIEW_NOTE = (
   <>
@@ -156,12 +158,19 @@ export default function RoutingV3Weather() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Weather Consideration"
-      description="Adapt the EV consumption curve for outside temperature on Routing API v3 Calculate Route and Reachable Range requests. Use forecast for automatic location-based weather, or userSpecified to provide a specific temperature. Requires an electric vehicle consumption model."
-      version="v3-private"
-      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
-      sections={sections}
-    />
+    <div className="page page--wide">
+      <div className="page-header page-header--with-tabs">
+        <h1>Weather Consideration</h1>
+        <PageActions />
+        <VersionTabBar versions={['v3']} activeTab="v3" onTabChange={() => {}} />
+      </div>
+      <p className="quick-answer">
+        Adapt the EV consumption curve for outside temperature on Routing API v3 Calculate Route
+        and Reachable Range requests. Use forecast for automatic location-based weather, or
+        userSpecified to provide a specific temperature. Requires an electric vehicle consumption model.
+      </p>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <ApiRefTwoCol sections={sections} />
+    </div>
   );
 }

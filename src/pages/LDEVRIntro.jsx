@@ -245,7 +245,21 @@ export default function LDEVRIntro({ onNavigate }) {
         {t('ldevrIntro.quickAnswer')}
       </p>
 
-
+      {/* Quickstart CTA */}
+      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onNavigate?.('ldevr-quickstart', 'ldevr')}
+          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Quickstart →
+        </button>
+        <button
+          onClick={() => onNavigate?.('ldevr-calculate-route', 'ldevr')}
+          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          API Reference
+        </button>
+      </div>
 
       {/* Endpoints */}
       <div className="zone">
@@ -458,68 +472,52 @@ const route = await calculateRoute({
 
       {/* Version comparison table */}
       <div className="zone">
-        <h2 className="sh" id="ldevr-platforms">{t('ldevrIntro.versionsTitle')}</h2>
-        {(() => {
-          const V1 = { label: t('ldevrIntro.versionLabels.v1'), status: t('ldevrIntro.versionStatuses.production'),     statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',  color: '#15803d' };
-          const V2 = { label: t('ldevrIntro.versionLabels.v2'), status: t('ldevrIntro.versionStatuses.privatePreview'), statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)', color: '#92400e' };
-          const Y = '✓'; const N = '—';
-          const rows = [
-            { label: t('ldevrIntro.tableRows.mapPlatform'),          v1: 'TomTom Maps',                               v2: 'Orbis Maps'                                       },
-            { label: t('ldevrIntro.tableRows.baseEndpoint'),         v1: '/routing/1/calculateLongDistanceEVRoute/…', v2: '/maps/orbis/routing/v2/…'                         },
-            { label: t('ldevrIntro.tableRows.calculateEvRoute'),     v1: Y, v2: Y },
-            { label: t('ldevrIntro.tableRows.batchEvRoute'),         v1: Y, v2: N },
-            { label: t('ldevrIntro.tableRows.batteryConsumption'),   v1: Y, v2: Y },
-            { label: t('ldevrIntro.tableRows.vehicleModelId'),       v1: Y, v2: Y },
-            { label: t('ldevrIntro.tableRows.vehicleBrandLookup'),   v1: N, v2: Y },
-            { label: t('ldevrIntro.tableRows.connectorMatching'),    v1: Y, v2: Y },
-            { label: t('ldevrIntro.tableRows.oemEmspSupport'),       v1: N, v2: Y },
-            { label: t('ldevrIntro.tableRows.computeTollAmounts'),   v1: N, v2: Y },
-            { label: t('ldevrIntro.tableRows.chargingParksHours'),   v1: N, v2: Y },
-            { label: t('ldevrIntro.tableRows.weatherConsideration'), v1: N, v2: Y },
-            { label: t('ldevrIntro.tableRows.dynamicDataFreshness'), v1: N, v2: Y },
-          ];
-          const cell = (val, col) => {
-            const isTick = val === Y, isDash = val === N;
-            return (
-              <td key={col.label} style={{
-                padding: '9px 14px', fontSize: '0.8125rem', textAlign: 'left',
-                color: isTick ? col.color : isDash ? 'var(--border)' : 'var(--mid)',
-                fontWeight: isTick ? 700 : 400,
-                borderBottom: '1px solid var(--border)',
-              }}>
-                {val}
-              </td>
-            );
-          };
-          return (
-            <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid var(--border)' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
-                <thead>
-                  <tr style={{ background: 'var(--bg)' }}>
-                    <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: 'var(--muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border)', width: '44%' }} />
-                    {[V1, V2].map(v => (
-                      <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '28%' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
-                          <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--muted)' }}>{v.label}</span>
-                          <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row, i) => (
-                    <tr key={row.label} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
-                      <td style={{ padding: '9px 14px', fontWeight: 600, color: 'var(--black)', borderBottom: '1px solid var(--border)', fontSize: '0.8125rem' }}>{row.label}</td>
-                      {cell(row.v1, V1)}
-                      {cell(row.v2, V2)}
-                    </tr>
+        <h2 className="sh" id="versions">Versions</h2>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                <th style={{ padding: '10px 14px', textAlign: 'left', width: '34%', color: 'var(--muted)', fontWeight: 600, fontSize: '0.75rem' }}>Feature</th>
+                {[
+                  { label: 'V1', platform: 'TomTom Maps',   status: 'Production',      statusBg: 'rgba(34,197,94,0.1)',   statusColor: '#15803d', color: '#15803d' },
+                  { label: 'V2', platform: 'Orbis Maps v2', status: 'Public Preview',  statusBg: 'rgba(167,139,250,0.1)', statusColor: '#7c3aed', color: '#7c3aed' },
+                  { label: 'V3', platform: 'Orbis Maps v3', status: 'Private Preview', statusBg: 'rgba(251,146,60,0.1)',  statusColor: '#c2410c', color: '#c2410c' },
+                ].map(v => (
+                  <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '22%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 2 }}>{v.platform}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Calculate EV Route',        '✓', '✓', '✓'],
+                ['Batch EV Route',            '✓', '—', '—'],
+                ['Battery consumption model', '✓', '✓', '✓'],
+                ['Vehicle model ID',          '✓', '✓', '✓'],
+                ['Vehicle brand lookup',      '—', '✓', '—'],
+                ['Connector type matching',   '✓', '✓', '✓'],
+                ['OEM eMSP support',          '—', '✓', '—'],
+                ['Compute toll amounts',      '—', '✓', '✓'],
+                ['Charging park hours',       '—', '✓', '—'],
+                ['Weather consideration',     '—', '✓', '✓'],
+                ['Dynamic data freshness',    '—', '✓', '✓'],
+                ['Guidance instructions',     '—', '—', '✓'],
+              ].map(([feat, v1, v2, v3], i) => (
+                <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                  <td style={{ padding: '9px 14px', color: 'var(--black)', fontWeight: 500 }}>{feat}</td>
+                  {[v1, v2, v3].map((val, j) => (
+                    <td key={j} style={{ padding: '9px 14px', color: val === '✓' ? '#15803d' : 'var(--t-dis)', fontWeight: val === '✓' ? 700 : 400 }}>{val}</td>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          );
-        })()}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Ready to build */}

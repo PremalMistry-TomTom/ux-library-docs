@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
-import ExampleCard from '../components/ui/ExampleCard';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -266,6 +265,33 @@ function ThumbRoadShields() {
   );
 }
 
+function ThumbGuidanceInstructions() {
+  const { palette: C } = useIlloStyle();
+  const steps = [
+    { icon: '↑', label: 'DEPART',       street: 'Görlitzer Ufer',  dist: '0 m'   },
+    { icon: '→', label: 'TURN_RIGHT',   street: 'Spreeufer',       dist: '340 m' },
+    { icon: '↖', label: 'BEAR_LEFT',    street: 'Schillingbrücke', dist: '870 m' },
+    { icon: '⬤', label: 'ARRIVE',       street: 'Destination',     dist: '1.2 km'},
+  ];
+  return (
+    <div style={{ background: C.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ fontSize: '0.5rem', color: C.mid, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>Guidance · 4 instructions</div>
+      {steps.map((s, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 5px', borderRadius: 4, background: i === 1 ? `${C.accent}15` : 'transparent', border: i === 1 ? `1px solid ${C.accent}30` : '1px solid transparent' }}>
+          <div style={{ width: 18, height: 18, borderRadius: 4, background: i === 1 ? C.accent : `${C.border}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <span style={{ fontSize: '0.5625rem', color: i === 1 ? '#fff' : C.soft }}>{s.icon}</span>
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: '0.4375rem', color: C.mid, fontFamily: 'monospace', letterSpacing: '0.03em' }}>{s.label}</div>
+            <div style={{ fontSize: '0.5rem', color: C.navy, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{s.street}</div>
+          </div>
+          <span style={{ fontSize: '0.4375rem', color: C.soft, fontFamily: 'monospace', flexShrink: 0 }}>{s.dist}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function ThumbLaneGuidance() {
   const { palette: C } = useIlloStyle();
   const lanes = [
@@ -393,7 +419,11 @@ function EndpointCard({ Thumb, title, method, path, desc, available, tag, onNavi
       <div className="nav-card-body">
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
           <MethodBadge method={method} />
-          {tag && <span style={{ fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, background: tag === 'Preview' ? 'rgba(167,139,250,0.12)' : 'rgba(226,0,26,0.08)', color: tag === 'Preview' ? '#a78bfa' : '#e2001a', fontWeight: 600 }}>{tag}</span>}
+          {tag && <span style={{
+            fontSize: '0.625rem', padding: '1px 5px', borderRadius: 3, fontWeight: 600,
+            background: (tag === 'v2+' || tag === 'Preview') ? 'rgba(167,139,250,0.12)' : tag === 'v3' ? 'rgba(251,146,60,0.1)' : 'rgba(226,0,26,0.08)',
+            color:      (tag === 'v2+' || tag === 'Preview') ? '#a78bfa'               : tag === 'v3' ? '#fb923c'              : '#e2001a',
+          }}>{tag}</span>}
           {available === false && <span style={{ fontSize: '0.625rem', color: '#64748b', marginLeft: 'auto' }}>v1 only</span>}
         </div>
         <div style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)', marginBottom: 3 }}>{title}</div>
@@ -409,18 +439,44 @@ export default function RoutingAPIIntro({ onNavigate }) {
   const { t } = useTranslation('pages');
 
   const ENDPOINTS_V1 = [
-    { Thumb: makeThumb(IlloCalculateRoute, L_CalculateRoute, IcoCalculateRoute), title: t('routingIntro.endpointDescs.calculateRoute', { defaultValue: 'Calculate Route' }), method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',          desc: t('routingIntro.endpointDescs.calculateRoute'), pageId: 'routing-calculate-route', available: true },
-    { Thumb: makeThumb(IlloReachableRange, L_ReachableRange, IcoReachableRange), title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',     desc: t('routingIntro.endpointDescs.reachableRange'),  pageId: 'routing-reachable-range', available: true },
-    { Thumb: makeThumb(IlloBatchRouting,   L_BatchRouting, IcoBatchRouting),   title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                           desc: t('routingIntro.endpointDescs.batchRouting'),    pageId: 'routing-batch',           available: true },
-    { Thumb: makeThumb(IlloTurnInstructions, L_TurnInstructions, IcoTurnInstructions),title: 'Turn-by-Turn Instructions',method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',    desc: t('routingIntro.endpointDescs.instructions'),    pageId: 'routing-instructions',    available: true },
-    { Thumb: makeThumb(ThumbLaneGuidance,   L_LaneGuidance, IcoADAS),   title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',        desc: t('routingIntro.endpointDescs.laneGuidance'),    pageId: 'routing-lane-guidance',   available: true },
-    { Thumb: makeThumb(ThumbRoadShields,    L_RoadShields, IcoNavGuidance),    title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',  desc: t('routingIntro.endpointDescs.roadShields'),     pageId: 'routing-road-shields',    available: true },
-    { Thumb: makeThumb(ThumbComputeToll,    L_RoutingComputeToll, IcoCalculateRoute), title: 'Compute Toll Amounts',  method: 'GET',  path: '/routing/2/calculateRoute/…?computeTravelTimeFor=all', desc: t('routingIntro.endpointDescs.computeTollAmounts', { defaultValue: 'Calculate per-road-class toll costs along the route, with EV discount and currency breakdown.' }), pageId: 'routing-v2-compute-toll',    available: true, tag: 'v2+' },
-    { Thumb: makeThumb(IlloRoutingWeather,  L_RoutingWeather, IcoRoutingWeather), title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',   desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-v3-weather',         available: true, tag: 'v3' },
-    { Thumb: makeThumb(ThumbDataFreshness,  L_RoutingDataFreshness, IcoTrafficStats), title: 'Dynamic Data Freshness', method: 'GET', path: '/routing/2/calculateRoute/…?dateFreshness=true',     desc: t('routingIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control how fresh traffic, closure, and speed-limit data must be before the route is recalculated.' }), pageId: 'routing-v2-data-freshness', available: true, tag: 'v2+' },
+    { Thumb: makeThumb(IlloCalculateRoute,         L_CalculateRoute,         IcoCalculateRoute),   title: 'Calculate Route',           method: 'GET',  path: '/routing/1/calculateRoute/{locations}/json',            desc: t('routingIntro.endpointDescs.calculateRoute'),   pageId: 'routing-calculate-route',   available: true },
+    { Thumb: makeThumb(IlloReachableRange,         L_ReachableRange,         IcoReachableRange),   title: 'Reachable Range',           method: 'GET',  path: '/routing/1/calculateReachableRange/{origin}/json',       desc: t('routingIntro.endpointDescs.reachableRange'),   pageId: 'routing-reachable-range',   available: true },
+    { Thumb: makeThumb(IlloBatchRouting,           L_BatchRouting,           IcoBatchRouting),     title: 'Batch Routing',             method: 'POST', path: '/routing/1/batch/sync/json',                             desc: t('routingIntro.endpointDescs.batchRouting'),     pageId: 'routing-batch',             available: true },
+    { Thumb: makeThumb(IlloTurnInstructions,       L_TurnInstructions,       IcoTurnInstructions), title: 'Turn-by-Turn Instructions', method: 'GET',  path: '/routing/1/calculateRoute/…?instructionsType=text',      desc: t('routingIntro.endpointDescs.instructions'),     pageId: 'routing-instructions',      available: true },
+    { Thumb: makeThumb(ThumbGuidanceInstructions,  ThumbGuidanceInstructions, IcoNavGuidance),     title: 'Guidance Instructions',     method: 'GET',  path: '/maps/orbis/routing/v2/…?instructionsType=text',         desc: 'Structured per-maneuver guidance for v2 and v3 routes. Returns junction exit numbers, signpost text, and lane arrays alongside route geometry.', pageId: 'routing-v2-guidance', available: true, tag: 'v2+' },
+    { Thumb: makeThumb(ThumbLaneGuidance,          L_LaneGuidance,           IcoADAS),             title: 'Lane Guidance',             method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=lanes',          desc: t('routingIntro.endpointDescs.laneGuidance'),     pageId: 'routing-lane-guidance',     available: true },
+    { Thumb: makeThumb(ThumbRoadShields,           L_RoadShields,            IcoNavGuidance),      title: 'Road Shield Notes',         method: 'GET',  path: '/routing/1/calculateRoute/…?sectionType=roadShields',    desc: t('routingIntro.endpointDescs.roadShields'),      pageId: 'routing-road-shields',      available: true },
+    { Thumb: makeThumb(ThumbComputeToll,           L_RoutingComputeToll,     IcoCalculateRoute),   title: 'Compute Toll Amounts',      method: 'GET',  path: '/routing/2/calculateRoute/…?computeTravelTimeFor=all',   desc: t('routingIntro.endpointDescs.computeTollAmounts', { defaultValue: 'Calculate per-road-class toll costs along the route, with EV discount and currency breakdown.' }), pageId: 'routing-v2-compute-toll',    available: true, tag: 'v2+' },
+    { Thumb: makeThumb(ThumbDataFreshness,         L_RoutingDataFreshness,   IcoTrafficStats),     title: 'Dynamic Data Freshness',    method: 'GET',  path: '/routing/2/calculateRoute/…?dateFreshness=true',         desc: t('routingIntro.endpointDescs.dynamicDataFreshness', { defaultValue: 'Control how fresh traffic, closure, and speed-limit data must be before the route is recalculated.' }), pageId: 'routing-v2-data-freshness', available: true, tag: 'v2+' },
+    { Thumb: makeThumb(IlloRoutingWeather,         L_RoutingWeather,         IcoRoutingWeather),   title: 'Weather Consideration',     method: 'GET',  path: '/maps/orbis/routing/v3/…?weatherConsideration=true',     desc: t('routingIntro.endpointDescs.weatherConsideration', { defaultValue: 'Incorporate real-time weather data to adjust route timing, ETA, and safety warnings.' }), pageId: 'routing-v3-weather', available: true, tag: 'v3' },
   ];
 
-  const endpoints = ENDPOINTS_V1;
+  const endpoints = ENDPOINTS_V1.filter(ep => ep.pageId !== 'routing-v3-weather');
+
+  /* ─── Shared text-card renderer ─────────────────────────────────────────── */
+  const TextCard = ({ label, title, desc, pageId, productId, tag, method }) => (
+    <button
+      className="text-card"
+      onClick={() => onNavigate?.(pageId, productId || 'routing-api')}
+      style={{ display: 'flex', flexDirection: 'column', gap: 0 }}
+    >
+      {(label || method || tag) && (
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 8 }}>
+          {label && <span style={{ fontSize: '0.6rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</span>}
+          {method && <MethodBadge method={method} />}
+          {tag && (
+            <span style={{
+              fontSize: '0.6rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3,
+              background: (tag === 'v2+' || tag === 'Preview') ? 'rgba(167,139,250,0.12)' : tag === 'v3' ? 'rgba(251,146,60,0.1)' : 'rgba(34,197,94,0.1)',
+              color:      (tag === 'v2+' || tag === 'Preview') ? '#a78bfa'               : tag === 'v3' ? '#fb923c'              : '#15803d',
+            }}>{tag}</span>
+          )}
+        </div>
+      )}
+      <div style={{ fontSize: '0.9375rem', fontWeight: 700, color: 'var(--black)', marginBottom: 4 }}>{title}</div>
+      <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.55, flex: 1 }}>{desc}</div>
+    </button>
+  );
 
   return (
     <div className="page">
@@ -433,96 +489,55 @@ export default function RoutingAPIIntro({ onNavigate }) {
         {t('routingIntro.quickAnswer')}
       </p>
 
-      {/* Endpoint grid */}
+      <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+        <button
+          style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
+          onClick={() => onNavigate?.('routing-quickstart')}
+        >
+          Quick Start
+        </button>
+        <button className="page-action-btn" onClick={() => onNavigate?.('routing-calculate-route')}>
+          View endpoints
+        </button>
+      </div>
+
+      {/* ── All endpoints ─────────────────────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="r-endpoints">{t('routingIntro.endpointsTitle')}</h2>
-        <p className="quick-answer" style={{ marginBottom: 20 }}>
+        <p className="body" style={{ marginBottom: 20 }}>
           {t('routingIntro.endpointsSubtitle')}
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 14 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 12 }}>
           {endpoints.map(ep => (
-            <EndpointCard key={ep.pageId} {...ep} onNavigate={onNavigate} />
+            <EndpointCard
+              key={ep.pageId}
+              Thumb={ep.Thumb}
+              method={ep.method}
+              tag={ep.tag}
+              title={ep.title}
+              desc={ep.desc}
+              pageId={ep.pageId}
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
       </div>
 
-      {/* See demos */}
+      {/* ── Guides ────────────────────────────────────────────────────────── */}
       <div className="zone">
-        <h2 className="sh" id="r-examples">{t('routingIntro.demosTitle')}</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
-          {t('routingIntro.demosIntro').split(t('routingIntro.demosIntroLinkText'))[0]}
-          <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
-            {t('routingIntro.demosIntroLinkText')}
-          </a>
-          {t('routingIntro.demosIntro').split(t('routingIntro.demosIntroLinkText'))[1]}
-        </p>
-        <div className="examples-grid">
+        <h2 className="sh" id="r-guides">Guides</h2>
 
-          <ExampleCard
-            href="https://docs.tomtom.com/maps-sdk-js/examples/reachable-ranges"
-            title={t('routingIntro.exampleTitles.reachableRanges')}
-            description={t('routingIntro.exampleDescs.reachableRanges')}
-            tags={[
-              { label: t('routingIntro.tagLabels.playground'), variant: 'playground' },
-              { label: t('routingIntro.tagLabels.routing'), variant: 'feature' },
-              { label: t('routingIntro.tagLabels.web'), variant: 'platform' },
-            ]}
-            imgSrc="/example-thumbs/reachable-ranges.png"
-            snippet={`// Calculate time-based reachable range
-const ranges = await calculateReachableRanges({
-  origins: [{ lat: 52.3086, lon: 4.7641 }],
-  // Switch between 'timeMinutes', 'fuelBudgetInLiters',
-  // or 'energyBudgetInkWh' for EV range rings
-  budgets: [
-    { budgetType: 'timeMinutes', budget: 10 },
-    { budgetType: 'timeMinutes', budget: 20 },
-    { budgetType: 'timeMinutes', budget: 30 },
-  ],
-  vehicle: {
-    routeType: 'fastest',
-    travelMode: 'car',
-  },
-});
-// Render polygons with GeometriesModule
-geometriesModule.showGeometries(
-  ranges.map(r => reachableRangeGeometryConfig(r))
-);`}
-          />
-
-          <ExampleCard
-            href="https://docs.tomtom.com/maps-sdk-js/examples/route"
-            title={t('routingIntro.exampleTitles.routeWithWaypoints')}
-            description={t('routingIntro.exampleDescs.routeWithWaypoints')}
-            tags={[
-              { label: t('routingIntro.tagLabels.gettingStarted'), variant: 'start' },
-              { label: t('routingIntro.tagLabels.routing'), variant: 'feature' },
-              { label: t('routingIntro.tagLabels.web'), variant: 'platform' },
-            ]}
-            imgSrc="/example-thumbs/route.png"
-            snippet={`// Calculate route with intermediate waypoints
-const route = await calculateRoute({
-  locations: [
-    { lat: 48.8566, lon: 2.3522  },  // Paris
-    { lat: 50.8503, lon: 4.3517  },  // Brussels (stop)
-    { lat: 51.2194, lon: 4.4025  },  // Antwerp (stop)
-    { lat: 52.3676, lon: 4.9041  },  // Amsterdam
-  ],
-  // Route options
-  routeType:  'fastest',
-  travelMode: 'car',
-  traffic:    true,
-  // Optional: avoid tolls, ferries, or motorways
-  avoid: ['unpavedRoads'],
-});
-// Stats are in the summary object
-const { travelTimeInSeconds, lengthInMeters } =
-  route.routes[0].summary;`}
-          />
-
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+          <TextCard label="Guide"  title="EV Route Planning"          desc="Configure multi-stop EV routes with automatic charging stop insertion and battery management." pageId="routing-ev-overview" />
+          <TextCard label="Guide"  title="Consumption Models"         desc="Model combustion and electric consumption per vehicle type. Required for accurate ETA and energy estimates." pageId="routing-ev-consumption" />
+          <TextCard label="Guide"  title="Vehicle Profiles"           desc="Map vehicle types, connector standards, and charging speeds to your fleet or end-user vehicles." pageId="routing-ev-connectors" />
+          <TextCard label="How-to" title="Route Reconstruction"       desc="Reconstruct a canonical route from a raw GPS trace or ordered set of visited coordinates." pageId="routing-reconstruction" />
+          <TextCard label="How-to" title="Avoiding Areas"             desc="Define polygon exclusion zones and configure road-type avoidance per request." pageId="routing-avoid-areas" />
+          <TextCard label="How-to" title="Vignettes & Toll Systems"   desc="Control how the API handles country-specific vignettes, toll roads, and ferry costs." pageId="routing-tolls" />
         </div>
       </div>
 
-      {/* Version comparison table */}
+      {/* ── Versions & Platforms ──────────────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="r-platforms">{t('routingIntro.versionsTitle')}</h2>
         {(() => {
@@ -567,8 +582,8 @@ const { travelTimeInSeconds, lengthInMeters } =
                     <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: 'var(--muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border)', width: '34%' }} />
                     {[V1, V2, V3].map(v => (
                       <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '22%' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
-                          <span style={{ fontSize: '0.6875rem', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--muted)' }}>{v.label}</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color, letterSpacing: '0.01em' }}>{v.version.toUpperCase()}</span>
                           <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
                         </div>
                       </th>
@@ -589,29 +604,39 @@ const { travelTimeInSeconds, lengthInMeters } =
             </div>
           );
         })()}
-      </div>
 
-      {/* Getting started */}
-      <div className="zone">
-        <h2 className="sh" id="r-start">{t('routingIntro.readyTitle')}</h2>
-        <p className="body" style={{ marginBottom: 16 }}>
-          {t('routingIntro.readyBody')}
-        </p>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button
-            className="page-action-btn"
-            style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
-            onClick={() => onNavigate?.('routing-first-route')}
-          >
-            {t('routingIntro.ctaQuickStart')}
-          </button>
-          <button className="page-action-btn" onClick={() => onNavigate?.('routing-calculate-route')}>
-            {t('routingIntro.ctaCalculateRoute')}
-          </button>
+        {/* Platform cards — directly below the table */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 20 }}>
+          {[
+            { badge: 'v1', badgeColor: '#15803d', badgeBg: 'rgba(34,197,94,0.12)',  title: 'Routing API v1',       desc: 'The production version. Global coverage, full parameter support, GET or POST.', pageId: 'routing-tomtom-maps' },
+            { badge: 'v2 & v3', badgeColor: '#7c3aed', badgeBg: 'rgba(168,85,247,0.12)', title: 'Routing API v2 & v3', desc: 'Next-generation versions (preview). Enhanced lane data and attribute-based responses.', pageId: 'routing-orbis-maps' },
+            { badge: 'v1 → v2', badgeColor: 'var(--mid)', badgeBg: 'var(--s2)', title: 'Migration Guide', desc: 'Step-by-step guide for moving from v1 to v2. URL, auth, and request format changes.', pageId: 'routing-migration' },
+          ].map(card => (
+            <button key={card.pageId} className="text-card" onClick={() => onNavigate?.(card.pageId, 'routing-api')}>
+              <div style={{ marginBottom: 10 }}>
+                <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: card.badgeBg, color: card.badgeColor, letterSpacing: '0.04em' }}>
+                  {card.badge}
+                </span>
+              </div>
+              <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{card.title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{card.desc}</div>
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Related standalone APIs */}
+      {/* ── Reference ─────────────────────────────────────────────────────── */}
+      <div className="zone">
+        <h2 className="sh" id="r-reference">Reference</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+          <TextCard label="Reference" title="Parameter Index"  desc="Every query and body parameter across v1, v2, and v3 in one searchable table." pageId="routing-params-ref" />
+          <TextCard label="Reference" title="Response Schema"  desc="Complete field reference for the route, leg, instruction, and section objects." pageId="routing-response-ref" />
+          <TextCard label="Reference" title="Error Codes"      desc="HTTP status codes and detailedError values returned by all routing endpoints." pageId="routing-error-codes" />
+          <TextCard label="Reference" title="Market Coverage"  desc="Countries and regions covered, including traffic model availability by version." pageId="routing-coverage" />
+        </div>
+      </div>
+
+      {/* ── Related standalone APIs ───────────────────────────────────────── */}
       <div className="zone">
         <h2 className="sh" id="r-related">{t('routingIntro.relatedTitle')}</h2>
         <p className="body" style={{ marginBottom: 16 }}>

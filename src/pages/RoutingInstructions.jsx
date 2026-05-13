@@ -1,6 +1,7 @@
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import VersionTabBar from '../components/ui/VersionTabBar';
 
 /* ─── Parameter data ─────────────────────────────────────────────────────────── */
 
@@ -171,7 +172,6 @@ export default function RoutingInstructions({ onNavigate }) {
       id: 'api-instr-request',
       heading: 'Request parameters',
       method: 'GET',
-      demoId: 'turn-by-turn',
       params: PARAMS_REQUEST,
       note: 'Add these parameters to any calculateRoute request. instructionsType activates guidance; all other guidance parameters are ignored if it is omitted.',
       code: CODE_REQUEST,
@@ -217,9 +217,10 @@ export default function RoutingInstructions({ onNavigate }) {
 
   return (
     <div className="page page--wide">
-      <div className="page-header">
+      <div className="page-header page-header--with-tabs">
         <h1>Turn-by-Turn Instructions</h1>
         <PageActions />
+        <VersionTabBar versions={['v1']} activeTab="v1" onTabChange={() => {}} />
       </div>
 
       <p className="quick-answer">

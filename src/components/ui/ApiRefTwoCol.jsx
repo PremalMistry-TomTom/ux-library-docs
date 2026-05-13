@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import PageActions from './PageActions';
-
-const TryItEmbed = lazy(() => import('../demos/TryItEmbed'));
+import VersionTabBar from './VersionTabBar';
 import hljs from 'highlight.js/lib/core';
 import bash from 'highlight.js/lib/languages/bash';
 import json from 'highlight.js/lib/languages/json';
@@ -499,38 +498,37 @@ export default function ApiRefTwoCol({ sections, panelLabel = 'Example', version
     </div>
   );
 
-  /* Pull the demoId from the first section that declares one */
-  const pageDemoId = sections.find(s => s.demoId)?.demoId;
-
-  const demoBlock = pageDemoId ? (
-    <Suspense fallback={<div style={{ height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', color: 'var(--muted)' }}>Loading demo…</div>}>
-      <TryItEmbed demoId={pageDemoId} />
-    </Suspense>
-  ) : null;
+  /* Parse version prop → sorted array, e.g. "v1,v2" → ['v1','v2'] */
+  const versionList = version
+    ? String(version).split(',').map(v => v.trim()).filter(v => ['v1','v2','v3'].includes(v))
+    : null;
 
   /* When a title is provided, wrap in a full page layout */
   if (title) {
+    const hasVersions = versionList && versionList.length > 0;
     return (
       <div className="page page--wide">
-        <div className="page-header">
+        <div className={`page-header${hasVersions ? ' page-header--with-tabs' : ''}`}>
           <h1>{title}</h1>
           <PageActions />
+          {hasVersions && (
+            <VersionTabBar
+              versions={versionList}
+              activeTab={versionList[0]}
+              onTabChange={() => {}}
+            />
+          )}
         </div>
         {description && (
           <p className="quick-answer">{description}</p>
         )}
         {topBanner}
 
-        {/* ── Try it live — sits under the summary text, full page width ── */}
-        {demoBlock}
-
         {sectionsContent}
       </div>
     );
   }
 
-  /* No title — custom-layout pages (e.g. routing) own the page shell themselves.
-     Render the demo inline before the sections so it still appears under the
-     page's summary paragraph. */
-  return demoBlock ? <>{demoBlock}{sectionsContent}</> : sectionsContent;
+  /* No title — custom-layout pages own the page shell themselves. */
+  return sectionsContent;
 }

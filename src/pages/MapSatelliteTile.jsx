@@ -86,13 +86,11 @@ const map = L.map('map', {
   layers: [satelliteLayer, labelsLayer],
 });`;
 
-/* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function MapSatelliteTile({ onNavigate }) {
+/* ─── V1 Content (named export for Unified wrapper) ─────────────────────────── */
+export function MapSatelliteTileV1Content({ onNavigate }) {
   return (
     <ApiRefTwoCol
-      title="Satellite Tile"
       description="Retrieve aerial and satellite imagery tiles in JPEG format at 256 × 256 pixels. Satellite tiles are available from zoom 0 to a maximum of zoom 19. Combine with a labels-only raster layer for a hybrid satellite view."
-      version="v1"
       sections={[
         {
           id: 'request',

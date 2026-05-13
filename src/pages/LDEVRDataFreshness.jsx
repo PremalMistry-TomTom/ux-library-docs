@@ -119,7 +119,7 @@ export default function LDEVRDataFreshness() {
     <ApiRefTwoCol
       title="Dynamic Data Freshness"
       description="Report how current the traffic incident data was at the time of route calculation. Set reportDynamicDataFreshness=UseFreshIncidents to receive a Unix timestamp in the response — routes should be recalculated when significant time has passed since data receipt."
-      version="v2-private"
+      version="v2"
       sections={sections}
     />
   );

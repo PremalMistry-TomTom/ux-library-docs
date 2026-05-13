@@ -1,5 +1,6 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
 import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+import PageActions from '../components/ui/PageActions';
 
 const PUBLIC_PREVIEW_NOTE = (
   <>
@@ -116,7 +117,7 @@ const SUPPORTED_NOTE = (
 );
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV3ComputeToll() {
+export function RoutingV3ComputeTollContent() {
   const sections = [
     {
       id: 'routing-v3-toll-get',
@@ -145,12 +146,24 @@ export default function RoutingV3ComputeToll() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Compute Toll Amounts"
-      description="Calculate total toll costs along a Routing API v3 route. Available in both GET and POST request formats. Returns a totalTollAmounts array with per-currency cost breakdowns, accounting for ETC transponder availability."
-      version="v3-private"
-      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <p className="quick-answer">Calculate total toll costs along a Routing API v3 route. Available in both GET and POST request formats. Returns a totalTollAmounts array with per-currency cost breakdowns, accounting for ETC transponder availability.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV3ComputeToll() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Compute Toll Amounts</h1>
+        <PageActions />
+      </div>
+      <RoutingV3ComputeTollContent />
+    </div>
   );
 }

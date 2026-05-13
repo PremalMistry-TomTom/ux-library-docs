@@ -207,6 +207,555 @@ export const TOC_MAP = {
     { id: 'dt-naming',   label: 'Naming principles' },
     { id: 'dt-themes',   label: 'Themes & modes' },
   ],
+
+  /* ── Routing API ──────────────────────────────────────────────────────── */
+  'routing-api-intro': [
+    { id: 'r-endpoints', label: 'All endpoints' },
+    { id: 'r-guides',    label: 'Guides' },
+    { id: 'r-platforms', label: 'Versions & Platforms' },
+    { id: 'r-reference', label: 'Reference' },
+    { id: 'r-related',   label: 'Related APIs' },
+  ],
+  'routing-quickstart': [
+    { id: 'authentication',     label: 'Authentication' },
+    { id: 'first-route',        label: 'Your first route' },
+    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'routing-ev-overview': [
+    { id: 'how-it-works',    label: 'How EV routing works' },
+    { id: 'key-params',      label: 'Key parameters' },
+    { id: 'code-example',    label: 'Code example' },
+    { id: 'version-support', label: 'Version support' },
+  ],
+  'routing-ev-consumption': [
+    { id: 'electric-model',   label: 'Electric consumption model' },
+    { id: 'combustion-model', label: 'Combustion model' },
+  ],
+  'routing-ev-connectors': [
+    { id: 'vehicle-dimensions', label: 'Vehicle dimensions' },
+    { id: 'battery-params',     label: 'Battery parameters' },
+    { id: 'syntax-versions',    label: 'v1/v2 vs v3 syntax' },
+  ],
+  'routing-reconstruction': [
+    { id: 'how-it-works', label: 'How reconstruction works' },
+  ],
+  'routing-avoid-areas': [
+    { id: 'avoid-areas',        label: 'avoidAreas parameter' },
+    { id: 'avoid-query-params', label: 'Query-param avoids' },
+  ],
+  'routing-tolls': [
+    { id: 'toll-avoidance',    label: 'Toll road avoidance' },
+    { id: 'vignette-coverage', label: 'Vignette coverage' },
+  ],
+  'routing-tomtom-maps': [
+    { id: 'overview',  label: 'Platform overview' },
+    { id: 'geocoding', label: 'Geocoding compatibility' },
+  ],
+  'routing-orbis-maps': [
+    { id: 'overview', label: 'Platform overview' },
+  ],
+  'routing-migration': [
+    { id: 'key-changes',     label: 'Key changes' },
+    { id: 'code-comparison', label: 'Code comparison' },
+  ],
+  'routing-params-ref': [
+    { id: 'all-params', label: 'Common parameters (A–Z)' },
+  ],
+  'routing-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'routing-error-codes': [
+    { id: 'error-table', label: 'Error reference' },
+  ],
+  'routing-coverage': [
+    { id: 'definitions',    label: 'Definitions' },
+    { id: 'coverage-legend', label: 'Coverage columns' },
+    { id: 'americas',       label: 'Americas' },
+    { id: 'asia-pacific',   label: 'Asia Pacific' },
+    { id: 'europe',         label: 'Europe' },
+    { id: 'mea',            label: 'Middle East & Africa' },
+  ],
+
+  /* ── LDEVR ──────────────────────────────────────────────────────────────── */
+  'ldevr-intro': [
+    { id: 'ldevr-endpoints', label: 'Endpoints' },
+    { id: 'ldevr-examples',  label: 'Guides' },
+    { id: 'versions',        label: 'Versions' },
+    { id: 'ldevr-base',      label: 'Base URL' },
+  ],
+  'ldevr-quickstart': [
+    { id: 'authentication',    label: 'Authentication' },
+    { id: 'first-route',       label: 'Your first EV route' },
+    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'ldevr-platform': [
+    { id: 'versions', label: 'All versions' },
+  ],
+  'ldevr-tomtom-maps': [
+    { id: 'overview',    label: 'Overview' },
+    { id: 'endpoints',   label: 'Endpoints' },
+    { id: 'base-url',    label: 'Base URL' },
+  ],
+  'ldevr-orbis-v2': [
+    { id: 'overview',    label: 'Overview' },
+    { id: 'new-params',  label: 'New parameters' },
+    { id: 'base-url',    label: 'Base URL' },
+  ],
+  'ldevr-orbis-v3': [
+    { id: 'overview',    label: 'Overview' },
+    { id: 'new-params',  label: 'New parameters' },
+    { id: 'base-url',    label: 'Base URL' },
+  ],
+  'ldevr-migration': [
+    { id: 'v1-to-v2',        label: 'v1 → v2' },
+    { id: 'v2-to-v3',        label: 'v2 → v3' },
+    { id: 'code-comparison', label: 'Code comparison' },
+  ],
+  'ldevr-params-ref': [
+    { id: 'all-params', label: 'Parameters (A–Z)' },
+  ],
+  'ldevr-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'ldevr-errors': [
+    { id: 'error-table', label: 'Error reference' },
+    { id: 'error-format', label: 'Error format' },
+  ],
+  'ldevr-coverage': [
+    { id: 'regional-coverage', label: 'Regional coverage' },
+  ],
+  'ldevr-battery-model': [
+    { id: 'lbm-consumption',  label: 'Speed consumption curve' },
+    { id: 'lbm-battery-curve',label: 'Battery charge curve' },
+    { id: 'lbm-efficiency',   label: 'Efficiency parameters' },
+    { id: 'lbm-aux',          label: 'Auxiliary power' },
+  ],
+  'ldevr-charging-stops': [
+    { id: 'lcs-strategy',    label: 'Charging stop strategy' },
+    { id: 'lcs-thresholds',  label: 'SoC thresholds' },
+    { id: 'lcs-manual',      label: 'Manual waypoints' },
+    { id: 'lcs-preferences', label: 'Charging preferences' },
+  ],
+  'ldevr-connectors': [
+    { id: 'lco-structure',  label: 'Connector object' },
+    { id: 'lco-power',      label: 'Effective power' },
+    { id: 'lco-current',    label: 'Current types' },
+    { id: 'lco-plug-types', label: 'Plug type reference' },
+  ],
+
+  /* ── Search API ─────────────────────────────────────────────────────────── */
+  'search-api-intro': [
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'guides',    label: 'Guides' },
+    { id: 'versions',  label: 'Versions' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'search-quickstart': [
+    { id: 'authentication',    label: 'Authentication' },
+    { id: 'first-search',      label: 'Your first search' },
+    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'search-guides': [
+    { id: 'guides', label: 'All guides' },
+  ],
+  'search-platform': [
+    { id: 'versions', label: 'All versions' },
+  ],
+  'search-tomtom-maps': [
+    { id: 'overview',   label: 'Overview' },
+    { id: 'endpoints',  label: 'Endpoints' },
+    { id: 'base-url',   label: 'Base URL' },
+  ],
+  'search-orbis-maps': [
+    { id: 'overview',   label: 'Overview' },
+    { id: 'endpoints',  label: 'Endpoints' },
+    { id: 'base-url',   label: 'Base URL' },
+  ],
+  'search-migration': [
+    { id: 'key-changes',      label: 'Key changes' },
+    { id: 'code-comparison',  label: 'Code comparison' },
+    { id: 'removed',          label: 'Services not available' },
+  ],
+  'search-params-ref': [
+    { id: 'all-params', label: 'Parameters (A–Z)' },
+  ],
+  'search-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'search-error-codes': [
+    { id: 'error-table',  label: 'Error reference' },
+    { id: 'error-format', label: 'Error format' },
+  ],
+  'search-coverage': [
+    { id: 'regional-coverage', label: 'Regional coverage' },
+  ],
+  'search-guide-typeahead': [
+    { id: 'overview',        label: 'Overview' },
+    { id: 'implementation',  label: 'Implementation' },
+    { id: 'example',         label: 'Example' },
+  ],
+  'search-guide-ev': [
+    { id: 'overview',       label: 'Overview' },
+    { id: 'category-set',   label: 'Category set 7309' },
+    { id: 'filtering',      label: 'Connector filtering' },
+    { id: 'example',        label: 'Example' },
+  ],
+  'search-guide-fuzzy-tips': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'params',    label: 'Key parameters' },
+    { id: 'example',   label: 'Example' },
+  ],
+  'search-geometry': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'search-place-by-id': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'search-poi-categories': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'search-additional-data': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'poi-details': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'poi-photos': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+    { id: 'usage',    label: 'Usage' },
+  ],
+
+  /* ── Geocoding API ──────────────────────────────────────────────────────── */
+  'geocoding-api-intro': [
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'guides',    label: 'Guides' },
+    { id: 'versions',  label: 'Versions' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'geocoding-quickstart': [
+    { id: 'authentication',    label: 'Authentication' },
+    { id: 'first-geocode',     label: 'Your first geocode' },
+    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'geocoding-guides': [
+    { id: 'guides', label: 'All guides' },
+  ],
+  'geocoding-platform': [
+    { id: 'versions', label: 'All versions' },
+  ],
+  'geocoding-tomtom-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'geocoding-orbis-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'geocoding-migration': [
+    { id: 'v1-migration',    label: 'TomTom Maps → v1' },
+    { id: 'v2-migration',    label: 'TomTom Maps → v2' },
+    { id: 'code-comparison', label: 'Code comparison' },
+  ],
+  'geocoding-params-ref': [
+    { id: 'all-params', label: 'Parameters (A–Z)' },
+  ],
+  'geocoding-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'geocoding-error-codes': [
+    { id: 'error-table',  label: 'Error reference' },
+    { id: 'error-format', label: 'Error format' },
+  ],
+  'geocoding-coverage': [
+    { id: 'regional-coverage', label: 'Regional coverage' },
+  ],
+  'geocoding-guide-accuracy': [
+    { id: 'overview',       label: 'Overview' },
+    { id: 'match-type',     label: 'Match confidence' },
+    { id: 'params',         label: 'Accuracy parameters' },
+    { id: 'example',        label: 'Example' },
+  ],
+  'geocoding-guide-batch': [
+    { id: 'overview',    label: 'Overview' },
+    { id: 'request',     label: 'Request format' },
+    { id: 'response',    label: 'Response format' },
+    { id: 'example',     label: 'Example' },
+  ],
+  'geocoding-guide-structured': [
+    { id: 'overview',       label: 'Overview' },
+    { id: 'when-to-use',    label: 'When to use' },
+    { id: 'params',         label: 'Address fields' },
+    { id: 'example',        label: 'Example' },
+  ],
+  'geocode': [
+    { id: 'geocode',          label: 'Geocode' },
+    { id: 'structured-geocode', label: 'Structured geocode' },
+  ],
+  'reverse-geocode': [
+    { id: 'reverse-geocode',  label: 'Reverse geocode' },
+    { id: 'cross-street-lookup', label: 'Cross street lookup' },
+  ],
+  'structured-geocode': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'cross-street-lookup': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+
+  /* ── Traffic API ────────────────────────────────────────────────────────── */
+  'traffic-api-intro': [
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'guides',    label: 'Guides' },
+    { id: 'versions',  label: 'Versions' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'traffic-quickstart': [
+    { id: 'authentication',    label: 'Authentication' },
+    { id: 'first-request',     label: 'Your first request' },
+    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'traffic-guides': [
+    { id: 'guides', label: 'All guides' },
+  ],
+  'traffic-platform': [
+    { id: 'versions', label: 'All versions' },
+  ],
+  'traffic-tomtom-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'traffic-orbis-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'traffic-migration': [
+    { id: 'general-changes',  label: 'General changes' },
+    { id: 'flow-vector-tiles', label: 'Flow vector tiles' },
+    { id: 'incident-details', label: 'Incident details' },
+    { id: 'code-comparison',  label: 'Code comparison' },
+  ],
+  'traffic-params-ref': [
+    { id: 'all-params', label: 'Parameters (A–Z)' },
+  ],
+  'traffic-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'traffic-error-codes': [
+    { id: 'error-table',  label: 'Error reference' },
+    { id: 'error-format', label: 'Error format' },
+  ],
+  'traffic-coverage': [
+    { id: 'regional-coverage', label: 'Regional coverage' },
+  ],
+  'traffic-guide-tiles': [
+    { id: 'overview',     label: 'Overview' },
+    { id: 'tile-url',     label: 'Tile URL structure' },
+    { id: 'styles',       label: 'Available styles' },
+    { id: 'example',      label: 'Example' },
+  ],
+  'traffic-guide-flow': [
+    { id: 'overview',     label: 'Overview' },
+    { id: 'flow-data',    label: 'Flow data fields' },
+    { id: 'thresholds',   label: 'Speed thresholds' },
+    { id: 'example',      label: 'Example' },
+  ],
+  'traffic-guide-model': [
+    { id: 'overview',     label: 'Overview' },
+    { id: 'model-id',     label: 'Model ID endpoint' },
+    { id: 'use-cases',    label: 'Use cases' },
+    { id: 'example',      label: 'Example' },
+  ],
+  'traffic-raster-flow': [
+    { id: 'raster-flow-request',  label: 'Request' },
+    { id: 'raster-flow-response', label: 'Response' },
+    { id: 'raster-flow-errors',   label: 'Error codes' },
+  ],
+  'traffic-vector-flow': [
+    { id: 'vector-flow-request',      label: 'Request' },
+    { id: 'vector-flow-default-tags', label: 'Default tags' },
+    { id: 'vector-flow-ondemand-tags',label: 'On-demand tags' },
+  ],
+  'traffic-raster-incident': [
+    { id: 'raster-incident-request',  label: 'Request' },
+    { id: 'raster-incident-response', label: 'Response' },
+    { id: 'raster-incident-errors',   label: 'Error codes' },
+  ],
+  'traffic-vector-incident': [
+    { id: 'vector-incident-request',    label: 'Request' },
+    { id: 'vector-incident-flow-tags',  label: 'Flow tags' },
+    { id: 'vector-incident-ondemand-tags', label: 'On-demand tags' },
+  ],
+  'traffic-flow-tiles': [
+    { id: 'raster-flow-tiles',  label: 'Raster flow tiles' },
+    { id: 'vector-flow-tiles',  label: 'Vector flow tiles' },
+    { id: 'incident-tiles',     label: 'Incident tiles' },
+    { id: 'tile-response',      label: 'Tile response' },
+  ],
+  'traffic-flow-segment': [
+    { id: 'request',  label: 'Request' },
+    { id: 'response', label: 'Response' },
+  ],
+  'traffic-model-id': [
+    { id: 'request',       label: 'Request' },
+    { id: 'response',      label: 'Response' },
+    { id: 'cache-pattern', label: 'Cache pattern' },
+  ],
+  'traffic-incident-details': [
+    { id: 'incident-details',          label: 'Incident details' },
+    { id: 'incident-details-response', label: 'Response' },
+    { id: 'incident-viewport',         label: 'Incident viewport' },
+  ],
+
+  /* ── Map Display API ────────────────────────────────────────────────────── */
+  'map-display-api-intro': [
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'guides',    label: 'Guides' },
+    { id: 'versions',  label: 'Versions' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'map-quickstart': [
+    { id: 'authentication',    label: 'Authentication' },
+    { id: 'first-tile',        label: 'Your first tile' },
+    { id: 'tile-response',     label: 'Understanding the tile system' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'map-guides': [
+    { id: 'guides', label: 'All guides' },
+  ],
+  'map-platform': [
+    { id: 'versions', label: 'All versions' },
+  ],
+  'map-tomtom-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'map-orbis-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'map-migration': [
+    { id: 'general-changes', label: 'General changes' },
+    { id: 'vector-tile',     label: 'Vector tile' },
+    { id: 'raster-tile',     label: 'Raster tile' },
+    { id: 'code-comparison', label: 'Code comparison' },
+  ],
+  'map-params-ref': [
+    { id: 'all-params', label: 'Parameters (A–Z)' },
+  ],
+  'map-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'map-error-codes': [
+    { id: 'error-table',  label: 'Error reference' },
+    { id: 'error-format', label: 'Error format' },
+  ],
+  'map-coverage': [
+    { id: 'regional-coverage', label: 'Regional coverage' },
+  ],
+  'map-guide-zoom': [
+    { id: 'overview',      label: 'Overview' },
+    { id: 'tile-grid',     label: 'Tile grid (XYZ)' },
+    { id: 'zoom-levels',   label: 'Zoom 0–22' },
+    { id: 'resolution',    label: 'Resolution' },
+  ],
+  'map-guide-styles': [
+    { id: 'overview',      label: 'Overview' },
+    { id: 'style-json',    label: 'Style JSON' },
+    { id: 'customisation', label: 'Customising layers' },
+    { id: 'example',       label: 'Example' },
+  ],
+  'map-guide-hybrid': [
+    { id: 'overview',    label: 'Overview' },
+    { id: 'layers',      label: 'Layer stack' },
+    { id: 'example',     label: 'Example' },
+  ],
+
+  /* ── EV Charging API ────────────────────────────────────────────────────── */
+  'ev-charging-api-intro': [
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'guides',    label: 'Guides' },
+    { id: 'versions',  label: 'Versions' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'ev-quickstart': [
+    { id: 'authentication',    label: 'Authentication' },
+    { id: 'first-search',      label: 'Your first station search' },
+    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'version-comparison', label: 'Which version?' },
+  ],
+  'ev-charging-guides': [
+    { id: 'guides', label: 'All guides' },
+  ],
+  'ev-charging-platform': [
+    { id: 'versions', label: 'All versions' },
+  ],
+  'ev-tomtom-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'ev-orbis-maps': [
+    { id: 'overview',  label: 'Overview' },
+    { id: 'endpoints', label: 'Endpoints' },
+    { id: 'base-url',  label: 'Base URL' },
+  ],
+  'ev-connector-types': [
+    { id: 'connector-table', label: 'Connector types' },
+    { id: 'usage',           label: 'Usage' },
+  ],
+  'ev-params-ref': [
+    { id: 'all-params', label: 'Parameters (A–Z)' },
+  ],
+  'ev-response-ref': [
+    { id: 'schema', label: 'Response object tree' },
+  ],
+  'ev-error-codes': [
+    { id: 'error-table',  label: 'Error reference' },
+    { id: 'error-format', label: 'Error format' },
+  ],
+  'ev-charging-coverage': [
+    { id: 'regional-coverage', label: 'Regional coverage' },
+  ],
+  'ev-supported-markets': [
+    { id: 'supported-markets', label: 'Supported markets' },
+  ],
+  'ev-guide-discovery': [
+    { id: 'overview',      label: 'Overview' },
+    { id: 'near-point',    label: 'Near a coordinate' },
+    { id: 'along-route',   label: 'Along a route' },
+    { id: 'in-geometry',   label: 'Within geometry' },
+    { id: 'example',       label: 'Example' },
+  ],
+  'ev-guide-connectors': [
+    { id: 'overview',        label: 'Overview' },
+    { id: 'connector-types', label: 'Connector types' },
+    { id: 'filtering',       label: 'Filtering' },
+    { id: 'example',         label: 'Example' },
+  ],
+  'ev-guide-jmespath': [
+    { id: 'overview',    label: 'Overview' },
+    { id: 'syntax',      label: 'JMESPath syntax' },
+    { id: 'examples',    label: 'Examples' },
+  ],
 };
 
 export default function TOC({ currentPage }) {

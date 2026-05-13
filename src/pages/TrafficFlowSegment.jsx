@@ -59,7 +59,7 @@ export default function TrafficFlowSegment({ onNavigate }) {
     <ApiRefTwoCol
       title="Flow Segment Data"
       description="Get real-time traffic flow for the road segment nearest to a given coordinate — current speed, free-flow speed, travel time ratio, and data confidence. Use this endpoint to display live congestion indicators, adjust ETAs, or detect road closures."
-      version="v4"
+      version="v1"
       sections={[
         {
           id: 'request',

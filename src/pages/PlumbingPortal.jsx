@@ -19,6 +19,7 @@ import DocDosDonts        from './DocDosDonts';
 import IconStyleSandbox   from './IconStyleSandbox';
 import TryItDemos        from './TryItDemos';
 import UIComponentGallery from './UIComponentGallery';
+import NavIASandbox       from './NavIASandbox';
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
@@ -35,6 +36,7 @@ const NAV_ITEMS = [
   { id: 'doc-dosdont',         label: "Dos & Don'ts",              icon: '🚦',  group: 'Doc authoring' },
   { id: 'icon-sandbox',        label: 'Icon style sandbox',        icon: '✦',   group: 'Illustration' },
   { id: 'try-it-demos',        label: 'Try it — endpoint demos',   icon: '▶',   group: 'API demos' },
+  { id: 'nav-ia-sandbox',      label: 'Routing API — nav IA',      icon: '🗺',  group: 'Prototyping' },
 ];
 
 /* ─── Icons ──────────────────────────────────────────────────────────────────── */
@@ -72,7 +74,7 @@ function MoonIcon() {
 }
 
 /* ─── Page renderer ──────────────────────────────────────────────────────────── */
-function PlumbingPage({ pageId }) {
+function PlumbingPage({ pageId, routingNavMode, onRoutingNavModeChange }) {
   switch (pageId) {
     case 'ui-gallery':          return <UIComponentGallery />;
     case 'typography':          return <Typography />;
@@ -87,13 +89,21 @@ function PlumbingPage({ pageId }) {
     case 'doc-dosdont':         return <DocDosDonts />;
     case 'icon-sandbox':        return <IconStyleSandbox />;
     case 'try-it-demos':        return <TryItDemos />;
-    default:                    return <Typography />;
+    case 'nav-ia-sandbox':      return <NavIASandbox navMode={routingNavMode} onNavModeChange={onRoutingNavModeChange} />;
+    default:                    return <UIComponentGallery />;
   }
 }
 
 /* ─── Main component ─────────────────────────────────────────────────────────── */
-export default function PlumbingPortal({ onClose, isDark, onToggleTheme }) {
-  const [activePage, setActivePage] = useState('doc-guidelines');
+export default function PlumbingPortal({ onClose, isDark, onToggleTheme, routingNavMode, onRoutingNavModeChange }) {
+  const [activePage, setActivePage] = useState(
+    () => localStorage.getItem('plumbing-active-page') || 'ui-gallery'
+  );
+
+  const navigate = (pageId) => {
+    setActivePage(pageId);
+    localStorage.setItem('plumbing-active-page', pageId);
+  };
 
   return (
     <div style={{
@@ -184,7 +194,7 @@ export default function PlumbingPortal({ onClose, isDark, onToggleTheme }) {
                   return (
                     <button
                       key={item.id}
-                      onClick={() => setActivePage(item.id)}
+                      onClick={() => navigate(item.id)}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 10,
                         width: '100%', padding: '9px 16px',
@@ -218,7 +228,7 @@ export default function PlumbingPortal({ onClose, isDark, onToggleTheme }) {
 
         {/* Content area */}
         <main style={{ flex: 1, overflowY: 'auto', background: 'var(--bg)' }}>
-          <PlumbingPage pageId={activePage} />
+          <PlumbingPage pageId={activePage} routingNavMode={routingNavMode} onRoutingNavModeChange={onRoutingNavModeChange} />
         </main>
 
       </div>

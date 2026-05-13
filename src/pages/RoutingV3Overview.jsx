@@ -1,4 +1,5 @@
 import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+import CodeBlock from '../components/ui/CodeBlock';
 
 /* ─── Routing API v3 Overview ────────────────────────────────────────────── */
 export default function RoutingV3Overview({ onNavigate }) {
@@ -102,19 +103,14 @@ export default function RoutingV3Overview({ onNavigate }) {
         Routing API v3 uses the same TomTom API key as v1/v2. Pass the key as a query parameter
         or via the <code style={{ fontFamily: 'monospace', fontSize: '0.8125rem' }}>TomTom-Api-Key</code> request header.
       </p>
-      <div style={{
-        background: 'var(--code-bg, #1e1e2e)', borderRadius: 8,
-        padding: '16px 18px', fontFamily: 'monospace', fontSize: '0.8125rem',
-        color: 'var(--code-fg, #cdd6f4)', overflowX: 'auto',
-        marginBottom: 32,
-      }}>
-        <pre style={{ margin: 0 }}>{`# Routing API v3 base endpoint
+      <div style={{ marginBottom: 32 }}>
+        <CodeBlock code={`# Routing API v3 base endpoint
 POST https://api.tomtom.com/maps/orbis/routing/v3/calculateRoute
 
 # Required headers
 Content-Type: application/json
 TomTom-Api-Key: YOUR_API_KEY
-Attributes: summary,legs,guidance    # specify which fields to return`}</pre>
+Attributes: summary,legs,guidance    # specify which fields to return`} language="bash" />
       </div>
     </div>
   );

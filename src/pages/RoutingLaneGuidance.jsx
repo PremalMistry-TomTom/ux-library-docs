@@ -200,13 +200,12 @@ function LaneDiagram() {
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 
-export default function RoutingLaneGuidance({ onNavigate }) {
+export function RoutingLaneGuidanceContent({ onNavigate }) {
   const requestSections = [
     {
       id: 'api-lane-request',
       heading: 'Enabling lane guidance',
       method: 'GET',
-      demoId: 'lane-guidance',
       params: PARAMS_REQUEST,
       note: 'Lane guidance is only available on roads where TomTom has lane-level map data. At junctions without coverage the lanes[] array will be absent from the instruction object.',
       extra: (
@@ -274,12 +273,7 @@ export default function RoutingLaneGuidance({ onNavigate }) {
   ];
 
   return (
-    <div className="page page--wide">
-      <div className="page-header">
-        <h1>Lane Guidance</h1>
-        <PageActions />
-      </div>
-
+    <>
       <p className="quick-answer">
         Lane guidance extends turn-by-turn instructions with per-lane detail at complex junctions —
         which lanes are drivable, which directions they allow, and which single lane the API recommends.
@@ -311,6 +305,18 @@ export default function RoutingLaneGuidance({ onNavigate }) {
           Calculate Route →
         </button>
       </div>
+    </>
+  );
+}
+
+export default function RoutingLaneGuidance({ onNavigate }) {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Lane Guidance</h1>
+        <PageActions />
+      </div>
+      <RoutingLaneGuidanceContent onNavigate={onNavigate} />
     </div>
   );
 }

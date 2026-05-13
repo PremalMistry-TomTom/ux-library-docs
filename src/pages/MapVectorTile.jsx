@@ -85,13 +85,11 @@ map.on('load', () => {
   });
 });`;
 
-/* ─── Page ───────────────────────────────────────────────────────────────────── */
-export default function MapVectorTile({ onNavigate }) {
+/* ─── V1 Content (named export for Unified wrapper) ─────────────────────────── */
+export function MapVectorTileV1Content({ onNavigate }) {
   return (
     <ApiRefTwoCol
-      title="Vector Tile"
       description="Retrieve Mapbox Vector Tiles (MVT) in Protocol Buffer format for client-side styled, resolution-independent rendering. Vector tiles give full control over style, language, and feature selection — ideal for MapLibre GL JS, Mapbox GL JS, and custom rendering pipelines."
-      version="v1"
       sections={[
         {
           id: 'request',

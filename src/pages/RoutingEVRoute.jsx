@@ -2,15 +2,6 @@ import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
 
-const addLn = t => {
-  const esc = t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const lines = esc.split('\n');
-  if (lines[lines.length - 1] === '') lines.pop();
-  return lines.map(l => `<span class="cb-line">${l}</span>`).join('\n');
-};
-
-/* ─── Shared UI ──────────────────────────────────────────────────────────────── */
-
 /* ─── Parameter data ─────────────────────────────────────────────────────────── */
 const PARAMS_ROUTE = [
   { name: 'locations', required: true, type: 'string (path)', desc: 'Colon-separated lat,lon pairs. Minimum 2 points (origin + destination). Up to 150 intermediate waypoints.' },

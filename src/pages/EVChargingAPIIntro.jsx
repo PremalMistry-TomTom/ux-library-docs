@@ -24,9 +24,6 @@ import {
   IlloEVSearchNearby, IlloEVChargingAvailability,
 } from './IntroIllustrations';
 
-/* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby);
-
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function EVChargingAPIIntro({ onNavigate }) {
   const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
@@ -36,9 +33,9 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby),
       method: 'GET',
       title: 'EV Station Search',
-      desc: 'Search for charging stations near a coordinate using category set 7309, with connector type and operator filters.',
+      desc: 'Search for charging stations near a coordinate using category set 7309 (v1) or the Orbis EV nearby endpoint (v3).',
       pageId: 'ev-station-search',
-      tag: 'v2',
+      tag: 'v1/v3',
     },
     {
       Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability, IcoEVChargingAvailability),
@@ -46,7 +43,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       title: 'Charging Availability',
       desc: 'Query real-time connector availability at a charging station — number of occupied and free slots per connector type.',
       pageId: 'ev-charging-availability',
-      tag: 'v2',
+      tag: 'v1/v3',
     },
     {
       Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics),
@@ -54,31 +51,31 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       title: 'Supported Markets',
       desc: 'Return the list of countries and regions where TomTom EV charging availability data is provided.',
       pageId: 'ev-supported-markets',
-      tag: 'v2',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability, IcoEVChargingAvailability),
       method: 'GET',
-      title: 'Charging Park Details',
-      desc: 'Retrieve enriched details for a charging park including operator, amenities, opening hours, and pricing information.',
-      pageId: 'ev-station-search',
-      tag: 'v2',
+      title: 'EV Search by ID',
+      desc: 'Retrieve enriched details for one or more EV POIs by UUID, including connectors, opening hours, and tariff pricing.',
+      pageId: 'ev-search-by-id',
+      tag: 'v1/v3',
     },
     {
       Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby),
-      method: 'GET',
+      method: 'POST',
       title: 'Along-Route Charging',
       desc: 'Find charging stations along a route corridor, ranked by deviation from the original path and compatible connectors.',
-      pageId: 'ev-station-search',
-      tag: 'v2',
+      pageId: 'ev-search-along-route',
+      tag: 'v1/v3',
     },
     {
       Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics),
       method: 'GET',
-      title: 'Connector Categories',
-      desc: 'List supported EV connector type categories — CCS, CHAdeMO, Type 2, and more — for filtering search results.',
-      pageId: 'ev-supported-markets',
-      tag: 'v2',
+      title: 'EV Search Nearby',
+      desc: 'Discover EV charging stations within a circular area or bounding box with rich filter support for connector type and power level.',
+      pageId: 'ev-search-nearby',
+      tag: 'v1/v3',
     },
   ];
 
@@ -114,9 +111,20 @@ export default function EVChargingAPIIntro({ onNavigate }) {
         It integrates with the Search API infrastructure for consistent, high-quality data.
       </p>
 
-      {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
-        <HeroIllo />
+      {/* Quickstart CTA */}
+      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onNavigate?.('ev-quickstart', 'ev-charging-api')}
+          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Quickstart →
+        </button>
+        <button
+          onClick={() => onNavigate?.('ev-station-search', 'ev-charging-api')}
+          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          API Reference
+        </button>
       </div>
 
       {/* Endpoint grid */}
@@ -145,6 +153,73 @@ export default function EVChargingAPIIntro({ onNavigate }) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Guides — before version table */}
+      <div className="zone">
+        <h2 className="sh" id="guides">Guides</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+          {[
+            { id: 'ev-guide-discovery', title: 'Station Discovery Patterns', desc: 'Find EV charging stations near a coordinate, along a route, and within a custom geometry using category set 7309.' },
+            { id: 'ev-guide-connectors', title: 'Connector Type Filtering', desc: 'Filter stations by connector type (CCS, CHAdeMO, Type 2, etc.) using the connectorSet parameter.' },
+            { id: 'ev-guide-jmespath', title: 'JMESPath Response Filtering', desc: 'Use JMESPath expressions in V2 to extract only the fields you need from the search response (Orbis Maps only).' },
+          ].map(({ id, title, desc }) => (
+            <button key={id} onClick={() => onNavigate?.(id, 'ev-charging-api')}
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '1.25rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--brand)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--black)', marginBottom: '0.375rem' }}>{title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Version comparison table */}
+      <div className="zone">
+        <h2 className="sh" id="versions">Versions</h2>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                <th style={{ padding: '10px 14px', textAlign: 'left', width: '40%', color: 'var(--muted)', fontWeight: 600, fontSize: '0.75rem' }}>Feature</th>
+                {[
+                  { label: 'V1', platform: 'TomTom Maps', status: 'Production',       statusBg: 'rgba(34,197,94,0.1)',   statusColor: '#15803d', color: '#15803d' },
+                  { label: 'V3', platform: 'Orbis Maps',  status: 'Private Preview',  statusBg: 'rgba(251,146,60,0.1)', statusColor: '#c2410c', color: '#c2410c' },
+                ].map(v => (
+                  <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '30%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 2 }}>{v.platform}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['EV Station Search',         '✓', '✓'],
+                ['EV Search Nearby',          '✓', '✓'],
+                ['EV Search Along Route',     '✓', '✓'],
+                ['EV Search by ID',           '✓', '✓'],
+                ['Charging Availability',     '✓', '✓'],
+                ['Connector type filtering',  '✓', '✓'],
+                ['Power range filtering',     '✓', '✓'],
+                ['JMESPath response filtering','—', '✓'],
+                ['Market coverage endpoint',  '✓', '—'],
+              ].map(([feat, v1, v3], i) => (
+                <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                  <td style={{ padding: '9px 14px', color: 'var(--black)', fontWeight: 500 }}>{feat}</td>
+                  {[v1, v3].map((val, j) => (
+                    <td key={j} style={{ padding: '9px 14px', color: val === '✓' ? '#15803d' : 'var(--t-dis)', fontWeight: val === '✓' ? 700 : 400 }}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

@@ -109,7 +109,7 @@ export default function SearchBatch({ onNavigate }) {
     <ApiRefTwoCol
       title="Batch Search"
       description="Execute multiple search queries in a single HTTP request. The synchronous endpoint supports up to 100 items and returns results immediately. The asynchronous endpoint supports up to 10,000 items and uses a poll-based model."
-      version="v2"
+      version="v1"
       sections={[
         {
           id: 'sync-request',

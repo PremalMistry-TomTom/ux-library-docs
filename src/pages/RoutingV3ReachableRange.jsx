@@ -1,5 +1,6 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
 import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Budget & origin ────────────────────────────────────────────────────── */
 const PARAMS_BUDGET = [
@@ -176,7 +177,7 @@ const CODE_RESPONSE = `// HTTP 200 — reachable range polygon
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV3ReachableRange() {
+export function RoutingV3ReachableRangeContent() {
   const sections = [
     {
       id: 'routing-v3-rr-budget',
@@ -280,12 +281,24 @@ export default function RoutingV3ReachableRange() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Reachable Range"
-      description="Calculate a polygon showing all reachable locations within a time, distance, fuel, or energy budget from an origin point. Returns a boundary array of lat/lon coordinates forming the isochrone polygon."
-      version="v3-private"
-      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <p className="quick-answer">Calculate a polygon showing all reachable locations within a time, distance, fuel, or energy budget from an origin point. Returns a boundary array of lat/lon coordinates forming the isochrone polygon.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV3ReachableRange() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Reachable Range</h1>
+        <PageActions />
+      </div>
+      <RoutingV3ReachableRangeContent />
+    </div>
   );
 }

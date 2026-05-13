@@ -142,7 +142,7 @@ export default function LDEVRComputeToll() {
     <ApiRefTwoCol
       title="Compute Toll Amounts"
       description="Add toll cost calculation to Long Distance EV routes. Returns the total toll along the planned route broken down by currency, optionally accounting for an ETC (Electronic Toll Collection) transponder."
-      version="v2-private"
+      version="v2"
       sections={sections}
     />
   );

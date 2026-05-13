@@ -24,9 +24,6 @@ import {
   IlloMapRasterTile, IlloMapVectorTile, IlloMapSatelliteTile, IlloMapStaticImage,
 } from './IntroIllustrations';
 
-/* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile);
-
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function MapDisplayAPIIntro({ onNavigate }) {
   const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
@@ -61,7 +58,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       method: 'GET',
       title: 'Hillshade Tile',
       desc: 'Terrain hillshade imagery at 514 × 514 px across 14 zoom levels for topographic context.',
-      pageId: 'map-display-api-intro',
+      pageId: 'map-hillshade-tile',
       tag: 'v1',
     },
     {
@@ -69,8 +66,8 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       method: 'GET',
       title: 'Map Styles',
       desc: 'Fetch style JSON, sprite sheets, and glyph fonts needed to render vector tiles client-side.',
-      pageId: 'map-display-api-intro',
-      tag: 'v2',
+      pageId: 'map-assets-api',
+      tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloMapStaticImage, L_MapStaticImage, IcoMapStaticImage),
@@ -83,18 +80,18 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
     {
       Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
       method: 'GET',
-      title: 'WMS / WMTS',
-      desc: 'OGC-compliant Web Map Service and Web Map Tile Service endpoints for GIS and enterprise integrations.',
-      pageId: 'map-display-api-intro',
+      title: 'WMS',
+      desc: 'OGC-compliant Web Map Service endpoint for GIS and enterprise raster map integrations.',
+      pageId: 'map-wms',
       tag: 'v1',
     },
     {
       Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
       method: 'GET',
-      title: 'Vector Content',
-      desc: 'Map feature collections for advanced client-side processing and custom cartographic workflows.',
-      pageId: 'map-display-api-intro',
-      tag: 'v2',
+      title: 'WMTS',
+      desc: 'OGC-compliant Web Map Tile Service endpoint for tiled GIS workflows using RESTful or KVP access.',
+      pageId: 'map-wmts',
+      tag: 'v1',
     },
   ];
 
@@ -130,9 +127,20 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
         Choose raster tiles for simplicity or vector tiles for full style customisation.
       </p>
 
-      {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
-        <HeroIllo />
+      {/* Quickstart CTA */}
+      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onNavigate?.('map-quickstart', 'map-display-api')}
+          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Quickstart →
+        </button>
+        <button
+          onClick={() => onNavigate?.('map-raster-tile', 'map-display-api')}
+          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          API Reference
+        </button>
       </div>
 
       {/* Endpoint grid */}
@@ -161,6 +169,75 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Guides — before version table */}
+      <div className="zone">
+        <h2 className="sh" id="guides">Guides</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+          {[
+            { id: 'map-guide-zoom', title: 'Zoom Levels & Tile Grid', desc: 'Understanding the Spherical Mercator tile grid (EPSG:3857), zoom 0–22, tile coordinates, and resolution.' },
+            { id: 'map-guide-styles', title: 'Map Styles & Customisation', desc: 'Load TomTom vector tile styles into MapLibre GL or Mapbox GL JS and customise layers and colours.' },
+            { id: 'map-guide-hybrid', title: 'Building a Hybrid Map', desc: 'Combine satellite imagery tiles with road/label overlays to create a hybrid basemap.' },
+          ].map(({ id, title, desc }) => (
+            <button key={id} onClick={() => onNavigate?.(id, 'map-display-api')}
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '1.25rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--brand)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--black)', marginBottom: '0.375rem' }}>{title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Version comparison table */}
+      <div className="zone">
+        <h2 className="sh" id="versions">Versions</h2>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                <th style={{ padding: '10px 14px', textAlign: 'left', width: '40%', color: 'var(--muted)', fontWeight: 600, fontSize: '0.75rem' }}>Feature</th>
+                {[
+                  { label: 'V1', platform: 'TomTom Maps', status: 'Production', statusBg: 'rgba(34,197,94,0.1)', statusColor: '#15803d', color: '#15803d' },
+                  { label: 'V2', platform: 'Orbis Maps',  status: 'Production', statusBg: 'rgba(34,197,94,0.1)', statusColor: '#15803d', color: '#7c3aed' },
+                ].map(v => (
+                  <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '30%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 2 }}>{v.platform}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Raster Map Tile (basic/hybrid/labels)', '✓', '✓'],
+                ['Vector Tile (MVT / Protobuf)',          '✓', '✓'],
+                ['Satellite Tile',                        '✓', '✓'],
+                ['Hillshade Tile',                        '✓', '✓'],
+                ['Static Image',                          '✓', '—'],
+                ['WMS',                                   '✓', '—'],
+                ['WMTS',                                  '✓', '—'],
+                ['Copyrights',                            '✓', '✓'],
+                ['3D Landmarks',                          '—', '✓'],
+                ['Extended Tiles',                        '—', '✓'],
+                ['Lane-level vector tiles',               '—', '✓'],
+              ].map(([feat, v1, v2], i) => (
+                <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                  <td style={{ padding: '9px 14px', color: 'var(--black)', fontWeight: 500 }}>{feat}</td>
+                  {[v1, v2].map((val, j) => (
+                    <td key={j} style={{ padding: '9px 14px', color: val === '✓' ? '#15803d' : 'var(--t-dis)', fontWeight: val === '✓' ? 700 : 400 }}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

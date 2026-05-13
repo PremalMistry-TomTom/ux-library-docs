@@ -73,7 +73,7 @@ export default function TrafficFlowTiles({ onNavigate }) {
     <ApiRefTwoCol
       title="Traffic Flow & Incident Tiles"
       description="Fetch raster PNG or vector PBF map tiles showing real-time traffic conditions. Flow tiles colour-code roads by current speed or delay. Incident tiles display icons for accidents, closures, and events. Both follow the standard XYZ tile scheme for easy integration with any mapping SDK."
-      version="v4"
+      version="v1"
       sections={[
         {
           id: 'raster-flow-tiles',

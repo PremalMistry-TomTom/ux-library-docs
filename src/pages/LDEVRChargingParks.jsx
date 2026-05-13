@@ -167,7 +167,7 @@ export default function LDEVRChargingParks() {
     <ApiRefTwoCol
       title="Charging Park Opening Hours"
       description="Exclude charging parks that would be closed at the expected arrival time. Use chargePlanningPreferences to define minimum time buffers before closing and after opening, and whether to allow the vehicle to wait before a park opens."
-      version="v2-private"
+      version="v2"
       sections={sections}
     />
   );

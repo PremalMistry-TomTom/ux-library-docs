@@ -1,5 +1,6 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
 import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Enabling guidance ──────────────────────────────────────────────────── */
 const PARAMS_REQUEST = [
@@ -88,7 +89,7 @@ const CODE_LANES = `// sections[] with lane data (sectionType=lanes)
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV3Guidance() {
+export function RoutingV3GuidanceContent() {
   const sections = [
     {
       id: 'routing-v3-guidance-request',
@@ -118,12 +119,24 @@ export default function RoutingV3Guidance() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Guidance Instructions"
-      description="Turn-by-turn instruction schema returned in the guidance object of a Routing API v3 Calculate Route response. Enable with instructionsType=text, tagged, or coded. Includes lane information when sectionType=lanes is also set."
-      version="v3-private"
-      topBanner={<PrivatePreviewBanner api="Routing API v3" />}
-      sections={sections}
-    />
+    <>
+      <PrivatePreviewBanner api="Routing API v3" />
+      <p className="quick-answer">Turn-by-turn instruction schema returned in the guidance object of a Routing API v3 Calculate Route response. Enable with instructionsType=text, tagged, or coded. Includes lane information when sectionType=lanes is also set.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV3Guidance() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Guidance Instructions</h1>
+        <PageActions />
+      </div>
+      <RoutingV3GuidanceContent />
+    </div>
   );
 }

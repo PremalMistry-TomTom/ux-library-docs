@@ -46,7 +46,7 @@ export default function TrafficModelID({ onNavigate }) {
     <ApiRefTwoCol
       title="Traffic Model ID"
       description="Retrieve the identifier for the current traffic data model. The model ID changes each time TomTom publishes a new traffic data batch (approximately every minute). Pass it as the t parameter in incident and tile requests to enable server-side cache validation — the server returns HTTP 304 Not Modified when the data is unchanged, avoiding unnecessary payload transfers."
-      version="v4"
+      version="v1"
       sections={[
         {
           id: 'request',

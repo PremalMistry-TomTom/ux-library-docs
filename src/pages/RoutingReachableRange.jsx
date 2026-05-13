@@ -171,13 +171,12 @@ const CODE_RESPONSE = `{
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 
-export default function RoutingReachableRange({ onNavigate }) {
+export function RoutingReachableRangeContent({ onNavigate }) {
   const sections = [
     {
       id: 'api-rr-budget',
       heading: 'Budget & origin',
       method: 'GET',
-      demoId: 'reachable-range',
       params: PARAMS_BUDGET,
       note: 'Exactly one budget type is required: fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters. Fuel and energy budgets require a matching consumption model.',
       code: CODE_TIME,
@@ -275,12 +274,7 @@ export default function RoutingReachableRange({ onNavigate }) {
   ];
 
   return (
-    <div className="page page--wide">
-      <div className="page-header">
-        <h1>Reachable Range</h1>
-        <PageActions />
-      </div>
-
+    <>
       <p className="quick-answer">
         Returns an isochrone polygon — all points reachable from an origin within a given time, distance, fuel, or energy budget.
         Use it to visualise delivery zones, service areas, or EV range on a map.
@@ -367,6 +361,18 @@ export default function RoutingReachableRange({ onNavigate }) {
           Batch Routing →
         </button>
       </div>
+    </>
+  );
+}
+
+export default function RoutingReachableRange({ onNavigate }) {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Reachable Range</h1>
+        <PageActions />
+      </div>
+      <RoutingReachableRangeContent onNavigate={onNavigate} />
     </div>
   );
 }

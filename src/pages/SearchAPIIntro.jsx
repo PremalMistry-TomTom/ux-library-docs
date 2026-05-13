@@ -26,9 +26,6 @@ import {
   IlloSearchAlongRoute, IlloSearchAutocomplete, IlloPOIDetails, IlloPOIPhotos,
 } from './IntroIllustrations';
 
-/* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloSearchFuzzy, L_SearchFuzzy, IcoSearchFuzzy);
-
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SearchAPIIntro({ onNavigate }) {
   const { theme: illoTheme, palette: illoPalette } = useIlloStyle();
@@ -140,12 +137,23 @@ export default function SearchAPIIntro({ onNavigate }) {
         along-route discovery, and batch processing — all backed by TomTom's global map data.
       </p>
 
-      {/* Hero illustration */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', height: 200, background: illoPalette.bg, marginBottom: 32 }}>
-        <HeroIllo />
+      {/* Quickstart CTA */}
+      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => onNavigate?.('search-quickstart', 'search-api')}
+          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Quickstart →
+        </button>
+        <button
+          onClick={() => onNavigate?.('search-fuzzy', 'search-api')}
+          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+        >
+          API Reference
+        </button>
       </div>
 
-      {/* Endpoint grid */}
+      {/* Endpoint grid — rule 4: before version table */}
       <div className="zone">
         <h2 className="sh" id="endpoints">Endpoints</h2>
         <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
@@ -174,6 +182,76 @@ export default function SearchAPIIntro({ onNavigate }) {
         </div>
       </div>
 
+      {/* Guides — rule 5: before version table */}
+      <div className="zone">
+        <h2 className="sh" id="guides">Guides</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
+          {[
+            { id: 'search-guide-typeahead', title: 'Typeahead & Autocomplete', desc: 'Build instant search UIs with debouncing, result rendering, and selection handling.' },
+            { id: 'search-guide-ev',        title: 'EV Station Discovery',     desc: 'Find EV charging stations using category set 7309 with connector type filters.' },
+            { id: 'search-guide-fuzzy-tips',title: 'Fuzzy Search Tips',        desc: 'Tune precision with geoBias, countrySet, idxSet, and typeahead flags.' },
+          ].map(({ id, title, desc }) => (
+            <button key={id} onClick={() => onNavigate?.(id, 'search-api')}
+              style={{ background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '1.25rem', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--brand)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--black)', marginBottom: '0.375rem' }}>{title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{desc}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Version comparison table — rule 4: after endpoints and guides */}
+      <div className="zone">
+        <h2 className="sh" id="versions">Versions</h2>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '2px solid var(--border)' }}>
+                <th style={{ padding: '10px 14px', textAlign: 'left', width: '34%', color: 'var(--muted)', fontWeight: 600, fontSize: '0.75rem' }}>Feature</th>
+                {[
+                  { label: 'V1', platform: 'TomTom Maps', status: 'Production', statusBg: 'rgba(34,197,94,0.1)',   statusColor: '#15803d', color: '#15803d' },
+                  { label: 'V2', platform: 'Orbis Maps',  status: 'Production', statusBg: 'rgba(34,197,94,0.1)',   statusColor: '#15803d', color: '#7c3aed' },
+                ].map(v => (
+                  <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '33%' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                    </div>
+                    <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginTop: 2 }}>{v.platform}</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['Fuzzy Search',         '✓', '✓'],
+                ['POI / Category Search','✓', '✓'],
+                ['Nearby Search',        '✓', '✓'],
+                ['Geometry Search',      '✓', '✓'],
+                ['Along-Route Search',   '✓', '✓'],
+                ['Autocomplete',         '✓', '✓'],
+                ['Batch Search',         '✓', '✓'],
+                ['Place by ID',          '✓', '✓'],
+                ['Additional Data',      '✓', '✓'],
+                ['POI Categories',       '✓', '✓'],
+                ['JMESPath filtering',   '—', '✓'],
+                ['Copyrights endpoint',  '—', '✓'],
+              ].map(([feat, v1, v2], i) => (
+                <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                  <td style={{ padding: '9px 14px', color: 'var(--black)', fontWeight: 500 }}>{feat}</td>
+                  {[v1, v2].map((val, j) => (
+                    <td key={j} style={{ padding: '9px 14px', color: val === '✓' ? '#15803d' : 'var(--t-dis)', fontWeight: val === '✓' ? 700 : 400 }}>{val}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* Base URL table */}
       <div className="zone">
         <h2 className="sh" id="base-url">Base URL &amp; Authentication</h2>
@@ -185,28 +263,6 @@ export default function SearchAPIIntro({ onNavigate }) {
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Getting started */}
-      <div className="zone">
-        <h2 className="sh" id="getting-started">Getting started</h2>
-        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 16, lineHeight: 1.6 }}>
-          Make your first fuzzy search request with a single <code>fetch</code> call:
-        </p>
-        <pre style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '16px 20px', fontSize: '0.8125rem', lineHeight: 1.7, overflowX: 'auto', color: 'var(--black)' }}>{`// Fuzzy Search — find a place by free-form text
-const API_KEY = 'your-api-key';
-const query   = 'Amsterdam';
-
-const res = await fetch(
-  \`https://api.tomtom.com/search/2/search/\${encodeURIComponent(query)}.json\` +
-  \`?key=\${API_KEY}&limit=5&countrySet=NL\`
-);
-const { results } = await res.json();
-
-// Each result contains position, address, and optionally a POI block
-results.forEach(r => {
-  console.log(r.address.freeformAddress, r.position);
-});`}</pre>
       </div>
     </div>
   );

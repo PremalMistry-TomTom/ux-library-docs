@@ -1,4 +1,6 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PageActions from '../components/ui/PageActions';
+import VersionTabBar from '../components/ui/VersionTabBar';
 
 /* ─── Request parameters ─────────────────────────────────────────────────── */
 const PARAMS_REQUEST = [
@@ -76,11 +78,17 @@ export default function RoutingV2DataFreshness() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Dynamic Data Freshness"
-      description="Report the freshness of traffic incident data used in Routing API v2 route calculations. The response includes per-country timestamps so clients can decide when to recalculate routes."
-      version="v2-public"
-      sections={sections}
-    />
+    <div className="page page--wide">
+      <div className="page-header page-header--with-tabs">
+        <h1>Dynamic Data Freshness</h1>
+        <PageActions />
+        <VersionTabBar versions={['v2']} activeTab="v2" onTabChange={() => {}} />
+      </div>
+      <p className="quick-answer">
+        Report the freshness of traffic incident data used in Routing API v2 route calculations.
+        The response includes per-country timestamps so clients can decide when to recalculate routes.
+      </p>
+      <ApiRefTwoCol sections={sections} />
+    </div>
   );
 }

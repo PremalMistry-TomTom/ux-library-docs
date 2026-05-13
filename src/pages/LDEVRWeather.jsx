@@ -158,7 +158,7 @@ export default function LDEVRWeather() {
     <ApiRefTwoCol
       title="Weather Consideration"
       description="Dynamically adapt EV consumption parameters based on outside temperature. Use forecast for location-based weather data, or userSpecified with a temperatureInDegC value in the POST body. Requires an electric vehicle consumption model."
-      version="v2-private"
+      version="v2"
       sections={sections}
     />
   );

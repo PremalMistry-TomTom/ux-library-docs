@@ -24,17 +24,156 @@
  * 12. Status States      (idle, loading, success, error)
  */
 
-import { useState } from 'react';
+import { useState, useContext, createContext } from 'react';
 import Callout from '../components/ui/Callout';
 import { ParamRow } from '../components/ui/ApiRefTwoCol';
 import CodeBlock from '../components/ui/CodeBlock';
 
 // ─────────────────────────────────────────────────────────────────────────────
+// DECISION MODE CONTEXT
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * DecisionContext — shared state for the keep / merge / erase audit mode.
+ * Provided by UIComponentGallery; consumed by GallerySection and Row.
+ */
+const DecisionContext = createContext(null);
+
+/**
+ * SectionContext — provides the current section title to Row components
+ * so they can build scoped decision keys ("SectionTitle::RowLabel").
+ */
+const SectionContext = createContext(null);
+
+const DECISION_CYCLE = ['undecided', 'keep', 'merge', 'erase'];
+
+const DECISION_STYLE = {
+  undecided: { bg: 'transparent',  border: 'var(--border)',  dot: '#d1d5db', label: '?',        text: 'undecided', color: '#9ca3af' },
+  keep:      { bg: '#f0fdf4',      border: '#86efac',        dot: '#22c55e', label: '✓',        text: 'keep',      color: '#166534' },
+  merge:     { bg: '#fffbeb',      border: '#fcd34d',        dot: '#f59e0b', label: '⇒',       text: 'merge',     color: '#92400e' },
+  erase:     { bg: '#fef2f2',      border: '#fca5a5',        dot: '#ef4444', label: '✕',        text: 'erase',     color: '#991b1b' },
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
 // HELPER COMPONENTS
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * usage = array of { n: string, f: number, t?: 'missing'|'ghost'|'wrong', fix?: string }
+ *   n   = class name or component name
+ *   f   = number of real-app files (excluding UIComponentGallery)
+ *   t   = issue type:
+ *           'missing' → not defined in CSS or app at all
+ *           'ghost'   → defined in CSS but never applied as className
+ *           'wrong'   → gallery name differs from actual code; supply `fix`
+ *   fix = the correct class name when t='wrong'
+ */
+function UsageBar({ usage }) {
+  if (!usage?.length) return null;
+
+  const dot = (f, t) => {
+    if (t === 'missing') return '#ef4444'; // red
+    if (t === 'ghost')   return '#f59e0b'; // amber
+    if (t === 'wrong')   return '#f97316'; // orange
+    if (f === 0)         return '#ef4444';
+    if (f === 1)         return '#f97316';
+    if (f <= 4)          return '#eab308';
+    return '#22c55e'; // green
+  };
+
+  const label = (f, t) => {
+    if (t === 'missing') return 'not in CSS';
+    if (t === 'ghost')   return 'CSS · never applied';
+    if (t === 'wrong')   return '⚠ wrong name';
+    return `${f} file${f !== 1 ? 's' : ''}`;
+  };
+
+  const usagePills    = usage.filter(u => u.t !== 'playbook');
+  const playbookPills = usage.filter(u => u.t === 'playbook');
+
+  return (
+    <div style={{ borderBottom: '1px solid var(--border)' }}>
+      {/* ── usage row ── */}
+      {usagePills.length > 0 && (
+        <div style={{
+          padding: '8px 20px 9px',
+          background: 'var(--s1)',
+          display: 'flex', flexWrap: 'wrap', gap: 5, alignItems: 'center',
+          borderBottom: playbookPills.length ? '1px solid var(--border)' : 'none',
+        }}>
+          <span style={{ fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginRight: 4, flexShrink: 0 }}>usage</span>
+          {usagePills.map(({ n, f, t, fix }) => {
+            const color = dot(f, t);
+            return (
+              <span key={n} title={fix ? `Fix: ${fix}` : undefined} style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                fontSize: '0.6rem', fontFamily: 'var(--font-mono)',
+                padding: '2px 7px 2px 5px', borderRadius: 99,
+                border: `1px solid ${color}55`,
+                background: `${color}22`,
+                color: 'var(--black)',
+                cursor: fix ? 'help' : 'default',
+              }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
+                {n}
+                <span style={{ color, fontWeight: 700, fontSize: '0.58rem' }}>{label(f, t)}</span>
+                {fix && <span style={{ color: '#f97316', fontSize: '0.55rem' }}>→ {fix}</span>}
+              </span>
+            );
+          })}
+        </div>
+      )}
+      {/* ── playbook row ── */}
+      {playbookPills.length > 0 && (
+        <div style={{
+          padding: '7px 20px 8px',
+          background: 'var(--s1)',
+          borderTop: '1px solid #7c3aed22',
+          display: 'flex', flexWrap: 'wrap', gap: 5, alignItems: 'center',
+        }}>
+          <span style={{ fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#a78bfa', marginRight: 4, flexShrink: 0 }}>playbook</span>
+          {playbookPills.map(({ n }) => (
+            <span key={`pb-${n}`} style={{
+              display: 'inline-flex', alignItems: 'center', gap: 5,
+              fontSize: '0.6rem', fontFamily: 'var(--font-mono)',
+              padding: '2px 7px 2px 5px', borderRadius: 99,
+              border: '1px solid #7c3aed66',
+              background: '#7c3aed28',
+              color: 'var(--black)',
+            }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#a78bfa', flexShrink: 0 }} />
+              {n}
+              <span style={{ color: '#a78bfa', fontWeight: 700, fontSize: '0.58rem' }}>Playbook</span>
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** Dark header bar containing title + optional description, then white content */
-function GallerySection({ title, desc, children }) {
+function GallerySection({ title, desc, usage, children }) {
+  const ctx = useContext(DecisionContext);
+  const decision    = ctx?.decisions?.[title] ?? { status: 'undecided', mergeInto: '' };
+  const ds          = DECISION_STYLE[decision.status] ?? DECISION_STYLE.undecided;
+  const isActive    = !!ctx?.active;
+
+  const cycleStatus = () => {
+    const next = DECISION_CYCLE[(DECISION_CYCLE.indexOf(decision.status) + 1) % DECISION_CYCLE.length];
+    ctx.setDecision(title, { ...decision, status: next });
+  };
+
+  // Count how many rows within this section have a non-undecided decision
+  const rowDecisionCount = isActive
+    ? Object.keys(ctx?.decisions ?? {}).filter(k => k.startsWith(`${title}::`) && (ctx.decisions[k]?.status ?? 'undecided') !== 'undecided').length
+    : 0;
+
+  // left-border accent when decision made
+  const accentBorder = isActive && decision.status !== 'undecided'
+    ? { borderLeft: `4px solid ${ds.dot}` }
+    : {};
+
   return (
     <div style={{
       background: 'var(--white)',
@@ -42,32 +181,103 @@ function GallerySection({ title, desc, children }) {
       borderRadius: 12,
       marginBottom: 32,
       overflow: 'hidden',
+      transition: 'border-left 0.15s',
+      ...accentBorder,
     }}>
       {/* Header */}
       <div style={{
-        background: 'var(--bg)',
+        background: isActive && decision.status !== 'undecided' ? ds.bg : 'var(--bg)',
         padding: '12px 20px',
-        borderBottom: '1px solid var(--border)',
+        borderBottom: usage?.length ? 'none' : '1px solid var(--border)',
         display: 'flex',
-        alignItems: 'baseline',
+        alignItems: 'center',
         gap: 8,
+        transition: 'background 0.15s',
       }}>
-        <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
-        {desc && (
+        <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', flex: 1, minWidth: 0 }}>{title}</span>
+        {desc && !isActive && (
           <>
             <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>·</span>
-            <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{desc}</span>
+            <span style={{ fontSize: '0.75rem', color: 'var(--muted)', flex: 1, minWidth: 0 }}>{desc}</span>
           </>
         )}
+
+        {/* ── Decision badge (visible only in decision mode) ── */}
+        {isActive && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto', flexShrink: 0 }}>
+            {/* Row decision count indicator */}
+            {rowDecisionCount > 0 && (
+              <span style={{
+                fontSize: '0.55rem', fontWeight: 700, color: '#6366f1',
+                background: '#eef2ff', border: '1px solid #c7d2fe',
+                padding: '2px 7px', borderRadius: 99,
+                fontFamily: 'var(--font-mono)',
+              }}>
+                {rowDecisionCount} row{rowDecisionCount !== 1 ? 's' : ''} marked
+              </span>
+            )}
+            {decision.status === 'merge' && (
+              <input
+                value={decision.mergeInto || ''}
+                onChange={e => ctx.setDecision(title, { ...decision, mergeInto: e.target.value })}
+                onClick={e => e.stopPropagation()}
+                placeholder="merge into…"
+                style={{
+                  fontSize: '0.625rem', padding: '3px 8px', borderRadius: 6,
+                  border: '1px solid #fcd34d', background: '#fffbeb', color: '#92400e',
+                  width: 130, outline: 'none', fontFamily: 'var(--font-mono)',
+                }}
+              />
+            )}
+            <button
+              onClick={cycleStatus}
+              title="Section-level: click to cycle undecided → keep → merge → erase"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                fontSize: '0.65rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
+                padding: '3px 10px 3px 7px', borderRadius: 99,
+                border: `1px solid ${ds.dot}55`,
+                background: decision.status === 'undecided' ? 'var(--border)' : ds.bg,
+                color: ds.color, cursor: 'pointer',
+                transition: 'all 0.1s',
+              }}
+            >
+              <span style={{ width: 7, height: 7, borderRadius: '50%', background: ds.dot, flexShrink: 0 }} />
+              {ds.label} {ds.text}
+            </button>
+          </div>
+        )}
       </div>
+      <UsageBar usage={usage} />
       {/* Content */}
-      <div style={{ padding: 20 }}>{children}</div>
+      <SectionContext.Provider value={{ title }}>
+        <div style={{ padding: 20 }}>{children}</div>
+      </SectionContext.Provider>
     </div>
   );
 }
 
 /** Labelled row — small uppercase label on the left, flex items on the right */
 function Row({ label, children, noBorder }) {
+  const ctx        = useContext(DecisionContext);
+  const sectionCtx = useContext(SectionContext);
+  const isActive   = !!ctx?.active && !!sectionCtx?.title;
+  const rowKey     = isActive ? `${sectionCtx.title}::${label}` : null;
+  const rowDec     = (rowKey && ctx?.decisions?.[rowKey]) || { status: 'undecided' };
+  const rds        = DECISION_STYLE[rowDec.status] ?? DECISION_STYLE.undecided;
+
+  const cycleRow = (e) => {
+    e.stopPropagation();
+    if (!rowKey) return;
+    const next = DECISION_CYCLE[(DECISION_CYCLE.indexOf(rowDec.status) + 1) % DECISION_CYCLE.length];
+    ctx.setDecision(rowKey, { ...rowDec, status: next });
+  };
+
+  // subtle row tint when decided
+  const rowTint = isActive && rowDec.status !== 'undecided'
+    ? { background: `${rds.dot}09`, borderRadius: 8, margin: '0 -8px', padding: '0 8px' }
+    : {};
+
   return (
     <div style={{
       display: 'flex',
@@ -76,21 +286,55 @@ function Row({ label, children, noBorder }) {
       marginBottom: noBorder ? 0 : 20,
       paddingBottom: noBorder ? 0 : 20,
       borderBottom: noBorder ? 'none' : '1px solid var(--border)',
+      ...rowTint,
     }}>
-      {/* Left label */}
-      <div style={{
-        width: 140,
-        flexShrink: 0,
-        fontSize: '0.6875rem',
-        fontWeight: 700,
-        color: 'var(--muted)',
-        textTransform: 'uppercase',
-        letterSpacing: '0.05em',
-        paddingTop: 4,
-        lineHeight: 1.4,
-      }}>
-        {label}
+      {/* Left label column — stacks label text + decision badge in decision mode */}
+      <div style={{ width: 140, flexShrink: 0, paddingTop: 4 }}>
+        <div style={{
+          fontSize: '0.6875rem', fontWeight: 700,
+          color: isActive && rowDec.status !== 'undecided' ? rds.color : 'var(--muted)',
+          textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: 1.4,
+          transition: 'color 0.15s',
+        }}>
+          {label}
+        </div>
+
+        {/* Row decision badge — only in decision mode */}
+        {isActive && (
+          <div style={{ marginTop: 5, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <button
+              onClick={cycleRow}
+              title="Click to cycle: undecided → keep → merge → erase"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 4, alignSelf: 'flex-start',
+                fontSize: '0.55rem', fontWeight: 700, fontFamily: 'var(--font-mono)',
+                padding: '2px 7px 2px 5px', borderRadius: 99,
+                border: `1px solid ${rds.dot}66`,
+                background: rowDec.status === 'undecided' ? '#f3f4f6' : rds.bg,
+                color: rds.color, cursor: 'pointer', whiteSpace: 'nowrap',
+                transition: 'all 0.1s',
+              }}
+            >
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: rds.dot, flexShrink: 0 }} />
+              {rds.label} {rds.text}
+            </button>
+            {rowDec.status === 'merge' && (
+              <input
+                value={rowDec.mergeInto || ''}
+                onChange={e => ctx.setDecision(rowKey, { ...rowDec, mergeInto: e.target.value })}
+                onClick={e => e.stopPropagation()}
+                placeholder="into…"
+                style={{
+                  fontSize: '0.55rem', padding: '2px 6px', borderRadius: 5, width: 120,
+                  border: '1px solid #fcd34d', background: '#fffbeb', color: '#92400e',
+                  outline: 'none', fontFamily: 'var(--font-mono)',
+                }}
+              />
+            )}
+          </div>
+        )}
       </div>
+
       {/* Right: flex row of states */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, flex: 1, alignItems: 'flex-start' }}>
         {children}
@@ -240,22 +484,36 @@ function ColorSwatch({ hex, varName, style: extraStyle }) {
 
 function DesignTokensSection() {
   return (
-    <GallerySection title="1 — Design Tokens" desc="CSS variables from :root in index.css">
+    <GallerySection title="Design Tokens" desc="CSS variables from :root in index.css"
+      usage={[
+        { n: 'var(--border)', f: 89 },
+        { n: 'var(--bg)', f: 75 },
+        { n: 'var(--muted)', f: 74 },
+        { n: 'var(--black)', f: 65 },
+        { n: 'var(--red)', f: 38 },
+        { n: 'var(--font-mono)', f: 20 },
+        { n: 'var(--white)', f: 16 },
+        { n: 'var(--font-display)', f: 2 },
+        { n: 'var(--brand)', f: 1 },
+        { n: 'var(--s0/s1/s2)', f: 0, t: 'ghost' },
+        { n: 'var(--b-med/b-hi)', f: 0, t: 'ghost' },
+        { n: 'var(--t-hi)', f: 0, t: 'ghost' },
+      ]}>
 
       {/* 1a. Color palette */}
-      <Row label="1a · Surfaces">
+      <Row label="Surfaces">
         {SURFACE_TOKENS.map(t => (
           <ColorSwatch key={t.var} hex={t.hex} varName={t.var} />
         ))}
       </Row>
 
-      <Row label="1a · Text">
+      <Row label="Text">
         {TEXT_TOKENS.map(t => (
           <ColorSwatch key={t.var} hex={t.hex} varName={t.var} />
         ))}
       </Row>
 
-      <Row label="1a · Semantic">
+      <Row label="Semantic">
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           {['info', 'success', 'warn', 'danger'].map(group => (
             <div key={group} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -278,7 +536,7 @@ function DesignTokensSection() {
       <Divider />
 
       {/* 1b. Border radius */}
-      <Row label="1b · Radius">
+      <Row label="Radius">
         {RADIUS_TOKENS.map(t => (
           <div key={t.var} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
             <div style={{
@@ -297,7 +555,7 @@ function DesignTokensSection() {
       <Divider />
 
       {/* 1c. Elevation */}
-      <Row label="1c · Elevation" noBorder={false}>
+      <Row label="Elevation" noBorder={false}>
         {ELEVATION_TOKENS.map(t => (
           <div key={t.var} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
             <div style={{
@@ -320,7 +578,7 @@ function DesignTokensSection() {
       <Divider />
 
       {/* 1d. Typography scale */}
-      <Row label="1d · Typography" noBorder>
+      <Row label="Typography" noBorder>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
           <div>
             <StateLabel>h1 · page title</StateLabel>
@@ -363,10 +621,19 @@ function ButtonsSection() {
   const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <GallerySection title="2 — Buttons" desc="All button variants with default / hover / active / disabled states">
+    <GallerySection title="Buttons" desc="All button variants with default / hover / active / disabled states"
+      usage={[
+        { n: '.page-action-btn', f: 17 },
+        { n: '.nav-expand-btn', f: 1 },
+        { n: '.btn-primary', f: 0, t: 'missing' },
+        { n: '.btn-secondary', f: 0, t: 'missing' },
+        { n: '.btn-ghost', f: 0, t: 'missing' },
+        { n: '.btn-danger', f: 0, t: 'missing' },
+        { n: 'Button', t: 'playbook' },
+      ]}>
 
       {/* 2a. Page action buttons */}
-      <Row label="2a · Page action">
+      <Row label="Page action">
         <StateBox label="Default">
           <button className="page-action-btn">Ask AI</button>
         </StateBox>
@@ -396,7 +663,7 @@ function ButtonsSection() {
       <Divider />
 
       {/* 2b. Primary / brand button */}
-      <Row label="2b · Primary brand">
+      <Row label="Primary brand">
         <StateBox label="Default">
           <button style={{
             background: 'var(--brand)',
@@ -456,7 +723,7 @@ function ButtonsSection() {
       <Divider />
 
       {/* 2c. Secondary / outline button */}
-      <Row label="2c · Secondary">
+      <Row label="Secondary">
         <StateBox label="Default">
           <button style={{
             background: 'transparent',
@@ -518,7 +785,7 @@ function ButtonsSection() {
       <Divider />
 
       {/* 2d. Tab buttons */}
-      <Row label="2d · Tab bar">
+      <Row label="Tab bar">
         <StateBox label="Tab bar (interactive)">
           <div className="tab-bar" style={{ marginBottom: 0 }}>
             {['REST', 'Kotlin', 'Swift', 'Python'].map((tab, i) => (
@@ -546,7 +813,7 @@ function ButtonsSection() {
       <Divider />
 
       {/* 2e. Icon buttons */}
-      <Row label="2e · Icon button" noBorder>
+      <Row label="Icon button" noBorder>
         <StateBox label="Default (.gh-icon-btn)">
           <button className="gh-icon-btn" title="Toggle theme" aria-label="Toggle theme">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -595,10 +862,27 @@ function ButtonsSection() {
 
 function BadgesSection() {
   return (
-    <GallerySection title="3 — Badges & Tags" desc="HTTP method tags, version badges, meta tags, value pills, status chips">
+    <GallerySection title="Badges & Tags" desc="HTTP method tags, version badges, meta tags, value pills, status chips"
+      usage={[
+        { n: '.http-tag', f: 7 },
+        { n: '.meta-tag', f: 7 },
+        { n: '.method-tag', f: 0, t: 'wrong', fix: '.http-tag' },
+        { n: '.http-get', f: 0, t: 'wrong', fix: '.http-tag-get' },
+        { n: '.http-post', f: 0, t: 'wrong', fix: '.http-tag-post' },
+        { n: '.version-badge', f: 0, t: 'missing' },
+        { n: '.ref-badge', f: 0, t: 'missing' },
+        { n: '.value-pill', f: 0, t: 'missing' },
+        { n: '.chip', f: 0, t: 'missing' },
+        { n: '.draft-chip', f: 0, t: 'missing' },
+        { n: 'Tag', t: 'playbook' },
+        { n: 'StatusTag', t: 'playbook' },
+        { n: 'Chip', t: 'playbook' },
+        { n: 'ChipGroup', t: 'playbook' },
+        { n: 'ChipGroupToggle', t: 'playbook' },
+      ]}>
 
       {/* 3a. HTTP method badges — CSS classes */}
-      <Row label="3a · HTTP classes">
+      <Row label="HTTP classes">
         <StateBox label="GET">
           <span className="http-tag http-tag-get">GET</span>
         </StateBox>
@@ -617,7 +901,7 @@ function BadgesSection() {
       </Row>
 
       {/* 3a. METHOD_STYLES inline pattern (from ApiRefTwoCol SectionHeader) */}
-      <Row label="3a · METHOD_STYLES inline">
+      <Row label="METHOD_STYLES inline">
         {[
           { method: 'GET',    bg: 'var(--info-bg)',    color: 'var(--info-text)'    },
           { method: 'POST',   bg: 'var(--success-bg)', color: 'var(--success-text)' },
@@ -638,7 +922,7 @@ function BadgesSection() {
       <Divider />
 
       {/* 3b. Version / status badges */}
-      <Row label="3b · Version badges">
+      <Row label="Version badges">
         <StateBox label="v1 Production">
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -680,7 +964,7 @@ function BadgesSection() {
       <Divider />
 
       {/* 3c. REF badge (sidenav chip) */}
-      <Row label="3c · REF chip">
+      <Row label="REF chip">
         <StateBox label="Default">
           <span className="api-ref-chip">REF</span>
         </StateBox>
@@ -700,7 +984,7 @@ function BadgesSection() {
       <Divider />
 
       {/* 3d. Meta tags */}
-      <Row label="3d · Meta tags">
+      <Row label="Meta tags">
         <StateBox label="Default">
           <span className="meta-tag">v1 · Production</span>
         </StateBox>
@@ -726,7 +1010,7 @@ function BadgesSection() {
       <Divider />
 
       {/* 3e. Value pills (3 states from ParamRow) */}
-      <Row label="3e · Value pills">
+      <Row label="Value pills">
         <StateBox label="Active (selected)">
           <code style={{
             fontSize: '0.75rem', padding: '2px 8px', borderRadius: 4,
@@ -768,7 +1052,7 @@ function BadgesSection() {
       <Divider />
 
       {/* 3f. Tinted chip pattern (color + '22' / '44' alpha) */}
-      <Row label="3f · Tinted chips">
+      <Row label="Tinted chips">
         {[
           { label: 'Green / success', bg: '#00A65E22', border: '#00A65E44', color: '#00A65E', text: 'Available' },
           { label: 'Amber / warn',    bg: '#D9770622', border: '#D9770644', color: '#D97706', text: 'Limited' },
@@ -788,7 +1072,7 @@ function BadgesSection() {
       <Divider />
 
       {/* 3g. Draft badge */}
-      <Row label="3g · Draft / warning chip" noBorder>
+      <Row label="Draft / warning chip" noBorder>
         <StateBox label="URL unverified">
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
@@ -833,7 +1117,11 @@ function BadgesSection() {
 
 function CalloutsSection() {
   return (
-    <GallerySection title="4 — Callouts" desc="All 4 Callout variants with realistic content">
+    <GallerySection title="Callouts" desc="All 4 Callout variants with realistic content"
+      usage={[
+        { n: 'Callout', f: 74 },
+        { n: 'Alert', t: 'playbook' },
+      ]}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
         <Callout type="info">
           <strong>API key required.</strong> All endpoints require a valid API key passed as the <code className="ic">key</code> query parameter or the <code className="ic">Authorization</code> header. See the Authentication guide to get started.
@@ -889,9 +1177,14 @@ search.search(query: query) { result in
 
 function CodeBlocksSection() {
   return (
-    <GallerySection title="5 — Code Blocks" desc="Single-label, multi-tab, and copied state">
+    <GallerySection title="Code Blocks" desc="Single-label, multi-tab, and copied state"
+      usage={[
+        { n: 'CodeBlock', f: 45 },
+        { n: '.cb-pre', f: 3 },
+        { n: '.cb-line', f: 4 },
+      ]}>
 
-      <Row label="5a · Single label">
+      <Row label="Single label">
         <div style={{ flex: 1, maxWidth: 700 }}>
           <CodeBlock label="curl · Fuzzy Search">
             {CURL_SNIPPET}
@@ -901,7 +1194,7 @@ function CodeBlocksSection() {
 
       <Divider />
 
-      <Row label="5b · Multi-tab" noBorder={false}>
+      <Row label="Multi-tab" noBorder={false}>
         <div style={{ flex: 1, maxWidth: 700 }}>
           <CodeBlock tabs={['REST', 'Kotlin', 'Swift']}>
             {REST_SNIPPET}
@@ -913,7 +1206,7 @@ function CodeBlocksSection() {
 
       <Divider />
 
-      <Row label="5c · Copied state" noBorder>
+      <Row label="Copied state" noBorder>
         <StateBox label="Copy btn: default">
           <button className="copy-btn">Copy</button>
         </StateBox>
@@ -950,9 +1243,16 @@ function ParamCardsSection() {
   const [modeValue, setModeValue] = useState(null);
 
   return (
-    <GallerySection title="6 — Param Cards" desc="Required, optional, nested children — all interactive">
+    <GallerySection title="Param Cards" desc="Required, optional, nested children — all interactive"
+      usage={[
+        { n: 'ParamRow', f: 55 },
+        { n: '.param-row', f: 0, t: 'missing' },
+        { n: '.param-name', f: 0, t: 'missing' },
+        { n: '.param-type', f: 0, t: 'missing' },
+        { n: '.param-req', f: 0, t: 'missing' },
+      ]}>
 
-      <Row label="6a · Required param">
+      <Row label="Required param">
         <div style={{ flex: 1, maxWidth: 540 }}>
           <ParamRow
             name="query"
@@ -965,7 +1265,7 @@ function ParamCardsSection() {
 
       <Divider />
 
-      <Row label="6b · Optional + values">
+      <Row label="Optional + values">
         <div style={{ flex: 1, maxWidth: 540 }}>
           <ParamRow
             name="limit"
@@ -992,7 +1292,7 @@ function ParamCardsSection() {
 
       <Divider />
 
-      <Row label="6c · Nested children" noBorder>
+      <Row label="Nested children" noBorder>
         <div style={{ flex: 1, maxWidth: 540 }}>
           <ParamRow
             name="chargingModes"
@@ -1035,10 +1335,16 @@ function ParamCardsSection() {
 
 function InlinePatternsSection() {
   return (
-    <GallerySection title="7 — Inline Patterns" desc="Recurring inline-style patterns used across API reference and demo pages">
+    <GallerySection title="Inline Patterns" desc="Recurring inline-style patterns used across API reference and demo pages"
+      usage={[
+        { n: '.async-status-pill', f: 0, t: 'missing' },
+        { n: '.error-code-row', f: 0, t: 'missing' },
+        { n: '.version-dot', f: 0, t: 'missing' },
+        { n: '.section-meta-header', f: 0, t: 'missing' },
+      ]}>
 
       {/* 7a. Pill row — async polling states */}
-      <Row label="7a · Async polling pills">
+      <Row label="Async polling pills">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           {[
             { status: 202, label: 'Processing', color: '#D97706', bg: '#FFF5DD', border: '#D9770644' },
@@ -1068,7 +1374,7 @@ function InlinePatternsSection() {
       <Divider />
 
       {/* 7b. Error code badge row */}
-      <Row label="7b · Error code rows">
+      <Row label="Error code rows">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1, maxWidth: 560 }}>
           {[
             { code: 400, title: 'Bad Request',   desc: 'The request was malformed. Check query parameter values.' },
@@ -1094,7 +1400,7 @@ function InlinePatternsSection() {
       <Divider />
 
       {/* 7c. Section header with method badge (api-ref-section-header style) */}
-      <Row label="7c · Section header">
+      <Row label="Section header">
         <div style={{ flex: 1, maxWidth: 700 }}>
           <div style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -1136,7 +1442,7 @@ function InlinePatternsSection() {
       <Divider />
 
       {/* 7d. Version badge (ApiRefTwoCol inline style) */}
-      <Row label="7d · Inline version dot" noBorder>
+      <Row label="Inline version dot" noBorder>
         <StateBox label="v1 Production">
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
@@ -1190,10 +1496,28 @@ function FormsSection() {
   const [sliderVal, setSliderVal] = useState(50);
 
   return (
-    <GallerySection title="8 — Forms & Inputs" desc="Text input, textarea, range slider — all interactive states">
+    <GallerySection title="Forms & Inputs" desc="Text input, textarea, range slider — all interactive states"
+      usage={[
+        { n: '.tt-input', f: 0, t: 'missing' },
+        { n: '.tt-input-wrap', f: 0, t: 'missing' },
+        { n: '.tt-input-label', f: 0, t: 'missing' },
+        { n: '.tt-input-error', f: 0, t: 'missing' },
+        { n: '.tt-textarea', f: 0, t: 'missing' },
+        { n: '.tt-range', f: 0, t: 'missing' },
+        { n: 'Input', t: 'playbook' },
+        { n: 'Textarea', t: 'playbook' },
+        { n: 'Slider', t: 'playbook' },
+        { n: 'FormControl', t: 'playbook' },
+        { n: 'FieldLabel', t: 'playbook' },
+        { n: 'FieldCaption', t: 'playbook' },
+        { n: 'Checkbox', t: 'playbook' },
+        { n: 'Switch', t: 'playbook' },
+        { n: 'Dropdown', t: 'playbook' },
+        { n: 'FileInput', t: 'playbook' },
+      ]}>
 
       {/* 8a. Text input */}
-      <Row label="8a · Text input">
+      <Row label="Text input">
         <StateBox label="Default (empty)">
           <input
             type="text"
@@ -1269,7 +1593,7 @@ function FormsSection() {
       <Divider />
 
       {/* 8b. Textarea */}
-      <Row label="8b · Textarea">
+      <Row label="Textarea">
         <StateBox label="Default (empty)">
           <textarea
             rows={3}
@@ -1333,7 +1657,7 @@ function FormsSection() {
       <Divider />
 
       {/* 8c. Range slider */}
-      <Row label="8c · Range slider" noBorder>
+      <Row label="Range slider" noBorder>
         <StateBox label={`Charge level: ${sliderVal}%`}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: 260 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1382,8 +1706,16 @@ function FormsSection() {
 
 function StepsSection() {
   return (
-    <GallerySection title="9 — Steps" desc=".steps / .step / .step-num pattern">
-      <Row label="9 · Steps" noBorder>
+    <GallerySection title="Steps" desc=".steps / .step / .step-num pattern"
+      usage={[
+        { n: '.steps', f: 0, t: 'ghost' },
+        { n: '.step', f: 0, t: 'ghost' },
+        { n: '.step-num', f: 0, t: 'ghost' },
+        { n: 'Stepper', t: 'playbook' },
+        { n: 'StepMenu', t: 'playbook' },
+        { n: 'StepsMenu', t: 'playbook' },
+      ]}>
+      <Row label="Steps" noBorder>
         <div style={{ flex: 1, maxWidth: 560 }}>
           <div className="steps">
             <div className="step">
@@ -1421,8 +1753,14 @@ function StepsSection() {
 
 function ScenarioCardsSection() {
   return (
-    <GallerySection title="10 — Scenario Cards" desc=".scenario-grid with .use and .avoid variants">
-      <Row label="10 · Use / Avoid" noBorder>
+    <GallerySection title="Scenario Cards" desc=".scenario-grid with .use and .avoid variants"
+      usage={[
+        { n: '.scenario-card', f: 1 },
+        { n: '.scenario-grid', f: 0, t: 'missing' },
+        { n: '.scenario-card--use', f: 0, t: 'wrong', fix: '.scenario-card.use' },
+        { n: '.scenario-card--avoid', f: 0, t: 'wrong', fix: '.scenario-card.avoid' },
+      ]}>
+      <Row label="Use / Avoid" noBorder>
         <div className="scenario-grid" style={{ flex: 1 }}>
           <div className="scenario-card use">
             <div className="sc-label">Use</div>
@@ -1453,8 +1791,14 @@ function ScenarioCardsSection() {
 
 function TablesSection() {
   return (
-    <GallerySection title="11 — Tables" desc=".prop-table with .prop-req and .prop-opt labels, hover state">
-      <Row label="11 · Prop table" noBorder>
+    <GallerySection title="Tables" desc=".prop-table with .prop-req and .prop-opt labels, hover state"
+      usage={[
+        { n: '.prop-table', f: 45 },
+        { n: '.prop-req', f: 0, t: 'ghost' },
+        { n: '.prop-opt', f: 0, t: 'ghost' },
+        { n: 'Table', t: 'playbook' },
+      ]}>
+      <Row label="Prop table" noBorder>
         <div style={{ flex: 1 }}>
           <table className="prop-table">
             <thead>
@@ -1532,9 +1876,19 @@ function StatusDots() {
 
 function StatusSection() {
   return (
-    <GallerySection title="12 — Status States" desc="Loading / result states used across demo panels and async operations">
+    <GallerySection title="Status States" desc="Loading / result states used across demo panels and async operations"
+      usage={[
+        { n: '.status-idle', f: 0, t: 'missing' },
+        { n: '.status-loading', f: 0, t: 'missing' },
+        { n: '.status-success', f: 0, t: 'missing' },
+        { n: '.status-error', f: 0, t: 'missing' },
+        { n: '.spinner', f: 0, t: 'missing' },
+        { n: 'Spinner', t: 'playbook' },
+        { n: 'AnimatedLoadingBar', t: 'playbook' },
+        { n: 'AnimatedLoadingSpinner', t: 'playbook' },
+      ]}>
 
-      <Row label="12 · Response states" noBorder>
+      <Row label="Response states" noBorder>
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', flex: 1 }}>
 
           {/* Idle */}
@@ -1670,7 +2024,15 @@ function NavCardsSection() {
   );
 
   return (
-    <GallerySection title="Navigation Cards" desc=".nav-card, .example-card — illustrated destination cards">
+    <GallerySection title="Navigation Cards" desc=".nav-card, .example-card — illustrated destination cards"
+      usage={[
+        { n: '.nav-card', f: 12 },
+        { n: '.nav-card-body', f: 11 },
+        { n: '.example-card', f: 1 },
+        { n: '.nav-card-title', f: 0, t: 'missing' },
+        { n: 'ContentCard', t: 'playbook' },
+        { n: 'SearchCard', t: 'playbook' },
+      ]}>
       <Row label="nav-card — default / hover">
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           {/* Default */}
@@ -1749,7 +2111,14 @@ function DomainCardsSection() {
   );
 
   return (
-    <GallerySection title="Domain Cards" desc=".domain-card — product/domain landing destination cards">
+    <GallerySection title="Domain Cards" desc=".domain-card — product/domain landing destination cards"
+      usage={[
+        { n: '.domain-card', f: 1 },
+        { n: '.domain-card-title', f: 1 },
+        { n: '.domain-card-icon', f: 0, t: 'wrong', fix: '.domain-card-illo' },
+        { n: 'Card', t: 'playbook' },
+        { n: 'ComplexCard', t: 'playbook' },
+      ]}>
       <Row label="variants">
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           {/* Default */}
@@ -1807,7 +2176,12 @@ function DomainCardsSection() {
 
 function ApiLinksSection() {
   return (
-    <GallerySection title="ApiLinks + ApiRef chip" desc=".api-links-block, .api-links-card, .api-ref-chip">
+    <GallerySection title="ApiLinks + ApiRef chip" desc=".api-links-block, .api-links-card, .api-ref-chip"
+      usage={[
+        { n: '.api-links-block', f: 1 },
+        { n: '.api-links-card', f: 1 },
+        { n: '.api-ref-chip', f: 1 },
+      ]}>
       <Row label="api-links-grid — 3 cards">
         <div style={{ width: '100%', maxWidth: 640 }}>
           <div className="api-links-block">
@@ -1867,7 +2241,14 @@ function PrivatePreviewSection() {
     </svg>
   );
   return (
-    <GallerySection title="Private Preview Banner" desc=".ppb-root — shown at top of private-preview API pages">
+    <GallerySection title="Private Preview Banner" desc=".ppb-root — shown at top of private-preview API pages"
+      usage={[
+        { n: 'PrivatePreviewBanner', f: 6 },
+        { n: '.ppb-root', f: 1 },
+        { n: '.ppb-title', f: 1 },
+        { n: '.ppb-body', f: 1 },
+        { n: '.ppb-badge', f: 0, t: 'wrong', fix: '.ppb-icon' },
+      ]}>
       <Row label="default" noBorder>
         <div style={{ width: '100%', maxWidth: 640 }}>
           <div className="ppb-root">
@@ -1894,7 +2275,14 @@ function PrivatePreviewSection() {
 
 function BenefitCardsSection() {
   return (
-    <GallerySection title="Benefit Cards" desc=".benefit-grid, .benefit-card — 2-col feature highlights">
+    <GallerySection title="Benefit Cards" desc=".benefit-grid, .benefit-card — 2-col feature highlights"
+      usage={[
+        { n: '.benefit-card', f: 1 },
+        { n: '.benefit-grid', f: 1 },
+        { n: '.benefit-card-icon', f: 0, t: 'missing' },
+        { n: '.benefit-card-title', f: 0, t: 'missing' },
+        { n: 'Card', t: 'playbook' },
+      ]}>
       <Row label="2-col grid" noBorder>
         <div style={{ width: '100%', maxWidth: 560 }}>
           <div className="benefit-grid">
@@ -1923,7 +2311,15 @@ function BenefitCardsSection() {
 
 function PageAnatomySection() {
   return (
-    <GallerySection title="Page Anatomy Shell" desc=".page-header, .quick-answer, .zone, .page-related, .feedback-strip">
+    <GallerySection title="Page Anatomy Shell" desc=".page-header, .quick-answer, .zone, .page-related, .feedback-strip"
+      usage={[
+        { n: '.page-header', f: 90 },
+        { n: '.quick-answer', f: 86 },
+        { n: '.zone', f: 84 },
+        { n: '.sh', f: 87 },
+        { n: '.feedback-strip', f: 17 },
+        { n: '.page-related', f: 8 },
+      ]}>
 
       {/* page-header */}
       <Row label=".page-header">
@@ -2007,7 +2403,13 @@ function PageAnatomySection() {
 
 function TokenNamingSection() {
   return (
-    <GallerySection title="Token Naming Anatomy" desc=".tna-* — colour-coded token name breakdown">
+    <GallerySection title="Token Naming Anatomy" desc=".tna-* — colour-coded token name breakdown"
+      usage={[
+        { n: '.tna-tier', f: 1 },
+        { n: '.tna-variant', f: 1 },
+        { n: '.tna-root', f: 0, t: 'ghost' },
+        { n: '.tna-role', f: 0, t: 'ghost' },
+      ]}>
       <Row label="full token anatomy" noBorder>
         <div>
           <div className="tna-token">--color-brand-primary-default</div>
@@ -2051,7 +2453,14 @@ function TokenNamingSection() {
 
 function ThemingCardSection() {
   return (
-    <GallerySection title="Theming Card" desc=".tm-card, .tm-bar, .tm-btns, .tm-btn-primary, .tm-btn-secondary">
+    <GallerySection title="Theming Card" desc=".tm-card, .tm-bar, .tm-btns, .tm-btn-primary, .tm-btn-secondary"
+      usage={[
+        { n: '.tm-card', f: 1 },
+        { n: '.tm-bar', f: 1 },
+        { n: '.tm-btns', f: 1 },
+        { n: '.tm-btn-primary', f: 1 },
+        { n: '.tm-btn-secondary', f: 1 },
+      ]}>
       <Row label="tm-card specimen" noBorder>
         <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           {/* Light variant */}
@@ -2117,7 +2526,13 @@ function SpecMethodTableSection() {
     { val: 'IEC62196Type2CCS', ctx: 'connectorSet', highlight: false },
   ];
   return (
-    <GallerySection title="Spec Method Table" desc=".smt-row, .smt-val, .smt-ctx, .smt-highlight — enumerated values table">
+    <GallerySection title="Spec Method Table" desc=".smt-row, .smt-val, .smt-ctx, .smt-highlight — enumerated values table"
+      usage={[
+        { n: '.smt-row', f: 1 },
+        { n: '.smt-val', f: 1 },
+        { n: '.smt-ctx', f: 1 },
+        { n: '.smt-highlight', f: 1 },
+      ]}>
       <Row label="table with highlight row" noBorder>
         <div style={{ width: '100%', maxWidth: 480, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
           {/* Header */}
@@ -2149,7 +2564,15 @@ function SpecMethodTableSection() {
 
 function ApiRefLayoutSection() {
   return (
-    <GallerySection title="ApiRef Two-Column Layout" desc=".api-ref-sections, .api-ref-section-left/right/code/header — every API reference page frame">
+    <GallerySection title="ApiRef Two-Column Layout" desc=".api-ref-sections, .api-ref-section-left/right/code/header — every API reference page frame"
+      usage={[
+        { n: 'ApiRefTwoCol', f: 55 },
+        { n: '.api-ref-sections', f: 1 },
+        { n: '.api-ref-section-left', f: 1 },
+        { n: '.api-ref-section-right', f: 1 },
+        { n: '.api-ref-section-code', f: 1 },
+        { n: '.api-ref-section-header', f: 1 },
+      ]}>
       <Row label="full layout specimen" noBorder>
         <div style={{ width: '100%', maxWidth: 760, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
           <div className="api-ref-sections" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: 200 }}>
@@ -2199,59 +2622,247 @@ function ApiRefLayoutSection() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function SidenavSection() {
+  const CC = '#D4D4D4'; // CONNECTOR_COLOR matching Sidenav.jsx
+
+  /* Exact connector components from Sidenav.jsx */
+  const CornerConnector = () => (
+    <div style={{ width: 16, alignSelf: 'stretch', flexShrink: 0, position: 'relative' }}>
+      <div style={{
+        position: 'absolute', left: 7, top: 0,
+        width: 9, height: 'calc(50% + 1px)',
+        borderLeft: `1.5px solid ${CC}`,
+        borderBottom: `1.5px solid ${CC}`,
+        borderBottomLeftRadius: 6,
+      }} />
+    </div>
+  );
+  const TeeConnector = () => (
+    <div style={{ width: 16, alignSelf: 'stretch', flexShrink: 0, position: 'relative' }}>
+      <div style={{ position: 'absolute', left: 7, top: 0, bottom: 0, width: 1.5, background: CC }} />
+      <div style={{ position: 'absolute', left: 7, top: '50%', right: 0, height: 1.5, background: CC, transform: 'translateY(-50%)' }} />
+    </div>
+  );
+  const ChevronDown = ({ open }) => (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+      style={{ flexShrink: 0, transition: 'transform 0.15s', transform: open ? 'rotate(0deg)' : 'rotate(-90deg)' }}>
+      <path fillRule="evenodd" clipRule="evenodd"
+        d="M7.9999 11.1011L3.41064 6.51189L4.58916 5.33337L7.9999 8.74412L11.4106 5.33337L12.5892 6.51189L7.9999 11.1011Z"
+        fill="#5C5C5C"/>
+    </svg>
+  );
+  const RefPill = () => (
+    <span style={{
+      fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3,
+      background: 'var(--info-bg)', color: 'var(--info-text)',
+      fontFamily: 'monospace', letterSpacing: '0.04em', flexShrink: 0, marginRight: 4,
+    }}>REF</span>
+  );
   const MethodPill = ({ m }) => {
-    const cols = { GET: '#e6f4ea:#c3e6cb:#1e7e34', POST: '#e8f0fe:#c5d3f8:#1d4ed8', DEL: '#fff5f5:#fecaca:#c0392b' };
-    const [bg, border, text] = (cols[m] || cols.GET).split(':');
-    return <span style={{ fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: bg, border: `1px solid ${border}`, color: text, lineHeight: 1 }}>{m}</span>;
+    const MAP = { GET: ['var(--info-bg)', 'var(--info-text)'], POST: ['var(--success-bg)', 'var(--success-text)'] };
+    const [bg, color] = MAP[m] || MAP.GET;
+    return (
+      <span style={{
+        fontSize: '0.5rem', fontWeight: 700, padding: '2px 5px', borderRadius: 3,
+        background: bg, color, fontFamily: 'monospace', letterSpacing: '0.05em', flexShrink: 0,
+      }}>{m}</span>
+    );
   };
+
+  const SectionLabel = ({ label }) => (
+    <div style={{ padding: '16px 10px 4px', fontSize: '0.6875rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--muted)', userSelect: 'none' }}>
+      {label}
+    </div>
+  );
+
+  const NavFrame = ({ children }) => (
+    <div style={{ width: 220, background: 'var(--white)', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', padding: '4px 0 8px' }}>
+      {children}
+    </div>
+  );
+
   return (
-    <GallerySection title="Sidenav Anatomy" desc=".sidenav-group, .sidenav-label, .sidenav-item, .sidenav-anchors, .sidenav-anchor-item">
-      <Row label="group + items + anchors" noBorder>
-        <div style={{ width: 220, background: 'var(--white)', border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
-          {/* Group with label */}
-          <div className="sidenav-group">
-            <div className="sidenav-label open" style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6, cursor: 'default', fontSize: '0.75rem', fontWeight: 600, color: 'var(--black)' }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
-              <span className="sidenav-label-text">Routing API</span>
-            </div>
-            <div className="sidenav-items open" style={{ display: 'block' }}>
-              {/* Default item */}
-              <div className="sidenav-item" style={{ display: 'flex', alignItems: 'center', padding: '7px 12px 7px 20px', fontSize: '0.8125rem', color: 'var(--mid)', cursor: 'default' }}>
-                <span className="sidenav-item-label">Introduction</span>
-              </div>
-              {/* Active item + anchors */}
-              <div className="sidenav-item active" style={{ display: 'flex', alignItems: 'center', padding: '7px 12px 7px 20px', fontSize: '0.8125rem', cursor: 'default' }}>
-                <span className="sidenav-item-label">Calculate Route</span>
-              </div>
-              <div className="sidenav-anchors">
-                <div className="sidenav-anchor-item" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 6px', fontSize: '0.75rem', color: 'var(--mid)', cursor: 'default' }}>
-                  <div className="sidenav-anchor-rail" />
-                  <span className="sidenav-anchor-label">Request</span>
-                  <MethodPill m="GET" />
-                </div>
-                <div className="sidenav-anchor-item active" style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 6px', fontSize: '0.75rem', color: 'var(--red)', cursor: 'default' }}>
-                  <div className="sidenav-anchor-rail" />
-                  <span className="sidenav-anchor-label" style={{ fontWeight: 600 }}>Response</span>
-                </div>
-              </div>
-              {/* Disabled item */}
-              <div className="sidenav-item" style={{ display: 'flex', alignItems: 'center', padding: '7px 12px 7px 20px', fontSize: '0.8125rem', color: 'var(--mid)', opacity: 0.55, cursor: 'default' }}>
-                <span className="sidenav-item-label">Batch Route</span>
-              </div>
-            </div>
+    <GallerySection title="Sidenav Anatomy" desc=".sidenav-group · .sidenav-label · .sidenav-item · .sidenav-top-link · .sidenav-anchor-item — two nav patterns + tree connectors"
+      usage={[
+        { n: '.sidenav', f: 3 },
+        { n: '.sidenav-item', f: 2 },
+        { n: '.sidenav-group', f: 1 },
+        { n: '.sidenav-label', f: 1 },
+        { n: '.sidenav-items', f: 1 },
+        { n: '.sidenav-top-link', f: 1 },
+        { n: '.sidenav-anchor-item', f: 0, t: 'ghost' },
+        { n: '.sidenav-anchor-rail', f: 0, t: 'ghost' },
+        { n: '.sidenav-anchor-label', f: 0, t: 'ghost' },
+        { n: 'Sidebar', t: 'playbook' },
+      ]}>
+
+      {/* ── 1. sidenav-top-link (the pattern shown in the screenshot) ── */}
+      <Row label="sidenav-top-link — top-level entries (type:'top') with REF badge + anchor expansion">
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+
+          {/* Default top-link */}
+          <div>
+            <StateLabel>default</StateLabel>
+            <NavFrame>
+              <span className="sidenav-top-link" style={{ cursor: 'default', display: 'flex', alignItems: 'center' }}>
+                <span style={{ flex: 1 }}>Introduction</span>
+              </span>
+            </NavFrame>
           </div>
-          {/* Divider */}
-          <div className="sidenav-plumbing-divider" />
-          {/* Top-level link */}
-          <div className="sidenav-top-link" style={{ padding: '7px 12px', fontSize: '0.8125rem', color: 'var(--mid)', cursor: 'default' }}>
-            Changelog
+
+          {/* Active top-link */}
+          <div>
+            <StateLabel>active (background:var(--s1))</StateLabel>
+            <NavFrame>
+              <span className="sidenav-top-link active" style={{ cursor: 'default', display: 'flex', alignItems: 'center' }}>
+                <span style={{ flex: 1 }}>Introduction</span>
+              </span>
+            </NavFrame>
+          </div>
+
+          {/* top-link with REF badge + chevron — collapsed */}
+          <div>
+            <StateLabel>with REF badge + chevron — collapsed</StateLabel>
+            <NavFrame>
+              <span className="sidenav-top-link" style={{ cursor: 'default', display: 'flex', alignItems: 'center' }}>
+                <span style={{ flex: 1 }}>Parking Availability</span>
+                <RefPill />
+                <ChevronDown open={false} />
+              </span>
+            </NavFrame>
+          </div>
+
+          {/* top-link expanded — the screenshot state */}
+          <div>
+            <StateLabel>expanded — anchors shown below (matches screenshot)</StateLabel>
+            <NavFrame>
+              <span className="sidenav-top-link" style={{ cursor: 'default', display: 'flex', alignItems: 'center' }}>
+                <span style={{ flex: 1 }}>Parking Availability</span>
+                <RefPill />
+                <ChevronDown open={true} />
+              </span>
+              {/* AnchorItems rendered as sidenav-items with sidenav-item children */}
+              <div className="sidenav-items open">
+                <span className="sidenav-item" style={{ cursor: 'default' }}>
+                  <TeeConnector />
+                  <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                    <span style={{ flex: 1 }}>Real-time Availability</span>
+                    <MethodPill m="GET" />
+                  </span>
+                </span>
+                <span className="sidenav-item" style={{ cursor: 'default' }}>
+                  <TeeConnector />
+                  <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                    <span style={{ flex: 1 }}>Response</span>
+                  </span>
+                </span>
+                <span className="sidenav-item" style={{ cursor: 'default' }}>
+                  <TeeConnector />
+                  <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                    <span style={{ flex: 1 }}>Nearby Parking Search</span>
+                    <MethodPill m="GET" />
+                  </span>
+                </span>
+                <span className="sidenav-item active" style={{ cursor: 'default' }}>
+                  <CornerConnector />
+                  <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                    <span style={{ flex: 1 }}>Response</span>
+                  </span>
+                </span>
+              </div>
+            </NavFrame>
           </div>
         </div>
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginTop: 8 }}>
-          Active item uses <code>.sidenav-item.active</code> → <code>background: var(--s1)</code> + bold label.
-          Active anchor uses <code>.sidenav-anchor-item.active</code> → <code>color: var(--red)</code>
+        <div style={{ marginTop: 8, fontSize: 11, color: 'var(--muted)' }}>
+          Anchors are rendered as <code>.sidenav-item</code> (same class as group items) inside <code>.sidenav-items.open</code>. The last item uses <code>CornerConnector</code>; all others use <code>TeeConnector</code>.
         </div>
       </Row>
+
+      {/* ── 2. sidenav-anchor-item (in-page section nav under a group item) ── */}
+      <Row label="sidenav-anchor-item — in-page anchors under a group item (older/secondary pattern)">
+        <NavFrame>
+          <div className="sidenav-anchors">
+            <div className="sidenav-anchor-item" style={{ cursor: 'default' }}>
+              <div className="sidenav-anchor-rail" />
+              <span className="sidenav-anchor-label">Request</span>
+              <MethodPill m="GET" />
+            </div>
+            <div className="sidenav-anchor-item active" style={{ cursor: 'default' }}>
+              <div className="sidenav-anchor-rail" />
+              <span className="sidenav-anchor-label">Response</span>
+            </div>
+          </div>
+        </NavFrame>
+        <div style={{ marginTop: 8, fontSize: 11, color: 'var(--muted)' }}>
+          <code>.sidenav-anchor-item.active</code> → <code>color:var(--red)</code> + bold label. Rail is a 16px spacer.
+        </div>
+      </Row>
+
+      {/* ── 3. NavGroup with section header ── */}
+      <Row label="sidenav-group — collapsible API group + section separator" noBorder>
+        <NavFrame>
+          {/* Section separator */}
+          <SectionLabel label="Endpoints" />
+
+          {/* Group label — open */}
+          <div className="sidenav-group">
+            <div className="sidenav-label open" style={{ cursor: 'default' }}>
+              <span className="sidenav-label-text">Routing API</span>
+              <span className="sidenav-chevron-wrap">
+                <ChevronDown open={true} />
+              </span>
+            </div>
+            <div className="sidenav-items open">
+              <span className="sidenav-item" style={{ cursor: 'default' }}>
+                <TeeConnector />
+                <span className="sidenav-item-label">Introduction</span>
+              </span>
+              <span className="sidenav-item active" style={{ cursor: 'default' }}>
+                <TeeConnector />
+                <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                  <span style={{ flex: 1 }}>Calculate Route</span>
+                  <ChevronDown open={true} />
+                </span>
+              </span>
+              {/* Sub-anchors with extra indent */}
+              <div className="sidenav-items open" style={{ paddingLeft: 24 }}>
+                <span className="sidenav-item" style={{ cursor: 'default' }}>
+                  <TeeConnector />
+                  <span className="sidenav-item-label" style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
+                    <span style={{ flex: 1 }}>Calculate Route</span>
+                    <MethodPill m="GET" />
+                  </span>
+                </span>
+                <span className="sidenav-item active" style={{ cursor: 'default' }}>
+                  <CornerConnector />
+                  <span className="sidenav-item-label">Response</span>
+                </span>
+              </div>
+              <span className="sidenav-item" style={{ cursor: 'default' }}>
+                <CornerConnector />
+                <span className="sidenav-item-label">Batch Route</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Collapsed group */}
+          <div className="sidenav-group">
+            <div className="sidenav-label" style={{ cursor: 'default' }}>
+              <span className="sidenav-label-text">EV Routing</span>
+              <span className="sidenav-chevron-wrap"><ChevronDown open={false} /></span>
+            </div>
+          </div>
+
+          {/* Plumbing divider + top-link */}
+          <div className="sidenav-plumbing-divider" />
+          <span className="sidenav-top-link" style={{ cursor: 'default', display: 'flex', alignItems: 'center' }}>
+            <span style={{ flex: 1 }}>Changelog</span>
+          </span>
+        </NavFrame>
+        <div style={{ marginTop: 8, fontSize: 11, color: 'var(--muted)' }}>
+          <code>.sidenav-label.open</code> rotates chevron to 0°. Items use <code>TeeConnector</code> except the last which uses <code>CornerConnector</code>. Active item: <code>background:var(--s1)</code> + bold.
+        </div>
+      </Row>
+
     </GallerySection>
   );
 }
@@ -2261,35 +2872,270 @@ function SidenavSection() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function HeaderNavSection() {
-  return (
-    <GallerySection title="Global Header + TopNav" desc=".global-header, .gh-nav, .topnav, .topnav-crumb-* — the two fixed chrome bars">
-      <Row label="global-header bar">
-        <div style={{ width: '100%', maxWidth: 680 }}>
-          <div className="global-header" style={{
-            position: 'relative', height: 48, padding: '0 20px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            background: 'var(--white)', borderBottom: '1px solid var(--border)',
-            borderRadius: 8,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ fontWeight: 800, fontSize: '0.9rem', color: 'var(--red)', fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>TomTom</div>
-              <div style={{ height: 16, width: 1, background: 'var(--border)' }} />
-              <div className="gh-nav" style={{ display: 'flex', gap: 4 }}>
-                {['Maps', 'Routing', 'Navigation', 'EV'].map(l => (
-                  <button key={l} style={{ padding: '4px 10px', fontSize: '0.75rem', fontWeight: 500, color: 'var(--mid)', background: 'none', border: 'none', cursor: 'default', borderRadius: 6 }}>{l}</button>
-                ))}
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  /* real TomTom logo SVG — matches App.jsx FixedLogo exactly */
+  const TomTomLogo = () => (
+    <svg width="100" height="19" viewBox="0 0 125 24" fill="none" aria-hidden="true" style={{ display: 'block' }}>
+      <path fillRule="evenodd" clipRule="evenodd" d="M121.444 22.1291H124.999L125 13.0887C125 12.5 124.925 12.0676 124.859 11.7567C124.836 11.6515 124.816 11.5678 124.794 11.4864C124.092 8.90785 121.577 7.123 118.811 7.23655C117.528 7.29129 116.321 7.76661 115.225 8.64915L115.085 8.76169L114.945 8.64915C113.849 7.76661 112.642 7.29129 111.359 7.23655C108.59 7.12114 106.078 8.90785 105.376 11.4864C105.354 11.568 105.334 11.652 105.311 11.7577C105.242 12.0876 105.17 12.5049 105.17 13.0887L105.171 22.1291H108.726V13.242C108.726 11.9833 109.753 10.9593 111.015 10.9593C112.266 10.9593 113.292 11.9744 113.303 13.222C113.304 13.2264 113.304 13.2342 113.304 13.242V22.1291H116.866L116.867 13.2212C116.878 11.9744 117.904 10.9593 119.155 10.9593C120.417 10.9593 121.444 11.9833 121.444 13.242V22.1291Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M95.1744 18.5808C93.0256 18.5808 91.2773 16.8374 91.2773 14.6945C91.2773 12.5516 93.0256 10.8081 95.1744 10.8081C97.3234 10.8081 99.0716 12.5516 99.0716 14.6945C99.0716 16.8374 97.3234 18.5808 95.1744 18.5808ZM95.1741 7.25977C91.0633 7.25977 87.7188 10.5949 87.7188 14.6944C87.7188 18.794 91.0633 22.1292 95.1741 22.1292C99.285 22.1292 102.629 18.794 102.629 14.6944C102.629 10.5949 99.285 7.25977 95.1741 7.25977Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M82.9062 22.1324H87.5178L85.4546 18.5805C85.0074 18.58 83.1692 18.5776 83.026 18.5776C81.8791 18.5776 80.8802 17.7512 80.7994 16.7353C80.7887 16.6023 80.7791 16.4376 80.7716 16.2566V10.9014H85.4537L87.2833 7.69089H80.7716V1.86743L77.2102 4.32446V7.52023H74.9629V11.072H77.21L77.2134 15.9215C77.2134 15.9236 77.211 16.1479 77.2144 16.2125L77.228 16.4827C77.3498 18.8376 78.5126 20.5715 80.684 21.6355C81.2652 21.9202 81.908 22.0772 82.7073 22.1294L82.9062 22.1291V22.1324Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M68.864 22.129H72.4192L72.4198 13.0887C72.4198 12.5 72.3444 12.0676 72.2785 11.7567C72.2556 11.6514 72.2355 11.5677 72.2135 11.4863C71.512 8.90779 68.9973 7.12293 66.2307 7.23648C64.9479 7.29123 63.7413 7.76655 62.6447 8.64909L62.5049 8.76163L62.3651 8.64909C61.2685 7.76655 60.0619 7.29123 58.7788 7.23648C56.01 7.12108 53.4979 8.90779 52.7962 11.4863C52.774 11.5679 52.754 11.6519 52.731 11.7577C52.6613 12.0875 52.5898 12.5049 52.5898 13.0887L52.5905 22.129H56.1459V13.2419C56.1459 11.9833 57.1727 10.9593 58.4348 10.9593C59.6856 10.9593 60.7119 11.9743 60.7229 13.222C60.7233 13.2264 60.7238 13.2342 60.7238 13.2419V22.129H64.2861L64.2869 13.2211C64.2978 11.9743 65.3242 10.9593 66.5749 10.9593C67.8372 10.9593 68.864 11.9833 68.864 13.2419V22.129Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M42.5944 18.5808C40.4454 18.5808 38.6973 16.8374 38.6973 14.6945C38.6973 12.5516 40.4454 10.8081 42.5944 10.8081C44.7434 10.8081 46.4915 12.5516 46.4915 14.6945C46.4915 16.8374 44.7434 18.5808 42.5944 18.5808ZM42.594 7.25977C38.4831 7.25977 35.1387 10.5949 35.1387 14.6944C35.1387 18.794 38.4831 22.1292 42.594 22.1292C46.7049 22.1292 50.0493 18.794 50.0493 14.6944C50.0493 10.5949 46.7049 7.25977 42.594 7.25977Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M30.3261 22.1325H34.9378L32.8745 18.5805C32.4273 18.58 30.5891 18.5777 30.4459 18.5777C29.299 18.5777 28.3001 17.7512 28.2193 16.7354C28.2086 16.6024 28.199 16.4376 28.1915 16.2567V10.9014H32.8736L34.7033 7.69095H28.1915V1.86749L24.6301 4.32452V7.52029H22.3828V11.0721H24.6299L24.6333 15.9216C24.6333 15.9236 24.6309 16.148 24.6343 16.2126L24.6479 16.4827C24.7697 18.8377 25.9326 20.5715 28.1039 21.6355C28.6851 21.9203 29.328 22.0772 30.1272 22.1295L30.3261 22.1291V22.1325Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M8.28764 24.0001L11.4639 18.5139H5.11133L8.28764 24.0001Z" fill="#DF1B12"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M8.28694 12.5839C5.89835 12.5839 3.95522 10.6459 3.95522 8.26409C3.95522 5.88209 5.89835 3.94415 8.28694 3.94415C10.6755 3.94415 12.6187 5.88209 12.6187 8.26409C12.6187 10.6459 10.6755 12.5839 8.28694 12.5839ZM8.28694 0C3.7175 0 0 3.70725 0 8.26409C0 12.8208 3.7175 16.528 8.28694 16.528C12.8564 16.528 16.5739 12.8208 16.5739 8.26409C16.5739 3.70725 12.8564 0 8.28694 0Z" fill="#DF1B12"/>
+    </svg>
+  );
+
+  /* shared icon helpers */
+  const IcoSearch = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  );
+  const IcoWrench = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+  );
+  const IcoUser = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  );
+  const IcoMenu = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  );
+  const IcoX = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  );
+
+  /* reusable full-bar specimen */
+  const BarSpecimen = ({ hiddenState = false, label, extra, children }) => (
+    <div style={{ width: '100%' }}>
+      {label && <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>{label}</div>}
+      <div style={{
+        position: 'relative', overflow: 'hidden',
+        borderRadius: 10, border: '1px solid var(--border)',
+        height: hiddenState ? 28 : 'auto',
+        background: hiddenState ? 'var(--s1)' : 'transparent',
+      }}>
+        {hiddenState ? (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', gap: 8 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" strokeWidth="2"><polyline points="18 15 12 9 6 15"/></svg>
+            <span style={{ fontSize: '0.7rem', color: 'var(--muted)', fontStyle: 'italic' }}>header translated off-screen — transform:translateY(-100%)</span>
+          </div>
+        ) : (
+          <div className="global-header" style={{ position: 'relative', transform: 'none', height: 52, borderRadius: 10 }}>
+            {/* fixed-logo lives in App, replicated here */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+              <div style={{ marginRight: 12, cursor: 'default', display: 'flex', alignItems: 'center' }}><TomTomLogo /></div>
+              <div className="gh-divider" />
+              <div className="gh-left" style={{ marginLeft: 12 }}>
+                <span className="gh-product-label">Docs</span>
               </div>
             </div>
-            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-              <button className="gh-icon-btn" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)', background: 'none', cursor: 'default' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-              </button>
-              <button className="gh-signin-btn" style={{ padding: '5px 14px', fontSize: '0.75rem', fontWeight: 600, background: 'var(--red)', color: '#fff', border: 'none', borderRadius: 6, cursor: 'default' }}>Sign in</button>
+            {/* centred nav */}
+            <div className="gh-nav" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+              {children}
             </div>
+            {/* right cluster */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              {extra}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <GallerySection title="Global Header + TopNav" desc=".global-header · .gh-nav · .gh-nav-link · .gh-icon-btn · .gh-signin-btn · .gh-product-label · .gh-divider · .gh-hamburger · .gh-mobile-menu — the fixed top chrome bar and all its states"
+      usage={[
+        { n: '.global-header', f: 2 },
+        { n: '.gh-nav', f: 1 },
+        { n: '.gh-nav-link', f: 1 },
+        { n: '.gh-icon-btn', f: 1 },
+        { n: '.gh-signin-btn', f: 1 },
+        { n: '.gh-product-label', f: 1 },
+        { n: '.gh-hamburger', f: 1 },
+        { n: '.gh-mobile-menu', f: 1 },
+        { n: '.fixed-logo', f: 1 },
+        { n: '.topnav', f: 1 },
+        { n: '.topnav-crumb', f: 1 },
+        { n: '.topnav-badge', f: 0, t: 'missing' },
+        { n: '.topnav-version', f: 0, t: 'missing' },
+        { n: 'Header', t: 'playbook' },
+        { n: 'SubHeader', t: 'playbook' },
+        { n: 'HeaderMenu', t: 'playbook' },
+        { n: 'HeaderMenuButton', t: 'playbook' },
+        { n: 'HeaderMenuDropdown', t: 'playbook' },
+      ]}>
+
+      {/* ── 1. Full anatomy ── */}
+      <Row label="anatomy — all sub-elements labelled">
+        <div style={{ width: '100%' }}>
+          <BarSpecimen extra={
+            <>
+              <button className="gh-icon-btn gh-desktop-only" style={{ cursor: 'default' }}><IcoSearch /></button>
+              <button className="gh-icon-btn gh-desktop-only" style={{ cursor: 'default' }}><IcoWrench /></button>
+              <button className="gh-signin-btn" style={{ cursor: 'default' }}><IcoUser />&nbsp;Sign in</button>
+            </>
+          }>
+            <a className="gh-nav-link" style={{ cursor: 'default' }}>Products</a>
+            <a className="gh-nav-link" style={{ cursor: 'default' }}>Resources</a>
+            <a className="gh-nav-link" style={{ cursor: 'default' }}>Pricing</a>
+          </BarSpecimen>
+
+          {/* anatomy callouts */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))', gap: 8, marginTop: 12 }}>
+            {[
+              { cls: '.fixed-logo',        note: 'position:fixed in App.jsx — sits above z-index 300' },
+              { cls: '.gh-divider',        note: '1px × 18px vertical separator, bg:var(--b-med)' },
+              { cls: '.gh-product-label',  note: 'display font 20 px / 700 / black — "Docs"' },
+              { cls: '.gh-nav',            note: 'position:absolute; left:50%; translateX(-50%) — always centred' },
+              { cls: '.gh-nav-link',       note: 'display font 0.875 rem / 700 · padding 6px 12px · radius 6px' },
+              { cls: '.gh-icon-btn',       note: '44×44 px tap target · radius 8px · transparent bg' },
+              { cls: '.gh-signin-btn',     note: 'pill shape · border:1.5px var(--b-med) · bg:var(--s1)' },
+              { cls: '.gh-hamburger',      note: 'display:none by default; shown via media <900 px' },
+            ].map(({ cls, note }) => (
+              <div key={cls} style={{ padding: '8px 10px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)' }}>
+                <code style={{ fontSize: '0.7rem', color: 'var(--brand)', display: 'block', marginBottom: 3 }}>{cls}</code>
+                <span style={{ fontSize: '0.72rem', color: 'var(--mid)', lineHeight: 1.4 }}>{note}</span>
+              </div>
+            ))}
           </div>
         </div>
       </Row>
-      <Row label="topnav breadcrumb bar" noBorder>
+
+      {/* ── 2. Visibility states ── */}
+      <Row label="global-header visibility states">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, width: '100%' }}>
+          <div>
+            <StateLabel>default — visible (isVisible=true)</StateLabel>
+            <BarSpecimen extra={
+              <>
+                <button className="gh-icon-btn gh-desktop-only" style={{ cursor: 'default' }}><IcoSearch /></button>
+                <button className="gh-signin-btn" style={{ cursor: 'default' }}><IcoUser />&nbsp;Sign in</button>
+              </>
+            }>
+              <a className="gh-nav-link" style={{ cursor: 'default' }}>Products</a>
+              <a className="gh-nav-link" style={{ cursor: 'default' }}>Resources</a>
+              <a className="gh-nav-link" style={{ cursor: 'default' }}>Pricing</a>
+            </BarSpecimen>
+          </div>
+          <div>
+            <StateLabel>hidden — scrolled away (.global-header--hidden)</StateLabel>
+            <BarSpecimen hiddenState />
+          </div>
+        </div>
+      </Row>
+
+      {/* ── 3. gh-nav-link states ── */}
+      <Row label="gh-nav-link states">
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <StateBox label="default">
+            <a className="gh-nav-link" style={{ cursor: 'default', display: 'inline-block' }}>Products</a>
+          </StateBox>
+          <StateBox label="hover / focus">
+            {/* simulate hover bg */}
+            <a className="gh-nav-link" style={{ cursor: 'default', display: 'inline-block', background: 'var(--s1)' }}>Resources</a>
+          </StateBox>
+          <StateBox label="active (.gh-nav-link--active) — Products portal open">
+            <a className="gh-nav-link gh-nav-link--active" style={{ cursor: 'default', display: 'inline-block' }}>Products</a>
+          </StateBox>
+        </div>
+        <div style={{ marginTop: 8, fontSize: '0.72rem', color: 'var(--muted)' }}>
+          Active state: <code>background:var(--s1)</code> + <code>color:var(--brand) !important</code> (red). Applied when the Products portal overlay is open.
+        </div>
+      </Row>
+
+      {/* ── 4. gh-icon-btn states ── */}
+      <Row label="gh-icon-btn states">
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <StateBox label="default (transparent)">
+            <button className="gh-icon-btn" style={{ cursor: 'default' }}><IcoSearch /></button>
+          </StateBox>
+          <StateBox label="hover (bg:var(--s1))">
+            <button className="gh-icon-btn" style={{ cursor: 'default', background: 'var(--s1)', color: 'var(--t-hi)' }}><IcoSearch /></button>
+          </StateBox>
+          <StateBox label=".gh-icon-btn--active — plumbing portal open (red icon)">
+            <button className="gh-icon-btn gh-icon-btn--active" style={{ cursor: 'default' }}><IcoWrench /></button>
+          </StateBox>
+          <StateBox label=".gh-desktop-only — hidden below 900 px">
+            <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+              <button className="gh-icon-btn gh-desktop-only" style={{ cursor: 'default', opacity: 0.35 }}><IcoSearch /></button>
+              <span style={{ fontSize: '0.7rem', color: 'var(--muted)', fontStyle: 'italic' }}>display:none &lt;900 px</span>
+            </div>
+          </StateBox>
+        </div>
+        <div style={{ marginTop: 8, fontSize: '0.72rem', color: 'var(--muted)' }}>
+          44 × 44 px touch target. <code>.gh-icon-btn--active</code> forces <code>color:#e2001a !important</code> to indicate an open overlay (used for the Plumbing Portal <code>?</code> button).
+        </div>
+      </Row>
+
+      {/* ── 5. gh-signin-btn states ── */}
+      <Row label="gh-signin-btn states">
+        <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <StateBox label="default">
+            <button className="gh-signin-btn" style={{ cursor: 'default' }}><IcoUser />&nbsp;Sign in</button>
+          </StateBox>
+          <StateBox label="hover (bg:var(--s2), border:var(--b-hi))">
+            <button className="gh-signin-btn" style={{ cursor: 'default', background: 'var(--s2)', borderColor: 'var(--b-hi)' }}><IcoUser />&nbsp;Sign in</button>
+          </StateBox>
+        </div>
+        <div style={{ marginTop: 8, fontSize: '0.72rem', color: 'var(--muted)' }}>
+          Pill shape via <code>border-radius:var(--r-pill)</code>. Default: <code>bg:var(--s1)</code> + <code>border:1.5px var(--b-med)</code>. Hover lifts to <code>--s2</code> + <code>--b-hi</code>.
+        </div>
+      </Row>
+
+      {/* ── 6. Mobile states ── */}
+      <Row label="mobile states — hamburger + gh-mobile-menu" noBorder>
+        <div style={{ width: '100%' }}>
+          {/* narrow mock bar */}
+          <div style={{ maxWidth: 360, borderRadius: 10, border: '1px solid var(--border)', overflow: 'visible', position: 'relative' }}>
+            <div style={{
+              height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              padding: '0 16px', background: 'var(--s0)', borderRadius: mobileOpen ? '10px 10px 0 0' : 10,
+              borderBottom: mobileOpen ? '1px solid var(--border)' : 'none',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}><TomTomLogo /></div>
+              <button
+                className={`gh-icon-btn gh-hamburger${mobileOpen ? ' gh-icon-btn--active' : ''}`}
+                style={{ display: 'flex', cursor: 'pointer' }}
+                onClick={() => setMobileOpen(o => !o)}
+              >
+                {mobileOpen ? <IcoX /> : <IcoMenu />}
+              </button>
+            </div>
+            {mobileOpen && (
+              <div className="gh-mobile-menu" style={{ position: 'relative', border: '1px solid var(--border)', borderTop: 'none', borderRadius: '0 0 10px 10px', background: 'var(--s0)', padding: '8px 0 12px' }}>
+                <a className="gh-mobile-link gh-mobile-link--active" style={{ display: 'block', cursor: 'default' }}>Products</a>
+                <a className="gh-mobile-link" style={{ display: 'block', cursor: 'default' }}>Resources</a>
+                <a className="gh-mobile-link" style={{ display: 'block', cursor: 'default' }}>Pricing</a>
+                <div className="gh-mobile-divider" style={{ margin: '8px 16px', height: 1, background: 'var(--border)' }} />
+                <a className="gh-mobile-signin" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px', fontSize: '0.875rem', fontWeight: 600, color: 'var(--t-hi)', cursor: 'default' }}><IcoUser />Sign in</a>
+              </div>
+            )}
+          </div>
+
+          {/* mobile link state breakdowns */}
+          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', marginTop: 16 }}>
+            <StateBox label="gh-mobile-link default">
+              <a className="gh-mobile-link" style={{ display: 'block', cursor: 'default', padding: '10px 16px' }}>Products</a>
+            </StateBox>
+            <StateBox label="gh-mobile-link hover (bg:var(--s1))">
+              <a className="gh-mobile-link" style={{ display: 'block', cursor: 'default', padding: '10px 16px', background: 'var(--s1)' }}>Resources</a>
+            </StateBox>
+            <StateBox label="gh-mobile-link--active (red text)">
+              <a className="gh-mobile-link gh-mobile-link--active" style={{ display: 'block', cursor: 'default', padding: '10px 16px' }}>Products</a>
+            </StateBox>
+          </div>
+          <div style={{ marginTop: 8, fontSize: '0.72rem', color: 'var(--muted)' }}>
+            Toggle the ☰ button above to see the live mobile menu. <code>.gh-hamburger</code> is <code>display:none</code> at desktop widths — visible only via <code>@media (max-width:900px)</code>. Active link uses <code>color:var(--red)</code>.
+          </div>
+        </div>
+      </Row>
+
+      <Divider />
+
+      {/* ── 7. TopNav breadcrumb bar ── */}
+      <Row label="topnav breadcrumb bar — below global-header, above content">
         <div style={{ width: '100%', maxWidth: 680 }}>
           <div className="topnav" style={{
             position: 'relative', height: 40, padding: '0 20px',
@@ -2314,6 +3160,7 @@ function HeaderNavSection() {
           </div>
         </div>
       </Row>
+
     </GallerySection>
   );
 }
@@ -2325,7 +3172,13 @@ function HeaderNavSection() {
 function TabBarSection() {
   const [active, setActive] = useState('rest');
   return (
-    <GallerySection title="Tab Bar" desc=".tab-bar, .tab-btn — language/platform code switcher">
+    <GallerySection title="Tab Bar" desc=".tab-bar, .tab-btn — language/platform code switcher"
+      usage={[
+        { n: '.tab-bar', f: 0, t: 'ghost' },
+        { n: '.tab-btn', f: 1 },
+        { n: '.tab-btn--active', f: 1 },
+        { n: 'TabNavigation', t: 'playbook' },
+      ]}>
       <Row label="interactive" noBorder>
         <div style={{ width: '100%', maxWidth: 480 }}>
           <div className="tab-bar">
@@ -2360,7 +3213,12 @@ function TabBarSection() {
 
 function TextCardSection() {
   return (
-    <GallerySection title="Text Card" desc=".text-card, .text-card--active — plain bordered content card with active state">
+    <GallerySection title="Text Card" desc=".text-card, .text-card--active — plain bordered content card with active state"
+      usage={[
+        { n: '.text-card', f: 1 },
+        { n: '.text-card--active', f: 0, t: 'ghost' },
+        { n: 'Card', t: 'playbook' },
+      ]}>
       <Row label="states" noBorder>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <div style={{ width: 200 }}>
@@ -2396,7 +3254,14 @@ function TextCardSection() {
 
 function AnatomyCardsSection() {
   return (
-    <GallerySection title="Anatomy Cards" desc=".anatomy-card, .anatomy-row, .anatomy-prop, .anatomy-arrow, .anatomy-note — page section diagram">
+    <GallerySection title="Anatomy Cards" desc=".anatomy-card, .anatomy-row, .anatomy-prop, .anatomy-arrow, .anatomy-note — page section diagram"
+      usage={[
+        { n: '.anatomy-card', f: 1 },
+        { n: '.anatomy-row', f: 1 },
+        { n: '.anatomy-prop', f: 1 },
+        { n: '.anatomy-arrow', f: 1 },
+        { n: '.anatomy-note', f: 1 },
+      ]}>
       <Row label="specimen" noBorder>
         <div style={{ width: '100%', maxWidth: 560 }}>
           <div className="anatomy-card">
@@ -2438,7 +3303,17 @@ function AnatomyCardsSection() {
 function ModalSection() {
   const [open, setOpen] = useState(false);
   return (
-    <GallerySection title="Modal" desc=".md-overlay, .md-modal, .md-modal-header, .md-modal-body, .md-modal-close, .md-modal-copy">
+    <GallerySection title="Modal" desc=".md-overlay, .md-modal, .md-modal-header, .md-modal-body, .md-modal-close, .md-modal-copy"
+      usage={[
+        { n: '.md-overlay', f: 1 },
+        { n: '.md-modal', f: 1 },
+        { n: '.md-modal-header', f: 1 },
+        { n: '.md-modal-body', f: 1 },
+        { n: '.md-modal-close', f: 1 },
+        { n: '.md-modal-copy', f: 1 },
+        { n: 'Modal', t: 'playbook' },
+        { n: 'ModalContextProvider', t: 'playbook' },
+      ]}>
       <Row label="trigger + overlay" noBorder>
         <div>
           <button className="page-action-btn" onClick={() => setOpen(true)}>Open modal demo</button>
@@ -2493,63 +3368,128 @@ function AIPanelSection() {
     </svg>
   );
   return (
-    <GallerySection title="AI Panel" desc=".ai-panel, .ai-panel-header, .ai-msg--user, .ai-msg--ai, .ai-msg--typing, .ai-panel-footer">
-      <Row label="static panel specimen" noBorder>
-        <div style={{ width: 320, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--white)' }}>
-          {/* Header */}
-          <div className="ai-panel-header" style={{ padding: '10px 14px', borderBottom: '1px solid var(--border)', background: 'var(--white)' }}>
-            <div className="ai-panel-header-top" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-              <span className="ai-panel-title" style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <SparkleIcon /> Ask AI
-              </span>
-              <div className="ai-panel-header-actions" style={{ display: 'flex', gap: 4 }}>
-                <button className="ai-panel-icon-btn" style={{ width: 26, height: 26, borderRadius: 6, border: '1px solid var(--border)', background: 'none', cursor: 'default', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)', fontSize: '0.75rem' }}>✕</button>
+    <GallerySection title="AI Panel" desc=".ai-panel · .ai-panel-header · .ai-panel-source-chip · .ai-msg--user · .ai-msg--ai · .ai-msg--typing · .ai-panel-footer — purple accent throughout, not brand red"
+      usage={[
+        { n: 'AskAIPanel', f: 2 },
+        { n: '.ai-panel', f: 1 },
+        { n: '.ai-panel-source-chip', f: 1 },
+        { n: '.ai-msg--user', f: 1 },
+        { n: '.ai-msg--ai', f: 1 },
+        { n: '.ai-panel-send', f: 1 },
+      ]}>
+
+      {/* ── Full panel specimen ── */}
+      <Row label="full panel — all zones">
+        <div style={{ width: 320, border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', background: 'var(--white)', boxShadow: '-4px 0 24px rgba(0,0,0,0.06)' }}>
+
+          {/* Header: title row + disclaimer */}
+          <div className="ai-panel-header">
+            <div className="ai-panel-header-top">
+              <div className="ai-panel-title">
+                <SparkleIcon size={13} /> Ask AI
+              </div>
+              <div className="ai-panel-header-actions">
+                <button className="ai-panel-icon-btn" style={{ cursor: 'default' }} title="New chat">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                </button>
+                <button className="ai-panel-icon-btn" style={{ cursor: 'default' }} title="Close">
+                  <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                </button>
               </div>
             </div>
-            <div className="ai-panel-source" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.6875rem', color: 'var(--muted)' }}>
-              Context:
-              <span className="ai-panel-source-chip" style={{ padding: '2px 8px', borderRadius: 99, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)', fontSize: '0.625rem', fontWeight: 600 }}>
-                Calculate Route
-              </span>
-            </div>
+            <p className="ai-panel-disclaimer">Responses are generated using AI and may contain mistakes.</p>
           </div>
+
+          {/* Source chip — own border-bottom section */}
+          <div className="ai-panel-source">
+            <span className="ai-panel-source-chip">
+              <SparkleIcon size={10} /> UX Library · Calculate Route
+            </span>
+          </div>
+
           {/* Messages */}
-          <div className="ai-panel-messages" style={{ padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: 8, minHeight: 140 }}>
-            {/* AI message */}
-            <div className="ai-msg ai-msg--ai" style={{ display: 'flex', gap: 8, alignSelf: 'flex-start', maxWidth: '88%' }}>
-              <span className="ai-msg-avatar" style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--s1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--red)' }}><SparkleIcon /></span>
-              <span className="ai-msg-text" style={{ fontSize: '0.8125rem', color: 'var(--black)', background: 'var(--bg)', padding: '7px 10px', borderRadius: '0 8px 8px 8px', lineHeight: 1.5 }}>
-                Hi! I have context for this page. Ask me anything about the Calculate Route endpoint.
+          <div className="ai-panel-messages" style={{ minHeight: 160 }}>
+            {/* AI welcome */}
+            <div className="ai-msg ai-msg--ai">
+              <span className="ai-msg-avatar"><SparkleIcon size={11} /></span>
+              <span className="ai-msg-text">
+                I have context for this page. Ask me anything about the Calculate Route endpoint.
               </span>
             </div>
             {/* User message */}
-            <div className="ai-msg ai-msg--user" style={{ display: 'flex', justifyContent: 'flex-end', maxWidth: '88%', alignSelf: 'flex-end' }}>
-              <span className="ai-msg-text" style={{ fontSize: '0.8125rem', color: '#fff', background: 'var(--red)', padding: '7px 10px', borderRadius: '8px 0 8px 8px', lineHeight: 1.5 }}>
-                What parameters are required?
-              </span>
+            <div className="ai-msg ai-msg--user">
+              <span className="ai-msg-text">What parameters are required?</span>
             </div>
             {/* Typing dots */}
-            <div className="ai-msg ai-msg--ai ai-msg--typing" style={{ display: 'flex', gap: 8, alignSelf: 'flex-start' }}>
-              <span className="ai-msg-avatar" style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--s1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: 'var(--red)' }}><SparkleIcon /></span>
-              <span className="ai-msg-dots" style={{ display: 'flex', gap: 3, alignItems: 'center', padding: '8px 10px', background: 'var(--bg)', borderRadius: '0 8px 8px 8px' }}>
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--muted)', display: 'inline-block' }} />
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--muted)', display: 'inline-block' }} />
-                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--muted)', display: 'inline-block' }} />
-              </span>
+            <div className="ai-msg ai-msg--ai ai-msg--typing">
+              <span className="ai-msg-avatar"><SparkleIcon size={11} /></span>
+              <span className="ai-msg-dots"><span /><span /><span /></span>
             </div>
           </div>
+
           {/* Footer */}
-          <div className="ai-panel-footer" style={{ padding: '8px 12px', borderTop: '1px solid var(--border)' }}>
-            <div className="ai-panel-input-wrap" style={{ display: 'flex', gap: 6, alignItems: 'center', background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 8, padding: '6px 10px' }}>
-              <input className="ai-panel-input" placeholder="Ask a question…" style={{ flex: 1, border: 'none', background: 'none', fontSize: '0.8125rem', color: 'var(--black)', outline: 'none' }} readOnly />
-              <button className="ai-panel-send" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 26, height: 26, borderRadius: 6, background: 'var(--red)', border: 'none', cursor: 'default', color: '#fff', fontSize: '0.875rem' }}>→</button>
+          <div className="ai-panel-footer">
+            <div className="ai-panel-input-wrap">
+              <textarea className="ai-panel-input" placeholder="Ask a question about this page…" rows={1} readOnly />
+              <button className="ai-panel-send" disabled aria-label="Send">
+                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13.5 8L2.5 2.5l2.8 5.5-2.8 5.5L13.5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+              </button>
             </div>
-            <p className="ai-panel-disclaimer" style={{ fontSize: '0.625rem', color: 'var(--muted)', textAlign: 'center', margin: '6px 0 0', lineHeight: 1.4 }}>
-              AI answers may be inaccurate. Verify against the docs.
-            </p>
+            <p className="ai-panel-hint">Enter to send · Esc to close</p>
           </div>
         </div>
       </Row>
+
+      {/* ── Element states ── */}
+      <Row label="ai-panel-source-chip">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <StateBox label="default (purple bg #f3f0ff, text #5b21b6)">
+            <span className="ai-panel-source-chip"><SparkleIcon size={10} /> UX Library · Calculate Route</span>
+          </StateBox>
+        </div>
+      </Row>
+
+      <Row label="ai-msg—user vs ai-msg—ai bubbles">
+        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+          <StateBox label="ai-msg--ai (bg:var(--bg), border:var(--border), radius:4 14 14 14)">
+            <div className="ai-msg ai-msg--ai" style={{ maxWidth: 220 }}>
+              <span className="ai-msg-avatar"><SparkleIcon size={11} /></span>
+              <span className="ai-msg-text">Here's what the AI message bubble looks like.</span>
+            </div>
+          </StateBox>
+          <StateBox label="ai-msg--user (bg:#5b21b6, white text, radius:14 14 4 14)">
+            <div className="ai-msg ai-msg--user" style={{ maxWidth: 220 }}>
+              <span className="ai-msg-text">And here is the user bubble.</span>
+            </div>
+          </StateBox>
+        </div>
+      </Row>
+
+      <Row label="ai-panel-icon-btn states" noBorder>
+        <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+          <StateBox label="default (28×28, no border, transparent)">
+            <button className="ai-panel-icon-btn" style={{ cursor: 'default' }}>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+            </button>
+          </StateBox>
+          <StateBox label="hover (bg:var(--bg), color:var(--black))">
+            <button className="ai-panel-icon-btn" style={{ cursor: 'default', background: 'var(--bg)', color: 'var(--black)' }}>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+            </button>
+          </StateBox>
+          <StateBox label="ai-panel-send — enabled (#5b21b6)">
+            <button className="ai-panel-send" style={{ cursor: 'default' }}>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13.5 8L2.5 2.5l2.8 5.5-2.8 5.5L13.5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+            </button>
+          </StateBox>
+          <StateBox label="ai-panel-send — disabled (var(--border) bg)">
+            <button className="ai-panel-send" disabled>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13.5 8L2.5 2.5l2.8 5.5-2.8 5.5L13.5 8z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/></svg>
+            </button>
+          </StateBox>
+        </div>
+      </Row>
+
     </GallerySection>
   );
 }
@@ -2560,7 +3500,14 @@ function AIPanelSection() {
 
 function TokenDisplaySection() {
   return (
-    <GallerySection title="Token Display + Colour Swatches" desc=".token-group, .token-table, .token-cell, .dt-swatch-row, .dt-swatch-ex, .swatch / .sw-*">
+    <GallerySection title="Token Display + Colour Swatches" desc=".token-group, .token-table, .token-cell, .dt-swatch-row, .dt-swatch-ex, .swatch / .sw-*"
+      usage={[
+        { n: '.swatch', f: 7 },
+        { n: '.token-group', f: 2 },
+        { n: '.token-table', f: 1 },
+        { n: '.token-cell', f: 1 },
+        { n: '.dt-swatch-row', f: 1 },
+      ]}>
       <Row label="token-group + token-table">
         <div style={{ width: '100%', maxWidth: 540 }}>
           <div className="token-group">
@@ -2632,7 +3579,14 @@ function TokenDisplaySection() {
 
 function TypographyPatternsSection() {
   return (
-    <GallerySection title="Typography Patterns" desc=".type-category-grid, .type-cat, .type-scale-table, .weight-preview, .font-token-group">
+    <GallerySection title="Typography Patterns" desc=".type-category-grid, .type-cat, .type-scale-table, .weight-preview, .font-token-group"
+      usage={[
+        { n: '.type-category-grid', f: 1 },
+        { n: '.type-cat', f: 1 },
+        { n: '.type-scale-table', f: 1 },
+        { n: '.weight-preview', f: 1 },
+        { n: '.font-token-group', f: 1 },
+      ]}>
       <Row label="type-category-grid (5-col)">
         <div style={{ width: '100%' }}>
           <div className="type-category-grid" style={{ maxWidth: 640 }}>
@@ -2691,7 +3645,13 @@ function TypographyPatternsSection() {
 
 function IlloCardSection() {
   return (
-    <GallerySection title="Illo Card" desc=".illo-card-wrap, .illo-card-actions, .illo-card-gen-name, .illo-card-refresh, .illo-card-ts — AI-generated illustration tiles">
+    <GallerySection title="Illo Card" desc=".illo-card-wrap, .illo-card-actions, .illo-card-gen-name, .illo-card-refresh, .illo-card-ts — AI-generated illustration tiles"
+      usage={[
+        { n: '.illo-card-wrap', f: 1 },
+        { n: '.illo-card-actions', f: 1 },
+        { n: '.illo-card-gen-name', f: 1 },
+        { n: '.illo-card-refresh', f: 1 },
+      ]}>
       <Row label="specimen (hover to reveal actions)" noBorder>
         <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           {/* Default */}
@@ -2761,7 +3721,13 @@ function IlloCardSection() {
 function PlatformSwitcherSection() {
   const [activePlatform, setActivePlatform] = useState('android');
   return (
-    <GallerySection title="Platform Switcher" desc=".platform-switcher, .platform-btn, .platform-btn-compact — SDK platform filter">
+    <GallerySection title="Platform Switcher" desc=".platform-switcher, .platform-btn, .platform-btn-compact — SDK platform filter"
+      usage={[
+        { n: '.platform-switcher', f: 1 },
+        { n: '.platform-btn', f: 1 },
+        { n: '.platform-btn-compact', f: 1 },
+        { n: 'Switcher', t: 'playbook' },
+      ]}>
       <Row label="full + compact variants" noBorder>
         <div style={{ display: 'flex', gap: 24, flexWrap: 'wrap', alignItems: 'flex-start' }}>
           <div>
@@ -2820,7 +3786,18 @@ function DocsPortal2Section() {
   );
 
   return (
-    <GallerySection title="DocsPortal2 Cards" desc=".dp2-product-card, .dp2-disc-card, .dp2-glass, .dp2-navsdk-card, .dp2-resource-card, .dp2-tool-card, .dp2-support-card">
+    <GallerySection title="DocsPortal2 Cards" desc=".dp2-product-card, .dp2-disc-card, .dp2-glass, .dp2-navsdk-card, .dp2-resource-card, .dp2-tool-card, .dp2-support-card"
+      usage={[
+        { n: '.dp2-product-card', f: 1 },
+        { n: '.dp2-disc-card', f: 1 },
+        { n: '.dp2-glass', f: 1 },
+        { n: '.dp2-navsdk-card', f: 1 },
+        { n: '.dp2-resource-card', f: 1 },
+        { n: '.dp2-tool-card', f: 1 },
+        { n: '.dp2-support-card', f: 1 },
+        { n: 'Card', t: 'playbook' },
+        { n: 'ContentCard', t: 'playbook' },
+      ]}>
 
       {/* Product card (plain) */}
       <Row label="dp2-product-card — plain + linked + in-progress">
@@ -2959,7 +3936,13 @@ function DocsPortal2Section() {
 
 function AdasSection() {
   return (
-    <GallerySection title="ADAS Stack + Capabilities" desc=".adas-stack, .adas-stack-layer, .adas-stack-highlight, .adas-cap-grid, .adas-highlights">
+    <GallerySection title="ADAS Stack + Capabilities" desc=".adas-stack, .adas-stack-layer, .adas-stack-highlight, .adas-cap-grid, .adas-highlights"
+      usage={[
+        { n: '.adas-stack', f: 4 },
+        { n: '.adas-stack-layer', f: 4 },
+        { n: '.adas-cap-grid', f: 1 },
+        { n: '.adas-highlights', f: 1 },
+      ]}>
       <Row label="adas-stack — layered architecture diagram">
         <div style={{ width: '100%', maxWidth: 480 }}>
           <div className="adas-stack">
@@ -3008,7 +3991,12 @@ function AdasSection() {
 
 function SemanticCardsSection() {
   return (
-    <GallerySection title="Semantic Cards" desc=".sem-card, .sem-title, .sem-body — tinted semantic colour blocks">
+    <GallerySection title="Semantic Cards" desc=".sem-card, .sem-title, .sem-body — tinted semantic colour blocks"
+      usage={[
+        { n: '.sem-card', f: 1 },
+        { n: '.sem-title', f: 1 },
+        { n: '.sem-body', f: 1 },
+      ]}>
       <Row label="four semantic variants" noBorder>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: '100%', maxWidth: 480 }}>
           {[
@@ -3034,7 +4022,13 @@ function SemanticCardsSection() {
 
 function TokenFlowSection() {
   return (
-    <GallerySection title="Token Flow" desc=".tfi-step, .tfi-icon, .tfi-icon-token/component/product, .tfi-arrow, .tfi-label — design token pipeline diagram">
+    <GallerySection title="Token Flow" desc=".tfi-step, .tfi-icon, .tfi-icon-token/component/product, .tfi-arrow, .tfi-label — design token pipeline diagram"
+      usage={[
+        { n: '.tfi-step', f: 1 },
+        { n: '.tfi-icon', f: 1 },
+        { n: '.tfi-arrow', f: 1 },
+        { n: '.tfi-label', f: 1 },
+      ]}>
       <Row label="3-step flow" noBorder>
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8, flexWrap: 'wrap' }}>
           {[
@@ -3086,7 +4080,12 @@ function TryItPanelSection() {
   const methodStyle  = { bg: '#dcfce7', text: '#166534' };
 
   return (
-    <GallerySection title="TryIt Panel (API Demo Widget)" desc="The live-preview widget embedded in API reference pages — all states side by side">
+    <GallerySection title="TryIt Panel (API Demo Widget)" desc="The live-preview widget embedded in API reference pages — all states side by side"
+      usage={[
+        { n: 'TryItEmbed', f: 3 },
+        { n: 'TryItPanel', f: 2 },
+        { n: 'DEMOS', f: 3 },
+      ]}>
 
       {/* Anatomy labels */}
       <Row label="component anatomy">
@@ -3225,7 +4224,16 @@ function PageActionsSection() {
   );
 
   return (
-    <GallerySection title="Page Actions Bar" desc=".page-actions, .page-action-btn, .page-action-btn--ai, .page-action-sep, .page-action-btn--disabled">
+    <GallerySection title="Page Actions Bar" desc=".page-actions, .page-action-btn, .page-action-btn--ai, .page-action-sep, .page-action-btn--disabled"
+      usage={[
+        { n: '.page-action-btn', f: 17 },
+        { n: '.page-actions', f: 1 },
+        { n: '.page-action-btn--ai', f: 1 },
+        { n: '.page-action-sep', f: 1 },
+        { n: '.md-overlay', f: 1 },
+        { n: '.md-modal', f: 1 },
+        { n: '.page-action-btn--disabled', f: 0, t: 'ghost' },
+      ]}>
       <Row label="full bar — all button types">
         <div style={{ width: '100%', maxWidth: 560 }}>
           <div className="page-actions" style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
@@ -3319,7 +4327,15 @@ function PageActionsSection() {
 
 function PageLayoutUtilitiesSection() {
   return (
-    <GallerySection title="Page Layout Utilities" desc=".page-subtitle, .page-body, .grid-2-col, .examples-grid, .ctx-grid">
+    <GallerySection title="Page Layout Utilities" desc=".page-subtitle, .page-body, .grid-2-col, .examples-grid, .ctx-grid"
+      usage={[
+        { n: '.page', f: 81 },
+        { n: '.page--wide', f: 9 },
+        { n: '.grid-2-col', f: 4 },
+        { n: '.examples-grid', f: 3 },
+        { n: '.ctx-grid', f: 2 },
+        { n: '.page-subtitle', f: 1 },
+      ]}>
 
       {/* page-subtitle */}
       <Row label=".page-subtitle — optional one-liner below h1">
@@ -3387,85 +4403,183 @@ function PageLayoutUtilitiesSection() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ShellLayoutSection() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  /* ── Shared logo SVG ── */
+  const Logo = ({ w = 70, h = 13 }) => (
+    <svg width={w} height={h} viewBox="0 0 125 24" fill="none" style={{ display: 'block', flexShrink: 0 }}>
+      <path fillRule="evenodd" clipRule="evenodd" d="M121.444 22.1291H124.999L125 13.0887C125 12.5 124.925 12.0676 124.859 11.7567C124.836 11.6515 124.816 11.5678 124.794 11.4864C124.092 8.90785 121.577 7.123 118.811 7.23655C117.528 7.29129 116.321 7.76661 115.225 8.64915L115.085 8.76169L114.945 8.64915C113.849 7.76661 112.642 7.29129 111.359 7.23655C108.59 7.12114 106.078 8.90785 105.376 11.4864C105.354 11.568 105.334 11.652 105.311 11.7577C105.242 12.0876 105.17 12.5049 105.17 13.0887L105.171 22.1291H108.726V13.242C108.726 11.9833 109.753 10.9593 111.015 10.9593C112.266 10.9593 113.292 11.9744 113.303 13.222C113.304 13.2264 113.304 13.2342 113.304 13.242V22.1291H116.866L116.867 13.2212C116.878 11.9744 117.904 10.9593 119.155 10.9593C120.417 10.9593 121.444 11.9833 121.444 13.242V22.1291Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M95.1744 18.5808C93.0256 18.5808 91.2773 16.8374 91.2773 14.6945C91.2773 12.5516 93.0256 10.8081 95.1744 10.8081C97.3234 10.8081 99.0716 12.5516 99.0716 14.6945C99.0716 16.8374 97.3234 18.5808 95.1744 18.5808ZM95.1741 7.25977C91.0633 7.25977 87.7188 10.5949 87.7188 14.6944C87.7188 18.794 91.0633 22.1292 95.1741 22.1292C99.285 22.1292 102.629 18.794 102.629 14.6944C102.629 10.5949 99.285 7.25977 95.1741 7.25977Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M82.9062 22.1324H87.5178L85.4546 18.5805C85.0074 18.58 83.1692 18.5776 83.026 18.5776C81.8791 18.5776 80.8802 17.7512 80.7994 16.7353C80.7887 16.6023 80.7791 16.4376 80.7716 16.2566V10.9014H85.4537L87.2833 7.69089H80.7716V1.86743L77.2102 4.32446V7.52023H74.9629V11.072H77.21L77.2134 15.9215C77.2134 15.9236 77.211 16.1479 77.2144 16.2125L77.228 16.4827C77.3498 18.8376 78.5126 20.5715 80.684 21.6355C81.2652 21.9202 81.908 22.0772 82.7073 22.1294L82.9062 22.1291V22.1324Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M68.864 22.129H72.4192L72.4198 13.0887C72.4198 12.5 72.3444 12.0676 72.2785 11.7567C72.2556 11.6514 72.2355 11.5677 72.2135 11.4863C71.512 8.90779 68.9973 7.12293 66.2307 7.23648C64.9479 7.29123 63.7413 7.76655 62.6447 8.64909L62.5049 8.76163L62.3651 8.64909C61.2685 7.76655 60.0619 7.29123 58.7788 7.23648C56.01 7.12108 53.4979 8.90779 52.7962 11.4863C52.774 11.5679 52.754 11.6519 52.731 11.7577C52.6613 12.0875 52.5898 12.5049 52.5898 13.0887L52.5905 22.129H56.1459V13.2419C56.1459 11.9833 57.1727 10.9593 58.4348 10.9593C59.6856 10.9593 60.7119 11.9743 60.7229 13.222C60.7233 13.2264 60.7238 13.2342 60.7238 13.2419V22.129H64.2861L64.2869 13.2211C64.2978 11.9743 65.3242 10.9593 66.5749 10.9593C67.8372 10.9593 68.864 11.9833 68.864 13.2419V22.129Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M42.5944 18.5808C40.4454 18.5808 38.6973 16.8374 38.6973 14.6945C38.6973 12.5516 40.4454 10.8081 42.5944 10.8081C44.7434 10.8081 46.4915 12.5516 46.4915 14.6945C46.4915 16.8374 44.7434 18.5808 42.5944 18.5808ZM42.594 7.25977C38.4831 7.25977 35.1387 10.5949 35.1387 14.6944C35.1387 18.794 38.4831 22.1292 42.594 22.1292C46.7049 22.1292 50.0493 18.794 50.0493 14.6944C50.0493 10.5949 46.7049 7.25977 42.594 7.25977Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M30.3261 22.1325H34.9378L32.8745 18.5805C32.4273 18.58 30.5891 18.5777 30.4459 18.5777C29.299 18.5777 28.3001 17.7512 28.2193 16.7354C28.2086 16.6024 28.199 16.4376 28.1915 16.2567V10.9014H32.8736L34.7033 7.69095H28.1915V1.86749L24.6301 4.32452V7.52029H22.3828V11.0721H24.6299L24.6333 15.9216C24.6333 15.9236 24.6309 16.148 24.6343 16.2126L24.6479 16.4827C24.7697 18.8377 25.9326 20.5715 28.1039 21.6355C28.6851 21.9203 29.328 22.0772 30.1272 22.1295L30.3261 22.1291V22.1325Z" fill="currentColor"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M8.28764 24.0001L11.4639 18.5139H5.11133L8.28764 24.0001Z" fill="#DF1B12"/>
+      <path fillRule="evenodd" clipRule="evenodd" d="M8.28694 12.5839C5.89835 12.5839 3.95522 10.6459 3.95522 8.26409C3.95522 5.88209 5.89835 3.94415 8.28694 3.94415C10.6755 3.94415 12.6187 5.88209 12.6187 8.26409C12.6187 10.6459 10.6755 12.5839 8.28694 12.5839ZM8.28694 0C3.7175 0 0 3.70725 0 8.26409C0 12.8208 3.7175 16.528 8.28694 16.528C12.8564 16.528 16.5739 12.8208 16.5739 8.26409C16.5739 3.70725 12.8564 0 8.28694 0Z" fill="#DF1B12"/>
+    </svg>
+  );
+
+  /* ── Sub-components ── */
   const NavCol = ({ collapsed }) => (
     <div style={{
-      width: collapsed ? 0 : 200,
-      minWidth: collapsed ? 0 : 200,
+      width: collapsed ? 0 : 180, minWidth: collapsed ? 0 : 180,
       borderRight: collapsed ? 'none' : '1px solid var(--border)',
-      background: 'var(--white)',
-      overflow: 'hidden',
-      transition: 'width 0.32s',
-      display: 'flex',
-      flexDirection: 'column',
+      background: 'var(--white)', overflow: 'hidden', transition: 'width 0.28s',
+      display: 'flex', flexDirection: 'column',
     }}>
       {!collapsed && (
-        <div style={{ padding: '12px 16px', flex: 1 }}>
+        <div style={{ padding: '10px 12px', flex: 1 }}>
           <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>Routing API</div>
-          {['Introduction', 'Calculate Route ●', 'Batch Route', 'Matrix Routing'].map((l, i) => (
-            <div key={l} style={{ padding: '5px 8px', fontSize: '0.7rem', color: i === 1 ? 'var(--black)' : 'var(--mid)', fontWeight: i === 1 ? 600 : 400, background: i === 1 ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 2 }}>{l.replace(' ●', '')}</div>
+          {[['Introduction', false], ['Calculate Route', true], ['Batch Route', false], ['Matrix Routing', false]].map(([l, active]) => (
+            <div key={l} style={{ padding: '5px 8px', fontSize: '0.68rem', color: active ? 'var(--black)' : 'var(--mid)', fontWeight: active ? 600 : 400, background: active ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 2 }}>{l}</div>
           ))}
         </div>
       )}
     </div>
   );
 
-  const ContentCol = () => (
-    <div style={{ flex: 1, padding: '16px 20px', minWidth: 0, background: 'var(--white)' }}>
-      <div style={{ height: 12, width: '60%', background: 'var(--border)', borderRadius: 4, marginBottom: 8 }} />
-      <div style={{ height: 8, width: '90%', background: 'var(--bg)', borderRadius: 3, marginBottom: 5 }} />
-      <div style={{ height: 8, width: '75%', background: 'var(--bg)', borderRadius: 3, marginBottom: 5 }} />
-      <div style={{ height: 8, width: '82%', background: 'var(--bg)', borderRadius: 3 }} />
+  const ContentCol = ({ wide }) => (
+    <div style={{ flex: 1, padding: wide ? '14px 24px' : '14px 18px', minWidth: 0, background: 'var(--white)' }}>
+      <div style={{ height: 11, width: '55%', background: 'var(--border)', borderRadius: 4, marginBottom: 10 }} />
+      {[90, 75, 82, 65].map((w, i) => (
+        <div key={i} style={{ height: 7, width: `${w}%`, background: 'var(--bg)', borderRadius: 3, marginBottom: 5 }} />
+      ))}
     </div>
   );
 
   const TocCol = ({ hidden }) => (
     <div style={{
-      width: hidden ? 0 : 120,
-      minWidth: hidden ? 0 : 120,
+      width: hidden ? 0 : 110, minWidth: hidden ? 0 : 110,
       borderLeft: hidden ? 'none' : '1px solid var(--border)',
-      background: 'var(--white)',
-      overflow: 'hidden',
-      transition: 'width 0.32s',
+      background: 'var(--white)', overflow: 'hidden', transition: 'width 0.28s',
     }}>
       {!hidden && (
-        <div style={{ padding: '12px 14px' }}>
+        <div style={{ padding: '10px 12px' }}>
           <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 8 }}>On this page</div>
-          {['Request', 'Parameters', 'Response', 'Examples'].map((l, i) => (
-            <div key={l} style={{ padding: '3px 0 3px 8px', borderLeft: `1px solid ${i === 1 ? 'var(--red)' : 'var(--border)'}`, fontSize: '0.6rem', color: i === 1 ? 'var(--red)' : 'var(--muted)', fontWeight: i === 1 ? 600 : 400, marginBottom: 2 }}>{l}</div>
+          {[['Request', false], ['Parameters', true], ['Response', false], ['Examples', false]].map(([l, active]) => (
+            <div key={l} style={{ padding: '3px 0 3px 7px', borderLeft: `2px solid ${active ? 'var(--red)' : 'var(--border)'}`, fontSize: '0.6rem', color: active ? 'var(--red)' : 'var(--muted)', fontWeight: active ? 600 : 400, marginBottom: 2 }}>{l}</div>
           ))}
         </div>
       )}
     </div>
   );
 
-  const HeaderBar = () => (
-    <div style={{ height: 36, background: 'var(--white)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 8 }}>
-      <div style={{ fontWeight: 800, fontSize: '0.7rem', color: 'var(--red)', fontFamily: 'var(--font-display)' }}>TomTom</div>
-      <div style={{ height: 12, width: 1, background: 'var(--border)' }} />
-      {['Maps', 'Nav', 'EV'].map(l => <span key={l} style={{ fontSize: '0.6rem', color: 'var(--mid)', padding: '2px 6px' }}>{l}</span>)}
-      <div style={{ marginLeft: 'auto', display: 'flex', gap: 6, alignItems: 'center' }}>
-        <div style={{ width: 18, height: 18, borderRadius: 4, border: '1px solid var(--border)' }} />
-        <div style={{ width: 44, height: 18, borderRadius: 4, background: 'var(--red)' }} />
+  /* Desktop header: logo left · Products/Resources/Pricing centred · icons + sign-in right */
+  const HeaderBar = ({ showExpandBtn }) => (
+    <div style={{ position: 'relative', height: 40, background: 'var(--white)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 14px' }}>
+      {/* Left: logo + divider + Docs */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, zIndex: 1 }}>
+        <Logo />
+        <div style={{ width: 1, height: 14, background: 'var(--border)', flexShrink: 0 }} />
+        <span style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--black)', fontFamily: 'var(--font-display)' }}>Docs</span>
+      </div>
+      {/* Centre: nav links */}
+      <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'center', gap: 2 }}>
+        {['Products', 'Resources', 'Pricing'].map(l => (
+          <span key={l} style={{ fontSize: '0.65rem', fontWeight: 700, color: 'var(--black)', padding: '3px 7px', borderRadius: 5, fontFamily: 'var(--font-display)' }}>{l}</span>
+        ))}
+      </div>
+      {/* Right: search + wrench + sign in */}
+      <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 2, zIndex: 1 }}>
+        {showExpandBtn && (
+          <div style={{ width: 20, height: 20, borderRadius: 4, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 4 }}>
+            <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6L6 2l4 4M2 10L6 6l4 4" stroke="var(--muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          </div>
+        )}
+        <div style={{ width: 24, height: 24, borderRadius: 5, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="7" cy="7" r="4.5"/><path d="M11 11l2.5 2.5"/></svg>
+        </div>
+        <div style={{ width: 24, height: 24, borderRadius: 5, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--muted)' }}>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <div style={{ height: 22, display: 'flex', alignItems: 'center', padding: '0 8px', borderRadius: 99, border: '1.5px solid var(--border)', background: 'var(--s1)', fontSize: '0.6rem', fontWeight: 600, color: 'var(--black)', marginLeft: 2, gap: 4 }}>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Sign in
+        </div>
       </div>
     </div>
   );
 
+  /* Mobile header: logo left · hamburger right (no centred nav) */
+  const MobileHeaderBar = ({ menuOpen, onToggle }) => (
+    <div style={{ position: 'relative' }}>
+      <div style={{ height: 40, background: 'var(--white)', borderBottom: menuOpen ? 'none' : '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 12px', justifyContent: 'space-between' }}>
+        <Logo />
+        <button onClick={onToggle} style={{ width: 28, height: 28, borderRadius: 6, border: '1px solid var(--border)', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'var(--black)' }}>
+          {menuOpen
+            ? <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/></svg>
+            : <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/></svg>
+          }
+        </button>
+      </div>
+      {menuOpen && (
+        <div style={{ background: 'var(--white)', borderBottom: '1px solid var(--border)', padding: '6px 0 10px' }}>
+          {['Products', 'Resources', 'Pricing'].map(l => (
+            <div key={l} style={{ padding: '8px 14px', fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', fontFamily: 'var(--font-display)' }}>{l}</div>
+          ))}
+          <div style={{ height: 1, background: 'var(--border)', margin: '6px 14px' }} />
+          <div style={{ padding: '8px 14px', fontSize: '0.72rem', fontWeight: 600, color: 'var(--mid)', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Sign in
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   const TopnavBar = () => (
-    <div style={{ height: 28, background: 'var(--white)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 16px', gap: 4, fontSize: '0.6rem' }}>
+    <div style={{ height: 26, background: 'var(--white)', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', padding: '0 14px', gap: 3, fontSize: '0.58rem' }}>
       <span style={{ color: 'var(--muted)' }}>Developer Portal</span>
-      <span style={{ color: 'var(--border)' }}>/</span>
+      <span style={{ color: 'var(--border)', margin: '0 1px' }}>/</span>
       <span style={{ color: 'var(--muted)' }}>Routing</span>
-      <span style={{ color: 'var(--border)' }}>/</span>
-      <span style={{ color: 'var(--black)', fontWeight: 500 }}>Calculate Route</span>
-      <span style={{ marginLeft: 'auto', fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: 'var(--warn-bg)', color: 'var(--warn-text)', border: '1px solid var(--warn-border)' }}>Beta</span>
-      <span style={{ fontSize: '0.5rem', padding: '1px 5px', borderRadius: 3, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--muted)' }}>v1.28</span>
+      <span style={{ color: 'var(--border)', margin: '0 1px' }}>/</span>
+      <span style={{ color: 'var(--black)', fontWeight: 600 }}>Calculate Route</span>
+      <span style={{ marginLeft: 'auto', fontSize: '0.48rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: 'var(--warn-bg)', color: 'var(--warn-text)' }}>Beta</span>
+      <span style={{ fontSize: '0.48rem', padding: '1px 5px', borderRadius: 3, background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--muted)' }}>v1.28</span>
+    </div>
+  );
+
+  /* Tablet nav drawer overlay */
+  const TabletDrawer = () => (
+    <div style={{ position: 'absolute', top: 0, left: 0, width: 160, height: '100%', background: 'var(--white)', borderRight: '1px solid var(--border)', zIndex: 10, boxShadow: '4px 0 16px rgba(0,0,0,0.10)', display: 'flex', flexDirection: 'column' }}>
+      <div style={{ height: 32, borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 10px', flexShrink: 0 }}>
+        <span style={{ fontSize: '0.58rem', fontWeight: 700, color: 'var(--black)' }}>Navigation</span>
+        <div style={{ width: 18, height: 18, borderRadius: 4, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="8" height="8" viewBox="0 0 12 12" fill="none" stroke="var(--muted)" strokeWidth="1.5" strokeLinecap="round"><line x1="1" y1="1" x2="11" y2="11"/><line x1="11" y1="1" x2="1" y2="11"/></svg>
+        </div>
+      </div>
+      <div style={{ padding: '8px 10px', flex: 1 }}>
+        <div style={{ fontSize: '0.47rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 6 }}>Routing API</div>
+        {[['Introduction', false], ['Calculate Route', true], ['Batch Route', false]].map(([l, active]) => (
+          <div key={l} style={{ padding: '4px 7px', fontSize: '0.62rem', color: active ? 'var(--black)' : 'var(--mid)', fontWeight: active ? 600 : 400, background: active ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 2 }}>{l}</div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const ShellFrame = ({ children, maxWidth = 680, height = 140, label }) => (
+    <div style={{ width: '100%', maxWidth }}>
+      {label && <div style={{ fontSize: '0.6rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>{label}</div>}
+      <div style={{ border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden' }}>
+        {children}
+      </div>
     </div>
   );
 
   return (
-    <GallerySection title="App Shell Layout" desc=".shell (3-col grid) · .sidenav | content | .toc — four grid variants">
-      <Row label=".shell — default (sidenav + content + toc)">
-        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+    <GallerySection title="App Shell Layout" desc=".shell (3-col grid) · .sidenav | content | .toc · desktop / tablet / mobile variants"
+      usage={[
+        { n: '.page', f: 81 },
+        { n: '.page--wide', f: 9 },
+        { n: '.content-area', f: 2 },
+        { n: '.shell', f: 1 },
+        { n: '.shell--no-toc', f: 1 },
+        { n: '.shell--nav-collapsed', f: 1 },
+      ]}>
+
+      {/* ── Desktop variants ── */}
+      <Row label="desktop — default (.shell: sidenav + content + toc)">
+        <ShellFrame>
           <HeaderBar />
           <TopnavBar />
           <div style={{ display: 'flex', height: 140 }}>
@@ -3473,132 +4587,151 @@ function ShellLayoutSection() {
             <ContentCol />
             <TocCol />
           </div>
-        </div>
+        </ShellFrame>
       </Row>
 
-      <Row label=".shell--no-toc — sidenav + content (API detail pages, wide layouts)">
-        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+      <Row label="desktop — .shell--no-toc (sidenav + full-width content, no TOC)">
+        <ShellFrame>
           <HeaderBar />
           <TopnavBar />
           <div style={{ display: 'flex', height: 120 }}>
             <NavCol />
-            <ContentCol />
+            <ContentCol wide />
             <TocCol hidden />
           </div>
-        </div>
+        </ShellFrame>
       </Row>
 
-      <Row label=".shell--nav-collapsed — sidenav hidden + content + toc">
-        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
-          <HeaderBar />
+      <Row label="desktop — .shell--nav-collapsed (sidenav hidden, expand button in header)">
+        <ShellFrame>
+          <HeaderBar showExpandBtn />
           <TopnavBar />
           <div style={{ display: 'flex', height: 120 }}>
             <NavCol collapsed />
-            <ContentCol />
+            <ContentCol wide />
             <TocCol />
           </div>
-        </div>
+        </ShellFrame>
       </Row>
 
-      <Row label=".shell--nav-collapsed.shell--no-toc — full-width content">
-        <div style={{ width: '100%', maxWidth: 680, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
-          <HeaderBar />
+      <Row label="desktop — .shell--nav-collapsed + .shell--no-toc (full-width canvas)">
+        <ShellFrame>
+          <HeaderBar showExpandBtn />
           <TopnavBar />
-          <div style={{ display: 'flex', height: 120 }}>
+          <div style={{ display: 'flex', height: 110 }}>
             <NavCol collapsed />
-            <ContentCol />
+            <ContentCol wide />
             <TocCol hidden />
           </div>
+        </ShellFrame>
+      </Row>
+
+      {/* ── Tablet variant ── */}
+      <Row label="tablet (~768 px) — sidenav hidden by default, opens as drawer overlay">
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <ShellFrame maxWidth={400} label="drawer closed">
+            <HeaderBar showExpandBtn />
+            <TopnavBar />
+            <div style={{ display: 'flex', height: 110 }}>
+              <NavCol collapsed />
+              <ContentCol wide />
+              <TocCol hidden />
+            </div>
+          </ShellFrame>
+          <ShellFrame maxWidth={400} label="drawer open (overlays content)">
+            <HeaderBar />
+            <TopnavBar />
+            <div style={{ display: 'flex', height: 110, position: 'relative' }}>
+              <TabletDrawer />
+              <ContentCol wide />
+            </div>
+          </ShellFrame>
         </div>
       </Row>
 
-      {/* ── Two-column API ref layout inside shell ── */}
-      <Row label=".shell + .api-ref-sections — 2-col API reference layout (left: prose+params · right: dark code)" noBorder>
-        <div style={{ width: '100%', maxWidth: 760, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden' }}>
+      {/* ── Mobile variant ── */}
+      <Row label="mobile (~375 px) — no sidenav, no TOC, hamburger opens full-width dropdown">
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <ShellFrame maxWidth={260} label="menu closed">
+            <MobileHeaderBar menuOpen={false} onToggle={() => {}} />
+            <TopnavBar />
+            <div style={{ padding: '12px 14px', background: 'var(--white)' }}>
+              <div style={{ height: 10, width: '60%', background: 'var(--border)', borderRadius: 3, marginBottom: 8 }} />
+              {[90, 75, 82].map((w, i) => <div key={i} style={{ height: 6, width: `${w}%`, background: 'var(--bg)', borderRadius: 3, marginBottom: 4 }} />)}
+            </div>
+          </ShellFrame>
+          <ShellFrame maxWidth={260} label="menu open (Products / Resources / Pricing + Sign in)">
+            <MobileHeaderBar menuOpen={true} onToggle={() => {}} />
+            <div style={{ padding: '10px 14px', background: 'var(--white)' }}>
+              <div style={{ height: 8, width: '70%', background: 'var(--bg)', borderRadius: 3, opacity: 0.4 }} />
+            </div>
+          </ShellFrame>
+          <ShellFrame maxWidth={260} label="interactive — try the ☰ toggle">
+            <MobileHeaderBar menuOpen={mobileMenuOpen} onToggle={() => setMobileMenuOpen(o => !o)} />
+            {!mobileMenuOpen && (
+              <>
+                <TopnavBar />
+                <div style={{ padding: '12px 14px', background: 'var(--white)' }}>
+                  <div style={{ height: 10, width: '55%', background: 'var(--border)', borderRadius: 3, marginBottom: 8 }} />
+                  {[85, 70, 80].map((w, i) => <div key={i} style={{ height: 6, width: `${w}%`, background: 'var(--bg)', borderRadius: 3, marginBottom: 4 }} />)}
+                </div>
+              </>
+            )}
+          </ShellFrame>
+        </div>
+      </Row>
+
+      {/* ── 2-col API ref inside shell ── */}
+      <Row label="desktop — .shell + .api-ref-sections (2-col API ref: prose + params left · dark code right)" noBorder>
+        <ShellFrame maxWidth={760} height={260}>
           <HeaderBar />
           <TopnavBar />
           <div style={{ display: 'flex', minHeight: 260 }}>
-            {/* Left nav */}
             <NavCol />
-            {/* Two-col content area */}
             <div style={{ flex: 1, minWidth: 0, display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
-              {/* Left prose column */}
-              <div style={{ padding: '16px 20px', borderRight: '1px solid var(--border)', background: 'var(--white)' }}>
-                {/* Section header with method + endpoint */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 10, paddingBottom: 10, borderBottom: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '0.5625rem', fontWeight: 800, padding: '2px 6px', borderRadius: 4, background: '#dcfce7', color: '#166534', letterSpacing: '0.04em' }}>GET</span>
-                  <code style={{ fontSize: '0.625rem', color: 'var(--black)', fontFamily: 'var(--font-mono)', wordBreak: 'break-all' }}>/routing/1/calculateRoute</code>
+              <div style={{ padding: '14px 18px', borderRight: '1px solid var(--border)', background: 'var(--white)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10, paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>
+                  <span style={{ fontSize: '0.5rem', fontWeight: 800, padding: '2px 5px', borderRadius: 3, background: 'var(--info-bg)', color: 'var(--info-text)', letterSpacing: '0.04em' }}>GET</span>
+                  <code style={{ fontSize: '0.58rem', color: 'var(--black)', fontFamily: 'var(--font-mono)' }}>/routing/1/calculateRoute</code>
                 </div>
-                {/* Prose */}
-                <p style={{ fontSize: '0.7rem', color: 'var(--mid)', lineHeight: 1.6, margin: '0 0 12px' }}>
-                  Calculates a route between two or more locations using real-time traffic.
-                </p>
-                {/* Param table */}
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.65rem' }}>
-                  <thead>
-                    <tr style={{ borderBottom: '1px solid var(--border)' }}>
-                      <th style={{ textAlign: 'left', padding: '4px 6px 4px 0', color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.55rem' }}>Parameter</th>
-                      <th style={{ textAlign: 'left', padding: '4px 0', color: 'var(--muted)', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', fontSize: '0.55rem' }}>Required</th>
-                    </tr>
-                  </thead>
+                <p style={{ fontSize: '0.66rem', color: 'var(--mid)', lineHeight: 1.6, margin: '0 0 10px' }}>Calculates a route between two or more locations using real-time traffic.</p>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.62rem' }}>
+                  <thead><tr style={{ borderBottom: '1px solid var(--border)' }}>
+                    <th style={{ textAlign: 'left', padding: '3px 0', color: 'var(--muted)', fontWeight: 600, fontSize: '0.52rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Parameter</th>
+                    <th style={{ textAlign: 'left', padding: '3px 0', color: 'var(--muted)', fontWeight: 600, fontSize: '0.52rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Required</th>
+                  </tr></thead>
                   <tbody>
-                    {[
-                      { name: 'routePlanningLocations', req: true },
-                      { name: 'travelMode', req: false },
-                      { name: 'traffic', req: false },
-                    ].map(p => (
-                      <tr key={p.name} style={{ borderBottom: '1px solid var(--bg)' }}>
-                        <td style={{ padding: '4px 6px 4px 0' }}><code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.6rem', color: 'var(--black)' }}>{p.name}</code></td>
-                        <td style={{ padding: '4px 0' }}>
-                          <span style={{ fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px', borderRadius: 3, background: p.req ? 'var(--danger-bg)' : 'var(--bg)', color: p.req ? 'var(--danger-text)' : 'var(--muted)', border: `1px solid ${p.req ? 'var(--danger-border)' : 'var(--border)'}` }}>
-                            {p.req ? 'required' : 'optional'}
-                          </span>
+                    {[['routePlanningLocations', true], ['travelMode', false], ['traffic', false]].map(([n, req]) => (
+                      <tr key={n} style={{ borderBottom: '1px solid var(--bg)' }}>
+                        <td style={{ padding: '3px 6px 3px 0' }}><code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.58rem', color: 'var(--black)' }}>{n}</code></td>
+                        <td style={{ padding: '3px 0' }}>
+                          <span style={{ fontSize: '0.48rem', fontWeight: 700, padding: '1px 4px', borderRadius: 3, background: req ? 'var(--danger-bg)' : 'var(--bg)', color: req ? 'var(--danger-text)' : 'var(--muted)', border: `1px solid ${req ? 'var(--danger-border)' : 'var(--border)'}` }}>{req ? 'required' : 'optional'}</span>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              {/* Right code column */}
               <div style={{ background: '#0d1117', display: 'flex', flexDirection: 'column' }}>
-                {/* Code bar */}
-                <div style={{ padding: '6px 12px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ fontSize: '0.55rem', color: '#94a3b8', fontWeight: 600 }}>cURL</span>
+                <div style={{ padding: '5px 10px', borderBottom: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ fontSize: '0.52rem', color: '#94a3b8', fontWeight: 600 }}>cURL</span>
                   <div style={{ flex: 1 }} />
-                  <button style={{ background: 'rgba(255,255,255,0.08)', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.6rem', borderRadius: 4, padding: '2px 7px', cursor: 'default' }}>Copy</button>
+                  <span style={{ fontSize: '0.52rem', color: 'rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.07)', borderRadius: 3, padding: '1px 6px' }}>Copy</span>
                 </div>
-                <pre style={{ margin: 0, padding: '12px 14px', fontSize: '0.6rem', color: '#c9d1d9', lineHeight: 1.65, flex: 1 }}>
-{`curl -X GET \\
-  "https://api.tomtom.com/
-  routing/1/calculateRoute/
-  52.37,4.90:48.86,2.35/
-  json?key=YOUR_KEY
-  &travelMode=car"`}
-                </pre>
-                {/* Response bar */}
-                <div style={{ padding: '5px 12px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.03)' }}>
-                  <span style={{ fontSize: '0.55rem', color: '#4ade80', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} /> Response
-                  </span>
-                  <span style={{ fontSize: '0.55rem', color: '#64748b', marginLeft: 'auto' }}>124ms</span>
+                <pre style={{ margin: 0, padding: '10px 12px', fontSize: '0.58rem', color: '#c9d1d9', lineHeight: 1.6, flex: 1 }}>{`curl -X GET \\\n  "https://api.tomtom.com/\n  routing/1/calculateRoute/\n  52.37,4.90:48.86,2.35/\n  json?key=YOUR_KEY\n  &travelMode=car"`}</pre>
+                <div style={{ padding: '4px 10px', borderTop: '1px solid rgba(255,255,255,0.07)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: '#4ade80', display: 'inline-block' }} />
+                  <span style={{ fontSize: '0.52rem', color: '#4ade80', fontWeight: 600 }}>200 OK</span>
+                  <span style={{ fontSize: '0.52rem', color: '#64748b', marginLeft: 'auto' }}>124 ms</span>
                 </div>
-                <pre style={{ margin: 0, padding: '10px 14px', fontSize: '0.6rem', color: '#c9d1d9', lineHeight: 1.65, background: '#0d1117', borderTop: '1px solid rgba(255,255,255,0.05)', maxHeight: 80, overflow: 'hidden' }}>
-{`{
-  "routes": [{
-    "summary": {
-      "travelTimeInSeconds": 3720,
-      "lengthInMeters": 499200
-    }
-  }]
-}`}
-                </pre>
+                <pre style={{ margin: 0, padding: '8px 12px', fontSize: '0.58rem', color: '#c9d1d9', lineHeight: 1.6, borderTop: '1px solid rgba(255,255,255,0.05)', maxHeight: 72, overflow: 'hidden' }}>{`{\n  "routes": [{\n    "summary": {\n      "travelTimeInSeconds": 3720\n    }\n  }]\n}`}</pre>
               </div>
             </div>
-            {/* Right TOC */}
             <TocCol />
           </div>
-        </div>
+        </ShellFrame>
       </Row>
+
     </GallerySection>
   );
 }
@@ -3609,7 +4742,16 @@ function ShellLayoutSection() {
 
 function TocSection() {
   return (
-    <GallerySection title="TOC — Table of Contents" desc=".toc, .toc-heading, .toc-list — right-column sticky nav, all link states">
+    <GallerySection title="TOC — Table of Contents" desc=".toc, .toc-heading, .toc-list — right-column sticky nav, all link states"
+      usage={[
+        { n: '.toc-list', f: 2 },
+        { n: '.toc', f: 1 },
+        { n: '.toc-heading', f: 1 },
+        { n: '.toc-link', f: 0, t: 'wrong', fix: '.toc-list a.active' },
+        { n: '.toc-link--active', f: 0, t: 'wrong', fix: '.toc-list a.active' },
+        { n: '.toc-link--h3', f: 0, t: 'wrong', fix: '.toc-list a.active' },
+        { n: 'TableOfContent', t: 'playbook' },
+      ]}>
       <Row label="full toc component">
         <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', alignItems: 'flex-start' }}>
 
@@ -3695,7 +4837,20 @@ function SidenavFullSection() {
   );
 
   return (
-    <GallerySection title="Sidenav — Collapse, Expand & Mobile Drawer" desc=".sidenav-collapse-btn, .nav-expand-btn, .sidenav-drawer — states missing from §23">
+    <GallerySection title="Sidenav — Collapse, Expand & Mobile Drawer" desc=".sidenav-collapse-btn, .nav-expand-btn, .sidenav-drawer — states missing from §23"
+      usage={[
+        { n: '.sidenav-collapse-btn', f: 1 },
+        { n: '.sidenav-collapse-bar', f: 1 },
+        { n: '.sidenav-drawer', f: 1 },
+        { n: '.sidenav-drawer-backdrop', f: 1 },
+        { n: '.sidenav-drawer-header', f: 1 },
+        { n: '.sidenav-drawer-close', f: 1 },
+        { n: '.sidenav--collapsed', f: 1 },
+        { n: '.sidenav-drawer--open', f: 1 },
+        { n: '.nav-expand-btn', f: 1 },
+        { n: 'Sidebar', t: 'playbook' },
+        { n: 'Drawer', t: 'playbook' },
+      ]}>
 
       {/* Desktop collapse / expand */}
       <Row label="desktop collapse bar (.sidenav-collapse-bar + .sidenav-collapse-btn) + nav-expand-btn">
@@ -3792,7 +4947,16 @@ function SidenavFullSection() {
                 {/* Header */}
                 <div className="sidenav-drawer-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 12px', height: 44, borderBottom: '1px solid var(--border)', flexShrink: 0, background: 'var(--white)' }}>
                   <div className="sidenav-drawer-header-actions" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <div style={{ fontWeight: 800, fontSize: '0.875rem', color: 'var(--red)', fontFamily: 'var(--font-display)' }}>TomTom</div>
+                    <svg width="80" height="15" viewBox="0 0 125 24" fill="none" style={{ display: 'block' }}>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M121.444 22.1291H124.999L125 13.0887C125 12.5 124.925 12.0676 124.859 11.7567C124.836 11.6515 124.816 11.5678 124.794 11.4864C124.092 8.90785 121.577 7.123 118.811 7.23655C117.528 7.29129 116.321 7.76661 115.225 8.64915L115.085 8.76169L114.945 8.64915C113.849 7.76661 112.642 7.29129 111.359 7.23655C108.59 7.12114 106.078 8.90785 105.376 11.4864C105.354 11.568 105.334 11.652 105.311 11.7577C105.242 12.0876 105.17 12.5049 105.17 13.0887L105.171 22.1291H108.726V13.242C108.726 11.9833 109.753 10.9593 111.015 10.9593C112.266 10.9593 113.292 11.9744 113.303 13.222C113.304 13.2264 113.304 13.2342 113.304 13.242V22.1291H116.866L116.867 13.2212C116.878 11.9744 117.904 10.9593 119.155 10.9593C120.417 10.9593 121.444 11.9833 121.444 13.242V22.1291Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M95.1744 18.5808C93.0256 18.5808 91.2773 16.8374 91.2773 14.6945C91.2773 12.5516 93.0256 10.8081 95.1744 10.8081C97.3234 10.8081 99.0716 12.5516 99.0716 14.6945C99.0716 16.8374 97.3234 18.5808 95.1744 18.5808ZM95.1741 7.25977C91.0633 7.25977 87.7188 10.5949 87.7188 14.6944C87.7188 18.794 91.0633 22.1292 95.1741 22.1292C99.285 22.1292 102.629 18.794 102.629 14.6944C102.629 10.5949 99.285 7.25977 95.1741 7.25977Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M82.9062 22.1324H87.5178L85.4546 18.5805C85.0074 18.58 83.1692 18.5776 83.026 18.5776C81.8791 18.5776 80.8802 17.7512 80.7994 16.7353C80.7887 16.6023 80.7791 16.4376 80.7716 16.2566V10.9014H85.4537L87.2833 7.69089H80.7716V1.86743L77.2102 4.32446V7.52023H74.9629V11.072H77.21L77.2134 15.9215C77.2134 15.9236 77.211 16.1479 77.2144 16.2125L77.228 16.4827C77.3498 18.8376 78.5126 20.5715 80.684 21.6355C81.2652 21.9202 81.908 22.0772 82.7073 22.1294L82.9062 22.1291V22.1324Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M68.864 22.129H72.4192L72.4198 13.0887C72.4198 12.5 72.3444 12.0676 72.2785 11.7567C72.2556 11.6514 72.2355 11.5677 72.2135 11.4863C71.512 8.90779 68.9973 7.12293 66.2307 7.23648C64.9479 7.29123 63.7413 7.76655 62.6447 8.64909L62.5049 8.76163L62.3651 8.64909C61.2685 7.76655 60.0619 7.29123 58.7788 7.23648C56.01 7.12108 53.4979 8.90779 52.7962 11.4863C52.774 11.5679 52.754 11.6519 52.731 11.7577C52.6613 12.0875 52.5898 12.5049 52.5898 13.0887L52.5905 22.129H56.1459V13.2419C56.1459 11.9833 57.1727 10.9593 58.4348 10.9593C59.6856 10.9593 60.7119 11.9743 60.7229 13.222C60.7233 13.2264 60.7238 13.2342 60.7238 13.2419V22.129H64.2861L64.2869 13.2211C64.2978 11.9743 65.3242 10.9593 66.5749 10.9593C67.8372 10.9593 68.864 11.9833 68.864 13.2419V22.129Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M42.5944 18.5808C40.4454 18.5808 38.6973 16.8374 38.6973 14.6945C38.6973 12.5516 40.4454 10.8081 42.5944 10.8081C44.7434 10.8081 46.4915 12.5516 46.4915 14.6945C46.4915 16.8374 44.7434 18.5808 42.5944 18.5808ZM42.594 7.25977C38.4831 7.25977 35.1387 10.5949 35.1387 14.6944C35.1387 18.794 38.4831 22.1292 42.594 22.1292C46.7049 22.1292 50.0493 18.794 50.0493 14.6944C50.0493 10.5949 46.7049 7.25977 42.594 7.25977Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M30.3261 22.1325H34.9378L32.8745 18.5805C32.4273 18.58 30.5891 18.5777 30.4459 18.5777C29.299 18.5777 28.3001 17.7512 28.2193 16.7354C28.2086 16.6024 28.199 16.4376 28.1915 16.2567V10.9014H32.8736L34.7033 7.69095H28.1915V1.86749L24.6301 4.32452V7.52029H22.3828V11.0721H24.6299L24.6333 15.9216C24.6333 15.9236 24.6309 16.148 24.6343 16.2126L24.6479 16.4827C24.7697 18.8377 25.9326 20.5715 28.1039 21.6355C28.6851 21.9203 29.328 22.0772 30.1272 22.1295L30.3261 22.1291V22.1325Z" fill="currentColor"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M8.28764 24.0001L11.4639 18.5139H5.11133L8.28764 24.0001Z" fill="#DF1B12"/>
+                      <path fillRule="evenodd" clipRule="evenodd" d="M8.28694 12.5839C5.89835 12.5839 3.95522 10.6459 3.95522 8.26409C3.95522 5.88209 5.89835 3.94415 8.28694 3.94415C10.6755 3.94415 12.6187 5.88209 12.6187 8.26409C12.6187 10.6459 10.6755 12.5839 8.28694 12.5839ZM8.28694 0C3.7175 0 0 3.70725 0 8.26409C0 12.8208 3.7175 16.528 8.28694 16.528C12.8564 16.528 16.5739 12.8208 16.5739 8.26409C16.5739 3.70725 12.8564 0 8.28694 0Z" fill="#DF1B12"/>
+                    </svg>
                   </div>
                   <button className="sidenav-drawer-close" onClick={() => setDrawerOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '4px 10px', height: 30, border: '1px solid var(--border)', background: 'transparent', cursor: 'pointer', color: 'var(--muted)', borderRadius: 6, fontSize: '0.75rem' }}>
                     <CloseIcon /> Close
@@ -3834,148 +4998,944 @@ function SidenavFullSection() {
 
 
 // ─────────────────────────────────────────────────────────────────────────────
+// §44  VERSION BADGES
+// Added: Routing API param index + response tree (2026-05-12)
+// Consolidation candidate: overlaps with Badges & Tags (§22) — same pill shape,
+// different semantic (version vs status). Consider folding into §22 as a variant row.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function VersionBadgesSection() {
+  const vBadge = { fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4, fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' };
+  const versions = [
+    { label: 'v1', bg: 'rgba(34,197,94,0.1)',    color: '#15803d' },
+    { label: 'v2', bg: 'rgba(167,139,250,0.1)',   color: '#7c3aed' },
+    { label: 'v3', bg: 'rgba(251,146,60,0.1)',    color: '#c2410c' },
+  ];
+  return (
+    <GallerySection
+      title="Version Badges"
+      desc="Inline v1/v2/v3 availability pills — used in Parameter Index table and Routing Intro comparison table. No dedicated CSS class; inline styles only."
+      usage={[
+        { n: 'version badge (inline)', f: 2 },
+      ]}>
+      <Row label="sizes & states" noBorder>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div>
+            <StateLabel>Single badges</StateLabel>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              {versions.map(v => (
+                <span key={v.label} style={{ ...vBadge, background: v.bg, color: v.color }}>{v.label}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <StateLabel>Inline cluster (param index usage)</StateLabel>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {versions.map(v => (
+                <span key={v.label} style={{ ...vBadge, background: v.bg, color: v.color }}>{v.label}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <StateLabel>Paired with version label (Routing Intro table header)</StateLabel>
+            <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+              {[
+                { ver: 'V1', bg: 'rgba(34,197,94,0.1)', color: '#15803d', status: 'Production', statusBg: 'rgba(34,197,94,0.12)', statusColor: '#15803d' },
+                { ver: 'V2', bg: 'rgba(167,139,250,0.1)', color: '#7c3aed', status: 'Public Preview', statusBg: 'rgba(168,85,247,0.12)', statusColor: '#7c3aed' },
+                { ver: 'V3', bg: 'rgba(251,146,60,0.1)', color: '#c2410c', status: 'Private Preview', statusBg: 'rgba(234,179,8,0.12)', statusColor: '#92400e' },
+              ].map(v => (
+                <div key={v.ver} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.ver}</span>
+                  <span style={{ ...vBadge, background: v.statusBg, color: v.statusColor, textTransform: 'uppercase' }}>{v.status}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div style={{ padding: '10px 14px', background: 'var(--s1)', borderRadius: 8, fontSize: '0.75rem', color: 'var(--muted)', maxWidth: 480 }}>
+            <strong style={{ color: 'var(--mid)' }}>Consolidation note:</strong> Same shape as method badges (GET/POST in §22) and status pills in §22. Could unify into a single semantic-color pill system. Key difference: version badges are always monospace font.
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §45  PARAMETER INDEX TABLE
+// Added: RoutingGuidePages.jsx — RoutingParamIndex (2026-05-12)
+// Consolidation candidate: §26 Tables uses generic table styles. This is a
+// specialised 5-column API param table — consider extracting as a shared
+// <ParamIndexTable> component if used on more than 1 page.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ParamIndexTableSection() {
+  const thStyle = {
+    padding: '0.5rem 0.75rem', textAlign: 'left', fontSize: '0.6875rem',
+    fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase',
+    letterSpacing: '0.06em', borderBottom: '2px solid var(--border)',
+    background: 'var(--s1)',
+  };
+  const vBadge = { fontSize: '0.625rem', fontWeight: 700, padding: '2px 6px', borderRadius: 4, fontFamily: 'var(--font-mono)' };
+  const sampleRows = [
+    { name: 'avoid',       type: 'string (×n)',  dflt: '—',       v: [1,2,3], desc: 'Road or feature types to exclude.', values: 'tollRoads, motorways, ferries…', constraint: 'motorways may time out on routes > 500 km.' },
+    { name: 'departAt',    type: 'datetime',     dflt: 'now',     v: [1,2,3], desc: 'Departure time (RFC 3339). Cannot combine with arriveAt.' },
+    { name: 'maxAlternatives', type: 'integer',  dflt: '0',       v: [1,2,3], desc: 'Number of alternative routes (0–5).', constraint: 'Cannot combine with computeBestOrder=true.' },
+    { name: 'vehicleHeading', type: 'integer',   dflt: '—',       v: [1,2],   desc: 'Heading in degrees clockwise from true north (0–359°).' },
+  ];
+  const vColors = { 1: { bg: 'rgba(34,197,94,0.1)', color: '#15803d' }, 2: { bg: 'rgba(167,139,250,0.1)', color: '#7c3aed' }, 3: { bg: 'rgba(251,146,60,0.1)', color: '#c2410c' } };
+
+  return (
+    <GallerySection
+      title="Parameter Index Table"
+      desc="Cross-version A–Z parameter table — name, type, default, version availability badges, description + constraints. Used in RoutingParamIndex. Inline styles only, no CSS class."
+      usage={[
+        { n: 'ParamIndexTable (inline)', f: 1 },
+      ]}>
+      <Row label="specimen (4 of 54 rows)" noBorder>
+        <div style={{ overflowX: 'auto', borderRadius: 10, border: '1px solid var(--border)', width: '100%', maxWidth: 860 }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+            <thead>
+              <tr>
+                <th style={{ ...thStyle, minWidth: 160 }}>Parameter</th>
+                <th style={{ ...thStyle, minWidth: 100 }}>Type</th>
+                <th style={{ ...thStyle, minWidth: 64 }}>Default</th>
+                <th style={{ ...thStyle, minWidth: 80 }}>Versions</th>
+                <th style={{ ...thStyle }}>Description &amp; constraints</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sampleRows.map((p, i) => (
+                <tr key={p.name} style={{ background: i % 2 === 0 ? 'var(--bg)' : 'var(--s1)', borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '0.45rem 0.75rem', verticalAlign: 'top' }}>
+                    <code style={{ fontSize: '0.75rem', color: 'var(--brand)', fontFamily: 'var(--font-mono)' }}>{p.name}</code>
+                  </td>
+                  <td style={{ padding: '0.45rem 0.75rem', verticalAlign: 'top' }}>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--muted)', fontFamily: 'var(--font-mono)' }}>{p.type}</span>
+                  </td>
+                  <td style={{ padding: '0.45rem 0.75rem', verticalAlign: 'top' }}>
+                    <code style={{ fontSize: '0.75rem', color: 'var(--mid)', fontFamily: 'var(--font-mono)' }}>{p.dflt}</code>
+                  </td>
+                  <td style={{ padding: '0.45rem 0.75rem', verticalAlign: 'top' }}>
+                    <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+                      {p.v.map(n => <span key={n} style={{ ...vBadge, background: vColors[n].bg, color: vColors[n].color }}>v{n}</span>)}
+                    </div>
+                  </td>
+                  <td style={{ padding: '0.45rem 0.75rem', verticalAlign: 'top', color: 'var(--text)', lineHeight: 1.5 }}>
+                    {p.desc}
+                    {p.values && <div style={{ marginTop: 3, fontSize: '0.75rem', color: 'var(--muted)' }}>Values: <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{p.values}</code></div>}
+                    {p.constraint && <div style={{ marginTop: 3, fontSize: '0.75rem', color: 'var(--muted)', fontStyle: 'italic' }}>{p.constraint}</div>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Row>
+      <Row label="consolidation note">
+        <div style={{ padding: '10px 14px', background: 'var(--s1)', borderRadius: 8, fontSize: '0.75rem', color: 'var(--muted)', maxWidth: 560 }}>
+          <strong style={{ color: 'var(--mid)' }}>vs §26 Tables:</strong> Generic tables use <code style={{ fontFamily: 'var(--font-mono)' }}>.data-table</code> CSS class. This is inline-styled with version badge columns. If a second endpoint gets its own param index, extract a shared <code style={{ fontFamily: 'var(--font-mono)' }}>{'<ParamIndexTable>'}</code> component with the badge logic built in.
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §46  RESPONSE SCHEMA TREE
+// Added: RoutingGuidePages.jsx — RoutingResponseRef (2026-05-12)
+// Consolidation candidate: unique pattern currently. If used for other API
+// response schemas (LDEVR, Search, etc.) extract as a shared <SchemaTree>
+// component. The renderTree() function is currently inlined per page.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ResponseTreeSection() {
+  const sampleTree = [
+    {
+      key: 'routes[]', type: 'Route[]', desc: 'Array of route objects. Index 0 is the primary route.',
+      children: [
+        {
+          key: 'summary', type: 'RouteSummary', desc: 'Aggregate statistics for the full route.',
+          children: [
+            { key: 'lengthInMeters',      type: 'integer',          desc: 'Total route distance in metres.' },
+            { key: 'travelTimeInSeconds', type: 'integer',          desc: 'Total travel time including real-time traffic.' },
+            { key: 'arrivalTime',         type: 'string (RFC 3339)', desc: 'Estimated arrival timestamp.' },
+          ],
+        },
+        {
+          key: 'legs[]', type: 'Leg[]', desc: 'One leg per consecutive waypoint pair.',
+          children: [
+            { key: 'points[]', type: 'GeoPoint[]', desc: 'Ordered polyline coordinates.' },
+          ],
+        },
+      ],
+    },
+    { key: 'warnings[]', type: 'Warning[]', desc: 'Non-fatal issues. Route was calculated but params may have been adjusted.' },
+  ];
+
+  const renderTree = (nodes, depth = 0) => nodes.map(node => (
+    <div key={node.key} style={{ marginLeft: depth * 20 }}>
+      <div style={{
+        display: 'flex', alignItems: 'flex-start', gap: '0.625rem',
+        padding: '0.375rem 0.75rem',
+        borderLeft: depth > 0 ? '2px solid var(--border)' : 'none',
+        marginLeft: depth > 0 ? '8px' : 0,
+      }}>
+        <code style={{ fontSize: '0.75rem', color: 'var(--brand)', fontFamily: 'var(--font-mono)', flexShrink: 0, minWidth: 160 }}>{node.key}</code>
+        <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', flexShrink: 0, minWidth: 80 }}>{node.type}</span>
+        <span style={{ fontSize: '0.8125rem', color: 'var(--text)' }}>{node.desc}</span>
+      </div>
+      {node.children && renderTree(node.children, depth + 1)}
+    </div>
+  ));
+
+  return (
+    <GallerySection
+      title="Response Schema Tree"
+      desc="Nested key→type→desc hierarchy for API response documentation. Depth-indented with border-left connectors. renderTree() currently inlined in RoutingResponseRef."
+      usage={[
+        { n: 'renderTree (inline)', f: 1 },
+      ]}>
+      <Row label="specimen" noBorder>
+        <div style={{ background: 'var(--s1)', border: '1px solid var(--border)', borderRadius: 12, padding: '0.5rem 0', width: '100%', maxWidth: 720, overflow: 'hidden' }}>
+          {renderTree(sampleTree)}
+        </div>
+      </Row>
+      <Row label="depth levels">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, fontSize: '0.75rem', color: 'var(--muted)', maxWidth: 480 }}>
+          <div><strong style={{ color: 'var(--mid)' }}>Depth 0</strong> — root fields. No left border. Key in brand red.</div>
+          <div><strong style={{ color: 'var(--mid)' }}>Depth 1+</strong> — child fields. 2px left border, 8px left margin per level. 20px indent per level via marginLeft.</div>
+          <div><strong style={{ color: 'var(--mid)' }}>Consolidation note:</strong> If LDEVR, Search API, or other products need response schema docs, extract as <code style={{ fontFamily: 'var(--font-mono)' }}>{'<SchemaTree nodes={} />'}</code> with the recursive renderer inside.</div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §47  GUIDE LANDING CARD
+// Added: RoutingGuidePages.jsx — RoutingEVLanding + RoutingHowToLanding (2026-05-12)
+// Consolidation candidate: Similar hover-border pattern to .text-card (§36) and
+// Nav Cards (§15). Key difference: 20px border-radius vs text-card's tighter radius,
+// no label pill, no icon. Consider unifying with text-card using a size/shape variant.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function GuideLandingCardSection() {
+  const cardBase = {
+    background: 'var(--bg)', border: '1px solid var(--border)',
+    borderRadius: '20px', padding: '1.25rem', cursor: 'pointer',
+    textAlign: 'left', display: 'block', width: '100%',
+  };
+
+  return (
+    <GallerySection
+      title="Guide Landing Card"
+      desc="Hover-border card used on EV Routing and How-to landing pages. No icon, no label pill — title + desc only. 20px radius, brand-color border on hover. Inline styles only."
+      usage={[
+        { n: 'guide landing card (inline)', f: 1 },
+      ]}>
+      <Row label="states" noBorder>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          <div style={{ width: 220 }}>
+            <StateLabel>Default</StateLabel>
+            <div style={{ ...cardBase, pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.375rem' }}>EV Route Planning</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--muted)', lineHeight: 1.5 }}>Configure multi-stop EV routes with automatic charging stop insertion.</div>
+            </div>
+          </div>
+          <div style={{ width: 220 }}>
+            <StateLabel>Hover (simulated)</StateLabel>
+            <div style={{ ...cardBase, borderColor: 'var(--brand)', pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.375rem' }}>Consumption Models</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--muted)', lineHeight: 1.5 }}>Model combustion and electric consumption per vehicle type.</div>
+            </div>
+          </div>
+        </div>
+      </Row>
+      <Row label="vs text-card (§36)">
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'flex-start' }}>
+          <div style={{ width: 200 }}>
+            <StateLabel>text-card (existing)</StateLabel>
+            <div className="text-card" style={{ padding: '14px 16px', pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>Guide</div>
+              <div style={{ fontSize: '0.8125rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>EV Route Planning</div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.55 }}>Has a label pill above the title.</div>
+            </div>
+          </div>
+          <div style={{ width: 200 }}>
+            <StateLabel>guide landing card (new)</StateLabel>
+            <div style={{ ...cardBase, pointerEvents: 'none' }}>
+              <div style={{ fontSize: '0.9375rem', fontWeight: 600, color: 'var(--text)', marginBottom: '0.375rem' }}>EV Route Planning</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--muted)', lineHeight: 1.5 }}>No label. Larger radius, larger title weight.</div>
+            </div>
+          </div>
+          <div style={{ padding: '10px 14px', background: 'var(--s1)', borderRadius: 8, fontSize: '0.75rem', color: 'var(--muted)', maxWidth: 260, alignSelf: 'center' }}>
+            <strong style={{ color: 'var(--mid)' }}>Consolidation note:</strong> Both have hover-border transition and serve as navigation cards to sub-pages. Could unify as a single card with an optional <code style={{ fontFamily: 'var(--font-mono)' }}>label</code> prop.
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §48 — NAV OPTION B  (concept-first + vDots)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Tiny coloured dot showing version coverage inline in a nav item */
+function VDot({ v }) {
+  const COLOR = { v1: '#22c55e', v2: '#a78bfa', v3: '#fb923c' };
+  return (
+    <span title={v} style={{
+      width: 5, height: 5, borderRadius: '50%',
+      background: COLOR[v] ?? '#9ca3af',
+      flexShrink: 0,
+      display: 'inline-block',
+    }} />
+  );
+}
+
+/** One simulated nav item with optional vDots cluster */
+function NavItemRow({ label, active, vDots, indent }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: `4px ${indent ? 22 : 10}px`,
+      background: active ? 'var(--s1)' : 'transparent',
+      borderRadius: 4,
+      marginBottom: 1,
+      cursor: 'default',
+    }}>
+      <span style={{ fontSize: '0.6875rem', color: active ? 'var(--black)' : 'var(--mid)', fontWeight: active ? 600 : 400 }}>{label}</span>
+      {vDots && (
+        <span style={{ display: 'flex', gap: 3, alignItems: 'center', marginLeft: 8 }}>
+          {vDots.map(v => <VDot key={v} v={v} />)}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function NavOptionBSection() {
+  const [activeItem, setActiveItem] = useState('Calculate Route');
+
+  const ENDPOINTS = [
+    { label: 'Calculate Route',          vDots: ['v1','v2','v3'] },
+    { label: 'Reachable Range',          vDots: ['v1','v2','v3'] },
+    { label: 'Lane Guidance',            vDots: ['v1','v2','v3'] },
+    { label: 'Batch Routing',            vDots: ['v1'] },
+    { label: 'Turn-by-Turn Instructions',vDots: ['v1'] },
+    { label: 'Guidance Instructions',    vDots: ['v2','v3'] },
+    { label: 'Compute Toll Amounts',     vDots: ['v2','v3'] },
+    { label: 'Dynamic Data Freshness',   vDots: ['v2'] },
+    { label: 'Road Shield Notes',        vDots: ['v1'] },
+    { label: 'Weather Consideration',    vDots: ['v3'] },
+  ];
+
+  const V_LEGEND = [
+    { v: 'v1', color: '#22c55e', bg: 'rgba(34,197,94,0.1)', label: 'V1 · Production' },
+    { v: 'v2', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)', label: 'V2 · Public Preview' },
+    { v: 'v3', color: '#fb923c', bg: 'rgba(251,146,60,0.1)', label: 'V3 · Private Preview' },
+  ];
+
+  return (
+    <GallerySection
+      title="Sidenav — Option B: Concept-first + vDots"
+      desc="One entry per endpoint concept; coloured dots on the right show which versions support it"
+      usage={[
+        { n: 'vDots', f: 0, t: 'missing' },
+        { n: 'ROUTING_API_NAV_B', f: 1 },
+        { n: 'CONCEPT_ENDPOINTS', f: 1 },
+      ]}
+    >
+      <Row label="endpoint list with version coverage dots">
+        <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+
+          {/* Simulated sidenav */}
+          <div style={{ width: 220, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', background: 'var(--white)' }}>
+            {/* Top links */}
+            <div style={{ padding: '10px 10px 4px' }}>
+              {['Introduction', 'Quick Start'].map(l => (
+                <div key={l} onClick={() => setActiveItem(l)} style={{ padding: '4px 10px', fontSize: '0.6875rem', color: activeItem === l ? 'var(--black)' : 'var(--mid)', fontWeight: activeItem === l ? 600 : 400, background: activeItem === l ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 1, cursor: 'pointer' }}>{l}</div>
+              ))}
+            </div>
+            {/* Endpoints section */}
+            <div style={{ padding: '4px 0 4px' }}>
+              <div style={{ padding: '6px 10px 3px', fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)' }}>Endpoints</div>
+              {ENDPOINTS.map(({ label, vDots }) => (
+                <div
+                  key={label}
+                  onClick={() => setActiveItem(label)}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '4px 10px',
+                    background: activeItem === label ? 'var(--s1)' : 'transparent',
+                    borderRadius: 4, marginBottom: 1, cursor: 'pointer', marginLeft: 6, marginRight: 6,
+                  }}
+                >
+                  <span style={{ fontSize: '0.6875rem', color: activeItem === label ? 'var(--black)' : 'var(--mid)', fontWeight: activeItem === label ? 600 : 400 }}>{label}</span>
+                  <span style={{ display: 'flex', gap: 3, alignItems: 'center', marginLeft: 6 }}>
+                    {vDots.map(v => <VDot key={v} v={v} />)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Legend + rationale */}
+          <div style={{ maxWidth: 340 }}>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 8 }}>Version dot legend</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                {V_LEGEND.map(({ v, color, bg, label }) => (
+                  <div key={v} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: color, flexShrink: 0, display: 'inline-block' }} />
+                    <span style={{ fontSize: '0.6875rem', fontFamily: 'var(--font-mono)', padding: '1px 7px', borderRadius: 99, background: bg, color, fontWeight: 700, border: `1px solid ${color}55` }}>{v.toUpperCase()}</span>
+                    <span style={{ fontSize: '0.6875rem', color: 'var(--mid)' }}>{label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.6 }}>
+              <strong style={{ color: 'var(--black)' }}>Rationale:</strong> Eliminates version-section repetition (Calculate Route × 3) while keeping
+              version availability visible at a glance. Clicking an endpoint lands on the merged
+              concept page — anchors let the developer jump to v1/v2/v3 sections directly.
+              Reduces nav depth from ~25 items → 10 endpoint rows.
+            </div>
+          </div>
+        </div>
+      </Row>
+
+      <Row label="dot anatomy — 5×5 px circles, flex gap-3, right-aligned" noBorder>
+        <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          {/* Annotation diagram */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {[
+              { label: 'v1 only',    dots: ['v1'] },
+              { label: 'v1 + v2',   dots: ['v1','v2'] },
+              { label: 'v2 + v3',   dots: ['v2','v3'] },
+              { label: 'all 3',     dots: ['v1','v2','v3'] },
+            ].map(({ label, dots }) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', width: 60 }}>{label}</span>
+                <div style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  width: 180, padding: '4px 10px', border: '1px solid var(--border)', borderRadius: 4, background: 'var(--white)',
+                }}>
+                  <span style={{ fontSize: '0.6875rem', color: 'var(--mid)' }}>Endpoint label</span>
+                  <span style={{ display: 'flex', gap: 3 }}>{dots.map(v => <VDot key={v} v={v} />)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.65, maxWidth: 260 }}>
+            Dots are <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem' }}>5×5px</code> circles with{' '}
+            <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem' }}>border-radius: 50%</code>.{' '}
+            Absent means "not supported in this version" — the absence is informative.
+            Colour matches version badges throughout the app: green / purple / orange.
+          </div>
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// §49 — NAV OPTION C  (concept-first + version-filter control)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function NavOptionCSection() {
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeItem, setActiveItem] = useState('Calculate Route');
+
+  const V_FILTER_OPTS = [
+    { id: 'all', label: 'All' },
+    { id: 'v1',  label: 'V1',  color: '#22c55e', bg: 'rgba(34,197,94,0.12)' },
+    { id: 'v2',  label: 'V2',  color: '#a78bfa', bg: 'rgba(167,139,250,0.12)' },
+    { id: 'v3',  label: 'V3',  color: '#fb923c', bg: 'rgba(251,146,60,0.12)' },
+  ];
+
+  const ENDPOINTS_C = [
+    { label: 'Calculate Route',          vDots: ['v1','v2','v3'] },
+    { label: 'Reachable Range',          vDots: ['v1','v2','v3'] },
+    { label: 'Lane Guidance',            vDots: ['v1','v2','v3'] },
+    { label: 'Batch Routing',            vDots: ['v1'] },
+    { label: 'Turn-by-Turn Instructions',vDots: ['v1'] },
+    { label: 'Guidance Instructions',    vDots: ['v2','v3'] },
+    { label: 'Compute Toll Amounts',     vDots: ['v2','v3'] },
+    { label: 'Dynamic Data Freshness',   vDots: ['v2'] },
+    { label: 'Road Shield Notes',        vDots: ['v1'] },
+    { label: 'Weather Consideration',    vDots: ['v3'] },
+  ];
+
+  const visible = ENDPOINTS_C.filter(e => activeFilter === 'all' || e.vDots.includes(activeFilter));
+
+  const filterOpt = (opt) => {
+    const isActive = activeFilter === opt.id;
+    const color    = opt.color ?? 'var(--mid)';
+    const bg       = opt.bg    ?? 'transparent';
+    return (
+      <button
+        key={opt.id}
+        onClick={() => setActiveFilter(opt.id)}
+        style={{
+          fontSize: '0.6rem', fontWeight: 700, padding: '3px 8px',
+          borderRadius: 4,
+          border: isActive ? `1.5px solid ${color}` : '1px solid var(--border)',
+          background: isActive ? bg : 'transparent',
+          color: isActive ? color : 'var(--mid)',
+          cursor: 'pointer', transition: 'all 0.12s',
+          fontFamily: 'var(--font-mono)',
+          letterSpacing: '0.02em',
+        }}
+      >
+        {opt.label}
+      </button>
+    );
+  };
+
+  return (
+    <GallerySection
+      title="Sidenav — Option C: Concept-first + Version Filter"
+      desc="Adds a segmented All / V1 / V2 / V3 control; endpoints whose vDots don't match the active filter are hidden"
+      usage={[
+        { n: 'version-filter', f: 0, t: 'missing' },
+        { n: 'ROUTING_API_NAV_C', f: 0 },
+      ]}
+    >
+      <Row label="version filter control + filtered endpoint list">
+        <div style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+
+          {/* Simulated sidenav */}
+          <div style={{ width: 220, border: '1px solid var(--border)', borderRadius: 8, overflow: 'hidden', background: 'var(--white)' }}>
+            {/* Top links */}
+            <div style={{ padding: '10px 10px 4px' }}>
+              {['Introduction', 'Quick Start'].map(l => (
+                <div key={l} onClick={() => setActiveItem(l)} style={{ padding: '4px 10px', fontSize: '0.6875rem', color: activeItem === l ? 'var(--black)' : 'var(--mid)', fontWeight: activeItem === l ? 600 : 400, background: activeItem === l ? 'var(--s1)' : 'transparent', borderRadius: 4, marginBottom: 1, cursor: 'pointer' }}>{l}</div>
+              ))}
+            </div>
+
+            {/* Version filter control (type: 'version-filter') */}
+            <div style={{ padding: '8px 10px 6px', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg)' }}>
+              <div style={{ fontSize: '0.5rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 5 }}>Filter by version</div>
+              <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+                {V_FILTER_OPTS.map(filterOpt)}
+              </div>
+            </div>
+
+            {/* Filtered endpoint list */}
+            <div style={{ padding: '6px 0 4px' }}>
+              <div style={{ padding: '4px 10px 3px', fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--muted)' }}>
+                Endpoints{activeFilter !== 'all' && <span style={{ marginLeft: 4, color: activeFilter === 'v1' ? '#22c55e' : activeFilter === 'v2' ? '#a78bfa' : '#fb923c' }}>({visible.length})</span>}
+              </div>
+              {visible.map(({ label, vDots }) => (
+                <div
+                  key={label}
+                  onClick={() => setActiveItem(label)}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '4px 10px',
+                    background: activeItem === label ? 'var(--s1)' : 'transparent',
+                    borderRadius: 4, marginBottom: 1, cursor: 'pointer', marginLeft: 6, marginRight: 6,
+                  }}
+                >
+                  <span style={{ fontSize: '0.6875rem', color: activeItem === label ? 'var(--black)' : 'var(--mid)', fontWeight: activeItem === label ? 600 : 400 }}>{label}</span>
+                  <span style={{ display: 'flex', gap: 3, alignItems: 'center', marginLeft: 6 }}>
+                    {vDots.map(v => <VDot key={v} v={v} />)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Filter states breakdown */}
+          <div style={{ maxWidth: 340 }}>
+            <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 10 }}>Filter output — active: <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem', padding: '1px 7px', borderRadius: 99, background: 'var(--s1)', border: '1px solid var(--border)' }}>{activeFilter}</span></div>
+            <div style={{ marginBottom: 12, fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.6 }}>
+              Showing <strong style={{ color: 'var(--black)' }}>{visible.length}</strong> of {ENDPOINTS_C.length} endpoints.
+              {activeFilter !== 'all' && <> Hidden items still exist in the nav data — they're just not rendered.</>}
+            </div>
+            <div style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.6 }}>
+              <strong style={{ color: 'var(--black)' }}>Implementation note:</strong> The <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem' }}>{'{ type: \'version-filter\' }'}</code> entry in{' '}
+              <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem' }}>ROUTING_API_NAV_C</code>{' '}
+              is a special nav node. Sidenav.jsx reads it and renders the filter control;
+              endpoint items below it are conditionally rendered based on <code style={{ fontFamily: 'var(--font-mono)', fontSize: '0.625rem' }}>vDots</code> membership.
+            </div>
+          </div>
+        </div>
+      </Row>
+
+      <Row label="option B vs C — decision surface" noBorder>
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {[
+            {
+              label: 'Option B — always-on dots',
+              points: ['Zero interaction required', 'All endpoints always visible', 'Dots are ambient — scannable', 'Best for devs exploring the API'],
+              accent: '#a78bfa',
+              bg: 'rgba(167,139,250,0.07)',
+            },
+            {
+              label: 'Option C — explicit filter',
+              points: ['Reduces noise when working in one version', 'State visible in the control', 'Requires a click to narrow scope', 'Best for versioned migration work'],
+              accent: '#fb923c',
+              bg: 'rgba(251,146,60,0.07)',
+            },
+          ].map(({ label, points, accent, bg }) => (
+            <div key={label} style={{ flex: '1 1 220px', border: `1px solid ${accent}44`, borderRadius: 8, padding: '12px 14px', background: bg }}>
+              <div style={{ fontSize: '0.6875rem', fontWeight: 700, color: accent, marginBottom: 8 }}>{label}</div>
+              <ul style={{ margin: 0, paddingLeft: 14, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {points.map(p => <li key={p} style={{ fontSize: '0.75rem', color: 'var(--mid)', lineHeight: 1.5 }}>{p}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Row>
+    </GallerySection>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ROOT — PAGE HEADER + ALL SECTIONS
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function UIComponentGallery() {
-  return (
-    <div style={{ padding: '32px 40px', maxWidth: 900, margin: '0 auto' }}>
+  // ── Decision mode state ──────────────────────────────────────────────────
+  const [decisionMode, setDecisionMode] = useState(false);
+  const [decisions, setDecisionsState] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('ux-gallery-decisions') || '{}'); }
+    catch { return {}; }
+  });
 
-      {/* Page header — intentionally minimal; this page lives inside the portal overlay */}
+  const setDecision = (title, data) => {
+    const next = { ...decisions, [title]: data };
+    setDecisionsState(next);
+    localStorage.setItem('ux-gallery-decisions', JSON.stringify(next));
+  };
+
+  const clearDecisions = () => {
+    if (!window.confirm('Clear all decisions? This cannot be undone.')) return;
+    setDecisionsState({});
+    localStorage.removeItem('ux-gallery-decisions');
+  };
+
+  // ── Quick-jump groups: [ groupLabel, [ [href, label], ... ] ] ────────────
+  const JUMP_GROUPS = [
+    ['Foundations', [
+      ['#s1',  'Design Tokens'],
+      ['#s2',  'Token Display'],
+      ['#s3',  'Typography'],
+      ['#s4',  'Token Names'],
+      ['#s5',  'Token Flow'],
+      ['#s6',  'Theming Card'],
+    ]],
+    ['App Shell', [
+      ['#s7',  'Shell Layout'],
+      ['#s8',  'Global Header'],
+      ['#s9',  'Sidenav'],
+      ['#s10', 'Sidenav Full'],
+      ['#s11', 'TOC'],
+      ['#s12', 'Page Anatomy'],
+      ['#s13', 'Page Actions'],
+      ['#s14', 'Layout Utils'],
+      ['#s48', 'Nav Option B'],
+      ['#s49', 'Nav Option C'],
+    ]],
+    ['Navigation', [
+      ['#s15', 'Nav Cards'],
+      ['#s16', 'Domain Cards'],
+      ['#s17', 'DocsPortal Cards'],
+      ['#s18', 'API Links'],
+      ['#s19', 'Platform Switcher'],
+      ['#s20', 'Tab Bar'],
+    ]],
+    ['Core Components', [
+      ['#s21', 'Buttons'],
+      ['#s22', 'Badges & Tags'],
+      ['#s23', 'Forms & Inputs'],
+      ['#s24', 'Status States'],
+      ['#s25', 'Steps'],
+      ['#s26', 'Tables'],
+      ['#s27', 'Modal'],
+      ['#s28', 'Callouts'],
+    ]],
+    ['API Reference', [
+      ['#s29', 'ApiRef Layout'],
+      ['#s30', 'Code Blocks'],
+      ['#s31', 'Param Cards'],
+      ['#s32', 'Spec Table'],
+      ['#s33', 'Inline Patterns'],
+      ['#s34', 'TryIt Panel'],
+      ['#s35', 'AI Panel'],
+      ['#s44', 'Version Badges'],
+      ['#s45', 'Param Index Table'],
+      ['#s46', 'Response Tree'],
+    ]],
+    ['Content Patterns', [
+      ['#s36', 'Text Card'],
+      ['#s37', 'Anatomy Cards'],
+      ['#s38', 'Scenario Cards'],
+      ['#s39', 'Benefit Cards'],
+      ['#s40', 'Semantic Cards'],
+      ['#s41', 'Private Preview'],
+      ['#s47', 'Guide Landing Card'],
+    ]],
+    ['Special', [
+      ['#s42', 'ADAS Stack'],
+      ['#s43', 'Illo Card'],
+    ]],
+  ];
+
+  // ── Decision export ────────────────────────────────────────────────────────
+  const exportDecisions = () => {
+    const allSections = JUMP_GROUPS.flatMap(([, items]) => items.map(([id, label]) => ({ id, label })));
+
+    // Collect all row-level decision keys grouped by section
+    const rowsBySection = {};
+    Object.keys(decisions).forEach(key => {
+      const sep = key.indexOf('::');
+      if (sep === -1) return; // section-level key, skip here
+      const sectionTitle = key.slice(0, sep);
+      const rowLabel     = key.slice(sep + 2);
+      if (!rowsBySection[sectionTitle]) rowsBySection[sectionTitle] = [];
+      const d = decisions[key];
+      if ((d?.status ?? 'undecided') !== 'undecided') {
+        rowsBySection[sectionTitle].push({
+          row: rowLabel,
+          decision: d.status,
+          ...(d.mergeInto ? { mergeInto: d.mergeInto } : {}),
+        });
+      }
+    });
+
+    const decisionRows = allSections.map(({ id, label }) => {
+      const d    = decisions[label] || { status: 'undecided' };
+      const rows = rowsBySection[label] || [];
+      return {
+        id,
+        section: label,
+        decision: d.status,
+        ...(d.mergeInto ? { mergeInto: d.mergeInto } : {}),
+        ...(rows.length ? { rows } : {}),
+      };
+    });
+
+    const summary = { keep: 0, merge: 0, erase: 0, undecided: 0 };
+    decisionRows.forEach(r => { summary[r.decision] = (summary[r.decision] || 0) + 1; });
+
+    const totalRowDecisions = Object.values(rowsBySection).reduce((n, arr) => n + arr.length, 0);
+
+    const data = {
+      exportedAt: new Date().toISOString(),
+      summary: { ...summary, rowLevelDecisions: totalRowDecisions },
+      decisions: decisionRows,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = Object.assign(document.createElement('a'), { href: url, download: 'ux-refactor-decisions.json' });
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // ── Decision progress counts ───────────────────────────────────────────────
+  const allSectionLabels = JUMP_GROUPS.flatMap(([, items]) => items.map(([, label]) => label));
+  const decisionCounts   = { keep: 0, merge: 0, erase: 0, undecided: 0 };
+  allSectionLabels.forEach(label => {
+    const s = decisions[label]?.status || 'undecided';
+    decisionCounts[s] = (decisionCounts[s] || 0) + 1;
+  });
+  const reviewed = allSectionLabels.length - decisionCounts.undecided;
+
+  // Row-level decision totals (keys containing '::')
+  const rowDecisionTotals = { keep: 0, merge: 0, erase: 0 };
+  Object.keys(decisions).forEach(key => {
+    if (!key.includes('::')) return;
+    const s = decisions[key]?.status;
+    if (s && s !== 'undecided') rowDecisionTotals[s] = (rowDecisionTotals[s] || 0) + 1;
+  });
+  const totalRowMarked = rowDecisionTotals.keep + rowDecisionTotals.merge + rowDecisionTotals.erase;
+
+  return (
+    <DecisionContext.Provider value={{ active: decisionMode, decisions, setDecision }}>
+    <div style={{ padding: '32px 40px' }}>
+
+      {/* Page header */}
       <div style={{ marginBottom: 32 }}>
-        <h1 style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '1.5rem',
-          fontWeight: 700,
-          color: 'var(--black)',
-          margin: '0 0 6px',
-        }}>
-          UI Component Gallery
-        </h1>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16, marginBottom: 6 }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', fontWeight: 700, color: 'var(--black)', margin: 0 }}>
+            UI Component Gallery
+          </h1>
+          {/* Decision mode toggle */}
+          <button
+            onClick={() => setDecisionMode(v => !v)}
+            style={{
+              flexShrink: 0,
+              fontSize: '0.6875rem', fontWeight: 700,
+              padding: '6px 14px', borderRadius: 20,
+              border: decisionMode ? '1px solid #7c3aed' : '1px solid var(--border)',
+              background: decisionMode ? '#7c3aed' : 'var(--bg)',
+              color: decisionMode ? '#fff' : 'var(--mid)',
+              cursor: 'pointer', transition: 'all 0.15s',
+            }}
+          >
+            {decisionMode ? '✕ Exit decision mode' : '⊕ Decision mode'}
+          </button>
+        </div>
+
+        {/* Decision mode stats bar */}
+        {decisionMode && (
+          <div style={{
+            marginBottom: 14, padding: '10px 14px',
+            background: '#f5f3ff', border: '1px solid #c4b5fd',
+            borderRadius: 10, display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap',
+          }}>
+            <span style={{ fontSize: '0.6875rem', fontWeight: 700, color: '#5b21b6' }}>
+              {reviewed} / {allSectionLabels.length} sections
+            </span>
+            {totalRowMarked > 0 && (
+              <span style={{ fontSize: '0.6rem', fontWeight: 700, color: '#6366f1', background: '#eef2ff', border: '1px solid #c7d2fe', padding: '2px 7px', borderRadius: 99 }}>
+                + {totalRowMarked} row{totalRowMarked !== 1 ? 's' : ''} marked
+              </span>
+            )}
+            <div style={{ height: 6, flex: 1, minWidth: 120, background: '#e9d5ff', borderRadius: 99, overflow: 'hidden' }}>
+              <div style={{ height: '100%', width: `${(reviewed / allSectionLabels.length) * 100}%`, background: '#7c3aed', borderRadius: 99, transition: 'width 0.3s' }} />
+            </div>
+            {[
+              { s: 'keep',  label: '✓ keep',  color: '#166534', bg: '#dcfce7' },
+              { s: 'merge', label: '⇒ merge', color: '#92400e', bg: '#fef3c7' },
+              { s: 'erase', label: '✕ erase', color: '#991b1b', bg: '#fee2e2' },
+            ].map(({ s, label, color, bg }) => decisionCounts[s] > 0 && (
+              <span key={s} style={{ fontSize: '0.625rem', fontWeight: 700, padding: '2px 8px', borderRadius: 99, background: bg, color }}>{decisionCounts[s]} {label}</span>
+            ))}
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+              <button
+                onClick={exportDecisions}
+                style={{
+                  fontSize: '0.625rem', fontWeight: 700, padding: '4px 10px', borderRadius: 99,
+                  border: '1px solid #7c3aed', background: '#fff', color: '#7c3aed', cursor: 'pointer',
+                }}
+              >
+                ↓ Export decisions.json
+              </button>
+              <button
+                onClick={clearDecisions}
+                style={{
+                  fontSize: '0.625rem', fontWeight: 700, padding: '4px 10px', borderRadius: 99,
+                  border: '1px solid #fca5a5', background: '#fff', color: '#991b1b', cursor: 'pointer',
+                }}
+              >
+                ✕ Clear all
+              </button>
+            </div>
+          </div>
+        )}
+
         <p style={{ fontSize: '0.875rem', color: 'var(--muted)', margin: 0, lineHeight: 1.55 }}>
           Every reusable component and inline pattern with all visual states — side by side.
           Use this to spot inconsistencies before shipping design changes.
         </p>
-        {/* Quick jump nav */}
-        <div style={{ marginTop: 14, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-          {[
-            ['#s1', '1 Tokens'],
-            ['#s2', '2 Buttons'],
-            ['#s3', '3 Badges'],
-            ['#s4', '4 Callouts'],
-            ['#s5', '5 Code'],
-            ['#s6', '6 Params'],
-            ['#s7', '7 Patterns'],
-            ['#s8', '8 Forms'],
-            ['#s9', '9 Steps'],
-            ['#s10', '10 Scenarios'],
-            ['#s11', '11 Tables'],
-            ['#s12', '12 Status'],
-            ['#s13', '13 Nav Cards'],
-            ['#s14', '14 Domain Cards'],
-            ['#s15', '15 ApiLinks'],
-            ['#s16', '16 PPB'],
-            ['#s17', '17 Benefits'],
-            ['#s18', '18 Page Shell'],
-            ['#s19', '19 Token Names'],
-            ['#s20', '20 Theming'],
-            ['#s21', '21 Spec Table'],
-            ['#s22', '22 ApiRef Layout'],
-            ['#s23', '23 Sidenav'],
-            ['#s24', '24 Header/Nav'],
-            ['#s25', '25 Tab Bar'],
-            ['#s26', '26 Text Card'],
-            ['#s27', '27 Anatomy Cards'],
-            ['#s28', '28 Modal'],
-            ['#s29', '29 AI Panel'],
-            ['#s30', '30 Token Display'],
-            ['#s31', '31 Typography'],
-            ['#s32', '32 Illo Card'],
-            ['#s33', '33 Platform'],
-            ['#s34', '34 dp2 Cards'],
-            ['#s35', '35 ADAS Stack'],
-            ['#s36', '36 Sem Cards'],
-            ['#s37', '37 Token Flow'],
-            ['#s38', '38 TryIt Panel'],
-            ['#s39', '39 Page Actions'],
-            ['#s40', '40 Layout Utils'],
-            ['#s41', '41 Shell Layout'],
-            ['#s42', '42 TOC'],
-            ['#s43', '43 Sidenav Full'],
-          ].map(([href, label]) => (
-            <a
-              key={href}
-              href={href}
-              style={{
-                fontSize: '0.6875rem', fontWeight: 600,
-                padding: '3px 10px', borderRadius: 20,
-                border: '1px solid var(--border)', background: 'var(--bg)',
-                color: 'var(--mid)', textDecoration: 'none',
-                transition: 'background 0.1s, color 0.1s',
-              }}
-              onMouseEnter={e => { e.target.style.background = 'var(--border)'; e.target.style.color = 'var(--black)'; }}
-              onMouseLeave={e => { e.target.style.background = 'var(--bg)'; e.target.style.color = 'var(--mid)'; }}
-            >
-              {label}
-            </a>
+
+        {/* Quick jump nav — grouped */}
+        <div style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {JUMP_GROUPS.map(([groupLabel, items]) => (
+            <div key={groupLabel} style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
+              <span style={{
+                fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase',
+                color: 'var(--muted)', whiteSpace: 'nowrap', minWidth: 90,
+              }}>{groupLabel}</span>
+              {items.map(([href, label]) => (
+                <a
+                  key={href}
+                  href={href}
+                  style={{
+                    fontSize: '0.6875rem', fontWeight: 600,
+                    padding: '3px 10px', borderRadius: 20,
+                    border: '1px solid var(--border)', background: 'var(--bg)',
+                    color: 'var(--mid)', textDecoration: 'none',
+                    transition: 'background 0.1s, color 0.1s',
+                  }}
+                  onMouseEnter={e => { e.target.style.background = 'var(--border)'; e.target.style.color = 'var(--black)'; }}
+                  onMouseLeave={e => { e.target.style.background = 'var(--bg)'; e.target.style.color = 'var(--mid)'; }}
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
           ))}
         </div>
       </div>
 
-      {/* ── Sections ── */}
+      {/* ── FOUNDATIONS ── */}
       <div id="s1"><DesignTokensSection /></div>
-      <div id="s2"><ButtonsSection /></div>
-      <div id="s3"><BadgesSection /></div>
-      <div id="s4"><CalloutsSection /></div>
-      <div id="s5"><CodeBlocksSection /></div>
-      <div id="s6"><ParamCardsSection /></div>
-      <div id="s7"><InlinePatternsSection /></div>
-      <div id="s8"><FormsSection /></div>
-      <div id="s9"><StepsSection /></div>
-      <div id="s10"><ScenarioCardsSection /></div>
-      <div id="s11"><TablesSection /></div>
-      <div id="s12"><StatusSection /></div>
-      <div id="s13"><NavCardsSection /></div>
-      <div id="s14"><DomainCardsSection /></div>
-      <div id="s15"><ApiLinksSection /></div>
-      <div id="s16"><PrivatePreviewSection /></div>
-      <div id="s17"><BenefitCardsSection /></div>
-      <div id="s18"><PageAnatomySection /></div>
-      <div id="s19"><TokenNamingSection /></div>
-      <div id="s20"><ThemingCardSection /></div>
-      <div id="s21"><SpecMethodTableSection /></div>
-      <div id="s22"><ApiRefLayoutSection /></div>
-      <div id="s23"><SidenavSection /></div>
-      <div id="s24"><HeaderNavSection /></div>
-      <div id="s25"><TabBarSection /></div>
-      <div id="s26"><TextCardSection /></div>
-      <div id="s27"><AnatomyCardsSection /></div>
-      <div id="s28"><ModalSection /></div>
-      <div id="s29"><AIPanelSection /></div>
-      <div id="s30"><TokenDisplaySection /></div>
-      <div id="s31"><TypographyPatternsSection /></div>
-      <div id="s32"><IlloCardSection /></div>
-      <div id="s33"><PlatformSwitcherSection /></div>
-      <div id="s34"><DocsPortal2Section /></div>
-      <div id="s35"><AdasSection /></div>
-      <div id="s36"><SemanticCardsSection /></div>
-      <div id="s37"><TokenFlowSection /></div>
-      <div id="s38"><TryItPanelSection /></div>
-      <div id="s39"><PageActionsSection /></div>
-      <div id="s40"><PageLayoutUtilitiesSection /></div>
-      <div id="s41"><ShellLayoutSection /></div>
-      <div id="s42"><TocSection /></div>
-      <div id="s43"><SidenavFullSection /></div>
+      <div id="s2"><TokenDisplaySection /></div>
+      <div id="s3"><TypographyPatternsSection /></div>
+      <div id="s4"><TokenNamingSection /></div>
+      <div id="s5"><TokenFlowSection /></div>
+      <div id="s6"><ThemingCardSection /></div>
+
+      {/* ── APP SHELL ── */}
+      <div id="s7"><ShellLayoutSection /></div>
+      <div id="s8"><HeaderNavSection /></div>
+      <div id="s9"><SidenavSection /></div>
+      <div id="s10"><SidenavFullSection /></div>
+      <div id="s11"><TocSection /></div>
+      <div id="s12"><PageAnatomySection /></div>
+      <div id="s13"><PageActionsSection /></div>
+      <div id="s14"><PageLayoutUtilitiesSection /></div>
+      <div id="s48"><NavOptionBSection /></div>
+      <div id="s49"><NavOptionCSection /></div>
+
+      {/* ── NAVIGATION ── */}
+      <div id="s15"><NavCardsSection /></div>
+      <div id="s16"><DomainCardsSection /></div>
+      <div id="s17"><DocsPortal2Section /></div>
+      <div id="s18"><ApiLinksSection /></div>
+      <div id="s19"><PlatformSwitcherSection /></div>
+      <div id="s20"><TabBarSection /></div>
+
+      {/* ── CORE COMPONENTS ── */}
+      <div id="s21"><ButtonsSection /></div>
+      <div id="s22"><BadgesSection /></div>
+      <div id="s23"><FormsSection /></div>
+      <div id="s24"><StatusSection /></div>
+      <div id="s25"><StepsSection /></div>
+      <div id="s26"><TablesSection /></div>
+      <div id="s27"><ModalSection /></div>
+      <div id="s28"><CalloutsSection /></div>
+
+      {/* ── API REFERENCE ── */}
+      <div id="s29"><ApiRefLayoutSection /></div>
+      <div id="s30"><CodeBlocksSection /></div>
+      <div id="s31"><ParamCardsSection /></div>
+      <div id="s32"><SpecMethodTableSection /></div>
+      <div id="s33"><InlinePatternsSection /></div>
+      <div id="s34"><TryItPanelSection /></div>
+      <div id="s35"><AIPanelSection /></div>
+      <div id="s44"><VersionBadgesSection /></div>
+      <div id="s45"><ParamIndexTableSection /></div>
+      <div id="s46"><ResponseTreeSection /></div>
+
+      {/* ── CONTENT PATTERNS ── */}
+      <div id="s36"><TextCardSection /></div>
+      <div id="s37"><AnatomyCardsSection /></div>
+      <div id="s38"><ScenarioCardsSection /></div>
+      <div id="s39"><BenefitCardsSection /></div>
+      <div id="s40"><SemanticCardsSection /></div>
+      <div id="s41"><PrivatePreviewSection /></div>
+      <div id="s47"><GuideLandingCardSection /></div>
+
+      {/* ── SPECIAL ── */}
+      <div id="s42"><AdasSection /></div>
+      <div id="s43"><IlloCardSection /></div>
 
       {/* Footer note */}
       <div style={{
         marginTop: 12, paddingTop: 20, borderTop: '1px solid var(--border)',
         fontSize: '0.75rem', color: 'var(--t-dis)', lineHeight: 1.6,
       }}>
-        Internal audit page · Plumbing Portal · 43 sections · All components sourced from{' '}
+        Internal audit page · Plumbing Portal · 49 sections · 7 groups · All components sourced from{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/components/ui/</code> and{' '}
         <code style={{ fontFamily: 'var(--font-mono)' }}>src/index.css</code>
       </div>
     </div>
+    </DecisionContext.Provider>
   );
 }

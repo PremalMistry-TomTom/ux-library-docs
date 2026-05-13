@@ -10,16 +10,23 @@ const PARAMS_ROUTE = [
   { name: 'travelMode', type: 'string', default: 'car', values: ['car', 'truck', 'taxi', 'bus', 'van', 'motorcycle', 'bicycle', 'pedestrian'], desc: 'Vehicle type. bus, motorcycle, taxi, van are currently BETA.' },
   { name: 'departAt', type: 'datetime (RFC 3339)', desc: 'Departure date/time. Defaults to now. Cannot be combined with arriveAt.' },
   { name: 'arriveAt', type: 'datetime (RFC 3339)', desc: 'Desired arrival time. Cannot be combined with departAt, minDeviationDistance, or minDeviationTime.' },
+  { name: 'minDeviationDistance', type: 'integer (metres)', desc: 'Minimum deviation distance from the reference route when using arriveAt. Cannot combine with minDeviationTime.' },
+  { name: 'minDeviationTime', type: 'integer (seconds)', desc: 'Minimum deviation time from the reference route when using arriveAt. Cannot combine with minDeviationDistance.' },
   { name: 'traffic', type: 'boolean', default: true, desc: 'Use real-time and historic traffic. Set false to ignore live incidents (historic patterns still apply to IQ Routes).' },
   { name: 'maxAlternatives', type: 'integer', default: 0, desc: 'Number of alternative routes (0–5). Cannot combine with computeBestOrder=true.' },
-  { name: 'avoid', type: 'string (repeatable)', values: ['motorways', 'tollRoads', 'ferries', 'unpavedRoads', 'tunnels', 'borderCrossings', 'lowEmissionZones', 'carpools', 'alreadyUsedRoads'], desc: 'Road/feature types to avoid. Repeatable: &avoid=motorways&avoid=tollRoads' },
+  { name: 'alternativeType', type: 'string', default: 'anyRoute', values: ['anyRoute', 'betterRoute'], desc: 'Quality threshold for alternative routes. betterRoute only returns alternatives that are meaningfully different and faster. Requires maxAlternatives > 0.' },
+  { name: 'avoid', type: 'string (repeatable)', values: ['motorways', 'tollRoads', 'ferries', 'unpavedRoads', 'tunnels', 'carTrains', 'borderCrossings', 'lowEmissionZones', 'carpools', 'alreadyUsedRoads'], desc: 'Road/feature types to avoid. Repeatable: &avoid=motorways&avoid=tollRoads. motorways may cause timeouts on routes > 500 km.' },
   { name: 'language', type: 'string (IETF)', default: 'en-GB', desc: 'Language for turn-by-turn instruction text and street name localisation.' },
+  { name: 'vehicleHeading', type: 'integer (0–359°)', desc: 'Initial vehicle heading in degrees clockwise from true north. Helps match the route to the current direction of travel at the origin.' },
   { name: 'sectionType', type: 'string (repeatable)', values: ['travelMode', 'traffic', 'toll', 'tollVignette', 'country', 'motorway', 'tunnel', 'ferry', 'speedLimit', 'lowEmissionZone', 'carpool', 'roadShields', 'lanes', 'importantRoadStretch'], desc: 'Which section types to include in the response. Repeatable.' },
   { name: 'instructionsType', type: 'string', values: ['coded', 'text', 'tagged'], desc: 'Activates turn-by-turn guidance. tagged wraps street names in XML-style tags for custom rendering.' },
   { name: 'routeRepresentation', type: 'string', default: 'polyline', values: ['polyline', 'encodedPolyline', 'summaryOnly', 'none'], desc: 'Shape of the route in the response. none requires computeBestOrder=true.' },
   { name: 'computeBestOrder', type: 'boolean', default: false, desc: 'Optimise waypoint visit order (TSP). Cannot be combined with maxAlternatives > 0 or circle waypoints.' },
   { name: 'computeTravelTimeFor', type: 'string', default: 'none', values: ['none', 'all'], desc: 'When set to all, the response includes noTraffic, historicTraffic, and liveTrafficIncidents travel time variants.' },
-  { name: 'report', type: 'string', values: ['effectiveSettings'], desc: 'Include effectiveSettings in the response to see which parameter values were actually applied.' },
+  { name: 'arrivalSidePreference', type: 'string', default: 'anySide', values: ['anySide', 'curbSide'], desc: 'Preferred side of road for arrival at each waypoint. Falls back to anySide if the stop is less than 2 m from the preferred side.' },
+  { name: 'coordinatePrecision', type: 'string', default: 'default', values: ['default', 'full'], desc: 'Decimal precision of coordinates in the response. default = 5 decimal places; full = 7 decimal places.' },
+  { name: 'reconstructionMode', type: 'string', default: 'normal', values: ['normal', 'strict', 'track', 'update'], desc: 'How to interpret a provided encodedPolyline or supportingPoints. normal = best-fit; strict = exact match; track = GPS trace fitting; update = re-evaluate with current traffic.' },
+  { name: 'report', type: 'string', values: ['effectiveSettings'], desc: 'Include effectiveSettings in the response to see which parameter values were actually applied. Useful for debugging parameter interactions.' },
 ];
 
 const PARAMS_VEHICLE = [
@@ -34,6 +41,7 @@ const PARAMS_VEHICLE = [
   { name: 'vehicleLoadType', type: 'string (repeatable)', values: ['USHazmatClass1', 'USHazmatClass2', 'USHazmatClass3', 'USHazmatClass4', 'USHazmatClass5', 'USHazmatClass6', 'USHazmatClass7', 'USHazmatClass8', 'USHazmatClass9', 'otherHazmatExplosive', 'otherHazmatGeneral', 'otherHazmatHarmfulToWater'], desc: 'Hazardous material classification for routing restrictions.' },
   { name: 'vehicleAdrTunnelRestrictionCode', type: 'string', values: ['B', 'C', 'D', 'E'], desc: 'ADR tunnel restriction code for hazmat transport through tunnels.' },
   { name: 'vehicleEngineType', type: 'string', values: ['combustion', 'electric'], desc: 'Required when using a consumption model.' },
+  { name: 'vehicleHasElectricTollCollectionTransponder', type: 'string', default: 'all', values: ['all', 'none'], desc: 'Whether to include ETC-transponder-only toll lanes. all = include them; none = avoid them and route only via cash/card lanes.' },
   { name: 'hilliness', type: 'string', default: 'normal', values: ['low', 'normal', 'high'], desc: 'Preference for hilly routes. Only applicable with routeType=thrilling.' },
   { name: 'windingness', type: 'string', default: 'normal', values: ['low', 'normal', 'high'], desc: 'Preference for winding roads. Only applicable with routeType=thrilling.' },
 ];
@@ -117,11 +125,32 @@ const SUMMARY_FIELDS_BASE = [
 
 const SUMMARY_FIELDS_V1 = [
   ...SUMMARY_FIELDS_BASE,
-  { name: 'noTrafficTravelTimeInSeconds',           type: 'number', desc: 'Hypothetical travel time assuming no traffic. Only returned when computeTravelTimeFor=all.' },
-  { name: 'historicTrafficTravelTimeInSeconds',     type: 'number', desc: 'Travel time based on historic traffic patterns. Only returned when computeTravelTimeFor=all.' },
-  { name: 'liveTrafficIncidentsTravelTimeInSeconds',type: 'number', desc: 'Travel time factoring in live traffic incidents only. Only returned when computeTravelTimeFor=all.' },
-  { name: 'batteryConsumptionInkWh',                type: 'number', desc: 'Total EV battery consumption. Negative values indicate net energy recuperation over the route.' },
-  { name: 'fuelConsumptionInLiters',                type: 'number', desc: 'Total fuel consumption for combustion vehicle routes.' },
+  { name: 'noTrafficTravelTimeInSeconds',           type: 'integer', desc: 'Hypothetical travel time assuming no traffic. Only when computeTravelTimeFor=all.' },
+  { name: 'historicTrafficTravelTimeInSeconds',     type: 'integer', desc: 'Travel time based on historic traffic patterns only. Only when computeTravelTimeFor=all.' },
+  { name: 'liveTrafficIncidentsTravelTimeInSeconds',type: 'integer', desc: 'Travel time factoring in live incidents only. Only when computeTravelTimeFor=all.' },
+  { name: 'batteryConsumptionInkWh',                type: 'float',   desc: 'Net EV battery energy consumed. Negative values indicate net recuperation over the route. Only when vehicleEngineType=electric.' },
+  { name: 'fuelConsumptionInLiters',                type: 'float',   desc: 'Total fuel consumed. Only when vehicleEngineType=combustion and consumption model is set.' },
+  { name: 'remainingFuelInLiters',                  type: 'float',   desc: 'Estimated fuel remaining on arrival. Only when currentFuelInLiters is set.' },
+  { name: 'remainingChargeAfterArrivalInkWh',       type: 'float',   desc: 'Estimated battery charge remaining on arrival. Only when currentChargeInkWh is set.' },
+  { name: 'deviationDistance',                      type: 'integer', desc: 'Deviation distance in metres from the reference route. Only when minDeviationDistance is set with arriveAt.' },
+  { name: 'deviationTime',                          type: 'integer', desc: 'Deviation time in seconds from the reference route. Only when minDeviationTime is set with arriveAt.' },
+];
+
+const GUIDANCE_INSTRUCTION_FIELDS = [
+  { name: 'routeOffsetInMeters',         type: 'integer', desc: 'Distance along the route from the start to this instruction.' },
+  { name: 'travelTimeInSeconds',         type: 'integer', desc: 'Cumulative travel time from departure to this instruction.' },
+  { name: 'point',                       type: 'GeoPoint', desc: 'Location of the manoeuvre { latitude, longitude }.' },
+  { name: 'instructionType',             type: 'string',  desc: 'Event type: TURN, ROUNDABOUT_ENTER, ROUNDABOUT_EXIT, ROUNDABOUT_PASS, MOTORWAY_ENTER_EXIT, WAYPOINT_REACHED, WAYPOINT_LEFT, ARRIVE, DEPART, ROAD_NAME_CHANGE, FOLLOW.' },
+  { name: 'street',                      type: 'string',  desc: 'Street name at the manoeuvre point.' },
+  { name: 'roadNumbers',                 type: 'string[]', desc: 'Road identifiers (e.g. A9, B2) at the manoeuvre point.' },
+  { name: 'exitNumber',                  type: 'string',  desc: 'Motorway or roundabout exit number.' },
+  { name: 'junctionType',                type: 'string',  desc: 'Junction classification: REGULAR, ROUNDABOUT, BIFURCATION.' },
+  { name: 'turnAngleInDecimalDegrees',   type: 'integer', desc: 'Turn angle in degrees (−180 to +180). Negative = left, positive = right.' },
+  { name: 'roundaboutExitNumber',        type: 'integer', desc: 'Exit number to take at a roundabout. Present on ROUNDABOUT_EXIT instructions only.' },
+  { name: 'drivingSide',                 type: 'string',  desc: 'Prevailing driving side at this instruction: LEFT or RIGHT.' },
+  { name: 'maneuver',                    type: 'string',  desc: 'Coded manoeuvre: ARRIVE, DEPART, STRAIGHT, TURN_LEFT, TURN_RIGHT, KEEP_LEFT, KEEP_RIGHT, SHARP_LEFT, SHARP_RIGHT, U_TURN_LEFT, ROUNDABOUT_EXIT_2 (exit number suffix), etc.' },
+  { name: 'message',                     type: 'string',  desc: 'Plain-text instruction string. Populated when instructionsType=text or tagged. E.g. "Turn right onto Kurfürstendamm".' },
+  { name: 'combinedMessage',             type: 'string',  desc: 'Combined instruction merging this step with the next (e.g. "Keep right then turn left"). instructionsType=text only.' },
 ];
 
 const ROUTING_SECTION_TYPES = [
@@ -287,14 +316,13 @@ const CODE_RESPONSE = `{
   }]
 }`;
 
-export default function RoutingCalculateRoute({ onNavigate }) {
+export function RoutingCalculateRouteContent({ onNavigate }) {
   /* ─── Parameter sections — each carries its own contextual code example ──── */
   const sections = [
         {
           id: 'api-rc-route-planning',
           heading: 'Route planning',
           method: 'GET',
-          demoId: 'calculate-route',
           params: PARAMS_ROUTE,
           tokens: {
             routeType: 'routeType=fastest',
@@ -463,6 +491,102 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
       lang: 'json',
     },
     {
+      id: 'api-rc-guidance',
+      heading: 'Guidance instructions',
+      params: GUIDANCE_INSTRUCTION_FIELDS,
+      note: 'Populated when instructionsType is set. Each instruction corresponds to one manoeuvre event. instructions[] is ordered by distance from the origin. instructionGroups[] bundles consecutive steps for compact HUD display.',
+      code: `// guidance object in the response (instructionsType=text)
+{
+  "guidance": {
+    "instructions": [
+      {
+        "routeOffsetInMeters": 0,
+        "travelTimeInSeconds": 0,
+        "point": { "latitude": 52.50931, "longitude": 13.42936 },
+        "instructionType": "DEPART",
+        "street": "Kurfürstenstraße",
+        "maneuver": "DEPART",
+        "message": "Head south-east on Kurfürstenstraße",
+        "drivingSide": "RIGHT"
+      },
+      {
+        "routeOffsetInMeters": 420,
+        "travelTimeInSeconds": 84,
+        "point": { "latitude": 52.50753, "longitude": 13.43201 },
+        "instructionType": "TURN",
+        "street": "Potsdamer Straße",
+        "junctionType": "REGULAR",
+        "turnAngleInDecimalDegrees": 92,
+        "maneuver": "TURN_RIGHT",
+        "message": "Turn right onto Potsdamer Straße",
+        "drivingSide": "RIGHT"
+      },
+      {
+        "routeOffsetInMeters": 1879,
+        "travelTimeInSeconds": 396,
+        "point": { "latitude": 52.50274, "longitude": 13.43872 },
+        "instructionType": "ARRIVE",
+        "maneuver": "ARRIVE",
+        "message": "You have arrived at your destination",
+        "drivingSide": "RIGHT"
+      }
+    ],
+    "instructionGroups": [
+      {
+        "firstInstructionIndex": 1,
+        "lastInstructionIndex": 1,
+        "groupMessage": "Turn right",
+        "groupLengthInMeters": 1459
+      }
+    ]
+  }
+}`,
+      lang: 'json',
+    },
+    {
+      id: 'api-rc-optimized',
+      heading: 'Optimized waypoints',
+      params: [
+        { name: 'optimizedWaypoints[].providedIndex', type: 'integer', desc: 'Original 0-based index of the waypoint as supplied in the request.' },
+        { name: 'optimizedWaypoints[].optimizedIndex', type: 'integer', desc: 'Position in the optimised visit sequence. Sort by this value to get the recommended order.' },
+      ],
+      note: 'Returned only when computeBestOrder=true. Maps each original waypoint index to its optimised position in the route. The route itself already reflects the optimised order.',
+      code: `// computeBestOrder=true — 4 waypoints reordered
+// Request order: A(0), B(1), C(2), D(3)
+// Optimised order: A → C → B → D
+
+"optimizedWaypoints": [
+  { "providedIndex": 0, "optimizedIndex": 0 },
+  { "providedIndex": 1, "optimizedIndex": 2 },
+  { "providedIndex": 2, "optimizedIndex": 1 },
+  { "providedIndex": 3, "optimizedIndex": 3 }
+]`,
+      lang: 'json',
+    },
+    {
+      id: 'api-rc-warnings',
+      heading: 'Warnings',
+      params: [
+        { name: 'warnings[].code',     type: 'string',   desc: 'Warning identifier. E.g. vehicleParameterNotConsidered, effectiveAlgorithmNotBestRouting.' },
+        { name: 'warnings[].text',     type: 'string',   desc: 'Human-readable description of the warning and what was adjusted.' },
+        { name: 'warnings[].fields[]', type: 'string[]', desc: 'Parameter names that triggered the warning.' },
+      ],
+      note: 'Non-fatal issues. The route was calculated but one or more parameters were silently adjusted or ignored. Always check this array during development — ignored parameters do not cause a 400 error.',
+      code: `// Warnings example — truck height parameter
+// ignored because travelMode=car does not support
+// height restrictions
+{
+  "warnings": [
+    {
+      "code": "vehicleParameterNotConsidered",
+      "text": "vehicleHeight is not applicable for travelMode=car and was ignored.",
+      "fields": ["vehicleHeight"]
+    }
+  ]
+}`,
+      lang: 'json',
+    },
+    {
       id: 'api-rc-errors',
       heading: 'Error codes',
       params: [],
@@ -495,13 +619,7 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
   ];
 
   return (
-    <div className="page page--wide">
-      <div className="page-header">
-        <h1>Calculate Route</h1>
-        <PageActions />
-      </div>
-
-
+    <>
       <p className="quick-answer">
         Calculates one or more optimal routes between waypoints. Supports full vehicle profiles, real-time and historic traffic, combustion and electric consumption models, turn-by-turn guidance, and up to 5 alternative routes.
       </p>
@@ -538,6 +656,18 @@ curl "https://api.tomtom.com/routing/1/calculateRoute/\\
           Routing API v3 →
         </button>
       </div>
+    </>
+  );
+}
+
+export default function RoutingCalculateRoute({ onNavigate }) {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Calculate Route</h1>
+        <PageActions />
+      </div>
+      <RoutingCalculateRouteContent onNavigate={onNavigate} />
     </div>
   );
 }

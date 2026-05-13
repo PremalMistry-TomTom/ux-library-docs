@@ -1599,6 +1599,11 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   margin-bottom: 0;
   flex-wrap: wrap;
 }
+/* When a VersionTabBar sits inside page-header, it provides its own border-bottom */
+.page-header--with-tabs {
+  padding-bottom: 0;
+  border-bottom: none;
+}
 .page-header h1 {
   font-size: 1.75rem;
   font-weight: 700;
@@ -3415,15 +3420,15 @@ html.ai-panel-open .page {
 .ppb-root {
   display: flex; gap: 14px;
   padding: 16px 20px; margin-bottom: 28px;
-  background: var(--info-bg);
-  border: 1px solid var(--info-border);
-  border-left: 4px solid var(--info-text);
+  background: rgba(251, 146, 60, 0.08);
+  border: 1px solid rgba(251, 146, 60, 0.3);
+  border-left: 4px solid #fb923c;
   border-radius: var(--r-md);
 }
 .ppb-icon {
   flex-shrink: 0; width: 32px; height: 32px;
   border-radius: var(--r-sm);
-  background: var(--info-text); color: #fff;
+  background: #fb923c; color: #fff;
   display: flex; align-items: center; justify-content: center;
   margin-top: 1px;
 }
@@ -3436,11 +3441,11 @@ html.ai-panel-open .page {
   margin: 0; font-size: 0.875rem; line-height: 1.65;
   color: var(--t-med);
 }
-.ppb-link { color: var(--info-text); text-decoration: underline; }
+.ppb-link { color: #c2410c; text-decoration: underline; }
 .ppb-link:hover { opacity: 0.8; }
-[data-theme="dark"] .ppb-root   { background: #0d1f38; border-color: #1e3a5c; border-left-color: #93c5fd; }
-[data-theme="dark"] .ppb-icon   { background: #1e3a5c; color: #93c5fd; }
-[data-theme="dark"] .ppb-link   { color: #93c5fd; }
+[data-theme="dark"] .ppb-root   { background: rgba(251, 146, 60, 0.1); border-color: rgba(251, 146, 60, 0.25); border-left-color: #fb923c; }
+[data-theme="dark"] .ppb-icon   { background: #c2410c; color: #fed7aa; }
+[data-theme="dark"] .ppb-link   { color: #fb923c; }
 
 /* ── IlloCard copy hint ───────────────────────────────────────────────────────── */
 [data-theme] div:hover > .illo-card-copy-hint,

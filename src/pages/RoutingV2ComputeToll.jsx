@@ -1,4 +1,5 @@
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import PageActions from '../components/ui/PageActions';
 
 /* ─── Request parameters ─────────────────────────────────────────────────── */
 const PARAMS_TOLL = [
@@ -68,7 +69,7 @@ const CODE_RESPONSE = `{
 }`;
 
 /* ─── Main component ─────────────────────────────────────────────────────── */
-export default function RoutingV2ComputeToll() {
+export function RoutingV2ComputeTollContent() {
   const sections = [
     {
       id: 'routing-v2-toll',
@@ -101,11 +102,23 @@ export default function RoutingV2ComputeToll() {
   ];
 
   return (
-    <ApiRefTwoCol
-      title="Compute Toll Amounts"
-      description="Calculate total toll costs on Routing API v2 routes. Available on both GET and POST. Returns totalTollAmounts in the route summary broken down by currency, with optional ETC transponder support."
-      version="v2-public"
-      sections={sections}
-    />
+    <>
+      <p className="quick-answer">Calculate total toll costs on Routing API v2 routes. Available on both GET and POST. Returns totalTollAmounts in the route summary broken down by currency, with optional ETC transponder support.</p>
+      <ApiRefTwoCol
+        sections={sections}
+      />
+    </>
+  );
+}
+
+export default function RoutingV2ComputeToll() {
+  return (
+    <div className="page page--wide">
+      <div className="page-header">
+        <h1>Compute Toll Amounts</h1>
+        <PageActions />
+      </div>
+      <RoutingV2ComputeTollContent />
+    </div>
   );
 }

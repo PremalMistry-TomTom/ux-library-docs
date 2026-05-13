@@ -99,7 +99,7 @@ export default function LDEVRVehicleBrand() {
     <ApiRefTwoCol
       title="Vehicle Brand"
       description="Filter charging stations by vehicle brand compatibility. When vehicleBrand is set, stations restricted to certain brands are matched against the vehicle — incompatible stations are excluded from route planning entirely."
-      version="v2-private"
+      version="v2"
       sections={sections}
     />
   );

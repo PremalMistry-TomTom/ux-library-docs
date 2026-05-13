@@ -1,6 +1,7 @@
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import ApiRefTwoCol from '../components/ui/ApiRefTwoCol';
+import VersionTabBar from '../components/ui/VersionTabBar';
 
 /* ─── Parameter data ─────────────────────────────────────────────────────────── */
 
@@ -216,9 +217,10 @@ export default function RoutingRoadShields({ onNavigate }) {
 
   return (
     <div className="page page--wide">
-      <div className="page-header">
+      <div className="page-header page-header--with-tabs">
         <h1>Road Shield Notes</h1>
         <PageActions />
+        <VersionTabBar versions={['v1']} activeTab="v1" onTabChange={() => {}} />
       </div>
 
       <p className="quick-answer">
