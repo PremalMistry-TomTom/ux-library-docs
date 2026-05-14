@@ -182,6 +182,7 @@ const PRODUCTS = {
       desc: 'A complete, customisable UI component library for TomTom automotive navigation apps on Android — covering maps, EV, ADAS, and in-car experiences.',
       docsId: 'overview',
       productId: 'ux-library',
+      ready: true,
     },
     {
       name: 'Maps & Navigation SDK',
@@ -189,7 +190,7 @@ const PRODUCTS = {
       docsId: 'navsdk-intro',
       productId: 'navsdk',
       links: ['Android', 'iOS'],
-      inProgress: true,
+      ready: true,
     },
     {
       name: 'Automotive Navigation App',
@@ -204,14 +205,14 @@ const PRODUCTS = {
     },
   ],
   Navigation: [
-    { name: 'Routing API',                  desc: 'Calculate routes with vehicle profiles, real-time traffic, reachable range, and batch routing.', docsId: 'routing-api-intro', productId: 'routing-api' },
+    { name: 'Routing API',                  desc: 'Calculate routes with vehicle profiles, real-time traffic, reachable range, and batch routing.', docsId: 'routing-api-intro', productId: 'routing-api', ready: true },
     { name: 'Long Distance EV Routing API', desc: 'Plan long-distance EV trips with optimized charging stops based on battery state and connector availability.', docsId: 'ldevr-intro', productId: 'ldevr' },
     { name: 'Matrix Routing v2 API',        desc: 'Get route times and distances for many origin-destination pairs in a single request.', docsId: 'matrix-intro', productId: 'matrix-routing', inProgress: true },
     { name: 'Waypoint Optimization API',    desc: 'Optimize waypoint order to find the fastest possible route across multiple stops.', docsId: 'waypoint-intro', productId: 'waypoint-opt', inProgress: true },
   ],
   Maps: [
     { name: 'Global Entity Matcher',        desc: 'Simplify data exchange and geospatial data management' },
-    { name: 'Map Display API',              desc: 'Display maps in raster or vector format for web or mobile apps', docsId: 'map-display-api-intro', productId: 'map-display-api' },
+    { name: 'Map Display API',              desc: 'Display maps in raster or vector format for web or mobile apps', docsId: 'map-display-api-intro', productId: 'map-display-api', ready: true },
     { name: 'Map Feedback API',             desc: 'Submit feedback and monitor its status, via TomTom Issue Tracker system' },
     { name: 'Maps SDK for JavaScript',      desc: 'Integrate TomTom maps and services seamlessly into your web application' },
   ],
@@ -232,7 +233,7 @@ const PRODUCTS = {
     { name: 'Junction Analytics API',   desc: 'Optimize traffic signal timing using real-time intersection metrics', docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
     { name: 'O/D Analysis API',         desc: 'Analyze historical traffic flows between origins and destinations', docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
     { name: 'Route Monitoring API',     desc: 'Monitor routes in real time with detailed traffic flow and delay insights' },
-    { name: 'Traffic API',              desc: 'Use real-time traffic data and historical analytics for your applications', docsId: 'traffic-api-intro', productId: 'traffic-api' },
+    { name: 'Traffic API',              desc: 'Use real-time traffic data and historical analytics for your applications', docsId: 'traffic-api-intro', productId: 'traffic-api', ready: true },
     { name: 'Traffic Stats API',        desc: 'Analyze traffic stats for routes and areas', docsId: 'traffic-analytics-api-intro', productId: 'traffic-analytics-api' },
   ],
   Mobility: [
@@ -329,7 +330,7 @@ function PlatformBadge({ runtime }) {
   return null;
 }
 
-function ProductCard({ name, desc, docsId, productId, links, platformIds, note, inProgress, onNavigate, illustration, tags, runtime, compact }) {
+function ProductCard({ name, desc, docsId, productId, links, platformIds, note, inProgress, ready, onNavigate, illustration, tags, runtime, compact }) {
   const hasLink = Boolean(docsId && onNavigate);
   const platformLinks = links && links.length > 0 ? links : null;
 
@@ -406,7 +407,19 @@ function ProductCard({ name, desc, docsId, productId, links, platformIds, note, 
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
         <h2 className="dp2-product-name">{name}</h2>
-        {inProgress ? (
+        {ready ? (
+          <span style={{
+            flexShrink: 0,
+            fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            padding: '3px 7px', borderRadius: 4,
+            background: 'rgba(34,197,94,0.12)', color: '#15803d',
+            marginTop: 2,
+            whiteSpace: 'nowrap',
+          }}>
+            Ready
+          </span>
+        ) : inProgress ? (
           <span style={{
             flexShrink: 0,
             fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.05em',

@@ -76,8 +76,9 @@ const TRAFFIC_SHARED_TAIL = [
 
 /* ── Option A — version-sectioned ─────────────────────────────────────────── */
 export const TRAFFIC_API_NAV = [
-  { id: 'traffic-api-intro', label: 'Introduction', type: 'top' },
-  { id: 'traffic-explorer',  label: 'API Explorer', type: 'top' },
+  { id: 'traffic-api-intro',   label: 'Introduction',    type: 'top' },
+  { id: 'traffic-quickstart',  label: 'Getting Started', type: 'top' },
+  { id: 'traffic-explorer',    label: 'API Explorer',    type: 'top' },
 
   { type: 'section', label: 'TomTom Maps', badge: 'v1' },
   { id: 'traffic-flow-segment',     label: 'Flow Segment Data',      type: 'top', ref: true, anchors: [
@@ -122,8 +123,9 @@ export const TRAFFIC_API_NAV = [
 
 /* ── Option B — concept-first + vDots ────────────────────────────────────── */
 export const TRAFFIC_API_NAV_B = [
-  { id: 'traffic-api-intro',  label: 'Introduction', type: 'top' },
-  { id: 'traffic-explorer',   label: 'API Explorer', type: 'top' },
+  { id: 'traffic-api-intro',   label: 'Introduction',    type: 'top' },
+  { id: 'traffic-quickstart',  label: 'Getting Started', type: 'top' },
+  { id: 'traffic-explorer',    label: 'API Explorer',    type: 'top' },
   { type: 'section', label: 'Endpoints' },
   ...TRAFFIC_CONCEPT_ENDPOINTS,
   ...TRAFFIC_SHARED_TAIL,
@@ -131,8 +133,9 @@ export const TRAFFIC_API_NAV_B = [
 
 /* ── Option C — concept-first + version-filter ───────────────────────────── */
 export const TRAFFIC_API_NAV_C = [
-  { id: 'traffic-api-intro',  label: 'Introduction', type: 'top' },
-  { id: 'traffic-explorer',   label: 'API Explorer', type: 'top' },
+  { id: 'traffic-api-intro',   label: 'Introduction',    type: 'top' },
+  { id: 'traffic-quickstart',  label: 'Getting Started', type: 'top' },
+  { id: 'traffic-explorer',    label: 'API Explorer',    type: 'top' },
   { type: 'version-filter' },
   { type: 'section', label: 'Endpoints' },
   ...TRAFFIC_CONCEPT_ENDPOINTS,
@@ -141,6 +144,7 @@ export const TRAFFIC_API_NAV_C = [
 
 export const TRAFFIC_API_PAGE_TITLES = {
   'traffic-api-intro':        'Introduction',
+  'traffic-quickstart':       'Getting Started',
   'traffic-explorer':         'API Explorer',
 
   /* ── endpoints ── */
