@@ -334,31 +334,66 @@ function TrafficLiveUrl({ endpoint, sharedCenter, incVals, flowVals, tileVals, a
     );
   }
 
-  /* Tile endpoints */
-  const { lat, lon } = parseLatLon(sharedCenter || '51.507,-0.128');
-  const z            = Number(tileVals.zoom) || 12;
-  const { x, y }     = latLonToTile(lat || 51.507, lon || -0.128, z);
-  const tileStyle    = endpoint === 'raster-flow-tile' ? (tileVals.flowStyle || 'relative') : (tileVals.incidentStyle || 's3');
-  const tileType     = endpoint === 'raster-flow-tile' ? 'flow' : 'incidents';
-  const qp = [
-    { k: 'key',      v: '***', muted: true },
-    { k: 'tileSize', v: tileVals.tileSize || '512' },
-  ];
-  return (
-    <div style={{ padding: '14px 18px', ...mono }}>
-      <div style={{ marginBottom: 3 }}>{badge}<span style={{ color: '#4b5563' }}>https://api.tomtom.com</span></div>
-      <div style={{ paddingLeft: 52 }}>
-        <span style={{ color: '#64748b' }}>/traffic/map/4/tile/{tileType}/</span>
-        <span style={{ color: '#f87171', fontWeight: 600 }}>{tileStyle}</span>
-        <span style={{ color: '#64748b' }}>/{z}/</span>
-        <span style={{ color: '#f87171', fontWeight: 600 }}>{x}</span>
-        <span style={{ color: '#64748b' }}>/</span>
-        <span style={{ color: '#f87171', fontWeight: 600 }}>{y}</span>
-        <span style={{ color: '#64748b' }}>.png</span>
+  /* Raster tile endpoints (v1) */
+  if (endpoint === 'raster-flow-tile' || endpoint === 'raster-incident-tile') {
+    const { lat, lon } = parseLatLon(sharedCenter || '51.507,-0.128');
+    const z            = Number(tileVals.zoom) || 12;
+    const { x, y }     = latLonToTile(lat || 51.507, lon || -0.128, z);
+    const tileStyle    = endpoint === 'raster-flow-tile' ? (tileVals.flowStyle || 'relative') : (tileVals.incidentStyle || 's3');
+    const tileType     = endpoint === 'raster-flow-tile' ? 'flow' : 'incidents';
+    const qp = [
+      { k: 'key',      v: '***', muted: true },
+      { k: 'tileSize', v: tileVals.tileSize || '512' },
+    ];
+    return (
+      <div style={{ padding: '14px 18px', ...mono }}>
+        <div style={{ marginBottom: 3 }}>{badge}<span style={{ color: '#4b5563' }}>https://api.tomtom.com</span></div>
+        <div style={{ paddingLeft: 52 }}>
+          <span style={{ color: '#64748b' }}>/traffic/map/4/tile/{tileType}/</span>
+          <span style={{ color: '#f87171', fontWeight: 600 }}>{tileStyle}</span>
+          <span style={{ color: '#64748b' }}>/{z}/</span>
+          <span style={{ color: '#f87171', fontWeight: 600 }}>{x}</span>
+          <span style={{ color: '#64748b' }}>/</span>
+          <span style={{ color: '#f87171', fontWeight: 600 }}>{y}</span>
+          <span style={{ color: '#64748b' }}>.png</span>
+        </div>
+        <QParams qp={qp} />
       </div>
-      <QParams qp={qp} />
-    </div>
-  );
+    );
+  }
+
+  /* v2 Extended vector tile endpoints */
+  if (endpoint === 'ext-flow-tile' || endpoint === 'ext-incident-tile') {
+    const { lat, lon } = parseLatLon(sharedCenter || '51.507,-0.128');
+    const z            = Number(tileVals.zoom) || 12;
+    const { x, y }     = latLonToTile(lat || 51.507, lon || -0.128, z);
+    const isFlow       = endpoint === 'ext-flow-tile';
+    const tileStyle    = isFlow ? (tileVals.flowStyle || 'relative') : (tileVals.incidentStyle || 's3');
+    const tileType     = isFlow ? 'flow' : 'incidents';
+    return (
+      <div style={{ padding: '14px 18px', ...mono }}>
+        <div style={{ marginBottom: 3 }}>{badge}<span style={{ color: '#4b5563' }}>https://api.tomtom.com</span></div>
+        <div style={{ paddingLeft: 52 }}>
+          <span style={{ color: '#64748b' }}>/traffic/map/4/tile/{tileType}/</span>
+          <span style={{ color: '#f87171', fontWeight: 600 }}>{tileStyle}</span>
+          <span style={{ color: '#64748b' }}>/{z}/</span>
+          <span style={{ color: '#f87171', fontWeight: 600 }}>{x}</span>
+          <span style={{ color: '#64748b' }}>/</span>
+          <span style={{ color: '#f87171', fontWeight: 600 }}>{y}</span>
+          <span style={{ color: '#a78bfa', fontWeight: 600 }}>.pbf</span>
+        </div>
+        <div style={{ paddingLeft: 52, marginTop: 4 }}>
+          <div><span style={{ color: '#374151' }}>?</span><span style={{ color: '#94a3b8' }}>key</span><span style={{ color: '#374151' }}>=</span><span style={{ color: '#4b5563' }}>***</span></div>
+        </div>
+        <div style={{ marginTop: 10, padding: '7px 10px', borderRadius: 6, background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)' }}>
+          <div style={{ fontSize: '0.625rem', color: '#a78bfa', fontWeight: 600, marginBottom: 3, letterSpacing: '0.04em' }}>INTEGRATION NOTE</div>
+          <div style={{ fontSize: '0.6875rem', color: '#94a3b8', lineHeight: 1.5 }}>
+            PBF vector tile — render with <span style={{ color: '#a78bfa', fontWeight: 600 }}>MapLibre GL JS</span> using a Traffic Orbis style.json from the Map Assets endpoint.
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 /* ─── SDK loader ───────────────────────────────────────────────────────────── */
@@ -818,6 +853,7 @@ function TrafficMap({ endpoint, vals, apiKey, isDark = false, showFlow = true, s
 /* ─── Main page ─────────────────────────────────────────────────────────────── */
 export default function TrafficExplorer({ onNavigate, isDark = false }) {
   const [apiKey,   setApiKey]   = useState(() => localStorage.getItem(LS_KEY) || DEMO_KEY);
+  const [tab,      setTab]      = useState('v1');
   const [endpoint, setEndpoint] = useState('incident-details');
   const [status,   setStatus]   = useState('idle');
   const [result,   setResult]   = useState(null);
@@ -826,9 +862,16 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
   const [copied,   setCopied]   = useState(false);
   const copyTimer  = useRef(null);
 
+  /* Reset endpoint when tab changes */
+  useEffect(() => {
+    setEndpoint(tab === 'v1' ? 'incident-details' : 'ext-incident-tile');
+    setResult(null);
+    setStatus('idle');
+  }, [tab]);
+
   /* Traffic layers derived from selected endpoint */
-  const showFlow      = endpoint === 'flow-segment'       || endpoint === 'raster-flow-tile';
-  const showIncidents = endpoint === 'incident-details'   || endpoint === 'raster-incident-tile';
+  const showFlow      = endpoint === 'flow-segment'       || endpoint === 'raster-flow-tile'    || endpoint === 'ext-flow-tile';
+  const showIncidents = endpoint === 'incident-details'   || endpoint === 'raster-incident-tile' || endpoint === 'ext-incident-tile';
 
   /* ── Map resize ── */
   const [mapHeight, setMapHeight] = useState(360);
@@ -1030,7 +1073,7 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
   }, [endpoint]);
 
   /* ── Endpoint card configs ── */
-  const EP_CARDS = [
+  const EP_CARDS_V1 = [
     {
       value: 'incident-details',
       label: 'Incident Details',
@@ -1061,6 +1104,25 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
     },
   ];
 
+  const EP_CARDS_V2 = [
+    {
+      value: 'ext-incident-tile',
+      label: 'Extended Incident Tiles',
+      thumb: ThumbTrafficIncidentTile,
+      method: 'GET',
+      desc: 'Vector PBF incident tiles with richer geometry and extended properties for client-side styling.',
+    },
+    {
+      value: 'ext-flow-tile',
+      label: 'Extended Flow Tiles',
+      thumb: ThumbTrafficFlowTile,
+      method: 'GET',
+      desc: 'Vector PBF flow tiles with per-segment speed data and additional flow attributes.',
+    },
+  ];
+
+  const EP_CARDS = tab === 'v1' ? EP_CARDS_V1 : EP_CARDS_V2;
+
   return (
     <div className="page page--wide" style={{ '--map-h': `${mapHeight}px` }}>
 
@@ -1071,7 +1133,7 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
         marginBottom: 32,
         boxShadow: '0 4px 16px rgba(0,0,0,0.10)',
       }}>
-        <div style={{ height: mapHeight, overflow: 'hidden' }}>
+        <div style={{ height: mapHeight, overflow: 'hidden', position: 'relative' }}>
           <TrafficMap
             endpoint={endpoint}
             vals={{
@@ -1088,6 +1150,28 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
             result={status === 'success' ? result : null}
             onMapClick={handleMapClick}
           />
+          {/* v2 Orbis overlay */}
+          {tab === 'v2' && (
+            <div style={{
+              position: 'absolute', inset: 0, zIndex: 3,
+              display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+              paddingBottom: 20, pointerEvents: 'none',
+              background: 'rgba(13,17,23,0.45)',
+            }}>
+              <div style={{
+                background: 'rgba(167,139,250,0.1)', border: '1px solid rgba(167,139,250,0.28)',
+                borderRadius: 10, padding: '9px 20px', textAlign: 'center',
+                backdropFilter: 'blur(6px)',
+              }}>
+                <div style={{ fontSize: '0.5625rem', fontWeight: 700, color: '#a78bfa', letterSpacing: '0.08em', marginBottom: 3 }}>
+                  V2 PUBLIC PREVIEW — ORBIS ACCESS REQUIRED
+                </div>
+                <div style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.5 }}>
+                  Extended Flow &amp; Incident Tiles are vector PBF — rendered via MapLibre GL JS with Orbis access.
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="map-resize-handle" onMouseDown={startMapDrag} title="Drag to resize map">
           <div className="map-resize-handle__grip" />
@@ -1104,26 +1188,36 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
             style={{ '--pg-sticky-top': 'calc(var(--app-top-offset) + var(--map-h, 360px) + 20px)' }}
           >
             {/* Page header lives inside the left column */}
-            <div className="page-header page-header--with-tabs" style={{ marginBottom: 24 }}>
+            <div className="page-header page-header--with-tabs" style={{ marginBottom: tab !== 'v1' ? 12 : 24 }}>
               <h1>API Explorer</h1>
               <PageActions />
-              <VersionTabBar versions={['v1']} activeTab="v1" onTabChange={() => {}} />
+              <VersionTabBar versions={['v1', 'v2']} activeTab={tab} onTabChange={setTab} />
             </div>
 
-            {/* ── Grouped endpoint layout: [thumb | endpoint | endpoint] × 2 rows ── */}
+            {/* ── v2 API key note ── */}
+            {tab === 'v2' && (
+              <div style={{
+                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
+                background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)',
+                display: 'flex', gap: 8, alignItems: 'flex-start',
+              }}>
+                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
+                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
+                  <span style={{ color: '#a78bfa', fontWeight: 600 }}>Orbis access required</span> — v2 endpoints are Public Preview.
+                  The demo key only covers v1 Production. Enter a key with Orbis access to use these endpoints.
+                </span>
+              </div>
+            )}
+
+            {/* ── Grouped endpoint layout ── */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
-              {[
-                {
-                  groupThumb: ThumbTrafficIncidents,
-                  groupLabel: 'Incidents',
-                  epIds: ['incident-details', 'raster-incident-tile'],
-                },
-                {
-                  groupThumb: ThumbTrafficFlow,
-                  groupLabel: 'Flow',
-                  epIds: ['flow-segment', 'raster-flow-tile'],
-                },
-              ].map(({ groupThumb: GroupThumb, groupLabel, epIds }) => (
+              {(tab === 'v1' ? [
+                { groupThumb: ThumbTrafficIncidents, groupLabel: 'Incidents', epIds: ['incident-details', 'raster-incident-tile'] },
+                { groupThumb: ThumbTrafficFlow,      groupLabel: 'Flow',      epIds: ['flow-segment', 'raster-flow-tile'] },
+              ] : [
+                { groupThumb: ThumbTrafficIncidentTile, groupLabel: 'Incidents', epIds: ['ext-incident-tile'] },
+                { groupThumb: ThumbTrafficFlowTile,     groupLabel: 'Flow',      epIds: ['ext-flow-tile'] },
+              ]).map(({ groupThumb: GroupThumb, groupLabel, epIds }) => (
                 <div key={groupLabel} style={{
                   display: 'flex',
                   border: '1px solid var(--border)',
@@ -1352,6 +1446,68 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
                 </SectionCard>
               </>
             )}
+
+            {/* ══════════════════════════════════════════════════════════════════
+             * v2 PARAMS
+             * ══════════════════════════════════════════════════════════════════ */}
+
+            {/* ── v2 Extended Incident Tiles params ── */}
+            {endpoint === 'ext-incident-tile' && (
+              <>
+                <SectionCard label="Tile">
+                  <CompactParamRow name="zoom" type="integer"
+                    desc="Tile zoom level (0–22). Higher zoom = more granular incident geometry."
+                    control={<input style={numStyle} type="number" min="0" max="22" value={tileVals.zoom} onChange={e => setTileVals(v => ({ ...v, zoom: e.target.value }))} />}
+                  />
+                  <CompactParamRow name="style" type="string"
+                    desc="Incident tile style variant."
+                    values={['s0','s1','s2','s3','night']}
+                    selectedValue={tileVals.incidentStyle}
+                    onSelect={v => setTileVals(prev => ({ ...prev, incidentStyle: v }))}
+                  />
+                </SectionCard>
+                <SectionCard label="Vector Format">
+                  <div style={{ padding: '10px 14px 12px' }}>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+                      Extended Incident Tiles return <span style={{ color: '#a78bfa', fontWeight: 600 }}>PBF (Protocol Buffer Format)</span> vector data.
+                      Each tile contains incident geometry and properties for client-side rendering with custom styles.
+                    </p>
+                    <p style={{ margin: '8px 0 0', fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+                      Compared to raster tiles, vector tiles support <span style={{ color: 'var(--black)', fontWeight: 600 }}>dynamic styling</span>,
+                      interactive feature querying, and smooth zoom transitions in a MapLibre GL JS renderer.
+                    </p>
+                  </div>
+                </SectionCard>
+              </>
+            )}
+
+            {/* ── v2 Extended Flow Tiles params ── */}
+            {endpoint === 'ext-flow-tile' && (
+              <>
+                <SectionCard label="Tile">
+                  <CompactParamRow name="zoom" type="integer"
+                    desc="Tile zoom level (0–22)."
+                    control={<input style={numStyle} type="number" min="0" max="22" value={tileVals.zoom} onChange={e => setTileVals(v => ({ ...v, zoom: e.target.value }))} />}
+                  />
+                  <CompactParamRow name="style" type="string"
+                    desc="Flow colour style. Determines how speed is expressed relative to free-flow speed."
+                    values={['absolute','relative','relative0','relative-delay','reduced-sensitivity']}
+                    selectedValue={tileVals.flowStyle}
+                    onSelect={v => setTileVals(prev => ({ ...prev, flowStyle: v }))}
+                    multiline
+                  />
+                </SectionCard>
+                <SectionCard label="Vector Format">
+                  <div style={{ padding: '10px 14px 12px' }}>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+                      Extended Flow Tiles return <span style={{ color: '#a78bfa', fontWeight: 600 }}>PBF vector data</span> with
+                      per-segment speed, free-flow speed, and road class attributes — enabling data-driven styling
+                      of flow colour, line width, and opacity in a MapLibre GL JS renderer.
+                    </p>
+                  </div>
+                </SectionCard>
+              </>
+            )}
           </div>
 
           {/* ── RIGHT: request panel + response ─────────────────────────────── */}
@@ -1374,11 +1530,11 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
                     <span style={{
                       fontSize: '0.5625rem', fontWeight: 700, fontFamily: 'var(--font-mono)', letterSpacing: '0.04em',
                       padding: '1px 7px', borderRadius: 4,
-                      background: ['incident-details','raster-incident-tile'].includes(endpoint) ? 'rgba(125,211,252,0.12)' : 'rgba(167,139,250,0.12)',
-                      color:      ['incident-details','raster-incident-tile'].includes(endpoint) ? '#7dd3fc' : '#a78bfa',
-                      border: `1px solid ${['incident-details','raster-incident-tile'].includes(endpoint) ? 'rgba(125,211,252,0.2)' : 'rgba(167,139,250,0.2)'}`,
+                      background: tab === 'v2' ? 'rgba(167,139,250,0.12)' : ['incident-details','raster-incident-tile'].includes(endpoint) ? 'rgba(125,211,252,0.12)' : 'rgba(167,139,250,0.12)',
+                      color:      tab === 'v2' ? '#a78bfa' : ['incident-details','raster-incident-tile'].includes(endpoint) ? '#7dd3fc' : '#a78bfa',
+                      border: `1px solid ${tab === 'v2' ? 'rgba(167,139,250,0.2)' : ['incident-details','raster-incident-tile'].includes(endpoint) ? 'rgba(125,211,252,0.2)' : 'rgba(167,139,250,0.2)'}`,
                     }}>
-                      {EP_CARDS.find(e => e.value === endpoint)?.label || endpoint}
+                      {[...EP_CARDS_V1, ...EP_CARDS_V2].find(e => e.value === endpoint)?.label || endpoint}
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

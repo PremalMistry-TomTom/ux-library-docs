@@ -24,6 +24,7 @@ const MAX_WAYPOINTS = 5;
 const BASE = {
   v1: 'https://api.tomtom.com/routing/1',
   v2: 'https://api.tomtom.com/maps/orbis/routing',
+  v3: 'https://api.tomtom.com/maps/orbis/routing/v3',
 };
 
 /* ─── Map style URLs ────────────────────────────────────────────────────────── *
@@ -51,13 +52,13 @@ const ENDPOINTS = [
 /* Derive the display path shown in the section header */
 function epPath(endpoint, version) {
   if (endpoint === 'calculate-route') {
-    return version === 'v2'
-      ? '/maps/orbis/routing/calculateRoute/{locations}/json'
-      : '/routing/1/calculateRoute/{locations}/json';
+    if (version === 'v3') return '/maps/orbis/routing/v3/calculateRoute/{locations}/json';
+    if (version === 'v2') return '/maps/orbis/routing/calculateRoute/{locations}/json';
+    return '/routing/1/calculateRoute/{locations}/json';
   }
-  return version === 'v2'
-    ? '/maps/orbis/routing/calculateReachableRange/{origin}/json'
-    : '/routing/1/calculateReachableRange/{origin}/json';
+  if (version === 'v3') return '/maps/orbis/routing/v3/calculateReachableRange/{origin}/json';
+  if (version === 'v2') return '/maps/orbis/routing/calculateReachableRange/{origin}/json';
+  return '/routing/1/calculateReachableRange/{origin}/json';
 }
 
 /* Vignette country codes (common European vignette systems) */
@@ -1487,10 +1488,40 @@ export default function RoutingExplorer({ onNavigate, isDark = false }) {
           <div className="api-ref-section-left" style={{ '--pg-sticky-top': 'calc(var(--app-top-offset) + var(--map-h, 360px) + 20px)' }}>
 
             {/* Page header lives inside the left column so the right column (code panel) aligns with it */}
-            <div className="page-header page-header--with-tabs" style={{ marginBottom: 24 }}>
+            <div className="page-header page-header--with-tabs" style={{ marginBottom: version !== 'v1' ? 12 : 24 }}>
               <h1>API Explorer</h1>
-              <VersionTabBar versions={['v1', 'v2']} activeTab={version} onTabChange={setVersion} />
+              <VersionTabBar versions={['v1', 'v2', 'v3']} activeTab={version} onTabChange={setVersion} />
             </div>
+
+            {/* ── v2 Public Preview note ── */}
+            {version === 'v2' && (
+              <div style={{
+                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
+                background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)',
+                display: 'flex', gap: 8, alignItems: 'flex-start',
+              }}>
+                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
+                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
+                  <span style={{ color: '#a78bfa', fontWeight: 600 }}>Orbis access required</span> — v2 endpoints are Public Preview.
+                  The demo key covers v1 Production. Enter a key with Orbis access enabled for v2.
+                </span>
+              </div>
+            )}
+
+            {/* ── v3 Private Preview note ── */}
+            {version === 'v3' && (
+              <div style={{
+                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
+                background: 'rgba(251,146,60,0.07)', border: '1px solid rgba(251,146,60,0.18)',
+                display: 'flex', gap: 8, alignItems: 'flex-start',
+              }}>
+                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
+                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
+                  <span style={{ color: '#fb923c', fontWeight: 600 }}>Private Preview — access required</span> — v3 endpoints include guidance, weather-aware routing, and enhanced EV route planning.
+                  Contact TomTom to request access. The demo key does not cover v3 endpoints.
+                </span>
+              </div>
+            )}
 
             {/* ── ENDPOINT SELECTOR ── */}
             <div style={{ marginBottom: 8 }}>

@@ -55,7 +55,7 @@ const MAP_CONCEPT_ENDPOINTS = [
       { id: 'map-wmts-request',  label: 'Request parameters', method: 'GET' },
       { id: 'map-wmts-response', label: 'Response' },
     ]},
-  { id: 'map-assets-api',    label: 'Map Assets',         type: 'top', ref: true, vDots: ['v1'] },
+  { id: 'map-assets-api',    label: 'Map Assets',         type: 'top', ref: true, vDots: ['v2'] },
 ];
 
 /* ── Shared tail ─────────────────────────────────────────────────────────── */
@@ -88,7 +88,7 @@ const MAP_SHARED_TAIL = [
 export const MAP_DISPLAY_API_NAV = [
   { id: 'map-display-api-intro',  label: 'Introduction',    type: 'top' },
   { id: 'map-quickstart',         label: 'Getting Started', type: 'top' },
-  { id: 'map-display-explorer',   label: 'API Explorer',    type: 'top' },
+  { id: 'map-display-explorer',   label: 'API Explorer',    type: 'top', vDots: ['v1','v2','v3'] },
 
   { type: 'section', label: 'TomTom Maps', badge: 'v1' },
   { id: 'map-raster-tile',    label: 'Raster Map Tile', type: 'top', ref: true, anchors: [
@@ -131,7 +131,7 @@ export const MAP_DISPLAY_API_NAV = [
 export const MAP_DISPLAY_API_NAV_B = [
   { id: 'map-display-api-intro',  label: 'Introduction',    type: 'top' },
   { id: 'map-quickstart',         label: 'Getting Started', type: 'top' },
-  { id: 'map-display-explorer',   label: 'API Explorer',    type: 'top' },
+  { id: 'map-display-explorer',   label: 'API Explorer',    type: 'top', vDots: ['v1','v2','v3'] },
   { type: 'section', label: 'Endpoints' },
   ...MAP_CONCEPT_ENDPOINTS,
   ...MAP_SHARED_TAIL,
@@ -141,7 +141,7 @@ export const MAP_DISPLAY_API_NAV_B = [
 export const MAP_DISPLAY_API_NAV_C = [
   { id: 'map-display-api-intro',  label: 'Introduction',    type: 'top' },
   { id: 'map-quickstart',         label: 'Getting Started', type: 'top' },
-  { id: 'map-display-explorer',   label: 'API Explorer',    type: 'top' },
+  { id: 'map-display-explorer',   label: 'API Explorer',    type: 'top', vDots: ['v1','v2','v3'] },
   { type: 'version-filter' },
   { type: 'section', label: 'Endpoints' },
   ...MAP_CONCEPT_ENDPOINTS,

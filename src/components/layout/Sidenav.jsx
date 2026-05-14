@@ -417,6 +417,14 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                 aria-current={showAsActive ? 'page' : undefined}
               >
                 <span style={{ flex: 1 }}>{label}</span>
+                {entry.ref && (
+                  <span style={{
+                    fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px',
+                    borderRadius: 3, background: 'var(--info-bg)',
+                    color: 'var(--info-text)', fontFamily: 'monospace',
+                    letterSpacing: '0.04em', flexShrink: 0,
+                  }}>REF</span>
+                )}
                 {entry.vDots && versionFilter === 'all' && (
                   <span style={{ display: 'flex', gap: 3, alignItems: 'center', flexShrink: 0 }}>
                     {entry.vDots.map(v => (
@@ -426,14 +434,6 @@ export default function Sidenav({ currentPage, onNavigate, drawerOpen = false,
                       }} />
                     ))}
                   </span>
-                )}
-                {entry.ref && (
-                  <span style={{
-                    fontSize: '0.5rem', fontWeight: 700, padding: '1px 5px',
-                    borderRadius: 3, background: 'var(--info-bg)',
-                    color: 'var(--info-text)', fontFamily: 'monospace',
-                    letterSpacing: '0.04em', flexShrink: 0,
-                  }}>REF</span>
                 )}
                 {hasAnchors && <ChevronIcon open={anchorOpen} />}
               </span>

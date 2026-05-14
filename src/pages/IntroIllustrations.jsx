@@ -3905,7 +3905,7 @@ export function IlloMapSatelliteTile() {
   );
 }
 
-function IlloMapAssetsAPI() {
+export function IlloMapAssetsAPI() {
   const D = useDarkStyle();
   const assets = [['sprite_day.png', '2.4 MB', '🖼️'], ['sprite_night.png', '2.4 MB', '🌙'], ['font_roboto.pbf', '1.1 MB', '🔤'], ['style.json', '48 KB', '{}']];
   return (

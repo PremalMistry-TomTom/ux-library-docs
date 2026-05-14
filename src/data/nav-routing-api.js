@@ -1,7 +1,7 @@
 export const ROUTING_API_NAV = [
   { id: 'routing-api-intro',  label: 'Introduction', type: 'top' },
   { id: 'routing-quickstart', label: 'Getting Started', type: 'top' },
-  { id: 'routing-explorer',   label: 'API Explorer', type: 'top' },
+  { id: 'routing-explorer',   label: 'API Explorer', type: 'top', vDots: ['v1','v2','v3'] },
 
   /* ── Version 1 ── */
   { type: 'section', label: 'Version 1', badge: 'v1' },
@@ -254,7 +254,7 @@ const CONCEPT_ENDPOINTS = [
 export const ROUTING_API_NAV_B = [
   { id: 'routing-api-intro',  label: 'Introduction', type: 'top' },
   { id: 'routing-quickstart', label: 'Getting Started', type: 'top' },
-  { id: 'routing-explorer',   label: 'API Explorer', type: 'top' },
+  { id: 'routing-explorer',   label: 'API Explorer', type: 'top', vDots: ['v1','v2','v3'] },
   { type: 'section', label: 'Endpoints' },
   ...CONCEPT_ENDPOINTS,
   ...SHARED_TAIL,
@@ -268,7 +268,7 @@ export const ROUTING_API_NAV_B = [
 export const ROUTING_API_NAV_C = [
   { id: 'routing-api-intro',  label: 'Introduction', type: 'top' },
   { id: 'routing-quickstart', label: 'Getting Started', type: 'top' },
-  { id: 'routing-explorer',   label: 'API Explorer', type: 'top' },
+  { id: 'routing-explorer',   label: 'API Explorer', type: 'top', vDots: ['v1','v2','v3'] },
   { type: 'version-filter' },
   { type: 'section', label: 'Endpoints' },
   ...CONCEPT_ENDPOINTS,
