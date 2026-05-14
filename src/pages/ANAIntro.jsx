@@ -446,6 +446,20 @@ export default function ANAIntro({ onNavigate }) {
       <p className="quick-answer">
         {t('anaIntro.quickAnswer')}
       </p>
+      <a
+        href="https://www.tomtom.com/en_gb/automotive/contact/"
+        target="_blank"
+        rel="noreferrer"
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          padding: '7px 16px', borderRadius: 8, marginBottom: 28,
+          border: 'none', background: 'var(--red)',
+          color: '#fff', fontWeight: 700, fontSize: '0.875rem',
+          textDecoration: 'none',
+        }}
+      >
+        Contact Sales →
+      </a>
 
       {/* Hero — real ANA UI screenshot */}
       <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, border: '1px solid var(--border)' }}>
