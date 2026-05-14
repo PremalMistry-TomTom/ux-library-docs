@@ -910,15 +910,28 @@ export function IlloCalculateRoute() {
     <div style={{ background: M.bg, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}>
       <svg style={{ width: '100%', height: '100%' }} viewBox="0 0 200 130" fill="none">
         <rect width="200" height="130" fill={M.bg}/>
+        {/* Road grid */}
         <path d="M0 70 Q60 58 100 70 T200 63" stroke={M.card} strokeWidth="6"/>
         <path d="M70 0 L68 130" stroke={M.card} strokeWidth="5"/>
         <path d="M140 0 L136 130" stroke={M.card} strokeWidth="5"/>
-        <path d="M30 100 Q65 72 100 68 T175 42" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
-        <path d="M30 100 Q65 72 100 68 T175 42" stroke="rgba(226,0,26,0.18)" strokeWidth="9" strokeLinecap="round"/>
-        <circle cx="30" cy="100" r="5" fill={M.green}/>
-        <circle cx="30" cy="100" r="9" fill="rgba(63,185,80,0.2)"/>
-        <circle cx="175" cy="42" r="5" fill="#e2001a"/>
-        <circle cx="175" cy="42" r="9" fill="rgba(226,0,26,0.2)"/>
+        {/* Route leg A→B: glow + stroke */}
+        <path d="M22 103 Q55 78 103 56" stroke="rgba(226,0,26,0.18)" strokeWidth="9" strokeLinecap="round"/>
+        <path d="M22 103 Q55 78 103 56" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
+        {/* Route leg B→C: glow + stroke */}
+        <path d="M103 56 Q138 40 178 26" stroke="rgba(226,0,26,0.18)" strokeWidth="9" strokeLinecap="round"/>
+        <path d="M103 56 Q138 40 178 26" stroke="#e2001a" strokeWidth="2.5" strokeLinecap="round" opacity="0.9"/>
+        {/* Pin A — green origin */}
+        <circle cx="22" cy="103" r="9" fill="rgba(63,185,80,0.18)"/>
+        <circle cx="22" cy="103" r="5.5" fill={M.green}/>
+        <text x="22" y="106.5" textAnchor="middle" fill="#fff" style={{fontSize:5,fontWeight:700,fontFamily:'system-ui'}}>A</text>
+        {/* Pin B — slate waypoint */}
+        <circle cx="103" cy="56" r="9" fill={`${M.blue}22`}/>
+        <circle cx="103" cy="56" r="5.5" fill={M.blue}/>
+        <text x="103" y="59.5" textAnchor="middle" fill="#fff" style={{fontSize:5,fontWeight:700,fontFamily:'system-ui'}}>B</text>
+        {/* Pin C — red destination */}
+        <circle cx="178" cy="26" r="9" fill="rgba(226,0,26,0.18)"/>
+        <circle cx="178" cy="26" r="5.5" fill="#e2001a"/>
+        <text x="178" y="29.5" textAnchor="middle" fill="#fff" style={{fontSize:5,fontWeight:700,fontFamily:'system-ui'}}>C</text>
       </svg>
       <div style={{ position: 'absolute', bottom: 8, left: 8, right: 8, background: M.dark, borderRadius: 5, padding: '6px 10px', display: 'flex', justifyContent: 'space-around', border: `1px solid ${M.line}` }}>
         {[['2h 14m', 'Time'], ['189 km', 'Distance'], ['14:32', 'ETA']].map(([v, l]) => (
@@ -3584,56 +3597,155 @@ export function IlloReverseGeocode() {
 
 export function IlloTrafficFlow() {
   const D = useDarkStyle();
-  const speeds = [[D.green,'68','Free flow'],[D.amber,'42','Moderate'],['#f97316','18','Slow'],['#ef4444','5','Queuing']];
   return (
-    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
-      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 8 }}>Traffic Flow</div>
-      {speeds.map(([col, spd, label], i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-          <div style={{ width: 40, height: 5, borderRadius: 3, background: col, flexShrink: 0 }}/>
-          <span style={{ fontSize: '0.5rem', color: D.text, fontFamily: 'monospace', width: 22 }}>{spd} km/h</span>
-          <span style={{ fontSize: '0.45rem', color: D.dim }}>{label}</span>
-        </div>
-      ))}
-      <div style={{ marginTop: 4, fontSize: '0.45rem', color: D.green }}>⚡ Live · updated 90s</div>
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
+      <svg width="100%" height="100%" viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice">
+        <rect width="160" height="110" fill={D.bg}/>
+        {/* City blocks */}
+        <rect x="0"   y="0"  width="44" height="42" fill={D.card} opacity="0.55" rx="2"/>
+        <rect x="58"  y="0"  width="44" height="42" fill={D.card} opacity="0.55" rx="2"/>
+        <rect x="116" y="0"  width="44" height="42" fill={D.card} opacity="0.55" rx="2"/>
+        <rect x="0"   y="56" width="44" height="54" fill={D.card} opacity="0.55" rx="2"/>
+        <rect x="58"  y="56" width="44" height="54" fill={D.card} opacity="0.55" rx="2"/>
+        <rect x="116" y="56" width="44" height="54" fill={D.card} opacity="0.55" rx="2"/>
+        {/* Road surfaces */}
+        <rect x="0"  y="42" width="160" height="14" fill="#1a2535"/>
+        <rect x="44" y="0"  width="14"  height="110" fill="#1a2535"/>
+        <rect x="102" y="0" width="14"  height="110" fill="#1a2535"/>
+        {/* Traffic color overlay — main horizontal road */}
+        <rect x="0"   y="45" width="42"  height="6" rx="1.5" fill="#22c55e" opacity="0.92"/>
+        <rect x="56"  y="45" width="44"  height="6" rx="1.5" fill="#fbbf24" opacity="0.92"/>
+        <rect x="102" y="45" width="14"  height="6" rx="1.5" fill="#f97316" opacity="0.92"/>
+        <rect x="116" y="45" width="44"  height="6" rx="1.5" fill="#ef4444" opacity="0.92"/>
+        {/* Traffic color overlay — vertical roads */}
+        <rect x="47" y="0"   width="6" height="40" rx="1.5" fill="#22c55e" opacity="0.8"/>
+        <rect x="47" y="58"  width="6" height="52" rx="1.5" fill="#22c55e" opacity="0.8"/>
+        <rect x="105" y="0"  width="6" height="40" rx="1.5" fill="#fbbf24" opacity="0.8"/>
+        <rect x="105" y="58" width="6" height="52" rx="1.5" fill="#ef4444" opacity="0.8"/>
+        {/* Speed popup over the orange section */}
+        <rect x="90" y="22" width="46" height="20" rx="4" fill="#0b1622" opacity="0.97"/>
+        <rect x="90" y="22" width="46" height="20" rx="4" fill="none" stroke={D.line} strokeWidth="0.75"/>
+        <circle cx="99" cy="32" r="4" fill="#f97316"/>
+        <rect x="107" y="27" width="22" height="4" rx="1.5" fill="#e2e8f0"/>
+        <rect x="107" y="34" width="16" height="3" rx="1"   fill="#475569"/>
+        <polygon points="106,42 118,42 112,47" fill="#0b1622"/>
+        {/* Legend strip */}
+        <rect x="0" y="96" width="160" height="14" fill="#070d18" opacity="0.9"/>
+        <circle cx="11"  cy="103" r="3.5" fill="#22c55e"/>
+        <rect x="17"  y="101" width="24" height="3.5" rx="1" fill="#3d5572"/>
+        <circle cx="55"  cy="103" r="3.5" fill="#fbbf24"/>
+        <rect x="61"  y="101" width="18" height="3.5" rx="1" fill="#3d5572"/>
+        <circle cx="93"  cy="103" r="3.5" fill="#ef4444"/>
+        <rect x="99"  y="101" width="22" height="3.5" rx="1" fill="#3d5572"/>
+      </svg>
     </div>
   );
 }
 
 export function IlloTrafficIncidents() {
   const D = useDarkStyle();
-  const incidents = [['🚧', 'Roadworks', 'A10 · km 14', D.amber], ['🚗', 'Accident', 'Ring East · km 3', '#ef4444'], ['⚠️', 'Road closed', 'N200 · km 7', '#f97316']];
   return (
-    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
-      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 6 }}>Traffic Incidents</div>
-      {incidents.map(([icon, type, loc, col], i) => (
-        <div key={i} style={{ display: 'flex', gap: 6, padding: '4px 0', borderTop: i > 0 ? `1px solid ${D.line}` : 'none' }}>
-          <span style={{ fontSize: '0.75rem', lineHeight: 1.2 }}>{icon}</span>
-          <div>
-            <div style={{ fontSize: '0.5rem', fontWeight: 700, color: col }}>{type}</div>
-            <div style={{ fontSize: '0.45rem', color: D.dim }}>{loc}</div>
-          </div>
-        </div>
-      ))}
-      <div style={{ marginTop: 4, fontSize: '0.45rem', color: D.dim }}>3 active · 12 km radius</div>
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
+      <svg width="100%" height="100%" viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice">
+        <rect width="160" height="110" fill={D.bg}/>
+        {/* City blocks */}
+        <rect x="0"   y="0"  width="62" height="42" fill={D.card} opacity="0.5" rx="2"/>
+        <rect x="76"  y="0"  width="84" height="42" fill={D.card} opacity="0.5" rx="2"/>
+        <rect x="0"   y="56" width="34" height="54" fill={D.card} opacity="0.5" rx="2"/>
+        <rect x="48"  y="56" width="30" height="54" fill={D.card} opacity="0.5" rx="2"/>
+        <rect x="92"  y="56" width="68" height="54" fill={D.card} opacity="0.5" rx="2"/>
+        {/* Road surfaces */}
+        <rect x="0"  y="42"  width="160" height="14" fill="#1a2535"/>
+        <rect x="62" y="0"   width="14"  height="110" fill="#1a2535"/>
+        <rect x="34" y="42"  width="14"  height="68" fill="#1a2535"/>
+        {/* Slight flow color on roads (background context) */}
+        <rect x="0"  y="46" width="60" height="5" rx="1" fill="#22c55e" opacity="0.5"/>
+        <rect x="74" y="46" width="86" height="5" rx="1" fill="#22c55e" opacity="0.5"/>
+        <rect x="65" y="0"  width="5"  height="40" rx="1" fill="#22c55e" opacity="0.45"/>
+        <rect x="65" y="58" width="5"  height="52" rx="1" fill="#22c55e" opacity="0.45"/>
+        {/* ── Incident marker 1 — Accident (red circle + !) ── */}
+        <circle cx="38" cy="49" r="9" fill="#ef4444" opacity="0.95"/>
+        <circle cx="38" cy="49" r="12" stroke="#ef4444" strokeWidth="1" fill="none" opacity="0.3"/>
+        <rect x="36.5" y="43" width="3" height="8"  rx="1.5" fill="white"/>
+        <circle cx="38" cy="54.5" r="1.8" fill="white"/>
+        {/* ── Incident marker 2 — Roadworks (amber diamond) ── */}
+        <rect x="60" y="28" width="13" height="13" rx="1.5" fill="#fbbf24" opacity="0.95" transform="rotate(45 66.5 34.5)"/>
+        <rect x="64.5" y="29.5" width="4" height="7"  rx="1" fill="#1a1a1a"/>
+        <rect x="64.5" y="38"  width="4" height="2"   rx="1" fill="#1a1a1a"/>
+        {/* ── Incident marker 3 — Road closed (slate bar) ── */}
+        <rect x="103" y="44" width="18" height="10" rx="3" fill="#475569" opacity="0.95"/>
+        <line x1="106" y1="47" x2="118" y2="51" stroke="white" strokeWidth="1.5"/>
+        <line x1="118" y1="47" x2="106" y2="51" stroke="white" strokeWidth="1.5"/>
+        {/* ── Incident popup for accident ── */}
+        <rect x="2" y="62" width="64" height="26" rx="4" fill="#0b1622" opacity="0.97"/>
+        <rect x="2" y="62" width="64" height="26" rx="4" fill="none" stroke="#ef4444" strokeWidth="0.75" opacity="0.6"/>
+        <circle cx="12" cy="70" r="4" fill="#ef4444"/>
+        <rect x="20" y="66.5" width="38" height="3.5" rx="1.5" fill="#e2e8f0"/>
+        <rect x="20" y="72.5" width="28" height="3"   rx="1"   fill="#475569"/>
+        <rect x="6"  y="78"  width="54" height="2.5"  rx="1"   fill="#1e3050"/>
+        <polygon points="10,62 22,62 16,58" fill="#0b1622"/>
+        {/* Count badge top-right */}
+        <rect x="128" y="6" width="28" height="14" rx="7" fill="#ef4444" opacity="0.9"/>
+        <rect x="131" y="10" width="22" height="4" rx="2" fill="white" opacity="0.9"/>
+      </svg>
     </div>
   );
 }
 
 export function IlloTrafficFlowTile() {
   const D = useDarkStyle();
-  const rows = 3, cols = 4;
-  const colors = ['#22c55e','#86efac','#fbbf24','#f97316','#ef4444','#22c55e','#fbbf24','#22c55e','#86efac','#f97316','#22c55e','#fbbf24'];
   return (
-    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%', padding: 10 }}>
-      <div style={{ fontSize: '0.5rem', fontWeight: 700, color: D.text, marginBottom: 2 }}>Flow Tile</div>
-      <div style={{ fontSize: '0.45rem', color: D.dim, marginBottom: 8 }}>z=12 / x=2095 / y=1359</div>
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols},1fr)`, gap: 3 }}>
-        {colors.map((c, i) => (
-          <div key={i} style={{ height: 22, borderRadius: 3, background: c, opacity: 0.75 }}/>
-        ))}
-      </div>
-      <div style={{ marginTop: 6, fontSize: '0.45rem', color: D.dim }}>PNG · 256×256 · traffic overlay</div>
+    <div style={{ background: D.bg, borderRadius: 20, overflow: 'hidden', height: '100%' }}>
+      <svg width="100%" height="100%" viewBox="0 0 160 110" preserveAspectRatio="xMidYMid slice">
+        <rect width="160" height="110" fill={D.bg}/>
+        {/* 2×2 tile grid — each tile is a map fragment */}
+        {/* Tile borders */}
+        <rect x="4"  y="16" width="74" height="44" rx="3" fill={D.card} stroke={D.line} strokeWidth="0.75"/>
+        <rect x="82" y="16" width="74" height="44" rx="3" fill={D.card} stroke={D.line} strokeWidth="0.75"/>
+        <rect x="4"  y="64" width="74" height="40" rx="3" fill={D.card} stroke={D.line} strokeWidth="0.75"/>
+        <rect x="82" y="64" width="74" height="40" rx="3" fill={D.card} stroke={D.line} strokeWidth="0.75"/>
+
+        {/* ── Tile TL: green (free flow) road network ── */}
+        <rect x="4"  y="36" width="74" height="7" fill="#162030"/>
+        <rect x="46" y="16" width="7"  height="44" fill="#162030"/>
+        <rect x="4"  y="38" width="40" height="4" rx="1" fill="#22c55e" opacity="0.9"/>
+        <rect x="50" y="38" width="28" height="4" rx="1" fill="#22c55e" opacity="0.9"/>
+        <rect x="48" y="16" width="4"  height="18" rx="1" fill="#22c55e" opacity="0.85"/>
+        <rect x="48" y="46" width="4"  height="14" rx="1" fill="#4ade80" opacity="0.85"/>
+
+        {/* ── Tile TR: amber/slow ── */}
+        <rect x="82" y="36" width="74" height="7" fill="#162030"/>
+        <rect x="124" y="16" width="7" height="44" fill="#162030"/>
+        <rect x="82"  y="38" width="40" height="4" rx="1" fill="#fbbf24" opacity="0.9"/>
+        <rect x="126" y="38" width="30" height="4" rx="1" fill="#fbbf24" opacity="0.9"/>
+        <rect x="126" y="16" width="4"  height="18" rx="1" fill="#22c55e" opacity="0.85"/>
+        <rect x="126" y="46" width="4"  height="14" rx="1" fill="#fbbf24" opacity="0.85"/>
+
+        {/* ── Tile BL: mixed ── */}
+        <rect x="4"  y="80" width="74" height="7" fill="#162030"/>
+        <rect x="46" y="64" width="7"  height="40" fill="#162030"/>
+        <rect x="4"  y="82" width="20" height="4" rx="1" fill="#22c55e" opacity="0.9"/>
+        <rect x="26" y="82" width="24" height="4" rx="1" fill="#fbbf24" opacity="0.9"/>
+        <rect x="50" y="82" width="28" height="4" rx="1" fill="#f97316" opacity="0.9"/>
+        <rect x="48" y="64" width="4"  height="14" rx="1" fill="#22c55e" opacity="0.85"/>
+        <rect x="48" y="80" width="4"  height="24" rx="1" fill="#22c55e" opacity="0.85"/>
+
+        {/* ── Tile BR: red/congested ── */}
+        <rect x="82" y="80" width="74" height="7" fill="#162030"/>
+        <rect x="124" y="64" width="7" height="40" fill="#162030"/>
+        <rect x="82"  y="82" width="40" height="4" rx="1" fill="#ef4444" opacity="0.9"/>
+        <rect x="126" y="82" width="30" height="4" rx="1" fill="#f97316" opacity="0.9"/>
+        <rect x="126" y="64" width="4"  height="14" rx="1" fill="#fbbf24" opacity="0.85"/>
+        <rect x="126" y="80" width="4"  height="24" rx="1" fill="#ef4444" opacity="0.85"/>
+
+        {/* Tile coordinate badge */}
+        <rect x="4"  y="4"  width="76" height="10" rx="3" fill="#0b1622" opacity="0.9"/>
+        <rect x="7"  y="6.5" width="70" height="4" rx="1" fill="#3d5572"/>
+
+        {/* PNG badge bottom-right */}
+        <rect x="112" y="98" width="44" height="10" rx="3" fill="#0b1622" opacity="0.9"/>
+        <rect x="115" y="100.5" width="38" height="4" rx="1" fill="#3d5572"/>
+      </svg>
     </div>
   );
 }

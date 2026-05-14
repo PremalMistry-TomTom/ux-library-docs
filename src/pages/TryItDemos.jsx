@@ -418,7 +418,7 @@ export const DEMOS = [
     description: 'Calculate the optimal route between an origin and destination with live traffic.',
     fields: [
       { id: 'origin',      label: 'Origin (lat,lon)',      placeholder: '52.3676,4.9041',  defaultValue: '52.3676,4.9041',  flex: true },
-      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '51.5074,-0.1278', defaultValue: '51.5074,-0.1278', flex: true },
+      { id: 'destination', label: 'Destination (lat,lon)', placeholder: '48.8566,2.3522',  defaultValue: '48.8566,2.3522',  flex: true },
       { id: 'travelMode',  label: 'Mode',                  placeholder: 'car',              defaultValue: 'car',             width: 80  },
     ],
     run: async ({ origin, destination, travelMode }, key) => {
@@ -442,9 +442,9 @@ export const DEMOS = [
     method: 'GET', renderMode: 'sdk-polygon',
     description: 'Calculate the polygon of area reachable within a time or distance budget. Rendered as a live isochrone overlay using the Maps Web SDK.',
     fields: [
-      { id: 'lat',        label: 'Origin Lat', placeholder: '51.5074', defaultValue: '51.5074', width: 110 },
-      { id: 'lon',        label: 'Origin Lon', placeholder: '-0.1278', defaultValue: '-0.1278', width: 110 },
-      { id: 'timeBudget', label: 'Time (sec)', placeholder: '1800',    defaultValue: '1800',    width: 100 },
+      { id: 'lat',        label: 'Origin Lat', placeholder: '52.3676', defaultValue: '52.3676', width: 110 },
+      { id: 'lon',        label: 'Origin Lon', placeholder: '4.9041',  defaultValue: '4.9041',  width: 110 },
+      { id: 'timeBudget', label: 'Time (sec)', placeholder: '3600',    defaultValue: '3600',    width: 100 },
     ],
     run: async ({ lat, lon, timeBudget }, key) => {
       const r = await fetch(`https://api.tomtom.com/routing/1/calculateReachableRange/${lat},${lon}/json?key=${key}&timeBudgetInSec=${timeBudget || 1800}`);

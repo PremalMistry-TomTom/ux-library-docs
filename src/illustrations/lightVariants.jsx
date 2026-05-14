@@ -705,12 +705,21 @@ export function L_CalculateRoute() {
       <clipPath id="lv-lcr-map"><rect x="10" y="8" width="180" height="84" rx="12"/></clipPath>
       <g clipPath="url(#lv-lcr-map)">
         <DW x={10} y={8} w={180} h={84} op={0.35}/>
-        <path d="M28 80 Q70 52 105 50 T178 28" stroke={C.mid} strokeWidth="3.5" strokeLinecap="round" opacity="0.8"/>
-        <path d="M28 80 Q70 52 105 50 T178 28" stroke={C.soft} strokeWidth="10" strokeLinecap="round" opacity="0.25"/>
-        <circle cx="28" cy="80" r="8" fill={C.accent ?? '#22c55e'}/>
-        <text x="28" y="84" textAnchor="middle" fill={C.white} style={{fontSize:7,fontWeight:700,fontFamily:'system-ui'}}>A</text>
-        <circle cx="178" cy="28" r="8" fill={C.dark}/>
-        <text x="178" y="32" textAnchor="middle" fill={C.white} style={{fontSize:7,fontWeight:700,fontFamily:'system-ui'}}>B</text>
+        {/* Route leg A→B: glow + stroke */}
+        <path d="M28 76 Q62 58 105 48" stroke={C.soft} strokeWidth="10" strokeLinecap="round" opacity="0.25"/>
+        <path d="M28 76 Q62 58 105 48" stroke={C.mid} strokeWidth="3.5" strokeLinecap="round" opacity="0.8"/>
+        {/* Route leg B→C: glow + stroke */}
+        <path d="M105 48 Q140 35 176 22" stroke={C.soft} strokeWidth="10" strokeLinecap="round" opacity="0.25"/>
+        <path d="M105 48 Q140 35 176 22" stroke={C.mid} strokeWidth="3.5" strokeLinecap="round" opacity="0.8"/>
+        {/* Pin A — green origin */}
+        <circle cx="28" cy="76" r="8" fill={C.accent ?? '#22c55e'}/>
+        <text x="28" y="79.5" textAnchor="middle" fill={C.white} style={{fontSize:7,fontWeight:700,fontFamily:'system-ui'}}>A</text>
+        {/* Pin B — slate waypoint */}
+        <circle cx="105" cy="48" r="8" fill={C.navy}/>
+        <text x="105" y="51.5" textAnchor="middle" fill={C.white} style={{fontSize:7,fontWeight:700,fontFamily:'system-ui'}}>B</text>
+        {/* Pin C — dark destination */}
+        <circle cx="176" cy="22" r="8" fill={C.dark}/>
+        <text x="176" y="25.5" textAnchor="middle" fill={C.white} style={{fontSize:7,fontWeight:700,fontFamily:'system-ui'}}>C</text>
       </g>
       <rect x="10" y="96" width="180" height="26" rx="10" fill={C.dark}/>
       {[['2h 14m','Time',60],['189 km','Distance',100],['14:32','ETA',148]].map(([v,l,x]) => (
@@ -1807,28 +1816,41 @@ export function L_TrafficFlow() {
     <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
       <rect width="200" height="130" fill={C.grid} rx="12"/>
       <DW/>
-      {/* Road grid */}
-      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="10" opacity="0.5"/>
-      <path d="M0 40 Q80 36 200 40" stroke={C.bg} strokeWidth="6" opacity="0.35"/>
-      <path d="M70 0 L68 130" stroke={C.bg} strokeWidth="6" opacity="0.4"/>
-      <path d="M135 0 L138 130" stroke={C.bg} strokeWidth="5" opacity="0.35"/>
-      {/* Flow colouring — green/amber/red segments */}
-      <path d="M0 65 Q30 62 50 63" stroke={C.accent} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
-      <path d="M50 63 Q80 61 100 63" stroke={C.warn} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
-      <path d="M100 63 Q130 62 155 64" stroke={C.danger} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
-      <path d="M155 64 Q175 63 200 65" stroke={C.accent} strokeWidth="7" strokeLinecap="round" opacity="0.85"/>
-      {/* Legend */}
-      <rect x="8" y="88" width="184" height="34" rx="6" fill={C.panel}/>
-      {[[C.accent,'Free flow'],[C.warn,'Slow'],[C.danger,'Congested']].map(([col,],i) => (
-        <g key={i}>
-          <rect x={14+i*62} y="96" width="12" height="6" rx="3" fill={col}/>
-          <LP x={29+i*62} y="96" w="38" h="6" color={C.navy}/>
-        </g>
-      ))}
-      {/* Speed badge */}
-      <rect x="8" y="8" width="60" height="20" rx="6" fill={C.panel}/>
-      <LP x="14" y="12" w="48" h="7" color={C.navy}/>
-      <LP x="14" y="22" w="32" h="5" color={C.soft}/>
+      {/* City blocks */}
+      <rect x="0"   y="0"  width="54" height="52" fill={C.panel} rx="2"/>
+      <rect x="72"  y="0"  width="54" height="52" fill={C.panel} rx="2"/>
+      <rect x="144" y="0"  width="56" height="52" fill={C.panel} rx="2"/>
+      <rect x="0"   y="70" width="54" height="60" fill={C.panel} rx="2"/>
+      <rect x="72"  y="70" width="54" height="60" fill={C.panel} rx="2"/>
+      <rect x="144" y="70" width="56" height="60" fill={C.panel} rx="2"/>
+      {/* Road surfaces */}
+      <rect x="0"  y="52" width="200" height="18" fill={C.bg}/>
+      <rect x="54" y="0"  width="18"  height="130" fill={C.bg}/>
+      <rect x="126" y="0" width="18"  height="130" fill={C.bg}/>
+      {/* Traffic flow overlay — main horizontal */}
+      <rect x="0"   y="56" width="52"  height="8" rx="2" fill={C.accent}  opacity="0.9"/>
+      <rect x="70"  y="56" width="54"  height="8" rx="2" fill={C.warn}    opacity="0.9"/>
+      <rect x="124" y="56" width="20"  height="8" rx="2" fill="#f97316"   opacity="0.9"/>
+      <rect x="142" y="56" width="58"  height="8" rx="2" fill={C.danger}  opacity="0.9"/>
+      {/* Traffic flow overlay — vertical roads */}
+      <rect x="58"  y="0"  width="8" height="50" rx="2" fill={C.accent} opacity="0.85"/>
+      <rect x="58"  y="72" width="8" height="58" rx="2" fill={C.accent} opacity="0.85"/>
+      <rect x="130" y="0"  width="8" height="50" rx="2" fill={C.warn}   opacity="0.85"/>
+      <rect x="130" y="72" width="8" height="58" rx="2" fill={C.danger} opacity="0.85"/>
+      {/* Speed popup */}
+      <rect x="114" y="28" width="56" height="22" rx="6" fill={C.panel}/>
+      <circle cx="125" cy="39" r="6" fill="#f97316"/>
+      <LP x="135" y="32" w="28" h="7" color={C.navy}/>
+      <LP x="135" y="42" w="20" h="5" color={C.soft}/>
+      <polygon points="126,50 140,50 133,56" fill={C.panel}/>
+      {/* Legend strip */}
+      <rect x="0" y="112" width="200" height="18" fill={C.panel}/>
+      <circle cx="12" cy="121" r="4" fill={C.accent}/>
+      <LP x="20" y="118" w="30" h="6" color={C.navy}/>
+      <circle cx="70" cy="121" r="4" fill={C.warn}/>
+      <LP x="78" y="118" w="24" h="6" color={C.navy}/>
+      <circle cx="116" cy="121" r="4" fill={C.danger}/>
+      <LP x="124" y="118" w="30" h="6" color={C.navy}/>
     </svg>
   );
 }
@@ -1839,32 +1861,43 @@ export function L_TrafficIncidents() {
     <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
       <rect width="200" height="130" fill={C.grid} rx="12"/>
       <DW/>
-      {/* Roads */}
-      <path d="M0 65 Q100 60 200 65" stroke={C.bg} strokeWidth="9" opacity="0.5"/>
-      <path d="M95 0 L95 130" stroke={C.bg} strokeWidth="6" opacity="0.4"/>
-      {/* Incident markers */}
-      {[[55,63,'⚠️'],[95,40,'🚧'],[148,64,'⛔']].map(([px,py,],i) => (
-        <g key={i}>
-          <circle cx={px} cy={py} r="10" fill={i===2?C.danger:C.warn} opacity="0.9"/>
-          <circle cx={px} cy={py} r="15" stroke={i===2?C.danger:C.warn} strokeWidth="1" fill="none" opacity="0.4"/>
-        </g>
-      ))}
-      {/* Detail card */}
-      <rect x="8" y="8" width="118" height="46" rx="8" fill={C.panel}/>
-      <rect x="8" y="8" width="118" height="12" rx="8" fill={C.danger} opacity="0.85"/>
-      <LP x="14" y="11" w="80" h="6" color={C.white}/>
-      <LP x="14" y="26" w="100" h="7" color={C.navy}/>
-      <LP x="14" y="37" w="80" h="6" color={C.soft}/>
-      <LP x="14" y="46" w="60" h="5" color={C.soft}/>
-      {/* Delay badge */}
-      <rect x="140" y="8" width="52" height="20" rx="6" fill={C.warn} opacity="0.9"/>
-      <LP x="146" y="12" w="40" h="7" color={C.dark}/>
-      <LP x="146" y="22" w="30" h="5" color={C.dark}/>
-      {/* Tile grid lines */}
-      {[0,1].map(col => [0,1].map(row => (
-        <rect key={`${col}${row}`} x={130+col*35} y={44+row*35} width="33" height="33" rx="2"
-          fill="none" stroke={C.border} strokeWidth="0.5" opacity="0.5"/>
-      )))}
+      {/* City blocks */}
+      <rect x="0"   y="0"  width="76" height="52" fill={C.panel} rx="2"/>
+      <rect x="94"  y="0"  width="106" height="52" fill={C.panel} rx="2"/>
+      <rect x="0"   y="70" width="44" height="60" fill={C.panel} rx="2"/>
+      <rect x="62"  y="70" width="36" height="60" fill={C.panel} rx="2"/>
+      <rect x="116" y="70" width="84" height="60" fill={C.panel} rx="2"/>
+      {/* Road surfaces */}
+      <rect x="0"   y="52" width="200" height="18" fill={C.bg}/>
+      <rect x="76"  y="0"  width="18"  height="130" fill={C.bg}/>
+      <rect x="44"  y="52" width="18"  height="78" fill={C.bg}/>
+      {/* Subtle flow base */}
+      <rect x="0"   y="56" width="74"  height="8" rx="2" fill={C.accent} opacity="0.4"/>
+      <rect x="92"  y="56" width="108" height="8" rx="2" fill={C.accent} opacity="0.4"/>
+      {/* ── Incident 1 — Accident (red, on main road) ── */}
+      <circle cx="46" cy="61" r="11" fill={C.danger} opacity="0.9"/>
+      <circle cx="46" cy="61" r="15" stroke={C.danger} strokeWidth="1.5" fill="none" opacity="0.3"/>
+      <rect x="44.5" y="54" width="3" height="9"  rx="1.5" fill="white"/>
+      <circle cx="46" cy="67" r="2" fill="white"/>
+      {/* ── Incident 2 — Roadworks (amber, vertical road) ── */}
+      <rect x="82" y="22" width="16" height="16" rx="2" fill={C.warn} opacity="0.9" transform="rotate(45 90 30)"/>
+      <rect x="88.5" y="23.5" width="3" height="9"  rx="1.5" fill={C.dark}/>
+      <circle cx="90" cy="36" r="1.8" fill={C.dark}/>
+      {/* ── Incident 3 — Road closed (grey) ── */}
+      <rect x="132" y="57" width="22" height="11" rx="3" fill={C.mid} opacity="0.9"/>
+      <line x1="135" y1="60" x2="151" y2="65" stroke="white" strokeWidth="1.5"/>
+      <line x1="151" y1="60" x2="135" y2="65" stroke="white" strokeWidth="1.5"/>
+      {/* ── Incident popup for accident ── */}
+      <rect x="4" y="78" width="80" height="32" rx="6" fill={C.panel}/>
+      <rect x="4" y="78" width="80" height="32" rx="6" fill="none" stroke={C.danger} strokeWidth="0.75" opacity="0.5"/>
+      <circle cx="16" cy="88" r="5" fill={C.danger} opacity="0.9"/>
+      <LP x="25" y="84" w="50" h="7" color={C.navy}/>
+      <LP x="25" y="94" w="36" h="5" color={C.soft}/>
+      <LP x="8"  y="102" w="70" h="4" color={C.soft}/>
+      <polygon points="14,78 28,78 21,73" fill={C.panel}/>
+      {/* Count badge */}
+      <rect x="156" y="6" width="36" height="16" rx="8" fill={C.danger} opacity="0.9"/>
+      <LP x="162" y="10" w="24" h="8" color={C.white}/>
     </svg>
   );
 }
@@ -1873,28 +1906,46 @@ export function L_TrafficFlowTile() {
   const { palette: C } = useIlloStyle();
   return (
     <svg viewBox="0 0 200 130" style={{width:'100%',height:'100%'}} fill="none">
-      <rect width="200" height="130" fill={C.dark} rx="12"/>
-      {/* 3×2 tile grid */}
-      {[0,1,2].map(col => [0,1].map(row => {
-        const x = 10 + col * 62, y = 10 + row * 58;
-        const flowColors = [[C.accent,C.warn],[C.danger,C.accent],[C.warn,C.danger]];
-        const [c1,c2] = flowColors[col];
-        return (
-          <g key={`${col}${row}`}>
-            <rect x={x} y={y} width="58" height="54" rx="4" fill={C.panel} stroke={C.border} strokeWidth="0.5"/>
-            {/* mini flow roads */}
-            <line x1={x} y1={y+27} x2={x+58} y2={y+27} stroke={C.bg} strokeWidth="4" opacity="0.4"/>
-            <line x1={x+29} y1={y} x2={x+29} y2={y+54} stroke={C.bg} strokeWidth="3" opacity="0.3"/>
-            <line x1={x} y1={y+27} x2={x+29} y2={y+27} stroke={c1} strokeWidth="4" strokeLinecap="round" opacity="0.9"/>
-            <line x1={x+29} y1={y+27} x2={x+58} y2={y+27} stroke={c2} strokeWidth="4" strokeLinecap="round" opacity="0.9"/>
-          </g>
-        );
-      }))}
-      {/* Zoom badge */}
-      <rect x="8" y="122" width="184" height="1" fill={C.border} opacity="0.3"/>
-      <rect x="10" y="10" width="180" height="110" rx="6" fill="none" stroke={C.border} strokeWidth="0.5" strokeDasharray="4 3" opacity="0.5"/>
-      <rect x="72" y="4" width="56" height="14" rx="7" fill={C.mid}/>
-      <LP x="78" y="7" w="44" h="8" color={C.white}/>
+      <rect width="200" height="130" fill={C.grid} rx="12"/>
+      <DW/>
+      {/* 2×2 tile grid — each tile is a map fragment */}
+      {/* Tile TL */}
+      <rect x="4"  y="18" width="92" height="52" rx="4" fill={C.panel} stroke={C.border} strokeWidth="0.75"/>
+      <rect x="4"  y="40" width="92" height="9"  fill={C.bg} opacity="0.7"/>
+      <rect x="46" y="18" width="9"  height="52" fill={C.bg} opacity="0.7"/>
+      <rect x="4"  y="43" width="40" height="5" rx="1.5" fill={C.accent} opacity="0.9"/>
+      <rect x="53" y="43" width="43" height="5" rx="1.5" fill={C.accent} opacity="0.9"/>
+      <rect x="49" y="18" width="5"  height="20" rx="1.5" fill={C.accent} opacity="0.85"/>
+      <rect x="49" y="51" width="5"  height="19" rx="1.5" fill={C.warn}   opacity="0.85"/>
+      {/* Tile TR */}
+      <rect x="104" y="18" width="92" height="52" rx="4" fill={C.panel} stroke={C.border} strokeWidth="0.75"/>
+      <rect x="104" y="40" width="92" height="9"  fill={C.bg} opacity="0.7"/>
+      <rect x="146" y="18" width="9"  height="52" fill={C.bg} opacity="0.7"/>
+      <rect x="104" y="43" width="40" height="5" rx="1.5" fill={C.warn}   opacity="0.9"/>
+      <rect x="153" y="43" width="43" height="5" rx="1.5" fill={C.danger} opacity="0.9"/>
+      <rect x="149" y="18" width="5"  height="20" rx="1.5" fill={C.warn}   opacity="0.85"/>
+      <rect x="149" y="51" width="5"  height="19" rx="1.5" fill={C.danger} opacity="0.85"/>
+      {/* Tile BL */}
+      <rect x="4"  y="76" width="92" height="48" rx="4" fill={C.panel} stroke={C.border} strokeWidth="0.75"/>
+      <rect x="4"  y="96" width="92" height="9"  fill={C.bg} opacity="0.7"/>
+      <rect x="46" y="76" width="9"  height="48" fill={C.bg} opacity="0.7"/>
+      <rect x="4"  y="99" width="20" height="5" rx="1.5" fill={C.accent} opacity="0.9"/>
+      <rect x="26" y="99" width="22" height="5" rx="1.5" fill={C.warn}   opacity="0.9"/>
+      <rect x="50" y="99" width="20" height="5" rx="1.5" fill="#f97316"  opacity="0.9"/>
+      <rect x="74" y="99" width="22" height="5" rx="1.5" fill={C.danger} opacity="0.9"/>
+      <rect x="49" y="76" width="5"  height="18" rx="1.5" fill={C.accent} opacity="0.85"/>
+      <rect x="49" y="107" width="5" height="17" rx="1.5" fill={C.accent} opacity="0.85"/>
+      {/* Tile BR */}
+      <rect x="104" y="76" width="92" height="48" rx="4" fill={C.panel} stroke={C.border} strokeWidth="0.75"/>
+      <rect x="104" y="96" width="92" height="9"  fill={C.bg} opacity="0.7"/>
+      <rect x="146" y="76" width="9"  height="48" fill={C.bg} opacity="0.7"/>
+      <rect x="104" y="99" width="40" height="5" rx="1.5" fill={C.danger} opacity="0.9"/>
+      <rect x="153" y="99" width="43" height="5" rx="1.5" fill="#f97316"  opacity="0.9"/>
+      <rect x="149" y="76" width="5"  height="18" rx="1.5" fill={C.warn}   opacity="0.85"/>
+      <rect x="149" y="107" width="5" height="17" rx="1.5" fill={C.danger} opacity="0.85"/>
+      {/* Tile coordinate badge */}
+      <rect x="52" y="5" width="96" height="14" rx="7" fill={C.mid}/>
+      <LP x="58" y="8" w="84" h="8" color={C.white}/>
     </svg>
   );
 }

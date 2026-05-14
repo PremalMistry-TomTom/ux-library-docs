@@ -24,6 +24,7 @@ import {
   IcoVoiceEngine, IcoWaypointOpt,
 } from '../illustrations/iconVariants';
 import { IlloCalculateRoute, IlloReachableRange, IlloBatchRouting, IlloTurnInstructions, IlloRoutingWeather } from './IntroIllustrations';
+import ExampleCard from '../components/ui/ExampleCard';
 
 /* ─── Shared helpers ────────────────────────────────────────────────────────── */
 function MethodBadge({ method }) {
@@ -489,15 +490,18 @@ export default function RoutingAPIIntro({ onNavigate }) {
         {t('routingIntro.quickAnswer')}
       </p>
 
-      <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+      <div style={{ display: 'flex', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
         <button
-          style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
-          onClick={() => onNavigate?.('routing-quickstart')}
+          style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: 6, fontWeight: 700, fontSize: '0.9375rem', cursor: 'pointer', letterSpacing: '-0.01em' }}
+          onClick={() => onNavigate?.('routing-explorer', 'routing-api')}
         >
-          Quick Start
+          API Explorer →
         </button>
-        <button className="page-action-btn" onClick={() => onNavigate?.('routing-calculate-route')}>
-          View endpoints
+        <button
+          style={{ background: 'transparent', color: 'var(--text)', border: '1.5px solid var(--border)', padding: '7px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
+          onClick={() => onNavigate?.('routing-quickstart', 'routing-api')}
+        >
+          Getting Started
         </button>
       </div>
 
@@ -520,6 +524,56 @@ export default function RoutingAPIIntro({ onNavigate }) {
               onNavigate={onNavigate}
             />
           ))}
+        </div>
+      </div>
+
+      {/* ── See demos ─────────────────────────────────────────────────────── */}
+      <div className="zone">
+        <h2 className="sh" id="r-examples">See demos</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          Live demos built with the{' '}
+          <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
+            TomTom Maps SDK for JavaScript
+          </a>
+          {' '}on top of the Routing API.
+        </p>
+        <div className="examples-grid">
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/add-stops-to-route"
+            title="Add Stops to Route"
+            description="Find stops along a route within a 5-minute detour and insert them all at optimal positions in a single call."
+            tags={[
+              { label: 'Getting Started', variant: 'start' },
+              { label: 'Routing',         variant: 'feature' },
+              { label: 'Web',             variant: 'platform' },
+            ]}
+            imgSrc="/example-thumbs/route-add-stops.png"
+          />
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/route-with-alternatives"
+            title="Route with Alternatives"
+            description="Display and compare multiple route alternatives side by side — different trade-offs between travel time and distance."
+            tags={[
+              { label: 'Routing',        variant: 'feature' },
+              { label: 'Web',            variant: 'platform' },
+            ]}
+            imgSrc="/example-thumbs/route-with-alternatives.png"
+          />
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/route-monitor-traffic"
+            title="Route with Traffic Monitoring"
+            description="Dynamic route recalculation with live traffic updates — watch the route adapt as conditions change in real time."
+            tags={[
+              { label: 'Routing',  variant: 'feature' },
+              { label: 'Traffic',  variant: 'custom' },
+              { label: 'Web',      variant: 'platform' },
+            ]}
+            imgSrc="/example-thumbs/route-traffic-monitoring.png"
+          />
+
         </div>
       </div>
 

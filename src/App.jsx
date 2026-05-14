@@ -168,6 +168,7 @@ import RoutingV2DataFreshness from './pages/RoutingV2DataFreshness';
 // Routing API v3
 import RoutingV3Overview from './pages/RoutingV3Overview';
 import RoutingQuickStart from './pages/RoutingQuickStart';
+import RoutingExplorer from './pages/RoutingExplorer';
 import RoutingEVGuide from './pages/RoutingEVGuide';
 import RoutingEVConsumption from './pages/RoutingEVConsumption';
 import RoutingEVVehicle from './pages/RoutingEVVehicle';
@@ -195,6 +196,7 @@ import GeocodingAPIIntro from './pages/GeocodingAPIIntro';
 import TrafficAPIIntro from './pages/TrafficAPIIntro';
 import EVChargingAPIIntro from './pages/EVChargingAPIIntro';
 import MapDisplayAPIIntro from './pages/MapDisplayAPIIntro';
+import MapDisplayExplorer from './pages/MapDisplayExplorer';
 import ParkingFuelAPIIntro from './pages/ParkingFuelAPIIntro';
 import TrafficAnalyticsAPIIntro from './pages/TrafficAnalyticsAPIIntro';
 import SnapToRoadsAPIIntro from './pages/SnapToRoadsAPIIntro';
@@ -287,6 +289,7 @@ import TrafficOrbisMaps from './pages/TrafficOrbisMaps';
 import TrafficMigration from './pages/TrafficMigration';
 import TrafficErrorCodes from './pages/TrafficErrorCodes';
 import TrafficCoverage from './pages/TrafficCoverage';
+import TrafficExplorer from './pages/TrafficExplorer';
 // Reference pages — Map Display API
 import MapTomTomMaps from './pages/MapTomTomMaps';
 import MapOrbisMaps from './pages/MapOrbisMaps';
@@ -378,7 +381,7 @@ const FULL_PAGES = new Set([
   'screenshot-assets', 'typography',
 ]);
 
-function PageContent({ pageId, onNavigate, product, platform, routingNavMode = 'a' }) {
+function PageContent({ pageId, onNavigate, product, platform, routingNavMode = 'a', isDark = false }) {
   switch (pageId) {
     case 'overview':           return <Overview onNavigate={onNavigate} />;
     case 'colour':             return <Colour />;
@@ -548,6 +551,7 @@ function PageContent({ pageId, onNavigate, product, platform, routingNavMode = '
         : <RoutingLaneGuidance onNavigate={onNavigate} />;
     case 'routing-road-shields':     return <RoutingRoadShields onNavigate={onNavigate} />;
     case 'routing-quickstart':      return <RoutingQuickStart onNavigate={onNavigate} />;
+    case 'routing-explorer':        return <RoutingExplorer onNavigate={onNavigate} isDark={isDark} />;
     // Routing API — EV guides
     case 'routing-ev':              return <RoutingEVLanding onNavigate={onNavigate} />;
     case 'routing-ev-overview':     return <RoutingEVGuide onNavigate={onNavigate} />;
@@ -642,6 +646,7 @@ function PageContent({ pageId, onNavigate, product, platform, routingNavMode = '
     case 'geocoding-platform':     return <GeocodingPlatformLanding onNavigate={onNavigate} />;
     // Traffic API
     case 'traffic-api-intro':      return <TrafficAPIIntro onNavigate={onNavigate} />;
+    case 'traffic-explorer':       return <TrafficExplorer onNavigate={onNavigate} isDark={isDark} />;
     case 'traffic-flow-segment':   return <TrafficFlowSegment onNavigate={onNavigate} />;
     case 'traffic-incident-details': return <TrafficIncidentDetails onNavigate={onNavigate} />;
     case 'traffic-flow-tiles':     return <TrafficFlowTiles onNavigate={onNavigate} />;
@@ -734,6 +739,7 @@ function PageContent({ pageId, onNavigate, product, platform, routingNavMode = '
     case 'ev-charging-coverage':   return <EVChargingCoverage  onNavigate={onNavigate} />;
     // Map Display API
     case 'map-display-api-intro':  return <MapDisplayAPIIntro onNavigate={onNavigate} />;
+    case 'map-display-explorer':   return <MapDisplayExplorer onNavigate={onNavigate} isDark={isDark} />;
     case 'map-raster-tile':        return <MapRasterTileUnified onNavigate={onNavigate} />;
     case 'map-vector-tile':        return <MapVectorTileUnified onNavigate={onNavigate} />;
     case 'map-satellite-tile':     return <MapSatelliteTileUnified onNavigate={onNavigate} />;
@@ -918,7 +924,7 @@ export default function App() {
             onCollapse={() => setNavCollapsed(true)}
           />
           <main id="main-content" className="content-area">
-            <PageContent pageId={currentPage} onNavigate={navigate} product={{ ...product, nav: productNav, pageTitles: productPageTitles }} platform={currentPlatform} routingNavMode={routingNavMode} />
+            <PageContent pageId={currentPage} onNavigate={navigate} product={{ ...product, nav: productNav, pageTitles: productPageTitles }} platform={currentPlatform} routingNavMode={routingNavMode} isDark={isDark} />
           </main>
           <TOC currentPage={currentPage} />
         </div>

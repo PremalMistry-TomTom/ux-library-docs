@@ -19,7 +19,7 @@ const BATTERY_APIS = [
 // soe         — demo starting state of energy
 // consumption — [[speed km/h, Wh/km], ...] baseline: 20°C, flat, no HVAC
 //               7 points from 10→120 km/h. REST API equivalent: Wh/km ÷ 10 = kWh/100km.
-const PRESETS = {
+export const PRESETS = {
   city: {
     nominalKwh: 44, capacity: 40, soe: 28,
     curve: [[0,30],[10,80],[28,40],[36,15]],
@@ -86,24 +86,27 @@ function ChargeCurve({ points, color, capacity }) {
 }
 
 /* ─── Consumption curve mini-visualisation ───────────────────────────────────── */
-function ConsumptionCurve({ points, color }) {
-  const W = 220, H = 80, PAD = 12;
+export function ConsumptionCurve({ points, color, width = 220, height = 80, showLabel = true }) {
+  const W = width, H = height, PAD = 12;
   const maxWh = Math.max(...points.map(p => p[1])) * 1.1;
   const maxSpd = Math.max(...points.map(p => p[0]));
   const toX = s  => PAD + ((s / maxSpd) * (W - PAD * 2));
   const toY = wh => H - PAD - ((wh / maxWh) * (H - PAD * 2));
   const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${toX(p[0]).toFixed(1)} ${toY(p[1]).toFixed(1)}`).join(' ');
+  const fill = d + ` L ${toX(maxSpd).toFixed(1)} ${H-PAD} L ${toX(points[0][0]).toFixed(1)} ${H-PAD} Z`;
 
   return (
     <div>
-      <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Speed consumption (Wh/km)</div>
+      {showLabel && <div style={{ fontSize: '0.875rem', color: 'var(--muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Speed consumption (Wh/km)</div>}
       <svg width={W} height={H} style={{ display: 'block', overflow: 'visible' }}>
+        <path d={fill} fill={`${color}18`} />
         <path d={d} stroke={color} strokeWidth="2" fill="none" strokeLinejoin="round" />
         {points.map((p, i) => (
           <circle key={i} cx={toX(p[0])} cy={toY(p[1])} r="3" fill={color} />
         ))}
         <text x={PAD} y={H} fontSize="9" fill="var(--muted)">10</text>
         <text x={W - PAD} y={H} fontSize="9" fill="var(--muted)" textAnchor="end">{maxSpd} km/h</text>
+        <text x={PAD} y={PAD + 4} fontSize="9" fill="var(--muted)">{Math.round(maxWh / 1.1)} Wh/km</text>
       </svg>
     </div>
   );

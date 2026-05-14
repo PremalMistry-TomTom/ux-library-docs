@@ -1009,11 +1009,11 @@ export default function DocsPortal({ onNavigate }) {
         </div>
       </section>
 
-      {/* ── Discovery (use cases) ── */}
-      <DiscoverySection onNavigate={onNavigate} />
-
       {/* ── Catalogue ── */}
       <CatalogueSection onNavigate={onNavigate} />
+
+      {/* ── Discovery (use cases) ── */}
+      <DiscoverySection onNavigate={onNavigate} />
 
       {/* ── Footer ── */}
       <footer className="dp2-footer">

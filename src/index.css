@@ -738,6 +738,41 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   /* expanded state overrides via inline style (position:relative, max-height:none) */
 }
 
+/* RoutingExplorer — wider left column for the param form */
+.api-ref-section--explorer { grid-template-columns: 3fr 2fr; }
+
+/* RoutingExplorer — hero-map offset via CSS variable; map height is user-resizable */
+.api-ref-section-code.re-code {
+  top: calc(var(--app-top-offset) + var(--map-h, 360px) + 20px);
+  max-height: calc(100vh - var(--app-top-offset) - var(--map-h, 360px) - 44px);
+  overflow-y: auto;
+}
+.api-ref-section-code.re-code[data-expanded="true"] {
+  max-height: none;
+  /* overflow-y stays auto from the base rule — no context switch = no sticky jump */
+}
+
+/* Map resize handle */
+.map-resize-handle {
+  height: 20px;
+  cursor: ns-resize;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--s0);
+  border-top: 1px solid var(--border);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.map-resize-handle__grip {
+  width: 40px; height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  transition: background 0.15s, width 0.15s;
+}
+.map-resize-handle:hover .map-resize-handle__grip {
+  background: var(--mid);
+  width: 52px;
+}
+
 /* Highlighted token in the code panel — shown when user picks a value from the pill list */
 .tt-changed {
   background: rgba(250, 204, 21, 0.22);
@@ -758,6 +793,9 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   .api-ref-section-header { height: auto; padding: 20px 0; }
   .api-ref-section-left, .api-ref-section-right { padding: 20px 0 32px; }
   .api-ref-section-code { position: relative; top: auto; max-height: none; overflow-y: visible; }
+  /* RoutingExplorer: reset hero-map offset so no offset push in single-column */
+  .api-ref-section-code.re-code { top: 0; max-height: none; overflow-y: visible; }
+  .api-ref-section-right { padding-top: 8px; }
 }
 
 /* Tab bar */
@@ -3544,3 +3582,30 @@ div:hover > .illo-card-copy-hint { opacity: 1 !important; }
 
 /* ── GlobalHeader active icon button ─────────────────────────────────────────── */
 .gh-icon-btn--active { color: #e2001a !important; }
+
+/* ── TomTom SDK popup — dark theme for API Explorer map ─────────────────────── */
+.mapboxgl-popup-content {
+  background: #0d1117 !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: 8px !important;
+  padding: 8px 11px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5) !important;
+  color: #e2e8f0 !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+}
+.mapboxgl-popup-tip {
+  border-top-color: #0d1117 !important;
+  border-bottom-color: #0d1117 !important;
+  border-left-color: #0d1117 !important;
+  border-right-color: #0d1117 !important;
+}
+.mapboxgl-popup-close-button {
+  color: #64748b !important;
+  font-size: 1rem !important;
+  line-height: 1 !important;
+  padding: 4px 7px !important;
+}
+.mapboxgl-popup-close-button:hover {
+  color: #e2e8f0 !important;
+  background: transparent !important;
+}

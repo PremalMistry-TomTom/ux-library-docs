@@ -86,7 +86,8 @@ const MAP_SHARED_TAIL = [
 
 /* ── Option A — version-sectioned ─────────────────────────────────────────── */
 export const MAP_DISPLAY_API_NAV = [
-  { id: 'map-display-api-intro', label: 'Introduction', type: 'top' },
+  { id: 'map-display-api-intro',  label: 'Introduction', type: 'top' },
+  { id: 'map-display-explorer',   label: 'API Explorer', type: 'top' },
 
   { type: 'section', label: 'TomTom Maps', badge: 'v1' },
   { id: 'map-raster-tile',    label: 'Raster Map Tile', type: 'top', ref: true, anchors: [
@@ -127,7 +128,8 @@ export const MAP_DISPLAY_API_NAV = [
 
 /* ── Option B — concept-first + vDots ────────────────────────────────────── */
 export const MAP_DISPLAY_API_NAV_B = [
-  { id: 'map-display-api-intro', label: 'Introduction', type: 'top' },
+  { id: 'map-display-api-intro',  label: 'Introduction', type: 'top' },
+  { id: 'map-display-explorer',   label: 'API Explorer', type: 'top' },
   { type: 'section', label: 'Endpoints' },
   ...MAP_CONCEPT_ENDPOINTS,
   ...MAP_SHARED_TAIL,
@@ -135,7 +137,8 @@ export const MAP_DISPLAY_API_NAV_B = [
 
 /* ── Option C — concept-first + version-filter ───────────────────────────── */
 export const MAP_DISPLAY_API_NAV_C = [
-  { id: 'map-display-api-intro', label: 'Introduction', type: 'top' },
+  { id: 'map-display-api-intro',  label: 'Introduction', type: 'top' },
+  { id: 'map-display-explorer',   label: 'API Explorer', type: 'top' },
   { type: 'version-filter' },
   { type: 'section', label: 'Endpoints' },
   ...MAP_CONCEPT_ENDPOINTS,
@@ -143,7 +146,8 @@ export const MAP_DISPLAY_API_NAV_C = [
 ];
 
 export const MAP_DISPLAY_API_PAGE_TITLES = {
-  'map-display-api-intro': 'Introduction',
+  'map-display-api-intro':  'Introduction',
+  'map-display-explorer':   'API Explorer',
 
   /* ── endpoints ── */
   'map-raster-tile':    'Raster Map Tile',

@@ -1,7 +1,7 @@
 # UX Library — Claude project context
 
 > Auto-loaded every session. Keep this current after major work.
-> Last updated: 2026-05-12
+> Last updated: 2026-05-14
 
 ---
 
@@ -894,6 +894,154 @@ export function FooUnified({ onNavigate }) {
 
 ### 7 — No TryIt / Try-it-live widget on API reference pages
 `TryItEmbed` is **removed** from `ApiRefTwoCol`. The lazy import, `pageDemoId`, `demoBlock`, and its render are deleted. `demoId` properties in `sections` arrays are ignored (no-ops). TryIt will be re-added via a dedicated mechanism later.
+
+---
+
+## API Explorer pages — architecture rules
+
+The Routing API Explorer (`src/pages/RoutingExplorer.jsx`) is the canonical pattern for any future interactive API explorer page. Follow these rules exactly when building a new one.
+
+### Component structure
+
+An Explorer page has two module-level components:
+
+```
+MapPanel (or equivalent visualisation component)   ← module level, before the Page
+export default function XxxExplorer({ onNavigate, isDark = false })  ← Page
+```
+
+`MapPanel` is a **separate module-level function**, not nested inside the Page. This is intentional — it owns its own map lifecycle and isolates map re-renders from the page's param state updates.
+
+### isDark threading
+
+`isDark` is the portal's light/dark theme toggle. It must flow down from `App` all the way to `MapPanel`:
+
+1. **`App.jsx — PageContent` props**: `PageContent` is a module-level function. It does NOT close over `App`'s state. Add `isDark` to its props and pass it at the call site:
+   ```jsx
+   // PageContent signature:
+   function PageContent({ pageId, onNavigate, product, platform, routingNavMode = 'a', isDark = false }) { … }
+
+   // Call site (inside App's JSX):
+   <PageContent … isDark={isDark} />
+
+   // Case in the switch:
+   case 'xxx-explorer': return <XxxExplorer onNavigate={onNavigate} isDark={isDark} />;
+   ```
+
+2. **Page component**: Accepts `isDark = false` as a prop and passes it to `MapPanel`:
+   ```jsx
+   export default function XxxExplorer({ onNavigate, isDark = false }) {
+     …
+     return … <MapPanel … isDark={isDark} />;
+   }
+   ```
+
+3. **MapPanel**: Accepts `isDark = false` as a prop and uses it directly in effects. Never reads it from a parent scope — always from its own props.
+
+### State that belongs in MapPanel, not in the Page
+
+`MapPanel` is module-level and cannot close over the Page's state. Any state or refs used exclusively inside `MapPanel` must be declared there:
+
+| Variable | Where to declare | Why |
+|---|---|---|
+| `mapRef` | `MapPanel` | Map instance lifecycle |
+| `appliedStyleRef` | `MapPanel` | Tracks last-applied isDark value, prevents double-fire |
+| `redrawToken` / `setRedrawToken` | `MapPanel` | Bumped after `setStyle()` to re-trigger route draw |
+| `markersRef`, `popupRef` | `MapPanel` | Marker lifecycle |
+
+**Never** declare these in the Page and reference them from `MapPanel` — they will be `undefined` at runtime.
+
+### Dark/light map style switching pattern
+
+Use the TomTom Style API URL template. The confirmed working format (SDK v6.25.1):
+
+```js
+const STYLE_VERSION = '22.2.1-*';
+
+function mapStyleUrl(apiKey, isDark) {
+  const v = isDark ? 'dark' : 'light';
+  const key = apiKey || DEMO_KEY;
+  return (
+    `https://api.tomtom.com/style/1/style/${STYLE_VERSION}` +
+    `?key=${key}&map=2/basic_street-${v}` +
+    `&traffic_incidents=2/incidents_${v}` +
+    `&traffic_flow=2/flow_relative-${v}` +
+    `&poi=2/poi_${v}`
+  );
+}
+```
+
+Inside `MapPanel`, two effects handle style:
+
+```js
+// Effect 1 — init map with correct style from the start
+useEffect(() => {
+  loadSdk().then(tt => {
+    map = tt.map({ key: apiKey, container: containerRef.current, style: mapStyleUrl(apiKey, isDark), … });
+    appliedStyleRef.current = isDark;
+    mapRef.current = map;
+  }).catch(() => {});
+  return () => { /* cleanup */ };
+}, [apiKey]); // apiKey only — isDark baked in at init via closure
+
+// Effect 2 — switch style when portal theme toggles
+useEffect(() => {
+  const map = mapRef.current;
+  if (!map || appliedStyleRef.current === isDark) return;
+  appliedStyleRef.current = isDark;
+  try {
+    map.setStyle(mapStyleUrl(apiKey, isDark));
+    map.once('styledata', () => {
+      if (!mapRef.current) return;
+      if (mapRef.current.isStyleLoaded()) {
+        setRedrawToken(t => t + 1);
+      } else {
+        mapRef.current.once('idle', () => setRedrawToken(t => t + 1));
+      }
+    });
+  } catch {}
+}, [isDark]);
+
+// Route draw effect — include redrawToken in deps so it re-fires after style swap
+useEffect(() => {
+  …
+}, [result, endpoint, vals.origin, redrawToken]);
+```
+
+### Scoping checklist before shipping any Explorer page
+
+- [ ] `MapPanel` (or equivalent) has `isDark = false` in its own props
+- [ ] All map-related refs and style-state live inside `MapPanel`, not the Page
+- [ ] `PageContent` in `App.jsx` has `isDark` in its props signature
+- [ ] `<PageContent>` call site passes `isDark={isDark}`
+- [ ] The new `case 'xxx-explorer'` in `PageContent` passes `isDark={isDark}` to the page component
+- [ ] `redrawToken` is in the route-draw effect's dependency array
+
+### Explorer pages — variant patterns
+
+Not all explorers need a TomTom Maps SDK map. Use the right visual output for the API:
+
+| API type | Visual output | Pattern |
+|---|---|---|
+| Routing / Traffic (with SDK map) | Live TomTom Maps SDK map | `TrafficMap`/`RouteMap` module-level component, `isDark` prop, `appliedStyleRef` guard, `redrawToken` |
+| Traffic incidents (no SDK needed) | Incident markers on TomTom map | Same as above — TrafficMap handles both incidents and flow-segment |
+| Map Display (tile/image APIs) | `<img>` tags — the response IS the image | No SDK needed. `TileGrid` shows 3×3 stitched tiles. Static Image uses `<img key={url}>` to auto-reload. |
+
+### Existing Explorer pages (confirmed working 2026-05-14)
+
+| API | File | Page ID | Endpoints |
+|---|---|---|---|
+| Routing | `src/pages/RoutingExplorer.jsx` | `routing-explorer` | Calculate Route, Reachable Range (v1 + v2) |
+| Traffic | `src/pages/TrafficExplorer.jsx` | `traffic-explorer` | Incident Details v5, Flow Segment Data v4 |
+| Map Display | `src/pages/MapDisplayExplorer.jsx` | `map-display-explorer` | Raster Tile (3×3 grid), Static Image |
+
+### Map Display Explorer — special notes
+
+- **No TomTom Maps SDK** — tiles and static images load directly via `<img src={url}>` (no CORS issue)
+- **Raster Tile**: `TileGrid` component derives tile X/Y from lat/lon using `latLonToTile()`, shows 3×3 grid, center tile has pin + z/x/y label
+- **Static Image**: `<img key={staticImgUrl}>` re-mounts automatically when any param changes (no Run button needed)
+- **Static Image `center` param**: API takes `longitude,latitude` order (NOT lat,lon) — the `staticUrl()` helper handles this
+- **Traffic Incidents `fields` param**: Valid properties are `iconCategory, magnitudeOfDelay, from, to, length, delay, roadNumbers, timeValidity, probabilityOfOccurrence, numberOfReports` — `startPoint` and `endPoint` are NOT valid
 
 ---
 

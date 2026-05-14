@@ -211,6 +211,7 @@ export const TOC_MAP = {
   /* ── Routing API ──────────────────────────────────────────────────────── */
   'routing-api-intro': [
     { id: 'r-endpoints', label: 'All endpoints' },
+    { id: 'r-examples',  label: 'See demos' },
     { id: 'r-guides',    label: 'Guides' },
     { id: 'r-platforms', label: 'Versions & Platforms' },
     { id: 'r-reference', label: 'Reference' },
@@ -219,7 +220,7 @@ export const TOC_MAP = {
   'routing-quickstart': [
     { id: 'authentication',     label: 'Authentication' },
     { id: 'first-route',        label: 'Your first route' },
-    { id: 'response-structure', label: 'Understanding the response' },
+    { id: 'response-structure', label: 'Response structure' },
     { id: 'version-comparison', label: 'Which version?' },
   ],
   'routing-ev-overview': [

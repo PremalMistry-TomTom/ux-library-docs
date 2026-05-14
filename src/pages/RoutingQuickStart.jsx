@@ -1,9 +1,6 @@
-import { lazy, Suspense } from 'react';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
-
-const TryItEmbed = lazy(() => import('../components/demos/TryItEmbed'));
 
 /* ─── Code examples ──────────────────────────────────────────────────────────── */
 const CODE_AUTH = `curl "https://api.tomtom.com/routing/1/calculateRoute/52.3676,4.9041:48.8566,2.3522/json?key=YOUR_API_KEY"`;
@@ -42,13 +39,12 @@ export default function RoutingQuickStart({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Quick Start</h1>
-        <PageActions pageId="routing-quickstart" pageTitle="Routing API Quick Start" />
+        <h1>Getting Started</h1>
+        <PageActions pageId="routing-quickstart" pageTitle="Routing API — Getting Started" />
       </div>
       <p className="quick-answer">
-        Make your first Routing API request in minutes. Authenticate with an API key, call
-        Calculate Route, and get a full route summary including travel time, distance, and
-        traffic delay.
+        Understand how the Routing API works, authenticate with an API key, and know which
+        version to use. Ready to build? Jump straight into the live API Explorer.
       </p>
 
       {/* ── 1. Authentication ── */}
@@ -76,11 +72,31 @@ export default function RoutingQuickStart({ onNavigate }) {
           path.
         </p>
 
-        <Suspense fallback={<div style={{ height: 200, background: 'var(--s1)', borderRadius: 12 }} />}>
-          <TryItEmbed demoId="calculate-route" />
-        </Suspense>
+        {/* Explorer CTA — replaces TryItEmbed, which is now the canonical Try It surface */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: 16, padding: '14px 18px',
+          background: 'var(--s1)', border: '1px solid var(--border)', borderRadius: 16,
+          marginBottom: '1rem',
+        }}>
+          <div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)', marginBottom: 3 }}>
+              Try it live in the API Explorer
+            </div>
+            <div style={{ fontSize: '0.8125rem', color: 'var(--muted)', lineHeight: 1.45 }}>
+              Set parameters, switch API versions, see the live response, copy cURL — all in one place.
+            </div>
+          </div>
+          <button
+            className="page-action-btn"
+            style={{ flexShrink: 0 }}
+            onClick={() => onNavigate?.('routing-explorer', 'routing-api')}
+          >
+            Open API Explorer →
+          </button>
+        </div>
 
-        <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '1rem 0 0.5rem' }}>
+        <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '0 0 0.5rem' }}>
           Equivalent cURL request:
         </p>
         <CodeBlock code={CODE_FIRST_ROUTE} language="bash" />

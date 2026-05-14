@@ -1,4 +1,5 @@
 import PageActions from '../components/ui/PageActions';
+import ExampleCard from '../components/ui/ExampleCard';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -161,6 +162,42 @@ export default function TrafficAPIIntro({ onNavigate }) {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* See demos */}
+      <div className="zone">
+        <h2 className="sh" id="demos">See demos</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', margin: '0 0 20px', lineHeight: 1.6 }}>
+          Live demos built with the{' '}
+          <a href="https://docs.tomtom.com/maps-sdk-js/overview" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--red)', textDecoration: 'none', fontWeight: 500 }}>
+            TomTom Maps SDK for JavaScript
+          </a>
+          {' '}on top of the Traffic API.
+        </p>
+        <div className="examples-grid">
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/traffic-flow"
+            title="Traffic Flow"
+            description="Visualise real-time traffic flow on a live map. Road segments are colour-coded by speed relative to free-flow speed."
+            imgSrc="/example-thumbs/traffic-flow.png"
+          />
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/traffic-config-playground"
+            title="Traffic Config Playground"
+            description="Explore presets for incidents and flow — toggle categories, delay filters, and road types interactively."
+            imgSrc="/example-thumbs/traffic-config-playground.png"
+          />
+
+          <ExampleCard
+            href="https://docs.tomtom.com/maps-sdk-js/examples/traffic-incident-overlay"
+            title="Traffic Incident Overlay"
+            description="Click incidents on the map to reveal a detail panel with category, delay, and affected road information."
+            imgSrc="/example-thumbs/traffic-incident-overlay.png"
+          />
+
         </div>
       </div>
 

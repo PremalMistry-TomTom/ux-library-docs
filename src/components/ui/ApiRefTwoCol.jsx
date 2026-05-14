@@ -57,6 +57,8 @@ export function ParamRow({
   depth = 0,
   /* interactivity */
   selectedValue, onSelect,
+  /* live control — React node rendered below the description (Explorer use) */
+  control,
 }) {
   const [childrenOpen, setChildrenOpen] = useState(false);
   const hasChildren = childParams?.length > 0;
@@ -144,6 +146,13 @@ export function ParamRow({
         </div>
       )}
 
+      {/* ── Live control (Explorer) ── */}
+      {control && (
+        <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--border)' }}>
+          {control}
+        </div>
+      )}
+
       {/* ── Show / hide child attributes toggle ── */}
       {hasChildren && (
         <button
@@ -191,14 +200,15 @@ export function ParamRow({
 
 /* ─── Section header — full-width sticky title row ───────────────────────────── */
 /* bg/color as CSS-var strings — aligned to Playbook semantic tokens */
-const METHOD_COLORS = {
+export const METHOD_COLORS = {
   GET:    { bg: 'var(--info-bg)',    color: 'var(--info-text)'    },
   POST:   { bg: 'var(--success-bg)', color: 'var(--success-text)' },
   DELETE: { bg: 'var(--danger-bg)',  color: 'var(--danger-text)'  },
   PUT:    { bg: 'var(--warn-bg)',    color: 'var(--warn-text)'    },
 };
 
-function SectionHeader({ title, count, method }) {
+/* Exported so Explorer and other custom pages can reuse the canonical title style */
+export function SectionHeader({ title, count, method, right }) {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -214,9 +224,11 @@ function SectionHeader({ title, count, method }) {
           </span>
         )}
       </div>
-      {count > 0 && (
-        <span style={{ fontSize: '0.75rem', color: 'var(--muted)', flexShrink: 0 }}>{count} {count === 1 ? 'parameter' : 'parameters'}</span>
-      )}
+      {/* right overrides the default parameter count — useful for custom right-side content */}
+      {right !== undefined
+        ? right
+        : count > 0 && <span style={{ fontSize: '0.75rem', color: 'var(--muted)', flexShrink: 0 }}>{count} {count === 1 ? 'parameter' : 'parameters'}</span>
+      }
     </>
   );
 }
