@@ -120,19 +120,18 @@ export default function TrafficAPIIntro({ onNavigate }) {
         data, incident details, and map tiles updated every minute.
       </p>
 
-      {/* Quickstart CTA */}
-      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
         <button
-          onClick={() => onNavigate?.('traffic-quickstart', 'traffic-api')}
-          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+          style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: 6, fontWeight: 700, fontSize: '0.9375rem', cursor: 'pointer', letterSpacing: '-0.01em' }}
+          onClick={() => onNavigate?.('traffic-explorer', 'traffic-api')}
         >
-          Quickstart →
+          API Explorer →
         </button>
         <button
-          onClick={() => onNavigate?.('traffic-flow-tile', 'traffic-api')}
-          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+          style={{ background: 'transparent', color: 'var(--text)', border: '1.5px solid var(--border)', padding: '7px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
+          onClick={() => onNavigate?.('traffic-quickstart', 'traffic-api')}
         >
-          API Reference
+          Getting Started
         </button>
       </div>
 

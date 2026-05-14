@@ -1,9 +1,6 @@
-import { lazy, Suspense } from 'react';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
-
-const TryItEmbed = lazy(() => import('../components/demos/TryItEmbed'));
 
 /* ─── Code examples ──────────────────────────────────────────────────────────── */
 const CODE_AUTH = `curl "https://api.tomtom.com/map/1/tile/basic/main/10/527/340.png?key=YOUR_API_KEY"`;
@@ -15,23 +12,22 @@ curl "https://api.tomtom.com/map/1/tile/basic/main/10/527/340.png\\
   &tileSize=512" \\
   --output tile.png`;
 
-const CODE_VECTOR_TILE = `# Vector tile in Mapbox Vector Tile (.pbf) format
-# Feed into MapLibre GL or Mapbox GL for client-side rendering
-curl "https://api.tomtom.com/map/1/tile/basic/main/10/527/340.pbf\\
-  ?key=YOUR_API_KEY" \\
-  --output tile.pbf`;
+const CODE_RESPONSE = `# Response: binary PNG image (200 OK)
+# Content-Type: image/png
+# Content-Length: ~12000 bytes
+
+# Saved as tile.png — ready to display in a browser <img> or mapping library`;
 
 export default function MapDisplayQuickstart({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Quick Start</h1>
-        <PageActions pageId="map-quickstart" pageTitle="Map Display API Quick Start" />
+        <h1>Getting Started</h1>
+        <PageActions pageId="map-quickstart" pageTitle="Map Display API — Getting Started" />
       </div>
       <p className="quick-answer">
-        Fetch your first map tile in seconds. Authenticate with an API key, request a raster
-        PNG tile using the standard XYZ grid, and get back a rendered map image ready to
-        display in any mapping library.
+        Understand how the Map Display API works, authenticate with an API key, and know which
+        version to use. Ready to build? Jump straight into the live API Explorer.
       </p>
 
       {/* ── 1. Authentication ── */}
@@ -39,7 +35,7 @@ export default function MapDisplayQuickstart({ onNavigate }) {
         <h2 className="sh" id="authentication">Authentication</h2>
         <p style={{ color: 'var(--text)', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
           All Map Display API requests require an API key passed as the <code>key</code> query
-          parameter. Get one free at the{' '}
+          parameter. You can generate a key in the{' '}
           <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer"
             style={{ color: 'var(--brand)' }}>TomTom Developer Portal</a>.
         </p>
@@ -59,24 +55,44 @@ export default function MapDisplayQuickstart({ onNavigate }) {
           The example below requests a 512 px raster tile at zoom 10 over central Netherlands.
         </p>
 
-        <Suspense fallback={<div style={{ height: 200, background: 'var(--s1)', borderRadius: 12 }} />}>
-          <TryItEmbed demoId="raster-tile" />
-        </Suspense>
+        {/* Explorer CTA */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: 16, padding: '14px 18px',
+          background: 'var(--s1)', border: '1px solid var(--border)', borderRadius: 16,
+          marginBottom: '1rem',
+        }}>
+          <div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)', marginBottom: 3 }}>
+              Try it live in the API Explorer
+            </div>
+            <div style={{ fontSize: '0.8125rem', color: 'var(--muted)', lineHeight: 1.45 }}>
+              Render tiles in real time, switch styles and zoom levels, preview static images — all in one place.
+            </div>
+          </div>
+          <button
+            className="page-action-btn"
+            style={{ flexShrink: 0 }}
+            onClick={() => onNavigate?.('map-display-explorer', 'map-display-api')}
+          >
+            Open API Explorer →
+          </button>
+        </div>
 
-        <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '1rem 0 0.5rem' }}>
-          Equivalent cURL for a raster tile:
+        <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '0 0 0.5rem' }}>
+          Equivalent cURL request:
         </p>
         <CodeBlock code={CODE_FIRST_TILE} language="bash" />
 
         <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '1rem 0 0.5rem' }}>
-          Vector tile (for MapLibre GL / Mapbox GL):
+          Response:
         </p>
-        <CodeBlock code={CODE_VECTOR_TILE} language="bash" />
+        <CodeBlock code={CODE_RESPONSE} language="bash" />
       </div>
 
-      {/* ── 3. Tile response ── */}
+      {/* ── 3. Understanding the tile system ── */}
       <div className="zone">
-        <h2 className="sh" id="tile-response">Understanding the tile system</h2>
+        <h2 className="sh" id="response-structure">Understanding the tile system</h2>
         <p style={{ color: 'var(--text)', fontSize: '0.875rem', marginBottom: '1rem' }}>
           Each URL parameter controls what you see in the tile:
         </p>

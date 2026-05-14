@@ -1,9 +1,6 @@
-import { lazy, Suspense } from 'react';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
-
-const TryItEmbed = lazy(() => import('../components/demos/TryItEmbed'));
 
 /* ─── Code examples ──────────────────────────────────────────────────────────── */
 const CODE_AUTH = `curl "https://api.tomtom.com/traffic/services/5/incidentDetails?key=YOUR_API_KEY&bbox=4.84,52.32,4.95,52.42&fields=%7Bincidents%7Btype,geometry%7D%7D"`;
@@ -12,47 +9,40 @@ const CODE_FIRST_REQUEST = `# Fetch traffic incidents in a bounding box (Amsterd
 curl "https://api.tomtom.com/traffic/services/5/incidentDetails\\
   ?key=YOUR_API_KEY\\
   &bbox=4.84239,52.31,4.97,52.51\\
-  &fields=%7Bincidents%7Btype%2Cgeometry%7Btype%2Ccoordinates%7D%2Cproperties%7Bid%2CstartTime%2CendTime%2Cfrom%2Cto%2Clength%2Cdelay%2CiconCategory%7D%7D%7D\\
-  &language=en-GB"`;
+  &fields=%7Bincidents%7Btype%2Cgeometry%7Btype%2Ccoordinates%7D%2Cproperties%7BiconCategory%2CmagnitudeOfDelay%2Cfrom%2Cto%2Clength%2Cdelay%7D%7D%7D\\
+  &language=en-GB\\
+  &timeValidityFilter=present"`;
 
 const CODE_RESPONSE = `{
-  "tm": {
-    "poi": [
-      {
-        "id": "europe_TTR351132688945009",
-        "type": "ACCIDENT",
-        "tm": "1111111111",
-        "cs": 0,
-        "se": "2026-05-12T09:00:00+02:00",
-        "ee": "2026-05-12T10:30:00+02:00",
-        "ic": 1,
-        "ty": "A",
-        "cs": 0,
-        "f": "Prins Hendrikkade",
-        "t": "Stationsplein",
-        "r": "N244",
-        "d": 240,
-        "l": 312,
-        "p": {
-          "x": 4.90088,
-          "y": 52.37812
-        }
+  "incidents": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": { "coordinate": [ ... ] }
+      },
+      "properties": {
+        "iconCategory": 9,
+        "magnitudeOfDelay": 0,
+        "from": "Upper Richmond Road (A205) / Rocks Lane",
+        "to": "Mortlake High Street",
+        "length": 312,
+        "delay": 0
       }
-    ]
-  }
+    }
+  ]
 }`;
 
 export default function TrafficQuickstart({ onNavigate }) {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>Quick Start</h1>
-        <PageActions pageId="traffic-quickstart" pageTitle="Traffic API Quick Start" />
+        <h1>Getting Started</h1>
+        <PageActions pageId="traffic-quickstart" pageTitle="Traffic API — Getting Started" />
       </div>
       <p className="quick-answer">
-        Query real-time traffic incidents and flow data in minutes. Authenticate with an API key,
-        call Incident Details with a bounding box, and get back live incidents with geometry,
-        severity, and road context.
+        Understand how the Traffic API works, authenticate with an API key, and know which
+        version to use. Ready to build? Jump straight into the live API Explorer.
       </p>
 
       {/* ── 1. Authentication ── */}
@@ -60,7 +50,7 @@ export default function TrafficQuickstart({ onNavigate }) {
         <h2 className="sh" id="authentication">Authentication</h2>
         <p style={{ color: 'var(--text)', fontSize: '0.875rem', marginBottom: '0.75rem' }}>
           All Traffic API requests require an API key passed as the <code>key</code> query
-          parameter. Get one free at the{' '}
+          parameter. You can generate a key in the{' '}
           <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer"
             style={{ color: 'var(--brand)' }}>TomTom Developer Portal</a>.
         </p>
@@ -75,16 +65,36 @@ export default function TrafficQuickstart({ onNavigate }) {
       <div className="zone">
         <h2 className="sh" id="first-request">Your first request</h2>
         <p style={{ color: 'var(--text)', fontSize: '0.875rem', marginBottom: '1rem' }}>
-          The example below fetches traffic incidents in the Amsterdam area. Provide a bounding
-          box as <code>minLon,minLat,maxLon,maxLat</code> and select which fields to return
-          using the URL-encoded <code>fields</code> template.
+          The example below fetches live traffic incidents in the Amsterdam area. Provide a
+          bounding box as <code>minLon,minLat,maxLon,maxLat</code> and select which fields to
+          return using the URL-encoded <code>fields</code> template.
         </p>
 
-        <Suspense fallback={<div style={{ height: 200, background: 'var(--s1)', borderRadius: 12 }} />}>
-          <TryItEmbed demoId="traffic-incidents" />
-        </Suspense>
+        {/* Explorer CTA */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: 16, padding: '14px 18px',
+          background: 'var(--s1)', border: '1px solid var(--border)', borderRadius: 16,
+          marginBottom: '1rem',
+        }}>
+          <div>
+            <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--black)', marginBottom: 3 }}>
+              Try it live in the API Explorer
+            </div>
+            <div style={{ fontSize: '0.8125rem', color: 'var(--muted)', lineHeight: 1.45 }}>
+              Set parameters, fire live requests, see real incident data on a map, copy cURL — all in one place.
+            </div>
+          </div>
+          <button
+            className="page-action-btn"
+            style={{ flexShrink: 0 }}
+            onClick={() => onNavigate?.('traffic-explorer', 'traffic-api')}
+          >
+            Open API Explorer →
+          </button>
+        </div>
 
-        <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '1rem 0 0.5rem' }}>
+        <p style={{ color: 'var(--mid)', fontSize: '0.8125rem', margin: '0 0 0.5rem' }}>
           Equivalent cURL request:
         </p>
         <CodeBlock code={CODE_FIRST_REQUEST} language="bash" />
@@ -99,18 +109,17 @@ export default function TrafficQuickstart({ onNavigate }) {
       <div className="zone">
         <h2 className="sh" id="response-structure">Understanding the response</h2>
         <p style={{ color: 'var(--text)', fontSize: '0.875rem', marginBottom: '1rem' }}>
-          Incident Details v5 returns a <code>tm</code> (Traffic Model) wrapper containing a{' '}
-          <code>poi</code> array of incident objects:
+          Incident Details v5 returns an <code>incidents</code> array of GeoJSON Feature objects:
         </p>
         <div style={{ display: 'grid', gap: '0.5rem' }}>
           {[
-            { key: 'tm.poi[]', desc: 'Array of traffic incident objects in the requested bounding box. Only fields requested via the fields parameter are included.' },
-            { key: 'tm.poi[0].id', desc: 'Unique incident identifier. Stable for the lifecycle of the incident — use to deduplicate across repeated polls.' },
-            { key: 'tm.poi[0].ic', desc: 'Icon category integer (1–14). Maps to incident types: 1 = Accident, 2 = Fog, 6 = Road Closure, 8 = Roadworks, 14 = Broken-down vehicle.' },
-            { key: 'tm.poi[0].d', desc: 'Delay in seconds caused by the incident compared to free-flow conditions. Useful for ranking incidents by impact.' },
-            { key: 'tm.poi[0].l', desc: 'Length of the affected road segment in metres.' },
-            { key: 'tm.poi[0].se / ee', desc: 'Start time and end time of the incident as ISO 8601 strings. ee may be absent for incidents with unknown end time.' },
-            { key: 'tm.poi[0].p', desc: 'Point position { x: lon, y: lat } of the incident icon. Use for map marker placement.' },
+            { key: 'incidents[]', desc: 'Array of GeoJSON Feature objects. Each represents one traffic incident in the requested bounding box. Only fields requested via the fields parameter are included.' },
+            { key: 'incidents[0].geometry', desc: 'GeoJSON geometry — either a Point or LineString with longitude/latitude coordinates. Use for map overlay rendering.' },
+            { key: 'incidents[0].properties.iconCategory', desc: 'Integer incident type (0–14). 1 = Accident, 6 = Jam, 8 = Road Closed, 9 = Road Works, 14 = Broken-down vehicle.' },
+            { key: 'incidents[0].properties.magnitudeOfDelay', desc: 'Severity: 0 = Unknown, 1 = Minor, 2 = Moderate, 3 = Major, 4 = Undefined. Use for colour-coding markers.' },
+            { key: 'incidents[0].properties.delay', desc: 'Extra travel time in seconds compared to free-flow conditions. Useful for ranking incidents by impact on journey time.' },
+            { key: 'incidents[0].properties.from / to', desc: 'Human-readable start and end road names for the affected segment. Safe to display directly in UI.' },
+            { key: 'incidents[0].properties.length', desc: 'Length of the affected road segment in metres.' },
           ].map(({ key, desc }) => (
             <div key={key} style={{
               display: 'grid', gridTemplateColumns: '220px 1fr', gap: '0.75rem',
@@ -128,7 +137,7 @@ export default function TrafficQuickstart({ onNavigate }) {
       <div className="zone">
         <h2 className="sh" id="version-comparison">Which version should I use?</h2>
         <p style={{ color: 'var(--text)', fontSize: '0.875rem', marginBottom: '1rem' }}>
-          The Traffic API has two versions. The Orbis version is currently in Private Preview.
+          The Traffic API has two versions on different map data platforms.
         </p>
         <div style={{ display: 'grid', gap: '0.875rem' }}>
           {[

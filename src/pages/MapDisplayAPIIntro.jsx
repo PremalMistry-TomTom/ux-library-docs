@@ -127,19 +127,18 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
         Choose raster tiles for simplicity or vector tiles for full style customisation.
       </p>
 
-      {/* Quickstart CTA */}
-      <div className="zone" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
         <button
-          onClick={() => onNavigate?.('map-quickstart', 'map-display-api')}
-          style={{ background: 'var(--brand)', color: '#fff', border: 'none', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+          style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: 6, fontWeight: 700, fontSize: '0.9375rem', cursor: 'pointer', letterSpacing: '-0.01em' }}
+          onClick={() => onNavigate?.('map-display-explorer', 'map-display-api')}
         >
-          Quickstart →
+          API Explorer →
         </button>
         <button
-          onClick={() => onNavigate?.('map-raster-tile', 'map-display-api')}
-          style={{ background: 'var(--bg)', color: 'var(--black)', border: '1px solid var(--border)', borderRadius: 20, padding: '10px 20px', fontSize: '0.875rem', fontWeight: 600, cursor: 'pointer' }}
+          style={{ background: 'transparent', color: 'var(--text)', border: '1.5px solid var(--border)', padding: '7px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
+          onClick={() => onNavigate?.('map-quickstart', 'map-display-api')}
         >
-          API Reference
+          Getting Started
         </button>
       </div>
 
