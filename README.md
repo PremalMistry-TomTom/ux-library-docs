@@ -1,287 +1,132 @@
-# TomTom UX Library — Documentation Site
+# TomTom Developer Docs — Portfolio Prototype
 
-High-fidelity documentation prototype spanning the TomTom developer ecosystem — from the UX Library SDK for automotive OEMs to the Routing API, Long Distance EV Routing API, Matrix Routing, and Waypoint Optimisation. Built to explore and demonstrate what great developer docs UX looks like at TomTom: one product, one audience, one clear path to working code.
+A high-fidelity prototype exploring what world-class developer documentation looks like across the entire TomTom product portfolio. Built to answer a single question: *how should TomTom's developer portal work when it serves both SDK integrators and REST API consumers in one unified experience?*
 
-![Overview](docs/screenshots/01-overview.png)
+The prototype covers 15 products across two distinct documentation patterns — SDK integration guides and REST API references — and demonstrates the full journey from product discovery to working code.
+
+![DocsPortal — product catalogue](docs/screenshots/readme-01-docsportal.png)
 
 ---
 
-## What's inside
+## Two documentation patterns
 
-### UX Library SDK
+The core design thesis is that TomTom's products split cleanly into two developer audiences with different needs. The prototype builds a full template for each.
 
-The UX Library gives OEMs a production-ready baseline for every visible layer of the navigation experience — colours, typography, map styles, navigation panels, search, cluster display, AI assistant integration, and vehicle systems — all overridable without forking the SDK.
+### Pattern 1 — SDK & Product Docs
 
-Every page pairs written documentation with live interactive demos — sliders, toggles, and configuration builders that generate real Kotlin output — so the integration story is tangible rather than abstract.
+For developers integrating a native SDK into a vehicle or application. The integration story is layered, visual, and configuration-heavy. Documentation must go beyond describing an API surface — it has to show what the output looks like and generate usable code on the spot.
 
-Six integration domains:
+**Products built to this pattern:**
 
-| Domain | Pages |
+| Product | What's demonstrated |
 |---|---|
-| **Design System** | Design tokens, colour, font, corner radius |
-| **Map Customisation** | Map style, traffic, safety locations, route styling, map markers |
-| **App Customisation** | Home screen layout, search engine, nav controls, horizon panel, NIP, ETA panel, route bar |
-| **EV & Charging** | Overview, vehicle & battery, charging search, long-distance routing, in-navigation UI, requirements |
-| **Vehicle Integration** | Instrument cluster, head-up display, ADAS integration, truck support |
-| **TomTom AI Assistant** | Overview, voice engine, speech-to-text, configuration |
+| **UX Library** | Design system docs — tokens, colour, typography, theming, corner radius. Six integration domains: Map Customisation, App Customisation, EV & Charging, Vehicle Integration, TomTom AI Assistant, and Design System. Every page pairs written docs with live interactive demos that generate real Kotlin output. |
+| **Maps & Navigation SDK** | SDK overview with platform capability cards. Eight domain landing pages (Map, Navigation, Routing, Location, Horizon, Advanced, Offline, Search). Full Android + iOS platform parity with a toggle that switches the entire doc set. |
+| **Automotive Navigation App** | HMI pattern library — Home Screen Layout, Route Bar, Horizon Panel, ETA Panel, HUD, Nav Controls, POI Details, EV Nav UI. Cluster display and ADAS integration with stack diagrams. |
 
-### API Documentation
+![UX Library — overview with domain cards](docs/screenshots/readme-03-ux-library-overview.png)
 
-Standalone documentation products for TomTom's routing and navigation APIs — each built as an independent doc set with its own introduction, quick start, and full API reference. This section demonstrates the principle of audience-first documentation: one guide, one integration track, one path to a working outcome.
+**What makes SDK docs different here:**
 
-| Product | Pages |
+- **Interactive configuration builders** — sliders, toggles, and zone editors that produce live Kotlin + ADB intent snippets (Home Screen Layout, Instrument Cluster, Nav Controls, Horizon Panel, ETA Panel, NIP)
+- **Live map integration** — the Map Style page renders a real TomTom map with four style variants (Browse, Drive, Mono, Satellite) inside a landscape IVI frame
+- **Illustration system** — 40+ theme-aware SVG hero cards used across domain landing pages; dual-style toggle (illustrated vs icon variants); six palette themes with light/dark variants
+- **Architecture diagrams** — TomTom AI Assistant signal-flow diagram (OEM STT → VPA Cloud → TAIA SDK → Navigation App → TTS), ADAS SDK capability stack
+- **Chinese localisation** — the full UX Library doc set is available in Simplified Chinese; toggle with the language switcher in the top-right corner; wired through `react-i18next`
+
+| | |
 |---|---|
-| **Routing API** | Introduction, Quick Start (authentication, first route, response structure), Core Concepts (route types, travel modes, vehicle profiles, consumption models), Calculate Route reference, Reachable Range, Batch Routing, Guidance (turn-by-turn, lane guidance), Advanced (reconstruction, avoid areas, tolls), Platform Reference (TomTom Maps v1, Orbis Maps v2, migration guide), API Reference |
-| **Long Distance EV Routing API** | Introduction, Quick Start (authentication, first EV route with cURL + Kotlin SDK), Core Concepts (charging stop selection, battery model, connector types), Calculate EV Route reference, Batch EV Route |
-| **Matrix Routing v2 API** | Introduction |
-| **Waypoint Optimization API** | Introduction |
+| ![Map Style — live map with style switcher](docs/screenshots/readme-04-map-style.png) | ![Home Screen Layout — interactive IVI builder](docs/screenshots/readme-05-home-screen-layout.png) |
+| ![Cluster — interactive config + Kotlin output](docs/screenshots/readme-06-cluster.png) | ![Maps & Navigation SDK intro](docs/screenshots/readme-07-navsdk-intro.png) |
 
-### Navigation SDK & Automotive Navigation App
+---
 
-Platform-aware introduction pages for the TomTom Navigation SDK and Automotive Navigation Application, with cross-linking between integration tracks.
+### Pattern 2 — REST API Docs
 
-| Product | Pages |
+For developers calling HTTP endpoints directly. The documentation story is about parameters, response schemas, versioning, and getting to a working request as fast as possible.
+
+**Products built to this pattern:**
+
+| Product | Status | Versions | Endpoint pages |
+|---|---|---|---|
+| **Routing API** | ✅ Ready | v1 Production · v2 Public Preview · v3 Private Preview | Calculate Route, Reachable Range, Batch Routing, Long Distance EV Route, Matrix Routing v2, Waypoint Optimisation |
+| **Traffic API** | ✅ Ready | v1 Production | Flow Segment Data, Raster/Vector Flow Tiles, Incident Details, Raster/Vector Incident Tiles, Traffic Model ID |
+| **Map Display API** | ✅ Ready | v1 Production · v2 Public Preview · v3 Private Preview | Raster Tile, Vector Tile, Satellite, Hillshade, Static Image, WMS, WMTS, Map Assets, 3D Landmarks, Extended Tiles, Copyrights |
+| **Search API** | ✅ Ready | v1 Production · v2 Public Preview | Fuzzy Search, POI Search, Nearby Search, Along-Route Search, Autocomplete, Batch Search, POI Details, POI Photos |
+| **Geocoding API** | ✅ Ready | v1 Production · v2 Public Preview | Geocode, Reverse Geocode, Structured Geocode, Cross-Street Lookup |
+| **Long Distance EV Routing** | ✅ Ready | v1 Production · v2 Public Preview · v3 Private Preview | Calculate EV Route, Batch EV Route, Weather, Vehicle Brand, OEM EMSP, Toll, Parks, Guidance |
+| **EV Charging API** | ✅ Ready | v1 Production · v3 Private Preview | Station Search, Nearby Search, Along-Route, By ID, Availability, Markets |
+| **Traffic Analytics** | 🔄 In Progress | — | Intro + partial |
+| **Parking & Fuel API** | 🔄 In Progress | — | Intro + partial |
+| **Snap to Roads API** | 🔄 In Progress | — | Intro + partial |
+
+![Routing API — intro page with endpoint grid and version table](docs/screenshots/readme-08-routing-intro.png)
+
+**What makes REST API docs different here:**
+
+- **Concept-first navigation with version coverage dots** — endpoints appear once in the sidenav with coloured dots (●v1 ●v2 ●v3) showing which versions support them. Three nav variants were built: Option A (version-sectioned), Option B (concept-first + vDots, the default), Option C (concept-first + version filter)
+- **Two-column API reference layout** — parameter tables scroll on the left; a sticky code panel (request + response) stays anchored on the right. Large responses show a fade-hint and expand in place
+- **Getting Started pages** — every API has a quickstart: authentication, first request with cURL, live try-it widget, response field guide, and a version comparison card
+- **Version comparison tables** — every intro page has a matrix of features vs versions (v1/v2/v3) so developers know what they can access before reading a single parameter
+- **Parameter Index** — A–Z sortable table of every parameter across all endpoint versions with version badges
+- **Migration guides** — structured key-changes table (Area · v1 · v2 · Action) with code comparison before/after blocks
+- **Market Coverage pages** — Americas / Asia Pacific / Europe / Middle East & Africa tables sourced directly from the devportal documentation repo
+
+| | |
 |---|---|
-| **Navigation SDK** | Introduction with platform capabilities, quick start, and integration guidance |
-| **Automotive Navigation App** | Introduction with deployment model and customisation overview |
-
-### Key use cases
-Eight of the most commonly customised capabilities, each with a visual preview. Click any card to jump directly to that page.
-
-![Key use cases](docs/screenshots/13-overview-use-cases.png)
-
-### Explore by domain
-Six integration domains with page-pill navigation — each card links directly to its sub-pages.
-
-![Explore by domain](docs/screenshots/14-overview-domains.png)
+| ![Two-column API reference — Calculate Route](docs/screenshots/readme-09-two-col-reference.png) | ![Getting Started — quickstart with code blocks](docs/screenshots/readme-10-quickstart.png) |
 
 ---
 
-## LDEVR — Introduction
+## Interactive API Explorers
 
-Hero SVG illustration showing the Amsterdam → Paris route with two charging stops (Fastned, Ionity), battery state arcs per segment, dwell times, and a segmented charge bar. Endpoint card links directly to the full reference. Lean layout matching the Routing API intro pattern.
+Three fully interactive explorer pages let developers fire real API calls against live TomTom services and see results plotted on a map — no external tool needed.
 
-![LDEVR Introduction](docs/screenshots/30-ldevr-intro.png)
+| Explorer | What it does |
+|---|---|
+| **Routing Explorer** | Calculate Route and Reachable Range on a live TomTom map. Supports v1 + v2. Origin/destination inputs, travel mode, route type. Route polyline + waypoint markers rendered on the map. |
+| **Traffic Explorer** | Incident Details (v5) and Flow Segment Data (v4). Incident request fires on load — markers plotted on map with popup cards, a random incident in viewport auto-opened. Flow segment fires at current map centre with zoom-aware tile calculation. |
+| **Map Display Explorer** | Raster Tile (3×3 tile grid centred on a coordinate) and Static Image (live preview, updates on every param change). No SDK needed — tiles load directly as `<img>` elements. |
 
----
+All explorer pages support the portal's light/dark theme toggle — the TomTom Maps SDK style switches between `basic_street-light` and `basic_street-dark` automatically.
 
-### LDEVR — Endpoint card
+| | |
+|---|---|
+| ![Routing Explorer — live route on TomTom map](docs/screenshots/readme-11-routing-explorer.png) | ![Traffic Explorer — incident markers with auto popup](docs/screenshots/readme-13-traffic-explorer.png) |
 
-Single-endpoint showcase card (landscape layout with thumbnail) positioned directly below the hero — the primary entry point to the API reference.
-
-![LDEVR Endpoint card](docs/screenshots/31-ldevr-intro-endpoint.png)
-
----
-
-### LDEVR — Quick Start
-
-Dedicated quick start page with a working cURL example (Amsterdam → Paris, 75 kWh battery, CCS Combo 2) and full Kotlin SDK integration using `OnlineRoutePlanner`.
-
-![LDEVR Quick Start](docs/screenshots/32-ldevr-quickstart.png)
+![Map Display Explorer — raster tile grid + static image](docs/screenshots/readme-15-map-display-explorer.png)
 
 ---
 
-### LDEVR — Calculate EV Route reference
+## Product Discovery — DocsPortal
 
-Full two-column API reference covering route planning, electric vehicle & battery, charging connector & power, and energy consumption model.
+The DocsPortal (`/products`) is a replica of the `docs.tomtom.com` navigation shell showing how all products sit together. It demonstrates:
 
-![Calculate EV Route](docs/screenshots/33-ldevr-calculate-ev-route.png)
+- **Product catalogue** — 15 products with Ready (green) / In Progress (amber) / Not yet built (grey) status
+- **Use-case filtering** — six buyer-centric categories (Automotive, Navigation, Maps, Places, Traffic, Mobility) that cross-cut products instead of mirroring the product tree
+- **Consistent product cards** — thumbnail illustration, product name, description, status badge, and direct link into the product's documentation
 
----
-
-### LDEVR — Response section
-
-Route & battery summary response in the two-column layout — parameter table on the left, sticky JSON example on the right.
-
-![LDEVR Response section](docs/screenshots/34-ldevr-response-section.png)
+![DocsPortal — catalogue scrolled to show navigation and maps products](docs/screenshots/readme-02-docsportal-catalogue.png)
 
 ---
 
-### LDEVR — Error codes
+## Ask AI
 
-Chargetrip-style error cards (HTTP badge + bold title + description) with a matching JSON error response in the code panel.
+Every page surfaces an **Ask about this page** button (top-right of the page header) that opens a contextual AI chat panel. The panel seeds itself from the current page content so responses are immediately relevant to what the developer is looking at. Opening the panel pushes the layout: sidenav and TOC slide away, content expands to full width.
 
-![LDEVR Error codes](docs/screenshots/35-ldevr-error-codes.png)
+![Ask AI panel open on Routing API intro](docs/screenshots/readme-18-ask-ai.png)
 
----
-
-## Routing API — Introduction
-
-Hero SVG illustration showing Amsterdam → Brussels fastest route with a traffic jam segment in amber, a dashed alternative route, waypoint B, travel mode chips, and a route summary card. Platform toggle switches between TomTom Maps v1 and Orbis Maps v2.
-
-![Routing API Introduction](docs/screenshots/36-routing-api-intro.png)
+The panel is prototype-ready — swap in a real AI endpoint in `src/components/ui/AskAIPanel.jsx`. Page text is already extracted and structured as context on every open.
 
 ---
 
-### Routing API — Endpoint grid
+## Dark mode & Light mode
 
-Three endpoint cards (Calculate Route, Reachable Range, Batch Routing) with visual thumbnails. Platform-aware: cards dim on features unavailable in Orbis v2.
+The portal supports both themes, toggled from the breadcrumb bar. All pages, maps, code blocks, and navigation elements respond to the toggle.
 
-![Routing API Endpoints](docs/screenshots/38-routing-api-endpoints.png)
-
----
-
-### Routing API — Calculate Route reference
-
-Full two-column reference for `GET /routing/1/calculateRoute` — 15 route planning parameters, vehicle profile, combustion + electric consumption models, POST body, response summary, and error codes.
-
-![Calculate Route reference](docs/screenshots/39-routing-calculate-route.png)
-
----
-
-### Two-column API reference layout — parameters
-
-Sticky code panel stays in view as parameters scroll. Method badges (GET / POST) on sidenav anchors. Possible values shown as clickable chips.
-
-![Two-column params](docs/screenshots/40-routing-two-col-params.png)
-
----
-
-### Routing API — Error codes
-
-Five error cards with response codes, titles, and descriptions. Matching JSON error response in the right-hand panel.
-
-![Routing API Error codes](docs/screenshots/42-routing-error-codes.png)
-
----
-
-### Expand / collapse code panel
-
-Long code blocks detect overflow automatically and show a bottom fade gradient hint. The Expand button breaks the panel out of its sticky container to show the full response inline.
-
-![Code panel expanded](docs/screenshots/43-code-panel-expanded.png)
-
----
-
-## DocsPortal
-
-A replica of the `docs.tomtom.com` navigation shell, accessible from the Products link in the top nav. Demonstrates how the individual product doc sets would sit inside TomTom's real developer portal — with the left-hand product picker, breadcrumb, and page structure matching the live site.
-
----
-
-## Ask AI integration
-
-Every page surfaces an **Ask about this page** button that opens a contextual AI chat panel from the right. Opening the panel pushes the layout: the sidenav and TOC slide away, the content expands to fill the full width, and the header bars shrink to match — so the page remains fully readable and interactive while the conversation is open.
-
-The panel seeds itself from the current page's content so responses are immediately relevant to what the developer is looking at.
-
-![Ask AI — Charging Search with EMSP integration question](docs/screenshots/22-ask-ai-charging-search.png)
-
-*Above: panel open on the EV Charging Search page. The user asks how to surface only preferred EMSP network partners — the AI responds with the `preferredNetworks` array in `EVSearchOptions`, connector type filtering, and minimum power thresholds.*
-
-![Ask AI panel open](docs/screenshots/20-ask-ai-panel.png)
-
-The panel is prototype-ready — swap in a real AI endpoint in `src/components/ui/AskAIPanel.jsx`. The page text is already extracted and structured as context on every open. A suggested integration pattern:
-
-```js
-// In AskAIPanel.jsx — replace the DEMO_RESPONSES simulation with:
-const response = await fetch('/api/ask', {
-  method: 'POST',
-  body: JSON.stringify({
-    system: `You are a helpful assistant for the TomTom UX Library docs. 
-             Answer questions about the following page:\n\n${getPageText()}`,
-    message: userMessage,
-  }),
-});
-```
-
----
-
-## Chinese localisation (中文)
-
-All core pages are available in Simplified Chinese. Toggle between EN and 中文 using the language switcher in the top-right corner — the full navigation, page titles, body content, and UI labels switch instantly.
-
-![Chinese overview](docs/screenshots/21-chinese-overview.png)
-
-![Chinese Vehicle & Battery — 车辆与电池](docs/screenshots/21b-chinese-ev.png)
-
-Translations live in `src/locales/zh/` and are wired through `react-i18next`. Adding a new language requires only a matching locale folder — no component changes needed.
-
----
-
-## Screens
-
-### Map Style — live interactive preview
-Switch between Browse, Drive, Mono, and Satellite styles. The live TomTom map updates instantly inside a landscape tablet frame with contextual overlays (NIP strip for Drive, search bar for Browse).
-
-![Map Style](docs/screenshots/02-map-style.png)
-
----
-
-### Instrument Cluster — interactive configuration builder
-Toggle map, horizon panel, and vignette on/off. Add or remove NIP, SLG, CMP, JV, UEP, and ETA components. Switch NIP and ETA layout types. The cluster display updates live and generates the corresponding Kotlin + ADB intent code.
-
-![Cluster](docs/screenshots/03-cluster.png)
-
----
-
-### TomTom AI Assistant — architecture overview
-The signal flow from driver voice input through OEM STT, VPA Cloud, TAIA SDK, and TAIA Cloud — down to the Navigation App and TTS output — shown as a layered stack with OEM vs TomTom ownership badges.
-
-![TAIA Architecture](docs/screenshots/04-taia-arch.png)
-
----
-
-### ADAS Integration — capabilities & integration model
-Highlights the six ADAS SDK capabilities (ISA, Predictive Speed Control, Safety Alerts, Lane Control, EV Energy Optimisation, ODD) alongside a stack diagram showing how the SDK layers onto any existing navigation provider.
-
-![ADAS](docs/screenshots/05-adas.png)
-
----
-
-### Dark mode
-Full dark theme across all pages — map previews, cluster display, navigation panels, code blocks, and the global header.
-
-![Dark mode](docs/screenshots/06-dark-map.png)
-
----
-
-### Home Screen Layout — interactive IVI screen zones & resize demo
-Click any of the four named zones to highlight it on the full-width IVI mock. Drag the four inset sliders to resize the navigation application area live — the generated Kotlin code updates in real time. A fourth explorer lets you combine all four UI state dimensions to inspect active/passive transitions.
-
-![Home Screen Layout](docs/screenshots/07-home-screen-layout.png)
-
----
-
-### Navigation Controls — button bar position & search entry point
-Choose from four button bar positions (left, right, top, bottom) and toggle individual control buttons on/off. Switch search entry between a persistent destination panel and a compact button. The full-width IVI mock and Kotlin snippet update instantly.
-
-![Navigation Controls](docs/screenshots/08-nav-controls.png)
-
----
-
-### Horizon Panel — composed vs decomposed layout
-Toggle between the single composed Horizon Panel and its three independent sub-components (NIP, Upcoming Events, ETA). Switch panel position between left, centre, and right. The full-width guidance mock shows exactly how each configuration looks on screen.
-
-![Horizon Panel](docs/screenshots/09-horizon-panel.png)
-
----
-
-### Next Instruction Panel — five anchor positions
-Place the NIP at any of five anchor points (top-left, top-centre, top-right, bottom-left, bottom-right). The full-width map mock and Kotlin configuration update live.
-
-![Next Instruction Panel](docs/screenshots/10-instruction-panel.png)
-
----
-
-### ETA Panel — position & content field toggles
-Choose from six anchor positions and individually show/hide each content field (ETA, travel time, distance, battery SoC, end-route button) via toggle switches. The full-width map mock and generated Kotlin reflect every change.
-
-![ETA Panel](docs/screenshots/11-eta-panel.png)
-
----
-
-### EV & Charging — domain landing
-The full EV integration journey in one view — battery modelling, charging search, long-distance routing, and in-navigation SoC UI. Each sub-page is one click from the landing card grid.
-
-![EV & Charging](docs/screenshots/15-ev-landing.png)
-
----
-
-### EV Long-Distance Routing — Berlin → Amsterdam trip timeline
-A real-world 679 km route showing LDEVR automatically inserting two charging stops (Ionity Bochum + Fastned Eindhoven) with per-stop SoC, kWh, peak power, and charge time. Zero routing code required from the OEM.
-
-![EV Routing — Berlin → Amsterdam](docs/screenshots/17-ev-routing-trip.png)
+| Dark (default) | Light |
+|---|---|
+| ![DocsPortal dark mode](docs/screenshots/readme-01-docsportal.png) | ![DocsPortal light mode](docs/screenshots/readme-16-docsportal-light.png) |
 
 ---
 
@@ -293,61 +138,32 @@ Everything runs in the browser — no backend, no environment variables needed.
 
 | Tool | Version | Install |
 |---|---|---|
-| **Node.js** | 18 or higher | [nodejs.org](https://nodejs.org) — download the LTS installer |
-| **Git** | any | [git-scm.com](https://git-scm.com) — or use GitHub Desktop |
-
-To check if you already have them, open a terminal and run:
+| **Node.js** | 18 or higher | [nodejs.org](https://nodejs.org) |
+| **Git** | any | [git-scm.com](https://git-scm.com) |
 
 ```bash
 node -v   # should print v18.x or higher
-git --version
 ```
 
 ### Steps
 
-**1. Clone the repository**
-
 ```bash
+# 1. Clone
 git clone https://github.com/PremalMistry-TomTom/ux-library-docs.git
-```
 
-**2. Move into the project folder**
-
-```bash
+# 2. Enter the project
 cd ux-library-docs/ux-library
-```
 
-**3. Install dependencies** *(first time only, takes ~30 seconds)*
-
-```bash
+# 3. Install dependencies (first time only, ~30 seconds)
 npm install
-```
 
-**4. Start the dev server**
-
-```bash
+# 4. Start the dev server
 npm run dev
 ```
 
-**5. Open in your browser**
+Open `http://localhost:5173` — hot-reloads on save, no restart needed.
 
-```
-http://localhost:5173
-```
-
-The site loads instantly. Any changes you save to the source files hot-reload automatically — no restart needed.
-
-### Stopping the server
-
-Press `Ctrl + C` in the terminal.
-
-### Updating to the latest version
-
-```bash
-git pull
-npm install   # only needed if dependencies changed
-npm run dev
-```
+> **Password:** `FasterRouteFound`
 
 ---
 
@@ -356,43 +172,88 @@ npm run dev
 ```
 src/
 ├── pages/
-│   ├── RoutingAPIIntro.jsx         # Routing API introduction + hero illustration
-│   ├── RoutingCalculateRoute.jsx   # Calculate Route — full two-column API reference
-│   ├── LDEVRIntro.jsx              # LDEVR introduction + hero illustration
-│   ├── LDEVRFirstRoute.jsx         # LDEVR quick start (cURL + Kotlin SDK)
-│   ├── RoutingEVRoute.jsx          # Calculate EV Route — full two-column API reference
-│   ├── MatrixRoutingIntro.jsx      # Matrix Routing introduction
-│   ├── WaypointOptIntro.jsx        # Waypoint Optimisation introduction
-│   ├── NavSDKIntro.jsx             # Navigation SDK introduction
-│   ├── ANAIntro.jsx                # Automotive Navigation App introduction
-│   ├── DocsPortal.jsx              # docs.tomtom.com shell replica
-│   └── ...                         # UX Library SDK pages (EV, Cluster, Map, TAIA…)
+│   │
+│   ├── ── SDK & Product pages ──────────────────────────────────────
+│   ├── Overview.jsx                  # UX Library hub + domain cards
+│   ├── DocsPortal.jsx                # Product discovery + catalogue
+│   ├── DomainLanding.jsx             # Generic domain landing (UX Library)
+│   ├── NavSDKIntro.jsx               # Maps & Navigation SDK overview
+│   ├── NavSDK*.jsx                   # 8 domain pages + iOS parity
+│   ├── ANAIntro.jsx                  # Automotive Navigation App overview
+│   ├── HomeScreenLayout.jsx          # IVI zone editor + Kotlin output
+│   ├── Cluster.jsx                   # Instrument cluster config builder
+│   ├── HorizonPanel.jsx, ETAPanel.jsx, InstructionPanel.jsx,
+│   │   NavigationControls.jsx, HUD.jsx, RouteBar.jsx,
+│   │   POIDetails.jsx, EVNavUI.jsx, ADASIntegration.jsx,
+│   │   VoiceEngine.jsx, AIConfig.jsx, VIBasics.jsx …
+│   │
+│   ├── ── API Reference pages ──────────────────────────────────────
+│   ├── RoutingAPIIntro.jsx + RoutingCalculateRoute.jsx,
+│   │   RoutingReachableRange.jsx, RoutingBatch.jsx,
+│   │   RoutingInstructions.jsx, RoutingLaneGuidance.jsx,
+│   │   RoutingQuickStart.jsx, RoutingGuidePages.jsx, RoutingMigration.jsx
+│   ├── LDEVRIntro.jsx + LDEVR*.jsx   # 13 endpoint pages
+│   ├── TrafficAPIIntro.jsx + Traffic*.jsx
+│   ├── TrafficQuickstart.jsx
+│   ├── MapDisplayAPIIntro.jsx + Map*.jsx
+│   ├── MapDisplayQuickstart.jsx
+│   ├── SearchAPIIntro.jsx + Search*.jsx
+│   ├── GeocodingAPIIntro.jsx + Geocode*.jsx
+│   ├── EVChargingAPIIntro.jsx + EVCharging*.jsx
+│   │
+│   ├── ── API Explorers ────────────────────────────────────────────
+│   ├── RoutingExplorer.jsx           # Live route + reachable range on map
+│   ├── TrafficExplorer.jsx           # Incidents + flow segment on map
+│   ├── MapDisplayExplorer.jsx        # Raster tile grid + static image
+│   │
+│   └── ── Plumbing (internal tooling) ──────────────────────────────
+│       ├── PlumbingPortal.jsx        # Fullscreen overlay (press ?)
+│       ├── UIComponentGallery.jsx    # Design audit: 49 sections, Decision Mode
+│       ├── TryItDemos.jsx            # All ~40 live API demos in one page
+│       └── IntroIllustrations.jsx    # Illustration system browser
+│
 ├── components/
-│   ├── layout/     # Topnav, Sidenav, TOC, GlobalHeader
+│   ├── layout/
+│   │   ├── GlobalHeader.jsx          # Fixed top chrome, auto-hide on scroll
+│   │   ├── Sidenav.jsx               # Left nav, collapse, vDots, tree connectors
+│   │   ├── TOC.jsx                   # Right-column sticky nav
+│   │   └── Topnav.jsx                # Breadcrumb bar
 │   └── ui/
-│       ├── ApiRefTwoCol.jsx        # Two-column parallax API reference layout
-│       ├── Callout.jsx
-│       ├── CodeBlock.jsx
-│       ├── PageActions.jsx
-│       └── ...
+│       ├── ApiRefTwoCol.jsx          # Two-column parallax API reference layout
+│       ├── AskAIPanel.jsx            # Contextual AI chat panel
+│       ├── CodeBlock.jsx             # Syntax-highlighted, multi-tab, expand
+│       ├── Callout.jsx               # Info / warn / success / danger
+│       ├── PageActions.jsx           # Per-page action bar
+│       └── ExampleCard.jsx           # External demo cards
+│
 ├── data/
-│   ├── nav-routing-api.js          # Routing API nav + page titles
-│   ├── nav-ldevr.js                # LDEVR nav + page titles
-│   ├── nav-matrix.js               # Matrix Routing nav
-│   ├── nav-waypoint.js             # Waypoint Optimisation nav
-│   ├── nav-navsdk.js               # Navigation SDK nav
-│   ├── nav-ana.js                  # Automotive Navigation App nav
-│   ├── nav-ux-library.js           # UX Library SDK nav
-│   └── products.js                 # Top-level product registry
-├── hooks/          # useGlobalHeader
-├── locales/        # EN + ZH i18n strings
-└── index.css       # Design system — 4pt scale, CSS custom properties, dark mode
+│   ├── products.js                   # Product registry (15 products)
+│   ├── nav-routing-api.js            # Routing nav — Options A / B / C
+│   ├── nav-traffic-api.js            # Traffic nav — Options A / B / C
+│   ├── nav-map-display-api.js        # Map Display nav — Options A / B / C
+│   ├── nav-ldevr.js                  # LDEVR nav
+│   ├── nav-ux-library.js             # UX Library nav
+│   ├── nav-navsdk.js                 # NavSDK nav (Android + iOS)
+│   └── nav-*.js                      # One file per product
+│
+├── illustrations/
+│   ├── lightVariants.jsx             # SVG illustrations (light palette)
+│   └── iconVariants.jsx              # Icon-style SVG variants
+│
+├── locales/                          # EN + 中文 i18n strings
+└── index.css                         # Design system — 4pt scale, CSS custom properties, dark mode
 ```
+
+---
 
 ## Tech
 
-- **React + Vite** — SPA, no router (page state in `useState`)
-- **react-i18next** — EN / 中文 localisation
-- **TomTom Maps Web SDK** — live map on Map Style and Tilt pages
-- **CSS custom properties** — theming, spacing scale, dark mode via `data-theme`
-- **GitHub Actions** — builds and deploys to GitHub Pages on push to `main`
+| | |
+|---|---|
+| **React 18 + Vite** | SPA, no router — all page state in `useState` in `App.jsx` |
+| **TomTom Maps Web SDK** | Live maps in all three API Explorers and the UX Library Map Style page; style switches with the portal's dark mode toggle |
+| **react-i18next** | EN / 中文 localisation across all UX Library SDK pages |
+| **CSS custom properties** | Full design token system — spacing scale, colour, dark mode via `body.dark` |
+| **GitHub Actions** | Builds and deploys to GitHub Pages on push to `main` |
+
+Live demo: [https://premalmistry-tomtom.github.io/ux-library-docs/](https://premalmistry-tomtom.github.io/ux-library-docs/)
