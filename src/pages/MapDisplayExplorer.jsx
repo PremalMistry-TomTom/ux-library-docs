@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import PageActions from '../components/ui/PageActions';
 import VersionTabBar from '../components/ui/VersionTabBar';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
 import {
   IlloMapRasterTile, IlloMapStaticImage,
   IlloMapVectorTile,  IlloMapAssetsAPI,
@@ -957,32 +958,18 @@ export default function MapDisplayExplorer({ onNavigate, isDark = false }) {
               />
             </div>
 
-            {/* ── v2 / v3 access callout — immediately below the tab bar ── */}
             {tab === 'v2' && (
-              <div style={{
-                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
-                background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)',
-                display: 'flex', gap: 8, alignItems: 'flex-start',
-              }}>
-                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
-                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
-                  <span style={{ color: '#a78bfa', fontWeight: 600 }}>Orbis access required</span> — v2 endpoints are Public Preview.
-                  The demo key only covers v1 Production. Enter a key with Orbis access to use these endpoints.
-                </span>
-              </div>
+              <PrivatePreviewBanner
+                variant="public" compact
+                message="v2 endpoints are Public Preview. The demo key only covers v1 Production. Enter a key with Orbis access to use these endpoints."
+              />
             )}
             {tab === 'v3' && (
-              <div style={{
-                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
-                background: 'rgba(251,146,60,0.07)', border: '1px solid rgba(251,146,60,0.18)',
-                display: 'flex', gap: 8, alignItems: 'flex-start',
-              }}>
-                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
-                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
-                  <span style={{ color: '#fb923c', fontWeight: 600 }}>Private Preview — access required</span> — 3D Landmarks and Extended Tiles are not publicly available.
-                  Contact TomTom to request access. The demo key does not cover v3 endpoints.
-                </span>
-              </div>
+              <PrivatePreviewBanner
+                variant="private" compact
+                title="Private Preview — access required"
+                message="3D Landmarks and Extended Tiles are not publicly available. Contact TomTom to request access. The demo key does not cover v3 endpoints."
+              />
             )}
 
             {/* ── Endpoint selector cards ── */}

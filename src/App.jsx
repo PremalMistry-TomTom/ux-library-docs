@@ -95,8 +95,9 @@ import {
 } from './pages/NavSDKMapPages';
 import {
   NavSDKProjectSetup, NavSDKSdkInit, NavSDKFirstMap,
-  NavSDKLocalization, NavSDKMigration,
+  NavSDKLocalization, NavSDKMigration, NavSDKExampleQuickstart,
 } from './pages/NavSDKGettingStarted';
+import NavSDKQuickstart from './pages/NavSDKQuickstart';
 import {
   NavSDKOfflineQuickstart, NavSDKOfflineSetup, NavSDKOfflineMgmt,
 } from './pages/NavSDKOfflinePages';
@@ -425,10 +426,12 @@ function PageContent({ pageId, onNavigate, product, platform, routingNavMode = '
     case 'style-samples':          return <StyleSamples />;
     // NavSDK group landing redirects (group header clicks)
     case 'navsdk-getting-started': return <NavSDKProjectSetup onNavigate={onNavigate} />;
-    case 'navsdk-example-app':     return <Placeholder pageId={pageId} pageTitles={product?.pageTitles} />;
+    case 'navsdk-example-app':         return <NavSDKExampleQuickstart onNavigate={onNavigate} />;
+    case 'navsdk-example-quickstart':  return <NavSDKExampleQuickstart onNavigate={onNavigate} />;
     case 'navsdk-ios-getting-started': return <NavSDKiOSProjectSetup onNavigate={onNavigate} />;
     // NavSDK
     case 'navsdk-intro':           return <NavSDKIntro onNavigate={onNavigate} platform={platform} />;
+    case 'navsdk-quickstart':      return <NavSDKQuickstart onNavigate={onNavigate} />;
     case 'navsdk-map-display':     return <NavSDKMapDisplay onNavigate={onNavigate} />;
     case 'navsdk-location':        return <NavSDKLocation onNavigate={onNavigate} />;
     case 'navsdk-search':          return <NavSDKSearch onNavigate={onNavigate} />;

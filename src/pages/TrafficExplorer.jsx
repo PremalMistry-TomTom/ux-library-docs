@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import PageActions from '../components/ui/PageActions';
 import VersionTabBar from '../components/ui/VersionTabBar';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
 import { IlloTrafficIncidents, IlloTrafficFlow, IlloTrafficFlowTile } from './IntroIllustrations';
 import { makeThumb, L_TrafficIncidents, L_TrafficFlow, L_TrafficFlowTile } from '../illustrations/lightVariants';
 import { IcoTrafficIncidents, IcoTrafficFlow, IcoTrafficFlowTile } from '../illustrations/iconVariants';
@@ -1194,19 +1195,11 @@ export default function TrafficExplorer({ onNavigate, isDark = false }) {
               <VersionTabBar versions={['v1', 'v2']} activeTab={tab} onTabChange={setTab} />
             </div>
 
-            {/* ── v2 API key note ── */}
             {tab === 'v2' && (
-              <div style={{
-                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
-                background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)',
-                display: 'flex', gap: 8, alignItems: 'flex-start',
-              }}>
-                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
-                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
-                  <span style={{ color: '#a78bfa', fontWeight: 600 }}>Orbis access required</span> — v2 endpoints are Public Preview.
-                  The demo key only covers v1 Production. Enter a key with Orbis access to use these endpoints.
-                </span>
-              </div>
+              <PrivatePreviewBanner
+                variant="public" compact
+                message="v2 endpoints are Public Preview. The demo key only covers v1 Production. Enter a key with Orbis access to use these endpoints."
+              />
             )}
 
             {/* ── Grouped endpoint layout ── */}

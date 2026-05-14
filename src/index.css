@@ -3481,9 +3481,31 @@ html.ai-panel-open .page {
 }
 .ppb-link { color: #c2410c; text-decoration: underline; }
 .ppb-link:hover { opacity: 0.8; }
+.ppb-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+/* Private Preview — dark mode */
 [data-theme="dark"] .ppb-root   { background: rgba(251, 146, 60, 0.1); border-color: rgba(251, 146, 60, 0.25); border-left-color: #fb923c; }
 [data-theme="dark"] .ppb-icon   { background: #c2410c; color: #fed7aa; }
 [data-theme="dark"] .ppb-link   { color: #fb923c; }
+
+/* Public Preview — purple variant */
+.ppb-root--public { background: rgba(167, 139, 250, 0.07); border-color: rgba(167, 139, 250, 0.28); border-left-color: #a78bfa; }
+.ppb-icon--public { background: #7c3aed; }
+[data-theme="dark"] .ppb-root--public { background: rgba(167, 139, 250, 0.1); border-color: rgba(167, 139, 250, 0.25); border-left-color: #a78bfa; }
+[data-theme="dark"] .ppb-icon--public { background: #6d28d9; color: #ddd6fe; }
+
+/* Free — green variant */
+.ppb-root--free { background: rgba(34, 197, 94, 0.07); border-color: rgba(34, 197, 94, 0.25); border-left-color: #22c55e; }
+.ppb-icon--free { background: #15803d; }
+[data-theme="dark"] .ppb-root--free { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); border-left-color: #22c55e; }
+[data-theme="dark"] .ppb-icon--free { background: #166534; color: #bbf7d0; }
+
+/* Compact — for explorer pages below the version tab bar */
+.ppb-root--compact { padding: 9px 14px; margin-bottom: 16px; border-left-width: 3px; border-radius: 8px; gap: 10px; }
+.ppb-root--compact .ppb-icon { width: 22px; height: 22px; border-radius: 4px; margin-top: 0; }
+.ppb-root--compact .ppb-icon svg { width: 11px; height: 11px; }
+.ppb-root--compact .ppb-title { font-size: 0.75rem; }
+.ppb-root--compact .ppb-desc  { font-size: 0.6875rem; }
 
 /* ── IlloCard copy hint ───────────────────────────────────────────────────────── */
 [data-theme] div:hover > .illo-card-copy-hint,

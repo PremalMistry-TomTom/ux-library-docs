@@ -217,6 +217,22 @@ export const TOC_MAP = {
     { id: 'r-reference', label: 'Reference' },
     { id: 'r-related',   label: 'Related APIs' },
   ],
+  'navsdk-quickstart': [
+    { id: 'qs-choose',  label: 'Choose your path' },
+    { id: 'qs-preview', label: 'What you\'ll build' },
+  ],
+  'navsdk-example-quickstart': [
+    { id: 'eq-key',   label: 'Get your API key' },
+    { id: 'eq-clone', label: 'Clone & configure' },
+    { id: 'eq-run',   label: 'Build & run' },
+    { id: 'eq-next',  label: 'Next steps' },
+  ],
+  'navsdk-example-app': [
+    { id: 'eq-key',   label: 'Get your API key' },
+    { id: 'eq-clone', label: 'Clone & configure' },
+    { id: 'eq-run',   label: 'Build & run' },
+    { id: 'eq-next',  label: 'Next steps' },
+  ],
   'routing-quickstart': [
     { id: 'authentication',     label: 'Authentication' },
     { id: 'first-route',        label: 'Your first route' },

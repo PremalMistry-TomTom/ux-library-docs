@@ -967,3 +967,171 @@ navigation.start(StartNavigationOptions(route = route))`,
     </div>
   );
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EXAMPLE APP QUICKSTART
+   ═══════════════════════════════════════════════════════════════════════════ */
+export function NavSDKExampleQuickstart({ onNavigate }) {
+  const [platform, setPlatform] = useState('android');
+  const isAndroid = platform === 'android';
+
+  return (
+    <div className="page">
+      <div className="page-header">
+        <h1>Example App — Quickstart</h1>
+        <PageActions />
+      </div>
+
+      <p className="quick-answer">
+        Clone the official TomTom NavSDK example app, add your API key, and run a full navigation app in minutes — no project setup from scratch.
+      </p>
+
+      <Callout type="success">
+        <strong>Free to start — no credit card required.</strong>{' '}
+        Get your API key at{' '}
+        <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>developer.tomtom.com</a>
+        {' '}— the same key works for Android and iOS. Make sure the <strong>Navigation SDK</strong> product is enabled on the key.
+      </Callout>
+
+      {/* Platform toggle */}
+      <div style={{ display: 'flex', gap: 6, marginBottom: 4 }}>
+        {['android', 'ios'].map(p => (
+          <button key={p} onClick={() => setPlatform(p)} style={{
+            padding: '6px 18px', borderRadius: 20, cursor: 'pointer', fontSize: '0.8125rem',
+            fontWeight: platform === p ? 600 : 400, textTransform: 'capitalize',
+            background: platform === p ? '#fff5f5' : 'var(--bg)',
+            border: `1px solid ${platform === p ? 'var(--red)' : 'var(--border)'}`,
+            color: platform === p ? 'var(--red)' : 'var(--mid)',
+            transition: 'all 0.1s',
+          }}>{p === 'android' ? 'Android' : 'iOS'}</button>
+        ))}
+      </div>
+
+      {/* Step 1 — API key */}
+      <div className="zone" id="eq-key">
+        <h2 className="sh">Step 1 — Get your API key</h2>
+        <StepCard number="1" title="Create and configure your key">
+          <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.55 }}>
+            Sign up or log in at{' '}
+            <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer" style={{ color: 'var(--red)', fontWeight: 600 }}>developer.tomtom.com</a>{' '}
+            and create an API key. In the key settings, enable the <strong>Navigation SDK</strong> product — it is not selected by default.
+          </p>
+          <Callout type="info">
+            The free tier covers <strong>2,500 monthly active users</strong> with no time limit and no credit card required.
+          </Callout>
+        </StepCard>
+      </div>
+
+      {/* Step 2 — Clone */}
+      <div className="zone" id="eq-clone">
+        <h2 className="sh">Step 2 — Clone &amp; configure</h2>
+        <StepCard number="2" title={isAndroid ? 'Clone the Android example app' : 'Clone the iOS example app'}>
+          <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.55 }}>
+            {isAndroid
+              ? 'Clone the NavSDK Android examples repository from GitHub:'
+              : 'Clone the NavSDK iOS examples repository from GitHub:'}
+          </p>
+          <CodeBlock tabs={['Terminal']}>
+            <pre>
+              {isAndroid
+                ? 'git clone https://github.com/tomtom-international/tomtom-navigation-android-examples.git\ncd tomtom-navigation-android-examples'
+                : 'git clone https://github.com/tomtom-international/tomtom-navigation-ios-examples.git\ncd tomtom-navigation-ios-examples'}
+            </pre>
+          </CodeBlock>
+        </StepCard>
+
+        <StepCard number="3" title={isAndroid ? 'Add your API key to local.properties' : 'Add your API key to the project'}>
+          {isAndroid ? (
+            <>
+              <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.55 }}>
+                Create a <code>local.properties</code> file in the project root (it is already in <code>.gitignore</code>) and add your key:
+              </p>
+              <CodeBlock tabs={['local.properties']}>
+                <pre>{'TOMTOM_API_KEY=your_api_key_here'}</pre>
+              </CodeBlock>
+              <Callout type="info" style={{ marginTop: 10 }}>
+                The key is injected into <code>BuildConfig.TOMTOM_API_KEY</code> via the project's Gradle configuration. Never commit <code>local.properties</code> to version control.
+              </Callout>
+            </>
+          ) : (
+            <>
+              <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.55 }}>
+                Open the project in Xcode. Find the <code>APIKey.swift</code> file (or the equivalent configuration file in the repo) and replace the placeholder with your key:
+              </p>
+              <CodeBlock tabs={['APIKey.swift']}>
+                <pre>
+                  {'let apiKey = '}<span className="hl-s">'"your_api_key_here"'</span>
+                </pre>
+              </CodeBlock>
+              <Callout type="warn" style={{ marginTop: 10 }}>
+                For production apps, load the key from your environment or a secrets manager — never hard-code it in source that is committed to version control.
+              </Callout>
+            </>
+          )}
+        </StepCard>
+      </div>
+
+      {/* Step 3 — Build & run */}
+      <div className="zone" id="eq-run">
+        <h2 className="sh">Step 3 — Build &amp; run</h2>
+        <StepCard number="4" title={isAndroid ? 'Build with Gradle and run on a device' : 'Build in Xcode and run on a device'}>
+          {isAndroid ? (
+            <>
+              <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.55 }}>
+                Open the project in Android Studio and sync Gradle, or build from the command line:
+              </p>
+              <CodeBlock tabs={['Terminal']}>
+                <pre>{'./gradlew assembleDebug\n# or open in Android Studio and click Run'}</pre>
+              </CodeBlock>
+              <div style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 10 }}>
+                <span style={{ fontSize: '0.8125rem', color: '#15803d', fontWeight: 600 }}>You have a running navigation app.</span>
+                <span style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>{' '}Grant location permission when prompted to see the live position puck on the map.</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 10, lineHeight: 1.55 }}>
+                Open <code>TomTomNavigation.xcodeproj</code> (or the <code>.xcworkspace</code>) in Xcode. Select your target device or simulator and press Run (⌘R).
+              </p>
+              <Callout type="info">
+                The first build resolves SPM packages — this may take a few minutes on the first run.
+              </Callout>
+              <div style={{ marginTop: 10, padding: '10px 14px', background: 'rgba(34,197,94,0.07)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: 10 }}>
+                <span style={{ fontSize: '0.8125rem', color: '#15803d', fontWeight: 600 }}>You have a running navigation app.</span>
+                <span style={{ fontSize: '0.8125rem', color: 'var(--mid)' }}>{' '}Accept the location permission prompt to see the live position on the map.</span>
+              </div>
+            </>
+          )}
+        </StepCard>
+      </div>
+
+      {/* Next steps */}
+      <div className="zone" id="eq-next">
+        <h2 className="sh">Next steps</h2>
+        <p style={{ fontSize: '0.875rem', color: 'var(--mid)', marginBottom: 14, lineHeight: 1.55 }}>
+          Now that the example app is running, explore the SDK in depth or set up your own project from scratch.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 10 }}>
+          {[
+            { title: 'Project Setup', desc: 'Add the SDK to your own Android or iOS project from scratch', id: 'navsdk-project-setup' },
+            { title: 'Map Display', desc: 'Customise the map — styles, camera, markers, and traffic', id: 'navsdk-map-display' },
+            { title: 'Routing', desc: 'Plan routes between two points and render them on the map', id: 'navsdk-routing' },
+            { title: 'Navigation', desc: 'Turn-by-turn guidance, voice instructions, and replanning', id: 'navsdk-navigation' },
+            { title: 'Search', desc: 'Let users search for destinations using fuzzy search and POI', id: 'navsdk-search' },
+            { title: 'Offline Maps', desc: 'Download map regions for navigation without connectivity', id: 'navsdk-offline' },
+          ].map(card => (
+            <div key={card.id}
+              style={{ padding: '14px 16px', borderRadius: 12, background: 'var(--surface)', border: '1px solid var(--border)', cursor: 'pointer', transition: 'border-color 0.15s' }}
+              onClick={() => onNavigate?.(card.id, 'navsdk')}
+              onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--red)'}
+              onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}
+            >
+              <div style={{ fontWeight: 600, fontSize: '0.875rem', marginBottom: 4 }}>{card.title}</div>
+              <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.45 }}>{card.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

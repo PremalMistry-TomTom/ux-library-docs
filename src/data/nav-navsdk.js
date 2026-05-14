@@ -1,7 +1,10 @@
 export const NAVSDK_NAV = [
-  { id: 'navsdk-intro', label: 'Introduction', type: 'top' },
+  { id: 'navsdk-intro',       label: 'Introduction', type: 'top' },
+  { id: 'navsdk-quickstart',  label: 'Quick Start',  type: 'top' },
+
+  { type: 'section', label: 'Setup' },
   {
-    label: 'Getting Started', key: 'navsdkGettingStarted', type: 'group', landingId: 'navsdk-getting-started',
+    label: 'Project Setup', key: 'navsdkGettingStarted', type: 'group', landingId: 'navsdk-getting-started',
     items: [
       { id: 'navsdk-project-setup', label: 'Project Setup' },
       { id: 'navsdk-sdk-init', label: 'Initializing the SDK' },
@@ -18,6 +21,8 @@ export const NAVSDK_NAV = [
       { id: 'navsdk-nav-app', label: 'Navigation App' },
     ],
   },
+
+  { type: 'section', label: 'Capabilities' },
   {
     label: 'Map Display', key: 'navsdkMapDisplay', type: 'group', landingId: 'navsdk-map-display',
     items: [
@@ -94,6 +99,7 @@ export const NAVSDK_NAV = [
       { id: 'navsdk-adv-vehicle', label: 'Vehicle Metadata' },
     ],
   },
+  { type: 'section', label: 'Reference' },
   {
     label: 'Releases', key: 'navsdkReleases', type: 'group',
     items: [
@@ -109,8 +115,9 @@ export const NAVSDK_NAV = [
 ];
 
 export const NAVSDK_PAGE_TITLES = {
-  'navsdk-intro': 'Introduction',
-  'navsdk-getting-started': 'Getting Started',
+  'navsdk-intro':       'Introduction',
+  'navsdk-quickstart':  'Quick Start',
+  'navsdk-getting-started': 'Project Setup',
   'navsdk-project-setup': 'Project Setup',
   'navsdk-sdk-init': 'Initializing the SDK',
   'navsdk-first-map': 'Displaying Your First Map',
@@ -171,14 +178,19 @@ export const NAVSDK_PAGE_TITLES = {
 /* ─── iOS Nav ─────────────────────────────────────────────────────────────── */
 export const NAVSDK_IOS_NAV = [
   { id: 'navsdk-ios-intro', label: 'Introduction', type: 'top' },
+  { id: 'navsdk-quickstart', label: 'Quick Start',  type: 'top' },
+
+  { type: 'section', label: 'Setup' },
   {
-    label: 'Getting Started', key: 'navsdkIosGettingStarted', type: 'group', landingId: 'navsdk-ios-getting-started',
+    label: 'Project Setup', key: 'navsdkIosGettingStarted', type: 'group', landingId: 'navsdk-ios-getting-started',
     items: [
       { id: 'navsdk-ios-project-setup', label: 'Project Setup' },
       { id: 'navsdk-ios-sdk-init',      label: 'Initializing the SDK' },
       { id: 'navsdk-ios-first-map',     label: 'Displaying Your First Map' },
     ],
   },
+
+  { type: 'section', label: 'Capabilities' },
   {
     label: 'Map Display', key: 'navsdkIosMapDisplay', type: 'group', landingId: 'navsdk-ios-map-display',
     items: [
@@ -235,6 +247,7 @@ export const NAVSDK_IOS_NAV = [
       { id: 'navsdk-ios-adv-vehicle',    label: 'Vehicle Metadata' },
     ],
   },
+  { type: 'section', label: 'Reference' },
   {
     label: 'Releases', key: 'navsdkIosReleases', type: 'group',
     items: [

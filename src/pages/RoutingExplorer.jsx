@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import PageActions from '../components/ui/PageActions';
 import { ParamRow } from '../components/ui/ApiRefTwoCol';
 import VersionTabBar from '../components/ui/VersionTabBar';
+import PrivatePreviewBanner from '../components/ui/PrivatePreviewBanner';
 import { IlloCalculateRoute, IlloReachableRange } from './IntroIllustrations';
 import { makeThumb, L_CalculateRoute, L_ReachableRange } from '../illustrations/lightVariants';
 import { IcoCalculateRoute, IcoReachableRange } from '../illustrations/iconVariants';
@@ -1493,34 +1494,18 @@ export default function RoutingExplorer({ onNavigate, isDark = false }) {
               <VersionTabBar versions={['v1', 'v2', 'v3']} activeTab={version} onTabChange={setVersion} />
             </div>
 
-            {/* ── v2 Public Preview note ── */}
             {version === 'v2' && (
-              <div style={{
-                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
-                background: 'rgba(167,139,250,0.07)', border: '1px solid rgba(167,139,250,0.18)',
-                display: 'flex', gap: 8, alignItems: 'flex-start',
-              }}>
-                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
-                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
-                  <span style={{ color: '#a78bfa', fontWeight: 600 }}>Orbis access required</span> — v2 endpoints are Public Preview.
-                  The demo key covers v1 Production. Enter a key with Orbis access enabled for v2.
-                </span>
-              </div>
+              <PrivatePreviewBanner
+                variant="public" compact
+                message="v2 endpoints are Public Preview. The demo key covers v1 Production only. Enter a key with Orbis access enabled for v2."
+              />
             )}
-
-            {/* ── v3 Private Preview note ── */}
             {version === 'v3' && (
-              <div style={{
-                marginBottom: 20, padding: '8px 12px', borderRadius: 8,
-                background: 'rgba(251,146,60,0.07)', border: '1px solid rgba(251,146,60,0.18)',
-                display: 'flex', gap: 8, alignItems: 'flex-start',
-              }}>
-                <span style={{ fontSize: '0.75rem', flexShrink: 0, marginTop: 1 }}>🔑</span>
-                <span style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.5 }}>
-                  <span style={{ color: '#fb923c', fontWeight: 600 }}>Private Preview — access required</span> — v3 endpoints include guidance, weather-aware routing, and enhanced EV route planning.
-                  Contact TomTom to request access. The demo key does not cover v3 endpoints.
-                </span>
-              </div>
+              <PrivatePreviewBanner
+                variant="private" compact
+                title="Private Preview — access required"
+                message="v3 endpoints include guidance, weather-aware routing, and enhanced EV route planning. Contact TomTom to request access. The demo key does not cover v3 endpoints."
+              />
             )}
 
             {/* ── ENDPOINT SELECTOR ── */}

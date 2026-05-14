@@ -493,6 +493,30 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
           : t('navsdkIntro.quickAnswerIos')}
       </p>
 
+      {/* Free tier + CTAs */}
+      <Callout type="success">
+        <div>
+          <strong>Free to start — 2,500 monthly active users at no cost.</strong>{' '}
+          No credit card required. Get your API key at{' '}
+          <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>developer.tomtom.com</a>
+          {' '}— the same key works for Android and iOS.
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+            <button
+              onClick={() => onNavigate?.('navsdk-quickstart', 'navsdk')}
+              style={{ padding: '7px 18px', borderRadius: 8, border: 'none', background: '#e2001a', color: '#fff', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer' }}
+            >
+              Quick Start — 15 min
+            </button>
+            <button
+              onClick={() => onNavigate?.('navsdk-example-quickstart', 'navsdk')}
+              style={{ padding: '7px 16px', borderRadius: 8, border: '1px solid var(--success-border)', background: 'transparent', color: 'var(--success-text)', fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
+            >
+              Clone example app
+            </button>
+          </div>
+        </div>
+      </Callout>
+
       {/* Hero */}
       <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>
         <img
