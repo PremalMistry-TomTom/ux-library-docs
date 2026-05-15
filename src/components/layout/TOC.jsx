@@ -217,6 +217,11 @@ export const TOC_MAP = {
     { id: 'r-reference', label: 'Reference' },
     { id: 'r-related',   label: 'Related APIs' },
   ],
+  'navsdk-intro': [
+    { id: 'ns-capabilities', label: 'Capabilities' },
+    { id: 'ns-arch',         label: 'Architecture' },
+    { id: 'ns-editions',     label: 'SDK editions' },
+  ],
   'navsdk-quickstart': [
     { id: 'qs-choose',  label: 'Choose your path' },
     { id: 'qs-preview', label: 'What you\'ll build' },

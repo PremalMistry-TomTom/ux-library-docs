@@ -739,7 +739,7 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
 }
 
 /* RoutingExplorer — wider left column for the param form */
-.api-ref-section--explorer { grid-template-columns: 3fr 2fr; }
+.api-ref-section--explorer { grid-template-columns: 1fr 1fr; }
 
 /* RoutingExplorer — hero-map offset via CSS variable; map height is user-resizable */
 .api-ref-section-code.re-code {
@@ -2269,7 +2269,7 @@ html.ai-panel-open .page {
   margin: 0 auto;
   width: 100%;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 10px 40px;
 }
 .dp2-viewbar-inner {
@@ -2818,16 +2818,33 @@ html.ai-panel-open .page {
 }
 @media (max-width: 640px) {
   .dp2-footer-inner { padding: 0 16px; }
-  .dp2-hero { padding: 24px 0; }
+  .dp2-hero { padding: 20px 0; }
+  .dp2-hero-inner { padding: 0 20px; }
+  .dp2-hero-left { width: 100%; min-width: 0; }
+  .dp2-hero-heading { max-width: 100%; font-size: 1.35rem; }
+  .dp2-search-bar { width: 100%; }
   .dp2-block-container { padding: 0 16px; }
 }
-/* Tablet / mobile: tighten padding and ensure both rows scroll horizontally */
+/* Tablet / mobile: scrollable tab bar */
 @media (max-width: 768px) {
-  .dp2-tabbar-wrap { padding: 8px 16px; max-width: 100%; }
-  .dp2-viewbar-inner { flex-direction: column; align-items: flex-start; gap: 6px; width: fit-content; max-width: calc(100vw - 32px); }
-  /* Pills take full width of the column, then scroll internally */
-  .dp2-tabbar-pill { width: max-content; flex: none; border-radius: var(--r-xl); }
-  .dp2-runtime-bar { width: 100%; }
+  .dp2-tabbar-wrap {
+    padding: 8px 0;
+    max-width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .dp2-tabbar-wrap::-webkit-scrollbar { display: none; }
+  .dp2-viewbar-inner {
+    flex-direction: row;
+    align-items: center;
+    width: max-content;
+    padding: 0 16px;
+    gap: 6px;
+  }
+  .dp2-tabbar-pill { flex-shrink: 0; border-radius: var(--r-xl); }
+  .dp2-runtime-bar { flex-shrink: 0; }
 }
 @media (max-width: 480px) {
   /* Smaller text on runtime pills to fit more before scrolling */
@@ -2836,6 +2853,22 @@ html.ai-panel-open .page {
   /* Tighter category tab text */
   .dp2-tab-btn { font-size: 0.8125rem; padding: 6px 14px; }
 }
+
+/* ── NavSDK intro hero banner — light / dark theming ── */
+.ns-hero-banner          { background: var(--s1); }
+.ns-hero-fallback        { color: var(--muted); }
+.ns-proof-strip          { border-top: 1px solid var(--border); background: var(--s1); }
+.ns-proof-title          { color: var(--black); }
+.ns-proof-sub            { color: var(--muted); }
+.ns-proof-btn            { color: var(--mid); border: 1px solid var(--border); background: var(--bg); }
+.ns-proof-btn:hover      { background: var(--s2); }
+
+body.dark .ns-hero-banner     { background: #0d1d2e; }
+body.dark .ns-proof-strip     { border-top-color: rgba(255,255,255,0.08); background: #0d1d2e; }
+body.dark .ns-proof-title     { color: #fff; }
+body.dark .ns-proof-sub       { color: rgba(255,255,255,0.55); }
+body.dark .ns-proof-btn       { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.07); }
+body.dark .ns-proof-btn:hover { background: rgba(255,255,255,0.13); }
 
 /* ── Dark mode overrides for DocsPortal (dp2-) — uses site CSS variables ── */
 /* Root & hero surface matches the global header (var(--white)); cards use var(--bg) to appear slightly sunken */

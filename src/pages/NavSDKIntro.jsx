@@ -38,11 +38,23 @@ function DocLink({ children, pageId, productId, onNavigate }) {
   );
 }
 
-function WhenCard({ icon, title, children }) {
+function WhenCard({ type = 'check', title, children }) {
+  const isWarn = type === 'warn';
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
-        <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
+        {isWarn ? (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+            <path d="M8 1.5L14.928 13.5H1.072L8 1.5Z" fill="#f59e0b"/>
+            <rect x="7.25" y="6" width="1.5" height="4" rx="0.75" fill="white"/>
+            <circle cx="8" cy="11.5" r="0.85" fill="white"/>
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+            <circle cx="8" cy="8" r="7" fill="#22c55e"/>
+            <path d="M5 8.2l2 2 4-4" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
       </div>
       <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{children}</div>
@@ -372,37 +384,129 @@ function CapabilityCard({ Thumb, title, desc, tag, onNavigate, pageId }) {
 
 /* ─── Architecture diagram ──────────────────────────────────────────────────── */
 function ArchDiagram({ t }) {
-  const layers = [
-    { labelKey: 'yourApp',         color: '#0066cc', bg: 'rgba(0,102,204,0.1)',  border: 'rgba(0,102,204,0.35)' },
-    { labelKey: 'navigationEngine',color: '#e2001a', bg: 'rgba(226,0,26,0.1)',   border: 'rgba(226,0,26,0.3)'   },
-    { labelKey: 'mapRoutingSdk',   color: '#3fb950', bg: 'rgba(63,185,80,0.08)', border: 'rgba(63,185,80,0.3)'  },
-    { labelKey: 'tomtomPlatform',  color: '#8b949e', bg: 'rgba(139,148,158,0.06)',border: 'rgba(139,148,158,0.2)'},
+  const SDK_MODULES = [
+    'Navigation Engine', 'Map Display', 'Routing', 'Search', 'Location', 'Virtual Horizon', 'Offline Maps',
   ];
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 560 }}>
-      {layers.map((layer, i) => (
-        <div key={layer.labelKey} style={{ background: layer.bg, border: `1px solid ${layer.border}`, borderRadius: 20, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 6, background: layer.bg, border: `1.5px solid ${layer.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-            <span style={{ fontSize: '0.875rem', fontWeight: 700, color: layer.color }}>{i + 1}</span>
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>{t(`navsdkIntro.archLayers.${layer.labelKey}.label`)}</div>
-            <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{t(`navsdkIntro.archLayers.${layer.labelKey}.desc`)}</div>
-          </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, maxWidth: 600 }}>
+
+      {/* Your App — top layer, developer's code */}
+      <div style={{
+        background: 'var(--s1)', border: '1px solid var(--border)',
+        borderLeft: '3px solid #e2001a', borderRadius: 12,
+        padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12,
+      }}>
+        <div style={{
+          width: 26, height: 26, borderRadius: 6, flexShrink: 0,
+          background: 'rgba(226,0,26,0.08)', border: '1px solid rgba(226,0,26,0.2)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M3 5l5-4 5 4v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5z" stroke="#e2001a" strokeWidth="1.5" strokeLinejoin="round"/>
+            <path d="M6 16v-5h4v5" stroke="#e2001a" strokeWidth="1.5" strokeLinejoin="round"/>
+          </svg>
         </div>
-      ))}
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', marginBottom: 1 }}>Your App</div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>Custom UI &amp; Business Logic</div>
+        </div>
+      </div>
+
+      {/* Maps & Navigation SDK — single container wrapping modules + bundled platform */}
+      <div style={{ border: '1px solid var(--border)', borderLeft: '3px solid #3b82f6', borderRadius: 12, overflow: 'hidden' }}>
+
+        {/* SDK header */}
+        <div style={{
+          background: 'var(--bg)', borderBottom: '1px solid var(--border)',
+          padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12,
+        }}>
+          <div style={{
+            width: 26, height: 26, borderRadius: 6, flexShrink: 0,
+            background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.25)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}>
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+              <path d="M5 3L1 8l4 5" stroke="#3b82f6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M11 3l4 5-4 5" stroke="#3b82f6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>
+            Maps &amp; Navigation SDK
+          </span>
+        </div>
+
+        {/* Module pills */}
+        <div style={{ padding: '10px 16px 12px', background: 'var(--s1)', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {SDK_MODULES.map(m => (
+            <span key={m} style={{
+              fontSize: '0.75rem', padding: '3px 10px', borderRadius: 6,
+              background: 'var(--bg)', border: '1px solid var(--border)', color: 'var(--mid)',
+            }}>{m}</span>
+          ))}
+        </div>
+
+        {/* Bundled platform layers — inside the SDK boundary */}
+        <div style={{ borderTop: '1px solid var(--border)', background: 'var(--bg)' }}>
+
+          {/* Zone label */}
+          <div style={{ padding: '5px 16px 0', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontSize: '0.5625rem', fontWeight: 700, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em', opacity: 0.7 }}>Bundled</span>
+          </div>
+
+          {/* TomTom APIs */}
+          <div style={{
+            padding: '5px 16px', display: 'flex', alignItems: 'center', gap: 10,
+            borderBottom: '1px solid var(--border)',
+          }}>
+            <div style={{
+              width: 26, height: 26, borderRadius: 6, flexShrink: 0,
+              background: 'var(--s1)', border: '1px solid var(--border)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6.5" stroke="var(--muted)" strokeWidth="1.25"/>
+                <path d="M8 1.5C8 1.5 5 4 5 8s3 6.5 3 6.5M8 1.5C8 1.5 11 4 11 8s-3 6.5-3 6.5M1.5 8h13" stroke="var(--muted)" strokeWidth="1.25" strokeLinecap="round"/>
+              </svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--muted)', marginRight: 6 }}>TomTom APIs</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--muted)', opacity: 0.7 }}>Routing · Traffic · Search · EV Data · ADAS</span>
+            </div>
+          </div>
+
+          {/* TomTom Orbis Maps — foundation */}
+          <div style={{
+            padding: '5px 16px 8px', display: 'flex', alignItems: 'center', gap: 10,
+          }}>
+            <div style={{
+              width: 26, height: 26, borderRadius: 6, flexShrink: 0,
+              background: 'var(--s1)', border: '1px solid var(--border)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                <path d="M2 12L6 4l3 5 2-3 3 6H2z" stroke="var(--muted)" strokeWidth="1.25" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 500, color: 'var(--muted)', marginRight: 6 }}>TomTom Orbis Maps</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--muted)', opacity: 0.7 }}>Vector tiles · Map styles · Geocoding data · Real-time traffic feeds</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   );
 }
 
 /* ─── Platform card ─────────────────────────────────────────────────────────── */
-function PlatformCard({ platform, icon, items, active, currentLabel }) {
+function PlatformCard({ platform, items, active }) {
   return (
     <div style={{ flex: 1, border: `1px solid ${active ? '#e2001a' : 'var(--border)'}`, borderRadius: 20, padding: '16px 20px', background: active ? 'rgba(226,0,26,0.03)' : 'var(--surface)', transition: 'border-color 0.2s' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-        <span style={{ fontSize: '1.5rem' }}>{icon}</span>
+        {active && <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#e2001a', flexShrink: 0 }} />}
         <span style={{ fontWeight: 700, fontSize: '0.875rem', color: 'var(--black)' }}>{platform}</span>
-        {active && <span style={{ marginLeft: 'auto', fontSize: '0.875rem', fontWeight: 600, color: '#e2001a', background: 'rgba(226,0,26,0.08)', padding: '2px 7px', borderRadius: 4 }}>{currentLabel}</span>}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {items.map(([title, desc]) => (
@@ -493,43 +597,78 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
           : t('navsdkIntro.quickAnswerIos')}
       </p>
 
-      {/* Free tier + CTAs */}
-      <Callout type="success">
-        <div>
-          <strong>Free to start — 2,500 monthly active users at no cost.</strong>{' '}
-          No credit card required. Get your API key at{' '}
-          <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>developer.tomtom.com</a>
-          {' '}— the same key works for Android and iOS.
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
-            <button
-              onClick={() => onNavigate?.('navsdk-quickstart', 'navsdk')}
-              style={{ padding: '7px 18px', borderRadius: 8, border: 'none', background: '#e2001a', color: '#fff', fontWeight: 700, fontSize: '0.875rem', cursor: 'pointer' }}
-            >
-              Quick Start — 15 min
-            </button>
-            <button
-              onClick={() => onNavigate?.('navsdk-example-quickstart', 'navsdk')}
-              style={{ padding: '7px 16px', borderRadius: 8, border: '1px solid var(--success-border)', background: 'transparent', color: 'var(--success-text)', fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
-            >
-              Clone example app
-            </button>
-          </div>
-        </div>
-      </Callout>
+      {/* CTAs */}
+      <p style={{ fontSize: '0.8125rem', color: 'var(--muted)', marginBottom: 12 }}>
+        Free tier includes 2,500 monthly active users — no credit card required.{' '}
+        Get your API key at{' '}
+        <a href="https://developer.tomtom.com" target="_blank" rel="noreferrer" style={{ color: 'var(--red)', fontWeight: 600 }}>developer.tomtom.com</a>.
+      </p>
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', marginBottom: 28 }}>
+        <button
+          onClick={() => onNavigate?.('navsdk-quickstart', 'navsdk')}
+          style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 20px', borderRadius: 6, fontWeight: 700, fontSize: '0.9375rem', cursor: 'pointer', letterSpacing: '-0.01em' }}
+        >
+          Quick Start →
+        </button>
+        <button
+          onClick={() => onNavigate?.('navsdk-example-quickstart', 'navsdk')}
+          style={{ background: 'transparent', color: 'var(--text)', border: '1.5px solid var(--border)', padding: '7px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
+        >
+          Clone example app
+        </button>
+      </div>
 
-      {/* Hero */}
-      <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>
+      {/* Hero + proof strip */}
+      <div className="ns-hero-banner" style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, border: '1px solid var(--border)', position: 'relative' }}>
         <img
           src={`${BASE}navsdk_banner.png`}
           alt={t('navsdkIntro.heroAlt')}
           style={{ width: '100%', display: 'block', maxHeight: 320, objectFit: 'cover', objectPosition: 'center 30%' }}
           onError={e => { e.currentTarget.style.display = 'none'; e.currentTarget.nextSibling.style.display = 'flex'; }}
         />
-        <div style={{ display: 'none', height: 220, alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 10, color: 'rgba(255,255,255,0.25)' }}>
+        <div className="ns-hero-fallback" style={{ display: 'none', height: 220, alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 10 }}>
           <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
           </svg>
           <span style={{ fontSize: '0.75rem' }}>{t('navsdkIntro.heroFallback')}</span>
+        </div>
+
+        {/* Proof strip — no gradient; bg inherited from .ns-hero-banner */}
+        <div className="ns-proof-strip" style={{
+          padding: '10px 20px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: 12, flexWrap: 'wrap',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/* App icon */}
+            <div style={{ width: 28, height: 28, borderRadius: 6, overflow: 'hidden', flexShrink: 0 }}>
+              <svg width="28" height="28" viewBox="0 0 1028 1028" fill="none">
+                <rect x="2" y="2" width="1024" height="1024" fill="white"/>
+                <g clipPath="url(#ttapp-hero-clip)">
+                  <path d="M606.721 703.224L516.438 859.161L426.155 703.224H606.721Z" fill="#DF1B12"/>
+                  <path fillRule="evenodd" clipRule="evenodd" d="M516.446 177C646.325 177 751.987 282.374 751.987 411.895C751.986 541.41 646.324 646.781 516.446 646.781C386.568 646.78 280.906 541.409 280.905 411.895C280.905 282.374 386.568 177.001 516.446 177ZM516.446 289.104C448.555 289.104 393.328 344.19 393.328 411.895C393.329 479.593 448.555 534.677 516.446 534.677C584.337 534.677 639.571 479.593 639.572 411.895C639.572 344.19 584.337 289.104 516.446 289.104Z" fill="#DF1B12"/>
+                </g>
+                <defs>
+                  <clipPath id="ttapp-hero-clip"><rect width="1028" height="1028" fill="white"/></clipPath>
+                </defs>
+              </svg>
+            </div>
+            <div>
+              <span className="ns-proof-title" style={{ fontSize: '0.75rem', fontWeight: 700 }}>Proven in production</span>
+              <span className="ns-proof-sub" style={{ fontSize: '0.75rem', marginLeft: 6 }}>TomTom App — 235+ countries, real-time traffic &amp; EV routing</span>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+            {[
+              { href: 'https://apps.apple.com/app/tomtom-maps-traffic/id1438106561', label: 'App Store' },
+              { href: 'https://play.google.com/store/apps/details?id=com.tomtom.speedcams.android.map', label: 'Google Play' },
+            ].map(({ href, label }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer"
+                className="ns-proof-btn"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 5, padding: '4px 10px', borderRadius: 6, fontSize: '0.6875rem', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}
+              >{label}</a>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -537,31 +676,31 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
       <div className="zone">
         <h2 className="sh" id="ns-when">{t('navsdkIntro.whenTitle')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.fullUiOwnership.title')}>
+          <WhenCard type="check" title={t('navsdkIntro.whenCards.fullUiOwnership.title')}>
             {t('navsdkIntro.whenCards.fullUiOwnership.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.modularByDesign.title')}>
+          <WhenCard type="check" title={t('navsdkIntro.whenCards.modularByDesign.title')}>
             {t('navsdkIntro.whenCards.modularByDesign.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.androidAndIos.title')}>
+          <WhenCard type="check" title={t('navsdkIntro.whenCards.androidAndIos.title')}>
             {t('navsdkIntro.whenCards.androidAndIos.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title={t('navsdkIntro.whenCards.extensible.title')}>
+          <WhenCard type="check" title={t('navsdkIntro.whenCards.extensible.title')}>
             {t('navsdkIntro.whenCards.extensible.desc')}
           </WhenCard>
           {isAndroid ? (
-            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.youBuildUiAndroid.title')}>
+            <WhenCard type="warn" title={t('navsdkIntro.whenCards.youBuildUiAndroid.title')}>
               {t('navsdkIntro.whenCards.youBuildUiAndroid.descPart1')}
               <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.youBuildUiAndroid.uxLibraryLink')}</DocLink>
               {t('navsdkIntro.whenCards.youBuildUiAndroid.descPart2')}
             </WhenCard>
           ) : (
-            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.youBuildUiIos.title')}>
+            <WhenCard type="warn" title={t('navsdkIntro.whenCards.youBuildUiIos.title')}>
               {t('navsdkIntro.whenCards.youBuildUiIos.desc')}
             </WhenCard>
           )}
           {isAndroid ? (
-            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.longerTimeAndroid.title')}>
+            <WhenCard type="warn" title={t('navsdkIntro.whenCards.longerTimeAndroid.title')}>
               {t('navsdkIntro.whenCards.longerTimeAndroid.descPart1')}
               <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.longerTimeAndroid.uxLibraryLink')}</DocLink>
               {t('navsdkIntro.whenCards.longerTimeAndroid.descPart2')}
@@ -569,7 +708,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
               {t('navsdkIntro.whenCards.longerTimeAndroid.descPart3')}
             </WhenCard>
           ) : (
-            <WhenCard icon="⚠️" title={t('navsdkIntro.whenCards.longerTimeIos.title')}>
+            <WhenCard type="warn" title={t('navsdkIntro.whenCards.longerTimeIos.title')}>
               {t('navsdkIntro.whenCards.longerTimeIos.descPart1')}
               <DocLink pageId="ana-intro" productId="ana" onNavigate={onNavigate}>{t('navsdkIntro.whenCards.longerTimeIos.anaLink')}</DocLink>
               {t('navsdkIntro.whenCards.longerTimeIos.descPart2')}
@@ -615,62 +754,159 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
         <ArchDiagram t={t} />
       </div>
 
-      {/* Platform support */}
+      {/* SDK Editions — platform-aware */}
       <div className="zone">
-        <h2 className="sh" id="ns-platforms">{t('navsdkIntro.platformsTitle')}</h2>
-        <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-          <PlatformCard
-            platform={t('navsdkIntro.platforms.android.label')}
-            icon="🤖"
-            active={isAndroid}
-            currentLabel={t('navsdkIntro.platforms.android.current')}
-            items={[
-              [t('navsdkIntro.platforms.android.items.compose.0'), t('navsdkIntro.platforms.android.items.compose.1')],
-              [t('navsdkIntro.platforms.android.items.views.0'), t('navsdkIntro.platforms.android.items.views.1')],
-              [t('navsdkIntro.platforms.android.items.minSdk.0'), t('navsdkIntro.platforms.android.items.minSdk.1')],
-              [t('navsdkIntro.platforms.android.items.offline.0'), t('navsdkIntro.platforms.android.items.offline.1')],
-              [t('navsdkIntro.platforms.android.items.uxLibrary.0'), t('navsdkIntro.platforms.android.items.uxLibrary.1')],
-            ]}
-          />
-          <PlatformCard
-            platform={t('navsdkIntro.platforms.ios.label')}
-            icon=""
-            active={!isAndroid}
-            currentLabel={t('navsdkIntro.platforms.android.current')}
-            items={[
-              [t('navsdkIntro.platforms.ios.items.swiftui.0'), t('navsdkIntro.platforms.ios.items.swiftui.1')],
-              [t('navsdkIntro.platforms.ios.items.uikit.0'), t('navsdkIntro.platforms.ios.items.uikit.1')],
-              [t('navsdkIntro.platforms.ios.items.minVersion.0'), t('navsdkIntro.platforms.ios.items.minVersion.1')],
-              [t('navsdkIntro.platforms.ios.items.carplay.0'), t('navsdkIntro.platforms.ios.items.carplay.1')],
-            ]}
-          />
-        </div>
+        <h2 className="sh" id="ns-editions">SDK editions</h2>
+        {(() => {
+          const Y = '✓'; const N = '—';
+          const cellStyle = (val, col) => {
+            const isTick = val === Y, isDash = val === N;
+            return (
+              <td style={{
+                padding: '9px 14px', fontSize: '0.8125rem', textAlign: 'left',
+                color: isTick ? col.color : isDash ? 'var(--border)' : 'var(--mid)',
+                fontWeight: isTick ? 700 : 400,
+                borderBottom: '1px solid var(--border)',
+              }}>{val}</td>
+            );
+          };
+
+          if (isAndroid) {
+            const COMPLETE = { label: 'Complete', status: 'Production',  statusColor: '#15803d', statusBg: 'rgba(34,197,94,0.12)',  color: '#15803d' };
+            const BETA     = { label: 'Beta',     status: 'Preview',     statusColor: '#7c3aed', statusBg: 'rgba(168,85,247,0.12)', color: '#7c3aed' };
+            const EXTENDED = { label: 'Extended', status: 'Enterprise',  statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)',  color: '#92400e' };
+            const rows = [
+              { label: 'SDK flavor',               c: 'complete',               b: 'complete',               e: 'extended'           },
+              { label: 'Access',                   c: 'Free tier · Self-serve', b: 'Opt-in — contact sales', e: 'Sales contract'     },
+              { label: 'Package manager',          c: 'Maven (public)',         b: 'Maven (public)',         e: 'Maven (private)'    },
+              { label: 'Min SDK',                  c: 'API 26+ (Android 8)',    b: 'API 26+ (Android 8)',    e: 'API 26+ (Android 8)'},
+              { label: 'UI framework',             c: 'Compose · XML Views',   b: 'Compose · XML Views',   e: 'Compose · XML Views'},
+              { label: 'Map Display',              c: Y, b: Y, e: Y },
+              { label: 'Navigation Engine',        c: Y, b: Y, e: Y },
+              { label: 'Routing',                  c: Y, b: Y, e: Y },
+              { label: 'Search',                   c: Y, b: Y, e: Y },
+              { label: 'Location',                 c: Y, b: Y, e: Y },
+              { label: 'Virtual Horizon',          c: Y, b: Y, e: Y },
+              { label: 'Offline Maps',             c: Y, b: Y, e: Y },
+              { label: 'Online First',             c: N, b: Y, e: Y },
+              { label: 'EV Experience',            c: N, b: Y, e: Y },
+              { label: 'Extended configurability', c: N, b: N, e: Y },
+            ];
+            return (
+              <>
+                <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid var(--border)' }}>
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+                    <thead>
+                      <tr style={{ background: 'var(--bg)' }}>
+                        <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: 'var(--muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border)', width: '34%' }} />
+                        {[COMPLETE, BETA, EXTENDED].map(v => (
+                          <th key={v.label} style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '22%' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                              <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: v.color }}>{v.label}</span>
+                              <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: v.statusBg, color: v.statusColor, whiteSpace: 'nowrap' }}>{v.status}</span>
+                            </div>
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rows.map((row, i) => (
+                        <tr key={row.label} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                          <td style={{ padding: '9px 14px', fontWeight: 600, color: 'var(--black)', borderBottom: '1px solid var(--border)', fontSize: '0.8125rem' }}>{row.label}</td>
+                          {cellStyle(row.c, COMPLETE)}
+                          {cellStyle(row.b, BETA)}
+                          {cellStyle(row.e, EXTENDED)}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 20 }}>
+                  {[
+                    { badge: 'Complete', badgeColor: '#15803d', badgeBg: 'rgba(34,197,94,0.12)',  title: 'Complete edition', desc: 'All core navigation modules. Self-serve via public Maven — no approval needed.', pageId: 'navsdk-quickstart' },
+                    { badge: 'Beta',     badgeColor: '#7c3aed', badgeBg: 'rgba(168,85,247,0.12)', title: 'Beta features',    desc: 'Online First and EV Experience. Opt-in required — contact sales to request access.', href: 'https://www.tomtom.com/contact-sales' },
+                    { badge: 'Extended', badgeColor: '#92400e', badgeBg: 'rgba(234,179,8,0.12)',  title: 'Extended edition', desc: 'Full configurability for custom integrations. Requires a sales contract and private registry credentials.', href: 'https://www.tomtom.com/contact-sales' },
+                  ].map(card => (
+                    <button key={card.badge} className="text-card"
+                      onClick={() => card.pageId ? onNavigate?.(card.pageId, 'navsdk') : window.open(card.href, '_blank')}>
+                      <div style={{ marginBottom: 10 }}>
+                        <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: card.badgeBg, color: card.badgeColor, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{card.badge}</span>
+                      </div>
+                      <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{card.title}</div>
+                      <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{card.desc}</div>
+                    </button>
+                  ))}
+                </div>
+              </>
+            );
+          }
+
+          /* ── iOS ─────────────────────────────────────────────────────────── */
+          const IOS = { label: 'Navigation SDK', status: 'On request', statusColor: '#92400e', statusBg: 'rgba(234,179,8,0.12)', color: '#92400e' };
+          const iosRows = [
+            { label: 'SDK version',      v: '0.72.1'                         },
+            { label: 'Access',           v: 'Contact sales — available on request' },
+            { label: 'Package manager',  v: 'SPM or CocoaPods'               },
+            { label: 'Min iOS version',  v: 'iOS 15.0+'                      },
+            { label: 'UI framework',     v: 'SwiftUI · UIKit'                 },
+            { label: 'Map Display',      v: Y },
+            { label: 'Navigation Engine',v: Y },
+            { label: 'Routing',          v: Y },
+            { label: 'Search',           v: Y },
+            { label: 'Location',         v: Y },
+            { label: 'Virtual Horizon',  v: Y },
+            { label: 'Offline Maps',     v: Y },
+            { label: 'EV Route Planning',v: Y },
+            { label: 'CarPlay',          v: Y },
+            { label: 'Online First',     v: N },
+            { label: 'AAOS (Android)',   v: N },
+          ];
+          return (
+            <>
+              <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid var(--border)' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.8125rem' }}>
+                  <thead>
+                    <tr style={{ background: 'var(--bg)' }}>
+                      <th style={{ padding: '10px 14px', textAlign: 'left', fontWeight: 600, color: 'var(--muted)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid var(--border)', width: '50%' }} />
+                      <th style={{ padding: '10px 14px', textAlign: 'left', borderBottom: '1px solid var(--border)', width: '50%' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                          <span style={{ fontSize: '0.9375rem', fontWeight: 700, color: IOS.color }}>{IOS.label}</span>
+                          <span style={{ fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', padding: '2px 7px', borderRadius: 4, background: IOS.statusBg, color: IOS.statusColor, whiteSpace: 'nowrap' }}>{IOS.status}</span>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {iosRows.map((row, i) => (
+                      <tr key={row.label} style={{ background: i % 2 === 0 ? 'transparent' : 'var(--bg)' }}>
+                        <td style={{ padding: '9px 14px', fontWeight: 600, color: 'var(--black)', borderBottom: '1px solid var(--border)', fontSize: '0.8125rem' }}>{row.label}</td>
+                        {cellStyle(row.v, IOS)}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 20 }}>
+                {[
+                  { badge: 'iOS', badgeColor: '#92400e', badgeBg: 'rgba(234,179,8,0.12)', title: 'Navigation SDK for iOS', desc: 'SwiftUI and UIKit support including CarPlay. Available on request via SPM or CocoaPods.', href: 'https://www.tomtom.com/contact-sales' },
+                  { badge: 'iOS', badgeColor: '#92400e', badgeBg: 'rgba(234,179,8,0.12)', title: 'Request access', desc: 'Contact TomTom sales to get credentials and start integrating the iOS Navigation SDK.', href: 'https://www.tomtom.com/contact-sales' },
+                  { badge: 'iOS', badgeColor: '#92400e', badgeBg: 'rgba(234,179,8,0.12)', title: 'iOS Quick Start', desc: 'Project setup, API key configuration, and your first navigation session on iOS.', pageId: 'navsdk-ios-getting-started' },
+                ].map(card => (
+                  <button key={card.title} className="text-card"
+                    onClick={() => card.pageId ? onNavigate?.(card.pageId, 'navsdk') : window.open(card.href, '_blank')}>
+                    <div style={{ marginBottom: 10 }}>
+                      <span style={{ fontSize: '0.6rem', fontWeight: 700, padding: '2px 7px', borderRadius: 3, background: card.badgeBg, color: card.badgeColor, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{card.badge}</span>
+                    </div>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--black)', marginBottom: 5 }}>{card.title}</div>
+                    <div style={{ fontSize: '0.8125rem', color: 'var(--mid)', lineHeight: 1.5 }}>{card.desc}</div>
+                  </button>
+                ))}
+              </div>
+            </>
+          );
+        })()}
       </div>
 
-      {/* Getting started */}
-      <div className="zone">
-        <h2 className="sh" id="ns-start">{t('navsdkIntro.readyTitle')}</h2>
-        <p className="body" style={{ marginBottom: 16 }}>
-          {isAndroid
-            ? t('navsdkIntro.readyBodyAndroid')
-            : t('navsdkIntro.readyBodyIos')}
-        </p>
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button
-            className="page-action-btn"
-            style={{ background: '#e2001a', color: '#fff', border: 'none', padding: '8px 18px', borderRadius: 6, fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}
-            onClick={() => onNavigate?.('navsdk-project-setup')}
-          >
-            {t('navsdkIntro.ctaGetStarted')}
-          </button>
-          <button
-            className="page-action-btn"
-            onClick={() => onNavigate?.('navsdk-first-map')}
-          >
-            {isAndroid ? t('navsdkIntro.ctaRunExampleAndroid') : t('navsdkIntro.ctaRunExampleIos')}
-          </button>
-        </div>
-      </div>
 
       <Callout type="info">
         {t('navsdkIntro.callout').split(t('navsdkIntro.calloutMigrationGuide'))[0]}

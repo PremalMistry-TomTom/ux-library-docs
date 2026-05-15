@@ -915,14 +915,6 @@ function CatalogueSection({ onNavigate }) {
   return (
     <section className="dp2-catalogue-section">
 
-      {/* ── Section label (scrolls away) ── */}
-      <div className="dp2-block-container">
-        <div className="dp2-section-label dp2-section-label--catalogue">
-          <h2 className="dp2-section-label-text">Product catalogue</h2>
-          <p className="dp2-section-label-sub">All APIs, SDKs, and developer tools</p>
-        </div>
-      </div>
-
       {/* ── Sticky category bar (tabs only) ── */}
       <div className="dp2-tabbar-wrap" ref={tabBarRef}>
         <div className="dp2-viewbar-inner">

@@ -719,7 +719,7 @@
       }
     },
     "archTitle": "SDK 架构",
-    "archBody": "SDK 由四个协同工作的层组成。您的应用位于顶层，仅依赖其下方的层——TomTom 平台调用已完全抽象。",
+    "archBody": "一个依赖项，完整的导航技术栈。您的应用位于 SDK 之上——TomTom API 和地图数据已捆绑并完全抽象。",
     "archLayers": {
       "yourApp": {
         "label": "您的应用",

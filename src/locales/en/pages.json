@@ -719,7 +719,7 @@
       }
     },
     "archTitle": "SDK architecture",
-    "archBody": "The SDK is structured as four co-operating layers. Your application sits at the top and depends only on the layers below it — TomTom platform calls are fully abstracted.",
+    "archBody": "One dependency, the full navigation stack. Your app sits on top of the SDK — TomTom APIs and map data are bundled and fully abstracted away.",
     "archLayers": {
       "yourApp": {
         "label": "Your App",
