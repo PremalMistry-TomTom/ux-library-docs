@@ -31,10 +31,28 @@ function MarkdownIcon() {
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-      fontSize: '0.625rem', fontWeight: 700, letterSpacing: '0.02em',
+      fontSize: '0.5625rem', fontWeight: 700, letterSpacing: '0.02em',
       border: '1.5px solid currentColor', borderRadius: 3,
-      padding: '0 3px', lineHeight: '14px', opacity: 0.75,
+      padding: '0 3px', lineHeight: '13px', opacity: 0.75,
+      flexShrink: 0,
     }}>M↓</span>
+  );
+}
+
+function ChevronDownIcon({ open }) {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true"
+      style={{ transition: 'transform 0.15s', transform: open ? 'rotate(180deg)' : 'none' }}>
+      <path d="M2 4.5l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
+function ExternalLinkIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ opacity: 0.5, flexShrink: 0 }}>
+      <path d="M7 2h3v3M10 2L5.5 6.5M5 3H3a1 1 0 00-1 1v5a1 1 0 001 1h5a1 1 0 001-1V7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
   );
 }
 
@@ -50,8 +68,13 @@ function CloseIcon() {
 function getPageText() {
   const el = document.querySelector('.page');
   if (!el) return '';
-  // Walk text nodes to produce something readable as markdown-ish plain text
   return el.innerText ?? '';
+}
+
+function getPageTitle() {
+  return document.querySelector('.page h1')?.textContent?.trim()
+    ?? document.title
+    ?? 'TomTom Developer Docs';
 }
 
 /* ─── Markdown modal ─────────────────────────────────────────────────────── */
@@ -61,12 +84,10 @@ function MarkdownModal({ onClose }) {
   const modalRef = useRef(null);
   const closeBtnRef = useRef(null);
 
-  // Focus the close button when modal opens
   useEffect(() => {
     closeBtnRef.current?.focus();
   }, []);
 
-  // Focus trap + Escape to close
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') { onClose(); return; }
@@ -121,11 +142,29 @@ function MarkdownModal({ onClose }) {
   );
 }
 
-/* ─── PageActions ────────────────────────────────────────────────────────── */
-export default function PageActions() {
+/* ─── AI split button ────────────────────────────────────────────────────── */
+function AiSplitButton({ onViewMd }) {
   const [copied, setCopied] = useState(false);
-  const [showMd, setShowMd] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
+  const [open, setOpen]     = useState(false);
+  const groupRef = useRef(null);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (e) => {
+      if (!groupRef.current?.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [open]);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(getPageText());
@@ -133,7 +172,80 @@ export default function PageActions() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Derive page title from the h1 on the page
+  const openInAI = (service) => {
+    const title = getPageTitle();
+    const url   = window.location.href;
+    const q     = encodeURIComponent(
+      `I'm reading TomTom developer documentation — "${title}". Help me understand it: ${url}`
+    );
+    const targets = {
+      claude:     `https://claude.ai/new?q=${q}`,
+      chatgpt:    `https://chatgpt.com/?q=${q}`,
+      perplexity: `https://www.perplexity.ai/search?q=${encodeURIComponent(title + ' TomTom API documentation')}`,
+    };
+    window.open(targets[service], '_blank', 'noopener,noreferrer');
+    setOpen(false);
+  };
+
+  return (
+    <div ref={groupRef} className="pa-split-group page-action-btn--desktop">
+      {/* Primary action — copy */}
+      <button
+        className="pa-split-primary"
+        onClick={handleCopy}
+        title="Copy page content as plain text"
+      >
+        {copied ? <CheckIcon /> : <ClipboardIcon />}
+        {copied ? 'Copied!' : 'Copy as markdown'}
+      </button>
+
+      {/* Chevron — open dropdown */}
+      <button
+        className="pa-split-chevron"
+        onClick={() => setOpen(v => !v)}
+        aria-label="More AI options"
+        aria-expanded={open}
+        aria-haspopup="menu"
+      >
+        <ChevronDownIcon open={open} />
+      </button>
+
+      {/* Dropdown panel */}
+      {open && (
+        <div className="pa-dropdown" role="menu">
+          <button
+            className="pa-dropdown-item"
+            role="menuitem"
+            onClick={() => { onViewMd(); setOpen(false); }}
+          >
+            <span className="pa-dropdown-item-label"><MarkdownIcon /> View as markdown</span>
+          </button>
+
+          <div className="pa-dropdown-sep" />
+
+          <button className="pa-dropdown-item" role="menuitem" onClick={() => openInAI('claude')}>
+            <span className="pa-dropdown-item-label">Open in Claude</span>
+            <ExternalLinkIcon />
+          </button>
+          <button className="pa-dropdown-item" role="menuitem" onClick={() => openInAI('chatgpt')}>
+            <span className="pa-dropdown-item-label">Open in ChatGPT</span>
+            <ExternalLinkIcon />
+          </button>
+          <button className="pa-dropdown-item" role="menuitem" onClick={() => openInAI('perplexity')}>
+            <span className="pa-dropdown-item-label">Open in Perplexity</span>
+            <ExternalLinkIcon />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── PageActions ────────────────────────────────────────────────────────── */
+export default function PageActions() {
+  const [showMd, setShowMd] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+
   const pageTitle = document.querySelector('.page h1')?.textContent?.trim() ?? '';
 
   return (
@@ -143,14 +255,7 @@ export default function PageActions() {
           <SparkleIcon /> Ask about this page
         </button>
         <span className="page-action-sep" aria-hidden="true" />
-        <button className="page-action-btn page-action-btn--desktop" onClick={handleCopy}>
-          {copied ? <CheckIcon /> : <ClipboardIcon />}
-          {copied ? 'Copied!' : 'Copy for LLM'}
-        </button>
-        <span className="page-action-sep page-action-btn--desktop" aria-hidden="true" />
-        <button className="page-action-btn page-action-btn--desktop" onClick={() => setShowMd(true)}>
-          <MarkdownIcon /> View as Markdown
-        </button>
+        <AiSplitButton onViewMd={() => setShowMd(true)} />
       </div>
 
       {showMd && <MarkdownModal onClose={() => setShowMd(false)} />}

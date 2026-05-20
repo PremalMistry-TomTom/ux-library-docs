@@ -1626,6 +1626,88 @@ code.ic { font-family: var(--font-mono); font-size: 0.82em; background: var(--bg
   flex-shrink: 0;
 }
 
+/* ── AI split button ─────────────────────────────────────────────────────── */
+.pa-split-group {
+  position: relative;
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  overflow: visible; /* allow dropdown to escape */
+}
+.pa-split-primary,
+.pa-split-chevron {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color 0.1s, background 0.1s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.pa-split-primary {
+  padding: 4px 8px;
+  border-radius: var(--r-sm) 0 0 var(--r-sm);
+}
+.pa-split-chevron {
+  padding: 4px 6px;
+  border-left: 1px solid var(--border);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.pa-split-primary:hover,
+.pa-split-chevron:hover {
+  color: var(--black);
+  background: var(--s1);
+}
+
+/* Dropdown panel */
+.pa-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  min-width: 196px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  z-index: 200;
+  padding: 4px 0;
+}
+.pa-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text);
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.1s;
+}
+.pa-dropdown-item:hover {
+  background: var(--s1);
+}
+.pa-dropdown-item-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.pa-dropdown-sep {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
 /* Page header layout */
 .page-header {
   display: flex;

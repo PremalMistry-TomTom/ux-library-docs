@@ -20,6 +20,7 @@ import IconStyleSandbox   from './IconStyleSandbox';
 import TryItDemos        from './TryItDemos';
 import UIComponentGallery from './UIComponentGallery';
 import NavIASandbox       from './NavIASandbox';
+import MCPExplorer        from './MCPExplorer';
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
@@ -37,6 +38,7 @@ const NAV_ITEMS = [
   { id: 'icon-sandbox',        label: 'Icon style sandbox',        icon: '✦',   group: 'Illustration' },
   { id: 'try-it-demos',        label: 'Try it — endpoint demos',   icon: '▶',   group: 'API demos' },
   { id: 'nav-ia-sandbox',      label: 'Routing API — nav IA',      icon: '🗺',  group: 'Prototyping' },
+  { id: 'mcp-explorer',        label: 'MCP Server explorer',        icon: '◈',   group: 'Prototyping' },
 ];
 
 /* ─── Icons ──────────────────────────────────────────────────────────────────── */
@@ -90,6 +92,7 @@ function PlumbingPage({ pageId, routingNavMode, onRoutingNavModeChange }) {
     case 'icon-sandbox':        return <IconStyleSandbox />;
     case 'try-it-demos':        return <TryItDemos />;
     case 'nav-ia-sandbox':      return <NavIASandbox navMode={routingNavMode} onNavModeChange={onRoutingNavModeChange} />;
+    case 'mcp-explorer':        return <MCPExplorer />;
     default:                    return <UIComponentGallery />;
   }
 }
