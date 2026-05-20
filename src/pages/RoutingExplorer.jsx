@@ -844,6 +844,7 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
   const popupRef          = useRef(null);
   const appliedStyleRef   = useRef(null);  /* tracks which isDark value the map was last styled with */
   const guidanceMarkersRef = useRef([]);   /* { marker, el }[] — shown/hidden on zoom */
+  const guidancePopupRef   = useRef(null); /* current guidance instruction popup */
   const trafficLayerIds   = useRef([]);    /* 'traffic-N' layer+source ids to clean up on redraw */
   const zoomCleanupRef    = useRef(null);  /* () => void — removes zoom event listener */
   const [redrawToken, setRedrawToken] = useState(0); /* bumped after style change to re-draw route */
@@ -921,8 +922,9 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
         /* Stop any in-progress animation */
         try { map.stop(); } catch {}
 
-        /* Remove existing popup */
-        if (popupRef.current) { try { popupRef.current.remove(); } catch {} }
+        /* Remove existing popups */
+        if (popupRef.current)         { try { popupRef.current.remove(); }         catch {} }
+        if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
 
         /* Clear all route layers — primary + up to MAX_ALTS alternatives */
         for (let i = MAX_ALTS - 1; i >= 0; i--) {
@@ -966,15 +968,25 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
 
           /* Helper: popup HTML for a route */
           const routePopupHtml = (route, label, color) => {
-            const s = route.summary;
+            const s     = route.summary;
             const km    = (s.lengthInMeters / 1000).toFixed(1);
             const min   = Math.round(s.travelTimeInSeconds / 60);
             const delay = Math.round((s.trafficDelayInSeconds || 0) / 60);
-            return `<div style="font-size:10px;font-family:system-ui;line-height:1.6;min-width:130px">` +
-              `<div style="font-weight:700;color:${color};margin-bottom:3px">${label}</div>` +
-              `<div style="color:#e2e8f0">${km} km · ${min} min` +
-              `${delay > 0 ? ` · <span style="color:#f87171">+${delay} min delay</span>` : ''}</div>` +
-              `</div>`;
+            const legs  = (route.legs || []).length;
+            const depart = s.departureTime ? new Date(s.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null;
+            const arrive = s.arrivalTime   ? new Date(s.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : null;
+            const safeJson = JSON.stringify(s, null, 2).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            /* Full detail HTML shared between hover (no JSON) and click (with JSON) */
+            const base =
+              `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:200px">` +
+              `<div style="font-weight:700;color:${color};margin-bottom:5px;font-size:13px">${label}</div>` +
+              `<div style="color:#e2e8f0;margin-bottom:3px">${km} km &nbsp;·&nbsp; ${min} min` +
+              `${delay > 0 ? ` &nbsp;·&nbsp; <span style="color:#f87171">+${delay} min delay</span>` : ''}</div>` +
+              (legs > 1 ? `<div style="color:#94a3b8;font-size:11px">${legs} legs</div>` : '') +
+              (depart && arrive ? `<div style="color:#94a3b8;font-size:11px">${depart} → ${arrive}</div>` : '');
+            route.__popupBase  = base;
+            route.__popupJson  = safeJson;
+            return base + `<div style="color:#475569;font-size:10px;margin-top:5px">Click for details</div></div>`;
           };
 
           /* Draw alternatives FIRST so primary sits on top */
@@ -998,7 +1010,7 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
               map.setPaintProperty(altId, 'line-opacity', 0.9);
               popup.setLngLat(e.lngLat)
                 .setHTML(routePopupHtml(altRoute, `Alternative ${i + 1}`, altColor) +
-                  `<div style="font-size:9px;color:#94a3b8;margin-top:2px">${diffLabel}</div>`)
+                  `<div style="font-size:11px;color:#94a3b8;margin-top:3px">${diffLabel}</div>`)
                 .addTo(map);
             });
             map.on('mousemove', altId, (e) => popup.setLngLat(e.lngLat));
@@ -1006,6 +1018,16 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
               map.getCanvas().style.cursor = '';
               map.setPaintProperty(altId, 'line-opacity', 0.55);
               popup.remove();
+            });
+            map.on('click', altId, (e) => {
+              if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+              const html = (altRoute.__popupBase || '') +
+                `<div style="font-size:11px;color:#94a3b8;margin-top:3px">${diffLabel}</div>` +
+                `<details style="margin-top:7px"><summary style="font-size:11px;color:#64748b;cursor:pointer;user-select:none;padding:2px 0">JSON summary</summary>` +
+                `<pre style="font-size:10px;color:#7dd3fc;margin:4px 0 0;overflow:auto;max-height:150px;line-height:1.6;white-space:pre-wrap">${altRoute.__popupJson || ''}</pre></details>` +
+                `</div>`;
+              guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: false, offset: 14 })
+                .setHTML(html).setLngLat(e.lngLat).addTo(map);
             });
             /* Start at muted opacity */
             map.setPaintProperty(altId, 'line-opacity', 0.55);
@@ -1039,6 +1061,16 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
               map.getCanvas().style.cursor = '';
               popup.remove();
             });
+            map.on('click', 'route', (e) => {
+              if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+              const route = routes[0];
+              const html = (route.__popupBase || '') +
+                `<details style="margin-top:7px"><summary style="font-size:11px;color:#64748b;cursor:pointer;user-select:none;padding:2px 0">JSON summary</summary>` +
+                `<pre style="font-size:10px;color:#7dd3fc;margin:4px 0 0;overflow:auto;max-height:150px;line-height:1.6;white-space:pre-wrap">${route.__popupJson || ''}</pre></details>` +
+                `</div>`;
+              guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: false, offset: 14 })
+                .setHTML(html).setLngLat(e.lngLat).addTo(map);
+            });
 
             /* Markers — snap each marker to the nearest point on the drawn polyline */
             const primLegs = routes[0].legs || [];
@@ -1057,12 +1089,39 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
             addMarkerTooltip(elA,
               `<strong style="color:#4ade80">Origin</strong><br>` +
               `${vals.origin || oLat + ',' + oLon}<br>` +
-              `Route: ${totalKm} km · ${totalMin} min`);
+              `Route: ${totalKm} km · ${totalMin} min<br>` +
+              `<span style="color:#475569;font-size:9px">Click for details</span>`);
+            elA.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+              const html =
+                `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:200px">` +
+                `<div style="font-weight:700;color:#4ade80;font-size:14px;margin-bottom:6px">Origin (A)</div>` +
+                `<div style="color:#e2e8f0;margin-bottom:3px">${vals.origin || oLat.toFixed(5) + ', ' + oLon.toFixed(5)}</div>` +
+                `<div style="color:#94a3b8;font-size:11px">Total route: ${totalKm} km · ${totalMin} min</div>` +
+                `<div style="color:#64748b;font-size:11px">Snapped: ${oSnapLat.toFixed(5)}, ${oSnapLon.toFixed(5)}</div>` +
+                `</div>`;
+              guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: true, offset: [0, -20] })
+                .setHTML(html).setLngLat([oSnapLon, oSnapLat]).addTo(map);
+            });
             const mA = new tt.Marker({ element: elA }).setLngLat([oSnapLon, oSnapLat]).addTo(map);
 
             const elB = markerEl('#e2001a', 'B');
             addMarkerTooltip(elB,
-              `<strong style="color:#f87171">Destination</strong><br>${vals.destination || dLat + ',' + dLon}`);
+              `<strong style="color:#f87171">Destination</strong><br>${vals.destination || dLat + ',' + dLon}<br>` +
+              `<span style="color:#475569;font-size:9px">Click for details</span>`);
+            elB.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+              const html =
+                `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:200px">` +
+                `<div style="font-weight:700;color:#f87171;font-size:14px;margin-bottom:6px">Destination (B)</div>` +
+                `<div style="color:#e2e8f0;margin-bottom:3px">${vals.destination || dLat.toFixed(5) + ', ' + dLon.toFixed(5)}</div>` +
+                `<div style="color:#64748b;font-size:11px">Snapped: ${dSnapLat.toFixed(5)}, ${dSnapLon.toFixed(5)}</div>` +
+                `</div>`;
+              guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: true, offset: [0, -20] })
+                .setHTML(html).setLngLat([dSnapLon, dSnapLat]).addTo(map);
+            });
             const mB = new tt.Marker({ element: elB }).setLngLat([dSnapLon, dSnapLat]).addTo(map);
 
             const validWpsMap = waypoints.filter(w => w && w.trim());
@@ -1080,7 +1139,21 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
               const el = markerEl('#64748b', String(i + 1));
               addMarkerTooltip(el,
                 `<strong style="color:#94a3b8">Stop ${i + 1}</strong><br>${wp}<br>` +
-                `Leg: ${legKm} km · ${legMin} min`);
+                `Leg: ${legKm} km · ${legMin} min<br>` +
+                `<span style="color:#475569;font-size:9px">Click for details</span>`);
+              el.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+                const html =
+                  `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:200px">` +
+                  `<div style="font-weight:700;color:#94a3b8;font-size:14px;margin-bottom:6px">Stop ${i + 1} (Waypoint)</div>` +
+                  `<div style="color:#e2e8f0;margin-bottom:3px">${wp}</div>` +
+                  `<div style="color:#94a3b8;font-size:11px">Leg ${i + 1}: ${legKm} km · ${legMin} min</div>` +
+                  `<div style="color:#64748b;font-size:11px">Snapped: ${snapLat.toFixed(5)}, ${snapLon.toFixed(5)}</div>` +
+                  `</div>`;
+                guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: true, offset: [0, -20] })
+                  .setHTML(html).setLngLat([snapLon, snapLat]).addTo(map);
+              });
               return new tt.Marker({ element: el }).setLngLat([snapLon, snapLat]).addTo(map);
             });
 
@@ -1105,19 +1178,36 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
                 const delayMin = section.delayInSeconds ? `+${Math.round(section.delayInSeconds / 60)} min` : null;
                 const speed    = section.effectiveSpeedInKmh ? `${section.effectiveSpeedInKmh} km/h` : null;
                 const cat      = section.simpleCategory?.replace(/_/g, ' ').toLowerCase() ?? null;
+                const secLen   = section.lengthInMeters ? `${section.lengthInMeters} m` : null;
+                const secRange = `pts ${section.startPointIndex}–${section.endPointIndex}`;
+                const safeJsonSec = JSON.stringify(section, null, 2).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const trafficBase =
+                  `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:200px">` +
+                  `<div style="font-weight:700;color:${color};margin-bottom:5px;font-size:13px">${TRAFFIC_LABELS[section.magnitudeOfDelay] || 'Traffic'}</div>` +
+                  (delayMin ? `<div style="color:#f87171;margin-bottom:2px">${delayMin} delay</div>` : '') +
+                  (speed    ? `<div style="color:#94a3b8">Eff. speed: ${speed}</div>` : '') +
+                  (cat      ? `<div style="color:#64748b;font-size:11px;text-transform:capitalize">${cat}</div>` : '') +
+                  (secLen   ? `<div style="color:#64748b;font-size:11px">${secLen}</div>` : '') +
+                  `<div style="color:#475569;font-size:11px">${secRange}</div>`;
                 map.on('mouseenter', tid, (e) => {
                   map.getCanvas().style.cursor = 'pointer';
                   popup.setLngLat(e.lngLat).setHTML(
-                    `<div style="font-size:10px;font-family:system-ui;line-height:1.7;min-width:120px">` +
-                    `<div style="font-weight:700;color:${color};margin-bottom:2px">${TRAFFIC_LABELS[section.magnitudeOfDelay] || 'Traffic'}</div>` +
-                    (delayMin ? `<div style="color:#f87171">${delayMin} delay</div>` : '') +
-                    (speed    ? `<div style="color:#94a3b8">Speed: ${speed}</div>` : '') +
-                    (cat      ? `<div style="color:#64748b;font-size:9px;text-transform:capitalize">${cat}</div>` : '') +
+                    trafficBase +
+                    `<div style="color:#475569;font-size:10px;margin-top:5px">Click for details</div>` +
                     `</div>`
                   ).addTo(map);
                 });
                 map.on('mousemove', tid, (e) => popup.setLngLat(e.lngLat));
                 map.on('mouseleave', tid, () => { map.getCanvas().style.cursor = ''; popup.remove(); });
+                map.on('click', tid, (e) => {
+                  if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+                  const html = trafficBase +
+                    `<details style="margin-top:7px"><summary style="font-size:11px;color:#64748b;cursor:pointer;user-select:none;padding:2px 0">JSON section</summary>` +
+                    `<pre style="font-size:10px;color:#7dd3fc;margin:4px 0 0;overflow:auto;max-height:150px;line-height:1.6;white-space:pre-wrap">${safeJsonSec}</pre></details>` +
+                    `</div>`;
+                  guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: false, offset: 14 })
+                    .setHTML(html).setLngLat(e.lngLat).addTo(map);
+                });
               });
 
             /* ── Guidance markers (appear at zoom ≥ 11) ──────────────────── */
@@ -1132,7 +1222,7 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
               if (!instr.point) return;
               const arrow = MANEUVER_ARROW[instr.maneuver] || '·';
               const el = document.createElement('div');
-              el.style.cssText = 'width:18px;height:18px;border-radius:50%;background:#1e293b;border:1.5px solid #475569;display:flex;align-items:center;justify-content:center;font-size:9px;color:#e2e8f0;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.5);transition:opacity 0.2s';
+              el.style.cssText = 'width:36px;height:36px;border-radius:50%;background:#1e293b;border:2px solid #475569;display:flex;align-items:center;justify-content:center;font-size:18px;color:#e2e8f0;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.5);transition:opacity 0.2s';
               el.textContent = arrow;
               const vis = map.getZoom() >= GUIDANCE_MIN_ZOOM;
               el.style.opacity = vis ? '1' : '0';
@@ -1145,8 +1235,48 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
                 `<strong style="color:#7dd3fc">${(instr.maneuver || 'Step').replace(/_/g, ' ')}</strong>` +
                 (street  ? `<br>${street}` : '') +
                 (msg     ? `<br><span style="color:#cbd5e1">${msg}</span>` : '') +
-                (distKm  ? `<br><span style="color:#64748b;font-size:9px">${distKm}</span>` : '')
+                (distKm  ? `<br><span style="color:#64748b;font-size:9px">${distKm}</span>` : '') +
+                `<br><span style="color:#475569;font-size:9px">Click for details</span>`
               );
+
+              /* Click → full instruction popup with JSON */
+              el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+                const roadNums  = (instr.roadNumbers || []).join(', ');
+                const exitNum   = instr.exitNumber != null ? String(instr.exitNumber) : '';
+                const direction = instr.travelDirection || '';
+                const junction  = instr.junction?.name || '';
+                const roundabout = instr.roundaboutExitNumber ? `Exit ${instr.roundaboutExitNumber}` : '';
+                const travelMin = instr.travelTimeInSeconds != null ? `${Math.round(instr.travelTimeInSeconds / 60)} min from start` : '';
+                const safeJson  = JSON.stringify(instr, null, 2).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const rows = [
+                  instr.routeOffsetInMeters != null && ['Offset',     `${instr.routeOffsetInMeters} m`],
+                  travelMin                          && ['Time',       travelMin],
+                  roadNums                           && ['Road',       roadNums],
+                  exitNum                            && ['Exit',       exitNum],
+                  roundabout                         && ['Roundabout', roundabout],
+                  direction                          && ['Direction',  direction],
+                  junction                           && ['Junction',   junction],
+                ].filter(Boolean);
+                const gridRows = rows.map(([k, v]) =>
+                  `<span style="color:#64748b">${k}</span><span style="color:#94a3b8">${v}</span>`
+                ).join('');
+                const html =
+                  `<div style="font-size:12px;font-family:system-ui,-apple-system,sans-serif;line-height:1.65;min-width:220px;max-width:290px">` +
+                  `<div style="font-weight:700;color:#7dd3fc;font-size:14px;margin-bottom:6px">${(instr.maneuver || 'Step').replace(/_/g, ' ')}</div>` +
+                  (street ? `<div style="color:#e2e8f0;margin-bottom:3px">${street}</div>` : '') +
+                  (msg    ? `<div style="color:#cbd5e1;font-size:12px;margin-bottom:6px">${msg}</div>` : '') +
+                  (rows.length ? `<div style="display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:11px;margin-bottom:4px">${gridRows}</div>` : '') +
+                  `<details style="margin-top:7px"><summary style="font-size:11px;color:#64748b;cursor:pointer;user-select:none;padding:2px 0">JSON</summary>` +
+                  `<pre style="font-size:10px;color:#7dd3fc;margin:4px 0 0;overflow:auto;max-height:150px;line-height:1.6;white-space:pre-wrap">${safeJson}</pre></details>` +
+                  `</div>`;
+                guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: true, offset: [0, -24] })
+                  .setHTML(html)
+                  .setLngLat([instr.point.longitude, instr.point.latitude])
+                  .addTo(map);
+              });
+
               const marker = new tt.Marker({ element: el })
                 .setLngLat([instr.point.longitude, instr.point.latitude])
                 .addTo(map);
@@ -1184,26 +1314,59 @@ function RouteMap({ result, endpoint, vals, apiKey, status, waypoints = [], isDa
               : vals.energyBudgetInkWh ? `${vals.energyBudgetInkWh} kWh range`
               : vals.fuelBudgetInLiters ? `${vals.fuelBudgetInLiters} L range` : 'Reachable range';
 
+            /* Approx area — ellipse from bounding-box half-axes */
+            const lats = boundary.map(p => p.latitude);
+            const lons = boundary.map(p => p.longitude);
+            const latSpan = (Math.max(...lats) - Math.min(...lats)) * 111;
+            const lonSpan = (Math.max(...lons) - Math.min(...lons)) * 111 * Math.cos(center.latitude * Math.PI / 180);
+            const approxKm2 = (Math.PI * (latSpan / 2) * (lonSpan / 2)).toFixed(0);
+
+            const rangeBase =
+              `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:190px">` +
+              `<div style="font-weight:700;color:#7dd3fc;margin-bottom:5px;font-size:13px">${budgetLabel}</div>` +
+              `<div style="color:#e2e8f0;margin-bottom:2px">${boundary.length} boundary points</div>` +
+              `<div style="color:#94a3b8">~${approxKm2} km² area</div>` +
+              `<div style="color:#94a3b8">Centre: ${center.latitude.toFixed(4)}, ${center.longitude.toFixed(4)}</div>`;
+            const safeJsonRange = JSON.stringify(result.reachableRange, null, 2).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             map.on('mousemove', 'range-fill', (e) => {
               map.getCanvas().style.cursor = 'crosshair';
               popup.setLngLat(e.lngLat)
-                .setHTML(`<div style="font-size:10px;font-family:system-ui;line-height:1.6">` +
-                  `<div style="font-weight:700;color:#7dd3fc;margin-bottom:3px">${budgetLabel}</div>` +
-                  `<div style="color:#e2e8f0">${boundary.length} boundary points</div>` +
-                  `<div style="color:#94a3b8">Centre: ${center.latitude.toFixed(4)}, ${center.longitude.toFixed(4)}</div>` +
-                  `</div>`)
+                .setHTML(rangeBase + `<div style="color:#475569;font-size:10px;margin-top:5px">Click for details</div></div>`)
                 .addTo(map);
             });
             map.on('mouseleave', 'range-fill', () => {
               map.getCanvas().style.cursor = '';
               popup.remove();
             });
+            map.on('click', 'range-fill', (e) => {
+              if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+              const html = rangeBase +
+                `<details style="margin-top:7px"><summary style="font-size:11px;color:#64748b;cursor:pointer;user-select:none;padding:2px 0">JSON reachableRange</summary>` +
+                `<pre style="font-size:10px;color:#7dd3fc;margin:4px 0 0;overflow:auto;max-height:150px;line-height:1.6;white-space:pre-wrap">${safeJsonRange}</pre></details>` +
+                `</div>`;
+              guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: false, offset: 14 })
+                .setHTML(html).setLngLat(e.lngLat).addTo(map);
+            });
 
             /* Centre marker */
             const elC = markerEl('#0066cc', '◎');
             addMarkerTooltip(elC,
               `<strong style="color:#7dd3fc">Origin</strong><br>` +
-              `${center.latitude.toFixed(5)}, ${center.longitude.toFixed(5)}`);
+              `${center.latitude.toFixed(5)}, ${center.longitude.toFixed(5)}<br>` +
+              `<span style="color:#475569;font-size:9px">Click for details</span>`);
+            elC.addEventListener('click', (e) => {
+              e.stopPropagation();
+              if (guidancePopupRef.current) { try { guidancePopupRef.current.remove(); } catch {} guidancePopupRef.current = null; }
+              const html =
+                `<div style="font-size:12px;font-family:system-ui;line-height:1.65;min-width:200px">` +
+                `<div style="font-weight:700;color:#7dd3fc;font-size:14px;margin-bottom:6px">Range Origin</div>` +
+                `<div style="color:#e2e8f0;margin-bottom:3px">${center.latitude.toFixed(5)}, ${center.longitude.toFixed(5)}</div>` +
+                `<div style="color:#94a3b8;font-size:11px">${budgetLabel}</div>` +
+                `<div style="color:#94a3b8;font-size:11px">${boundary.length} boundary pts · ~${approxKm2} km²</div>` +
+                `</div>`;
+              guidancePopupRef.current = new tt.Popup({ closeButton: true, closeOnClick: true, offset: [0, -20] })
+                .setHTML(html).setLngLat([center.longitude, center.latitude]).addTo(map);
+            });
             const m = new tt.Marker({ element: elC }).setLngLat([center.longitude, center.latitude]).addTo(map);
             markersRef.current = [m];
             sdkFitBounds(map, tt, coords.filter((_, i) => i % 4 === 0), 40, 10);
@@ -1509,116 +1672,71 @@ export default function RoutingExplorer({ onNavigate, isDark = false }) {
             )}
 
             {/* ── ENDPOINT SELECTOR ── */}
-            <div style={{ marginBottom: 8 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 8 }}>
-
-                {/* Calculate Route illustrated card */}
-                {(() => {
-                  const active = endpoint === 'calculate-route';
-                  return (
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setEndpoint('calculate-route')}
-                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setEndpoint('calculate-route'); } }}
-                      style={{
-                        textAlign: 'left', borderRadius: 16, cursor: 'pointer',
-                        border: `1.5px solid ${active ? '#e2001a' : 'var(--border)'}`,
-                        background: active ? 'rgba(226,0,26,0.02)' : 'var(--s1)',
-                        transition: 'border-color 0.15s, background 0.15s, box-shadow 0.15s',
-                        outline: 'none', padding: 0, overflow: 'hidden',
-                        boxShadow: active ? '0 0 0 3px rgba(226,0,26,0.08)' : 'none',
-                      }}
-                    >
-                      {/* Illustration */}
-                      <div style={{ height: 88, borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
-                        <ThumbCalculateRoute />
-                      </div>
-                      {/* Card body */}
-                      <div style={{ padding: '10px 14px 12px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
-                          {active ? (
-                            <div
-                              onClick={e => e.stopPropagation()}
-                              style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 5, overflow: 'hidden' }}
-                            >
-                              {['GET', 'POST'].map(m => (
-                                <button key={m} onClick={() => setMethod(m)} style={{
-                                  padding: '1px 7px', border: 'none', cursor: 'pointer',
-                                  fontSize: '0.5rem', fontWeight: 800, fontFamily: 'var(--font-mono)', letterSpacing: '0.07em',
-                                  background: method === m
-                                    ? (m === 'POST' ? 'rgba(34,197,94,0.15)' : 'rgba(125,211,252,0.15)')
-                                    : 'transparent',
-                                  color: method === m ? (m === 'POST' ? '#4ade80' : '#7dd3fc') : 'var(--muted)',
-                                  transition: 'all 0.15s',
-                                  borderRight: m === 'GET' ? '1px solid var(--border)' : 'none',
-                                }}>{m}</button>
-                              ))}
-                            </div>
-                          ) : (
-                            <span style={{
-                              fontSize: '0.5rem', fontWeight: 800, letterSpacing: '0.07em',
-                              fontFamily: 'var(--font-mono)', padding: '1px 6px', borderRadius: 3,
-                              background: 'rgba(125,211,252,0.10)', color: '#7dd3fc',
-                            }}>GET / POST</span>
-                          )}
-                          {active && <span style={{ fontSize: '0.4375rem', fontWeight: 700, letterSpacing: '0.1em', color: '#e2001a', textTransform: 'uppercase' }}>● active</span>}
-                        </div>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: 3, color: active ? 'var(--black)' : 'var(--mid)', fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>
-                          Calculate Route
-                        </div>
-                        <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.45 }}>
-                          Calculate one or more routes between waypoints with full vehicle profile, traffic, and guidance support.
-                        </div>
-                      </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+              {[
+                { value: 'calculate-route', label: 'Calculate Route', Thumb: ThumbCalculateRoute,
+                  desc: 'Calculate one or more routes between waypoints with full vehicle profile, traffic, and guidance support.' },
+                { value: 'reachable-range', label: 'Reachable Range', Thumb: ThumbReachableRange,
+                  desc: 'Calculate the isochrone polygon reachable within a given time, distance, fuel, or energy budget from an origin point.' },
+              ].map((ep, i, arr) => {
+                const active = endpoint === ep.value;
+                const isCalc = ep.value === 'calculate-route';
+                return (
+                  <div key={ep.value} style={{
+                    display: 'flex',
+                    border: '1px solid var(--border)',
+                    borderRadius: 14,
+                    overflow: 'hidden',
+                    background: 'var(--s1)',
+                  }}>
+                    {/* Thumbnail column */}
+                    <div style={{ width: 80, flexShrink: 0, borderRight: '1px solid var(--border)', overflow: 'hidden' }}>
+                      <ep.Thumb />
                     </div>
-                  );
-                })()}
-
-                {/* Reachable Range illustrated card */}
-                {(() => {
-                  const active = endpoint === 'reachable-range';
-                  return (
+                    {/* Endpoint cell */}
                     <div
                       role="button"
                       tabIndex={0}
-                      onClick={() => setEndpoint('reachable-range')}
-                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setEndpoint('reachable-range'); } }}
+                      onClick={() => { setEndpoint(ep.value); setResult(null); setStatus('idle'); }}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setEndpoint(ep.value); setResult(null); setStatus('idle'); } }}
                       style={{
-                        textAlign: 'left', borderRadius: 16, cursor: 'pointer',
-                        border: `1.5px solid ${active ? '#e2001a' : 'var(--border)'}`,
-                        background: active ? 'rgba(226,0,26,0.02)' : 'var(--s1)',
-                        transition: 'border-color 0.15s, background 0.15s, box-shadow 0.15s',
-                        outline: 'none', padding: 0, overflow: 'hidden',
-                        boxShadow: active ? '0 0 0 3px rgba(226,0,26,0.08)' : 'none',
+                        flex: 1, textAlign: 'left', cursor: 'pointer',
+                        background: active ? 'rgba(226,0,26,0.03)' : 'transparent',
+                        boxShadow: active ? 'inset 3px 0 0 #e2001a' : 'none',
+                        transition: 'background 0.15s, box-shadow 0.15s',
+                        outline: 'none',
+                        padding: '8px 12px 10px',
                       }}
                     >
-                      {/* Illustration */}
-                      <div style={{ height: 88, borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
-                        <ThumbReachableRange />
-                      </div>
-                      {/* Card body */}
-                      <div style={{ padding: '10px 14px 12px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                        {isCalc && active ? (
+                          <div onClick={e => e.stopPropagation()} style={{ display: 'flex', border: '1px solid var(--border)', borderRadius: 5, overflow: 'hidden' }}>
+                            {['GET', 'POST'].map(m => (
+                              <button key={m} onClick={() => setMethod(m)} style={{
+                                padding: '1px 7px', border: 'none', cursor: 'pointer',
+                                fontSize: '0.5rem', fontWeight: 800, fontFamily: 'var(--font-mono)', letterSpacing: '0.07em',
+                                background: method === m ? (m === 'POST' ? 'rgba(34,197,94,0.15)' : 'rgba(125,211,252,0.15)') : 'transparent',
+                                color: method === m ? (m === 'POST' ? '#4ade80' : '#7dd3fc') : 'var(--muted)',
+                                transition: 'all 0.15s',
+                                borderRight: m === 'GET' ? '1px solid var(--border)' : 'none',
+                              }}>{m}</button>
+                            ))}
+                          </div>
+                        ) : (
                           <span style={{
                             fontSize: '0.5rem', fontWeight: 800, letterSpacing: '0.07em',
                             fontFamily: 'var(--font-mono)', padding: '1px 6px', borderRadius: 3,
                             background: 'rgba(125,211,252,0.10)', color: '#7dd3fc',
-                          }}>GET</span>
-                          {active && <span style={{ fontSize: '0.4375rem', fontWeight: 700, letterSpacing: '0.1em', color: '#e2001a', textTransform: 'uppercase' }}>● active</span>}
-                        </div>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 700, marginBottom: 3, color: active ? 'var(--black)' : 'var(--mid)', fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>
-                          Reachable Range
-                        </div>
-                        <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.45 }}>
-                          Calculate the isochrone polygon reachable within a given time, distance, fuel, or energy budget from an origin point.
-                        </div>
+                          }}>{isCalc ? 'GET / POST' : 'GET'}</span>
+                        )}
+                        {active && <span style={{ fontSize: '0.4375rem', fontWeight: 700, letterSpacing: '0.1em', color: '#e2001a', textTransform: 'uppercase' }}>● active</span>}
                       </div>
+                      <div style={{ fontSize: '0.8125rem', fontWeight: 700, marginBottom: 2, color: active ? 'var(--black)' : 'var(--mid)', fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>{ep.label}</div>
+                      <div style={{ fontSize: '0.625rem', color: 'var(--muted)', lineHeight: 1.4 }}>{ep.desc}</div>
                     </div>
-                  );
-                })()}
-
-              </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* ── COMPACT FLAT PARAM LIST ── */}

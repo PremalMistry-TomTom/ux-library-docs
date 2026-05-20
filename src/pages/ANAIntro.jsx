@@ -34,11 +34,23 @@ function DocLink({ children, pageId, productId, onNavigate }) {
   );
 }
 
-function WhenCard({ icon, title, children }) {
+function WhenCard({ type = 'check', title, children }) {
+  const isWarn = type === 'warn';
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
-        <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
+        {isWarn ? (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+            <path d="M8 1.5L14.928 13.5H1.072L8 1.5Z" fill="#f59e0b"/>
+            <rect x="7.25" y="6" width="1.5" height="4" rx="0.75" fill="white"/>
+            <circle cx="8" cy="11.5" r="0.85" fill="white"/>
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+            <circle cx="8" cy="8" r="7" fill="#22c55e"/>
+            <path d="M5 8.2l2 2 4-4" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
       </div>
       <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{children}</div>
@@ -474,26 +486,26 @@ export default function ANAIntro({ onNavigate }) {
       <div className="zone">
         <h2 className="sh" id="ana-when">{t('anaIntro.whenTitle')}</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-          <WhenCard icon="✅" title={t('anaIntro.whenCards.fastTimeToMarket.title')}>
+          <WhenCard type="check" title={t('anaIntro.whenCards.fastTimeToMarket.title')}>
             {t('anaIntro.whenCards.fastTimeToMarket.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title={t('anaIntro.whenCards.tomtomMaintained.title')}>
+          <WhenCard type="check" title={t('anaIntro.whenCards.tomtomMaintained.title')}>
             {t('anaIntro.whenCards.tomtomMaintained.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title={t('anaIntro.whenCards.fullEvSupport.title')}>
+          <WhenCard type="check" title={t('anaIntro.whenCards.fullEvSupport.title')}>
             {t('anaIntro.whenCards.fullEvSupport.desc')}
           </WhenCard>
-          <WhenCard icon="✅" title={t('anaIntro.whenCards.aaOsCertified.title')}>
+          <WhenCard type="check" title={t('anaIntro.whenCards.aaOsCertified.title')}>
             {t('anaIntro.whenCards.aaOsCertified.desc')}
           </WhenCard>
-          <WhenCard icon="⚠️" title={t('anaIntro.whenCards.limitedCustomisation.title')}>
+          <WhenCard type="warn" title={t('anaIntro.whenCards.limitedCustomisation.title')}>
             {t('anaIntro.whenCards.limitedCustomisation.descPart1')}
             <DocLink pageId="overview" productId="ux-library" onNavigate={onNavigate}>{t('anaIntro.whenCards.limitedCustomisation.uxLibraryLink')}</DocLink>
             {t('anaIntro.whenCards.limitedCustomisation.descPart2')}
             <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>{t('anaIntro.whenCards.limitedCustomisation.navSdkLink')}</DocLink>
             {t('anaIntro.whenCards.limitedCustomisation.descPart3')}
           </WhenCard>
-          <WhenCard icon="⚠️" title={t('anaIntro.whenCards.apkDependency.title')}>
+          <WhenCard type="warn" title={t('anaIntro.whenCards.apkDependency.title')}>
             {t('anaIntro.whenCards.apkDependency.desc')}
           </WhenCard>
         </div>

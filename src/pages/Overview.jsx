@@ -48,11 +48,23 @@ function DocLink({ pageId, productId, onNavigate, children }) {
   );
 }
 
-function WhenCard({ icon, title, children }) {
+function WhenCard({ type = 'check', title, children }) {
+  const isWarn = type === 'warn';
   return (
     <div style={{ border: '1px solid var(--border)', borderRadius: 20, padding: '12px 14px', background: 'var(--surface)' }}>
       <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start', marginBottom: 4 }}>
-        <span style={{ fontSize: '0.875rem', lineHeight: 1.2 }}>{icon}</span>
+        {isWarn ? (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+            <path d="M8 1.5L14.928 13.5H1.072L8 1.5Z" fill="#f59e0b"/>
+            <rect x="7.25" y="6" width="1.5" height="4" rx="0.75" fill="white"/>
+            <circle cx="8" cy="11.5" r="0.85" fill="white"/>
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+            <circle cx="8" cy="8" r="7" fill="#22c55e"/>
+            <path d="M5 8.2l2 2 4-4" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        )}
         <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)' }}>{title}</span>
       </div>
       <div style={{ fontSize: '0.75rem', color: 'var(--muted)', lineHeight: 1.5 }}>{children}</div>
@@ -194,26 +206,26 @@ export default function Overview({ onNavigate }) {
       <div className="zone">
         <h2 className="sh" id="ov-when">When to choose UX Library</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
-          <WhenCard icon="✅" title="Ready-made navigation UI">
+          <WhenCard type="check" title="Ready-made navigation UI">
             Complete Compose components for map display, guidance, search, ETA panel, and EV charging — no UI design from scratch.
           </WhenCard>
-          <WhenCard icon="✅" title="Fully themeable">
+          <WhenCard type="check" title="Fully themeable">
             Override colours, typography, corner radius, and icon sets via design tokens to match your OEM brand identity.
           </WhenCard>
-          <WhenCard icon="✅" title="Built on NavSDK">
+          <WhenCard type="check" title="Built on NavSDK">
             Sits directly on top of the{' '}
             <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>.
             All NavSDK capabilities remain accessible beneath the component layer.
           </WhenCard>
-          <WhenCard icon="✅" title="Production-tested patterns">
+          <WhenCard type="check" title="Production-tested patterns">
             Components follow the same UX patterns used in TomTom's own navigation application — proven in real vehicles.
           </WhenCard>
-          <WhenCard icon="⚠️" title="Android only">
+          <WhenCard type="warn" title="Android only">
             UX Library targets Jetpack Compose on Android. iOS is not currently supported — use the{' '}
             <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>{' '}
             directly on iOS.
           </WhenCard>
-          <WhenCard icon="⚠️" title="TomTom UI structure">
+          <WhenCard type="warn" title="TomTom UI structure">
             The component architecture follows TomTom's UX patterns. For a completely bespoke layout, build directly on the{' '}
             <DocLink pageId="navsdk-intro" productId="navsdk" onNavigate={onNavigate}>Maps &amp; Navigation SDK</DocLink>{' '}
             instead.

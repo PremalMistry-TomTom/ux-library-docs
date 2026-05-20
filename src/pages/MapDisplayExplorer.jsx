@@ -973,56 +973,47 @@ export default function MapDisplayExplorer({ onNavigate, isDark = false }) {
             )}
 
             {/* ── Endpoint selector cards ── */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
-              {EP_CARDS.map(ep => {
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+              {EP_CARDS.map((ep) => {
                 const active = endpoint === ep.value;
+                const Thumb = ep.thumb;
                 return (
-                  <div
-                    key={ep.value}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setEndpoint(ep.value)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault(); setEndpoint(ep.value);
-                      }
-                    }}
-                    style={{
-                      textAlign: 'left', borderRadius: 16, cursor: 'pointer',
-                      border: `1.5px solid ${active ? '#e2001a' : 'var(--border)'}`,
-                      background: active ? 'rgba(226,0,26,0.02)' : 'var(--s1)',
-                      transition: 'border-color 0.15s, background 0.15s, box-shadow 0.15s',
-                      outline: 'none', padding: 0, overflow: 'hidden',
-                      boxShadow: active ? '0 0 0 3px rgba(226,0,26,0.08)' : 'none',
-                    }}
-                  >
-                    {/* Illustration */}
-                    <div style={{ height: 88, borderRadius: '14px 14px 0 0', overflow: 'hidden' }}>
-                      <ep.thumb />
+                  <div key={ep.value} style={{
+                    display: 'flex',
+                    border: '1px solid var(--border)',
+                    borderRadius: 14,
+                    overflow: 'hidden',
+                    background: 'var(--s1)',
+                  }}>
+                    {/* Thumbnail column */}
+                    <div style={{ width: 80, flexShrink: 0, borderRight: '1px solid var(--border)', overflow: 'hidden' }}>
+                      <Thumb />
                     </div>
-                    {/* Card body */}
-                    <div style={{ padding: '10px 14px 12px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 6 }}>
+                    {/* Endpoint cell */}
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setEndpoint(ep.value)}
+                      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setEndpoint(ep.value); } }}
+                      style={{
+                        flex: 1, textAlign: 'left', cursor: 'pointer',
+                        background: active ? 'rgba(226,0,26,0.03)' : 'transparent',
+                        boxShadow: active ? 'inset 3px 0 0 #e2001a' : 'none',
+                        transition: 'background 0.15s, box-shadow 0.15s',
+                        outline: 'none',
+                        padding: '8px 12px 10px',
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                         <span style={{
                           fontSize: '0.5rem', fontWeight: 800, letterSpacing: '0.07em',
                           fontFamily: 'var(--font-mono)', padding: '1px 6px', borderRadius: 3,
                           background: 'rgba(125,211,252,0.10)', color: '#7dd3fc',
                         }}>{ep.method}</span>
-                        {active && (
-                          <span style={{
-                            fontSize: '0.4375rem', fontWeight: 700, letterSpacing: '0.1em',
-                            color: '#e2001a', textTransform: 'uppercase',
-                          }}>● active</span>
-                        )}
+                        {active && <span style={{ fontSize: '0.4375rem', fontWeight: 700, letterSpacing: '0.1em', color: '#e2001a', textTransform: 'uppercase' }}>● active</span>}
                       </div>
-                      <div style={{
-                        fontSize: '0.875rem', fontWeight: 700, marginBottom: 3,
-                        color: active ? 'var(--black)' : 'var(--mid)',
-                        fontFamily: 'var(--font-display)', lineHeight: 1.2,
-                      }}>{ep.label}</div>
-                      <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', lineHeight: 1.45 }}>
-                        {ep.desc}
-                      </div>
+                      <div style={{ fontSize: '0.8125rem', fontWeight: 700, marginBottom: 2, color: active ? 'var(--black)' : 'var(--mid)', fontFamily: 'var(--font-display)', lineHeight: 1.2 }}>{ep.label}</div>
+                      <div style={{ fontSize: '0.625rem', color: 'var(--muted)', lineHeight: 1.4 }}>{ep.desc}</div>
                     </div>
                   </div>
                 );
