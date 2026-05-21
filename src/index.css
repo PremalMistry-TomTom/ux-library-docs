@@ -2213,7 +2213,7 @@ html.ai-panel-open .page {
 }
 .dp2-hero-inner {
   position: relative;
-  z-index: 1;
+  z-index: 30; /* above sticky disc-tabs (z-index 19) so search dropdown overlays correctly */
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 40px;

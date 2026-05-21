@@ -94,6 +94,18 @@ function HeroSearch({ onNavigate, cards }) {
     return () => document.removeEventListener('mousedown', onDown);
   }, []);
 
+  /* Scroll out of view → close */
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (!entry.isIntersecting) setOpen(false); },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   function handleNav(id, pid) {
     onNavigate(id, pid);
     setOpen(false);
