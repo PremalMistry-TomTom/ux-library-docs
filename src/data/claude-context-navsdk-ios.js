@@ -341,6 +341,18 @@ CarPlay requires an Apple entitlement. Request it via the Apple Developer portal
 
 ---
 
+## SDK Editions
+
+| Edition    | Included capabilities |
+|------------|-----------------------|
+| Standard   | Map Display, Location, Search, Routing |
+| Navigation | All Standard + Navigation UI, Traffic, Voice Guidance |
+| Extended   | All Navigation + Virtual Horizon, Offline Maps, ADAS |
+
+Add only the packages for the edition you need. The Extended edition requires an additional licence — contact TomTom sales.
+
+---
+
 ## Capabilities Reference
 
 | Capability       | Key type / class        | Key method |
@@ -354,6 +366,8 @@ CarPlay requires an Apple entitlement. Request it via the Apple Developer portal
 | Navigation       | \`TomTomNavigation\`      | \`create(options:)\` → \`start(route:)\` |
 | Location         | \`AppleLocationProvider\` | \`start()\` |
 | CarPlay          | \`TomTomSDKCarPlay\`      | \`configure(interfaceController:template:)\` |
+| Offline maps     | \`OfflineMapManager\`     | \`downloadRegion(_:completion:)\` — Extended edition |
+| Virtual Horizon  | \`VirtualHorizonEngine\`  | Available in Extended edition only |
 
 ---
 

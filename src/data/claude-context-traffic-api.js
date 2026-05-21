@@ -35,6 +35,19 @@ Never expose your API key in client-side code in production. Use a backend proxy
 
 ---
 
+## API versions
+
+| Version | Status          | Platform        | Notes |
+|---------|-----------------|-----------------|-------|
+| Current | **Production**  | TomTom Maps     | Stable. Use for all production applications. |
+| Orbis   | Private Preview | TomTom Orbis    | Next-generation Orbis raster flow and incident endpoints. Not yet publicly available — do not use in production. |
+
+**Use the TomTom Maps (Production) endpoints below for all production apps.**
+
+The numbers in the URL paths (e.g. `/services/4`, `/services/5`, `/map/4`) are **endpoint-level version identifiers**, not API generations. They are fixed and do not change with the roadmap versioning above.
+
+---
+
 ## Base URLs
 
 | Endpoint group | Base URL |
