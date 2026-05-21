@@ -145,6 +145,17 @@ function HeroSearch({ onNavigate, cards }) {
         )}
       </div>
 
+      {/* Backdrop blur overlay — covers page below hero while results are open */}
+      {showPanel && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 24,
+          background: 'rgba(0,0,0,0.35)',
+          backdropFilter: 'blur(4px)',
+          WebkitBackdropFilter: 'blur(4px)',
+          pointerEvents: 'none',
+        }} />
+      )}
+
       {/* Results panel */}
       {showPanel && (
         <div style={{
