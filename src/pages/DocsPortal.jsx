@@ -62,7 +62,7 @@ import {
 const BASE = import.meta.env.BASE_URL; // e.g. '/ux-library-docs/'
 
 /* ─── Hero smart search ──────────────────────────────────────────────────────── */
-function HeroSearch({ onNavigate, cards }) {
+function HeroSearch({ onNavigate, cards, onOpenChange }) {
   const [query, setQuery]   = useState('');
   const [open, setOpen]     = useState(false);
   const containerRef        = useRef(null);
@@ -110,9 +110,13 @@ function HeroSearch({ onNavigate, cards }) {
     onNavigate(id, pid);
     setOpen(false);
     setQuery('');
+    onOpenChange?.(false);
   }
 
   const showPanel = open && query.trim().length >= 2;
+
+  /* Notify parent whenever panel visibility changes */
+  useEffect(() => { onOpenChange?.(showPanel); }, [showPanel]);
 
   return (
     <div ref={containerRef} style={{ position: 'relative' }}>
@@ -144,17 +148,6 @@ function HeroSearch({ onNavigate, cards }) {
           >×</button>
         )}
       </div>
-
-      {/* Backdrop blur overlay — covers page below hero while results are open */}
-      {showPanel && (
-        <div style={{
-          position: 'fixed', inset: 0, zIndex: 24,
-          background: 'rgba(0,0,0,0.35)',
-          backdropFilter: 'blur(4px)',
-          WebkitBackdropFilter: 'blur(4px)',
-          pointerEvents: 'none',
-        }} />
-      )}
 
       {/* Results panel */}
       {showPanel && (
@@ -1173,6 +1166,8 @@ function CatalogueSection({ onNavigate }) {
 
 /* ─── Main ───────────────────────────────────────────────────────────────────── */
 export default function DocsPortal({ onNavigate }) {
+  const [searchOpen, setSearchOpen] = useState(false);
+
   return (
     <div className="dp2-root">
 
@@ -1187,7 +1182,7 @@ export default function DocsPortal({ onNavigate }) {
             <h4 className="dp2-hero-heading">
               Start building with TomTom APIs, SDKs, and location technology.
             </h4>
-            <HeroSearch onNavigate={onNavigate} cards={MOSAIC_CARDS} />
+            <HeroSearch onNavigate={onNavigate} cards={MOSAIC_CARDS} onOpenChange={setSearchOpen} />
             <div style={{ marginTop: 16 }}>
               <BundleDownloadBtn />
             </div>
@@ -1206,11 +1201,20 @@ export default function DocsPortal({ onNavigate }) {
         </div>
       </section>
 
-      {/* ── Catalogue ── */}
-      <CatalogueSection onNavigate={onNavigate} />
+      {/* ── Content below hero — blurred when search is active ── */}
+      <div style={searchOpen ? {
+        filter: 'blur(4px)',
+        opacity: 0.45,
+        pointerEvents: 'none',
+        userSelect: 'none',
+        transition: 'filter 0.2s, opacity 0.2s',
+      } : { transition: 'filter 0.2s, opacity 0.2s' }}>
 
-      {/* ── Discovery (use cases) ── */}
-      <DiscoverySection onNavigate={onNavigate} />
+        {/* ── Catalogue ── */}
+        <CatalogueSection onNavigate={onNavigate} />
+
+        {/* ── Discovery (use cases) ── */}
+        <DiscoverySection onNavigate={onNavigate} />
 
       {/* ── Footer ── */}
       <footer className="dp2-footer">
@@ -1224,6 +1228,8 @@ export default function DocsPortal({ onNavigate }) {
           <div className="dp2-footer-copy">Copyright © 2026 TomTom International BV. All rights reserved.</div>
         </div>
       </footer>
+
+      </div> {/* end blur wrapper */}
 
     </div>
   );
