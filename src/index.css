@@ -2198,7 +2198,7 @@ html.ai-panel-open .page {
   position: relative;
   padding: 40px 0;
   border-bottom: 1px solid #e8eaed;
-  overflow: hidden;
+  /* overflow must stay visible so the search dropdown can overlay content below */
 }
 .dp2-hero-bg {
   position: absolute;
@@ -2208,6 +2208,8 @@ html.ai-panel-open .page {
   background-repeat: no-repeat;
   opacity: 0.5;
   z-index: 0;
+  /* clip-path replaces overflow:hidden on parent — keeps bg image contained */
+  clip-path: inset(0);
 }
 .dp2-hero-inner {
   position: relative;
