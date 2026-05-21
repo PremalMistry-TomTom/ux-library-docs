@@ -208,21 +208,21 @@ export default function Overview({ onNavigate }) {
         <PageActions />
       </div>
       <div className="quick-answer">{t('intro')}</div>
-      <a
-        href="https://www.tomtom.com/en_gb/automotive/contact/"
-        target="_blank"
-        rel="noreferrer"
-        style={{
-          display: 'inline-flex', alignItems: 'center', gap: 6,
-          padding: '7px 16px', borderRadius: 8, marginBottom: 28,
-          border: 'none', background: 'var(--red)',
-          color: '#fff', fontWeight: 700, fontSize: '0.875rem',
-          textDecoration: 'none',
-        }}
-      >
-        Contact Sales →
-      </a>
-      <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 28, flexWrap: 'wrap' }}>
+        <a
+          href="https://www.tomtom.com/en_gb/automotive/contact/"
+          target="_blank"
+          rel="noreferrer"
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '7px 16px', borderRadius: 8,
+            border: 'none', background: 'var(--red)',
+            color: '#fff', fontWeight: 700, fontSize: '0.875rem',
+            textDecoration: 'none',
+          }}
+        >
+          Contact Sales →
+        </a>
         <DownloadAIContextBtn onDownload={downloadUXLibraryContext} />
       </div>
 
