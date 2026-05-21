@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Callout from '../components/ui/Callout';
 import PageActions from '../components/ui/PageActions';
+import { downloadUXLibraryContext } from '../data/claude-context-ux-library';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -140,6 +142,48 @@ const USE_CASE_CARDS = [
   { id: 'hud',                key: 'hud',               Thumb: makeThumb(IlloHUD,                     L_ADAS, IcoHUD)                 },
 ];
 
+/* ─── Download AI context button ────────────────────────────────────────────── */
+function DownloadAIContextBtn({ onDownload }) {
+  const [downloaded, setDownloaded] = useState(false);
+  const handleClick = () => {
+    onDownload();
+    setDownloaded(true);
+    setTimeout(() => setDownloaded(false), 2500);
+  };
+  return (
+    <button
+      onClick={handleClick}
+      title="Download a structured markdown file for use as context in any AI assistant"
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 6,
+        background: 'transparent', color: 'var(--text)',
+        border: '1.5px solid var(--border)',
+        padding: '7px 18px', borderRadius: 6, fontWeight: 600,
+        fontSize: '0.875rem', cursor: 'pointer',
+      }}
+    >
+      {downloaded ? <><CheckIcon /> Downloaded</> : <><DownloadIcon /> Download AI context</>}
+    </button>
+  );
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 13h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 /* ─── Page ──────────────────────────────────────────────────────────────────── */
 export default function Overview({ onNavigate }) {
   const { t } = useTranslation('overview');
@@ -178,6 +222,9 @@ export default function Overview({ onNavigate }) {
       >
         Contact Sales →
       </a>
+      <div style={{ display: 'flex', gap: 10, marginBottom: 8 }}>
+        <DownloadAIContextBtn onDownload={downloadUXLibraryContext} />
+      </div>
 
       {/* Hero image */}
       <div style={{ borderRadius: 20, overflow: 'hidden', marginBottom: 36, background: '#0d1d2e', border: '1px solid var(--border)', position: 'relative' }}>
