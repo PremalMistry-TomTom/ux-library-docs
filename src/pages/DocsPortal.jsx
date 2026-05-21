@@ -137,13 +137,13 @@ function HeroSearch({ onNavigate, cards, onOpenChange }) {
           placeholder="Search Documentation, API and SDKs"
           style={{
             flex: 1, background: 'transparent', border: 'none', outline: 'none',
-            color: 'rgba(255,255,255,0.9)', fontSize: '0.875rem', fontFamily: 'inherit',
+            color: 'var(--text)', fontSize: '0.875rem', fontFamily: 'inherit',
           }}
         />
         {query && (
           <button
             onClick={() => { setQuery(''); setOpen(false); inputRef.current?.focus(); }}
-            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)',
+            style={{ background: 'none', border: 'none', color: 'var(--muted)',
               cursor: 'pointer', padding: '0 2px', fontSize: '1.1rem', lineHeight: 1, flexShrink: 0 }}
           >×</button>
         )}
@@ -218,12 +218,12 @@ function BundleDownloadBtn() {
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 7,
         padding: '7px 16px', borderRadius: 8, cursor: 'pointer',
-        background: 'transparent', border: '1.5px solid rgba(255,255,255,0.2)',
-        color: 'rgba(255,255,255,0.7)', fontWeight: 600, fontSize: '0.8125rem',
+        background: 'transparent', border: '1.5px solid rgba(255,255,255,0.28)',
+        color: 'rgba(255,255,255,0.72)', fontWeight: 600, fontSize: '0.8125rem',
         transition: 'border-color 0.15s, color 0.15s',
       }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.color = '#fff'; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = 'rgba(255,255,255,1)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = 'rgba(255,255,255,0.72)'; }}
     >
       {done ? (
         <>
