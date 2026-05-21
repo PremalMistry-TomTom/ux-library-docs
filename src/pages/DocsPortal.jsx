@@ -119,7 +119,7 @@ function HeroSearch({ onNavigate, cards }) {
       {/* Search bar */}
       <div
         className="dp2-search-bar"
-        style={open ? { borderColor: 'rgba(255,255,255,0.45)', boxShadow: '0 0 0 3px rgba(255,255,255,0.08)' } : {}}
+        style={open ? { borderColor: 'var(--brand)', boxShadow: '0 0 0 3px rgba(223,27,18,0.18)' } : {}}
         onClick={() => inputRef.current?.focus()}
       >
         <span className="dp2-search-icon"><SearchIcon /></span>
