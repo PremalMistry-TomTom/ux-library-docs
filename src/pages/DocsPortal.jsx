@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import { downloadFullBundle } from '../data/claude-context-bundle';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
   makeThumb,
@@ -58,6 +59,46 @@ import {
 } from '../illustrations/iconVariants';
 
 const BASE = import.meta.env.BASE_URL; // e.g. '/ux-library-docs/'
+
+/* ─── AI context bundle download button ─────────────────────────────────────── */
+function BundleDownloadBtn() {
+  const [done, setDone] = useState(false);
+  function handle() {
+    downloadFullBundle();
+    setDone(true);
+    setTimeout(() => setDone(false), 2500);
+  }
+  return (
+    <button
+      onClick={handle}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 7,
+        padding: '7px 16px', borderRadius: 8, cursor: 'pointer',
+        background: 'transparent', border: '1.5px solid rgba(255,255,255,0.2)',
+        color: 'rgba(255,255,255,0.7)', fontWeight: 600, fontSize: '0.8125rem',
+        transition: 'border-color 0.15s, color 0.15s',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; e.currentTarget.style.color = '#fff'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'rgba(255,255,255,0.7)'; }}
+    >
+      {done ? (
+        <>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Downloaded
+        </>
+      ) : (
+        <>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2v8M5 7l3 3 3-3M3 12h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Download complete AI context
+        </>
+      )}
+    </button>
+  );
+}
 
 /* ─── Icons ──────────────────────────────────────────────────────────────────── */
 function SearchIcon() {
@@ -998,6 +1039,9 @@ export default function DocsPortal({ onNavigate }) {
             <div className="dp2-search-bar">
               <span className="dp2-search-icon"><SearchIcon /></span>
               <span className="dp2-search-placeholder">Search Documentation, API and SDKs</span>
+            </div>
+            <div style={{ marginTop: 16 }}>
+              <BundleDownloadBtn />
             </div>
           </div>
           <div className="dp2-hero-right">

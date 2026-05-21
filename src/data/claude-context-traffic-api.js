@@ -44,7 +44,7 @@ Never expose your API key in client-side code in production. Use a backend proxy
 
 **Use the TomTom Maps (Production) endpoints below for all production apps.**
 
-The numbers in the URL paths (e.g. `/services/4`, `/services/5`, `/map/4`) are **endpoint-level version identifiers**, not API generations. They are fixed and do not change with the roadmap versioning above.
+The numbers in the URL paths (e.g. \`/services/4\`, \`/services/5\`, \`/map/4\`) are **endpoint-level version identifiers**, not API generations. They are fixed and do not change with the roadmap versioning above.
 
 ---
 
