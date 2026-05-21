@@ -218,12 +218,12 @@ function BundleDownloadBtn() {
       style={{
         display: 'inline-flex', alignItems: 'center', gap: 7,
         padding: '7px 16px', borderRadius: 8, cursor: 'pointer',
-        background: 'transparent', border: '1.5px solid rgba(255,255,255,0.28)',
-        color: 'rgba(255,255,255,0.72)', fontWeight: 600, fontSize: '0.8125rem',
+        background: 'transparent', border: '1.5px solid var(--b-med)',
+        color: 'var(--t-med)', fontWeight: 600, fontSize: '0.8125rem',
         transition: 'border-color 0.15s, color 0.15s',
       }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = 'rgba(255,255,255,1)'; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.28)'; e.currentTarget.style.color = 'rgba(255,255,255,0.72)'; }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--b-hi)'; e.currentTarget.style.color = 'var(--t-hi)'; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--b-med)'; e.currentTarget.style.color = 'var(--t-med)'; }}
     >
       {done ? (
         <>
