@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
+import Fuse from 'fuse.js';
 import { downloadFullBundle } from '../data/claude-context-bundle';
 import { useIlloStyle } from '../context/IlloStyleContext';
 import {
@@ -59,6 +60,133 @@ import {
 } from '../illustrations/iconVariants';
 
 const BASE = import.meta.env.BASE_URL; // e.g. '/ux-library-docs/'
+
+/* ─── Hero smart search ──────────────────────────────────────────────────────── */
+function HeroSearch({ onNavigate, cards }) {
+  const [query, setQuery]   = useState('');
+  const [open, setOpen]     = useState(false);
+  const containerRef        = useRef(null);
+  const inputRef            = useRef(null);
+  const { palette }         = useIlloStyle();
+
+  const fuse = useMemo(() => new Fuse(cards, {
+    keys: [
+      { name: 'title',   weight: 0.55 },
+      { name: 'problem', weight: 0.35 },
+      { name: 'product', weight: 0.10 },
+    ],
+    threshold: 0.4,
+    includeScore: true,
+    minMatchCharLength: 2,
+  }), [cards]);
+
+  const results = useMemo(() => {
+    if (!query.trim()) return [];
+    return fuse.search(query.trim()).slice(0, 6).map(r => r.item);
+  }, [fuse, query]);
+
+  /* Click outside → close */
+  useEffect(() => {
+    function onDown(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) setOpen(false);
+    }
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, []);
+
+  function handleNav(id, pid) {
+    onNavigate(id, pid);
+    setOpen(false);
+    setQuery('');
+  }
+
+  const showPanel = open && query.trim().length >= 2;
+
+  return (
+    <div ref={containerRef} style={{ position: 'relative' }}>
+      {/* Search bar */}
+      <div
+        className="dp2-search-bar"
+        style={open ? { borderColor: 'rgba(255,255,255,0.45)', boxShadow: '0 0 0 3px rgba(255,255,255,0.08)' } : {}}
+        onClick={() => inputRef.current?.focus()}
+      >
+        <span className="dp2-search-icon"><SearchIcon /></span>
+        <input
+          ref={inputRef}
+          type="text"
+          value={query}
+          onChange={e => { setQuery(e.target.value); setOpen(true); }}
+          onFocus={() => setOpen(true)}
+          onKeyDown={e => { if (e.key === 'Escape') { setOpen(false); setQuery(''); } }}
+          placeholder="Search Documentation, API and SDKs"
+          style={{
+            flex: 1, background: 'transparent', border: 'none', outline: 'none',
+            color: 'rgba(255,255,255,0.9)', fontSize: '0.875rem', fontFamily: 'inherit',
+          }}
+        />
+        {query && (
+          <button
+            onClick={() => { setQuery(''); setOpen(false); inputRef.current?.focus(); }}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)',
+              cursor: 'pointer', padding: '0 2px', fontSize: '1.1rem', lineHeight: 1, flexShrink: 0 }}
+          >×</button>
+        )}
+      </div>
+
+      {/* Results panel */}
+      {showPanel && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0,
+          background: 'var(--s1)', border: '1px solid var(--border)',
+          borderRadius: 16, padding: '14px 14px 10px', zIndex: 200,
+          boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+        }}>
+          {results.length > 0 ? (
+            <>
+              <div style={{ fontSize: '0.6875rem', color: 'var(--muted)', marginBottom: 10,
+                fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                {results.length} result{results.length !== 1 ? 's' : ''}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                {results.map(card => (
+                  <ProductCard
+                    key={card.id}
+                    name={card.title}
+                    desc={card.problem}
+                    docsId={card.docsId}
+                    productId={card.productId}
+                    onNavigate={handleNav}
+                    compact
+                    illustration={
+                      <div style={{ width: '100%', height: '100%', background: palette.bg }}>
+                        <card.Illo />
+                      </div>
+                    }
+                    runtime={cardRuntime(card)}
+                    tags={(() => {
+                      const rt = cardRuntime(card);
+                      if (rt === 'android' || rt === 'ios') {
+                        return [(card.product || '').split(/ [·—\/] /)[0].replace(' iOS', '').trim()];
+                      }
+                      return parseProductTags(card.product);
+                    })()}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div style={{ padding: '12px 4px', color: 'var(--muted)', fontSize: '0.875rem', textAlign: 'center' }}>
+              No results for <strong style={{ color: 'var(--text)' }}>"{query}"</strong>
+              <div style={{ fontSize: '0.75rem', marginTop: 4, color: 'var(--muted)' }}>
+                Try "EV routing", "turn-by-turn", "map tiles", "parking"…
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ─── AI context bundle download button ─────────────────────────────────────── */
 function BundleDownloadBtn() {
@@ -1036,10 +1164,7 @@ export default function DocsPortal({ onNavigate }) {
             <h4 className="dp2-hero-heading">
               Start building with TomTom APIs, SDKs, and location technology.
             </h4>
-            <div className="dp2-search-bar">
-              <span className="dp2-search-icon"><SearchIcon /></span>
-              <span className="dp2-search-placeholder">Search Documentation, API and SDKs</span>
-            </div>
+            <HeroSearch onNavigate={onNavigate} cards={MOSAIC_CARDS} />
             <div style={{ marginTop: 16 }}>
               <BundleDownloadBtn />
             </div>
