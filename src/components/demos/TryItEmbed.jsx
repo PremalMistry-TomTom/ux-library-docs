@@ -9,7 +9,8 @@
 
 import { DEMOS, TryItPanel } from '../../pages/TryItDemos';
 
-const DEMO_API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+import { TOMTOM_API_KEY } from '../../config/tomtomKey';
+const DEMO_API_KEY = TOMTOM_API_KEY;
 
 export default function TryItEmbed({ demoId }) {
   const demo = DEMOS.find(d => d.id === demoId);

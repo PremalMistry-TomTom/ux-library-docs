@@ -32,6 +32,11 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # TomTom key for the live demos and API Explorers. Set it under
+          # Settings → Secrets and variables → Actions. Vite inlines it into the
+          # public bundle, so use a key restricted to the Pages domain.
+          VITE_TOMTOM_API_KEY: ${{ secrets.VITE_TOMTOM_API_KEY }}
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

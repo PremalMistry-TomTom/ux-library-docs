@@ -7,6 +7,7 @@ import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
 import { useDemoStyle } from '../hooks/useDemoStyle';
 
+import { TOMTOM_API_KEY } from '../config/tomtomKey';
 const MAP_DISPLAY_APIS = [
   {
     name: 'Map Display for Compose',
@@ -34,11 +35,11 @@ const MAP_DISPLAY_APIS = [
   },
 ];
 
-const API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+const API_KEY = TOMTOM_API_KEY;
 const CENTER  = [-0.1276, 51.5074]; // London
 
 /* ─── TomTom MapStyleConfig objects ──────────────────────────── */
-const STYLE_CFG = {
+export const STYLE_CFG = {
   standardLight: { map: '2/basic_street-light',         trafficIncidents: '2/incidents_light', trafficFlow: '2/flow_relative-light', poi: '2/poi_light'       },
   standardDark:  { map: '2/basic_street-dark',          trafficIncidents: '2/incidents_dark',  trafficFlow: '2/flow_relative-dark',  poi: '2/poi_dark'        },
   drivingLight:  { map: '2/basic_street-light-driving', trafficIncidents: '2/incidents_light', trafficFlow: '2/flow_relative-light', poi: '2/poi_light'       },
@@ -86,7 +87,7 @@ const STYLES = [
  *  A thin React wrapper around the TomTom Maps SDK.
  *  styleKey / pitch changes are applied via map.setStyle / easeTo.
  * ──────────────────────────────────────────────────────────────── */
-function LiveMap({ styleKey, pitch = 0, zoom = 12.5 }) {
+export function LiveMap({ styleKey, pitch = 0, zoom = 12.5 }) {
   const containerRef = useRef(null);
   const mapRef       = useRef(null);
   const prevStyleRef = useRef(styleKey);
@@ -153,7 +154,7 @@ function LiveMap({ styleKey, pitch = 0, zoom = 12.5 }) {
 }
 
 /* ─── Tablet frame (landscape) ────────────────────────────────── */
-function TabletFrame({ children, nipOverlay, browseOverlay }) {
+export function TabletFrame({ children, nipOverlay, browseOverlay }) {
   return (
     <div style={{
       position: 'relative', width: '100%',

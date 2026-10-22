@@ -9,6 +9,7 @@ import {
 import { makeThumb, L_MapRasterTile, L_MapStaticImage, L_MapVectorTile, L_MapAssetsAPI } from '../illustrations/lightVariants';
 import { IcoMapRasterTile, IcoMapStaticImage, IcoMapVectorTile, IcoMapDisplay } from '../illustrations/iconVariants';
 
+import { TOMTOM_API_KEY } from '../config/tomtomKey';
 const ThumbRasterTile  = makeThumb(IlloMapRasterTile,  L_MapRasterTile,  IcoMapRasterTile);
 const ThumbStaticImage = makeThumb(IlloMapStaticImage, L_MapStaticImage, IcoMapStaticImage);
 const ThumbVectorTile  = makeThumb(IlloMapVectorTile,  L_MapVectorTile,  IcoMapVectorTile);
@@ -30,7 +31,7 @@ const ThumbAssetsAPI   = makeThumb(IlloMapAssetsAPI,   L_MapAssetsAPI,   IcoMapD
  * Map Assets    : sprite PNG loaded directly as <img>.
  * ───────────────────────────────────────────────────────────────────────────── */
 
-const DEMO_KEY     = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+const DEMO_KEY     = TOMTOM_API_KEY;
 const LS_KEY       = 'tt-explorer-key';
 const ASSET_BASE   = 'https://api.tomtom.com/maps/orbis/assets/styles';
 const VECTOR_BASE  = 'https://api.tomtom.com/map/1/tile';

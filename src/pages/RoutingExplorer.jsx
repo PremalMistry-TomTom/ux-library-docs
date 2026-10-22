@@ -8,6 +8,7 @@ import { makeThumb, L_CalculateRoute, L_ReachableRange } from '../illustrations/
 import { IcoCalculateRoute, IcoReachableRange } from '../illustrations/iconVariants';
 import { PRESETS as EV_PRESETS, ConsumptionCurve } from './EVBattery';
 
+import { TOMTOM_API_KEY } from '../config/tomtomKey';
 const ThumbCalculateRoute  = makeThumb(IlloCalculateRoute,  L_CalculateRoute,  IcoCalculateRoute);
 const ThumbReachableRange  = makeThumb(IlloReachableRange,  L_ReachableRange,  IcoReachableRange);
 
@@ -17,7 +18,7 @@ const ThumbReachableRange  = makeThumb(IlloReachableRange,  L_ReachableRange,  I
  * Uses ParamRow cards for all form fields (same component as API reference pages).
  * ───────────────────────────────────────────────────────────────────────────── */
 
-const DEMO_KEY      = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+const DEMO_KEY      = TOMTOM_API_KEY;
 const LS_KEY        = 'tt-explorer-key';
 const MAX_WAYPOINTS = 5;
 

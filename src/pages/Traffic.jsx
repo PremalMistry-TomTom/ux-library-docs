@@ -7,6 +7,7 @@ import { ApiLinks } from '../components/ui/ApiLinks';
 import PageActions from '../components/ui/PageActions';
 import { useDemoStyle } from '../hooks/useDemoStyle';
 
+import { TOMTOM_API_KEY } from '../config/tomtomKey';
 const MAP_DISPLAY_APIS = [
   {
     name: 'Map Display for Compose',
@@ -34,7 +35,7 @@ const MAP_DISPLAY_APIS = [
   },
 ];
 
-const API_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+const API_KEY = TOMTOM_API_KEY;
 const CENTER  = [-0.1276, 51.5074]; // London
 
 const FLOW_STYLES = {

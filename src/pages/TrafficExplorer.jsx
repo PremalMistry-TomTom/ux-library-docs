@@ -6,6 +6,7 @@ import { IlloTrafficIncidents, IlloTrafficFlow, IlloTrafficFlowTile } from './In
 import { makeThumb, L_TrafficIncidents, L_TrafficFlow, L_TrafficFlowTile } from '../illustrations/lightVariants';
 import { IcoTrafficIncidents, IcoTrafficFlow, IcoTrafficFlowTile } from '../illustrations/iconVariants';
 
+import { TOMTOM_API_KEY } from '../config/tomtomKey';
 const ThumbTrafficIncidents    = makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents);
 const ThumbTrafficFlow         = makeThumb(IlloTrafficFlow,      L_TrafficFlow,      IcoTrafficFlow);
 const ThumbTrafficFlowTile     = makeThumb(IlloTrafficFlowTile,  L_TrafficFlowTile,  IcoTrafficFlowTile);
@@ -18,7 +19,7 @@ const ThumbTrafficIncidentTile = makeThumb(IlloTrafficIncidents, L_TrafficIncide
  *   • Flow Segment Data v4 (GET /traffic/services/4/flowSegmentData/{style}/{zoom}/json)
  * ───────────────────────────────────────────────────────────────────────────── */
 
-const DEMO_KEY = 'A4owgES2XdDEHLJBXyy69GFmxRMXfuyf';
+const DEMO_KEY = TOMTOM_API_KEY;
 const LS_KEY   = 'tt-explorer-key';
 
 const STYLE_VERSION = '22.2.1-*';
