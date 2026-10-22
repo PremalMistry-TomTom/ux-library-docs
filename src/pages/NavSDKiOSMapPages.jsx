@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { LiveMap, TabletFrame } from './MapStyle';
 
 /* ─── Shared map mock background ─────────────────────────────────────────── */
 export function MapBg({ style = 'day', showTrafficFlow = false, showTrafficIncidents = false }) {
@@ -150,19 +151,9 @@ export function NavSDKiOSMapSwiftUI({ onNavigate }) {
           />
         </div>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <MapBg style={mapStyle} />
-          {/* SwiftUI label */}
-          <div style={{
-            position: 'absolute', bottom: 10, left: 10,
-            background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '4px 10px',
-            fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-mono)',
-          }}>
-            TomTomMapView · SwiftUI
-          </div>
-          {/* Location puck */}
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
-        </div>
+        <TabletFrame browseOverlay={true}>
+          <LiveMap styleKey={layer === 'night' ? 'standardDark' : 'standardLight'} />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Swift']}>
@@ -227,7 +218,6 @@ const MAP_UIKIT_APIS = [
 ];
 
 export function NavSDKiOSMapUIKit({ onNavigate }) {
-  const [attached, setAttached] = useState(true);
 
   return (
     <div className="page">
@@ -251,29 +241,9 @@ export function NavSDKiOSMapUIKit({ onNavigate }) {
         <h2 className="sh" id="uikit-demo">View controller preview</h2>
         <p className="body">Toggle below to simulate <code>viewDidLoad</code> — the point where the map view is added as a subview.</p>
 
-        <div style={{ marginBottom: 12 }}>
-          <Toggle value={attached} onChange={setAttached} label="View loaded" secondary="viewDidLoad() called — map added as subview" />
-        </div>
-
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '2px dashed var(--border)', background: 'var(--bg)' }}>
-          {attached ? (
-            <>
-              <MapBg style="day" />
-              <div style={{
-                position: 'absolute', top: 8, left: 8,
-                background: 'rgba(0,0,0,0.55)', borderRadius: 5, padding: '3px 8px',
-                fontSize: '0.7rem', color: 'rgba(255,255,255,0.75)', fontFamily: 'var(--font-mono)',
-              }}>
-                TomTomMapView · UIKit
-              </div>
-              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
-            </>
-          ) : (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--muted)', fontSize: '0.875rem' }}>
-              UIViewController — no map subview attached
-            </div>
-          )}
-        </div>
+        <TabletFrame browseOverlay={true}>
+          <LiveMap styleKey="standardLight" />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Swift']}>
@@ -386,19 +356,19 @@ export function NavSDKiOSMapStyles({ onNavigate }) {
           )}
         </div>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <MapBg style={current.style} />
-          {activeStyle === 'custom' && (
-            <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,80,60,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ background: 'rgba(0,0,0,0.7)', color: '#4ade80', fontSize: '0.75rem', fontFamily: 'var(--font-mono)', padding: '6px 12px', borderRadius: 6 }}>Custom style URL applied</span>
-            </div>
-          )}
-          <div style={{
-            position: 'absolute', bottom: 10, right: 10,
-            background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '4px 10px',
-            fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-mono)',
-          }}>{current.descriptor}</div>
-        </div>
+        <TabletFrame
+          browseOverlay={activeStyle === 'browse' || activeStyle === 'browse-night'}
+          nipOverlay={activeStyle === 'drive' || activeStyle === 'drive-night'}
+        >
+          <LiveMap styleKey={
+            activeStyle === 'browse-night' ? 'standardDark'  :
+            activeStyle === 'drive'        ? 'drivingLight'  :
+            activeStyle === 'drive-night'  ? 'drivingDark'   :
+            activeStyle === 'mono'         ? 'monoLight'     :
+            activeStyle === 'custom'       ? 'satellite'     :
+            'standardLight'
+          } />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Swift']}>
@@ -514,10 +484,6 @@ export function NavSDKiOSMapCamera({ onNavigate }) {
   const [animated, setAnimated] = useState(true);
   const current = IOS_CAMERA_PRESETS.find(p => p.id === preset);
 
-  const tiltFactor = current.tilt / 70;
-  const perspectiveScale = 1 - tiltFactor * 0.25;
-  const verticalShift = tiltFactor * 20;
-
   return (
     <div className="page">
       <div className="page-header">
@@ -564,25 +530,13 @@ export function NavSDKiOSMapCamera({ onNavigate }) {
           />
         </div>
 
-        {/* Map with perspective effect */}
-        <div style={{
-          width: '100%', height: 260, borderRadius: 16, overflow: 'hidden',
-          position: 'relative', border: '1px solid var(--border)',
-          perspective: '600px',
-        }}>
-          <div style={{
-            position: 'absolute', inset: 0,
-            transform: `rotateX(${tiltFactor * 25}deg) scale(${perspectiveScale}) translateY(${verticalShift}px)`,
-            transformOrigin: 'bottom center',
-            transition: animated ? 'transform 0.6s cubic-bezier(0.4,0,0.2,1)' : 'none',
-          }}>
-            <MapBg style="day" />
-          </div>
-          <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,0.55)', borderRadius: 6, padding: '4px 10px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-mono)' }}>
-            zoom: {current.zoom} · tilt: {current.tilt}° · bearing: {current.bearing}°
-          </div>
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
-        </div>
+        <TabletFrame nipOverlay={preset !== 'overview'}>
+          <LiveMap
+            styleKey={preset === 'aerial' ? 'satellite' : 'drivingLight'}
+            zoom={current.zoom}
+            pitch={current.tilt}
+          />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Swift']}>
@@ -670,8 +624,6 @@ const IOS_MARKERS_APIS = [
 ];
 
 export function NavSDKiOSMapMarkers({ onNavigate }) {
-  const [selectedMarker, setSelectedMarker] = useState(null);
-
   return (
     <div className="page">
       <div className="page-header">
@@ -690,30 +642,9 @@ export function NavSDKiOSMapMarkers({ onNavigate }) {
         <h2 className="sh" id="ios-mk-demo">Interactive demo</h2>
         <p className="body">Tap annotations to select them and see the tap handler pattern.</p>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice">
-            <rect width="300" height="200" fill="#1e2d40" />
-            {[30, 60, 90, 120, 150, 180, 210, 240, 270].map(x => (
-              <line key={`v${x}`} x1={x} y1="0" x2={x} y2="200" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8" />
-            ))}
-            {[40, 80, 120, 160].map(y => (
-              <line key={`h${y}`} x1="0" y1={y} x2="300" y2={y} stroke="rgba(255,255,255,0.08)" strokeWidth="0.8" />
-            ))}
-            <path d="M0 100 Q75 90 150 100 T300 95" stroke="#c8a96e" strokeWidth="4" strokeLinecap="round" />
-            {IOS_DEMO_MARKERS.map(m => (
-              <AnnotationPin
-                key={m.id} x={m.x} y={m.y} label={m.label} color={m.color}
-                selected={selectedMarker === m.id}
-                onClick={() => setSelectedMarker(prev => prev === m.id ? null : m.id)}
-              />
-            ))}
-          </svg>
-          {selectedMarker && (
-            <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, background: 'rgba(15,26,40,0.92)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.12)', fontSize: '0.8125rem', color: 'rgba(255,255,255,0.8)' }}>
-              Selected: <strong style={{ color: 'white' }}>{IOS_DEMO_MARKERS.find(m => m.id === selectedMarker)?.label}</strong> — handled by <code style={{ color: '#e2001a' }}>annotationManager(_:didTapAnnotation:)</code>
-            </div>
-          )}
-        </div>
+        <TabletFrame browseOverlay={true}>
+          <LiveMap styleKey="standardLight" zoom={14} />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Swift']}>
@@ -839,19 +770,9 @@ export function NavSDKiOSMapTraffic({ onNavigate }) {
           </div>
         )}
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <MapBg style="day" showTrafficFlow={showFlow} showTrafficIncidents={showIncidents} />
-          {showFlow && (
-            <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: 4, flexDirection: 'column', background: 'rgba(0,0,0,0.55)', borderRadius: 8, padding: '8px 10px' }}>
-              {[['#22c55e', 'Free'], ['#f59e0b', 'Slow'], ['#ef4444', 'Jammed']].map(([c, l]) => (
-                <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ width: 12, height: 4, borderRadius: 2, background: c }} />
-                  <span style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.7)' }}>{l}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <TabletFrame nipOverlay={true}>
+          <LiveMap styleKey="drivingLight" />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Swift']}>

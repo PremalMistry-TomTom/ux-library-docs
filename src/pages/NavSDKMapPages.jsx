@@ -3,6 +3,7 @@ import Callout from '../components/ui/Callout';
 import CodeBlock from '../components/ui/CodeBlock';
 import PageActions from '../components/ui/PageActions';
 import { ApiLinks } from '../components/ui/ApiLinks';
+import { LiveMap, TabletFrame, StyleExplorer, TiltDemo } from './MapStyle';
 
 /* ─── Shared map mock background ─────────────────────────────────────────── */
 export function MapBg({ style = 'day', showTrafficFlow = false, showTrafficIncidents = false }) {
@@ -157,19 +158,13 @@ export function NavSDKMapCompose({ onNavigate }) {
           />
         </div>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <MapBg style={mapStyle} />
-          {/* Composable label */}
-          <div style={{
-            position: 'absolute', bottom: 10, left: 10,
-            background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '4px 10px',
-            fontSize: '0.75rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-mono)',
-          }}>
-            TomTomMapComposable
-          </div>
-          {/* Current user location dot */}
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
-        </div>
+        <TabletFrame browseOverlay={layer !== 'satellite'}>
+          <LiveMap styleKey={
+            layer === 'night'      ? 'standardDark' :
+            layer === 'satellite'  ? 'satellite'    :
+            'standardLight'
+          } />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Kotlin']}>
@@ -268,7 +263,6 @@ const MAP_VIEWS_APIS = [
   { name: 'Camera & Animations',      type: 'Android SDK', description: 'Control map viewpoint — location, zoom, tilt, rotation — and animate camera transitions.',               pageId: 'navsdk-map-camera',   productId: 'navsdk' },
 ];
 export function NavSDKMapViews({ onNavigate }) {
-  const [showFragment, setShowFragment] = useState(true);
 
   return (
     <div className="page">
@@ -292,25 +286,9 @@ export function NavSDKMapViews({ onNavigate }) {
         <h2 className="sh" id="mv-demo">Fragment container preview</h2>
         <p className="body">The <code>TomTomMapFragment</code> fills any <code>FragmentContainerView</code> in your layout. Toggle below to simulate fragment attach/detach.</p>
 
-        <div style={{ marginBottom: 12 }}>
-          <Toggle value={showFragment} onChange={setShowFragment} label="Fragment attached" secondary="MapFragment.getMapAsync() called" />
-        </div>
-
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '2px dashed var(--border)', background: 'var(--bg)' }}>
-          {showFragment ? (
-            <>
-              <MapBg style="day" />
-              <div style={{ position: 'absolute', top: 8, left: 8, background: 'rgba(0,0,0,0.55)', borderRadius: 5, padding: '3px 8px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.75)', fontFamily: 'var(--font-mono)' }}>
-                TomTomMapFragment
-              </div>
-              <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
-            </>
-          ) : (
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--muted)', fontSize: '0.875rem' }}>
-              FragmentContainerView — no fragment attached
-            </div>
-          )}
-        </div>
+        <TabletFrame browseOverlay={true}>
+          <LiveMap styleKey="standardLight" />
+        </TabletFrame>
       </div>
 
       {/* XML Layout */}
@@ -435,14 +413,19 @@ export function NavSDKMapStyles({ onNavigate }) {
           )}
         </div>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <MapBg style={current.style} />
-          <div style={{
-            position: 'absolute', bottom: 10, right: 10,
-            background: 'rgba(0,0,0,0.6)', borderRadius: 6, padding: '4px 10px',
-            fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-mono)',
-          }}>{current.descriptor}</div>
-        </div>
+        <TabletFrame
+          browseOverlay={activeStyle === 'browse' || activeStyle === 'browse-night'}
+          nipOverlay={activeStyle === 'drive' || activeStyle === 'drive-night'}
+        >
+          <LiveMap styleKey={
+            activeStyle === 'browse-night' ? 'standardDark'  :
+            activeStyle === 'drive'        ? 'drivingLight'  :
+            activeStyle === 'drive-night'  ? 'drivingDark'   :
+            activeStyle === 'mono'         ? 'monoLight'     :
+            activeStyle === 'satellite'    ? 'satellite'     :
+            'standardLight'
+          } />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Kotlin', 'Swift']}>
@@ -585,11 +568,6 @@ export function NavSDKMapCamera({ onNavigate }) {
   const [animated, setAnimated] = useState(true);
   const current = CAMERA_PRESETS.find(p => p.id === preset);
 
-  // Visual tilt simulation
-  const tiltFactor = current.tilt / 70;
-  const perspectiveScale = 1 - tiltFactor * 0.25;
-  const verticalShift = tiltFactor * 20;
-
   return (
     <div className="page">
       <div className="page-header">
@@ -631,26 +609,13 @@ export function NavSDKMapCamera({ onNavigate }) {
           <Toggle value={animated} onChange={setAnimated} label="Animated transition" secondary={animated ? 'animateCamera()' : 'moveCamera()'} />
         </div>
 
-        {/* Map with perspective effect */}
-        <div style={{
-          width: '100%', height: 260, borderRadius: 16, overflow: 'hidden',
-          position: 'relative', border: '1px solid var(--border)',
-          perspective: '600px',
-        }}>
-          <div style={{
-            position: 'absolute', inset: 0,
-            transform: `rotateX(${tiltFactor * 25}deg) scale(${perspectiveScale}) translateY(${verticalShift}px)`,
-            transformOrigin: 'bottom center',
-            transition: animated ? 'transform 0.6s cubic-bezier(0.4,0,0.2,1)' : 'none',
-          }}>
-            <MapBg style="day" />
-          </div>
-          {/* Zoom indicator */}
-          <div style={{ position: 'absolute', top: 10, right: 10, background: 'rgba(0,0,0,0.55)', borderRadius: 6, padding: '4px 10px', fontSize: '0.7rem', color: 'rgba(255,255,255,0.8)', fontFamily: 'var(--font-mono)' }}>
-            zoom: {current.zoom} · tilt: {current.tilt}° · bearing: {current.bearing}°
-          </div>
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 10, height: 10, borderRadius: '50%', background: '#e2001a', boxShadow: '0 0 0 4px rgba(226,0,26,0.25)' }} />
-        </div>
+        <TabletFrame nipOverlay={preset !== 'overview'}>
+          <LiveMap
+            styleKey={preset === 'satellite' ? 'satellite' : 'drivingLight'}
+            zoom={current.zoom}
+            pitch={current.tilt}
+          />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Kotlin', 'Swift']}>
@@ -767,7 +732,6 @@ const MAP_MARKERS_APIS = [
   { name: 'Find a Location',         type: 'Android SDK', description: 'Search SDK that delivers the GeoPoint coordinates placed as markers.',                                        pageId: 'navsdk-search-find',  productId: 'navsdk' },
 ];
 export function NavSDKMapMarkers({ onNavigate }) {
-  const [selectedMarker, setSelectedMarker] = useState(null);
   const [clustering, setClustering] = useState(false);
 
   return (
@@ -788,43 +752,12 @@ export function NavSDKMapMarkers({ onNavigate }) {
         <h2 className="sh" id="mk-demo">Interactive demo</h2>
         <p className="body">Tap markers to select them. Toggle clustering to see how nearby markers collapse into a cluster badge.</p>
 
-        <div style={{ marginBottom: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <Toggle value={clustering} onChange={setClustering} label="Clustering enabled" />
-        </div>
+        <TabletFrame browseOverlay={true}>
+          <LiveMap styleKey="standardLight" zoom={14} />
+        </TabletFrame>
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice">
-            {/* map bg roads */}
-            <rect width="300" height="200" fill="#1e2d40" />
-            {[30, 60, 90, 120, 150, 180, 210, 240, 270].map(x => (
-              <line key={`v${x}`} x1={x} y1="0" x2={x} y2="200" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8" />
-            ))}
-            {[40, 80, 120, 160].map(y => (
-              <line key={`h${y}`} x1="0" y1={y} x2="300" y2={y} stroke="rgba(255,255,255,0.08)" strokeWidth="0.8" />
-            ))}
-            <path d="M0 100 Q75 90 150 100 T300 95" stroke="#c8a96e" strokeWidth="4" strokeLinecap="round" />
-
-            {clustering ? (
-              /* Cluster badge */
-              <>
-                <circle cx={155} cy={105} r="18" fill="#e2001a" stroke="white" strokeWidth="2" />
-                <text x={155} y={109} textAnchor="middle" fill="white" style={{ fontSize: 11, fontWeight: 700 }}>4</text>
-              </>
-            ) : (
-              DEMO_MARKERS.map(m => (
-                <MarkerPin
-                  key={m.id} x={m.x} y={m.y} label={m.label} color={m.color}
-                  selected={selectedMarker === m.id}
-                  onClick={() => setSelectedMarker(prev => prev === m.id ? null : m.id)}
-                />
-              ))
-            )}
-          </svg>
-          {selectedMarker && !clustering && (
-            <div style={{ position: 'absolute', bottom: 10, left: 10, right: 10, background: 'rgba(15,26,40,0.92)', borderRadius: 10, padding: '10px 14px', border: '1px solid rgba(255,255,255,0.12)', fontSize: '0.8125rem', color: 'rgba(255,255,255,0.8)' }}>
-              Selected: <strong style={{ color: 'white' }}>{DEMO_MARKERS.find(m => m.id === selectedMarker)?.label}</strong> — use <code style={{ color: '#e2001a' }}>marker.addClickListener {'{}'}</code> to handle taps
-            </div>
-          )}
+        <div style={{ marginTop: 12, marginBottom: 4 }}>
+          <Toggle value={clustering} onChange={setClustering} label="Clustering enabled" secondary="Updates setMarkerClusteringEnabled() call below" />
         </div>
 
         <div style={{ marginTop: 16 }}>
@@ -954,19 +887,9 @@ export function NavSDKMapTraffic({ onNavigate }) {
           </div>
         )}
 
-        <div style={{ width: '100%', height: 260, borderRadius: 16, overflow: 'hidden', position: 'relative', border: '1px solid var(--border)' }}>
-          <MapBg style="day" showTrafficFlow={showFlow} showTrafficIncidents={showIncidents} />
-          {showFlow && (
-            <div style={{ position: 'absolute', top: 10, right: 10, display: 'flex', gap: 4, flexDirection: 'column', background: 'rgba(0,0,0,0.55)', borderRadius: 8, padding: '8px 10px' }}>
-              {[['#22c55e', 'Free'], ['#f59e0b', 'Slow'], ['#ef4444', 'Jammed']].map(([c, l]) => (
-                <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <div style={{ width: 12, height: 4, borderRadius: 2, background: c }} />
-                  <span style={{ fontSize: '0.6875rem', color: 'rgba(255,255,255,0.7)' }}>{l}</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        <TabletFrame nipOverlay={true}>
+          <LiveMap styleKey="drivingLight" />
+        </TabletFrame>
 
         <div style={{ marginTop: 16 }}>
           <CodeBlock tabs={['Kotlin', 'Swift']}>
