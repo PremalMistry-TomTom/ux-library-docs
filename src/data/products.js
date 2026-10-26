@@ -13,6 +13,7 @@ import { MAP_DISPLAY_API_NAV_B as MAP_DISPLAY_API_NAV, MAP_DISPLAY_API_PAGE_TITL
 import { PARKING_FUEL_API_NAV, PARKING_FUEL_API_PAGE_TITLES } from './nav-parking-fuel-api';
 import { TRAFFIC_ANALYTICS_API_NAV, TRAFFIC_ANALYTICS_API_PAGE_TITLES } from './nav-traffic-analytics-api';
 import { SNAP_TO_ROADS_API_NAV, SNAP_TO_ROADS_API_PAGE_TITLES } from './nav-snap-to-roads-api';
+import { DI_NAV, DI_PAGE_TITLES } from './nav-driving-intelligence';
 
 export const PRODUCTS = {
   'ux-library': {
@@ -126,6 +127,13 @@ export const PRODUCTS = {
     defaultPage: 'snap-to-roads-api-intro',
     nav: SNAP_TO_ROADS_API_NAV,
     pageTitles: SNAP_TO_ROADS_API_PAGE_TITLES,
+  },
+  'driving-intelligence': {
+    id: 'driving-intelligence',
+    name: 'Driving Intelligence',
+    defaultPage: 'di-intro',
+    nav: DI_NAV,
+    pageTitles: DI_PAGE_TITLES,
   },
 };
 

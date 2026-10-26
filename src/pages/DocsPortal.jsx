@@ -385,6 +385,13 @@ const PRODUCTS = {
       inProgress: true,
     },
     {
+      name: 'Driving Intelligence',
+      desc: "Draft. The driving specialist behind a carmaker's assistant: predicts the trip, watches the road ahead and returns one structured answer with its reason.",
+      docsId: 'di-intro',
+      productId: 'driving-intelligence',
+      inProgress: true,
+    },
+    {
       name: 'ADAS SDK',
       desc: 'Bring ISA-compliant TomTom ADAS data to your vehicle and efficiently augment your existing navigation with speed alerts, curve warnings, and virtual horizon data.',
     },

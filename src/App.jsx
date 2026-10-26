@@ -353,6 +353,12 @@ import EVGuideJMESPath from './pages/EVGuideJMESPath';
 // LDEVR — new endpoint pages
 import LDEVRGuidance from './pages/LDEVRGuidance';
 import { LDEVRPlatformLanding } from './pages/LDEVRGuidePages';
+// Driving Intelligence (draft, pkd-to-docs)
+import {
+  DIQuickstart, DIConcepts, DIIntegrationPaths, DIFlows, DIDesigning,
+  DICapabilities, DISdkInterface, DIContext, DIResponseContract, DIErrors, DIGlossary, DIGapReport,
+} from './pages/DrivingIntelligencePages';
+import { DIIntroduction, DIUseCases, DIUseCasePage } from './pages/DrivingIntelligenceUseCases';
 import Placeholder from './pages/Placeholder';
 import PlumbingPortal from './pages/PlumbingPortal';
 import {
@@ -771,6 +777,27 @@ function PageContent({ pageId, onNavigate, product, platform, routingNavMode = '
     // Snap to Roads API
     case 'snap-to-roads-api-intro': return <SnapToRoadsAPIIntro onNavigate={onNavigate} />;
     case 'snap-to-roads':          return <SnapToRoads onNavigate={onNavigate} />;
+    // Driving Intelligence (draft)
+    case 'di-intro': return <DIIntroduction onNavigate={onNavigate} />;
+    case 'di-use-cases': return <DIUseCases onNavigate={onNavigate} />;
+    case 'di-uc-faster-way': return <DIUseCasePage id="faster-way" onNavigate={onNavigate} />;
+    case 'di-uc-closure': return <DIUseCasePage id="closure" onNavigate={onNavigate} />;
+    case 'di-uc-save-place': return <DIUseCasePage id="save-place" onNavigate={onNavigate} />;
+    case 'di-uc-charger': return <DIUseCasePage id="charger" onNavigate={onNavigate} />;
+    case 'di-uc-coffee': return <DIUseCasePage id="coffee" onNavigate={onNavigate} />;
+    case 'di-uc-open-on-arrival': return <DIUseCasePage id="open-on-arrival" onNavigate={onNavigate} />;
+    case 'di-quickstart': return <DIQuickstart onNavigate={onNavigate} />;
+    case 'di-concepts': return <DIConcepts onNavigate={onNavigate} />;
+    case 'di-integration-paths': return <DIIntegrationPaths onNavigate={onNavigate} />;
+    case 'di-flows': return <DIFlows onNavigate={onNavigate} />;
+    case 'di-designing': return <DIDesigning onNavigate={onNavigate} />;
+    case 'di-capabilities': return <DICapabilities onNavigate={onNavigate} />;
+    case 'di-sdk-interface': return <DISdkInterface onNavigate={onNavigate} />;
+    case 'di-context': return <DIContext onNavigate={onNavigate} />;
+    case 'di-response-contract': return <DIResponseContract onNavigate={onNavigate} />;
+    case 'di-errors': return <DIErrors onNavigate={onNavigate} />;
+    case 'di-glossary': return <DIGlossary onNavigate={onNavigate} />;
+    case 'di-gap-report': return <DIGapReport onNavigate={onNavigate} />;
     // Domain landing pages
     case 'assets':                 return <DomainLanding groupKey="assets"             onNavigate={onNavigate} />;
     case 'map-customisation':      return <DomainLanding groupKey="mapCustomisation"   onNavigate={onNavigate} />;
