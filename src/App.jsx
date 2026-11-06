@@ -388,7 +388,7 @@ const FULL_PAGES = new Set([
   'screenshot-assets', 'typography',
 ]);
 
-function PageContent({ pageId, onNavigate, product, platform, routingNavMode = 'a', isDark = false }) {
+function PageContent({ pageId, onNavigate, product, platform, routingNavMode = 'b', isDark = false }) {
   switch (pageId) {
     case 'overview':           return <Overview onNavigate={onNavigate} />;
     case 'colour':             return <Colour />;
@@ -819,7 +819,9 @@ export default function App() {
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [plumbingOpen, setPlumbingOpen] = useState(false);
   const [routingNavMode, setRoutingNavMode] = useState(
-    () => localStorage.getItem('routing-nav-ia-mode') || 'a'
+    // Option B (concept-first, version tabs on every endpoint) is the default; A and C stay
+    // available from Plumbing › Routing API — nav IA, which remembers the choice.
+    () => localStorage.getItem('routing-nav-ia-mode') || 'b'
   );
   const handleRoutingNavModeChange = useCallback((mode) => {
     setRoutingNavMode(mode);
