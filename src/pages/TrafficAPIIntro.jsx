@@ -99,7 +99,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile, IcoTrafficFlowTile),
+      Thumb: makeThumb(IlloTrafficFlowTile, L_TrafficFlowTile, IcoTrafficFlowTile, 'map-layers'),
       method: 'GET',
       title: 'Vector Flow Tiles',
       desc: 'Protocol Buffer vector tiles carrying traffic speed and flow data for client-side styled overlays.',
@@ -107,7 +107,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
+      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents, 'apis'),
       method: 'GET',
       title: 'Raster Incident Tiles',
       desc: 'Raster tiles showing traffic incident pins and severity overlays for quick visual integration.',
@@ -115,7 +115,7 @@ export default function TrafficAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents),
+      Thumb: makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents, 'search'),
       method: 'GET',
       title: 'Incident Viewport',
       desc: 'Return incidents within a viewport bounding box — optimised for map-aligned incident data fetching.',

@@ -390,7 +390,7 @@ function ScreenshotShowcase({ t }) {
   const ITEMS = [
     { labelKey: 'liveTraffic', Thumb: makeThumb(ThumbANATraffic,   L_ANA_Traffic, IcoTrafficFlow)   },
     { labelKey: 'premiumMap',  Thumb: makeThumb(ThumbANAMap,       L_ANA_Map, IcoMapDisplay)        },
-    { labelKey: 'evCharging',  Thumb: makeThumb(ThumbANAEVSearch,  L_ANA_EVSearch, IcoEVSearchNearby)   },
+    { labelKey: 'evCharging',  Thumb: makeThumb(ThumbANAEVSearch, L_ANA_EVSearch, IcoEVSearchNearby, 'usecases/ev')   },
     { labelKey: 'ldEvRoute',   Thumb: makeThumb(ThumbANALDRoute,   L_ANA_LDRoute, IcoEVRouting)    },
   ];
   return (
@@ -422,13 +422,13 @@ export default function ANAIntro({ onNavigate }) {
       pageId: 'ana-driver-experience',
     },
     {
-      Thumb: makeThumb(ThumbVIL,    L_VIL, IcoNavSDKNavigation),
+      Thumb: makeThumb(ThumbVIL, L_VIL, IcoNavSDKNavigation, 'automotive'),
       title: t('anaIntro.features.vil.title'),
       desc: t('anaIntro.features.vil.desc'),
       pageId: 'ana-vil',
     },
     {
-      Thumb: makeThumb(ThumbCIL,    L_CIL, IcoNavSDKNavigation),
+      Thumb: makeThumb(ThumbCIL, L_CIL, IcoNavSDKNavigation, 'nav/controls'),
       title: t('anaIntro.features.cil.title'),
       desc: t('anaIntro.features.cil.desc'),
       pageId: 'ana-cil',
@@ -441,7 +441,7 @@ export default function ANAIntro({ onNavigate }) {
       pageId: 'ana-theming',
     },
     {
-      Thumb: makeThumb(ThumbANAEVSearch, L_ANA_EVSearch, IcoEVSearchNearby),
+      Thumb: makeThumb(ThumbANAEVSearch, L_ANA_EVSearch, IcoEVSearchNearby, 'nav/ev-battery'),
       title: t('anaIntro.features.evSupport.title'),
       desc: t('anaIntro.features.evSupport.desc'),
       pageId: 'ana-vil-ev',

@@ -48,7 +48,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(null, L_SearchCategory, IcoSearchPOI),
+      Thumb: makeThumb(null, L_SearchCategory, IcoSearchPOI, 'usecases/city'),
       method: 'GET',
       title: 'Category Search',
       desc: 'Find POIs by category type such as restaurants, hospitals, or petrol stations.',
@@ -80,7 +80,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(null, L_BatchSearch, IcoSearchFuzzy),
+      Thumb: makeThumb(null, L_BatchSearch, IcoSearchFuzzy, 'nav/batch'),
       method: 'POST',
       title: 'Batch Search',
       desc: 'Execute multiple search queries in a single HTTP request, synchronously or asynchronously.',
@@ -88,7 +88,7 @@ export default function SearchAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloPOIDetails, L_POIDetails, IcoPOIDetails),
+      Thumb: makeThumb(IlloPOIDetails, L_POIDetails, IcoPOIDetails, 'nav/poi-details'),
       method: 'GET',
       title: 'POI Details',
       desc: 'Retrieve enriched POI data including ratings, price range, opening hours, and contact info.',

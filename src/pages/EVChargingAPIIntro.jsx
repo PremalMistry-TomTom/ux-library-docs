@@ -30,7 +30,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
 
   const endpoints = [
     {
-      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby),
+      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby, 'usecases/ev'),
       method: 'GET',
       title: 'EV Station Search',
       desc: 'Search for charging stations near a coordinate using category set 7309 (v1) or the Orbis EV nearby endpoint (v3).',
@@ -46,7 +46,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       tag: 'v1/v3',
     },
     {
-      Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics),
+      Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics, 'global-data'),
       method: 'GET',
       title: 'Supported Markets',
       desc: 'Return the list of countries and regions where TomTom EV charging availability data is provided.',
@@ -54,7 +54,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability, IcoEVChargingAvailability),
+      Thumb: makeThumb(IlloEVChargingAvailability, L_EVChargingAvailability, IcoEVChargingAvailability, 'markers'),
       method: 'GET',
       title: 'EV Search by ID',
       desc: 'Retrieve enriched details for one or more EV POIs by UUID, including connectors, opening hours, and tariff pricing.',
@@ -62,7 +62,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       tag: 'v1/v3',
     },
     {
-      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby),
+      Thumb: makeThumb(IlloEVSearchNearby, L_EVSearchNearby, IcoEVSearchNearby, 'usecases/multistop'),
       method: 'POST',
       title: 'Along-Route Charging',
       desc: 'Find charging stations along a route corridor, ranked by deviation from the original path and compatible connectors.',
@@ -70,7 +70,7 @@ export default function EVChargingAPIIntro({ onNavigate }) {
       tag: 'v1/v3',
     },
     {
-      Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics),
+      Thumb: makeThumb(null, L_EVMarketCoverage, IcoAreaAnalytics, 'nav/nearby'),
       method: 'GET',
       title: 'EV Search Nearby',
       desc: 'Discover EV charging stations within a circular area or bounding box with rich filter support for connector type and power level.',

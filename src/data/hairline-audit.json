@@ -1,0 +1,2071 @@
+{
+  "generatedAt": "2026-11-06T13:18:07.616Z",
+  "totals": {
+    "slots": 317,
+    "covered": 295,
+    "gapSlots": 22,
+    "pages": 21,
+    "figures": 71,
+    "upstream": 32,
+    "local": 39,
+    "unusedFigures": 2,
+    "gapIcons": 11,
+    "duplicates": 25,
+    "bypass": 21,
+    "planned": 0,
+    "plannedCards": 0,
+    "duplicatesWhenDrawn": 25
+  },
+  "figures": [
+    {
+      "slug": "map-layers",
+      "name": "Layer Stack",
+      "for": "Map layers",
+      "alt": "Three map sheets stacked above one another: a field of data points, the road network, and the finished map with a river, a park and a route between two pins.",
+      "source": "upstream",
+      "uses": 8,
+      "pages": [
+        "DocsPortal",
+        "MapDisplayAPIIntro",
+        "MapDisplayExplorer",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "TrafficAPIIntro"
+      ],
+      "icons": [
+        "IcoMapDisplay",
+        "IcoMapVectorTile",
+        "IcoTrafficFlowTile"
+      ]
+    },
+    {
+      "slug": "traffic",
+      "name": "Rush Hour",
+      "for": "Traffic",
+      "alt": "A two-lane road in a jam: two cars stopped nose to tail in each lane, the road empty behind them.",
+      "source": "upstream",
+      "uses": 8,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "TrafficAPIIntro",
+        "TrafficAnalyticsAPIIntro",
+        "TrafficExplorer"
+      ],
+      "icons": [
+        "IcoAreaAnalytics",
+        "IcoMapDisplay",
+        "IcoNavSDKNavigation",
+        "IcoTrafficFlow"
+      ]
+    },
+    {
+      "slug": "traffic-incident",
+      "name": "Hazard Ahead",
+      "for": "Traffic incidents",
+      "alt": "A car broken down askew in its lane on a two-lane road, a traffic cone behind it and smoke rising off its bonnet.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "DocsPortal",
+        "DrivingIntelligenceUseCases",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "TrafficAPIIntro",
+        "TrafficExplorer"
+      ],
+      "icons": [
+        "IcoNavSDKVirtualHorizon",
+        "IcoTrafficIncidents"
+      ]
+    },
+    {
+      "slug": "search",
+      "name": "Lens and Pin",
+      "for": "Search",
+      "alt": "A magnifying glass held over a street map, with a map pin rising up through the lens.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "SearchAPIIntro",
+        "TrafficAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKSearch",
+        "IcoSearchFuzzy",
+        "IcoTrafficIncidents"
+      ]
+    },
+    {
+      "slug": "map-data",
+      "name": "Live Streets",
+      "for": "Map Data",
+      "alt": "A map tile with a connected network of roads, low buildings, and traffic dashes on the main road.",
+      "source": "upstream",
+      "uses": 11,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "MapDisplayAPIIntro",
+        "MapDisplayExplorer",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "TrafficAPIIntro",
+        "TrafficAnalyticsAPIIntro",
+        "TrafficExplorer"
+      ],
+      "icons": [
+        "IcoMapDisplay",
+        "IcoMapVectorTile",
+        "IcoTrafficFlowTile",
+        "IcoTrafficStats"
+      ]
+    },
+    {
+      "slug": "agentic-map",
+      "name": "Ask the Way",
+      "for": "Agentic Map",
+      "alt": "A chat bubble whose tail is a map pin, standing on a street map, with an AI spark at its corner and a dashed route to a destination.",
+      "source": "upstream",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "Overview"
+      ],
+      "icons": [
+        "IcoIntentRouting"
+      ]
+    },
+    {
+      "slug": "agentic-search",
+      "name": "Ask for Places",
+      "for": "Agentic Map Search",
+      "alt": "A chat bubble whose tail is a map pin, standing on a street map, with an AI spark at its corner and map pins rising from places, one of them chosen.",
+      "source": "upstream",
+      "uses": 0,
+      "pages": [],
+      "icons": []
+    },
+    {
+      "slug": "mcps",
+      "name": "Connected Globe",
+      "for": "MCPs",
+      "alt": "A globe with service points on it, linked by arcs to one hub, and two AI sparks beside it.",
+      "source": "upstream",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding"
+      ],
+      "icons": [
+        "IcoAIConfig"
+      ]
+    },
+    {
+      "slug": "global-data",
+      "name": "Dotted Earth",
+      "for": "Global data mapping",
+      "alt": "A globe whose continents are drawn in fine dots, Europe and Africa facing the viewer, a scatter of dots on the land lit where data is coming in.",
+      "source": "upstream",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "EVChargingAPIIntro",
+        "MapDisplayAPIIntro",
+        "NavSDKDomains",
+        "TrafficAnalyticsAPIIntro"
+      ],
+      "icons": [
+        "IcoAreaAnalytics",
+        "IcoMapSatelliteTile",
+        "IcoNavSDKOffline"
+      ]
+    },
+    {
+      "slug": "markers",
+      "name": "Dropped Pin",
+      "for": "Map markers",
+      "alt": "A map marker, a pin with a round hole through its head, hovering over a round pad, the spot it marks.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "DocsPortal",
+        "EVChargingAPIIntro",
+        "GeocodingAPIIntro",
+        "MapDisplayAPIIntro",
+        "MapDisplayExplorer",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoEVChargingAvailability",
+        "IcoGeocode",
+        "IcoMapDisplay",
+        "IcoMapStaticImage"
+      ]
+    },
+    {
+      "slug": "apis",
+      "name": "Tile Service",
+      "for": "APIs",
+      "alt": "A grid of map tiles with one missing, a server just above the empty slot, linked to two other services.",
+      "source": "upstream",
+      "uses": 6,
+      "pages": [
+        "DocsPortal",
+        "MapDisplayAPIIntro",
+        "MapDisplayExplorer",
+        "TrafficAPIIntro",
+        "TrafficExplorer"
+      ],
+      "icons": [
+        "IcoMapRasterTile",
+        "IcoNavGuidance",
+        "IcoTrafficIncidents"
+      ]
+    },
+    {
+      "slug": "automotive",
+      "name": "Round the Corner",
+      "for": "Automotive",
+      "alt": "A car on a street map seen from above, with a route round the corner to a destination pin.",
+      "source": "upstream",
+      "uses": 8,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "DomainLanding",
+        "LDEVRIntro",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "Overview"
+      ],
+      "icons": [
+        "IcoCluster",
+        "IcoNavSDKNavigation",
+        "IcoVIBasics"
+      ]
+    },
+    {
+      "slug": "automotive-ui",
+      "name": "Modular Cockpit",
+      "for": "Automotive UI",
+      "alt": "A tablet lying on a table, its interface built of modules set into slots: a map with a route from a chevron to a pin, lane guidance and a trip panel.",
+      "source": "upstream",
+      "uses": 6,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "DomainLanding",
+        "DrivingIntelligenceUseCases",
+        "NavSDKiOSDomains",
+        "Overview"
+      ],
+      "icons": [
+        "IcoHomeScreen",
+        "IcoNavSDKNavigation"
+      ]
+    },
+    {
+      "slug": "mpp",
+      "name": "Probable Path",
+      "for": "Most Probable Path (ADAS)",
+      "alt": "A car in the middle lane of a three-lane road, faint sensor arcs at its front corners, and ahead of it the lane it will most likely take picked out with a row of chevrons.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "DrivingIntelligenceUseCases",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "RoutingAPIIntro"
+      ],
+      "icons": [
+        "IcoADAS",
+        "IcoHorizonPanel",
+        "IcoNavSDKVirtualHorizon"
+      ]
+    },
+    {
+      "slug": "parking",
+      "name": "Free Bay",
+      "for": "Parking availability",
+      "alt": "A car parked in its bay, and beside it a free bay with a parking marker, a P, floating over it.",
+      "source": "upstream",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "ParkingFuelAPIIntro"
+      ],
+      "icons": [
+        "IcoParkingAvailability"
+      ]
+    },
+    {
+      "slug": "dispatch",
+      "name": "Load Order",
+      "for": "Live delivery dispatch",
+      "alt": "A delivery van with its back doors open and three parcels queued behind it, each marked with dots for its stop, their order shuffling as dispatch updates it.",
+      "source": "upstream",
+      "uses": 1,
+      "pages": [
+        "DocsPortal"
+      ],
+      "icons": [
+        "IcoWaypointOpt"
+      ]
+    },
+    {
+      "slug": "routing",
+      "name": "Route Drawn",
+      "for": "Routing",
+      "alt": "Two roads from a start point to a destination pin, the chosen one raised with the pin and the route drawn along it.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "DocsPortal",
+        "LDEVRIntro",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "RoutingAPIIntro",
+        "RoutingExplorer"
+      ],
+      "icons": [
+        "IcoCalculateRoute",
+        "IcoNavSDKRouting"
+      ]
+    },
+    {
+      "slug": "matrix",
+      "name": "Route Matrix",
+      "for": "Matrix Routing API",
+      "alt": "A street grid with two origins on one side, each routed along the streets to two stop pins of its own, the first origin's routes lit.",
+      "source": "upstream",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "TrafficAnalyticsAPIIntro"
+      ],
+      "icons": [
+        "IcoMatrixRouting",
+        "IcoODAnalysis"
+      ]
+    },
+    {
+      "slug": "navigation",
+      "name": "Pocket Navigator",
+      "for": "Navigation SDK",
+      "alt": "A phone lying screen up with a navigation app: a route runs along the map's streets from a position puck to a destination pin.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "RoutingAPIIntro"
+      ],
+      "icons": [
+        "IcoNavGuidance",
+        "IcoNavSDKNavigation"
+      ]
+    },
+    {
+      "slug": "usecases/sport",
+      "name": "Lap Replay",
+      "for": "Activity tracker",
+      "alt": "A map with a park and its pines, and a run along the street round it, the runner a puck and the stretch already run lit.",
+      "source": "upstream",
+      "uses": 3,
+      "pages": [
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "SnapToRoadsAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKLocation",
+        "IcoSnapToRoads"
+      ]
+    },
+    {
+      "slug": "usecases/poi",
+      "name": "Corner Shop",
+      "for": "Discover places",
+      "alt": "A shop on a street corner with a map pin over its roof.",
+      "source": "upstream",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKSearch",
+        "IcoSearchPOI"
+      ]
+    },
+    {
+      "slug": "usecases/ev",
+      "name": "Charge Point",
+      "for": "Find an EV charger",
+      "alt": "A lightning bolt hovering over a round charging pad.",
+      "source": "upstream",
+      "uses": 8,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "DomainLanding",
+        "EVChargingAPIIntro",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "Overview"
+      ],
+      "icons": [
+        "IcoEV",
+        "IcoEVRouting",
+        "IcoEVSearchNearby",
+        "IcoNavSDKSearch"
+      ]
+    },
+    {
+      "slug": "usecases/delivery",
+      "name": "Depot Belt",
+      "for": "Live delivery dispatch",
+      "alt": "Crates leaving a depot along a belt in stop order.",
+      "source": "upstream",
+      "uses": 0,
+      "pages": [],
+      "icons": []
+    },
+    {
+      "slug": "usecases/heatmap",
+      "name": "Heat Sun",
+      "for": "Temperature map",
+      "alt": "A sun with its rays reaching out.",
+      "source": "upstream",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "LDEVRIntro",
+        "RoutingAPIIntro"
+      ],
+      "icons": [
+        "IcoRoutingWeather"
+      ]
+    },
+    {
+      "slug": "usecases/multistop",
+      "name": "Long Haul",
+      "for": "Long-distance EV trip",
+      "alt": "A car on a road from start to destination pin, with a charger halfway.",
+      "source": "upstream",
+      "uses": 6,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "DomainLanding",
+        "EVChargingAPIIntro",
+        "LDEVRIntro",
+        "Overview"
+      ],
+      "icons": [
+        "IcoEVRouting",
+        "IcoEVSearchNearby"
+      ]
+    },
+    {
+      "slug": "usecases/city",
+      "name": "Walking Ring",
+      "for": "Neighbourhood analysis",
+      "alt": "A home inside a walking ring, with a bus stop, a park and a shop around it.",
+      "source": "upstream",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "RoutingAPIIntro",
+        "RoutingExplorer",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoReachableRange",
+        "IcoSearchPOI"
+      ]
+    },
+    {
+      "slug": "usecases/package",
+      "name": "Doorstep",
+      "for": "Package tracker",
+      "alt": "A parcel on the path to a front door.",
+      "source": "upstream",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "GeocodingAPIIntro"
+      ],
+      "icons": [
+        "IcoGeocode"
+      ]
+    },
+    {
+      "slug": "usecases/route",
+      "name": "Two Roads",
+      "for": "Plan a route",
+      "alt": "Two roads from a start point to a destination pin, one raised.",
+      "source": "upstream",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKRouting"
+      ]
+    },
+    {
+      "slug": "usecases/sharing",
+      "name": "Shared Bay",
+      "for": "Shared mobility",
+      "alt": "A small car and a bike parked nose to tail in a shared bay.",
+      "source": "upstream",
+      "uses": 1,
+      "pages": [
+        "ParkingFuelAPIIntro"
+      ],
+      "icons": [
+        "IcoParkingAvailability"
+      ]
+    },
+    {
+      "slug": "usecases/fleet",
+      "name": "Geofence",
+      "for": "Track your fleet",
+      "alt": "A delivery truck inside its geofence, with sonar rings around it.",
+      "source": "upstream",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding"
+      ],
+      "icons": [
+        "IcoTruck"
+      ]
+    },
+    {
+      "slug": "usecases/density",
+      "name": "Neighbourhood Moods",
+      "for": "Vibe density",
+      "alt": "Three faces standing on a street map, one per neighbourhood: happy, so-so and sad.",
+      "source": "upstream",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "TrafficAnalyticsAPIIntro"
+      ],
+      "icons": [
+        "IcoAreaAnalytics",
+        "IcoODAnalysis"
+      ]
+    },
+    {
+      "slug": "usecases/traffic",
+      "name": "Pull Out",
+      "for": "City live traffic",
+      "alt": "A queue of cars nose to tail on a short road.",
+      "source": "upstream",
+      "uses": 7,
+      "pages": [
+        "DocsPortal",
+        "DrivingIntelligenceUseCases",
+        "LDEVRIntro",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "RoutingAPIIntro",
+        "TrafficAnalyticsAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKVirtualHorizon",
+        "IcoTrafficStats"
+      ]
+    },
+    {
+      "slug": "nav/location",
+      "name": "Sky Fix",
+      "for": "Navigation SDK: Location",
+      "alt": "A round position puck on a small street patch with an accuracy ring around it, and three small satellites with solar panels above, dashed lines running from one of them down to the puck.",
+      "source": "local",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKLocation"
+      ]
+    },
+    {
+      "slug": "nav/offline",
+      "name": "Saved Region",
+      "for": "Navigation SDK: Offline maps",
+      "alt": "A shallow open drawer with a finger pull, and above it a map region split into nine thin tiles; one corner tile already sits inside the drawer.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKIntro"
+      ],
+      "icons": [
+        "IcoNavSDKOffline"
+      ]
+    },
+    {
+      "slug": "nav/simulate",
+      "name": "Rolling Road",
+      "for": "Navigation SDK: Advanced, simulated navigation",
+      "alt": "A car standing on a belt that runs round two rollers on a floor plate, with a round cooling fan on a stand in front of its nose.",
+      "source": "local",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKAdvanced"
+      ]
+    },
+    {
+      "slug": "nav/controls",
+      "name": "Push Keys",
+      "for": "Navigation controls",
+      "alt": "A slim rounded panel with four round push buttons in a row; the third is pressed in, with a bright rim and centre dot.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "DomainLanding",
+        "NavSDKIntro"
+      ],
+      "icons": [
+        "IcoNavControls",
+        "IcoNavSDKNavigation"
+      ]
+    },
+    {
+      "slug": "nav/turn",
+      "name": "Next Turn",
+      "for": "Turn instructions",
+      "alt": "A four-way crossroads with a raised route ribbon coming up the near road and curving right into the far-right road.",
+      "source": "local",
+      "uses": 8,
+      "pages": [
+        "DocsPortal",
+        "GeocodingAPIIntro",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "RoutingAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKNavigation",
+        "IcoReverseGeocode",
+        "IcoTurnInstructions"
+      ]
+    },
+    {
+      "slug": "nav/lanes",
+      "name": "Lane Gantry",
+      "for": "Instruction panel and lane guidance",
+      "alt": "A straight three-lane road crossed by a sign gantry with a panel over each lane; the middle panel is swung out and its lane stripe is lit.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "Overview",
+        "RoutingAPIIntro"
+      ],
+      "icons": [
+        "IcoInstructionPanel",
+        "IcoNavGuidance"
+      ]
+    },
+    {
+      "slug": "nav/route-bar",
+      "name": "Trip Rail",
+      "for": "Route bar",
+      "alt": "A long slim rail with a round puck on it; along its side stand a short queue of cars, a map pin and a charging post, the pin drawn bright.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKRouting",
+        "IcoRouteBar"
+      ]
+    },
+    {
+      "slug": "nav/hud",
+      "name": "Heads Up",
+      "for": "Head-up display",
+      "alt": "A car driving away up a road, seen from behind and to its left, with a small pane floating just ahead of its windscreen showing a bright little road that curves into the bend.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "Overview"
+      ],
+      "icons": [
+        "IcoHUD"
+      ]
+    },
+    {
+      "slug": "nav/eta",
+      "name": "Arrival Dial",
+      "for": "ETA panel",
+      "alt": "A short road from a round start puck to a clock dial on a post, with a small puck on the road as the car and the road behind it drawn bright.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "Overview"
+      ],
+      "icons": [
+        "IcoETAPanel",
+        "IcoEVRouting"
+      ]
+    },
+    {
+      "slug": "nav/cluster",
+      "name": "Through the Wheel",
+      "for": "Instrument cluster",
+      "alt": "A car dashboard with an instrument pod under a curved hood: two round gauges with needles and a small screen showing a short route between them, seen through a three-spoke steering wheel.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "Overview"
+      ],
+      "icons": [
+        "IcoCluster"
+      ]
+    },
+    {
+      "slug": "nav/ev-battery",
+      "name": "Charge Ahead",
+      "for": "EV navigation UI",
+      "alt": "A battery pack with five raised cells beside a road that runs from a start puck past a charging post to a map pin; three cells are full.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "ANAIntro",
+        "DocsPortal",
+        "DomainLanding"
+      ],
+      "icons": [
+        "IcoEVNavUI",
+        "IcoEVSearchNearby"
+      ]
+    },
+    {
+      "slug": "nav/adas-data",
+      "name": "Road Profile",
+      "for": "ADAS data",
+      "alt": "An S-curved road with a dashed centre line and, above it on dashed posts, a narrow ribbon that follows its bends and rises and falls, one stretch lit with a line dropping to the road.",
+      "source": "local",
+      "uses": 6,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoADAS",
+        "IcoNavSDKVirtualHorizon"
+      ]
+    },
+    {
+      "slug": "nav/snap-to-roads",
+      "name": "Snap Line",
+      "for": "Snap to Roads and map-matched location",
+      "alt": "A gently curving road with faint GPS dots scattered either side; near the start a few dots sit on the road, joined by a bright line.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "SnapToRoadsAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKAdvanced",
+        "IcoSnapToRoads"
+      ]
+    },
+    {
+      "slug": "nav/logging",
+      "name": "Black Box",
+      "for": "Logging and diagnostics",
+      "alt": "A small rounded recorder case with a handle, a strip of paper curling out of its slot along the ground, and five event dots on stems above it, one lit.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKAdvanced"
+      ]
+    },
+    {
+      "slug": "nav/vehicle-profile",
+      "name": "Measured Car",
+      "for": "Vehicle metadata",
+      "alt": "A car framed by dashed dimension lines with end ticks along its side, across its front and standing at its rear; the length line is lit.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoEVBattery",
+        "IcoNavSDKAdvanced"
+      ]
+    },
+    {
+      "slug": "nav/map-style",
+      "name": "Day Night Tile",
+      "for": "Map styles",
+      "alt": "A map tile held between two posts on a low base, leaning toward the viewer, with streets, a river and a park on top; turned over, its underside shows the same streets lined with dots for street lights.",
+      "source": "local",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "MapDisplayAPIIntro",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "Overview"
+      ],
+      "icons": [
+        "IcoMapDisplay",
+        "IcoMapStyle"
+      ]
+    },
+    {
+      "slug": "nav/camera",
+      "name": "Camera Orbit",
+      "for": "Map camera and animations",
+      "alt": "A small camera with a lens rides a curved rail arching over a map tile, its lens turned on the tile.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoMapDisplay"
+      ]
+    },
+    {
+      "slug": "nav/map-image",
+      "name": "Map Print",
+      "for": "WMS and WMTS map images",
+      "alt": "A server box with vents and a status light, a map sheet with streets, a river and a park sliding out of a slot in its front like a print.",
+      "source": "local",
+      "uses": 1,
+      "pages": [
+        "MapDisplayAPIIntro"
+      ],
+      "icons": [
+        "IcoMapVectorTile"
+      ]
+    },
+    {
+      "slug": "nav/poi-details",
+      "name": "Open Sign",
+      "for": "POI details: contact and opening hours",
+      "alt": "A flat-roofed shop with a wide window and a door, a sign plate hanging from a bracket at its corner; near the pointer the plate turns to show a clock face and the door is outlined bright.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoPOIDetails"
+      ]
+    },
+    {
+      "slug": "nav/batch",
+      "name": "Request Deck",
+      "for": "Batch routing and batch search",
+      "alt": "Six thin cards standing in a tray, each with a different route line on it; the card under the pointer stands up with its route bright while the others lean away.",
+      "source": "local",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "LDEVRIntro",
+        "RoutingAPIIntro",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoBatchRouting",
+        "IcoSearchFuzzy"
+      ]
+    },
+    {
+      "slug": "nav/toll",
+      "name": "Toll Gate",
+      "for": "Toll costs",
+      "alt": "A short road with a small roofed toll booth on an island beside it and a barrier arm across the lane; as the pointer nears, the arm swings up.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "RoutingAPIIntro"
+      ],
+      "icons": [
+        "IcoCalculateRoute"
+      ]
+    },
+    {
+      "slug": "nav/replan",
+      "name": "Detour",
+      "for": "Continuous replanning",
+      "alt": "A street plan of three low blocks with a roadworks barrier across the main road; near the barrier the route bends off up a cross street, round the middle block and back down.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKNavigation",
+        "IcoNavSDKRouting"
+      ]
+    },
+    {
+      "slug": "nav/voice-engine",
+      "name": "Speaker Grille",
+      "for": "Voice instructions and TTS engines",
+      "alt": "A car door panel with a pull slot and a round speaker set low in it: a raised rim with screws around a grille of dots, the dots near the pointer pushed out.",
+      "source": "local",
+      "uses": 8,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKNavigation",
+        "IcoVoiceEngine"
+      ]
+    },
+    {
+      "slug": "nav/safety-camera",
+      "name": "Speed Camera",
+      "for": "Safety locations",
+      "alt": "A straight road with a dashed centre line, a camera box on a post at its far end facing oncoming traffic, a barred zone strip on the road before it, and a round car puck.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKNavigation"
+      ]
+    },
+    {
+      "slug": "nav/resume",
+      "name": "Pause Point",
+      "for": "Saving and resuming navigation",
+      "alt": "A winding route from a round start puck to a map pin, with a notched bookmark on a short stem standing partway along it; the route behind it is bright, the route ahead dashed.",
+      "source": "local",
+      "uses": 1,
+      "pages": [
+        "NavSDKDomains"
+      ],
+      "icons": [
+        "IcoNavSDKNavigation"
+      ]
+    },
+    {
+      "slug": "nav/speed-alert",
+      "name": "Limit Ring",
+      "for": "Speed alerts",
+      "alt": "A large round sign with a broad ring and a blank centre on a tall post beside a road, a car puck on the road, and part of the sign's rim lit.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKVirtualHorizon"
+      ]
+    },
+    {
+      "slug": "nav/autocomplete",
+      "name": "Type Ahead",
+      "for": "Search autocomplete and suggestions",
+      "alt": "A search bar standing like a screen, a pill-shaped field with a caret and a round button, with three suggestion bars under it; one slides out toward the viewer.",
+      "source": "local",
+      "uses": 8,
+      "pages": [
+        "DocsPortal",
+        "NavSDKDomains",
+        "NavSDKIntro",
+        "NavSDKiOSDomains",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKSearch",
+        "IcoSearchAutocomplete"
+      ]
+    },
+    {
+      "slug": "nav/nearby",
+      "name": "Radius Sweep",
+      "for": "Nearby search",
+      "alt": "A round position puck with a search ring on the ground and eight map pins around it; the pins inside the ring float up on dashed lines.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "EVChargingAPIIntro",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoAreaAnalytics",
+        "IcoEVSearchNearby",
+        "IcoSearchNearby"
+      ]
+    },
+    {
+      "slug": "nav/along-route",
+      "name": "Roadside Finds",
+      "for": "Search along a route",
+      "alt": "A road with one bend inside a dashed corridor; map pins stand along it, and those in the corridor near the pointer rise while dim pins outside stay put.",
+      "source": "local",
+      "uses": 5,
+      "pages": [
+        "DocsPortal",
+        "DrivingIntelligenceUseCases",
+        "NavSDKDomains",
+        "NavSDKiOSDomains",
+        "SearchAPIIntro"
+      ],
+      "icons": [
+        "IcoNavSDKSearch",
+        "IcoSearchAlongRoute"
+      ]
+    },
+    {
+      "slug": "nav/reverse-geocode",
+      "name": "Pin to Door",
+      "for": "Reverse geocoding",
+      "alt": "Three gabled houses in a row with a map pin overhead; the pin settles over the house under the pointer and its door and door plate light up.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "GeocodingAPIIntro",
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKSearch",
+        "IcoReverseGeocode"
+      ]
+    },
+    {
+      "slug": "nav/hillshade",
+      "name": "Relief Tile",
+      "for": "Hillshade tiles",
+      "alt": "A square terrain tile on a thin plinth, its surface cut into parallel strips that follow two ridges and a valley, with a dot on the rim marking the sun.",
+      "source": "local",
+      "uses": 1,
+      "pages": [
+        "MapDisplayAPIIntro"
+      ],
+      "icons": [
+        "IcoMapRasterTile"
+      ]
+    },
+    {
+      "slug": "nav/location-engine",
+      "name": "Sensor Stack",
+      "for": "Custom location engine",
+      "alt": "A position puck on the ground, linked to three sensors on round plinths behind it: a dish, an upright wheel and a gyroscope.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKLocation"
+      ]
+    },
+    {
+      "slug": "nav/carplay",
+      "name": "Head Unit",
+      "for": "Phone projection and CarPlay navigation",
+      "alt": "A car dashboard with a steering wheel, a wide head-unit screen and a phone in a cradle showing a route, joined by a cable.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKNavigation"
+      ]
+    },
+    {
+      "slug": "nav/ev-availability",
+      "name": "Open Sockets",
+      "for": "Live EV connector availability",
+      "alt": "A charging post with a small screen and three round sockets; the middle one has a plug in it, its cable lying in a loop beside the post.",
+      "source": "local",
+      "uses": 6,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "EVChargingAPIIntro",
+        "LDEVRIntro"
+      ],
+      "icons": [
+        "IcoEVChargingAvailability",
+        "IcoEVSearchNearby"
+      ]
+    },
+    {
+      "slug": "nav/ev-requirements",
+      "name": "Plug Fit",
+      "for": "EV integration requirements",
+      "alt": "A round charging plug, flattened on one side and turned off-angle, hovering on its cable above a matching socket with five pin holes.",
+      "source": "local",
+      "uses": 4,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "LDEVRIntro"
+      ],
+      "icons": [
+        "IcoEVBattery",
+        "IcoEVRequirements"
+      ]
+    },
+    {
+      "slug": "nav/offline-routing",
+      "name": "Pocket Route",
+      "for": "Offline routing",
+      "alt": "An open drawer holding one map tile; a route steps across the tile from a start dot to an end dot.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "NavSDKDomains",
+        "NavSDKIntro"
+      ],
+      "icons": [
+        "IcoNavSDKOffline"
+      ]
+    },
+    {
+      "slug": "nav/map-update",
+      "name": "Patch Tile",
+      "for": "Incremental map updates",
+      "alt": "A three-by-three grid of map tiles; one tile is lifted out and a fresh tile with a new street drops into its slot.",
+      "source": "local",
+      "uses": 1,
+      "pages": [
+        "NavSDKDomains"
+      ],
+      "icons": [
+        "IcoNavSDKOffline"
+      ]
+    },
+    {
+      "slug": "nav/theming",
+      "name": "Token Blocks",
+      "for": "Brand tokens and theming",
+      "alt": "A navigation panel beside a tray of four small blocks; one block is lifted and the panel part it controls is outlined.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "Overview"
+      ],
+      "icons": [
+        "IcoHomeScreen",
+        "IcoThemingTokens"
+      ]
+    },
+    {
+      "slug": "nav/route-import",
+      "name": "Route Sleeve",
+      "for": "Import, export and modify routes",
+      "alt": "A thin map card half inside a folder sleeve with a thumb cut; pulled out, a route with two end dots is drawn across it.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "NavSDKDomains",
+        "NavSDKiOSDomains"
+      ],
+      "icons": [
+        "IcoNavSDKRouting"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "icon": "IcoAIVoice",
+      "light": "L_ConversationPersonality",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding"
+      ],
+      "labels": [
+        "Customise AI assistant personality",
+        "Add AI voice assistant to a car app"
+      ]
+    },
+    {
+      "icon": "IcoTrafficModelID",
+      "light": "L_TrafficModelID",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "TrafficAPIIntro"
+      ],
+      "labels": [
+        "Query live EV data freshness",
+        "Version traffic data freshness",
+        "Traffic Model ID"
+      ]
+    },
+    {
+      "icon": "IcoSpeechToText",
+      "light": "L_AIVoice",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding"
+      ],
+      "labels": [
+        "Connect a speech-to-text engine"
+      ]
+    },
+    {
+      "icon": "IcoPOIPhotos",
+      "light": "L_POIPhotos",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "SearchAPIIntro"
+      ],
+      "labels": [
+        "Display crowd-sourced POI photos",
+        "POI Photos"
+      ]
+    },
+    {
+      "icon": "IcoJunctionAnalytics",
+      "light": "L_JunctionAnalytics",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "TrafficAnalyticsAPIIntro"
+      ],
+      "labels": [
+        "Count vehicles at an intersection",
+        "Junction Analytics"
+      ]
+    },
+    {
+      "icon": "IcoParkingPrices",
+      "light": "L_ParkingPrices",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "ParkingFuelAPIIntro"
+      ],
+      "labels": [
+        "Display parking prices by duration",
+        "Parking Prices"
+      ]
+    },
+    {
+      "icon": "IcoOnStreetParking",
+      "light": "L_OnStreetParking",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "ParkingFuelAPIIntro"
+      ],
+      "labels": [
+        "Predict on-street parking probability",
+        "On-Street Parking"
+      ]
+    },
+    {
+      "icon": "IcoFuelPrices",
+      "light": "L_FuelPrices",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "ParkingFuelAPIIntro"
+      ],
+      "labels": [
+        "Show live fuel prices at stations",
+        "Fuel Prices"
+      ]
+    },
+    {
+      "icon": "IcoConversationPersonality",
+      "light": "L_ConversationPersonality",
+      "uses": 2,
+      "pages": [
+        "DomainLanding",
+        "Overview"
+      ],
+      "labels": [
+        "ai-personality"
+      ]
+    },
+    {
+      "icon": "IcoColourSystem",
+      "light": "L_ColourSystem",
+      "uses": 1,
+      "pages": [
+        "Overview"
+      ],
+      "labels": [
+        "assets"
+      ]
+    },
+    {
+      "icon": "IcoSearchResult",
+      "light": "L_SearchResult",
+      "uses": 1,
+      "pages": [
+        "Overview"
+      ],
+      "labels": [
+        "search-engine"
+      ]
+    }
+  ],
+  "dupes": [
+    {
+      "page": "DocsPortal",
+      "slug": "nav/eta",
+      "cards": [
+        "Show live ETA & route progress",
+        "Long-distance EV routing UI"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/autocomplete",
+      "cards": [
+        "Customise the in-car search engine",
+        "Autocomplete a search input",
+        "Add fuzzy search and autocomplete",
+        "Add iOS search and autocomplete"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/ev-availability",
+      "cards": [
+        "Search EV stations from within the car",
+        "Check charging park opening hours",
+        "Check real-time connector availability"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/adas-data",
+      "cards": [
+        "Guide lane changes with ADAS data",
+        "Access the Virtual Horizon for ADAS"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/voice-engine",
+      "cards": [
+        "Connect an OEM TTS voice engine",
+        "Add voice navigation instructions",
+        "iOS voice navigation instructions"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/ev",
+      "cards": [
+        "EV integration overview",
+        "Route to the driver"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/ev-requirements",
+      "cards": [
+        "EV integration requirements",
+        "Look up a vehicle brand battery model"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "automotive",
+      "cards": [
+        "Vehicle integration basics",
+        "Feed vehicle signals into ANA via VIL"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "apis",
+      "cards": [
+        "Command ANA from your app via CIL",
+        "Render raster map tiles"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/batch",
+      "cards": [
+        "Batch-plan multiple EV routes",
+        "Batch-calculate routes for a fleet"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/heatmap",
+      "cards": [
+        "Factor weather into EV range",
+        "Adjust routes for weather"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/turn",
+      "cards": [
+        "Parse structured turn instructions",
+        "Drive turn-by-turn navigation",
+        "Turn-by-turn navigation on iOS"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "map-layers",
+      "cards": [
+        "Style vector maps on the client",
+        "Render a NavSDK map on iOS"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "map-data",
+      "cards": [
+        "Embed a live map in an app",
+        "Add traffic overlay tiles to a map"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/nearby",
+      "cards": [
+        "Discover nearby places by radius",
+        "Find nearby EV charging stations"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "traffic-incident",
+      "cards": [
+        "Overlay live traffic incidents",
+        "Alert drivers to road hazards ahead"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/density",
+      "cards": [
+        "Heatmap traffic density by zone",
+        "Measure origin-destination flows"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/location",
+      "cards": [
+        "Connect GPS positioning to the NavSDK",
+        "iOS GPS location provider"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/route",
+      "cards": [
+        "Calculate and compare SDK routes",
+        "Calculate iOS routes with alternatives"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/logging",
+      "cards": [
+        "Configure advanced NavSDK settings",
+        "Advanced iOS NavSDK configuration"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/simulate",
+      "cards": [
+        "Simulate navigation for testing",
+        "Simulate iOS navigation for testing"
+      ]
+    },
+    {
+      "page": "NavSDKDomains",
+      "slug": "traffic",
+      "cards": [
+        "Traffic",
+        "Traffic-Aware Navigation"
+      ]
+    },
+    {
+      "page": "NavSDKiOSDomains",
+      "slug": "navigation",
+      "cards": [
+        "Start Navigation",
+        "CarPlay Deep Link"
+      ]
+    },
+    {
+      "page": "NavSDKiOSDomains",
+      "slug": "nav/voice-engine",
+      "cards": [
+        "Voice Instructions",
+        "CarPlay Voice Prompts"
+      ]
+    },
+    {
+      "page": "Overview",
+      "slug": "nav/theming",
+      "cards": [
+        "app-customisation",
+        "theming"
+      ]
+    }
+  ],
+  "dupesWhenDrawn": [
+    {
+      "page": "DocsPortal",
+      "slug": "nav/eta",
+      "cards": [
+        "Show live ETA & route progress",
+        "Long-distance EV routing UI"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/autocomplete",
+      "cards": [
+        "Customise the in-car search engine",
+        "Autocomplete a search input",
+        "Add fuzzy search and autocomplete",
+        "Add iOS search and autocomplete"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/ev-availability",
+      "cards": [
+        "Search EV stations from within the car",
+        "Check charging park opening hours",
+        "Check real-time connector availability"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/adas-data",
+      "cards": [
+        "Guide lane changes with ADAS data",
+        "Access the Virtual Horizon for ADAS"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/voice-engine",
+      "cards": [
+        "Connect an OEM TTS voice engine",
+        "Add voice navigation instructions",
+        "iOS voice navigation instructions"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/ev",
+      "cards": [
+        "EV integration overview",
+        "Route to the driver"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/ev-requirements",
+      "cards": [
+        "EV integration requirements",
+        "Look up a vehicle brand battery model"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "automotive",
+      "cards": [
+        "Vehicle integration basics",
+        "Feed vehicle signals into ANA via VIL"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "apis",
+      "cards": [
+        "Command ANA from your app via CIL",
+        "Render raster map tiles"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/batch",
+      "cards": [
+        "Batch-plan multiple EV routes",
+        "Batch-calculate routes for a fleet"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/heatmap",
+      "cards": [
+        "Factor weather into EV range",
+        "Adjust routes for weather"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/turn",
+      "cards": [
+        "Parse structured turn instructions",
+        "Drive turn-by-turn navigation",
+        "Turn-by-turn navigation on iOS"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "map-layers",
+      "cards": [
+        "Style vector maps on the client",
+        "Render a NavSDK map on iOS"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "map-data",
+      "cards": [
+        "Embed a live map in an app",
+        "Add traffic overlay tiles to a map"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/nearby",
+      "cards": [
+        "Discover nearby places by radius",
+        "Find nearby EV charging stations"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "traffic-incident",
+      "cards": [
+        "Overlay live traffic incidents",
+        "Alert drivers to road hazards ahead"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/density",
+      "cards": [
+        "Heatmap traffic density by zone",
+        "Measure origin-destination flows"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/location",
+      "cards": [
+        "Connect GPS positioning to the NavSDK",
+        "iOS GPS location provider"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "usecases/route",
+      "cards": [
+        "Calculate and compare SDK routes",
+        "Calculate iOS routes with alternatives"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/logging",
+      "cards": [
+        "Configure advanced NavSDK settings",
+        "Advanced iOS NavSDK configuration"
+      ]
+    },
+    {
+      "page": "DocsPortal",
+      "slug": "nav/simulate",
+      "cards": [
+        "Simulate navigation for testing",
+        "Simulate iOS navigation for testing"
+      ]
+    },
+    {
+      "page": "NavSDKDomains",
+      "slug": "traffic",
+      "cards": [
+        "Traffic",
+        "Traffic-Aware Navigation"
+      ]
+    },
+    {
+      "page": "NavSDKiOSDomains",
+      "slug": "navigation",
+      "cards": [
+        "Start Navigation",
+        "CarPlay Deep Link"
+      ]
+    },
+    {
+      "page": "NavSDKiOSDomains",
+      "slug": "nav/voice-engine",
+      "cards": [
+        "Voice Instructions",
+        "CarPlay Voice Prompts"
+      ]
+    },
+    {
+      "page": "Overview",
+      "slug": "nav/theming",
+      "cards": [
+        "app-customisation",
+        "theming"
+      ]
+    }
+  ],
+  "bypass": [
+    {
+      "page": "ANAIntro",
+      "line": 479,
+      "kind": "image",
+      "what": "${BASE}ana_live_traffic.png",
+      "label": null
+    },
+    {
+      "page": "DocsPortal",
+      "line": 446,
+      "kind": "image",
+      "what": "${BASE}tools_card_moveportal.webp",
+      "label": "TomTom Move Portal"
+    },
+    {
+      "page": "DocsPortal",
+      "line": 455,
+      "kind": "image",
+      "what": "${BASE}tools_card_mapmaker.webp",
+      "label": "TomTom Map Maker"
+    },
+    {
+      "page": "DocsPortal",
+      "line": 464,
+      "kind": "image",
+      "what": "${BASE}tools_card_figma.webp",
+      "label": "Figma TomTom Maps Generator"
+    },
+    {
+      "page": "DocsPortal",
+      "line": 472,
+      "kind": "image",
+      "what": "${BASE}tools_card_mcpserver.webp",
+      "label": "MCP Server"
+    },
+    {
+      "page": "DocsPortal",
+      "line": 1199,
+      "kind": "image",
+      "what": "${BASE}hero.png",
+      "label": null
+    },
+    {
+      "page": "LDEVRIntro",
+      "line": 321,
+      "kind": "image",
+      "what": "ldevr-model-id.png",
+      "label": null
+    },
+    {
+      "page": "LDEVRIntro",
+      "line": 357,
+      "kind": "image",
+      "what": "ldevr-custom-charging-stops.png",
+      "label": null
+    },
+    {
+      "page": "LDEVRIntro",
+      "line": 396,
+      "kind": "image",
+      "what": "ldevr-detailed-vehicle.png",
+      "label": null
+    },
+    {
+      "page": "NavSDKIntro",
+      "line": 670,
+      "kind": "image",
+      "what": "${BASE}navsdk_banner.png",
+      "label": null
+    },
+    {
+      "page": "Overview",
+      "line": 232,
+      "kind": "image",
+      "what": "${import.meta.env.BASE_URL}hero.png",
+      "label": null
+    },
+    {
+      "page": "RoutingAPIIntro",
+      "line": 597,
+      "kind": "image",
+      "what": "route-add-stops.png",
+      "label": "Web"
+    },
+    {
+      "page": "RoutingAPIIntro",
+      "line": 608,
+      "kind": "image",
+      "what": "route-with-alternatives.png",
+      "label": "Web"
+    },
+    {
+      "page": "RoutingAPIIntro",
+      "line": 620,
+      "kind": "image",
+      "what": "route-traffic-monitoring.png",
+      "label": "Web"
+    },
+    {
+      "page": "Theming",
+      "line": 140,
+      "kind": "image",
+      "what": "ui-toolkit.webp",
+      "label": null
+    },
+    {
+      "page": "Theming",
+      "line": 145,
+      "kind": "image",
+      "what": "visual-assets.webp",
+      "label": null
+    },
+    {
+      "page": "Theming",
+      "line": 157,
+      "kind": "image",
+      "what": "publish-library.webp",
+      "label": null
+    },
+    {
+      "page": "Theming",
+      "line": 171,
+      "kind": "image",
+      "what": "swap-library.webp",
+      "label": null
+    },
+    {
+      "page": "TrafficAPIIntro",
+      "line": 228,
+      "kind": "image",
+      "what": "traffic-flow.png",
+      "label": null
+    },
+    {
+      "page": "TrafficAPIIntro",
+      "line": 235,
+      "kind": "image",
+      "what": "traffic-config-playground.png",
+      "label": null
+    },
+    {
+      "page": "TrafficAPIIntro",
+      "line": 242,
+      "kind": "image",
+      "what": "traffic-incident-overlay.png",
+      "label": null
+    }
+  ],
+  "planned": [],
+  "pages": [
+    {
+      "page": "ParkingFuelAPIIntro",
+      "slots": 5,
+      "covered": 2
+    },
+    {
+      "page": "Overview",
+      "slots": 15,
+      "covered": 12
+    },
+    {
+      "page": "TrafficAPIIntro",
+      "slots": 7,
+      "covered": 6
+    },
+    {
+      "page": "TrafficAnalyticsAPIIntro",
+      "slots": 7,
+      "covered": 6
+    },
+    {
+      "page": "DomainLanding",
+      "slots": 24,
+      "covered": 21
+    },
+    {
+      "page": "SearchAPIIntro",
+      "slots": 9,
+      "covered": 8
+    },
+    {
+      "page": "DocsPortal",
+      "slots": 94,
+      "covered": 84
+    },
+    {
+      "page": "ANAIntro",
+      "slots": 9,
+      "covered": 9
+    },
+    {
+      "page": "DrivingIntelligenceUseCases",
+      "slots": 5,
+      "covered": 5
+    },
+    {
+      "page": "EVChargingAPIIntro",
+      "slots": 6,
+      "covered": 6
+    },
+    {
+      "page": "GeocodingAPIIntro",
+      "slots": 4,
+      "covered": 4
+    },
+    {
+      "page": "LDEVRIntro",
+      "slots": 8,
+      "covered": 8
+    },
+    {
+      "page": "MapDisplayAPIIntro",
+      "slots": 8,
+      "covered": 8
+    },
+    {
+      "page": "MapDisplayExplorer",
+      "slots": 4,
+      "covered": 4
+    },
+    {
+      "page": "NavSDKDomains",
+      "slots": 40,
+      "covered": 40
+    },
+    {
+      "page": "NavSDKIntro",
+      "slots": 16,
+      "covered": 16
+    },
+    {
+      "page": "NavSDKiOSDomains",
+      "slots": 38,
+      "covered": 38
+    },
+    {
+      "page": "RoutingAPIIntro",
+      "slots": 10,
+      "covered": 10
+    },
+    {
+      "page": "RoutingExplorer",
+      "slots": 2,
+      "covered": 2
+    },
+    {
+      "page": "SnapToRoadsAPIIntro",
+      "slots": 2,
+      "covered": 2
+    },
+    {
+      "page": "TrafficExplorer",
+      "slots": 4,
+      "covered": 4
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+[
+  {
+    "slug": "nav/location",
+    "name": "Sky Fix",
+    "for": "Navigation SDK: Location",
+    "alt": "A round position puck on a small street patch with an accuracy ring around it, and three small satellites with solar panels above, dashed lines running from one of them down to the puck."
+  },
+  {
+    "slug": "nav/offline",
+    "name": "Saved Region",
+    "for": "Navigation SDK: Offline maps",
+    "alt": "A shallow open drawer with a finger pull, and above it a map region split into nine thin tiles; one corner tile already sits inside the drawer."
+  },
+  {
+    "slug": "nav/simulate",
+    "name": "Rolling Road",
+    "for": "Navigation SDK: Advanced, simulated navigation",
+    "alt": "A car standing on a belt that runs round two rollers on a floor plate, with a round cooling fan on a stand in front of its nose."
+  },
+  {
+    "slug": "nav/controls",
+    "name": "Push Keys",
+    "for": "Navigation controls",
+    "alt": "A slim rounded panel with four round push buttons in a row; the third is pressed in, with a bright rim and centre dot."
+  },
+  {
+    "slug": "nav/turn",
+    "name": "Next Turn",
+    "for": "Turn instructions",
+    "alt": "A four-way crossroads with a raised route ribbon coming up the near road and curving right into the far-right road."
+  },
+  {
+    "slug": "nav/lanes",
+    "name": "Lane Gantry",
+    "for": "Instruction panel and lane guidance",
+    "alt": "A straight three-lane road crossed by a sign gantry with a panel over each lane; the middle panel is swung out and its lane stripe is lit."
+  },
+  {
+    "slug": "nav/route-bar",
+    "name": "Trip Rail",
+    "for": "Route bar",
+    "alt": "A long slim rail with a round puck on it; along its side stand a short queue of cars, a map pin and a charging post, the pin drawn bright."
+  },
+  {
+    "slug": "nav/hud",
+    "name": "Heads Up",
+    "for": "Head-up display",
+    "alt": "A car driving away up a road, seen from behind and to its left, with a small pane floating just ahead of its windscreen showing a bright little road that curves into the bend."
+  },
+  {
+    "slug": "nav/eta",
+    "name": "Arrival Dial",
+    "for": "ETA panel",
+    "alt": "A short road from a round start puck to a clock dial on a post, with a small puck on the road as the car and the road behind it drawn bright."
+  },
+  {
+    "slug": "nav/cluster",
+    "name": "Through the Wheel",
+    "for": "Instrument cluster",
+    "alt": "A car dashboard with an instrument pod under a curved hood: two round gauges with needles and a small screen showing a short route between them, seen through a three-spoke steering wheel."
+  },
+  {
+    "slug": "nav/ev-battery",
+    "name": "Charge Ahead",
+    "for": "EV navigation UI",
+    "alt": "A battery pack with five raised cells beside a road that runs from a start puck past a charging post to a map pin; three cells are full."
+  },
+  {
+    "slug": "nav/adas-data",
+    "name": "Road Profile",
+    "for": "ADAS data",
+    "alt": "An S-curved road with a dashed centre line and, above it on dashed posts, a narrow ribbon that follows its bends and rises and falls, one stretch lit with a line dropping to the road."
+  },
+  {
+    "slug": "nav/snap-to-roads",
+    "name": "Snap Line",
+    "for": "Snap to Roads and map-matched location",
+    "alt": "A gently curving road with faint GPS dots scattered either side; near the start a few dots sit on the road, joined by a bright line."
+  },
+  {
+    "slug": "nav/logging",
+    "name": "Black Box",
+    "for": "Logging and diagnostics",
+    "alt": "A small rounded recorder case with a handle, a strip of paper curling out of its slot along the ground, and five event dots on stems above it, one lit."
+  },
+  {
+    "slug": "nav/vehicle-profile",
+    "name": "Measured Car",
+    "for": "Vehicle metadata",
+    "alt": "A car framed by dashed dimension lines with end ticks along its side, across its front and standing at its rear; the length line is lit."
+  },
+  {
+    "slug": "nav/map-style",
+    "name": "Day Night Tile",
+    "for": "Map styles",
+    "alt": "A map tile held between two posts on a low base, leaning toward the viewer, with streets, a river and a park on top; turned over, its underside shows the same streets lined with dots for street lights."
+  },
+  {
+    "slug": "nav/camera",
+    "name": "Camera Orbit",
+    "for": "Map camera and animations",
+    "alt": "A small camera with a lens rides a curved rail arching over a map tile, its lens turned on the tile."
+  },
+  {
+    "slug": "nav/map-image",
+    "name": "Map Print",
+    "for": "WMS and WMTS map images",
+    "alt": "A server box with vents and a status light, a map sheet with streets, a river and a park sliding out of a slot in its front like a print."
+  },
+  {
+    "slug": "nav/poi-details",
+    "name": "Open Sign",
+    "for": "POI details: contact and opening hours",
+    "alt": "A flat-roofed shop with a wide window and a door, a sign plate hanging from a bracket at its corner; near the pointer the plate turns to show a clock face and the door is outlined bright."
+  },
+  {
+    "slug": "nav/batch",
+    "name": "Request Deck",
+    "for": "Batch routing and batch search",
+    "alt": "Six thin cards standing in a tray, each with a different route line on it; the card under the pointer stands up with its route bright while the others lean away."
+  },
+  {
+    "slug": "nav/toll",
+    "name": "Toll Gate",
+    "for": "Toll costs",
+    "alt": "A short road with a small roofed toll booth on an island beside it and a barrier arm across the lane; as the pointer nears, the arm swings up."
+  },
+  {
+    "slug": "nav/replan",
+    "name": "Detour",
+    "for": "Continuous replanning",
+    "alt": "A street plan of three low blocks with a roadworks barrier across the main road; near the barrier the route bends off up a cross street, round the middle block and back down."
+  },
+  {
+    "slug": "nav/voice-engine",
+    "name": "Speaker Grille",
+    "for": "Voice instructions and TTS engines",
+    "alt": "A car door panel with a pull slot and a round speaker set low in it: a raised rim with screws around a grille of dots, the dots near the pointer pushed out."
+  },
+  {
+    "slug": "nav/safety-camera",
+    "name": "Speed Camera",
+    "for": "Safety locations",
+    "alt": "A straight road with a dashed centre line, a camera box on a post at its far end facing oncoming traffic, a barred zone strip on the road before it, and a round car puck."
+  },
+  {
+    "slug": "nav/resume",
+    "name": "Pause Point",
+    "for": "Saving and resuming navigation",
+    "alt": "A winding route from a round start puck to a map pin, with a notched bookmark on a short stem standing partway along it; the route behind it is bright, the route ahead dashed."
+  },
+  {
+    "slug": "nav/speed-alert",
+    "name": "Limit Ring",
+    "for": "Speed alerts",
+    "alt": "A large round sign with a broad ring and a blank centre on a tall post beside a road, a car puck on the road, and part of the sign's rim lit."
+  },
+  {
+    "slug": "nav/autocomplete",
+    "name": "Type Ahead",
+    "for": "Search autocomplete and suggestions",
+    "alt": "A search bar standing like a screen, a pill-shaped field with a caret and a round button, with three suggestion bars under it; one slides out toward the viewer."
+  },
+  {
+    "slug": "nav/nearby",
+    "name": "Radius Sweep",
+    "for": "Nearby search",
+    "alt": "A round position puck with a search ring on the ground and eight map pins around it; the pins inside the ring float up on dashed lines."
+  },
+  {
+    "slug": "nav/along-route",
+    "name": "Roadside Finds",
+    "for": "Search along a route",
+    "alt": "A road with one bend inside a dashed corridor; map pins stand along it, and those in the corridor near the pointer rise while dim pins outside stay put."
+  },
+  {
+    "slug": "nav/reverse-geocode",
+    "name": "Pin to Door",
+    "for": "Reverse geocoding",
+    "alt": "Three gabled houses in a row with a map pin overhead; the pin settles over the house under the pointer and its door and door plate light up."
+  },
+  {
+    "slug": "nav/hillshade",
+    "name": "Relief Tile",
+    "for": "Hillshade tiles",
+    "alt": "A square terrain tile on a thin plinth, its surface cut into parallel strips that follow two ridges and a valley, with a dot on the rim marking the sun."
+  },
+  {
+    "slug": "nav/location-engine",
+    "name": "Sensor Stack",
+    "for": "Custom location engine",
+    "alt": "A position puck on the ground, linked to three sensors on round plinths behind it: a dish, an upright wheel and a gyroscope."
+  },
+  {
+    "slug": "nav/carplay",
+    "name": "Head Unit",
+    "for": "Phone projection and CarPlay navigation",
+    "alt": "A car dashboard with a steering wheel, a wide head-unit screen and a phone in a cradle showing a route, joined by a cable."
+  },
+  {
+    "slug": "nav/ev-availability",
+    "name": "Open Sockets",
+    "for": "Live EV connector availability",
+    "alt": "A charging post with a small screen and three round sockets; the middle one has a plug in it, its cable lying in a loop beside the post."
+  },
+  {
+    "slug": "nav/ev-requirements",
+    "name": "Plug Fit",
+    "for": "EV integration requirements",
+    "alt": "A round charging plug, flattened on one side and turned off-angle, hovering on its cable above a matching socket with five pin holes."
+  },
+  {
+    "slug": "nav/offline-routing",
+    "name": "Pocket Route",
+    "for": "Offline routing",
+    "alt": "An open drawer holding one map tile; a route steps across the tile from a start dot to an end dot."
+  },
+  {
+    "slug": "nav/map-update",
+    "name": "Patch Tile",
+    "for": "Incremental map updates",
+    "alt": "A three-by-three grid of map tiles; one tile is lifted out and a fresh tile with a new street drops into its slot."
+  },
+  {
+    "slug": "nav/theming",
+    "name": "Token Blocks",
+    "for": "Brand tokens and theming",
+    "alt": "A navigation panel beside a tray of four small blocks; one block is lifted and the panel part it controls is outlined."
+  },
+  {
+    "slug": "nav/route-import",
+    "name": "Route Sleeve",
+    "for": "Import, export and modify routes",
+    "alt": "A thin map card half inside a folder sleeve with a thumb cut; pulled out, a route with two end dots is drawn across it."
+  }
+]

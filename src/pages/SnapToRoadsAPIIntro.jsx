@@ -52,7 +52,7 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc, pageId, onNavig
 }
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloSnapToRoads, L_SnapToRoads, IcoSnapToRoads);
+const HeroIllo = makeThumb(IlloSnapToRoads, L_SnapToRoads, IcoSnapToRoads, 'usecases/sport');
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function SnapToRoadsAPIIntro({ onNavigate }) {

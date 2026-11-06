@@ -131,8 +131,8 @@ const CARD_ILLOS = {
   'route-bar':          makeThumb(IlloRouteBar,               L_Route, IcoRouteBar),
   // EV & Charging
   'ev-overview':        makeThumb(IlloEV,                     L_EV, IcoEV),
-  'ev-battery':         makeThumb(IlloEVBattery,              L_EV, IcoEVBattery),
-  'ev-charging-search': makeThumb(IlloEVSearchNearby,         L_ChargingSearch, IcoEVSearchNearby),
+  'ev-battery':         makeThumb(IlloEVBattery, L_EV, IcoEVBattery, 'nav/vehicle-profile'),
+  'ev-charging-search': makeThumb(IlloEVSearchNearby, L_ChargingSearch, IcoEVSearchNearby, 'nav/ev-availability'),
   'ev-routing':         makeThumb(IlloEVRouting,              L_EVRouting, IcoEVRouting),
   'ev-nav-ui':          makeThumb(IlloEVNavUI,                L_EVRouting, IcoEVNavUI),
   'ev-requirements':    makeThumb(IlloEVRequirements,         L_EV, IcoEVRequirements),
@@ -140,7 +140,7 @@ const CARD_ILLOS = {
   'vi-basics':          makeThumb(IlloVIBasics,               L_VIL, IcoVIBasics),
   'cluster':            makeThumb(IlloCluster,                L_Cluster, IcoCluster),
   'hud':                makeThumb(IlloHUD,                    L_ADAS, IcoHUD),
-  'adas':               makeThumb(IlloADAS,                   L_ADAS, IcoADAS),
+  'adas':               makeThumb(IlloADAS, L_ADAS, IcoADAS, 'nav/adas-data'),
   'truck':              makeThumb(IlloTruck,                  L_Cluster, IcoTruck),
   // TomTom AI Assistant
   'ai-overview':        makeThumb(IlloAIVoice,                L_AIVoice, IcoAIVoice),

@@ -303,9 +303,25 @@ export const IlloStyleContext = createContext({
   theme:      DEFAULT_THEME,
   setTheme:   () => {},
   palette:    THEMES[DEFAULT_THEME],
-  illoStyle:  'icon',
+  illoStyle:  'hairline',
   setIlloStyle: () => {},
+  hlColour:   'blueprint',
+  setHlColour: () => {},
+  hlTheme:    'auto',
+  setHlTheme: () => {},
+  hlResolvedTheme: 'light',
 });
+
+/* Illustration styles. 'hairline' is TomTom Docs' own (Thiago Andrade's set,
+   src/illustrations/hairline.jsx); the other three are the prototype's originals. */
+const ILLO_STYLES = ['lofi', 'detailed', 'icon', 'hairline'];
+const HL_COLOURS = ['blueprint', 'mono', 'red'];
+const HL_THEMES = ['auto', 'light', 'dark'];
+const readPref = (key, allowed, fallback) => {
+  try { const v = localStorage.getItem(key); if (allowed.includes(v)) return v; } catch {}
+  return fallback;
+};
+const siteIsDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
 
 export function IlloStyleProvider({ children }) {
   const [theme, setTheme] = useState(() => {
@@ -322,17 +338,24 @@ export function IlloStyleProvider({ children }) {
     } catch { return DEFAULT_THEME; }
   });
 
-  const [illoStyle, setIlloStyleState] = useState(() => {
-    try {
-      const stored = localStorage.getItem('illoStylePref');
-      if (stored === 'lofi' || stored === 'detailed' || stored === 'icon') return stored;
-    } catch {}
-    return 'icon'; // default: icon style
-  });
+  const [illoStyle, setIlloStyleState] = useState(() => readPref('illoStylePref', ILLO_STYLES, 'hairline'));
+  const [hlColour, setHlColourState] = useState(() => readPref('hlColour', HL_COLOURS, 'blueprint'));
+  const [hlTheme, setHlThemeState] = useState(() => readPref('hlTheme', HL_THEMES, 'auto'));
+  const [siteDark, setSiteDark] = useState(siteIsDark);
+  const hlResolvedTheme = hlTheme === 'auto' ? (siteDark ? 'dark' : 'light') : hlTheme;
+
+  // The hairline figures read their colour and theme from <html>; see index.css "Hairline".
+  useEffect(() => {
+    const el = document.documentElement;
+    el.setAttribute('data-illo', illoStyle);
+    el.setAttribute('data-hl-colour', hlColour);
+    el.setAttribute('data-hl-theme', hlResolvedTheme);
+  }, [illoStyle, hlColour, hlResolvedTheme]);
 
   // Follow site day↔dark toggles when the current theme is part of the coupled pair
   useEffect(() => {
     const observer = new MutationObserver(() => {
+      setSiteDark(siteIsDark());
       setTheme(prev => {
         if (!(prev in SITE_COUPLED)) return prev;   // manual override — leave it alone
         const next = themeForSite();
@@ -353,13 +376,24 @@ export function IlloStyleProvider({ children }) {
   };
 
   const setIlloStyle = (v) => {
-    if (v !== 'lofi' && v !== 'detailed' && v !== 'icon') return;
+    if (!ILLO_STYLES.includes(v)) return;
     setIlloStyleState(v);
     try { localStorage.setItem('illoStylePref', v); } catch {}
   };
+  const setHlColour = (v) => {
+    if (!HL_COLOURS.includes(v)) return;
+    setHlColourState(v);
+    try { localStorage.setItem('hlColour', v); } catch {}
+  };
+  const setHlTheme = (v) => {
+    if (!HL_THEMES.includes(v)) return;
+    setHlThemeState(v);
+    try { localStorage.setItem('hlTheme', v); } catch {}
+  };
 
   return (
-    <IlloStyleContext.Provider value={{ theme, setTheme: set, palette: THEMES[theme] ?? THEMES.day, illoStyle, setIlloStyle }}>
+    <IlloStyleContext.Provider value={{ theme, setTheme: set, palette: THEMES[theme] ?? THEMES.day, illoStyle, setIlloStyle,
+      hlColour, setHlColour, hlTheme, setHlTheme, hlResolvedTheme }}>
       {children}
     </IlloStyleContext.Provider>
   );

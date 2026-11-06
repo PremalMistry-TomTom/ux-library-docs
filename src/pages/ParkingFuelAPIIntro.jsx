@@ -57,7 +57,7 @@ function EndpointCard({ Illo, title, method = 'GET', path, desc, pageId, onNavig
 }
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloParkingAvailability, L_ParkingAvailability, IcoParkingAvailability);
+const HeroIllo = makeThumb(IlloParkingAvailability, L_ParkingAvailability, IcoParkingAvailability, 'usecases/sharing');
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function ParkingFuelAPIIntro({ onNavigate }) {

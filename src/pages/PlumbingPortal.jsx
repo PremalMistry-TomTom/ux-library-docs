@@ -21,6 +21,7 @@ import TryItDemos        from './TryItDemos';
 import UIComponentGallery from './UIComponentGallery';
 import NavIASandbox       from './NavIASandbox';
 import MCPExplorer        from './MCPExplorer';
+import HairlineLibrary    from './HairlineLibrary';
 
 /* ─── Nav items ──────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
@@ -35,6 +36,7 @@ const NAV_ITEMS = [
   { id: 'doc-feature',         label: 'Feature page template',     icon: '⚙️', group: 'Doc authoring' },
   { id: 'doc-usecase',         label: 'Use case template',         icon: '✅',  group: 'Doc authoring' },
   { id: 'doc-dosdont',         label: "Dos & Don'ts",              icon: '🚦',  group: 'Doc authoring' },
+  { id: 'hairline-library',    label: 'Hairline library',          icon: '⬡',   group: 'Illustration' },
   { id: 'icon-sandbox',        label: 'Icon style sandbox',        icon: '✦',   group: 'Illustration' },
   { id: 'try-it-demos',        label: 'Try it — endpoint demos',   icon: '▶',   group: 'API demos' },
   { id: 'nav-ia-sandbox',      label: 'Routing API — nav IA',      icon: '🗺',  group: 'Prototyping' },
@@ -89,6 +91,7 @@ function PlumbingPage({ pageId, routingNavMode, onRoutingNavModeChange }) {
     case 'doc-feature':         return <DocFeatureTemplate />;
     case 'doc-usecase':         return <DocUseCaseTemplate />;
     case 'doc-dosdont':         return <DocDosDonts />;
+    case 'hairline-library':    return <HairlineLibrary />;
     case 'icon-sandbox':        return <IconStyleSandbox />;
     case 'try-it-demos':        return <TryItDemos />;
     case 'nav-ia-sandbox':      return <NavIASandbox navMode={routingNavMode} onNavModeChange={onRoutingNavModeChange} />;

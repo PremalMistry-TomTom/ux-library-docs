@@ -3748,3 +3748,50 @@ div:hover > .illo-card-copy-hint { opacity: 1 !important; }
   color: #e2e8f0 !important;
   background: transparent !important;
 }
+
+/* ── Hairline illustrations (TomTom Docs set, src/illustrations/hairline.jsx) ──
+   Colour and theme options match Thiago Andrade's gallery: Blueprint, Black and
+   white, TomTom red, each on a light or a dark ground. IlloStyleProvider sets
+   data-illo, data-hl-colour and data-hl-theme on <html>. The figures are 5:4
+   (400 × 320), so in hairline mode every thumbnail box takes that shape. */
+:root {
+  --hlx-ink-l: #1988CF; --hlx-ink-d: #1988CF; --hlx-bright-l: #1988CF; --hlx-bright-d: #6CC0F5;
+  --hlx-ground: #FFFFFF; --hlx-ink: var(--hlx-ink-l); --hlx-bright: var(--hlx-bright-l);
+}
+:root[data-hl-colour="mono"] { --hlx-ink-l: #6B6F78; --hlx-ink-d: #B4B8C0; --hlx-bright-l: #1B1C1F; --hlx-bright-d: #F2F3F5; }
+:root[data-hl-colour="red"]  { --hlx-ink-l: #DF1B12; --hlx-ink-d: #DF1B12; --hlx-bright-l: #DF1B12; --hlx-bright-d: #DF1B12; }
+:root[data-hl-theme="dark"]  { --hlx-ground: #0C0C12; --hlx-ink: var(--hlx-ink-d); --hlx-bright: var(--hlx-bright-d); }
+
+.hl-fig, .hl-fallback { width: 100%; height: 100%; }
+.hl-fig { background: var(--hlx-ground); }
+.hl-fig--failed { background: var(--hlx-ground); }
+.hl-stage {
+  width: 100%; height: 100%;
+  --hairline-plate: var(--hlx-ground);
+  --hairline-hi: var(--hlx-bright);
+  --hairline-edge: color-mix(in srgb, var(--hlx-ink) 88%, var(--hlx-ground));
+  --hairline-mid: color-mix(in srgb, var(--hlx-ink) 62%, var(--hlx-ground));
+  --hairline-lo: color-mix(in srgb, var(--hlx-ink) 38%, var(--hlx-ground));
+  --hairline-stroke: 1.1;
+  pointer-events: none;
+}
+
+/* Every thumbnail box, whichever page drew it, becomes 5:4 on the hairline ground.
+   !important beats the boxes' inline heights, paddings and palette backgrounds. */
+[data-illo="hairline"] :is(.nav-card-thumb, .example-card-thumb, [style*="height"]):has(> .hl-fig, > .hl-fallback, > div > .hl-fig, > div > .hl-fallback) {
+  height: auto !important;
+  aspect-ratio: 5 / 4;
+  padding: 0 !important;
+  background: var(--hlx-ground) !important;
+  overflow: hidden;
+}
+
+/* Plumbing › Intro hero illustrations, hairline mode */
+.hl-card { border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--white); transition: border-color 0.2s; }
+.hl-card:hover { border-color: var(--black); }
+.hl-card-figure { position: relative; aspect-ratio: 5 / 4; background: var(--hlx-ground); }
+.hl-card-label { padding: 8px 12px 10px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 2px; }
+.hl-card-gap {
+  position: absolute; top: 8px; left: 8px; padding: 2px 8px; border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6); color: #fff; font-size: 0.5625rem; font-weight: 600; pointer-events: none;
+}

@@ -11,6 +11,7 @@
  */
 
 import { useIlloStyle } from '../context/IlloStyleContext';
+import { HairlineFigure, hairlineSlugFor } from './hairline';
 
 /* ─── Palette ─────────────────────────────────────────────────────────────────── */
 // C is now read from THEMES via useIlloStyle() — see IlloStyleContext.jsx
@@ -2641,9 +2642,17 @@ export function L_JunctionAnalytics() {
    Safe to call at module level (hook is only invoked at render time).
    ══════════════════════════════════════════════════════════════════════════════ */
 
-export function makeThumb(Dark, Light, Icon) {
+/* hairlineSlug (optional): the hairline figure for this one card, so cards that
+   share an Icon need not share a figure. Ignored until that figure exists. */
+export function makeThumb(Dark, Light, Icon, hairlineSlug) {
   function IlloSwitch() {
     const { illoStyle } = useIlloStyle();
+    if (illoStyle === 'hairline') {
+      const slug = hairlineSlugFor(Icon, hairlineSlug);
+      if (slug) return <HairlineFigure slug={slug} />;
+      // No hairline figure yet: keep the Icon drawing, framed to the same 5:4 box.
+      if (Icon) return <div className="hl-fallback"><Icon /></div>;
+    }
     if (illoStyle === 'icon' && Icon) return <Icon />;
     return (illoStyle === 'detailed' && Dark) ? <Dark /> : <Light />;
   }

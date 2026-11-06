@@ -3,6 +3,9 @@ import { useIlloStyle } from '../context/IlloStyleContext';
 import PageActions from '../components/ui/PageActions';
 import Callout from '../components/ui/Callout';
 import {
+  HairlineFigure, hairlineSlugFor, HAIRLINE_COLOURS, HAIRLINE_THEMES,
+} from '../illustrations/hairline';
+import {
   L_SearchFuzzy, L_SearchPOI, L_SearchCategory, L_SearchNearby, L_SearchAlongRoute, L_SearchAutocomplete,
   L_Geocode, L_ReverseGeocode,
   L_TrafficFlow, L_TrafficIncidents, L_TrafficFlowTile, L_TrafficModelID,
@@ -4295,7 +4298,39 @@ function relTime(ts) {
   return new Date(ts).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
 }
 
-function IlloCard({ dark: Dark, light: Light, icon: Icon, label, emoji, source, prompt, illoStyle = 'lofi' }) {
+/* Hairline mode: the figure at its own 5:4 shape, the label under it (an overlay
+   would sit on the drawing, which fills the whole box). */
+function HairlineCard({ slug, Icon, label, emoji, source }) {
+  return (
+    <div className="illo-card-wrap">
+      <div className="hl-card" title={slug ? `hairline · ${slug}` : 'No hairline figure yet — showing the Icon drawing'}>
+        <div className="hl-card-figure">
+          {slug ? <HairlineFigure slug={slug} /> : <div className="hl-fallback">{Icon && <Icon />}</div>}
+          {!slug && <span className="hl-card-gap">Needs a hairline figure</span>}
+        </div>
+        <div className="hl-card-label">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+            {emoji && <span style={{ fontSize: '0.875rem', lineHeight: 1 }}>{emoji}</span>}
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--black)', lineHeight: 1.3 }}>{label}</span>
+          </div>
+          <span style={{ fontSize: '0.5625rem', color: 'var(--mid)', fontFamily: 'var(--font-mono, monospace)' }}>
+            {slug ? `hairline/${slug}` : source}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IlloCard(props) {
+  if (props.illoStyle === 'hairline') {
+    const { icon: Icon, label, emoji, source } = props;
+    return <HairlineCard slug={hairlineSlugFor(Icon)} Icon={Icon} label={label} emoji={emoji} source={source} />;
+  }
+  return <IlloCardClassic {...props} />;
+}
+
+function IlloCardClassic({ dark: Dark, light: Light, icon: Icon, label, emoji, source, prompt, illoStyle = 'lofi' }) {
   const { palette } = useIlloStyle();
   const showRegenerate = React.useContext(RegenerateCtx);
   const Illo = illoStyle === 'icon' && Icon ? Icon
@@ -4624,6 +4659,7 @@ export const COLOUR_FAMILIES = [
 ];
 
 const STYLE_OPTIONS = [
+  { id: 'hairline', icon: '⬡',  label: 'Hairline',            desc: 'TomTom Docs line art · 5:4' },
   { id: 'lofi',     icon: '◻',  label: 'Lo-Fi Wireframe',     desc: 'Geometric SVG shapes · full palette system' },
   { id: 'detailed', icon: '▦',  label: 'Detailed Wireframe',  desc: 'Rich HTML mockups · themed UI chrome' },
   { id: 'icon',     icon: '◆',  label: 'Icon Style',          desc: 'Bold symbols · dark field · palette accent' },
@@ -4728,7 +4764,10 @@ export function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPlu
         </div>
       </div>}
 
+      {!compact && illoStyle === 'hairline' && <HairlineBar />}
+
       {/* ── Row 2: Palette picker — system themes ── */}
+      {!(!compact && illoStyle === 'hairline') && <>
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -4856,7 +4895,44 @@ export function ThemeBar({ theme, onThemeChange, illoStyle, onStyleChange, onPlu
           </span>
         )}
       </div>
+      </>}
 
+    </div>
+  );
+}
+
+/* Hairline colour + theme, the same options as Thiago Andrade's gallery. */
+export function HairlineBar() {
+  const { hlColour, setHlColour, hlTheme, setHlTheme, hlResolvedTheme } = useIlloStyle();
+  const label = { fontSize: '0.6875rem', fontWeight: 600, color: 'var(--mid)', flexShrink: 0, letterSpacing: '0.04em', textTransform: 'uppercase' };
+  const pill = (active) => ({
+    display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 100,
+    border: active ? '2px solid var(--black)' : '1.5px solid var(--border)',
+    background: active ? 'var(--black)' : 'transparent', color: active ? 'var(--bg)' : 'var(--mid)',
+    cursor: 'pointer', fontSize: '0.8125rem', fontWeight: 600, whiteSpace: 'nowrap', transition: 'all 0.15s',
+  });
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 24px', flexWrap: 'wrap' }}>
+      <span style={label}>Colour</span>
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        {HAIRLINE_COLOURS.map(c => (
+          <button key={c.id} onClick={() => setHlColour(c.id)} style={pill(hlColour === c.id)} aria-pressed={hlColour === c.id}>
+            <span style={{ width: 10, height: 10, borderRadius: '50%', background: c.swatch, boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.15)' }} />
+            {c.label}
+          </button>
+        ))}
+      </div>
+      <span style={{ ...label, marginLeft: 12 }}>Theme</span>
+      <div style={{ display: 'flex', gap: 6 }}>
+        {HAIRLINE_THEMES.map(t => (
+          <button key={t.id} onClick={() => setHlTheme(t.id)} title={t.desc} style={pill(hlTheme === t.id)} aria-pressed={hlTheme === t.id}>
+            {t.label}{t.id === 'auto' ? ` (${hlResolvedTheme})` : ''}
+          </button>
+        ))}
+      </div>
+      <span style={{ fontSize: '0.6875rem', color: 'var(--mid)', marginLeft: 4 }}>
+        Applies to every hairline figure in the docs
+      </span>
     </div>
   );
 }
@@ -5012,6 +5088,15 @@ export default function IntroIllustrations({ noThemeBar = false, forcedIlloStyle
         <p className="quick-answer">
           All 82+ hero illustrations across every product intro and API reference page, unified under one theme system. Switching a theme recolours every single illustration live — shapes and layout stay identical.
         </p>
+
+        {illoStyle === 'hairline' && (
+          <Callout type="info" title="Hairline is the TomTom Docs illustration style">
+            Figures come from Thiago Andrade's <a href="https://thiagoandrade-tomtom.github.io/tomtom-docs-illustrations/" target="_blank" rel="noreferrer">TomTom Docs illustrations</a>,
+            vendored in <code>public/hairline/</code>, plus figures drawn for this prototype in <code>public/hairline-local/</code>.
+            Cards marked "Needs a hairline figure" keep their Icon drawing until one is drawn. Coverage, gaps and repeats are in Plumbing › Hairline library.
+            Hover a card to play its figure.
+          </Callout>
+        )}
 
         {/* ── Link to legacy reference ── */}
         {!noThemeBar && (

@@ -296,28 +296,28 @@ function UseCaseCard({ Thumb, group, title, desc, pageId, onNavigate }) {
 
 const USE_CASE_CARDS = [
   {
-    Thumb:  makeThumb(IlloMapDisplay,           L_MapDisplay, IcoMapDisplay),
+    Thumb:  makeThumb(IlloMapDisplay, L_MapDisplay, IcoMapDisplay, 'map-layers'),
     group:  'Map Display',
     title:  'Render a Map',
     desc:   'Embed a fully interactive TomTom map into a Jetpack Compose or Android Views layout with styles, camera control, and live traffic.',
     pageId: 'navsdk-map-compose',
   },
   {
-    Thumb:  makeThumb(IlloNavSDKNavigation,     L_NavGuidance, IcoNavSDKNavigation),
+    Thumb:  makeThumb(IlloNavSDKNavigation, L_NavGuidance, IcoNavSDKNavigation, 'nav/turn'),
     group:  'Navigation',
     title:  'Start Turn-by-Turn Navigation',
     desc:   'Initiate a guided session with manoeuvre events, progress tracking, continuous replanning, and free-driving support.',
     pageId: 'navsdk-nav-quickstart',
   },
   {
-    Thumb:  makeThumb(IlloNavSDKRouting,        L_Route, IcoNavSDKRouting),
+    Thumb:  makeThumb(IlloNavSDKRouting, L_Route, IcoNavSDKRouting, 'usecases/route'),
     group:  'Routing',
     title:  'Calculate Route with Alternatives',
     desc:   'Request traffic-aware routes with up to three alternatives, compare section breakdowns, and import or export active routes.',
     pageId: 'navsdk-route-alternatives',
   },
   {
-    Thumb:  makeThumb(IlloNavSDKNavigation,     L_NavGuidance, IcoNavSDKNavigation),
+    Thumb:  makeThumb(IlloNavSDKNavigation, L_NavGuidance, IcoNavSDKNavigation, 'nav/voice-engine'),
     group:  'Navigation',
     title:  'Add Voice Instructions',
     desc:   'Connect a text-to-speech engine to receive NIP events and synthesise turn-by-turn voice prompts during active guidance.',
@@ -338,14 +338,14 @@ const USE_CASE_CARDS = [
     pageId: 'navsdk-location-quickstart',
   },
   {
-    Thumb:  makeThumb(IlloNavSDKVirtualHorizon, L_VirtualHorizon, IcoNavSDKVirtualHorizon),
+    Thumb:  makeThumb(IlloNavSDKVirtualHorizon, L_VirtualHorizon, IcoNavSDKVirtualHorizon, 'nav/adas-data'),
     group:  'Virtual Horizon',
     title:  'Virtual Horizon & ADAS Data',
     desc:   'Read curvature, gradient, speed limits, and ahead-of-route events from the Horizon Engine for ADAS features.',
     pageId: 'navsdk-horizon-data',
   },
   {
-    Thumb:  makeThumb(IlloNavSDKSearch,         L_SDKSearch, IcoNavSDKSearch),
+    Thumb:  makeThumb(IlloNavSDKSearch, L_SDKSearch, IcoNavSDKSearch, 'nav/autocomplete'),
     group:  'Search',
     title:  'Fuzzy Search',
     desc:   'Query the TomTom search API for destinations, POIs, and reverse-geocoded coordinates with autocomplete and along-route variants.',
@@ -609,7 +609,7 @@ export default function NavSDKIntro({ onNavigate, platform = 'android' }) {
   const CAPABILITIES_ANDROID = [
     ...CAPABILITIES_SHARED,
     {
-      Thumb: makeThumb(ThumbOffline,      L_OfflineMaps, IcoNavSDKOffline),
+      Thumb: makeThumb(ThumbOffline, L_OfflineMaps, IcoNavSDKOffline, 'nav/offline-routing'),
       title: t('navsdkIntro.capabilities.offlineMaps.title'),
       desc: t('navsdkIntro.capabilities.offlineMaps.desc'),
       pageId: 'navsdk-offline-quickstart',

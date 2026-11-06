@@ -41,7 +41,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloGeocode, L_Geocode, IcoGeocode),
+      Thumb: makeThumb(IlloGeocode, L_Geocode, IcoGeocode, 'usecases/package'),
       method: 'GET',
       title: 'Structured Geocode',
       desc: 'Geocode addresses already split into discrete fields — street number, city, postal code — for higher precision.',
@@ -49,7 +49,7 @@ export default function GeocodingAPIIntro({ onNavigate }) {
       tag: 'v2',
     },
     {
-      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode, IcoReverseGeocode),
+      Thumb: makeThumb(IlloReverseGeocode, L_ReverseGeocode, IcoReverseGeocode, 'nav/turn'),
       method: 'GET',
       title: 'Cross Street Lookup',
       desc: 'Resolve a coordinate to the nearest road intersection or cross-street name for turn-by-turn context.',

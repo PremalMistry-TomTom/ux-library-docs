@@ -1,0 +1,3 @@
+Vendored from https://github.com/thiagoandrade-tomtom/tomtom-docs-illustrations at a972022 2026-11-02.
+Do not edit here: change the figure upstream, then run scripts/sync-hairline.sh.
+Hairline engine: MIT, see HAIRLINE-LICENSE.

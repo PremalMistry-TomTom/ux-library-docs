@@ -10,7 +10,7 @@ import { TOMTOM_API_KEY } from '../config/tomtomKey';
 const ThumbTrafficIncidents    = makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents);
 const ThumbTrafficFlow         = makeThumb(IlloTrafficFlow,      L_TrafficFlow,      IcoTrafficFlow);
 const ThumbTrafficFlowTile     = makeThumb(IlloTrafficFlowTile,  L_TrafficFlowTile,  IcoTrafficFlowTile);
-const ThumbTrafficIncidentTile = makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents);
+const ThumbTrafficIncidentTile = makeThumb(IlloTrafficIncidents, L_TrafficIncidents, IcoTrafficIncidents, 'apis');
 
 /* ─────────────────────────────────────────────────────────────────────────────
  * TrafficExplorer — live API request builder.

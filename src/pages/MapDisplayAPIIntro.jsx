@@ -98,7 +98,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile, IcoMapRasterTile),
+      Thumb: makeThumb(IlloMapRasterTile, L_MapRasterTile, IcoMapRasterTile, 'nav/hillshade'),
       method: 'GET',
       title: 'Hillshade Tile',
       desc: 'Terrain hillshade imagery at 514 × 514 px across 14 zoom levels for topographic context.',
@@ -106,7 +106,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(null, L_MapAssetsAPI, IcoMapDisplay),
+      Thumb: makeThumb(null, L_MapAssetsAPI, IcoMapDisplay, 'nav/map-style'),
       method: 'GET',
       title: 'Map Styles',
       desc: 'Fetch style JSON, sprite sheets, and glyph fonts needed to render vector tiles client-side.',
@@ -122,7 +122,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile, 'nav/map-image'),
       method: 'GET',
       title: 'WMS',
       desc: 'OGC-compliant Web Map Service endpoint for GIS and enterprise raster map integrations.',
@@ -130,7 +130,7 @@ export default function MapDisplayAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile),
+      Thumb: makeThumb(IlloMapVectorTile, L_MapVectorTile, IcoMapVectorTile, 'map-data'),
       method: 'GET',
       title: 'WMTS',
       desc: 'OGC-compliant Web Map Tile Service endpoint for tiled GIS workflows using RESTful or KVP access.',

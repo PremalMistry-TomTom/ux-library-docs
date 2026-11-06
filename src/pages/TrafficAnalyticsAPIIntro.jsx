@@ -25,7 +25,7 @@ import {
 } from './IntroIllustrations';
 
 /* ─── Hero ───────────────────────────────────────────────────────────────────── */
-const HeroIllo = makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics);
+const HeroIllo = makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics, 'traffic');
 
 /* ─── Page ───────────────────────────────────────────────────────────────────── */
 export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
@@ -65,7 +65,7 @@ export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloTrafficStats, L_TrafficStats, IcoTrafficStats),
+      Thumb: makeThumb(IlloTrafficStats, L_TrafficStats, IcoTrafficStats, 'map-data'),
       method: 'POST',
       title: 'Road Segment Stats',
       desc: 'Query speed percentiles, delay indices, and reliability scores for individual road segments over a date range.',
@@ -73,7 +73,7 @@ export default function TrafficAnalyticsAPIIntro({ onNavigate }) {
       tag: 'v1',
     },
     {
-      Thumb: makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics),
+      Thumb: makeThumb(IlloAreaAnalytics, L_AreaAnalytics, IcoAreaAnalytics, 'global-data'),
       method: 'GET',
       title: 'Probe Metadata',
       desc: 'Retrieve available time ranges and geographic coverage regions for probe-based traffic analytics datasets.',
