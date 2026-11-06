@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-11-06T13:18:07.616Z",
+  "generatedAt": "2026-11-06T14:47:50.779Z",
   "totals": {
     "slots": 317,
-    "covered": 295,
-    "gapSlots": 22,
+    "covered": 317,
+    "gapSlots": 0,
     "pages": 21,
-    "figures": 71,
+    "figures": 82,
     "upstream": 32,
-    "local": 39,
+    "local": 50,
     "unusedFigures": 2,
-    "gapIcons": 11,
+    "gapIcons": 0,
     "duplicates": 25,
     "bypass": 21,
     "planned": 0,
@@ -1217,12 +1217,14 @@
       "for": "Incremental map updates",
       "alt": "A three-by-three grid of map tiles; one tile is lifted out and a fresh tile with a new street drops into its slot.",
       "source": "local",
-      "uses": 1,
+      "uses": 2,
       "pages": [
+        "DocsPortal",
         "NavSDKDomains"
       ],
       "icons": [
-        "IcoNavSDKOffline"
+        "IcoNavSDKOffline",
+        "IcoTrafficModelID"
       ]
     },
     {
@@ -1255,148 +1257,174 @@
       "icons": [
         "IcoNavSDKRouting"
       ]
-    }
-  ],
-  "gaps": [
+    },
     {
-      "icon": "IcoAIVoice",
-      "light": "L_ConversationPersonality",
-      "uses": 3,
+      "slug": "nav/parking-prices",
+      "name": "Meter Post",
+      "for": "Parking prices by duration",
+      "alt": "A parking meter on a post at the kerb, with a round dial and a coin slot on its head, beside an empty parking bay painted on the road.",
+      "source": "local",
+      "uses": 2,
       "pages": [
         "DocsPortal",
-        "DomainLanding"
+        "ParkingFuelAPIIntro"
       ],
-      "labels": [
-        "Customise AI assistant personality",
-        "Add AI voice assistant to a car app"
+      "icons": [
+        "IcoParkingPrices"
       ]
     },
     {
-      "icon": "IcoTrafficModelID",
-      "light": "L_TrafficModelID",
-      "uses": 3,
+      "slug": "nav/on-street",
+      "name": "Kerbside",
+      "for": "On-street parking probability",
+      "alt": "A street with a raised pavement and six parking bays along the kerb; two hold small parked cars and the other four hold short bars of different heights.",
+      "source": "local",
+      "uses": 2,
       "pages": [
         "DocsPortal",
-        "TrafficAPIIntro"
+        "ParkingFuelAPIIntro"
       ],
-      "labels": [
-        "Query live EV data freshness",
-        "Version traffic data freshness",
-        "Traffic Model ID"
+      "icons": [
+        "IcoOnStreetParking"
       ]
     },
     {
-      "icon": "IcoSpeechToText",
-      "light": "L_AIVoice",
+      "slug": "nav/fuel-prices",
+      "name": "Pump Stand",
+      "for": "Live fuel prices",
+      "alt": "Two fuel pumps on a raised forecourt island, each a tall cabinet with a price window and a nozzle in a side holster, its hose hanging in a loop.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "ParkingFuelAPIIntro"
+      ],
+      "icons": [
+        "IcoFuelPrices"
+      ]
+    },
+    {
+      "slug": "nav/ai-voice",
+      "name": "Voice Puck",
+      "for": "In-car AI voice assistant",
+      "alt": "A round smart-speaker puck on a ledge, with sound rings floating above it that widen as they rise.",
+      "source": "local",
       "uses": 2,
       "pages": [
         "DocsPortal",
         "DomainLanding"
       ],
-      "labels": [
-        "Connect a speech-to-text engine"
+      "icons": [
+        "IcoAIVoice"
       ]
     },
     {
-      "icon": "IcoPOIPhotos",
-      "light": "L_POIPhotos",
+      "slug": "nav/speech-to-text",
+      "name": "Mic Ribbon",
+      "for": "Speech to text",
+      "alt": "A small desk microphone whose sound wave flattens into a raised strip of dashes, grouped like words.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding"
+      ],
+      "icons": [
+        "IcoSpeechToText"
+      ]
+    },
+    {
+      "slug": "nav/personality",
+      "name": "Two Voices",
+      "for": "Conversation personality",
+      "alt": "Two upright chat bubbles on a slab, one round with a curling tail and one squared with a notched tail, turned towards each other.",
+      "source": "local",
+      "uses": 3,
+      "pages": [
+        "DocsPortal",
+        "DomainLanding",
+        "Overview"
+      ],
+      "icons": [
+        "IcoAIVoice",
+        "IcoConversationPersonality"
+      ]
+    },
+    {
+      "slug": "nav/colour-system",
+      "name": "Swatch Fan",
+      "for": "Colour system",
+      "alt": "A fan of six swatch cards pinned at one end by a rivet, each card's swatch a different pattern.",
+      "source": "local",
+      "uses": 1,
+      "pages": [
+        "Overview"
+      ],
+      "icons": [
+        "IcoColourSystem"
+      ]
+    },
+    {
+      "slug": "nav/poi-photos",
+      "name": "Shop Snaps",
+      "for": "POI photos",
+      "alt": "A small shop with an awning, and beside it a low stand of four photo cards, each showing a tiny line scene.",
+      "source": "local",
       "uses": 2,
       "pages": [
         "DocsPortal",
         "SearchAPIIntro"
       ],
-      "labels": [
-        "Display crowd-sourced POI photos",
-        "POI Photos"
+      "icons": [
+        "IcoPOIPhotos"
       ]
     },
     {
-      "icon": "IcoJunctionAnalytics",
-      "light": "L_JunctionAnalytics",
+      "slug": "nav/traffic-model",
+      "name": "Snapshot Stack",
+      "for": "Traffic model ID",
+      "alt": "Three thin map sheets stacked loosely, each with a curving road, traffic dashes and an index tab; one sheet slides out toward the viewer.",
+      "source": "local",
+      "uses": 2,
+      "pages": [
+        "DocsPortal",
+        "TrafficAPIIntro"
+      ],
+      "icons": [
+        "IcoTrafficModelID"
+      ]
+    },
+    {
+      "slug": "nav/junction",
+      "name": "Counting Junction",
+      "for": "Junction analytics",
+      "alt": "A four-way crossroads with a short stack of thin rings standing on each arm; one arm's kerbs light and its stack rises tall.",
+      "source": "local",
       "uses": 2,
       "pages": [
         "DocsPortal",
         "TrafficAnalyticsAPIIntro"
       ],
-      "labels": [
-        "Count vehicles at an intersection",
-        "Junction Analytics"
+      "icons": [
+        "IcoJunctionAnalytics"
       ]
     },
     {
-      "icon": "IcoParkingPrices",
-      "light": "L_ParkingPrices",
-      "uses": 2,
-      "pages": [
-        "DocsPortal",
-        "ParkingFuelAPIIntro"
-      ],
-      "labels": [
-        "Display parking prices by duration",
-        "Parking Prices"
-      ]
-    },
-    {
-      "icon": "IcoOnStreetParking",
-      "light": "L_OnStreetParking",
-      "uses": 2,
-      "pages": [
-        "DocsPortal",
-        "ParkingFuelAPIIntro"
-      ],
-      "labels": [
-        "Predict on-street parking probability",
-        "On-Street Parking"
-      ]
-    },
-    {
-      "icon": "IcoFuelPrices",
-      "light": "L_FuelPrices",
-      "uses": 2,
-      "pages": [
-        "DocsPortal",
-        "ParkingFuelAPIIntro"
-      ],
-      "labels": [
-        "Show live fuel prices at stations",
-        "Fuel Prices"
-      ]
-    },
-    {
-      "icon": "IcoConversationPersonality",
-      "light": "L_ConversationPersonality",
-      "uses": 2,
-      "pages": [
-        "DomainLanding",
-        "Overview"
-      ],
-      "labels": [
-        "ai-personality"
-      ]
-    },
-    {
-      "icon": "IcoColourSystem",
-      "light": "L_ColourSystem",
+      "slug": "nav/search-result",
+      "name": "Result Rows",
+      "for": "Search result list",
+      "alt": "A phone lying flat with a search field and three list rows, each with a pin dot and text dashes; one row lifts out of the list.",
+      "source": "local",
       "uses": 1,
       "pages": [
         "Overview"
       ],
-      "labels": [
-        "assets"
-      ]
-    },
-    {
-      "icon": "IcoSearchResult",
-      "light": "L_SearchResult",
-      "uses": 1,
-      "pages": [
-        "Overview"
-      ],
-      "labels": [
-        "search-engine"
+      "icons": [
+        "IcoSearchResult"
       ]
     }
   ],
+  "gaps": [],
   "dupes": [
     {
       "page": "DocsPortal",
@@ -1963,44 +1991,19 @@
   "planned": [],
   "pages": [
     {
-      "page": "ParkingFuelAPIIntro",
-      "slots": 5,
-      "covered": 2
-    },
-    {
-      "page": "Overview",
-      "slots": 15,
-      "covered": 12
-    },
-    {
-      "page": "TrafficAPIIntro",
-      "slots": 7,
-      "covered": 6
-    },
-    {
-      "page": "TrafficAnalyticsAPIIntro",
-      "slots": 7,
-      "covered": 6
-    },
-    {
-      "page": "DomainLanding",
-      "slots": 24,
-      "covered": 21
-    },
-    {
-      "page": "SearchAPIIntro",
+      "page": "ANAIntro",
       "slots": 9,
-      "covered": 8
+      "covered": 9
     },
     {
       "page": "DocsPortal",
       "slots": 94,
-      "covered": 84
+      "covered": 94
     },
     {
-      "page": "ANAIntro",
-      "slots": 9,
-      "covered": 9
+      "page": "DomainLanding",
+      "slots": 24,
+      "covered": 24
     },
     {
       "page": "DrivingIntelligenceUseCases",
@@ -2048,6 +2051,16 @@
       "covered": 38
     },
     {
+      "page": "Overview",
+      "slots": 15,
+      "covered": 15
+    },
+    {
+      "page": "ParkingFuelAPIIntro",
+      "slots": 5,
+      "covered": 5
+    },
+    {
       "page": "RoutingAPIIntro",
       "slots": 10,
       "covered": 10
@@ -2058,9 +2071,24 @@
       "covered": 2
     },
     {
+      "page": "SearchAPIIntro",
+      "slots": 9,
+      "covered": 9
+    },
+    {
       "page": "SnapToRoadsAPIIntro",
       "slots": 2,
       "covered": 2
+    },
+    {
+      "page": "TrafficAPIIntro",
+      "slots": 7,
+      "covered": 7
+    },
+    {
+      "page": "TrafficAnalyticsAPIIntro",
+      "slots": 7,
+      "covered": 7
     },
     {
       "page": "TrafficExplorer",

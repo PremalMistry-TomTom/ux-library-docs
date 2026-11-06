@@ -22,6 +22,8 @@ import {
   IcoInstructionPanel, IcoRouteBar, IcoHUD, IcoETAPanel, IcoCluster, IcoEVNavUI, IcoEVBattery,
   IcoSearchAutocomplete, IcoSearchNearby, IcoSearchAlongRoute, IcoReverseGeocode, IcoBatchRouting,
   IcoSnapToRoads, IcoEVChargingAvailability, IcoEVRequirements, IcoVoiceEngine, IcoMapStyle, IcoThemingTokens,
+  IcoPOIPhotos, IcoTrafficModelID, IcoJunctionAnalytics, IcoParkingPrices, IcoOnStreetParking, IcoFuelPrices,
+  IcoAIVoice, IcoSpeechToText, IcoConversationPersonality, IcoColourSystem, IcoSearchResult,
 } from './iconVariants';
 
 import UPSTREAM_INDEX from '../../public/hairline/figures/index.json';
@@ -101,6 +103,17 @@ export const HAIRLINE_FOR = new Map([
   [IcoVoiceEngine,            'nav/voice-engine'],
   [IcoMapStyle,               'nav/map-style'],
   [IcoThemingTokens,          'nav/theming'],
+  [IcoPOIPhotos,              'nav/poi-photos'],
+  [IcoTrafficModelID,         'nav/traffic-model'],
+  [IcoJunctionAnalytics,      'nav/junction'],
+  [IcoParkingPrices,          'nav/parking-prices'],
+  [IcoOnStreetParking,        'nav/on-street'],
+  [IcoFuelPrices,             'nav/fuel-prices'],
+  [IcoAIVoice,                'nav/ai-voice'],
+  [IcoSpeechToText,           'nav/speech-to-text'],
+  [IcoConversationPersonality,'nav/personality'],
+  [IcoColourSystem,           'nav/colour-system'],
+  [IcoSearchResult,           'nav/search-result'],
 ]);
 
 /** Icon thumbnails still waiting for a hairline figure of their own. */
